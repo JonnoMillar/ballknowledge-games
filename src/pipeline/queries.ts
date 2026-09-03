@@ -28,6 +28,28 @@ SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHE
   OPTIONAL { ?player rdfs:label ?mul FILTER(LANG(?mul) = "mul") }
   BIND(COALESCE(?en, ?mul) AS ?name)
   FILTER(BOUND(?name))
+
+  # Exclude people whose notability is musical rather than footballing.
+  # Spec 8.1 trap 3.
+  #
+  # Julio Iglesias genuinely holds occupation "association football player" —
+  # he kept goal for Castilla — so the occupation filter alone does not remove
+  # him, and his 87 sitelinks measure singing fame, not football fame.
+  #
+  # MEASURED: this list must NOT include actor (Q33999). David Beckham holds
+  # occupation actor, and excluding it removes him from the pool entirely.
+  # Verified against the live endpoint on 2026-09-03. Narrow this list rather
+  # than widening it.
+  FILTER NOT EXISTS {
+    ?player wdt:P106 ?other .
+    VALUES ?other {
+      wd:Q177220    # singer
+      wd:Q639669    # musician
+      wd:Q36834     # composer
+      wd:Q753110    # songwriter
+      wd:Q488205    # singer-songwriter
+    }
+  }
 }`.trim();
 }
 
