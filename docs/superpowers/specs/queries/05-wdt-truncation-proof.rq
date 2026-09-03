@@ -1,0 +1,6 @@
+SELECT ?mode (COUNT(DISTINCT ?club) AS ?clubs) WHERE {
+  { BIND("wdt: (truthy)" AS ?mode) wd:Q21621995 wdt:P54 ?club . }
+  UNION
+  { BIND("p:/ps: (all)"  AS ?mode) wd:Q21621995 p:P54 ?s . ?s ps:P54 ?club . }
+}
+GROUP BY ?mode

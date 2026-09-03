@@ -1,0 +1,6 @@
+SELECT ?item ?en ?mul ?any WHERE {
+  VALUES ?item { wd:Q10520 wd:Q21621995 wd:Q483309 wd:Q576614 wd:Q4712099 }
+  OPTIONAL { ?item rdfs:label ?en  FILTER(LANG(?en)="en") }
+  OPTIONAL { ?item rdfs:label ?mul FILTER(LANG(?mul)="mul") }
+  OPTIONAL { ?item rdfs:label ?any FILTER(LANG(?any)="es") }
+}

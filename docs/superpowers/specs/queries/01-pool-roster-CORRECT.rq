@@ -1,0 +1,8 @@
+SELECT DISTINCT ?player ?name ?sitelinks WHERE {
+  ?player p:P54 ?st . ?st ps:P54 wd:Q8682 .
+  ?player wikibase:sitelinks ?sitelinks .
+  OPTIONAL { ?player rdfs:label ?en  FILTER(LANG(?en)="en") }
+  OPTIONAL { ?player rdfs:label ?mul FILTER(LANG(?mul)="mul") }
+  BIND(COALESCE(?en, ?mul) AS ?name)
+  FILTER(BOUND(?name))
+}

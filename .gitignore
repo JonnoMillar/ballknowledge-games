@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+dist/
+.env*
+.DS_Store
+*.log
+
+# Wikidata pipeline output is committed deliberately (pinned snapshots).
+# Raw intermediate dumps are not.
+data/raw/

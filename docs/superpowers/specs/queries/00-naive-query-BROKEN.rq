@@ -1,0 +1,6 @@
+SELECT ?playerLabel ?sitelinks WHERE {
+  ?player wdt:P54 wd:Q8682 ;
+          wikibase:sitelinks ?sitelinks .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+ORDER BY DESC(?sitelinks)

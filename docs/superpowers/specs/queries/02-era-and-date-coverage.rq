@@ -1,0 +1,10 @@
+SELECT ?player ?name ?sitelinks (MIN(?start) AS ?firstSpell)
+       (COUNT(?st) AS ?statements) (SUM(IF(BOUND(?start),1,0)) AS ?dated) WHERE {
+  ?player p:P54 ?rm . ?rm ps:P54 wd:Q8682 .
+  ?player wikibase:sitelinks ?sitelinks .
+  ?player p:P54 ?st . OPTIONAL { ?st pq:P580 ?start }
+  OPTIONAL { ?player rdfs:label ?en FILTER(LANG(?en)="en") }
+  OPTIONAL { ?player rdfs:label ?mul FILTER(LANG(?mul)="mul") }
+  BIND(COALESCE(?en,?mul) AS ?name) FILTER(BOUND(?name))
+}
+GROUP BY ?player ?name ?sitelinks

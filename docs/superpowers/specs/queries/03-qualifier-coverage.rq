@@ -1,0 +1,7 @@
+SELECT (COUNT(?st) AS ?spells) (SUM(IF(BOUND(?apps),1,0)) AS ?withApps)
+       (SUM(IF(BOUND(?start),1,0)) AS ?withDates) WHERE {
+  ?player p:P54 ?rm . ?rm ps:P54 wd:Q8682 .
+  ?player p:P54 ?st .
+  OPTIONAL { ?st pq:P1350 ?apps }
+  OPTIONAL { ?st pq:P580 ?start }
+}
