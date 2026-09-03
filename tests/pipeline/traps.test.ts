@@ -61,3 +61,52 @@ describe.skipIf(!hasFixture)('pipeline traps (spec 8.1)', () => {
     expect(raw.length).toBeGreaterThan(500);
   });
 });
+
+describe.skipIf(!hasFixture)('position mapping (spec 5.3)', () => {
+  const parsed2 = JSON.parse(readFileSync(FIXTURE, 'utf8')) as SparqlResponse;
+  const raw2 = normalise(parsed2.results.bindings, new Map());
+
+  it('classifies the large majority of players', () => {
+    // An earlier map written from memory left 42% unclassified because seven
+    // of ten QIDs pointed at unrelated entities — a beetle, a starfish, a drug.
+    // This guards against a silent regression of the same kind.
+    const unclassified = raw2.filter((p) => p.positions.length === 0).length;
+    const ratio = unclassified / raw2.length;
+    expect(ratio, `${(ratio * 100).toFixed(1)}% unclassified`).toBeLessThan(0.15);
+  });
+
+  it('classifies known players into the expected class', () => {
+    const find = (n: string) => raw2.find((p) => p.name === n);
+    expect(find('Iker Casillas')?.positions).toContain('GK');
+    expect(find('Sergio Ramos')?.positions).toContain('DEF');
+    expect(find('Luka Modrić')?.positions).toContain('MID');
+    expect(find('Kylian Mbappé')?.positions).toContain('FWD');
+  });
+});
+
+describe.skipIf(!hasFixture)('national teams are not clubs (spec 5.1)', () => {
+  const parsed3 = JSON.parse(readFileSync(FIXTURE, 'utf8')) as SparqlResponse;
+  const raw3 = normalise(parsed3.results.bindings, new Map());
+
+  it('excludes national teams from club sets', () => {
+    // P54 covers national teams too. Left in, every Spanish international
+    // would share a "club" with every other, turning nationality into a green
+    // club link and double-counting the nation dimension.
+    const NATIONAL_TEAM_QIDS = [
+      'Q207337',  // Morocco
+      'Q42267',   // Spain
+      'Q83459',   // France
+      'Q47774',   // France (alternate item)
+    ];
+    const allClubs = new Set(raw3.flatMap((p) => p.clubs.map((c) => c.clubId)));
+    for (const qid of NATIONAL_TEAM_QIDS) {
+      expect(allClubs.has(qid), `${qid} is a national team and must not be a club`).toBe(false);
+    }
+  });
+
+  it('still keeps real clubs', () => {
+    const allClubs = new Set(raw3.flatMap((p) => p.clubs.map((c) => c.clubId)));
+    expect(allClubs.has('Q8682')).toBe(true);   // Real Madrid
+    expect(allClubs.has('Q483020')).toBe(true); // PSG
+  });
+});

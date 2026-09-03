@@ -21,6 +21,17 @@ SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHE
   OPTIONAL { ?spell pq:P580 ?start }
   OPTIONAL { ?spell pq:P582 ?end }
 
+  # P54 includes NATIONAL TEAMS, not just clubs. Left in, every Moroccan
+  # international would "share a club" with every other Moroccan, manufacturing
+  # green links out of pure nationality and double-counting the nation
+  # dimension of the link table.
+  #
+  # MEASURED: a positive filter on Q476028 (association football club) does NOT
+  # work — Wikidata classifies the Morocco senior team as one. Excluding
+  # Q6979593 (national association football team) is what actually discriminates.
+  # Verified against the live endpoint on 2026-09-03.
+  FILTER NOT EXISTS { ?club wdt:P31/wdt:P279* wd:Q6979593 }
+
   OPTIONAL { ?player wdt:P27 ?nation }
   OPTIONAL { ?player wdt:P413 ?position }
 

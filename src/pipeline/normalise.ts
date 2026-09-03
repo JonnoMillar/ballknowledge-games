@@ -26,17 +26,43 @@ const year = (iso: string | undefined): number | null =>
  * P413 is coarse — Mbappe's whole record is one value. We map to GK/DEF/MID/FWD
  * and no finer, which is all spec 5.3 requires.
  */
+/**
+ * EVERY QID BELOW WAS RESOLVED AGAINST THE LIVE ENDPOINT ON 2026-09-03.
+ * Do not add one from memory.
+ *
+ * An earlier version of this map was written from memory and was wrong for
+ * seven of ten entries — "defender" pointed at Cyphon hofferi (a beetle),
+ * "attacking midfielder" at a starfish, "striker" at a drug. The result was a
+ * plausible-looking pipeline that silently discarded 42% of all players for
+ * having no recognisable position.
+ */
 const POSITION_CLASS: Record<string, PositionClass> = {
-  Q201330: 'GK',    // goalkeeper
-  Q2005335: 'DEF',  // defender
-  Q17505298: 'DEF', // centre-back
-  Q3341015: 'DEF',  // full-back
-  Q193592: 'MID',   // midfielder
-  Q1379556: 'MID',  // defensive midfielder
-  Q1932482: 'MID',  // attacking midfielder
-  Q280658: 'FWD',   // forward
-  Q21057452: 'FWD', // winger
-  Q1130256: 'FWD',  // striker
+  // goalkeeper — two distinct live items, both in use
+  Q201330: 'GK',
+  Q179789: 'GK',
+
+  Q336286: 'DEF',    // defender
+  Q268258: 'DEF',    // centre-back
+  Q90173132: 'DEF',  // full-back
+  Q107213256: 'DEF', // wing-back
+  Q1489923: 'DEF',   // sweeper
+
+  Q193592: 'MID',    // midfielder
+  Q6008848: 'MID',   // central midfielder
+  Q18691898: 'MID',  // defensive midfielder
+  Q90326494: 'MID',  // attacking midfielder
+  Q114358123: 'MID', // right midfielder
+  Q8025128: 'MID',   // wing half (historic, broadly a midfield role)
+
+  Q280658: 'FWD',    // forward
+  Q9731197: 'FWD',   // centre-forward
+  Q11681748: 'FWD',  // winger
+  Q1369558: 'FWD',   // winger
+  Q2827965: 'FWD',   // winger
+  Q114358150: 'FWD', // right winger
+  Q114358158: 'FWD', // left winger
+  Q3446915: 'FWD',   // attacker
+  Q6037916: 'FWD',   // inside forward
 };
 
 export function positionClassOf(positionQid: string): PositionClass | null {
