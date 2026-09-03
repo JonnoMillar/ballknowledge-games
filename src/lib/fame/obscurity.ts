@@ -1,0 +1,39 @@
+import type { Player } from '../chemistry/types';
+
+/**
+ * Score a placement 0..100 against the fame range of that slot's valid answers.
+ * 100 is the most obscure valid answer, 0 the most famous.
+ *
+ * Scoring locally rather than globally cancels most era bias, because it
+ * compares like with like. Fame therefore only needs to be ordinally correct
+ * within a comparable group, not globally calibrated. Spec 6.2.
+ */
+export function slotObscurityScore(
+  chosen: Player,
+  answerSet: readonly Player[],
+): number {
+  if (answerSet.length === 0) return 0;
+  if (!answerSet.some((p) => p.id === chosen.id)) return 0;
+  if (answerSet.length === 1) return 50;
+
+  const values = answerSet.map((p) => p.fame.value);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  if (max === min) return 50;
+
+  return Math.round(((max - chosen.fame.value) / (max - min)) * 100);
+}
+
+export function boardObscurityScore(
+  placed: Readonly<Record<string, Player>>,
+  answerSets: Readonly<Record<string, readonly Player[]>>,
+): number {
+  const slots = Object.keys(placed);
+  if (slots.length === 0) return 0;
+
+  const total = slots.reduce(
+    (sum, slotId) => sum + slotObscurityScore(placed[slotId]!, answerSets[slotId] ?? []),
+    0,
+  );
+  return Math.round(total / slots.length);
+}
