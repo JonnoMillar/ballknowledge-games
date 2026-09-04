@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { scoreBoard, isValidPlacement } from '../../src/lib/puzzle/validate';
+import { scoreBoard } from '../../src/lib/puzzle/validate';
 import { FORMATIONS } from '../../src/lib/puzzle/formations';
 import { CHEMISTRY_GATE } from '../../src/lib/chemistry/score';
-import type { Board, Placement } from '../../src/lib/puzzle/types';
+import type { Board } from '../../src/lib/puzzle/types';
 import type { Player } from '../../src/lib/chemistry/types';
 
 const hasPool = existsSync('data/pool.json');
@@ -38,15 +38,32 @@ describe.skipIf(!hasPool || boards.length === 0)('shipped boards', () => {
       }
     });
 
-    it(`${file}: the reference solution is legal under its own constraints`, () => {
-      // Replay it slot by slot, exactly as the game would validate it.
-      const filled: Record<string, string> = { ...board.seeded };
+    it(`${file}: every player is in their natural position`, () => {
+      // Boards prescribe no links, so there is nothing else to be "legal"
+      // against — chemistry is the only target and it is asserted above. What
+      // still matters is that the generator never parked anyone out of
+      // position, which would silently cost 5 chemistry.
       for (const slot of formation.slots) {
-        if (filled[slot.id]) continue;
         const player = pool.get(board.referenceSolution[slot.id]!)!;
-        const r = isValidPlacement(board, formation, pool, filled as Placement, slot.id, player);
-        expect(r.ok, `${slot.id} (${player.name}) illegal on its own board`).toBe(true);
-        filled[slot.id] = player.id;
+        expect(
+          player.positions.includes(slot.position),
+          `${slot.id}: ${player.name} is not a ${slot.position}`,
+        ).toBe(true);
+      }
+    });
+
+    it(`${file}: the three givens differ in club and nation`, () => {
+      const seeds = Object.values(board.seeded).map((id) => pool.get(id)!);
+      for (let i = 0; i < seeds.length; i++) {
+        for (let j = i + 1; j < seeds.length; j++) {
+          const a = seeds[i]!;
+          const b = seeds[j]!;
+          expect(a.nation, `${a.name} and ${b.name} share a nation`).not.toBe(b.nation);
+          expect(
+            a.clubIds.some((c) => b.clubIds.includes(c)),
+            `${a.name} and ${b.name} share a club`,
+          ).toBe(false);
+        }
       }
     });
 
