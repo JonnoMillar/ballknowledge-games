@@ -1,0 +1,29 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Squad board", "x": 0, "y": 0, "w": 1440, "h": 900 }
+  ],
+  "annotations": [
+    {
+      "id": "note-ip",
+      "x": 0,
+      "y": -300,
+      "w": 700,
+      "text": "Matches the FIFA squad screen's INFORMATION ARCHITECTURE — pitch view, cards with a\nposition pill beneath, chemistry lines drawn pill-to-pill, club block top-left with a\nchemistry bar, player panel right, control legend along the bottom.\n\nThe card SILHOUETTE is deliberately ours: chamfered top corners, square base. Not the FUT\nshield. That shape and the gold card art are EA's branded assets, and the brief already\nsettled this — own visual system, rather than relying on tolerance."
+    },
+    {
+      "id": "note-state",
+      "x": 760,
+      "y": -300,
+      "w": 660,
+      "text": "Real state from board 003, a Manchester City web.\n\nGIVEN: Kompany, Navas, Álvarez.\nFOUND: Fernandinho, Palmer, Eric García.\nOPEN: GK, LCB, RB, ST, RW.\n\nChemistry 33 of a possible 110, against a gate of 100.\nLCB is live — and that is where Philippe Sandler sits, fame 23,\nthe answer almost nobody will reach for."
+    },
+    {
+      "id": "note-photos",
+      "x": 0,
+      "y": 960,
+      "w": 1000,
+      "text": "PLAYER PHOTOS — measured, not guessed. Wikidata P18 links to Wikimedia Commons, and\ncoverage across our own pool is:  top 500 by fame 100%  ·  mid pool 84%  ·  deep cuts 35%.\n\nCommons images are CC BY / CC BY-SA / public domain, so they are usable with attribution.\nReal costs are a credits page and unifying wildly varied crops — not availability.\n\nThe gradient is the interesting part: seeded players always have a face, deep cuts often do not.\nThe silhouettes on the cards here are placeholders, and for a genuinely obscure player the\nsilhouette may be the honest permanent state. Worth leaning into rather than fixing."
+    }
+  ],
+  "launch": { "view": "focused", "file": "Main.dc.html" }
+}
