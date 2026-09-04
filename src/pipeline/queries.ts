@@ -124,3 +124,20 @@ SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHE
   }
 }`.trim();
 }
+
+/**
+ * Sex or gender (P21) for a batch of players.
+ *
+ * Fetched separately rather than joined into careersQuery so that adding it did
+ * not require re-pulling every career. The pool contains women's football —
+ * Marta, Alex Morgan, Sam Kerr and Ada Hegerberg were all present — and mixing
+ * men's and women's players into one XI is not what "Recall XI" means.
+ */
+export function genderQuery(playerQids: readonly string[]): string {
+  const values = playerQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT ?player ?gender WHERE {
+  VALUES ?player { ${values} }
+  OPTIONAL { ?player wdt:P21 ?gender }
+}`.trim();
+}

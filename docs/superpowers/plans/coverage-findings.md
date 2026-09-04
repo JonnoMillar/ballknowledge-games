@@ -129,3 +129,76 @@ fame floor of 20 works across tiers without per-league tuning.
 
 Proceed to Task 12 (board authoring). Before authoring at scale, expand the pool
 to 20–30 clubs and add a name-sanity check to the pipeline.
+
+---
+
+# Addendum — board authoring (Task 12)
+
+**Date:** 2026-09-04
+
+## What the boards taught us
+
+**1. A random XI from this pool is all deep cuts and unplayable.** The pool's
+median fame is 27, so random selection produces eleven obscure players — no
+recognisable anchor, no entry point, nothing to weigh a choice against. The
+first board generated this way had every player between fame 21 and 38.
+Boards need deliberate fame anchoring; the generator now requires a minimum
+number of well-known players.
+
+**2. Link tightness is driven by the neighbour's career length, not by the
+link colour.** This is the main difficulty dial and it is not obvious. A GREEN
+link means "shares any club with the neighbour", so a neighbour with 12 clubs
+barely constrains anything while a one-club player constrains hard. The first
+tuned board was anchored on well-travelled players (Dani Alves, 8+ clubs) and
+every slot had 100–350 legal answers. Capping career length at 3–4 clubs is
+what brought boards into range.
+
+**3. Whole-board solution counts are the wrong difficulty metric.** Enumeration
+over a 12k pool always hits its cap, and answer sets derived from a capped
+search are a biased sample of whichever branches were explored first — they
+look authoritative and are not. The honest measure is per-slot: walk the
+solution slot by slot and count how many players are legal *given only what is
+solved so far*, which is exactly the rule the game enforces (spec §4.1).
+
+**4. Difficulty is not uniform across a board, by construction.** Under
+progressive reveal, slots resolved early have one solved neighbour and 200–400
+options; slots resolved late have three and 8–30. That gradient is inherent, and
+probably a feature — the board opens loose and closes tight.
+
+**5. Boards inherit a flavour from wherever the search lands.** 001 and 002 came
+out almost entirely Bundesliga; 003 is Manchester City–flavoured. Worth making
+an explicit authoring input rather than an accident.
+
+## The three boards
+
+Target: no slot under ~4 options (trial and error) or over ~150 (fame lottery).
+
+| Board | Seeds | Tightest | Loosest | Flavour |
+|---|---|---|---|---|
+| 001 | LB, LCM, ST | 33 | 199 | Bundesliga |
+| 002 | GK, LCM, LW | 13 | 189 | Bundesliga |
+| 003 | LB, RCM, LW | 8 | 100 | Man City / Premier League |
+
+All three reach chemistry 110/110. **003 is the best of them** — every slot in
+range, with Paul Dickov, Bradley Wright-Phillips, Dalian Atkinson and Carlo Nash
+as available deep cuts. 001 and 002 each have one or two slots above the 150
+ceiling and should be retuned before shipping.
+
+## Scope decision made here
+
+**The pool contains women's football** — Marta, Alex Morgan, Sam Kerr, Ada
+Hegerberg and Megan Rapinoe were all present (379 of 12,289 players). Nothing in
+the spec or brief addressed it, so the pipeline was mixing men's and women's
+players into single XIs.
+
+Defaulted to **men's only**, since "Recall XI" with FIFA-style chemistry implies
+it and a mixed XI reads as a bug. This is a one-value config change in
+`scripts/build-pool.ts`, not a hard-coding: a women's pool or separate boards is
+the same pipeline with `GENDER` flipped. **Flagged for confirmation.**
+
+## Pipeline fix found along the way
+
+The SPARQL client used GET, putting the whole query in the URL. A `VALUES`
+clause of ~500 QIDs overflowed the endpoint's header limit and returned **431**,
+which looks nothing like a query problem. Switched to POST, and the error
+messages now distinguish "request too large" from "query too expensive".

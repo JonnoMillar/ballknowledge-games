@@ -1,4 +1,5 @@
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { normalise } from '../src/pipeline/normalise';
 import { applyPoolFilters, DEFAULT_POOL_RULES } from '../src/pipeline/pool';
 import { suspiciousName } from '../src/pipeline/sanity';
@@ -35,7 +36,19 @@ for (let i = 0; i < clubQids.length; i += CHUNK) {
 }
 console.log(`resolved ${clubToLeague.size} of ${clubQids.length} clubs to a league`);
 
-const raw = normalise(bindings, clubToLeague);
+let raw = normalise(bindings, clubToLeague);
+
+// Gender scope. The pool contains women's football (379 players); mixing men's
+// and women's players into a single XI is not what "Recall XI" means. This is a
+// scope choice, not a data-quality one - flip GENDER to 'Q6581072' for a
+// women's pool, or to null for both.
+const GENDER: string | null = 'Q6581097'; // male
+if (GENDER && existsSync('data/raw/_gender.json')) {
+  const g = JSON.parse(await readFile('data/raw/_gender.json', 'utf8')) as Record<string, string>;
+  const before = raw.length;
+  raw = raw.filter((p) => g[p.id] === GENDER);
+  console.log(`gender filter: ${before} -> ${raw.length}`);
+}
 const pool = applyPoolFilters(raw, DEFAULT_POOL_RULES);
 
 // Name sanity. Flag, never remove — a defaced name still belongs to a real
