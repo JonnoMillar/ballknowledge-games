@@ -2,9 +2,9 @@
   "id": "003",
   "formationId": "433",
   "seeded": {
-    "RCB": "Q185093",
-    "LCM": "Q296583",
-    "LW": "Q59306386"
+    "RCB": "Q39230",
+    "CM": "Q131234",
+    "ST": "Q113704154"
   },
   "required": {
     "GK|LCB": "green",
@@ -13,28 +13,28 @@
     "LB|LCM": "green",
     "LCB|RCB": "green",
     "LCB|LCM": "green",
-    "RB|RCB": "green",
+    "RB|RCB": "hyper",
     "RCB|RCM": "green",
     "RB|RCM": "green",
     "CM|LCM": "green",
     "LCM|LW": "green",
     "CM|RCM": "green",
-    "CM|ST": "hyper",
-    "RCM|RW": "hyper",
+    "CM|ST": "orange",
+    "RCM|RW": "green",
     "LW|ST": "green",
     "RW|ST": "green"
   },
   "referenceSolution": {
-    "GK": "Q20830808",
-    "LB": "Q172211",
-    "LCB": "Q113509374",
-    "RCB": "Q185093",
-    "RB": "Q111479885",
-    "LCM": "Q296583",
-    "CM": "Q7360535",
-    "RCM": "Q29456",
-    "LW": "Q59306386",
-    "ST": "Q326236",
-    "RW": "Q99760796"
+    "RCB": "Q39230",
+    "CM": "Q131234",
+    "ST": "Q113704154",
+    "RCM": "Q6696318",
+    "RB": "Q112604843",
+    "RW": "Q550019",
+    "GK": "Q4720865",
+    "LCB": "Q87767569",
+    "LCM": "Q3288415",
+    "LW": "Q56424307",
+    "LB": "Q97724521"
   }
 }
