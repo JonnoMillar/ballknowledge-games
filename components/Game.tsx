@@ -48,8 +48,15 @@ export default function Game({
   }, []);
 
   const score = chemistry(state);
-  const pct = Math.min(100, (score.squadChemistry / MAX_SQUAD_CHEMISTRY) * 100);
-  const gatePct = (CHEMISTRY_GATE / MAX_SQUAD_CHEMISTRY) * 100;
+  /**
+   * Chemistry is never shown above 100. The scale internally runs to 110 so a
+   * hyper link can absorb a weak one elsewhere, but that headroom is a
+   * mechanic, not a number the player should be reading. At 100 the bar fills
+   * and glows; beyond it, nothing further changes.
+   */
+  const shownChem = Math.min(CHEMISTRY_GATE, score.squadChemistry);
+  const pct = (shownChem / CHEMISTRY_GATE) * 100;
+  const full = score.squadChemistry >= CHEMISTRY_GATE;
 
   function onDragStart(e: DragStartEvent) {
     const id = e.active.data.current?.playerId as string | undefined;
@@ -122,12 +129,38 @@ export default function Game({
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>CHEMISTRY</span>
-            <span className="cond" style={{ fontWeight: 700, fontSize: 22, color: 'var(--green)' }}>{score.squadChemistry}</span>
-            <div style={{ position: 'relative', width: 180, height: 9, background: 'var(--panel-2)', borderRadius: 5 }}>
-              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${pct}%`, background: 'linear-gradient(90deg, #2f9e5c, var(--green))', borderRadius: 5, transition: 'width 220ms ease' }} />
-              <div style={{ position: 'absolute', left: `${gatePct}%`, top: -4, bottom: -4, width: 2, background: 'var(--text)' }} />
+            <span
+              className="cond"
+              style={{
+                fontWeight: 700, fontSize: 22,
+                color: full ? 'var(--green)' : 'var(--text)',
+                textShadow: full ? '0 0 14px rgba(94,224,138,0.75)' : 'none',
+                transition: 'color 220ms ease, text-shadow 220ms ease',
+              }}
+            >
+              {shownChem}
+            </span>
+            <div
+              style={{
+                position: 'relative', width: 180, height: 9, borderRadius: 5,
+                background: 'var(--panel-2)',
+                boxShadow: full ? '0 0 12px rgba(94,224,138,0.55)' : 'none',
+                transition: 'box-shadow 260ms ease',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute', left: 0, top: 0, bottom: 0, width: `${pct}%`,
+                  borderRadius: 5, transition: 'width 220ms ease, background 260ms ease',
+                  background: full
+                    ? 'linear-gradient(90deg, var(--green), #b6ff9c, var(--green))'
+                    : 'linear-gradient(90deg, #2f9e5c, var(--green))',
+                }}
+              />
             </div>
-            <span className="cond" style={{ fontWeight: 600, fontSize: 12, color: 'var(--dim)' }}>{CHEMISTRY_GATE} TO SOLVE</span>
+            <span className="cond" style={{ fontWeight: 600, fontSize: 12, color: full ? 'var(--green)' : 'var(--dim)' }}>
+              {full ? 'FULL' : `${CHEMISTRY_GATE} TO SOLVE`}
+            </span>
           </div>
 
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -169,7 +202,7 @@ export default function Game({
                 transformOrigin: 'center center',
               }}
             >
-              <Pitch state={state} nations={nations} images={images} obscurityFor={obscurityFor} focusedSlot={focusedSlot} onFocus={setFocusedSlot} />
+              <Pitch state={state} nations={nations} images={images} obscurityFor={obscurityFor} perSlotChem={score.perSlot} focusedSlot={focusedSlot} onFocus={setFocusedSlot} />
             </div>
           </div>
 

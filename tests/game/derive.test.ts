@@ -28,19 +28,35 @@ describe('linkViews', () => {
   const views = linkViews(s0);
   const get = (a: string, b: string) => views.find((v) => v.key === edgeKey(a, b))!;
 
-  it('marks a link touching a filled slot as required-but-unmet', () => {
-    expect(get('LB', 'LCB').status).toBe('required');
-    expect(get('LB', 'LCB').colour).toBe('green');
+  it('leaves a link open while either end is empty, with no colour', () => {
+    // The board prescribes nothing. A half-filled link has not achieved a
+    // colour yet, and showing a "required" one would put a shape on the board
+    // that the player never agreed to.
+    expect(get('LB', 'LCB').status).toBe('open');
+    expect(get('LB', 'LCB').colour).toBeNull();
   });
 
-  it('marks a link with both ends empty as hidden', () => {
-    // Spec 4.1: a link is inert until one end is solved.
-    expect(get('LCB', 'RCB').status).toBe('hidden');
+  it('leaves a link with both ends empty open too', () => {
+    expect(get('LCB', 'RCB').status).toBe('open');
+    expect(get('LCB', 'RCB').colour).toBeNull();
   });
 
-  it('marks a link with both ends filled as earned', () => {
+  it('never prescribes a link colour anywhere', () => {
+    expect(views.every((v) => v.status === 'earned' || v.colour === null)).toBe(true);
+  });
+
+  it('marks a link with both ends filled as earned, in the colour achieved', () => {
     const s = reduce(s0, { type: 'place', slotId: 'LCB', playerId: 'd2' });
-    expect(linkViews(s).find((x) => x.key === edgeKey('LB', 'LCB'))!.status).toBe('earned');
+    const v = linkViews(s).find((x) => x.key === edgeKey('LB', 'LCB'))!;
+    expect(v.status).toBe('earned');
+    expect(v.colour).toBe('green');   // d1 and d2 share CITY
+  });
+
+  it('shows a red link rather than refusing the placement', () => {
+    const s = reduce(s0, { type: 'place', slotId: 'LCB', playerId: 'odd' });
+    const v = linkViews(s).find((x) => x.key === edgeKey('LB', 'LCB'))!;
+    expect(s.placed['LCB']).toBe('odd');
+    expect(v.colour).toBe('red');
   });
 
   it('covers every edge in the formation', () => {

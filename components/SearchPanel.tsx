@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import { search, type SearchIndex } from '../src/lib/search/index';
 import { isoForNation } from '../src/pipeline/nations';
-import { adjacentSlots, edgeKey } from '../src/lib/puzzle/edges';
+import { adjacentSlots } from '../src/lib/puzzle/edges';
 import type { GameState } from '../src/game/state';
 
 /**
@@ -27,16 +27,14 @@ export default function SearchPanel({
   const [query, setQuery] = useState('');
   const results = useMemo(() => search(index, query, 14), [index, query]);
 
-  const requirements = focusedSlot
-    ? adjacentSlots(state.formation, focusedSlot).map((n) => {
-        const key = edgeKey(focusedSlot, n);
-        const other = state.placed[n];
-        return {
-          slot: n,
-          name: other ? state.pool.get(other)!.name : null,
-          required: state.board.required[key] ?? 'any',
-        };
-      })
+  // Who this slot is adjacent to, and whether they are on the pitch yet.
+  // NOT what the link "must" be — the board prescribes nothing. Where the links
+  // fall is the player's decision; the only target is 100 chemistry.
+  const neighbours = focusedSlot
+    ? adjacentSlots(state.formation, focusedSlot).map((n) => ({
+        slot: n,
+        name: state.placed[n] ? state.pool.get(state.placed[n]!)!.name : null,
+      }))
     : [];
 
   return (
@@ -93,21 +91,23 @@ export default function SearchPanel({
       {focusedSlot ? (
         <div style={{ borderTop: '1px solid var(--line)', padding: 18 }}>
           <div className="cond" style={{ fontWeight: 700, fontSize: 12, letterSpacing: '0.18em', color: 'var(--muted)', marginBottom: 11 }}>
-            {focusedSlot} MUST LINK TO
+            {focusedSlot} CONNECTS TO
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {requirements.map((r) => (
-              <div key={r.slot} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: r.name ? 1 : 0.5 }}>
+            {neighbours.map((n) => (
+              <div key={n.slot} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: n.name ? 1 : 0.45 }}>
                 <span style={{
                   width: 22, height: 3, borderRadius: 2, flexShrink: 0,
-                  background: r.name ? 'var(--green)' : 'repeating-linear-gradient(90deg, #33455f 0 3px, transparent 3px 7px)',
+                  background: n.name ? 'var(--soft)' : 'repeating-linear-gradient(90deg, #33455f 0 3px, transparent 3px 7px)',
                 }} />
-                <span style={{ fontWeight: 600, fontSize: 14, color: r.name ? 'var(--text)' : 'var(--soft)' }}>
-                  {r.name ?? r.slot}
+                <span style={{ fontWeight: 600, fontSize: 14, color: n.name ? 'var(--text)' : 'var(--soft)' }}>
+                  {n.name ?? n.slot}
                 </span>
-                <span className="cond" style={{ marginLeft: 'auto', fontSize: 12, letterSpacing: '0.1em', color: r.name ? 'var(--green)' : 'var(--muted)' }}>
-                  {r.name ? String(r.required).toUpperCase() : 'HIDDEN'}
-                </span>
+                {!n.name && (
+                  <span className="cond" style={{ marginLeft: 'auto', fontSize: 12, letterSpacing: '0.1em', color: 'var(--muted)' }}>
+                    EMPTY
+                  </span>
+                )}
               </div>
             ))}
           </div>

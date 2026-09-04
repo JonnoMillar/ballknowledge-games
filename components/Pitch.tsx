@@ -20,11 +20,13 @@ const STROKE: Record<string, string> = {
 };
 
 function Slot({
-  state, slotId, nations, images, obscurityFor, focused, onFocus,
+  state, slotId, nations, images, obscurityFor, chem, focused, onFocus,
 }: {
   state: GameState; slotId: string;
   nations: Record<string, string>; images: Record<string, string>;
   obscurityFor: (slotId: string) => number | null;
+  /** Individual chemistry 0..10 for this slot, or null when empty. */
+  chem: number | null;
   focused: boolean; onFocus: (s: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: slotId });
@@ -81,16 +83,38 @@ function Slot({
       >
         {slotId}
       </div>
+
+      {/* Individual chemistry, 0..10. Deliberately quiet — it sits beside the
+          position pill rather than on the card, so it reads as a property of
+          the slot without competing with the player's name. */}
+      {chem !== null && (
+        <div
+          className="cond"
+          title={`Individual chemistry ${chem}/10`}
+          style={{
+            position: 'absolute', left: 'calc(50% + 34px)', top: 148,
+            height: 22, minWidth: 22, padding: '0 5px', borderRadius: 11,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontWeight: 700, fontSize: 12,
+            background: chem >= 10 ? 'rgba(94,224,138,0.16)' : 'rgba(22,34,58,0.9)',
+            color: chem >= 10 ? 'var(--green)' : chem >= 6 ? 'var(--soft)' : '#8a6a55',
+            border: `1px solid ${chem >= 10 ? 'rgba(94,224,138,0.45)' : 'var(--slot-border)'}`,
+          }}
+        >
+          {chem}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function Pitch({
-  state, nations, images, obscurityFor, focusedSlot, onFocus,
+  state, nations, images, obscurityFor, perSlotChem, focusedSlot, onFocus,
 }: {
   state: GameState;
   nations: Record<string, string>; images: Record<string, string>;
   obscurityFor: (slotId: string) => number | null;
+  perSlotChem: Record<string, number>;
   focusedSlot: string | null; onFocus: (s: string) => void;
 }) {
   const links = linkViews(state);
@@ -119,19 +143,26 @@ export default function Pitch({
         {links.map((l) => {
           const a = anchor(l.a);
           const b = anchor(l.b);
-          if (l.status === 'hidden') {
+          // Open: the adjacency exists but nothing has been earned yet. Drawn
+          // faintly so the shape of the web is legible without implying that
+          // any particular colour is required there.
+          if (l.status === 'open' || !l.colour) {
             return <line key={l.key} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--line)" strokeWidth="3" strokeDasharray="2 9" strokeLinecap="round" />;
           }
-          if (l.status === 'required') {
-            return <line key={l.key} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={STROKE[l.colour]} strokeWidth="3" strokeDasharray="10 9" strokeLinecap="round" opacity={0.42} />;
-          }
-          return <line key={l.key} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={STROKE[l.colour]} strokeWidth="4.5" strokeLinecap="round" filter="url(#lg)" />;
+          return (
+            <line key={l.key} x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+              stroke={STROKE[l.colour]}
+              strokeWidth={l.colour === 'red' ? 3 : 4.5}
+              strokeLinecap="round"
+              filter={l.colour === 'red' ? undefined : 'url(#lg)'} />
+          );
         })}
       </svg>
 
       {Object.keys(POS).map((slotId) => (
         <Slot key={slotId} state={state} slotId={slotId} nations={nations}
           images={images} obscurityFor={obscurityFor}
+          chem={state.placed[slotId] ? (perSlotChem[slotId] ?? 0) : null}
           focused={focusedSlot === slotId} onFocus={onFocus} />
       ))}
     </div>
