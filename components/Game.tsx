@@ -15,11 +15,12 @@ import type { Player } from '../src/lib/chemistry/types';
 import type { Board } from '../src/lib/puzzle/types';
 
 export default function Game({
-  players, board, nations,
+  players, board, nations, images,
 }: {
   players: Player[];
   board: Board;
   nations: Record<string, string>;
+  images: Record<string, string>;
 }) {
   const pool = useMemo(() => new Map(players.map((p) => [p.id, p])), [players]);
   const formation = FORMATIONS[board.formationId]!;
@@ -71,18 +72,36 @@ export default function Game({
 
   // Obscurity is only meaningful once a player is placed, so it is computed
   // over placed non-seeded slots against that slot's position-eligible field.
+  // Position-eligible fields, computed once. slotObscurityScore ranks a pick
+  // against everyone who could legally have gone there.
+  const fields = useMemo(() => {
+    const byClass = new Map<string, Player[]>();
+    for (const slot of formation.slots) {
+      if (!byClass.has(slot.position)) {
+        byClass.set(slot.position, players.filter((p) => p.positions.includes(slot.position)));
+      }
+    }
+    return byClass;
+  }, [formation, players]);
+
+  const slotObscurity = useMemo(() => {
+    const out: Record<string, number> = {};
+    for (const [slot, id] of Object.entries(state.placed)) {
+      if (board.seeded[slot] !== undefined) continue;
+      const chosen = pool.get(id);
+      const cls = formation.slots.find((s) => s.id === slot)?.position;
+      if (!chosen || !cls) continue;
+      out[slot] = slotObscurityScore(chosen, fields.get(cls) ?? []);
+    }
+    return out;
+  }, [state.placed, board.seeded, pool, formation, fields]);
+
+  const obscurityFor = (slotId: string): number | null => slotObscurity[slotId] ?? null;
+
   const obscurity = useMemo(() => {
-    const scored = Object.entries(state.placed)
-      .filter(([slot]) => board.seeded[slot] === undefined)
-      .map(([slot, id]) => {
-        const chosen = pool.get(id)!;
-        const cls = formation.slots.find((s) => s.id === slot)!.position;
-        const field = players.filter((p) => p.positions.includes(cls));
-        return slotObscurityScore(chosen, field);
-      });
-    if (scored.length === 0) return 0;
-    return Math.round(scored.reduce((a, b) => a + b, 0) / scored.length);
-  }, [state.placed, board.seeded, pool, formation, players]);
+    const vals = Object.values(slotObscurity);
+    return vals.length === 0 ? 0 : Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+  }, [slotObscurity]);
 
   const rejection = state.lastRejection;
 
@@ -113,10 +132,10 @@ export default function Game({
 
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14 }}>
             {rejection ? (
-              <span style={{ fontSize: 13, color: '#e07a6a' }}>
+              <span style={{ fontSize: 13, color: '#e5b566' }}>
                 {rejection.reason === 'position'
-                  ? 'Wrong position for that slot'
-                  : `No link to ${rejection.failedEdges.map((k) => k.split('|').find((s) => s !== rejection.slotId)).join(', ')}`}
+                  ? `Out of position at ${rejection.slotId} — costs chemistry`
+                  : `Weak link to ${rejection.failedEdges.map((k) => k.split('|').find((sl) => sl !== rejection.slotId)).join(', ')}`}
               </span>
             ) : null}
             <button
@@ -136,7 +155,7 @@ export default function Game({
         </header>
 
         <div style={{ flexGrow: 1, display: 'flex', minHeight: 0 }}>
-          <Library state={state} nations={nations} onRemove={(id) => dispatch({ type: 'library/remove', playerId: id })} />
+          <Library state={state} nations={nations} images={images} onRemove={(id) => dispatch({ type: 'library/remove', playerId: id })} />
 
           {/* The pitch is authored at a fixed 880x700 so the slot and link
               geometry stays exactly as designed. Scale it to whatever space is
@@ -150,7 +169,7 @@ export default function Game({
                 transformOrigin: 'center center',
               }}
             >
-              <Pitch state={state} nations={nations} focusedSlot={focusedSlot} onFocus={setFocusedSlot} />
+              <Pitch state={state} nations={nations} images={images} obscurityFor={obscurityFor} focusedSlot={focusedSlot} onFocus={setFocusedSlot} />
             </div>
           </div>
 
@@ -166,7 +185,7 @@ export default function Game({
       </div>
 
       <DragOverlay>
-        {dragging ? <PlayerCard player={dragging} variant="library" nations={nations} revealFame={false} /> : null}
+        {dragging ? <PlayerCard player={dragging} variant="library" nations={nations} images={images} obscurity={null} /> : null}
       </DragOverlay>
     </DndContext>
   );

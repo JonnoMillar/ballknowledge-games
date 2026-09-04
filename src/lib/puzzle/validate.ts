@@ -20,6 +20,15 @@ export interface BoardScore {
  * player by the progressive-reveal rule, which is what makes rejection fair.
  * Spec 4.1.
  */
+/**
+ * Anyone may be placed anywhere. Failing a link is not illegal — it simply
+ * scores less chemistry, exactly as in FUT, where you can field a striker at
+ * centre-back and merely suffer for it.
+ *
+ * This reports what a placement WOULD cost so the UI can warn, and it is what
+ * board authoring uses to measure how constrained a slot is. It is no longer a
+ * gate on the player's actions: only an already-occupied slot is refused.
+ */
 export function isValidPlacement(
   board: Board,
   formation: Formation,
@@ -34,9 +43,8 @@ export function isValidPlacement(
 
   const slot = formation.slots.find((s) => s.id === slotId);
   if (!slot) return { ok: false, reason: 'position', failedEdges: [] };
-  if (!candidate.positions.includes(slot.position)) {
-    return { ok: false, reason: 'position', failedEdges: [] };
-  }
+
+  const outOfPosition = !candidate.positions.includes(slot.position);
 
   const failedEdges: string[] = [];
   for (const otherId of adjacentSlots(formation, slotId)) {
@@ -52,9 +60,19 @@ export function isValidPlacement(
     }
   }
 
-  return failedEdges.length === 0
+  return failedEdges.length === 0 && !outOfPosition
     ? { ok: true }
-    : { ok: false, reason: 'links', failedEdges };
+    : { ok: false, reason: outOfPosition ? 'position' : 'links', failedEdges };
+}
+
+/** Whether a slot's position class matches the player's. Costs chemistry, never legality. */
+export function isOutOfPosition(
+  formation: Formation,
+  slotId: string,
+  player: Player,
+): boolean {
+  const slot = formation.slots.find((s) => s.id === slotId);
+  return slot ? !player.positions.includes(slot.position) : false;
 }
 
 export function scoreBoard(
@@ -84,7 +102,11 @@ export function scoreBoard(
       if (!other) continue;
       earned += linkPoints(linkColour(player, other));
     }
-    perSlot[slot.id] = playerChemistry(linkCountFor(formation, slot.id), earned);
+    perSlot[slot.id] = playerChemistry(
+      linkCountFor(formation, slot.id),
+      earned,
+      !player.positions.includes(slot.position),
+    );
   }
 
   const total = squadChemistry(Object.values(perSlot));

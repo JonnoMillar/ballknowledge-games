@@ -11,10 +11,11 @@ import type { GameState } from '../src/game/state';
  * revealing it would turn the bench into a solver.
  */
 export default function Library({
-  state, nations, onRemove,
+  state, nations, images, onRemove,
 }: {
   state: GameState;
   nations: Record<string, string>;
+  images: Record<string, string>;
   onRemove: (playerId: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: 'library' });
@@ -49,7 +50,7 @@ export default function Library({
               if (!p) return null;
               return (
                 <div key={id} style={{ position: 'relative' }}>
-                  <PlayerCard player={p} variant="library" nations={nations} revealFame={false} compact />
+                  <PlayerCard player={p} variant="library" nations={nations} images={images} obscurity={null} compact />
                   <button
                     onClick={() => onRemove(id)}
                     aria-label={`Remove ${p.name} from bench`}

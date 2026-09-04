@@ -16,6 +16,11 @@ export interface GameState {
   placed: Record<string, string>;
   /** Candidates the player has gathered. Unbounded and free. */
   library: string[];
+  /**
+   * What the last placement cost, if anything. NOT a refusal — the placement
+   * happened. Named for the UI to explain a weak link or an out-of-position
+   * card.
+   */
   lastRejection: Rejection | null;
   submitted: boolean;
 }
@@ -69,17 +74,19 @@ export function reduce(s: GameState, a: Action): GameState {
       const displaced = placed[a.slotId];
       delete placed[a.slotId];
 
+      // Placement always succeeds. A weak or missing link is not illegal, it
+      // just scores less chemistry — the same as putting a striker at
+      // centre-back in FUT. `isValidPlacement` is consulted only to tell the
+      // player what this is costing them.
       const r = isValidPlacement(s.board, s.formation, s.pool, placed as Placement, a.slotId, player);
-      if (!r.ok) {
-        return { ...s, lastRejection: { slotId: a.slotId, reason: r.reason, failedEdges: r.failedEdges } };
-      }
+      const cost = r.ok ? null : { slotId: a.slotId, reason: r.reason, failedEdges: r.failedEdges };
 
       placed[a.slotId] = a.playerId;
       const library = s.library.filter((id) => id !== a.playerId);
       if (displaced && displaced !== a.playerId && !library.includes(displaced)) {
         library.push(displaced);
       }
-      return { ...s, placed, library, lastRejection: null };
+      return { ...s, placed, library, lastRejection: cost };
     }
 
     case 'unplace': {

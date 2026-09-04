@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linkColour, linkPoints, linkRank, meetsRequirement } from '../../src/lib/chemistry/link';
+import { linkColour, linkPoints, linkRank, meetsRequirement, FULL_LINK_POINTS } from '../../src/lib/chemistry/link';
 import type { PlayerFacts } from '../../src/lib/chemistry/types';
 
 const p = (
@@ -49,11 +49,20 @@ describe('linkColour', () => {
 });
 
 describe('linkPoints', () => {
-  it('scores hyper the same as green so the arithmetic stays hand-computable', () => {
-    expect(linkPoints('hyper')).toBe(2);
-    expect(linkPoints('green')).toBe(2);
-    expect(linkPoints('orange')).toBe(1);
+  it('matches the documented FIFA point table', () => {
+    // nothing 0 · league or nation only 1 · league+nation or same club 2 ·
+    // same club AND same nation 3. An earlier version scored hyper as 2, which
+    // was invented rather than researched.
     expect(linkPoints('red')).toBe(0);
+    expect(linkPoints('orange')).toBe(1);
+    expect(linkPoints('green')).toBe(2);
+    expect(linkPoints('hyper')).toBe(3);
+  });
+
+  it('treats green as the full-chemistry level, with hyper as headroom', () => {
+    // An all-green squad reaches 100 in FUT; hyper links are never required.
+    expect(FULL_LINK_POINTS).toBe(2);
+    expect(linkPoints('hyper')).toBeGreaterThan(FULL_LINK_POINTS);
   });
 });
 

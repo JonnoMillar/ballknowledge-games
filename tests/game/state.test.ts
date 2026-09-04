@@ -66,17 +66,25 @@ describe('placement', () => {
     expect(s.library).toEqual([]);
   });
 
-  it('refuses an illegal placement and says which link failed', () => {
+  it('PLACES a player who fails a link, and reports what it cost', () => {
+    // Anyone can go anywhere. A missing link is not illegal, it just scores
+    // less chemistry — the same as fielding an off-chem card in FUT.
     const s = reduce(s0, { type: 'place', slotId: 'LCB', playerId: 'odd' });
-    expect(s.placed['LCB']).toBeUndefined();
+    expect(s.placed['LCB']).toBe('odd');
     expect(s.lastRejection?.slotId).toBe('LCB');
     expect(s.lastRejection?.failedEdges).toContain(edgeKey('LB', 'LCB'));
   });
 
-  it('refuses a position-class mismatch', () => {
+  it('PLACES a player out of position, and reports that too', () => {
     const s = reduce(s0, { type: 'place', slotId: 'LCB', playerId: 'gk' });
-    expect(s.placed['LCB']).toBeUndefined();
+    expect(s.placed['LCB']).toBe('gk');
     expect(s.lastRejection?.reason).toBe('position');
+  });
+
+  it('reports no cost for a clean placement', () => {
+    let s = reduce(s0, { type: 'library/add', playerId: 'd2' });
+    s = reduce(s, { type: 'place', slotId: 'LCB', playerId: 'd2' });
+    expect(s.lastRejection).toBeNull();
   });
 
   it('never places over a seeded slot', () => {

@@ -11,6 +11,18 @@ describe('playerChemistry', () => {
     expect(playerChemistry(4, 8)).toBe(10);
   });
 
+  it('lets a hyper link absorb a weak one', () => {
+    // 2 links: one hyper (3) and one orange (1) = 4 of a nominal 4. Still 10.
+    // This is what hyper's third point is for.
+    expect(playerChemistry(2, 4)).toBe(10);
+  });
+
+  it('halves chemistry for a player out of position', () => {
+    // Allowed, never refused — it just costs. Spec 5.3.
+    expect(playerChemistry(4, 8, true)).toBe(5);
+    expect(playerChemistry(4, 4, true)).toBe(0);
+  });
+
   it('gives 0 when every link is red', () => {
     expect(playerChemistry(4, 0)).toBe(0);
   });

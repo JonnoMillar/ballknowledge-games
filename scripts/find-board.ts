@@ -104,14 +104,30 @@ console.log(' ', JSON.stringify(counts));
 // the player gets an entry point rather than three names in one corner.
 const boardId = process.argv[7];
 if (boardId) {
-  const bySlotFame = f.slots
-    .map((s) => ({ slot: s.id, fame: byId.get(best!.placement[s.id]!)!.fame.value }))
-    .sort((a, b) => b.fame - a.fame);
-  const seedSlots = [
-    bySlotFame.find((x) => ['GK', 'LCB', 'RCB', 'LB', 'RB'].includes(x.slot))?.slot,
-    bySlotFame.find((x) => ['LCM', 'CM', 'RCM'].includes(x.slot))?.slot,
-    bySlotFame.find((x) => ['LW', 'ST', 'RW'].includes(x.slot))?.slot,
-  ].filter((s): s is string => !!s);
+  // Seeds must come from DIFFERENT clubs. Three given players who all share a
+  // club hand the solver one obvious answer for every remaining slot — board
+  // 003 was seeded entirely from Manchester City and every open slot could be
+  // filled by simply naming another City player.
+  //
+  // One seed per third of the pitch, most famous first (the player needs a
+  // recognisable way in), skipping anyone whose clubs already overlap a seed.
+  const bands = [
+    ['GK', 'LCB', 'RCB', 'LB', 'RB'],
+    ['LCM', 'CM', 'RCM'],
+    ['LW', 'ST', 'RW'],
+  ];
+  const seedSlots: string[] = [];
+  const usedClubs = new Set<string>();
+  for (const band of bands) {
+    const candidates = band
+      .map((slot) => ({ slot, p: byId.get(best!.placement[slot]!)! }))
+      .sort((a, b) => b.p.fame.value - a.p.fame.value);
+    const pick =
+      candidates.find((c) => !c.p.clubIds.some((cl) => usedClubs.has(cl))) ?? candidates[0];
+    if (!pick) continue;
+    seedSlots.push(pick.slot);
+    for (const cl of pick.p.clubIds) usedClubs.add(cl);
+  }
 
   const board = {
     id: boardId,

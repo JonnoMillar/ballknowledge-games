@@ -20,9 +20,11 @@ const STROKE: Record<string, string> = {
 };
 
 function Slot({
-  state, slotId, nations, focused, onFocus,
+  state, slotId, nations, images, obscurityFor, focused, onFocus,
 }: {
-  state: GameState; slotId: string; nations: Record<string, string>;
+  state: GameState; slotId: string;
+  nations: Record<string, string>; images: Record<string, string>;
+  obscurityFor: (slotId: string) => number | null;
   focused: boolean; onFocus: (s: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: slotId });
@@ -36,7 +38,17 @@ function Slot({
     <div style={{ position: 'absolute', left: p.x, top: p.y, transform: 'translate(-50%,-50%)', width: 108 }}>
       <div ref={setNodeRef} onClick={() => !given && onFocus(slotId)}>
         {player ? (
-          <PlayerCard player={player} variant={given ? 'given' : 'found'} slotId={slotId} nations={nations} revealFame />
+          <PlayerCard
+            player={player}
+            variant={given ? 'given' : 'found'}
+            slotId={slotId}
+            nations={nations}
+            images={images}
+            obscurity={given ? null : obscurityFor(slotId)}
+            outOfPosition={!player.positions.includes(
+              state.formation.slots.find((sl) => sl.id === slotId)!.position,
+            )}
+          />
         ) : (
           <div
             className="card-shape"
@@ -74,9 +86,11 @@ function Slot({
 }
 
 export default function Pitch({
-  state, nations, focusedSlot, onFocus,
+  state, nations, images, obscurityFor, focusedSlot, onFocus,
 }: {
-  state: GameState; nations: Record<string, string>;
+  state: GameState;
+  nations: Record<string, string>; images: Record<string, string>;
+  obscurityFor: (slotId: string) => number | null;
   focusedSlot: string | null; onFocus: (s: string) => void;
 }) {
   const links = linkViews(state);
@@ -117,6 +131,7 @@ export default function Pitch({
 
       {Object.keys(POS).map((slotId) => (
         <Slot key={slotId} state={state} slotId={slotId} nations={nations}
+          images={images} obscurityFor={obscurityFor}
           focused={focusedSlot === slotId} onFocus={onFocus} />
       ))}
     </div>

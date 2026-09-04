@@ -35,19 +35,22 @@ const board: Board = {
   referenceSolution: { GK: 'alisson', LCB: 'vandijk', RCB: 'konate' },
 };
 
-describe('isValidPlacement', () => {
+// isValidPlacement no longer gates the player's actions — placement always
+// succeeds (see src/game/state.ts). It reports what a placement WOULD cost, and
+// board authoring uses it to measure how constrained a slot is.
+describe('isValidPlacement (cost report, not a gate)', () => {
   it('accepts a player satisfying every resolved link', () => {
     const r = isValidPlacement(board, FORMATION_433, pool, { GK: 'alisson' }, 'LCB', vanDijk);
     expect(r.ok).toBe(true);
   });
 
-  it('rejects a player failing a resolved link and names the failing edge', () => {
+  it('flags a player failing a resolved link and names the failing edge', () => {
     const r = isValidPlacement(board, FORMATION_433, pool, { GK: 'alisson' }, 'LCB', stranger);
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.failedEdges).toContain(edgeKey('GK', 'LCB'));
   });
 
-  it('rejects a position-class mismatch', () => {
+  it('flags a position-class mismatch', () => {
     const r = isValidPlacement(board, FORMATION_433, pool, { GK: 'alisson' }, 'LCB', keeper);
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.reason).toBe('position');
@@ -58,7 +61,7 @@ describe('isValidPlacement', () => {
     expect(r.ok).toBe(true);
   });
 
-  it('rejects placing into an already-filled slot', () => {
+  it('flags an already-filled slot', () => {
     const r = isValidPlacement(board, FORMATION_433, pool, { GK: 'alisson' }, 'GK', keeper);
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.reason).toBe('occupied');
