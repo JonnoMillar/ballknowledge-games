@@ -24,7 +24,7 @@ const clubQids = [
 
 // Chunked: a VALUES clause over every club times out. Spec 8.3.
 const clubToLeague = new Map<string, string>();
-const CHUNK = 400;
+const CHUNK = 250;
 for (let i = 0; i < clubQids.length; i += CHUNK) {
   const res = await runQuery(clubLeagueQuery(clubQids.slice(i, i + CHUNK)));
   for (const b of res.results.bindings) {

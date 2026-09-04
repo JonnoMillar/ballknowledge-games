@@ -168,6 +168,42 @@ SELECT ?player ?sport WHERE {
 }
 
 /**
+ * National teams a player has actually represented, with the team's country and
+ * whether it is a youth side.
+ *
+ * P1532 alone is not enough. Dual-nationality players carry BOTH countries on
+ * it with no ordering, so taking the first value is a coin flip — Achraf Hakimi
+ * came out Spanish and Hakim Ziyech Dutch, when both represent Morocco.
+ *
+ * Senior caps are what decide it. Youth caps do not bind: Ziyech played
+ * Netherlands at U19, U20 and U21 before choosing Morocco, and he is far from
+ * unusual. So this pulls every national team with its country, and the caller
+ * prefers a senior side over a youth one.
+ *
+ * Note the p:/ps: traversal. `wdt:P54` returns best-rank only and for Hakimi
+ * yields nothing but PSG — the national teams disappear entirely.
+ */
+export function nationalTeamQuery(playerQids: readonly string[]): string {
+  const values = playerQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT ?player ?country ?type ?apps ?start WHERE {
+  VALUES ?player { ${values} }
+  ?player p:P54 ?st . ?st ps:P54 ?team .
+  ?team wdt:P31 ?type .
+  ?type wdt:P279* wd:Q6979593 .
+  OPTIONAL { ?st pq:P1350 ?apps }
+  OPTIONAL { ?st pq:P580 ?start }
+  # The team's own country-for-sport, NOT P17. England's national team has
+  # P17 = United Kingdom and P1532 = England; using P17 re-collapses the home
+  # nations into the UK, which is the exact bug P1532 was adopted to fix.
+  OPTIONAL { ?team wdt:P1532 ?sportCountry }
+  OPTIONAL { ?team wdt:P17 ?legalCountry }
+  BIND(COALESCE(?sportCountry, ?legalCountry) AS ?country)
+  FILTER(BOUND(?country))
+}`.trim();
+}
+
+/**
  * Wikimedia Commons image (P18) for a batch of players.
  *
  * Commons files are CC BY / CC BY-SA / public domain, so they are usable with
