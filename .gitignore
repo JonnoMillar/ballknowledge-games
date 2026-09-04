@@ -1,13 +1,12 @@
-
-# Fetched SPARQL batches — large and reproducible via `npm run fetch:pool`.
-# Raw intermediate dumps are not.
-# Wikidata pipeline output is committed deliberately (pinned snapshots).
-# data/pool.json IS committed as the pinned snapshot (spec 8.2).
-*.log
-.DS_Store
-.env*
-.next/
-data/raw/
-dist/
 node_modules/
+.next/
 out/
+dist/
+.env*
+.DS_Store
+*.log
+
+# Fetched SPARQL batches. Large, and reproducible with `npm run fetch:pool`.
+# data/pool.json IS committed, as the pinned snapshot required by spec 8.2.
+data/raw/
+data/name-review.json
