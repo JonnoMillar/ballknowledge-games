@@ -38,6 +38,20 @@ console.log(`resolved ${clubToLeague.size} of ${clubQids.length} clubs to a leag
 
 let raw = normalise(bindings, clubToLeague);
 
+// Sporting nationality overrides citizenship. P27 collapses the home nations
+// into "United Kingdom", which would make an English and a Scottish player
+// register a nation match. P1532 is who a player actually represents, which is
+// what the link table means by nation. Falls back to P27 where absent.
+if (existsSync('data/raw/_sportnation.json')) {
+  const sport = JSON.parse(await readFile('data/raw/_sportnation.json', 'utf8')) as Record<string, string>;
+  let changed = 0;
+  for (const p of raw) {
+    const s = sport[p.id];
+    if (s && s !== p.nation) { p.nation = s; changed++; }
+  }
+  console.log(`sporting nationality applied to ${changed} players`);
+}
+
 // Gender scope. The pool contains women's football (379 players); mixing men's
 // and women's players into a single XI is not what "Recall XI" means. This is a
 // scope choice, not a data-quality one - flip GENDER to 'Q6581072' for a

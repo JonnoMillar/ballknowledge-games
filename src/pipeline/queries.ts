@@ -141,3 +141,28 @@ SELECT ?player ?gender WHERE {
   OPTIONAL { ?player wdt:P21 ?gender }
 }`.trim();
 }
+
+/**
+ * Sporting nationality (P1532, "country for sport") for a batch of players.
+ *
+ * P27 is legal citizenship; P1532 is who you actually represent, which is what
+ * football chemistry means. Two consequences, both measured on 2026-09-04:
+ *
+ *  - P27 collapses England, Scotland, Wales and Northern Ireland into
+ *    "United Kingdom" (Q145) — 788 players in the pool. That makes an English
+ *    and a Scottish player register a nation match, which is wrong in football
+ *    terms and wrong for the link table. P1532 separates them correctly
+ *    (England 245, Scotland 54, Wales 29, N. Ireland 14 in a 400 sample).
+ *  - It also fixes the general case: a player born in one country and capped by
+ *    another reads as the country they represent.
+ *
+ * 88% coverage on UK nationals; fall back to P27 where absent.
+ */
+export function sportNationQuery(playerQids: readonly string[]): string {
+  const values = playerQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT ?player ?sport WHERE {
+  VALUES ?player { ${values} }
+  ?player wdt:P1532 ?sport .
+}`.trim();
+}
