@@ -73,3 +73,54 @@ SELECT ?club ?league WHERE {
   OPTIONAL { ?club wdt:P118 ?league }
 }`.trim();
 }
+
+/**
+ * Phase 1 of the pool build: just the eligible player ids and their fame.
+ *
+ * Deliberately does NOT expand careers. Sitelink-banding the full career query
+ * times out (504 at 65s even for a single 5-wide band) because the club-type
+ * property path has to run over every spell of every candidate. Fetching the
+ * id list first, then careers in fixed batches keyed by id, keeps every request
+ * small and bounded.
+ */
+export function eligiblePlayersQuery(minSitelinks: number, eraFrom: number): string {
+  return `
+SELECT DISTINCT ?player ?sitelinks WHERE {
+  ?player wdt:P106 wd:Q937857 ;
+          wikibase:sitelinks ?sitelinks .
+  FILTER(?sitelinks >= ${minSitelinks})
+  ?player p:P54 ?spell .
+  ?spell pq:P580 ?start .
+  FILTER(YEAR(?start) >= ${eraFrom})
+}`.trim();
+}
+
+/** Phase 2: full careers for a fixed batch of player ids. */
+export function careersQuery(playerQids: readonly string[]): string {
+  const values = playerQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHERE {
+  VALUES ?player { ${values} }
+  ?player wikibase:sitelinks ?sitelinks .
+
+  ?player p:P54 ?spell .
+  ?spell ps:P54 ?club .
+  OPTIONAL { ?spell pq:P580 ?start }
+  OPTIONAL { ?spell pq:P582 ?end }
+
+  FILTER NOT EXISTS { ?club wdt:P31/wdt:P279* wd:Q6979593 }
+
+  OPTIONAL { ?player wdt:P27 ?nation }
+  OPTIONAL { ?player wdt:P413 ?position }
+
+  OPTIONAL { ?player rdfs:label ?en  FILTER(LANG(?en)  = "en")  }
+  OPTIONAL { ?player rdfs:label ?mul FILTER(LANG(?mul) = "mul") }
+  BIND(COALESCE(?en, ?mul) AS ?name)
+  FILTER(BOUND(?name))
+
+  FILTER NOT EXISTS {
+    ?player wdt:P106 ?other .
+    VALUES ?other { wd:Q177220 wd:Q639669 wd:Q36834 wd:Q753110 wd:Q488205 }
+  }
+}`.trim();
+}

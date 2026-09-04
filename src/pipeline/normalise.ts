@@ -1,4 +1,5 @@
 import type { PositionClass } from '../lib/chemistry/types';
+import { applyNameOverride } from './overrides';
 import type { SparqlBinding } from './sparql';
 
 export interface RawSpell {
@@ -85,7 +86,7 @@ export function normalise(
     let player = byId.get(id);
     if (!player) {
       player = {
-        id, name, aliases: [],
+        id, name: applyNameOverride(id, name), aliases: [],
         nation: b['nation'] ? qid(b['nation'].value) : 'UNKNOWN',
         sitelinks: Number.parseInt(b['sitelinks']?.value ?? '0', 10),
         positions: [], clubs: [],

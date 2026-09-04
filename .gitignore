@@ -1,11 +1,13 @@
-node_modules/
-.next/
-out/
-dist/
-.env*
-.DS_Store
-*.log
 
-# Wikidata pipeline output is committed deliberately (pinned snapshots).
+# Fetched SPARQL batches — large and reproducible via `npm run fetch:pool`.
 # Raw intermediate dumps are not.
+# Wikidata pipeline output is committed deliberately (pinned snapshots).
+# data/pool.json IS committed as the pinned snapshot (spec 8.2).
+*.log
+.DS_Store
+.env*
+.next/
 data/raw/
+dist/
+node_modules/
+out/
