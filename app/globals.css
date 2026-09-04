@@ -1,0 +1,34 @@
+@import 'flag-icons/css/flag-icons.min.css';
+
+:root {
+  --bg: #0a0e16;
+  --bg-deep: #070b12;
+  --panel: #111c2f;
+  --panel-2: #16223a;
+  --line: #1d2942;
+  --border: #26364f;
+  --card-a: #1e3450;
+  --card-b: #142136;
+  --given-a: #24405f;
+  --given-b: #16263f;
+  --text: #eef2f8;
+  --muted: #64789a;
+  --dim: #4f658a;
+  --soft: #7e97bb;
+  --green: #5ee08a;
+  --green-dim: #3fbf6d;
+  --green-pill: #1f7a48;
+  --gold: #f0b429;
+  --gold-light: #f7d774;
+  --slot-border: #2a3a58;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+  font-family: 'Barlow', system-ui, sans-serif; overflow: hidden; }
+.cond { font-family: 'Barlow Condensed', system-ui, sans-serif; }
+.card-shape { clip-path: polygon(9% 0, 91% 0, 100% 7%, 100% 100%, 0 100%, 0 7%); }
+button { font-family: inherit; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
