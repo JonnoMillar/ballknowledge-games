@@ -1,0 +1,118 @@
+'use client';
+import { useMemo, useState } from 'react';
+import { search, type SearchIndex } from '../src/lib/search/index';
+import { isoForNation } from '../src/pipeline/nations';
+import { adjacentSlots, edgeKey } from '../src/lib/puzzle/edges';
+import type { GameState } from '../src/game/state';
+
+/**
+ * Search only. No suggestions, no recent searches, no default results.
+ *
+ * The pool is searched, never listed: any name rendered beside an open slot is
+ * an answer to it. `search()` returns [] for an empty query, and this component
+ * must never add a list of its own.
+ *
+ * Results show name and nation. Never fame — that is the whole game.
+ */
+export default function SearchPanel({
+  state, index, nations, focusedSlot, onAddToBench, onPlace,
+}: {
+  state: GameState;
+  index: SearchIndex;
+  nations: Record<string, string>;
+  focusedSlot: string | null;
+  onAddToBench: (playerId: string) => void;
+  onPlace: (slotId: string, playerId: string) => void;
+}) {
+  const [query, setQuery] = useState('');
+  const results = useMemo(() => search(index, query, 14), [index, query]);
+
+  const requirements = focusedSlot
+    ? adjacentSlots(state.formation, focusedSlot).map((n) => {
+        const key = edgeKey(focusedSlot, n);
+        const other = state.placed[n];
+        return {
+          slot: n,
+          name: other ? state.pool.get(other)!.name : null,
+          required: state.board.required[key] ?? 'any',
+        };
+      })
+    : [];
+
+  return (
+    <div style={{ width: 316, flexShrink: 0, display: 'flex', flexDirection: 'column', borderLeft: '1px solid var(--line)' }}>
+      <div style={{ padding: '18px 18px 14px 18px', borderBottom: '1px solid var(--line)' }}>
+        <div className="cond" style={{ fontWeight: 700, fontSize: 13, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 10 }}>
+          SEARCH
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--panel)', border: '1px solid var(--border)', borderRadius: 5, padding: '10px 13px' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b7396" strokeWidth="2" strokeLinecap="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-4.5-4.5" />
+          </svg>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={focusedSlot ? `Name a ${focusedSlot}...` : 'Name a player...'}
+            style={{ flexGrow: 1, background: 'transparent', border: 'none', outline: 'none', color: 'var(--text)', fontSize: 15 }}
+          />
+        </div>
+        <div className="cond" style={{ fontSize: 11, letterSpacing: '0.1em', color: 'var(--dim)', marginTop: 8 }}>
+          SEARCHING {state.pool.size.toLocaleString()} PLAYERS
+        </div>
+      </div>
+
+      <div style={{ flexGrow: 1, overflowY: 'auto' }}>
+        {results.map((p) => {
+          const iso = isoForNation(p.nation, nations);
+          return (
+            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px solid rgba(29,41,66,0.5)' }}>
+              {iso
+                ? <span className={`fi fi-${iso}`} style={{ width: 18, height: 13, borderRadius: 1, flexShrink: 0 }} />
+                : <span style={{ width: 18, height: 13, borderRadius: 1, background: 'var(--slot-border)', flexShrink: 0 }} />}
+              <span style={{ fontSize: 14, flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
+              <button
+                onClick={() => onAddToBench(p.id)}
+                style={{ background: 'var(--panel-2)', border: '1px solid var(--border)', color: 'var(--soft)', borderRadius: 4, padding: '4px 9px', fontSize: 12, cursor: 'pointer' }}
+              >
+                Bench
+              </button>
+              {focusedSlot ? (
+                <button
+                  onClick={() => onPlace(focusedSlot, p.id)}
+                  style={{ background: 'var(--green)', border: 'none', color: 'var(--bg)', borderRadius: 4, padding: '4px 9px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                >
+                  {focusedSlot}
+                </button>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+
+      {focusedSlot ? (
+        <div style={{ borderTop: '1px solid var(--line)', padding: 18 }}>
+          <div className="cond" style={{ fontWeight: 700, fontSize: 12, letterSpacing: '0.18em', color: 'var(--muted)', marginBottom: 11 }}>
+            {focusedSlot} MUST LINK TO
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {requirements.map((r) => (
+              <div key={r.slot} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: r.name ? 1 : 0.5 }}>
+                <span style={{
+                  width: 22, height: 3, borderRadius: 2, flexShrink: 0,
+                  background: r.name ? 'var(--green)' : 'repeating-linear-gradient(90deg, #33455f 0 3px, transparent 3px 7px)',
+                }} />
+                <span style={{ fontWeight: 600, fontSize: 14, color: r.name ? 'var(--text)' : 'var(--soft)' }}>
+                  {r.name ?? r.slot}
+                </span>
+                <span className="cond" style={{ marginLeft: 'auto', fontSize: 12, letterSpacing: '0.1em', color: r.name ? 'var(--green)' : 'var(--muted)' }}>
+                  {r.name ? String(r.required).toUpperCase() : 'HIDDEN'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}

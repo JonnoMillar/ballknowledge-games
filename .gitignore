@@ -10,3 +10,6 @@ dist/
 # data/pool.json IS committed, as the pinned snapshot required by spec 8.2.
 data/raw/
 data/name-review.json
+.next/
+next-env.d.ts
+tsconfig.tsbuildinfo
