@@ -33,3 +33,29 @@ button { font-family: inherit; }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+/* The lock-in reveal. One orchestrated moment, not scattered effects: the
+   links confirm, then each pick's obscurity rises in and its depth gauge
+   draws, staggered left to right. */
+@keyframes chip-in {
+  from { opacity: 0; transform: translateY(7px) scale(0.88); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes link-settle {
+  0%, 100% { box-shadow: 0 0 12px rgba(94, 224, 138, 0.6); }
+  45%      { box-shadow: 0 0 26px rgba(94, 224, 138, 1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}

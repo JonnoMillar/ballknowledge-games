@@ -66,26 +66,41 @@ export default function ChainSearch({
       <div style={{ flexGrow: 1, overflowY: 'auto' }}>
         {results.map((p) => {
           const iso = isoForNation(p.nation, nations);
+          // A player holds at most one slot. Saying so on the row is clearer
+          // than leaving a Place button that silently does nothing.
+          const inChain = state.filled.includes(p.id);
           return (
-            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px solid rgba(29,41,66,0.5)' }}>
+            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px solid rgba(29,41,66,0.5)', opacity: inChain ? 0.55 : 1 }}>
               {iso
                 ? <span className={`fi fi-${iso}`} style={{ width: 18, height: 13, borderRadius: 1, flexShrink: 0 }} />
                 : <span style={{ width: 18, height: 13, borderRadius: 1, background: 'var(--slot-border)', flexShrink: 0 }} />}
               <span style={{ fontSize: 14, flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
-              <button
-                onClick={() => onAddToBench(p.id)}
-                style={{ background: 'var(--panel-2)', border: '1px solid var(--border)', color: 'var(--soft)', borderRadius: 4, padding: '4px 9px', fontSize: 12, cursor: 'pointer' }}
-              >
-                Bench
-              </button>
-              {focused !== null ? (
-                <button
-                  onClick={() => onPlace(focused, p.id)}
-                  style={{ background: 'var(--green)', border: 'none', color: 'var(--bg)', borderRadius: 4, padding: '4px 9px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+              {inChain ? (
+                <span
+                  className="cond"
+                  style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--green)' }}
                 >
-                  Place
-                </button>
-              ) : null}
+                  IN CHAIN
+                </span>
+              ) : (
+                <>
+                  <button
+                    onClick={() => onAddToBench(p.id)}
+                    disabled={state.submitted}
+                    style={{ background: 'var(--panel-2)', border: '1px solid var(--border)', color: 'var(--soft)', borderRadius: 4, padding: '4px 9px', fontSize: 12, cursor: state.submitted ? 'not-allowed' : 'pointer' }}
+                  >
+                    Bench
+                  </button>
+                  {focused !== null && !state.submitted ? (
+                    <button
+                      onClick={() => onPlace(focused, p.id)}
+                      style={{ background: 'var(--green)', border: 'none', color: 'var(--bg)', borderRadius: 4, padding: '4px 9px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      Place
+                    </button>
+                  ) : null}
+                </>
+              )}
             </div>
           );
         })}

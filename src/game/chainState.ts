@@ -48,7 +48,14 @@ export function chainReduce(s: ChainState, a: ChainAction): ChainState {
       if (outOfRange(s, a.index) || isGiven(s, a.index)) return s;
       if (!s.pool.has(a.playerId)) return s;
 
-      // Placement is never refused. There is no legality test to fail here:
+      // A player holds at most one slot in the chain. Moving them vacates the
+      // slot they came from — but a GIVEN slot cannot be vacated, so placing
+      // someone who is already given has to be refused outright. Falling
+      // through instead put the same player on two slots at once and let them
+      // link to themselves.
+      if (s.puzzle.slots.includes(a.playerId)) return s;
+
+      // Otherwise placement is never refused. There is no legality test to fail:
       // a player who does not link just leaves that link ungreen, which the
       // line shows plainly. Blocking the drop would hide the information the
       // player is trying to get.

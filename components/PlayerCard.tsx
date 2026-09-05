@@ -16,7 +16,8 @@ export function commonsThumb(filename: string, width: number): string {
 }
 
 export default function PlayerCard({
-  player, variant, slotId, nations, images, obscurity, outOfPosition = false, compact = false,
+  player, variant, slotId, nations, images, obscurity,
+  outOfPosition = false, compact = false, revealDelay,
 }: {
   player: Player;
   variant: CardVariant;
@@ -32,6 +33,12 @@ export default function PlayerCard({
   obscurity: number | null;
   outOfPosition?: boolean;
   compact?: boolean;
+  /**
+   * Milliseconds to wait before the obscurity chip rises in. Only chain mode
+   * passes this — it withholds obscurity until the chain is locked in, so the
+   * number arrives as a result rather than sitting there as a running total.
+   */
+  revealDelay?: number;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `${slotId ?? 'lib'}:${player.id}`,
@@ -91,7 +98,14 @@ export default function PlayerCard({
       {given && <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 4, background: 'var(--green)' }} />}
 
       {obscurity !== null && (
-        <div style={{ position: 'absolute', left: 7, top: 10 }}>
+        <div
+          style={{
+            position: 'absolute', left: 7, top: 10,
+            animation: revealDelay === undefined
+              ? undefined
+              : `chip-in 380ms cubic-bezier(0.16,0.84,0.3,1) ${revealDelay}ms both`,
+          }}
+        >
           <div className="cond" style={{ fontWeight: 700, fontSize: compact ? 18 : 21, lineHeight: 0.85, color: 'var(--gold)', textShadow: '0 1px 4px rgba(0,0,0,0.7)' }}>
             {obscurity}
           </div>

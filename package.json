@@ -15,7 +15,8 @@
     "dev": "next dev",
     "build": "next build",
     "fetch:nations": "tsx scripts/fetch-nations.ts",
-    "build:chain": "tsx scripts/build-chain.ts"
+    "build:chain": "tsx scripts/build-chain.ts",
+    "check:chain": "tsx scripts/check-chain.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

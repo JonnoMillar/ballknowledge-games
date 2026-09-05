@@ -3,8 +3,10 @@ import { useMemo, useReducer, useState } from 'react';
 import { DndContext, DragOverlay, useDroppable, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import ChainSearch from './ChainSearch';
+import type { SlotDepth } from '../src/lib/chain/score';
 import { initChain, chainReduce } from '../src/game/chainState';
-import { chainLinks, chainProgress, chainSlotObscurity, chainObscurity, isGreen } from '../src/lib/chain/score';
+import { chainLinks, chainProgress, chainSlotDepths, chainObscurity, isGreen } from '../src/lib/chain/score';
+import DepthGauge, { useCountUp } from './DepthGauge';
 import { buildIndex } from '../src/lib/search/index';
 import type { ChainPuzzle } from '../src/lib/chain/types';
 import type { LinkColour, Player } from '../src/lib/chemistry/types';
@@ -51,13 +53,16 @@ function Link({ colour }: { colour: LinkColour | null }) {
 }
 
 function Slot({
-  index, player, given, focused, obscurity, nations, images, onFocus,
+  index, player, given, focused, depth, revealed, revealDelay, nations, images, onFocus,
 }: {
   index: number;
   player: Player | undefined;
   given: boolean;
   focused: boolean;
-  obscurity: number | null;
+  /** How deep this pick dug. Withheld from the card until `revealed`. */
+  depth: SlotDepth | null;
+  revealed: boolean;
+  revealDelay: number;
   nations: Record<string, string>;
   images: Record<string, string>;
   onFocus: (i: number) => void;
@@ -74,7 +79,8 @@ function Slot({
             slotId={`slot:${index}`}
             nations={nations}
             images={images}
-            obscurity={given ? null : obscurity}
+            obscurity={revealed && depth ? depth.score : null}
+            revealDelay={revealed ? revealDelay : undefined}
           />
         ) : (
           <div
@@ -101,8 +107,9 @@ function Slot({
           color: given ? 'var(--green)' : focused ? 'var(--green)' : 'var(--muted)',
         }}
       >
-        {given ? 'GIVEN' : 'FIND'}
+        {given ? 'GIVEN' : revealed ? 'FOUND' : 'FIND'}
       </span>
+      {revealed && depth ? <DepthGauge depth={depth} delay={revealDelay} /> : null}
     </div>
   );
 }
@@ -161,6 +168,35 @@ function Bench({
   );
 }
 
+/**
+ * The final score. Mounts only once the chain is locked in.
+ *
+ * Obscurity is deliberately absent from the header until then. Shown live it
+ * becomes a dial to optimise against mid-solve, which turns the search box
+ * into a warmer/colder oracle and quietly leaks how obscure a name is before
+ * you commit to it.
+ */
+function FinalScore({ value }: { value: number }) {
+  const shown = useCountUp(value, 900, 900);
+  return (
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+      <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>
+        OBSCURITY
+      </span>
+      <span
+        className="cond"
+        style={{
+          fontWeight: 700, fontSize: 30, lineHeight: 1, color: 'var(--gold)',
+          fontVariantNumeric: 'tabular-nums',
+          textShadow: '0 0 18px rgba(240,180,41,0.45)',
+        }}
+      >
+        {shown}
+      </span>
+    </div>
+  );
+}
+
 export default function Chain({
   players, puzzle, nations, images,
 }: {
@@ -179,12 +215,30 @@ export default function Chain({
   const links = useMemo(() => chainLinks(state.filled, pool), [state.filled, pool]);
   const progress = chainProgress(links);
 
-  const perSlot = useMemo(
-    () => chainSlotObscurity(state.filled, puzzle.slots, players, pool),
-    [state.filled, puzzle.slots, players, pool],
+  // Only computed once the chain is locked in. Before that nothing on screen
+  // depends on it, and skipping the work keeps every keystroke cheap — each
+  // slot's field is a full scan of ~12k players.
+  const depths = useMemo(
+    () => (state.submitted ? chainSlotDepths(state.filled, puzzle.slots, players, pool) : {}),
+    [state.submitted, state.filled, puzzle.slots, players, pool],
   );
-  const obscurity = chainObscurity(perSlot);
+
+  const obscurity = useMemo(() => {
+    const scores: Record<number, number> = {};
+    for (const [slot, d] of Object.entries(depths)) scores[Number(slot)] = d.score;
+    return chainObscurity(scores);
+  }, [depths]);
+
   const blanks = puzzle.slots.filter((s) => s == null).length;
+
+  // The reveal runs left to right, one pick at a time, so the eye follows the
+  // chain in the order it reads rather than everything arriving at once.
+  const revealOrder = useMemo(() => {
+    const order: Record<number, number> = {};
+    let n = 0;
+    puzzle.slots.forEach((given, i) => { if (given == null) order[i] = n++; });
+    return order;
+  }, [puzzle.slots]);
 
   function onDragStart(e: DragStartEvent) {
     const id = e.active.data.current?.playerId as string | undefined;
@@ -224,11 +278,6 @@ export default function Chain({
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 7 }}>
-            <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>OBSCURITY</span>
-            <span className="cond" style={{ fontWeight: 700, fontSize: 22, color: 'var(--gold)' }}>{obscurity}</span>
-          </div>
-
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>LINKS</span>
             <span
@@ -251,13 +300,17 @@ export default function Chain({
                     background: isGreen(l.colour) ? 'var(--green)' : l.colour ? STROKE[l.colour] : 'var(--panel-2)',
                     boxShadow: isGreen(l.colour) ? '0 0 10px rgba(94,224,138,0.55)' : 'none',
                     transition: 'background 200ms ease, box-shadow 200ms ease',
+                    animation: state.submitted
+                      ? `link-settle 460ms ease-out ${l.index * 90}ms both`
+                      : undefined,
                   }}
                 />
               ))}
             </div>
           </div>
 
-          <div style={{ marginLeft: 'auto' }}>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 22 }}>
+            {state.submitted ? <FinalScore value={obscurity} /> : null}
             <button
               onClick={() => dispatch({ type: 'submit' })}
               disabled={!solved || state.submitted}
@@ -286,7 +339,9 @@ export default function Chain({
                       player={id ? pool.get(id) : undefined}
                       given={puzzle.slots[i] != null}
                       focused={focused === i}
-                      obscurity={perSlot[i] ?? null}
+                      depth={depths[i] ?? null}
+                      revealed={state.submitted}
+                      revealDelay={420 + (revealOrder[i] ?? 0) * 260}
                       nations={nations}
                       images={images}
                       onFocus={setFocused}

@@ -40,6 +40,30 @@ describe('placement is never refused', () => {
   });
 });
 
+describe('a player holds at most one slot', () => {
+  it('refuses a player who is already a given', () => {
+    // Moving vacates the slot a player came from, but a given cannot be
+    // vacated — so falling through would put them on two slots at once and
+    // let them link to themselves.
+    expect(chainReduce(s0, { type: 'place', index: 1, playerId: 'a' })).toBe(s0);
+    expect(chainReduce(s0, { type: 'place', index: 1, playerId: 'c' })).toBe(s0);
+  });
+
+  it('refuses a given even from the far end of a longer chain', () => {
+    const long: ChainPuzzle = { id: 't5', slots: ['a', null, 'c', null, 'stranger'] };
+    const l0 = initChain(long, pool);
+    expect(chainReduce(l0, { type: 'place', index: 3, playerId: 'a' })).toBe(l0);
+  });
+
+  it('still allows moving a player the user placed themselves', () => {
+    const long: ChainPuzzle = { id: 't5', slots: ['a', null, 'c', null, 'stranger'] };
+    let s = chainReduce(initChain(long, pool), { type: 'place', index: 1, playerId: 'b' });
+    s = chainReduce(s, { type: 'place', index: 3, playerId: 'b' });
+    expect(s.filled.filter((id) => id === 'b')).toHaveLength(1);
+    expect(s.filled[3]).toBe('b');
+  });
+});
+
 describe('given slots', () => {
   it('cannot be replaced', () => {
     expect(chainReduce(s0, { type: 'place', index: 0, playerId: 'b' })).toBe(s0);

@@ -91,11 +91,51 @@ export function chainFieldFor(
 }
 
 /**
- * Obscurity per slot the player filled themselves, 0..100.
+ * How deep a single pick dug.
+ *
+ * `score` is the 0..100 obscurity. `rank` and `fieldSize` are the same fact in
+ * units a person can actually feel: "the 6th most obscure of 247 players who
+ * would have fit". That framing is the point of the mode — the gate is finding
+ * anyone who links, the score is finding someone nobody else would have.
+ *
+ * Rank 1 is the most obscure answer available. Ties take the better rank. A
+ * pick outside its own field — one that does not link — has no rank at all.
+ */
+export interface SlotDepth {
+  score: number;
+  rank: number | null;
+  fieldSize: number;
+}
+
+/**
+ * Depth per slot the player filled themselves.
  *
  * Given slots are excluded — they were not chosen, so scoring them would just
  * add a constant. An empty chain scores nothing rather than zero-as-a-result.
  */
+export function chainSlotDepths(
+  fill: ChainFill,
+  given: ChainFill,
+  players: readonly Player[],
+  pool: ReadonlyMap<string, Player>,
+): Record<number, SlotDepth> {
+  const out: Record<number, SlotDepth> = {};
+  fill.forEach((id, i) => {
+    if (!id || given[i]) return;
+    const chosen = pool.get(id);
+    if (!chosen) return;
+    const field = chainFieldFor(i, fill, players, pool);
+    const inField = field.some((p) => p.id === chosen.id);
+    out[i] = {
+      score: slotObscurityScore(chosen, field),
+      rank: inField ? field.filter((p) => p.fame.value < chosen.fame.value).length + 1 : null,
+      fieldSize: field.length,
+    };
+  });
+  return out;
+}
+
+/** Obscurity per filled slot, 0..100. */
 export function chainSlotObscurity(
   fill: ChainFill,
   given: ChainFill,
@@ -103,12 +143,9 @@ export function chainSlotObscurity(
   pool: ReadonlyMap<string, Player>,
 ): Record<number, number> {
   const out: Record<number, number> = {};
-  fill.forEach((id, i) => {
-    if (!id || given[i]) return;
-    const chosen = pool.get(id);
-    if (!chosen) return;
-    out[i] = slotObscurityScore(chosen, chainFieldFor(i, fill, players, pool));
-  });
+  for (const [slot, depth] of Object.entries(chainSlotDepths(fill, given, players, pool))) {
+    out[Number(slot)] = depth.score;
+  }
   return out;
 }
 

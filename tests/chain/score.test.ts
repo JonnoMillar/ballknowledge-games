@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
-  chainLinks, chainProgress, chainFieldFor, chainSlotObscurity, chainObscurity, isGreen,
+  chainLinks, chainProgress, chainFieldFor, chainSlotDepths, chainSlotObscurity,
+  chainObscurity, isGreen,
 } from '../../src/lib/chain/score';
 import type { Player } from '../../src/lib/chemistry/types';
 
@@ -115,5 +116,30 @@ describe('chainObscurity', () => {
 
   it('averages the filled slots', () => {
     expect(chainObscurity({ 1: 80, 3: 40 })).toBe(60);
+  });
+});
+
+describe('chainSlotDepths', () => {
+  const given = ['a', null, 'c'];
+
+  it('reports the size of the field the pick was made from', () => {
+    // b, famousBridge and hyper all bridge a and c.
+    expect(chainSlotDepths(['a', 'b', 'c'], given, players, pool)[1]!.fieldSize).toBe(3);
+  });
+
+  it('ranks the most obscure answer first', () => {
+    // b is fame 20, hyper 40, famousBridge 80.
+    expect(chainSlotDepths(['a', 'b', 'c'], given, players, pool)[1]!.rank).toBe(1);
+    expect(chainSlotDepths(['a', 'hyper', 'c'], given, players, pool)[1]!.rank).toBe(2);
+    expect(chainSlotDepths(['a', 'famousBridge', 'c'], given, players, pool)[1]!.rank).toBe(3);
+  });
+
+  it('gives a pick that does not link no rank at all', () => {
+    // Rank 0 would read as "best possible"; there is no rank to report.
+    expect(chainSlotDepths(['a', 'weak', 'c'], given, players, pool)[1]!.rank).toBeNull();
+  });
+
+  it('leaves given slots unscored', () => {
+    expect(Object.keys(chainSlotDepths(['a', 'b', 'c'], given, players, pool))).toEqual(['1']);
   });
 });
