@@ -113,7 +113,7 @@ export default function Game({
   const rejection = state.lastRejection;
 
   return (
-    <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DndContext id="xi" onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg)' }}>
 
         <header style={{ display: 'flex', alignItems: 'center', gap: 28, padding: '16px 26px', borderBottom: '1px solid var(--line)' }}>
