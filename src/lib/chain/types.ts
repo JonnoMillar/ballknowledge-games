@@ -10,9 +10,24 @@
  * The whole format reuses `linkColour` untouched.
  */
 
+/**
+ * How a chain decides a link is complete.
+ *
+ * `chemistry` is the full FIFA link table: green needs a shared club OR the
+ * same nation and league.
+ *
+ * `clubs` counts only a shared club. It is the stricter rule and the more
+ * legible one — a nation-plus-league link is real but invisible, with nothing
+ * to point at on screen, whereas a shared club can show the badge of the club
+ * that connects the two players. The link explains itself.
+ */
+export type ChainMode = 'chemistry' | 'clubs';
+
 /** A published chain. Slots are ordered left to right; links join i and i+1. */
 export interface ChainPuzzle {
   id: string;
+  /** Defaults to `chemistry` when absent, so existing content is unchanged. */
+  mode?: ChainMode;
   /**
    * One entry per slot, in order: a given player's id, or null for a slot the
    * player must fill. `slots.length` is the chain length.

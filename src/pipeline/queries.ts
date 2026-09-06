@@ -219,3 +219,28 @@ SELECT ?player ?img WHERE {
   ?player wdt:P18 ?img .
 }`.trim();
 }
+
+/**
+ * Club name and badge for a batch of club ids.
+ *
+ * P154 (logo image) is where most clubs keep their crest, but a good number of
+ * European clubs record it as P94 (coat of arms) instead — the crest genuinely
+ * IS their coat of arms — so both are pulled and the caller prefers P154.
+ *
+ * Labels take the same COALESCE(en, mul) treatment as players: names have been
+ * migrating to the `mul` language code and an `en`-only query silently returns
+ * bare QIDs for the ones that have moved.
+ */
+export function clubQuery(clubQids: readonly string[]): string {
+  const values = clubQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT ?club ?name ?logo ?arms WHERE {
+  VALUES ?club { ${values} }
+  OPTIONAL { ?club wdt:P154 ?logo }
+  OPTIONAL { ?club wdt:P94 ?arms }
+
+  OPTIONAL { ?club rdfs:label ?en  FILTER(LANG(?en)  = "en")  }
+  OPTIONAL { ?club rdfs:label ?mul FILTER(LANG(?mul) = "mul") }
+  BIND(COALESCE(?en, ?mul) AS ?name)
+}`.trim();
+}

@@ -17,6 +17,7 @@ const pool = new Map(players.map((p) => [p.id, p]));
 
 const id = process.argv[2] ?? '001';
 const chain = JSON.parse(await readFile(`content/chains/${id}.json`, 'utf8')) as ChainPuzzle;
+const mode = chain.mode ?? 'chemistry';
 
 const overrides = process.argv.slice(3);
 const fill = [...chain.slots];
@@ -27,19 +28,19 @@ fill.forEach((slot, i) => {
   n++;
 });
 
-console.log(`chain ${id}:`);
+console.log(`chain ${id} (${mode} mode):`);
 for (const [i, pid] of fill.entries()) {
   const p = pid ? pool.get(pid) : undefined;
   const given = chain.slots[i] != null;
   console.log(`  ${i} ${given ? 'GIVEN' : ' FILL'}  ${p?.name ?? '(empty)'}`);
 }
 
-const depths = chainSlotDepths(fill, chain.slots, players, pool);
+const depths = chainSlotDepths(fill, chain.slots, players, pool, mode);
 console.log('\nper filled slot:');
 let total = 0;
 let count = 0;
 for (const [slot, d] of Object.entries(depths)) {
-  const field = chainFieldFor(Number(slot), fill, players, pool);
+  const field = chainFieldFor(Number(slot), fill, players, pool, mode);
   const most = [...field].sort((a, b) => a.fame.value - b.fame.value)[0];
   console.log(
     `  slot ${slot}: score ${d.score}  rank ${d.rank} of ${d.fieldSize}` +

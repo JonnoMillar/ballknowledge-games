@@ -88,7 +88,7 @@ export function chainReduce(s: ChainState, a: ChainAction): ChainState {
     }
 
     case 'submit': {
-      const solved = chainProgress(chainLinks(s.filled, s.pool)).solved;
+      const solved = chainProgress(chainLinks(s.filled, s.pool, s.puzzle.mode ?? 'chemistry')).solved;
       return solved ? { ...s, submitted: true } : s;
     }
   }

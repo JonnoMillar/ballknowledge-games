@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   chainLinks, chainProgress, chainFieldFor, chainSlotDepths, chainSlotObscurity,
-  chainObscurity, isGreen,
+  chainObscurity, isGreen, linked,
 } from '../../src/lib/chain/score';
 import type { Player } from '../../src/lib/chemistry/types';
 
@@ -141,5 +141,43 @@ describe('chainSlotDepths', () => {
 
   it('leaves given slots unscored', () => {
     expect(Object.keys(chainSlotDepths(['a', 'b', 'c'], given, players, pool))).toEqual(['1']);
+  });
+});
+
+describe('club mode', () => {
+  // `natLeague` shares no club with `a`, but the same nation AND league — a
+  // real green link under the chemistry rule and nothing at all under clubs.
+  const natLeague = mk('natLeague', 'BRA', ['FLA'], 30, ['L_CITY']);
+  const clubPlayers = [...players, natLeague];
+  const clubPool = new Map(clubPlayers.map((p) => [p.id, p]));
+
+  it('the two rules disagree exactly where they should', () => {
+    expect(linked(a, natLeague, 'chemistry')).toBe(true);
+    expect(linked(a, natLeague, 'clubs')).toBe(false);
+    expect(linked(a, b, 'clubs')).toBe(true);
+  });
+
+  it('a nation-plus-league bridge does not complete a club chain', () => {
+    const links = chainLinks(['a', 'natLeague', 'a'], clubPool, 'clubs');
+    expect(chainProgress(links).solved).toBe(false);
+    expect(links[0]!.clubs).toEqual([]);
+  });
+
+  it('a made club link carries the club that made it', () => {
+    const links = chainLinks(['a', 'b', 'c'], clubPool, 'clubs');
+    expect(links[0]!.made).toBe(true);
+    expect(links[0]!.clubs).toEqual(['CITY']);
+    expect(links[1]!.clubs).toEqual(['ROMA']);
+  });
+
+  it('narrows the field to players who share a club', () => {
+    // Scored against `a` alone: a player cannot hold two nations, so a
+    // nation-plus-league bridge to BOTH neighbours of a mixed-nation chain is
+    // impossible by construction and would test nothing.
+    const chem = chainFieldFor(1, ['a', null, null], clubPlayers, clubPool, 'chemistry').map((p) => p.id);
+    const club = chainFieldFor(1, ['a', null, null], clubPlayers, clubPool, 'clubs').map((p) => p.id);
+    expect(chem).toContain('natLeague');
+    expect(club).not.toContain('natLeague');
+    expect(club.sort()).toEqual(['b', 'famousBridge', 'hyper']);
   });
 });

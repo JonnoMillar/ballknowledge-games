@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { chainLinks, chainProgress, isGreen } from '../../src/lib/chain/score';
-import { linkColour } from '../../src/lib/chemistry/link';
+import { chainLinks, chainProgress, linked } from '../../src/lib/chain/score';
 import type { ChainPuzzle } from '../../src/lib/chain/types';
 import type { Player } from '../../src/lib/chemistry/types';
 
@@ -19,9 +18,10 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
   for (const file of files) {
     const chain = JSON.parse(readFileSync(`content/chains/${file}`, 'utf8')) as ChainPuzzle;
     const ref = chain.referenceSolution!;
+    const mode = chain.mode ?? 'chemistry';
 
-    it(`${file}: the reference solution is green all the way`, () => {
-      expect(chainProgress(chainLinks(ref, pool)).solved).toBe(true);
+    it(`${file}: the reference solution links all the way`, () => {
+      expect(chainProgress(chainLinks(ref, pool, mode)).solved).toBe(true);
     });
 
     it(`${file}: every referenced player exists in the pool`, () => {
@@ -42,13 +42,24 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
       });
     });
 
-    it(`${file}: consecutive givens do not link green to each other`, () => {
-      // If they did, the blank between them would have nothing to do.
+    it(`${file}: consecutive givens do not already link to each other`, () => {
+      // If they did, the blank between them would have nothing to do. The test
+      // has to use the chain's OWN rule: a club-mode pair may link green by
+      // nation and league and still be a perfectly good puzzle, because in that
+      // mode nation and league connect nothing.
       for (let i = 0; i + 2 < chain.slots.length; i += 2) {
         const u = pool.get(chain.slots[i]!)!;
         const v = pool.get(chain.slots[i + 2]!)!;
-        expect(isGreen(linkColour(u, v)), `${u.name} already links to ${v.name}`).toBe(false);
-        expect(u.nation, `${u.name} and ${v.name} share a nation`).not.toBe(v.nation);
+        expect(linked(u, v, mode), `${u.name} already links to ${v.name}`).toBe(false);
+      }
+    });
+
+    it(`${file}: every link in the reference solution is explainable`, () => {
+      // In club mode the UI names the club that made each link, so a link with
+      // no shared club would render as a green line with nothing on it.
+      if (mode !== 'clubs') return;
+      for (const link of chainLinks(ref, pool, mode)) {
+        expect(link.clubs.length, `link ${link.index} has no club to show`).toBeGreaterThan(0);
       }
     });
 

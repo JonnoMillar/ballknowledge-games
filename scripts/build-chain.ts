@@ -37,6 +37,14 @@ const seed = Number(process.argv[2] ?? 1);
 const LENGTH = Number(process.argv[3] ?? 5);
 const outId = process.argv[4];
 
+/**
+ * `clubs` counts only a shared club as a link; `chemistry` uses the full link
+ * table. Club mode is the stricter rule, so it produces smaller answer sets and
+ * needs its own bands — but every link it makes can be shown on screen as the
+ * badge of the club that made it.
+ */
+const MODE: 'chemistry' | 'clubs' = process.env.MODE === 'clubs' ? 'clubs' : 'chemistry';
+
 if (LENGTH < 3 || LENGTH % 2 === 0) {
   console.log('length must be odd and at least 3 - givens sit at even indices');
   process.exit(1);
@@ -72,19 +80,24 @@ for (const p of pool) {
   byNation.get(p.nation)!.push(p);
 }
 
-const greenCache = new Map<string, Player[]>();
-function greenTo(p: Player): Player[] {
-  const hit = greenCache.get(p.id);
+const linkCache = new Map<string, Player[]>();
+/** Everyone this player links to, under the mode in force. */
+function linksTo(p: Player): Player[] {
+  const hit = linkCache.get(p.id);
   if (hit) return hit;
   const out = new Map<string, Player>();
   for (const c of p.clubIds) for (const q of byClub.get(c) ?? []) if (q.id !== p.id) out.set(q.id, q);
-  for (const q of byNation.get(p.nation) ?? []) {
-    if (q.id !== p.id && q.leagueIds.some((l) => p.leagueIds.includes(l))) out.set(q.id, q);
+  if (MODE === 'chemistry') {
+    for (const q of byNation.get(p.nation) ?? []) {
+      if (q.id !== p.id && q.leagueIds.some((l) => p.leagueIds.includes(l))) out.set(q.id, q);
+    }
   }
   const arr = [...out.values()];
-  greenCache.set(p.id, arr);
+  linkCache.set(p.id, arr);
   return arr;
 }
+
+const shareClub = (a: Player, b: Player) => a.clubIds.some((c) => b.clubIds.includes(c));
 
 const green = (a: Player, b: Player) => {
   const c = linkColour(a, b);
@@ -93,8 +106,8 @@ const green = (a: Player, b: Player) => {
 
 /** Every player who bridges u and v. This is the blank's answer set. */
 function bridges(u: Player, v: Player, exclude: ReadonlySet<string>): Player[] {
-  const vs = new Set(greenTo(v).map((p) => p.id));
-  return greenTo(u).filter((p) => vs.has(p.id) && !exclude.has(p.id));
+  const vs = new Set(linksTo(v).map((p) => p.id));
+  return linksTo(u).filter((p) => vs.has(p.id) && !exclude.has(p.id));
 }
 
 /**
@@ -113,7 +126,13 @@ function bridges(u: Player, v: Player, exclude: ReadonlySet<string>): Player[] {
  * which trivialises nothing. Different nations on top, so the line is not a
  * walk through one country.
  */
-const farApart = (a: Player, b: Player) => a.nation !== b.nation && !green(a, b);
+const farApart = (a: Player, b: Player) =>
+  MODE === 'clubs'
+    // In club mode nation and league do not link anything, so the only thing
+    // that would leave the blank between two givens with nothing to do is the
+    // givens already sharing a club.
+    ? !shareClub(a, b)
+    : a.nation !== b.nation && !green(a, b);
 
 let rng = seed;
 const rand = () => ((rng = (rng * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
@@ -194,13 +213,17 @@ line.forEach((p, i) => {
     `  ${label}  ${p.name.padEnd(26)} fame ${String(p.fame.value).padStart(3)}  ${p.clubIds.length} clubs`,
   );
   const next = line[i + 1];
-  if (next) console.log(`           ${linkColour(p, next)}`);
+  if (next) {
+    const via = p.clubIds.filter((c) => next.clubIds.includes(c));
+    console.log(`           ${linkColour(p, next)}${via.length ? `  via ${via.join(', ')}` : ''}`);
+  }
 });
 console.log('\nanswers available per blank: ' + answerCounts.join(', '));
 
 if (outId) {
   const puzzle = {
     id: outId,
+    mode: MODE,
     slots: line.map((p, i) => (i % 2 === 0 ? p.id : null)),
     referenceSolution: line.map((p) => p.id),
   };

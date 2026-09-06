@@ -1,12 +1,20 @@
-import { linkColour, meetsRequirement } from '../chemistry/link';
+import { linkColour, meetsRequirement, sharedClubs } from '../chemistry/link';
 import { slotObscurityScore } from '../fame/obscurity';
 import type { LinkColour, Player } from '../chemistry/types';
-import type { ChainFill } from './types';
+import type { ChainFill, ChainMode } from './types';
 
 /** Link i joins slot i and slot i+1. Null colour while either end is empty. */
 export interface ChainLink {
   index: number;
   colour: LinkColour | null;
+  /**
+   * Clubs both players appeared for. Empty when either end is empty, and
+   * often empty on a perfectly good chemistry link too — a nation-plus-league
+   * green shares no club at all.
+   */
+  clubs: readonly string[];
+  /** Whether this link is complete under the puzzle's own rule. */
+  made: boolean;
 }
 
 /**
@@ -20,14 +28,33 @@ export function isGreen(colour: LinkColour | null): boolean {
   return colour !== null && meetsRequirement(colour, 'green');
 }
 
-export function chainLinks(fill: ChainFill, pool: ReadonlyMap<string, Player>): ChainLink[] {
+/**
+ * Whether two players are linked under `mode`.
+ *
+ * The single place the two rules differ, so the generator, the scorer and the
+ * board cannot drift apart on what counts as a link.
+ */
+export function linked(a: Player, b: Player, mode: ChainMode): boolean {
+  return mode === 'clubs' ? sharedClubs(a, b).length > 0 : isGreen(linkColour(a, b));
+}
+
+export function chainLinks(
+  fill: ChainFill,
+  pool: ReadonlyMap<string, Player>,
+  mode: ChainMode = 'chemistry',
+): ChainLink[] {
   const out: ChainLink[] = [];
   for (let i = 0; i < fill.length - 1; i++) {
     const a = fill[i];
     const b = fill[i + 1];
     const pa = a ? pool.get(a) : undefined;
     const pb = b ? pool.get(b) : undefined;
-    out.push({ index: i, colour: pa && pb ? linkColour(pa, pb) : null });
+    out.push({
+      index: i,
+      colour: pa && pb ? linkColour(pa, pb) : null,
+      clubs: pa && pb ? sharedClubs(pa, pb) : [],
+      made: pa && pb ? linked(pa, pb, mode) : false,
+    });
   }
   return out;
 }
@@ -39,7 +66,7 @@ export interface ChainProgress {
 }
 
 export function chainProgress(links: readonly ChainLink[]): ChainProgress {
-  const made = links.filter((l) => isGreen(l.colour)).length;
+  const made = links.filter((l) => l.made).length;
   return { made, total: links.length, solved: links.length > 0 && made === links.length };
 }
 
@@ -70,6 +97,7 @@ export function chainFieldFor(
   fill: ChainFill,
   players: readonly Player[],
   pool: ReadonlyMap<string, Player>,
+  mode: ChainMode = 'chemistry',
 ): Player[] {
   const neighbours: Player[] = [];
   for (const n of [index - 1, index + 1]) {
@@ -86,7 +114,7 @@ export function chainFieldFor(
   fill.forEach((id, i) => { if (id && i !== index) usedElsewhere.add(id); });
 
   return players.filter(
-    (p) => !usedElsewhere.has(p.id) && neighbours.every((n) => isGreen(linkColour(p, n))),
+    (p) => !usedElsewhere.has(p.id) && neighbours.every((n) => linked(p, n, mode)),
   );
 }
 
@@ -118,13 +146,14 @@ export function chainSlotDepths(
   given: ChainFill,
   players: readonly Player[],
   pool: ReadonlyMap<string, Player>,
+  mode: ChainMode = 'chemistry',
 ): Record<number, SlotDepth> {
   const out: Record<number, SlotDepth> = {};
   fill.forEach((id, i) => {
     if (!id || given[i]) return;
     const chosen = pool.get(id);
     if (!chosen) return;
-    const field = chainFieldFor(i, fill, players, pool);
+    const field = chainFieldFor(i, fill, players, pool, mode);
     const inField = field.some((p) => p.id === chosen.id);
     out[i] = {
       score: slotObscurityScore(chosen, field),
@@ -141,9 +170,10 @@ export function chainSlotObscurity(
   given: ChainFill,
   players: readonly Player[],
   pool: ReadonlyMap<string, Player>,
+  mode: ChainMode = 'chemistry',
 ): Record<number, number> {
   const out: Record<number, number> = {};
-  for (const [slot, depth] of Object.entries(chainSlotDepths(fill, given, players, pool))) {
+  for (const [slot, depth] of Object.entries(chainSlotDepths(fill, given, players, pool, mode))) {
     out[Number(slot)] = depth.score;
   }
   return out;

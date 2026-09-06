@@ -62,3 +62,15 @@ export function meetsRequirement(
   if (required === 'any') return true;
   return linkRank(achieved) >= linkRank(required);
 }
+
+/**
+ * Every club both players appeared for.
+ *
+ * The club dimension of the link table, returned rather than reduced to a
+ * boolean, because in club-only mode the shared club IS the explanation shown
+ * on the link — "these two are connected, and here is why".
+ */
+export function sharedClubs(a: PlayerFacts, b: PlayerFacts): string[] {
+  const set = new Set(a.clubIds);
+  return b.clubIds.filter((c) => set.has(c));
+}
