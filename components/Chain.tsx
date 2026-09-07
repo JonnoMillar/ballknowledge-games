@@ -3,7 +3,8 @@ import { useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { DndContext, DragOverlay, useDroppable, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import ChainSearch from './ChainSearch';
-import ClubBadge, { shortClubName, type ClubRecord } from './ClubBadge';
+import ClubBadge, { shortClubName } from './ClubBadge';
+import type { ClubView } from '../src/lib/clubs';
 import type { SlotDepth } from '../src/lib/chain/score';
 import { initChain, chainReduce } from '../src/game/chainState';
 import { chainLinks, chainProgress, chainSlotDepths, chainObscurity } from '../src/lib/chain/score';
@@ -35,7 +36,7 @@ const STROKE: Record<LinkColour, string> = {
 function Link({ link, mode, clubs }: {
   link: ChainLink;
   mode: 'chemistry' | 'clubs';
-  clubs: Record<string, ClubRecord>;
+  clubs: Record<string, ClubView>;
 }) {
   const { colour, made } = link;
   // A club link can be green or hyper; either way the club is what is shown.
@@ -251,7 +252,7 @@ export default function Chain({
   puzzle: ChainPuzzle;
   nations: Record<string, string>;
   images: Record<string, string>;
-  clubs: Record<string, ClubRecord>;
+  clubs: Record<string, ClubView>;
 }) {
   const mode = puzzle.mode ?? 'chemistry';
   const pool = useMemo(() => new Map(players.map((p) => [p.id, p])), [players]);

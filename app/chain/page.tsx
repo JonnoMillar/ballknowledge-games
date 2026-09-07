@@ -2,13 +2,16 @@ import { readFile } from 'node:fs/promises';
 import Chain from '../../components/Chain';
 import type { Player } from '../../src/lib/chemistry/types';
 import type { ChainPuzzle } from '../../src/lib/chain/types';
-import type { ClubRecord } from '../../components/ClubBadge';
+import { clubView, type ClubRecord, type ClubView } from '../../src/lib/clubs';
 
 export default async function ChainPage() {
   const players = JSON.parse(await readFile('data/pool.json', 'utf8')) as Player[];
   const nations = JSON.parse(await readFile('data/nations.json', 'utf8')) as Record<string, string>;
   const images = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
-  const clubs = JSON.parse(await readFile('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
+  const stored = JSON.parse(await readFile('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
+  // Names and a yes/no on the crest. The URLs stay on the server; see ClubView.
+  const clubs: Record<string, ClubView> = {};
+  for (const [qid, club] of Object.entries(stored)) clubs[qid] = clubView(club);
 
   const file = JSON.parse(await readFile('content/chains/004.json', 'utf8')) as ChainPuzzle;
 

@@ -1,11 +1,5 @@
 'use client';
-import { commonsThumb } from './PlayerCard';
-
-export interface ClubRecord {
-  name: string;
-  /** Commons filename, when Wikidata has one. Most clubs have none. */
-  badge?: string;
-}
+import { crestPath, type ClubView } from '../src/lib/clubs';
 
 /**
  * Trim the legal furniture off a club's name.
@@ -46,31 +40,28 @@ function tone(id: string): string {
 /**
  * A club's crest.
  *
- * Wikidata carries a badge for about 17% of the clubs in the pool and none of
- * the Premier League, because club crests are copyrighted logos that Wikimedia
- * Commons will not host — English Wikipedia keeps them as local fair-use files
- * that are not reusable. The clubs that do have one are those whose crests fall
- * below the threshold of originality.
+ * Crests come from English Wikipedia's article infoboxes, not from Wikidata:
+ * P154 covers 4.9% of football clubs and none of the Premier League, because
+ * Commons will not host a copyrighted crest. See scripts/fetch-club-badges.ts.
  *
- * So the monogram is not a placeholder for a missing image, it is the normal
- * case, and it is drawn to look deliberate: the same chamfer as the player
- * cards, a colour fixed by club id so a club always looks like itself. A real
- * crest replaces it wherever one exists, and would replace it everywhere if the
- * badges ever came from a source that licenses them.
+ * The monogram is still not a broken image. It is what a club gets when it has
+ * no English article or no infobox crest, and it is drawn to look deliberate:
+ * the same chamfer as the player cards, a colour fixed by club id so a club
+ * always looks like itself.
  */
 export default function ClubBadge({
   clubId, club, size = 18,
 }: {
   clubId: string;
-  club: ClubRecord | undefined;
+  club: ClubView | undefined;
   size?: number;
 }) {
   const name = shortClubName(club?.name ?? clubId);
 
-  if (club?.badge) {
+  if (club?.crest) {
     return (
       <img
-        src={commonsThumb(club.badge, 64)}
+        src={crestPath(clubId)}
         alt=""
         width={size}
         height={size}

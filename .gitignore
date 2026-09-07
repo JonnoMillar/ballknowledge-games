@@ -13,3 +13,11 @@ data/name-review.json
 .next/
 next-env.d.ts
 tsconfig.tsbuildinfo
+
+# Club crests, cached from Wikipedia by `npm run fetch:badges`.
+# ~95 MB of PNGs and reproducible, so the URLs live in data/clubs.json instead
+# and the app falls back to them when the cache is absent.
+public/badges/
+
+# Production builds made alongside a running dev server. See next.config.ts.
+.next-prod/
