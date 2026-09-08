@@ -136,6 +136,7 @@ export default function LockIn({
             {result.slots.map((s) => {
               const mine = s.playerId ? pool.get(s.playerId) : undefined;
               const beatMe = s.best && s.depth && s.best.score > s.depth.score;
+              const nailed = s.held && s.best?.id === s.playerId;
               return (
                 <div
                   key={s.index}
@@ -161,16 +162,21 @@ export default function LockIn({
                     </div>
                   </div>
 
-                  {/* The point of the whole screen: what was sitting there. */}
+                  {/* The point of the whole screen: what was sitting there.
+                      When the player already found it, saying so outright beats
+                      printing their own name back at them under a heading that
+                      reads like a correction. */}
                   <div style={{ minWidth: 190, flex: 1 }}>
                     <div className="cond" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--muted)' }}>
-                      DEEPEST ANSWER
+                      {nailed ? 'NOBODY WENT DEEPER' : 'DEEPEST ANSWER'}
                     </div>
-                    <div style={{ fontWeight: 600, fontSize: 15, color: beatMe ? 'var(--gold)' : 'var(--green)' }}>
-                      {s.best?.name ?? '—'}
+                    <div style={{ fontWeight: 600, fontSize: 15, color: nailed ? 'var(--green)' : beatMe ? 'var(--gold)' : 'var(--green)' }}>
+                      {nailed ? 'You found it' : s.best?.name ?? '—'}
                     </div>
                     <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
-                      {s.fieldSize} would have fitted · worth {s.best?.score ?? 0}
+                      {nailed
+                        ? `the most obscure of ${s.fieldSize} who fitted`
+                        : `${s.fieldSize} would have fitted · worth ${s.best?.score ?? 0}`}
                     </div>
                   </div>
                 </div>

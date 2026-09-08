@@ -21,7 +21,7 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
     const mode = chain.mode ?? 'chemistry';
 
     it(`${file}: the reference solution links all the way`, () => {
-      expect(chainProgress(chainLinks(ref, pool, mode)).solved).toBe(true);
+      expect(chainProgress(chainLinks(ref, pool, mode, chain.prescribedLinks)).solved).toBe(true);
     });
 
     it(`${file}: every referenced player exists in the pool`, () => {
@@ -33,24 +33,48 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
       chain.slots.forEach((id, i) => { if (id !== null) expect(id).toBe(ref[i]); });
     });
 
-    it(`${file}: givens sit at even indices and blanks at odd ones`, () => {
-      // A blank must have both neighbours given. Two blanks side by side is not
-      // a puzzle: measured over 1,349 famous pairs, 1,290 had more than a
-      // thousand valid fills. See scripts/build-chain.ts.
+    it(`${file}: every blank is constrained on both sides`, () => {
+      // A blank must be pinned by what sits next to it: a given neighbour, or
+      // a link whose club the puzzle names. An unconstrained pair of adjacent
+      // blanks is not a puzzle — measured over 2,642 famous end-pairs in club
+      // mode, 2,551 admitted more than 600 answers and none landed in a
+      // playable range. See scripts/measure-layouts.ts.
+      const prescribed = chain.prescribedLinks ?? {};
       chain.slots.forEach((id, i) => {
-        expect(id === null, `slot ${i}`).toBe(i % 2 === 1);
+        if (id !== null) return;
+        for (const [neighbour, link] of [[i - 1, i - 1], [i + 1, i]] as const) {
+          expect(
+            chain.slots[neighbour] != null || prescribed[link] !== undefined,
+            `slot ${i} is unconstrained towards slot ${neighbour}`,
+          ).toBe(true);
+        }
       });
     });
 
-    it(`${file}: consecutive givens do not already link to each other`, () => {
-      // If they did, the blank between them would have nothing to do. The test
-      // has to use the chain's OWN rule: a club-mode pair may link green by
-      // nation and league and still be a perfectly good puzzle, because in that
-      // mode nation and league connect nothing.
-      for (let i = 0; i + 2 < chain.slots.length; i += 2) {
-        const u = pool.get(chain.slots[i]!)!;
-        const v = pool.get(chain.slots[i + 2]!)!;
+    it(`${file}: neighbouring givens do not already link to each other`, () => {
+      // If they did, the blanks between them would have nothing to do. The
+      // test has to use the chain's OWN rule: a club-mode pair may link green
+      // by nation and league and still be a perfectly good puzzle, because in
+      // that mode nation and league connect nothing.
+      const givenAt = chain.slots
+        .map((id, i) => (id === null ? -1 : i))
+        .filter((i) => i >= 0);
+      for (let n = 0; n + 1 < givenAt.length; n++) {
+        const u = pool.get(chain.slots[givenAt[n]!]!)!;
+        const v = pool.get(chain.slots[givenAt[n + 1]!]!)!;
         expect(linked(u, v, mode), `${u.name} already links to ${v.name}`).toBe(false);
+      }
+    });
+
+    it(`${file}: a named club really is the club that makes its link`, () => {
+      // The whole point of naming it: a pair sharing some OTHER club does not
+      // satisfy the link, so the reference solution has to go through the one
+      // on the board.
+      for (const [link, club] of Object.entries(chain.prescribedLinks ?? {})) {
+        const a = pool.get(ref[Number(link)]!)!;
+        const b = pool.get(ref[Number(link) + 1]!)!;
+        expect(a.clubIds, `${a.name} never played for ${club}`).toContain(club);
+        expect(b.clubIds, `${b.name} never played for ${club}`).toContain(club);
       }
     });
 
@@ -58,7 +82,7 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
       // In club mode the UI names the club that made each link, so a link with
       // no shared club would render as a green line with nothing on it.
       if (mode !== 'clubs') return;
-      for (const link of chainLinks(ref, pool, mode)) {
+      for (const link of chainLinks(ref, pool, mode, chain.prescribedLinks)) {
         expect(link.clubs.length, `link ${link.index} has no club to show`).toBeGreaterThan(0);
       }
     });

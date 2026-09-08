@@ -60,8 +60,9 @@ export function chainResult(
   pool: ReadonlyMap<string, Player>,
 ): ChainResult {
   const mode = puzzle.mode ?? 'chemistry';
-  const links = chainLinks(fill, pool, mode);
-  const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode);
+  const prescribed = puzzle.prescribedLinks ?? {};
+  const links = chainLinks(fill, pool, mode, prescribed);
+  const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode, prescribed);
 
   const slots: SlotOutcome[] = [];
   puzzle.slots.forEach((given, i) => {
@@ -76,7 +77,7 @@ export function chainResult(
     // Scored against the puzzle, not against the player's own answer. On the
     // alternating layout these are the same set; they diverge as soon as two
     // blanks sit next to each other.
-    const field = chainFieldFor(i, puzzle.slots, players, pool, mode);
+    const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed);
     const most = field.reduce<Player | null>(
       (best, p) => (best === null || p.fame.value < best.fame.value ? p : best),
       null,

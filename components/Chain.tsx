@@ -47,9 +47,12 @@ function Link({ link, mode, clubs, revealed }: {
 }) {
   const colour = revealed ? link.colour : null;
   const made = revealed && link.made;
-  // A club link can be green or hyper; either way the club is what is shown.
-  const via = mode === 'clubs' && made ? link.clubs[0] : undefined;
-  const width = mode === 'clubs' ? 116 : 74;
+  // A prescribed club is part of the puzzle, not part of the reveal: it is
+  // shown from the first render, on an empty link, because it is the rule the
+  // player is being asked to satisfy. A discovered club is the opposite and
+  // stays hidden until the lock-in.
+  const via = link.required ?? (mode === 'clubs' && made ? link.clubs[0] : undefined);
+  const width = mode === 'clubs' || link.required ? 116 : 74;
 
   return (
     <div style={{ width, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
@@ -60,7 +63,11 @@ function Link({ link, mode, clubs, revealed }: {
             ? 'var(--green)'
             : colour
               ? STROKE[colour]
-              : 'repeating-linear-gradient(90deg, #33455f 0 4px, transparent 4px 9px)',
+              : link.required
+                // A demanded link reads as a rule waiting to be met, not as an
+                // empty gap, so it is drawn in the colour that means "stated".
+                ? 'repeating-linear-gradient(90deg, var(--gold) 0 5px, transparent 5px 10px)'
+                : 'repeating-linear-gradient(90deg, #33455f 0 4px, transparent 4px 9px)',
           boxShadow: made ? '0 0 12px rgba(94,224,138,0.6)' : 'none',
           transition: 'background 200ms ease, box-shadow 200ms ease',
         }}
@@ -80,7 +87,8 @@ function Link({ link, mode, clubs, revealed }: {
             className="cond"
             style={{
               fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', lineHeight: 1.15,
-              color: 'var(--text)', textAlign: 'center', textWrap: 'balance',
+              color: link.required && !made ? 'var(--gold)' : 'var(--text)',
+              textAlign: 'center', textWrap: 'balance',
             }}
           >
             {shortClubName(clubs[via]?.name ?? via).toUpperCase()}
@@ -273,7 +281,11 @@ export default function Chain({
   // locked either way, so this is presentation only.
   const [showResult, setShowResult] = useState(false);
 
-  const links = useMemo(() => chainLinks(state.filled, pool, mode), [state.filled, pool, mode]);
+  const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
+  const links = useMemo(
+    () => chainLinks(state.filled, pool, mode, prescribed),
+    [state.filled, pool, mode, prescribed],
+  );
   const progress = chainProgress(links);
 
   // The full result, computed once on lock-in. Everything the reveal shows —
@@ -357,7 +369,8 @@ export default function Chain({
           <div>
             <div className="cond" style={{ fontWeight: 700, fontSize: 26, lineHeight: 1 }}>CHAIN {puzzle.id}</div>
             <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 3 }}>
-              {mode === 'clubs' ? 'Every link a shared club' : 'Every link green'} · {blanks} to find
+              {mode === 'clubs' ? 'Every link a shared club' : 'Every link green'}
+              {Object.keys(prescribed).length > 0 ? ' · one club named for you' : ''} · {blanks} to find
             </div>
           </div>
 

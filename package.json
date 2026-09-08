@@ -18,7 +18,9 @@
     "build:chain": "tsx scripts/build-chain.ts",
     "check:chain": "tsx scripts/check-chain.ts",
     "fetch:clubs": "tsx scripts/fetch-clubs.ts",
-    "fetch:badges": "tsx scripts/fetch-club-badges.ts --download"
+    "fetch:badges": "tsx scripts/fetch-club-badges.ts --download",
+    "build:pair": "tsx scripts/build-pair-chain.ts",
+    "measure:layouts": "tsx scripts/measure-layouts.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

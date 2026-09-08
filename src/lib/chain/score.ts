@@ -15,6 +15,8 @@ export interface ChainLink {
   clubs: readonly string[];
   /** Whether this link is complete under the puzzle's own rule. */
   made: boolean;
+  /** The club the puzzle demands here, when it names one. */
+  required?: string;
 }
 
 /**
@@ -38,10 +40,25 @@ export function linked(a: Player, b: Player, mode: ChainMode): boolean {
   return mode === 'clubs' ? sharedClubs(a, b).length > 0 : isGreen(linkColour(a, b));
 }
 
+/**
+ * Whether two players are linked, where the puzzle may name the club.
+ *
+ * A prescribed club REPLACES the mode's rule rather than adding to it, and it
+ * is strictly harder: two players who share three clubs, none of them the
+ * named one, do not make this link.
+ */
+export function linkedVia(
+  a: Player, b: Player, mode: ChainMode, club: string | undefined,
+): boolean {
+  if (club === undefined) return linked(a, b, mode);
+  return a.clubIds.includes(club) && b.clubIds.includes(club);
+}
+
 export function chainLinks(
   fill: ChainFill,
   pool: ReadonlyMap<string, Player>,
   mode: ChainMode = 'chemistry',
+  prescribed: Readonly<Record<number, string>> = {},
 ): ChainLink[] {
   const out: ChainLink[] = [];
   for (let i = 0; i < fill.length - 1; i++) {
@@ -49,11 +66,16 @@ export function chainLinks(
     const b = fill[i + 1];
     const pa = a ? pool.get(a) : undefined;
     const pb = b ? pool.get(b) : undefined;
+    const required = prescribed[i];
     out.push({
       index: i,
       colour: pa && pb ? linkColour(pa, pb) : null,
-      clubs: pa && pb ? sharedClubs(pa, pb) : [],
-      made: pa && pb ? linked(pa, pb, mode) : false,
+      // A prescribed link shows the club it demands, not the clubs the two
+      // players happen to share, so the board says the same thing before and
+      // after the reveal.
+      clubs: required !== undefined ? [required] : pa && pb ? sharedClubs(pa, pb) : [],
+      made: pa && pb ? linkedVia(pa, pb, mode, required) : false,
+      required,
     });
   }
   return out;
@@ -98,15 +120,25 @@ export function chainFieldFor(
   players: readonly Player[],
   pool: ReadonlyMap<string, Player>,
   mode: ChainMode = 'chemistry',
+  prescribed: Readonly<Record<number, string>> = {},
 ): Player[] {
-  const neighbours: Player[] = [];
-  for (const n of [index - 1, index + 1]) {
+  // Link index-1 joins this slot to its left neighbour, link index to its
+  // right, so each side carries its own requirement.
+  const neighbours: { player: Player; club: string | undefined }[] = [];
+  for (const [n, link] of [[index - 1, index - 1], [index + 1, index]] as const) {
     const id = fill[n];
     const p = id ? pool.get(id) : undefined;
-    if (p) neighbours.push(p);
+    if (p) neighbours.push({ player: p, club: prescribed[link] });
   }
-  // Nothing placed either side yet: every player is still a legal answer.
-  if (neighbours.length === 0) return [...players];
+
+  // A prescribed link constrains this slot even with nobody beside it yet:
+  // whoever sits here has to have played for that club.
+  const own = [prescribed[index - 1], prescribed[index]].filter(
+    (c): c is string => c !== undefined,
+  );
+
+  // Nothing placed either side and nothing demanded: everyone is still legal.
+  if (neighbours.length === 0 && own.length === 0) return [...players];
 
   // The occupant of this slot must stay in its own field, or it would score 0
   // against a set it is excluded from by definition.
@@ -114,7 +146,9 @@ export function chainFieldFor(
   fill.forEach((id, i) => { if (id && i !== index) usedElsewhere.add(id); });
 
   return players.filter(
-    (p) => !usedElsewhere.has(p.id) && neighbours.every((n) => linked(p, n, mode)),
+    (p) => !usedElsewhere.has(p.id)
+      && own.every((c) => p.clubIds.includes(c))
+      && neighbours.every((n) => linkedVia(p, n.player, mode, n.club)),
   );
 }
 
@@ -147,13 +181,14 @@ export function chainSlotDepths(
   players: readonly Player[],
   pool: ReadonlyMap<string, Player>,
   mode: ChainMode = 'chemistry',
+  prescribed: Readonly<Record<number, string>> = {},
 ): Record<number, SlotDepth> {
   const out: Record<number, SlotDepth> = {};
   fill.forEach((id, i) => {
     if (!id || given[i]) return;
     const chosen = pool.get(id);
     if (!chosen) return;
-    const field = chainFieldFor(i, fill, players, pool, mode);
+    const field = chainFieldFor(i, fill, players, pool, mode, prescribed);
     const inField = field.some((p) => p.id === chosen.id);
     out[i] = {
       score: slotObscurityScore(chosen, field),

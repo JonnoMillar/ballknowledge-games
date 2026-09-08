@@ -34,6 +34,24 @@ export interface ChainPuzzle {
    */
   slots: readonly (string | null)[];
   /**
+   * Links that name the club that has to make them, keyed by link index — link
+   * `i` joins slot `i` and slot `i+1`. Shown on the board from the start, as a
+   * badge on an empty link.
+   *
+   * This exists to make two adjacent blanks playable. Measured over 2,642
+   * pairs of famous ends in club mode, "find two players who link to each
+   * other and to an end apiece" admits more than 600 answers for 2,551 of
+   * them, and lands in a playable range for NONE — the club graph is simply
+   * too dense for adjacency to be a constraint. Naming the club collapses it:
+   * 2,563 of the same 2,642 pairs then have at least one club that yields a
+   * sane answer count, with a median of 211 clubs to choose between. See
+   * scripts/measure-layouts.ts.
+   *
+   * A prescribed link is not a hint. It is a harder rule than the mode's own:
+   * sharing some other club is no longer enough.
+   */
+  prescribedLinks?: Readonly<Record<number, string>>;
+  /**
    * Proves the chain is solvable. Never the required answer — several hundred
    * distinct chains usually satisfy the same puzzle.
    *
