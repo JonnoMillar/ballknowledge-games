@@ -121,12 +121,18 @@ describe('out of range', () => {
 });
 
 describe('submit', () => {
-  it('is refused while any link is ungreen', () => {
-    const s = chainReduce(s0, { type: 'place', index: 1, playerId: 'stranger' });
-    expect(chainReduce(s, { type: 'submit' }).submitted).toBe(false);
+  it('is refused while a slot is still empty', () => {
+    expect(chainReduce(s0, { type: 'submit' }).submitted).toBe(false);
   });
 
-  it('locks the chain in once every link is green', () => {
+  it('accepts a chain whose links do not hold', () => {
+    // The bet. A player who links nothing can be locked in and will score
+    // nothing, which is the only way the commitment can cost anything.
+    const s = chainReduce(s0, { type: 'place', index: 1, playerId: 'stranger' });
+    expect(chainReduce(s, { type: 'submit' }).submitted).toBe(true);
+  });
+
+  it('locks the chain in once every slot is filled', () => {
     const s = chainReduce(s0, { type: 'place', index: 1, playerId: 'b' });
     expect(chainReduce(s, { type: 'submit' }).submitted).toBe(true);
   });

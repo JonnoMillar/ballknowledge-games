@@ -59,3 +59,13 @@ button { font-family: inherit; }
   outline: 2px solid var(--green);
   outline-offset: 2px;
 }
+
+/* The lock-in takeover. See components/LockIn.tsx. */
+@keyframes lockin-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes verdict-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}

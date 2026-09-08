@@ -7,9 +7,11 @@ import ClubBadge, { shortClubName } from './ClubBadge';
 import type { ClubView } from '../src/lib/clubs';
 import type { SlotDepth } from '../src/lib/chain/score';
 import { initChain, chainReduce } from '../src/game/chainState';
-import { chainLinks, chainProgress, chainSlotDepths, chainObscurity } from '../src/lib/chain/score';
+import { chainLinks, chainProgress } from '../src/lib/chain/score';
 import type { ChainLink } from '../src/lib/chain/score';
 import DepthGauge, { useCountUp } from './DepthGauge';
+import LockIn from './LockIn';
+import { chainResult } from '../src/lib/chain/result';
 import { buildIndex } from '../src/lib/search/index';
 import type { ChainPuzzle } from '../src/lib/chain/types';
 import type { LinkColour, Player } from '../src/lib/chemistry/types';
@@ -24,21 +26,27 @@ const STROKE: Record<LinkColour, string> = {
 /**
  * The connector between two slots.
  *
- * It shows what the link ACTUALLY is, never what it is supposed to become.
- * Nothing here tells the player what would work — that is the puzzle. A link
- * with an empty end is drawn as a dashed gap.
+ * IT SHOWS NOTHING UNTIL THE CHAIN IS LOCKED IN. A board that lights a link
+ * green the moment it is satisfied is a board with no risk on it: you try
+ * names until the lights come on, and the lock-in is a formality you perform
+ * after already knowing the answer. Withholding the verdict is what makes the
+ * commitment cost something, so before `revealed` every link looks identical
+ * whether it is perfect or nonsense.
  *
- * In club mode a made link names the club that made it. That is the whole
- * point of the mode: a nation-plus-league link is real but invisible, with
- * nothing to point at, whereas "these two both played for Manchester United"
- * is an explanation the player can see and argue with.
+ * After the reveal it shows what the link ACTUALLY is, and in club mode it
+ * names the club that made it. That is the whole point of the mode: a
+ * nation-plus-league link is real but invisible, with nothing to point at,
+ * whereas "these two both played for Manchester United" is an explanation the
+ * player can see and argue with.
  */
-function Link({ link, mode, clubs }: {
+function Link({ link, mode, clubs, revealed }: {
   link: ChainLink;
   mode: 'chemistry' | 'clubs';
   clubs: Record<string, ClubView>;
+  revealed: boolean;
 }) {
-  const { colour, made } = link;
+  const colour = revealed ? link.colour : null;
+  const made = revealed && link.made;
   // A club link can be green or hyper; either way the club is what is shown.
   const via = mode === 'clubs' && made ? link.clubs[0] : undefined;
   const width = mode === 'clubs' ? 116 : 74;
@@ -86,7 +94,7 @@ function Link({ link, mode, clubs }: {
             color: colour ? STROKE[colour] : 'var(--dim)',
           }}
         >
-          {mode === 'clubs' ? (colour ? 'NO CLUB' : '—') : colour ? colour.toUpperCase() : '—'}
+          {!revealed ? '?' : mode === 'clubs' ? (colour ? 'NO CLUB' : '—') : colour ? colour.toUpperCase() : '—'}
         </span>
       )}
     </div>
@@ -155,7 +163,7 @@ function Slot({
           color: given ? 'var(--green)' : focused ? 'var(--green)' : 'var(--muted)',
         }}
       >
-        {given ? 'GIVEN' : revealed ? 'FOUND' : 'FIND'}
+        {given ? 'GIVEN' : revealed ? 'FOUND' : player ? 'PLACED' : 'FIND'}
       </span>
       {revealed && depth ? <DepthGauge depth={depth} delay={revealDelay} /> : null}
     </div>
@@ -261,23 +269,20 @@ export default function Chain({
   const [state, dispatch] = useReducer(chainReduce, undefined, () => initChain(puzzle, pool));
   const [focused, setFocused] = useState<number | null>(null);
   const [dragging, setDragging] = useState<Player | null>(null);
+  // The takeover can be dismissed to look at the board again; the chain stays
+  // locked either way, so this is presentation only.
+  const [showResult, setShowResult] = useState(false);
 
   const links = useMemo(() => chainLinks(state.filled, pool, mode), [state.filled, pool, mode]);
   const progress = chainProgress(links);
 
-  // Only computed once the chain is locked in. Before that nothing on screen
-  // depends on it, and skipping the work keeps every keystroke cheap — each
-  // slot's field is a full scan of ~12k players.
-  const depths = useMemo(
-    () => (state.submitted ? chainSlotDepths(state.filled, puzzle.slots, players, pool, mode) : {}),
-    [state.submitted, state.filled, puzzle.slots, players, pool, mode],
+  // The full result, computed once on lock-in. Everything the reveal shows —
+  // the verdict, the score, the answers that were available — comes from here,
+  // so the screen and the header cannot disagree about how it went.
+  const result = useMemo(
+    () => (state.submitted ? chainResult(state.filled, puzzle, players, pool) : null),
+    [state.submitted, state.filled, puzzle, players, pool],
   );
-
-  const obscurity = useMemo(() => {
-    const scores: Record<number, number> = {};
-    for (const [slot, d] of Object.entries(depths)) scores[Number(slot)] = d.score;
-    return chainObscurity(scores);
-  }, [depths]);
 
   const blanks = puzzle.slots.filter((s) => s == null).length;
 
@@ -331,7 +336,15 @@ export default function Chain({
     }
   }
 
-  const solved = progress.solved;
+  // The takeover owns the reveal. While it is up, the board behind it stays
+  // exactly as the player left it — otherwise the header prints the score and
+  // every link turns green underneath the overlay, and the sequence is
+  // narrating something the player could already read through the backdrop.
+  const boardRevealed = state.submitted && !showResult;
+
+  // Filled, not correct. Whether the chain holds is what the lock-in reveals.
+  const complete = state.filled.every((id) => id !== null);
+  const placed = state.filled.filter((id, i) => id !== null && puzzle.slots[i] == null).length;
 
   return (
     // A stable id keeps dnd-kit's aria-describedby ids identical on the
@@ -348,18 +361,22 @@ export default function Chain({
             </div>
           </div>
 
+          {/* Progress the player can see is progress that cannot leak the
+              answer: how many slots are filled, never how many links hold. */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>LINKS</span>
+            <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>
+              {boardRevealed ? 'LINKS' : 'FILLED'}
+            </span>
             <span
               className="cond"
               style={{
                 fontWeight: 700, fontSize: 22,
-                color: solved ? 'var(--green)' : 'var(--text)',
-                textShadow: solved ? '0 0 14px rgba(94,224,138,0.75)' : 'none',
+                color: boardRevealed && progress.solved ? 'var(--green)' : 'var(--text)',
+                textShadow: boardRevealed && progress.solved ? '0 0 14px rgba(94,224,138,0.75)' : 'none',
                 transition: 'color 220ms ease, text-shadow 220ms ease',
               }}
             >
-              {progress.made}/{progress.total}
+              {boardRevealed ? `${progress.made}/${progress.total}` : `${placed}/${blanks}`}
             </span>
             <div style={{ display: 'flex', gap: 5 }}>
               {links.map((l) => (
@@ -367,10 +384,12 @@ export default function Chain({
                   key={l.index}
                   style={{
                     width: 26, height: 7, borderRadius: 4,
-                    background: l.made ? 'var(--green)' : l.colour ? STROKE[l.colour] : 'var(--panel-2)',
-                    boxShadow: l.made ? '0 0 10px rgba(94,224,138,0.55)' : 'none',
+                    background: !boardRevealed
+                      ? 'var(--panel-2)'
+                      : l.made ? 'var(--green)' : l.colour ? STROKE[l.colour] : 'var(--panel-2)',
+                    boxShadow: boardRevealed && l.made ? '0 0 10px rgba(94,224,138,0.55)' : 'none',
                     transition: 'background 200ms ease, box-shadow 200ms ease',
-                    animation: state.submitted
+                    animation: boardRevealed
                       ? `link-settle 460ms ease-out ${l.index * 90}ms both`
                       : undefined,
                   }}
@@ -380,16 +399,16 @@ export default function Chain({
           </div>
 
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 22 }}>
-            {state.submitted ? <FinalScore value={obscurity} /> : null}
+            {result && boardRevealed ? <FinalScore value={result.score} /> : null}
             <button
-              onClick={() => dispatch({ type: 'submit' })}
-              disabled={!solved || state.submitted}
+              onClick={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
+              disabled={!complete || state.submitted}
               style={{
-                background: solved && !state.submitted ? 'var(--green)' : 'var(--panel-2)',
-                color: solved && !state.submitted ? 'var(--bg)' : 'var(--dim)',
+                background: complete && !state.submitted ? 'var(--green)' : 'var(--panel-2)',
+                color: complete && !state.submitted ? 'var(--bg)' : 'var(--dim)',
                 border: 'none', borderRadius: 5, padding: '11px 22px',
                 fontWeight: 700, fontSize: 14, letterSpacing: '0.04em',
-                cursor: solved && !state.submitted ? 'pointer' : 'not-allowed',
+                cursor: complete && !state.submitted ? 'pointer' : 'not-allowed',
               }}
             >
               {state.submitted ? 'LOCKED IN' : 'LOCK IN CHAIN'}
@@ -411,7 +430,7 @@ export default function Chain({
                   <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
                     {i > 0 && (
                       <div style={{ marginBottom: 34 }}>
-                        <Link link={links[i - 1]!} mode={mode} clubs={clubs} />
+                        <Link link={links[i - 1]!} mode={mode} clubs={clubs} revealed={boardRevealed} />
                       </div>
                     )}
                     <Slot
@@ -419,8 +438,8 @@ export default function Chain({
                       player={id ? pool.get(id) : undefined}
                       given={puzzle.slots[i] != null}
                       focused={focused === i}
-                      depth={depths[i] ?? null}
-                      revealed={state.submitted}
+                      depth={boardRevealed ? result?.slots.find((sl) => sl.index === i)?.depth ?? null : null}
+                      revealed={boardRevealed}
                       revealDelay={420 + (revealOrder[i] ?? 0) * 260}
                       nations={nations}
                       images={images}
@@ -449,6 +468,15 @@ export default function Chain({
           />
         </div>
       </div>
+
+      {result && showResult ? (
+        <LockIn
+          result={result}
+          chainId={puzzle.id}
+          pool={pool}
+          onDismiss={() => setShowResult(false)}
+        />
+      ) : null}
 
       <DragOverlay>
         {dragging ? <PlayerCard player={dragging} variant="library" nations={nations} images={images} obscurity={null} /> : null}

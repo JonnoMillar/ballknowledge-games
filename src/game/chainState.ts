@@ -1,4 +1,3 @@
-import { chainLinks, chainProgress } from '../lib/chain/score';
 import type { ChainPuzzle } from '../lib/chain/types';
 import type { Player } from '../lib/chemistry/types';
 
@@ -88,8 +87,14 @@ export function chainReduce(s: ChainState, a: ChainAction): ChainState {
     }
 
     case 'submit': {
-      const solved = chainProgress(chainLinks(s.filled, s.pool, s.puzzle.mode ?? 'chemistry')).solved;
-      return solved ? { ...s, submitted: true } : s;
+      // Locking in a WRONG chain has to be possible, or there is no bet on the
+      // table. The old rule refused to submit until every link was already
+      // green, which only worked because the board showed the player which
+      // links were green — together they made the game unloseable and the
+      // lock-in a formality. Every slot filled is the whole requirement now;
+      // whether the links hold is the thing you find out.
+      const complete = s.filled.every((id) => id !== null);
+      return complete ? { ...s, submitted: true } : s;
     }
   }
 }
