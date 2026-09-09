@@ -21,3 +21,9 @@ public/badges/
 
 # Production builds made alongside a running dev server. See next.config.ts.
 .next-prod/
+
+# Seeded design-canvas payloads. ~3 MB each and almost entirely the canvas
+# editor's own minified code. The SOURCE is committed — the .dc.html artboards,
+# design/sheets/ and canvas.json — and `npm run build:sheets` regenerates it.
+recall-xi-graded-boards.html
+design/recall-xi-design-strands.html

@@ -20,7 +20,8 @@
     "fetch:clubs": "tsx scripts/fetch-clubs.ts",
     "fetch:badges": "tsx scripts/fetch-club-badges.ts --download",
     "build:pair": "tsx scripts/build-pair-chain.ts",
-    "measure:layouts": "tsx scripts/measure-layouts.ts"
+    "measure:layouts": "tsx scripts/measure-layouts.ts",
+    "fetch:portraits": "tsx scripts/fetch-portraits.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

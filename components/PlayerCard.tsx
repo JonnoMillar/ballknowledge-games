@@ -5,15 +5,6 @@ import type { Player } from '../src/lib/chemistry/types';
 
 export type CardVariant = 'given' | 'found' | 'library';
 
-/**
- * Commons thumbnail. Special:FilePath redirects to a rendered thumbnail at the
- * requested width, so we never pull a full-size original. Files reached this
- * way are CC BY / CC BY-SA / public domain and need an attribution page before
- * this ships publicly.
- */
-export function commonsThumb(filename: string, width: number): string {
-  return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(filename)}?width=${width}`;
-}
 
 export default function PlayerCard({
   player, variant, slotId, nations, images, obscurity,
@@ -24,6 +15,7 @@ export default function PlayerCard({
   /** Undefined when the card is sitting on the bench. */
   slotId?: string;
   nations: Record<string, string>;
+  /** Player id to a ready image URL. See src/lib/portraits.ts. */
   images: Record<string, string>;
   /**
    * 0–100 for this placement, or null while the player is still on the bench.
@@ -47,7 +39,7 @@ export default function PlayerCard({
   });
 
   const iso = isoForNation(player.nation, nations);
-  const file = images[player.id];
+  const photo = images[player.id];
   const given = variant === 'given';
   const w = compact ? 92 : 108;
   const h = compact ? 120 : 140;
@@ -75,9 +67,9 @@ export default function PlayerCard({
           so every one is forced through the same box: cover, anchored high,
           desaturated and dimmed so the card reads as a set rather than a
           scrapbook. */}
-      {file ? (
+      {photo ? (
         <img
-          src={commonsThumb(file, 200)}
+          src={photo}
           alt=""
           style={{
             position: 'absolute', right: 0, top: 0, width: '78%', height: '72%',
