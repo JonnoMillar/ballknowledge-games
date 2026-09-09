@@ -22,7 +22,8 @@
     "build:pair": "tsx scripts/build-pair-chain.ts",
     "measure:layouts": "tsx scripts/measure-layouts.ts",
     "fetch:portraits": "tsx scripts/fetch-portraits.ts",
-    "build:graded": "tsx scripts/build-graded-chains.ts"
+    "build:graded": "tsx scripts/build-graded-chains.ts",
+    "build:sheets": "tsx scripts/build-design-sheets.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
