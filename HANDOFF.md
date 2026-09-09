@@ -248,8 +248,13 @@ at deprecated rank.
 - **§5.1 — hyper links score 3, not 2.** Corrected against FIFA's table.
 - **§5.3 — out of position costs 5 chemistry, never legality.**
 - **Placement is unconditional.** A missing link is not illegal, it scores less.
-- **Boards prescribe no links** (XI mode). `Board.required` is dead. Chain mode
-  reintroduced prescribed links deliberately and for a measured reason.
+- **Required links no longer gate placement** (XI mode). `Board.required` is
+  NOT dead — the shipped boards still carry it (003 is 14 green, 1 hyper, 1
+  orange) and `isValidPlacement` still reads it. What changed is that placement
+  always succeeds: the check is consulted only to tell the player what a pick is
+  costing them. An earlier version of this file called the field dead, which is
+  wrong and sends you looking for code to delete. Chain mode reintroduced
+  prescribed links deliberately, and for a measured reason.
 - **Nation is sporting nationality (P1532), not citizenship (P27).** P27
   collapses the home nations into "United Kingdom".
 - **Club crests are in.** Previously "deliberately absent — trademarks". Jonno's

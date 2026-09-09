@@ -40,7 +40,8 @@ Wikipedia pageviews, free API, covers squad-filler-level players, an
 established stand-in for "how known is this person" in real research.
 
 ## Reference prototype
-A working single-file React prototype exists (`recall-xi.jsx`): 4-3-3
+A working single-file React prototype (`recall-xi.jsx`, never committed to this
+repo and since superseded by `components/`): 4-3-3
 pitch, SVG chemistry-link lines, click-to-guess flow, simplified
 adjacency-only chemistry, hardcoded placeholder squad. Good starting
 reference for the pitch/link rendering approach, not the final data model

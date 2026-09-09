@@ -37,11 +37,6 @@ export function linkViews(s: GameState): LinkView[] {
   });
 }
 
-/** Individual chemistry per filled slot, 0..10. */
-export function perSlotChemistry(s: GameState): Record<string, number> {
-  return chemistry(s).perSlot;
-}
-
 export function canDrop(s: GameState, slotId: string, player: Player): boolean {
   if (s.board.seeded[slotId] !== undefined) return false;
   const placed = { ...s.placed };

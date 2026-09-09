@@ -65,16 +65,6 @@ export function isValidPlacement(
     : { ok: false, reason: outOfPosition ? 'position' : 'links', failedEdges };
 }
 
-/** Whether a slot's position class matches the player's. Costs chemistry, never legality. */
-export function isOutOfPosition(
-  formation: Formation,
-  slotId: string,
-  player: Player,
-): boolean {
-  const slot = formation.slots.find((s) => s.id === slotId);
-  return slot ? !player.positions.includes(slot.position) : false;
-}
-
 export function scoreBoard(
   formation: Formation,
   pool: ReadonlyMap<string, Player>,
