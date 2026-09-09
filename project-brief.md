@@ -1,5 +1,12 @@
 # Recall XI — project brief
 
+> **This is the origin document — the decisions made before anything was built.
+> It is kept as a record and is no longer the state of play; see `HANDOFF.md`
+> for that.** Two things below have since been overtaken: obscurity scoring is
+> not a parked idea, it is the whole game, and Wikidata sitelink counts are the
+> fame proxy rather than Wikipedia pageviews. The IP stance also moved — club
+> crests are now used.
+
 ## Concept
 A squad-recall puzzle game. Player sees a formation with a couple of names
 confirmed. Coloured chemistry links between positions hint at whether the
