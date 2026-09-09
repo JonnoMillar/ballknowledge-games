@@ -1,29 +1,24 @@
 'use client';
-import { useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
-import { DndContext, DragOverlay, useDroppable, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { DndContext, DragOverlay, useDroppable, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
+import ChainRow from './ChainRow';
 import ChainSearch from './ChainSearch';
-import ClubBadge, { shortClubName } from './ClubBadge';
+import DragPicture from './DragPicture';
+import Clip from './Clip';
+import { shortClubName } from './ClubBadge';
+import { tiltFor } from './swing';
 import type { ClubView } from '../src/lib/clubs';
-import type { SlotDepth } from '../src/lib/chain/score';
 import { initChain, chainReduce } from '../src/game/chainState';
-import { chainLinks, chainProgress } from '../src/lib/chain/score';
-import type { ChainLink } from '../src/lib/chain/score';
-import DepthGauge, { useCountUp } from './DepthGauge';
+import { chainLinks } from '../src/lib/chain/score';
 import LockIn from './LockIn';
 import { chainResult } from '../src/lib/chain/result';
 import { buildIndex } from '../src/lib/search/index';
 import type { ChainDifficulty, ChainPuzzle } from '../src/lib/chain/types';
 import { clubColour, splitRing, SIGNATURE_CLUB, NEUTRAL } from '../src/lib/club-colours';
-import type { LinkColour, Player } from '../src/lib/chemistry/types';
+import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
-
-const STROKE: Record<LinkColour, string> = {
-  green: 'var(--green)',
-  hyper: 'var(--gold-light)',
-  orange: 'var(--gold)',
-  red: 'var(--link-red)',
-};
+import { plateName } from '../src/lib/short-name';
 
 /** Grade colours. Deliberately not the link palette: a grade is not a verdict. */
 const GRADE: Record<ChainDifficulty, string> = {
@@ -33,180 +28,136 @@ const GRADE: Record<ChainDifficulty, string> = {
 };
 
 /**
- * The connector between two slots.
+ * The masthead.
  *
- * IT SHOWS NOTHING UNTIL THE CHAIN IS LOCKED IN. A board that lights a link
- * green the moment it is satisfied is a board with no risk on it: you try
- * names until the lights come on, and the lock-in is a formality you perform
- * after already knowing the answer. Withholding the verdict is what makes the
- * commitment cost something, so before `revealed` every link looks identical
- * whether it is perfect or nonsense.
- *
- * After the reveal it shows what the link ACTUALLY is, and in club mode it
- * names the club that made it. That is the whole point of the mode: a
- * nation-plus-league link is real but invisible, with nothing to point at,
- * whereas "these two both played for Manchester United" is an explanation the
- * player can see and argue with.
+ * It used to be a browser-chrome bar across the top of the window, above the
+ * sheet, which meant the thing the player was looking at had no title on it —
+ * the title belonged to the application. Printing it ON the paper is the
+ * whole difference between a web page about a scouting sheet and a scouting
+ * sheet, and it costs nothing but moving the markup inside the border.
  */
-function Link({ link, mode, clubs, revealed }: {
-  link: ChainLink;
-  mode: 'chemistry' | 'clubs';
-  clubs: Record<string, ClubView>;
-  revealed: boolean;
-}) {
-  const colour = revealed ? link.colour : null;
-  const made = revealed && link.made;
-  // A prescribed club is part of the puzzle, not part of the reveal: it is
-  // shown from the first render, on an empty link, because it is the rule the
-  // player is being asked to satisfy. A discovered club is the opposite and
-  // stays hidden until the lock-in.
-  const via = link.required ?? (mode === 'clubs' && made ? link.clubs[0] : undefined);
-  const width = mode === 'clubs' || link.required ? 116 : 74;
-
+function Masthead({ puzzle, blanks }: { puzzle: ChainPuzzle; blanks: number }) {
+  const count = ['no', 'one', 'two', 'three', 'four', 'five'][blanks] ?? String(blanks);
   return (
-    <div style={{ width, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
-      <div
-        style={{
-          width: '100%', height: 5, borderRadius: 3,
-          background: made
-            ? 'var(--green)'
-            : colour
-              ? STROKE[colour]
-              : link.required
-                // A demanded link reads as a rule waiting to be met, not as an
-                // empty gap, so it is drawn in the colour that means "stated".
-                ? 'repeating-linear-gradient(90deg, var(--gold) 0 5px, transparent 5px 10px)'
-                : 'repeating-linear-gradient(90deg, rgba(26,20,16,0.42) 0 4px, transparent 4px 9px)',
-          boxShadow: made ? '0 0 12px rgba(94,224,138,0.6)' : 'none',
-          transition: 'background 200ms ease, box-shadow 200ms ease',
-        }}
-      />
-
-      {via ? (
-        // Badge above, name below. An inline pill truncated every long name to
-        // "MANCHESTER ..." — which on a board holding both United and City is
-        // worse than useless, because the link stops identifying itself. The
-        // name is the payload, so it gets the full width and wraps instead.
-        <span
-          title={clubs[via]?.name ?? via}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, width: '100%' }}
-        >
-          <ClubBadge clubId={via} club={clubs[via]} size={20} />
-          <span
-            className="cond"
-            style={{
-              fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', lineHeight: 1.15,
-              color: link.required && !made ? 'var(--gold)' : 'var(--text)',
-              textAlign: 'center', textWrap: 'balance',
-            }}
-          >
-            {shortClubName(clubs[via]?.name ?? via).toUpperCase()}
-          </span>
-        </span>
-      ) : (
-        <span
-          className="cond"
-          style={{
-            fontSize: 10, fontWeight: 700, letterSpacing: '0.14em',
-            color: colour ? STROKE[colour] : 'var(--dim)',
-          }}
-        >
-          {!revealed ? '?' : mode === 'clubs' ? (colour ? 'NO CLUB' : '—') : colour ? colour.toUpperCase() : '—'}
-        </span>
-      )}
+    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, borderBottom: '3px solid var(--ink)', paddingBottom: 11 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <div className="narrow" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+          Scouting sheet &middot; {count} to find
+        </div>
+        <div className="slab misreg" style={{ fontSize: 46, lineHeight: 0.96 }}>
+          <span className="lean">RECALL XI</span>
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20 }}>
+        {/* A score only compares across boards once you know the boards were
+            graded, so the grade is on the sheet before you start. */}
+        {puzzle.difficulty ? (
+          <div className="narrow stamp" style={{ fontSize: 15, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: GRADE[puzzle.difficulty] }}>
+            {puzzle.difficulty}
+          </div>
+        ) : null}
+        <div style={{ width: 1, height: 36, background: 'rgba(26,20,16,0.22)' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+          <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+            Chain
+          </div>
+          <div className="slab" style={{ fontSize: 26, lineHeight: 1 }}>{puzzle.id}</div>
+        </div>
+      </div>
     </div>
   );
 }
 
-function Slot({
-  index, player, given, focused, depth, revealed, revealDelay, nations, images, onFocus, ring,
+/**
+ * The brief, and the button.
+ *
+ * This band is where the artboard prints how many ways the board could have
+ * gone — but that is a fact about the ANSWER, and quoting field sizes to
+ * somebody who is still searching is the same leak as lighting the links up
+ * green. So the live sheet keeps the shape and changes the payload: the left
+ * is the assignment in plain words, the right is the state of the sheet.
+ *
+ * The right block turning from ink to gold when the last plate is filled is
+ * the only "you may now commit" signal on the screen, and it deliberately
+ * says nothing about whether committing is a good idea.
+ */
+function Brief({
+  ends, club, mode, placed, blanks, sealed, onSeal,
 }: {
-  index: number;
-  player: Player | undefined;
-  given: boolean;
-  focused: boolean;
-  /** How deep this pick dug. Withheld from the card until `revealed`. */
-  depth: SlotDepth | null;
-  revealed: boolean;
-  revealDelay: number;
-  nations: Record<string, string>;
-  images: Record<string, PortraitImage>;
-  onFocus: (i: number) => void;
-  /** Ring colour for the mounted print. See PlayerCard. */
-  ring: string;
+  ends: [string, string];
+  club: string | undefined;
+  mode: 'chemistry' | 'clubs';
+  placed: number;
+  blanks: number;
+  sealed: boolean;
+  onSeal: () => void;
 }) {
-  const { setNodeRef, isOver } = useDroppable({ id: `slot:${index}`, disabled: given });
-
+  const complete = placed === blanks;
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9 }}>
-      <div ref={setNodeRef}>
-        {player ? (
-          <div onClick={() => !given && onFocus(index)}>
-            <PlayerCard
-              player={player}
-              variant={given ? 'given' : 'found'}
-              slotId={`slot:${index}`}
-              nations={nations}
-              images={images}
-              obscurity={revealed && depth ? depth.score : null}
-              revealDelay={revealed ? revealDelay : undefined}
-              ring={ring}
-            />
-          </div>
-        ) : (
-          // A real button, not a clickable div. An empty slot is the primary
-          // control on this screen and was unreachable by keyboard entirely.
-          <button
-            type="button"
-            onClick={() => onFocus(index)}
-            aria-label={`Choose a player for slot ${index + 1}`}
-            className="mount"
-            style={{
-              width: 108, cursor: 'pointer', padding: '5px 5px 0',
-              display: 'block', textAlign: 'center',
-              boxShadow: focused
-                ? '0 2px 0 rgba(26,20,16,0.14), 0 0 0 4px rgba(179,52,31,0.34)'
-                : '0 2px 0 rgba(26,20,16,0.14), 0 8px 16px rgba(26,20,16,0.18)',
-            }}
-          >
-            <span
-              style={{
-                display: 'flex', width: 98, height: 118,
-                border: `2px dashed ${focused ? 'var(--accent)' : 'var(--slot-border)'}`,
-                background: isOver ? 'rgba(179,52,31,0.12)' : 'var(--panel-2)',
-                alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              <span className="slab" style={{ fontSize: 38, lineHeight: 1, color: 'rgba(179,52,31,0.34)' }}>?</span>
-            </span>
-            <span
-              className="narrow"
-              style={{ display: 'block', width: 98, padding: '5px 1px 7px', fontSize: 12, fontWeight: 700, color: focused ? 'var(--accent)' : 'var(--muted)', textAlign: 'left' }}
-            >
-              TO FIND
-            </span>
-          </button>
-        )}
+    <div style={{ marginTop: 18, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)' }}>
+      <div style={{ flexGrow: 1, padding: '14px 20px', display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+        <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+          The brief &middot; {mode === 'clubs' ? 'every link a shared club' : 'every link green'}
+        </div>
+        <div className="slab" style={{ fontSize: 20, lineHeight: 1.2 }}>
+          {club
+            ? <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]} — through {club}.</>
+            : <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]}.</>}
+        </div>
       </div>
-      <span
-        className="cond"
+
+      <button
+        onClick={onSeal}
+        disabled={!complete || sealed}
+        className="narrow"
         style={{
-          fontSize: 10, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase',
-          color: given ? 'var(--muted)' : 'var(--accent)',
+          width: 176, flexShrink: 0, border: 'none', borderLeft: '2.5px solid var(--ink)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3,
+          padding: '10px 12px', cursor: complete && !sealed ? 'pointer' : 'not-allowed',
+          background: complete && !sealed
+            ? 'linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a)'
+            : 'var(--panel-2)',
+          transition: 'background 420ms ease',
         }}
       >
-        {given ? 'Given' : 'Yours'}
-      </span>
-      {revealed && depth ? <DepthGauge depth={depth} delay={revealDelay} /> : null}
+        {complete && !sealed ? (
+          <>
+            <span className="slab" style={{ fontSize: 21, lineHeight: 1, color: '#fffdf7', textShadow: '0 2px 0 rgba(70,48,6,0.55)' }}>
+              SEAL IT
+            </span>
+            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#46300a' }}>
+              One scored submission
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="slab" style={{ fontSize: 30, lineHeight: 0.95, color: sealed ? 'var(--muted)' : 'var(--ink)', fontVariantNumeric: 'tabular-nums' }}>
+              {sealed ? '—' : `${placed}/${blanks}`}
+            </span>
+            <span className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+              {sealed ? 'Sheet sealed' : 'Plates filled'}
+            </span>
+          </>
+        )}
+      </button>
     </div>
   );
 }
 
-function Bench({
-  state, nations, images, onRemove,
+/**
+ * The shortlist.
+ *
+ * Called the bench before, which borrowed a football word for something that
+ * is not a bench: nobody is coming on. It is the pile of prints a scout has
+ * pulled out of the drawer and not yet decided about, so it looks like one —
+ * on the desk rather than on the sheet, and the cards in it are the same
+ * mounted prints as everywhere else, because the thing the player drags has
+ * to be the thing that ends up on the board.
+ */
+function Shortlist({
+  state, images, onRemove,
 }: {
   state: ReturnType<typeof initChain>;
-  nations: Record<string, string>;
   images: Record<string, PortraitImage>;
   onRemove: (id: string) => void;
 }) {
@@ -215,34 +166,79 @@ function Bench({
     <div
       ref={setNodeRef}
       style={{
-        borderTop: '1px solid var(--line)', padding: '14px 26px',
-        background: isOver ? 'rgba(179,52,31,0.07)' : 'transparent',
-        minHeight: 152,
+        borderTop: '1px solid rgba(26,20,16,0.18)',
+        boxShadow: isOver ? 'inset 0 0 0 2px rgba(179,52,31,0.4)' : 'inset 0 14px 22px -18px rgba(26,20,16,0.5)',
+        background: isOver ? 'rgba(179,52,31,0.07)' : 'rgba(26,20,16,0.035)',
+        padding: '14px 34px 20px', minHeight: 236, transition: 'background 180ms ease',
       }}
     >
-      <div className="cond" style={{ fontWeight: 700, fontSize: 12, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 10 }}>
-        BENCH · {state.library.length}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 10 }}>
+        <div className="narrow" style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.26em', textTransform: 'uppercase', color: 'var(--soft)' }}>
+          The shortlist
+        </div>
+        <div style={{ flexGrow: 1, height: 1, background: 'rgba(26,20,16,0.16)' }} />
+        <div className="narrow" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', color: 'var(--muted)', fontVariantNumeric: 'tabular-nums' }}>
+          {state.library.length} PULLED
+        </div>
       </div>
+
       {state.library.length === 0 ? (
-        <div style={{ fontSize: 13, color: 'var(--dim)' }}>
-          Search on the right to gather candidates here. Costs nothing.
+        // Empty slips rather than a sentence on its own. The shape of the
+        // thing that goes here is the clearest instruction available, and a
+        // band of bare desk under the sheet reads as a layout that ran out
+        // rather than as a tray waiting to be filled.
+        <div style={{ display: 'flex', alignItems: 'center', gap: 22, paddingTop: 6 }}>
+          <div style={{ display: 'flex', gap: 14, flexShrink: 0 }}>
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                aria-hidden
+                style={{
+                  width: 82, height: 110,
+                  border: '2px dashed rgba(26,20,16,0.16)',
+                  background: 'rgba(255,253,247,0.28)',
+                  transform: `rotate(${tiltFor(`slip-${i}`, 2.2)}deg)`,
+                }}
+              />
+            ))}
+          </div>
+          <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--dim)', maxWidth: 420, lineHeight: 1.5 }}>
+            Search on the right to pull prints out onto the desk. Costs nothing —
+            nothing counts until the sheet is sealed.
+          </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 4 }}>
+        // Setting `overflow-x` alone does not do what it looks like it does:
+        // any non-visible value on one axis computes the OTHER axis to auto
+        // as well, so a strip that only meant to scroll sideways was also
+        // clipping the top off every pin and the bottom off every nameplate.
+        // The vertical padding is what the cards lean and hang into.
+        <div style={{ display: 'flex', gap: 16, overflowX: 'auto', overflowY: 'hidden', paddingTop: 14, paddingBottom: 14, minHeight: 172 }}>
           {state.library.map((id) => {
             const p = state.pool.get(id);
             if (!p) return null;
             return (
               <div key={id} style={{ position: 'relative', flexShrink: 0 }}>
-                <PlayerCard player={p} variant="library" nations={nations} images={images} obscurity={null} compact />
+                <PlayerCard
+                  player={p}
+                  variant="library"
+                  images={images}
+                  obscurity={null}
+                  compact
+                  // Neutral until lock-in, like every card the player chose:
+                  // the ring names the clubs that made a link hold.
+                  ring={NEUTRAL}
+                  tilt={tiltFor(`bench-${id}`, 2.6)}
+                />
                 <button
                   onClick={() => onRemove(id)}
-                  aria-label={`Remove ${p.name} from bench`}
+                  aria-label={`Put ${p.name} back`}
+                  className="narrow"
                   style={{
-                    position: 'absolute', top: -6, right: -6, width: 20, height: 20,
-                    borderRadius: '50%', border: '1px solid var(--border)',
-                    background: 'var(--panel)', color: 'var(--soft)', cursor: 'pointer',
-                    fontSize: 13, lineHeight: 1, padding: 0,
+                    position: 'absolute', top: -7, right: -7, width: 21, height: 21,
+                    borderRadius: '50%', border: '1.5px solid var(--ink)',
+                    background: 'var(--panel)', color: 'var(--ink)', cursor: 'pointer',
+                    fontSize: 13, lineHeight: 1, padding: 0, zIndex: 3,
                   }}
                 >
                   &times;
@@ -256,40 +252,11 @@ function Bench({
   );
 }
 
-/**
- * The final score. Mounts only once the chain is locked in.
- *
- * Obscurity is deliberately absent from the header until then. Shown live it
- * becomes a dial to optimise against mid-solve, which turns the search box
- * into a warmer/colder oracle and quietly leaks how obscure a name is before
- * you commit to it.
- */
-function FinalScore({ value }: { value: number }) {
-  const shown = useCountUp(value, 900, 900);
-  return (
-    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-      <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>
-        OBSCURITY
-      </span>
-      <span
-        className="slab"
-        style={{
-          fontSize: 30, lineHeight: 1, color: 'var(--gold)',
-          fontVariantNumeric: 'tabular-nums',
-        }}
-      >
-        {shown}
-      </span>
-    </div>
-  );
-}
-
 export default function Chain({
-  players, puzzle, nations, images, clubs,
+  players, puzzle, images, clubs,
 }: {
   players: Player[];
   puzzle: ChainPuzzle;
-  nations: Record<string, string>;
   images: Record<string, PortraitImage>;
   clubs: Record<string, ClubView>;
 }) {
@@ -300,6 +267,10 @@ export default function Chain({
   const [state, dispatch] = useReducer(chainReduce, undefined, () => initChain(puzzle, pool));
   const [focused, setFocused] = useState<number | null>(null);
   const [dragging, setDragging] = useState<Player | null>(null);
+  const [overSlot, setOverSlot] = useState(false);
+  // The slot that was filled a moment ago. It plays the landing and drives its
+  // pin, then clears itself so a re-render cannot replay it.
+  const [landed, setLanded] = useState<number | null>(null);
   // The takeover can be dismissed to look at the board again; the chain stays
   // locked either way, so this is presentation only.
   const [showResult, setShowResult] = useState(false);
@@ -309,11 +280,10 @@ export default function Chain({
     () => chainLinks(state.filled, pool, mode, prescribed),
     [state.filled, pool, mode, prescribed],
   );
-  const progress = chainProgress(links);
 
   // The full result, computed once on lock-in. Everything the reveal shows —
   // the verdict, the score, the answers that were available — comes from here,
-  // so the screen and the header cannot disagree about how it went.
+  // so the screen and the sheet cannot disagree about how it went.
   const result = useMemo(
     () => (state.submitted ? chainResult(state.filled, puzzle, players, pool) : null),
     [state.submitted, state.filled, puzzle, players, pool],
@@ -321,28 +291,11 @@ export default function Chain({
 
   const blanks = puzzle.slots.filter((s) => s == null).length;
 
-  // A club-mode link is wider than a chemistry one, and a long chain of them
-  // overflowed the column and clipped the end cards off both edges. Scale the
-  // row down to whatever space is left rather than letting it spill.
-  const rowRef = useRef<HTMLDivElement>(null);
-  const [rowScale, setRowScale] = useState(1);
-  useLayoutEffect(() => {
-    const el = rowRef.current;
-    if (!el) return;
-    const fit = () => {
-      const box = el.parentElement?.getBoundingClientRect();
-      const natural = el.offsetWidth;
-      if (!box || natural <= 0) return;
-      const byWidth = (box.width - 52) / natural;
-      const byHeight = (box.height - 52) / el.offsetHeight;
-      setRowScale(Math.max(0.4, Math.min(1.15, byWidth, byHeight)));
-    };
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(el);
-    if (el.parentElement) ro.observe(el.parentElement);
-    return () => ro.disconnect();
-  }, [state.filled.length, mode]);
+  useEffect(() => {
+    if (landed === null) return;
+    const t = setTimeout(() => setLanded(null), 900);
+    return () => clearTimeout(t);
+  }, [landed]);
 
   // The reveal runs left to right, one pick at a time, so the eye follows the
   // chain in the order it reads rather than everything arriving at once.
@@ -358,8 +311,13 @@ export default function Chain({
     setDragging(id ? pool.get(id) ?? null : null);
   }
 
+  function onDragOver(e: DragOverEvent) {
+    setOverSlot(String(e.over?.id ?? '').startsWith('slot:'));
+  }
+
   function onDragEnd(e: DragEndEvent) {
     setDragging(null);
+    setOverSlot(false);
     const playerId = e.active.data.current?.playerId as string | undefined;
     const target = e.over?.id as string | undefined;
     if (!playerId || !target) return;
@@ -370,14 +328,16 @@ export default function Chain({
       return;
     }
     if (target.startsWith('slot:')) {
-      dispatch({ type: 'place', index: Number(target.slice(5)), playerId });
+      const i = Number(target.slice(5));
+      dispatch({ type: 'place', index: i, playerId });
+      setLanded(i);
     }
   }
 
   // The takeover owns the reveal. While it is up, the board behind it stays
-  // exactly as the player left it — otherwise the header prints the score and
-  // every link turns green underneath the overlay, and the sequence is
-  // narrating something the player could already read through the backdrop.
+  // exactly as the player left it — otherwise every link turns green
+  // underneath the overlay and the sequence narrates something the player
+  // could already read through the backdrop.
   const boardRevealed = state.submitted && !showResult;
 
   /**
@@ -389,8 +349,7 @@ export default function Chain({
    * A player YOU placed wears plain ink until the chain is locked in. The ring
    * shows the clubs that made a link, so colouring it live would answer the
    * question being asked: two colours would mean "both links hold", one would
-   * mean "half right", and the board would be a warmer/colder oracle. It only
-   * splits once the verdict is already out.
+   * mean "half right", and the board would be a warmer/colder oracle.
    */
   const ringFor = (i: number): string => {
     const id = state.filled[i];
@@ -409,169 +368,104 @@ export default function Chain({
   const complete = state.filled.every((id) => id !== null);
   const placed = state.filled.filter((id, i) => id !== null && puzzle.slots[i] == null).length;
 
+  // The two ends, for the brief. Short names, because "Lionel Messi to Thibaut
+  // Courtois" is a sentence and "Messi to Courtois" is an instruction.
+  const ends = useMemo<[string, string]>(() => {
+    const named = (id: string | null | undefined) => {
+      const p = id ? pool.get(id) : undefined;
+      return p ? plateName(p.id, p.name) : '?';
+    };
+    return [named(puzzle.slots[0]), named(puzzle.slots[puzzle.slots.length - 1])];
+  }, [puzzle.slots, pool]);
+
+  const namedClub = useMemo(() => {
+    const first = Object.values(prescribed)[0];
+    return first ? shortClubName(clubs[first]?.name ?? first) : undefined;
+  }, [prescribed, clubs]);
+
+  const sheet = useRef<HTMLDivElement>(null);
+
   return (
-    // A stable id keeps dnd-kit's aria-describedby ids identical on the
-    // server and the client. Without it every draggable hydrates with a
-    // mismatch warning, because the id counter restarts per render pass.
-    <DndContext id="chain" onDragStart={onDragStart} onDragEnd={onDragEnd}>
-      <div className="sheet" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    // A stable id keeps dnd-kit's aria-describedby ids identical on the server
+    // and the client. Without it every draggable hydrates with a mismatch
+    // warning, because the id counter restarts per render pass.
+    <DndContext id="chain" onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
+      <div className="sheet" style={{ height: '100vh', display: 'flex', minHeight: 0 }}>
+        <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0 }}>
 
-        <header style={{ display: 'flex', alignItems: 'flex-end', gap: 28, padding: '14px 26px 12px', borderBottom: '3px solid var(--ink)' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-              <div className="slab misreg" style={{ fontSize: 30, lineHeight: 0.96 }}>
-                <span className="lean">RECALL XI</span>
-              </div>
-              <div className="narrow" style={{ fontWeight: 700, fontSize: 20, letterSpacing: '0.04em' }}>{puzzle.id}</div>
-              {/* A score only compares across boards once you know the boards
-                  were graded, so the grade is on screen before you start. */}
-              {puzzle.difficulty && (
-                <span
-                  className="narrow stamp"
-                  style={{
-                    fontWeight: 700, fontSize: 12, letterSpacing: '0.2em',
-                    textTransform: 'uppercase', color: GRADE[puzzle.difficulty],
-                  }}
-                >
-                  {puzzle.difficulty}
-                </span>
-              )}
-            </div>
-            <div className="narrow" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--muted)', marginTop: 5 }}>
-              {mode === 'clubs' ? 'Every link a shared club' : 'Every link green'}
-              {Object.keys(prescribed).length > 0 ? ' · one club named for you' : ''} · {blanks} to find
-            </div>
-          </div>
-
-          {/* Progress the player can see is progress that cannot leak the
-              answer: how many slots are filled, never how many links hold. */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="cond" style={{ fontWeight: 600, fontSize: 12, letterSpacing: '0.14em', color: 'var(--muted)' }}>
-              {boardRevealed ? 'LINKS' : 'FILLED'}
-            </span>
-            <span
-              className="cond"
-              style={{
-                fontWeight: 700, fontSize: 22,
-                color: boardRevealed && progress.solved ? 'var(--green)' : 'var(--text)',
-                transition: 'color 220ms ease',
-              }}
-            >
-              {boardRevealed ? `${progress.made}/${progress.total}` : `${placed}/${blanks}`}
-            </span>
-            <div style={{ display: 'flex', gap: 5 }}>
-              {links.map((l) => (
-                <span
-                  key={l.index}
-                  style={{
-                    width: 26, height: 7, borderRadius: 4,
-                    background: !boardRevealed
-                      ? 'rgba(26,20,16,0.16)'
-                      : l.made ? 'var(--green)' : l.colour ? STROKE[l.colour] : 'rgba(26,20,16,0.16)',
-                    boxShadow: 'none',
-                    transition: 'background 200ms ease, box-shadow 200ms ease',
-                    animation: boardRevealed
-                      ? `link-settle 460ms ease-out ${l.index * 90}ms both`
-                      : undefined,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 22 }}>
-            {result && boardRevealed ? <FinalScore value={result.score} /> : null}
-            <button
-              onClick={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
-              disabled={!complete || state.submitted}
-              className="narrow"
-              style={{
-                background: complete && !state.submitted ? 'var(--ink)' : 'transparent',
-                color: complete && !state.submitted ? 'var(--panel)' : 'var(--dim)',
-                border: complete && !state.submitted ? '2px solid var(--ink)' : '2px solid rgba(26,20,16,0.24)',
-                borderRadius: 0, padding: '11px 24px',
-                fontWeight: 700, fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase',
-                cursor: complete && !state.submitted ? 'pointer' : 'not-allowed',
-              }}
-            >
-              {state.submitted ? 'Sheet sealed' : 'Seal the sheet'}
-            </button>
-          </div>
-        </header>
-
-        <div style={{ flexGrow: 1, display: 'flex', minHeight: 0 }}>
-          <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 26, minWidth: 0 }}>
+          <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px 36px 22px', minWidth: 0, minHeight: 0, overflow: 'auto' }}>
+            {/* The sheet is not the only thing on the desk, and a single
+                rectangle floating in the middle of a large surface is what
+                made the screen read as empty. Two blank sheets underneath fix
+                it more honestly than decoration would: they give the clip
+                something to be holding, put a real edge and a real shadow
+                behind the paper, and are exactly what a desk with work on it
+                looks like. */}
+            <div style={{ position: 'relative', width: '100%', maxWidth: 1080, flexShrink: 0 }}>
+              <div aria-hidden className="paper" style={{ position: 'absolute', inset: '10px -14px -16px -9px', transform: 'rotate(-0.7deg)', opacity: 0.75, zIndex: 0 }} />
+              <div aria-hidden className="paper" style={{ position: 'absolute', inset: '5px -6px -8px -13px', transform: 'rotate(0.55deg)', opacity: 0.88, zIndex: 0 }} />
               <div
-                ref={rowRef}
+                ref={sheet}
                 className="paper"
-                style={{
-                  position: 'relative', padding: '46px 34px 30px',
-                  transform: `scale(${rowScale})`, transformOrigin: 'center center',
-                }}
+                style={{ position: 'relative', zIndex: 1, padding: '46px 40px 32px' }}
               >
-                {/* Bulldog clip. The sheet is a physical object you are handed,
-                    and it is the one flourish the board itself gets. */}
-                <div style={{ position: 'absolute', top: -17, left: '50%', transform: 'translateX(-50%)' }}>
-                  <svg width="146" height="36" viewBox="0 0 146 36" fill="none" aria-hidden>
-                    <rect x="1" y="7" width="144" height="21" rx="3" fill="#8e9298" />
-                    <rect x="1" y="7" width="144" height="10" rx="3" fill="#b9bec4" />
-                    <rect x="1" y="24" width="144" height="4" rx="2" fill="#6d7278" />
-                    <circle cx="26" cy="17" r="5.5" fill="#5d6268" />
-                    <circle cx="120" cy="17" r="5.5" fill="#5d6268" />
-                    <rect x="52" y="0" width="42" height="9" rx="4" fill="#a3a8ae" />
-                  </svg>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 0 }}>
-                {state.filled.map((id, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
-                    {i > 0 && (
-                      <div style={{ marginBottom: 34 }}>
-                        <Link link={links[i - 1]!} mode={mode} clubs={clubs} revealed={boardRevealed} />
-                      </div>
-                    )}
-                    <Slot
-                      index={i}
-                      player={id ? pool.get(id) : undefined}
-                      given={puzzle.slots[i] != null}
-                      focused={focused === i}
-                      depth={boardRevealed ? result?.slots.find((sl) => sl.index === i)?.depth ?? null : null}
-                      revealed={boardRevealed}
-                      revealDelay={420 + (revealOrder[i] ?? 0) * 260}
-                      nations={nations}
-                      images={images}
-                      onFocus={setFocused}
-                      ring={ringFor(i)}
-                    />
-                  </div>
-                ))}
-                </div>
+              <Clip />
+              <Masthead puzzle={puzzle} blanks={blanks} />
+
+              <div style={{ padding: '46px 0 22px' }}>
+                <ChainRow
+                  fill={state.filled}
+                  slots={puzzle.slots}
+                  links={links}
+                  mode={mode}
+                  clubs={clubs}
+                  images={images}
+                  players={pool}
+                  revealed={boardRevealed}
+                  ringFor={ringFor}
+                  depthFor={(i) => (boardRevealed ? result?.slots.find((sl) => sl.index === i)?.depth ?? null : null)}
+                  revealDelayFor={(i) => 420 + (revealOrder[i] ?? 0) * 260}
+                  focused={focused}
+                  onFocus={setFocused}
+                  landedIndex={landed}
+                />
+              </div>
+
+              <Brief
+                ends={ends}
+                club={namedClub}
+                mode={mode}
+                placed={placed}
+                blanks={blanks}
+                sealed={state.submitted}
+                onSeal={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
+              />
               </div>
             </div>
-
-            <Bench
-              state={state}
-              nations={nations}
-              images={images}
-              onRemove={(id) => dispatch({ type: 'library/remove', playerId: id })}
-            />
           </div>
 
-          <ChainSearch
+          <Shortlist
             state={state}
-            index={index}
-            nations={nations}
-            focused={focused}
-            onAddToBench={(id) => dispatch({ type: 'library/add', playerId: id })}
-            onPlace={(i, id) => dispatch({ type: 'place', index: i, playerId: id })}
+            images={images}
+            onRemove={(id) => dispatch({ type: 'library/remove', playerId: id })}
           />
         </div>
+
+        <ChainSearch
+          state={state}
+          index={index}
+          focused={focused}
+          onAddToBench={(id) => dispatch({ type: 'library/add', playerId: id })}
+          onPlace={(i, id) => { dispatch({ type: 'place', index: i, playerId: id }); setLanded(i); }}
+        />
       </div>
 
       {result && showResult ? (
         <LockIn
           result={result}
-          chainId={puzzle.id}
+          puzzle={puzzle}
+          fill={state.filled}
+          links={links}
           pool={pool}
           images={images}
           clubs={clubs}
@@ -579,8 +473,13 @@ export default function Chain({
         />
       ) : null}
 
-      <DragOverlay>
-        {dragging ? <PlayerCard player={dragging} variant="library" nations={nations} images={images} obscurity={null} /> : null}
+      <DragOverlay
+        // Dropping ONTO a plate hands the animation over to the plate itself,
+        // which lands the card and drives a pin through it. Letting dnd-kit
+        // fly the clone home first would play two landings in a row.
+        dropAnimation={overSlot ? null : { duration: 240, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1)' }}
+      >
+        {dragging ? <DragPicture player={dragging} images={images} /> : null}
       </DragOverlay>
     </DndContext>
   );

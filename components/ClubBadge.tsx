@@ -2,15 +2,45 @@
 import { crestPath, type ClubView } from '../src/lib/clubs';
 
 /**
+ * The handful of clubs whose everyday name is not a substring of their
+ * registered one.
+ *
+ * The suffix stripping below cannot produce these, and no rule could: "PSG"
+ * is not a shorter Paris Saint-Germain, it is a different string that happens
+ * to be what everybody says. So they are listed, by hand, one at a time —
+ * this is emphatically NOT a place to guess at abbreviations, and it is not a
+ * licence to shorten anything that stripping already handles: "FC Bayern
+ * Munich" becomes "Bayern Munich" below and stops there. Every entry here is
+ * a name a fan would use out loud; anything that needed inventing is left
+ * long instead.
+ *
+ * Matched on the WHOLE name, so "Borussia Dortmund II" is untouched. A rule
+ * that matched loosely would put a reserve side on the sheet under the first
+ * team's name.
+ */
+const SPOKEN_NAME: Record<string, string> = {
+  'Paris Saint-Germain FC': 'PSG',
+  'Brighton & Hove Albion F.C.': 'Brighton',
+  'Wolverhampton Wanderers F.C.': 'Wolves',
+  'Tottenham Hotspur F.C.': 'Tottenham',
+  'Borussia Mönchengladbach': 'Gladbach',
+  'Borussia Dortmund': 'Dortmund',
+  'Bayer 04 Leverkusen': 'Leverkusen',
+  '1. FC Köln': 'Köln',
+};
+
+/**
  * Trim the legal furniture off a club's name.
  *
  * Wikidata stores full registered names — "Manchester United F.C.", "Real
  * Madrid Club de Fútbol" — which are too long for a link pill and read as
  * paperwork rather than as a club. Only well-known suffixes are stripped, and
  * anything left over is kept verbatim: guessing at abbreviations would produce
- * a name no fan actually uses.
+ * a name no fan actually uses. See SPOKEN_NAME for the hand-checked exceptions.
  */
 export function shortClubName(name: string): string {
+  const spoken = SPOKEN_NAME[name.trim()];
+  if (spoken) return spoken;
   return name
     .replace(/\s+(A\.?F\.?C\.?|F\.?C\.?|S\.?C\.?|C\.?F\.?|B\.?C\.?|J\.?K\.?|S\.?K\.?)$/i, '')
     // Leading club-type prefixes. SV, AS, RC and the rest read as noise beside

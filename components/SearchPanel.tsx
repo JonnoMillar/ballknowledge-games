@@ -1,7 +1,6 @@
 'use client';
 import { useMemo, useState } from 'react';
 import { search, type SearchIndex } from '../src/lib/search/index';
-import { isoForNation } from '../src/pipeline/nations';
 import { adjacentSlots } from '../src/lib/puzzle/edges';
 import type { GameState } from '../src/game/state';
 
@@ -12,14 +11,13 @@ import type { GameState } from '../src/game/state';
  * an answer to it. `search()` returns [] for an empty query, and this component
  * must never add a list of its own.
  *
- * Results show name and nation. Never fame — that is the whole game.
+ * Results show the name and nothing else. Never fame — that is the whole game.
  */
 export default function SearchPanel({
-  state, index, nations, focusedSlot, onAddToBench, onPlace,
+  state, index, focusedSlot, onAddToBench, onPlace,
 }: {
   state: GameState;
   index: SearchIndex;
-  nations: Record<string, string>;
   focusedSlot: string | null;
   onAddToBench: (playerId: string) => void;
   onPlace: (slotId: string, playerId: string) => void;
@@ -62,12 +60,8 @@ export default function SearchPanel({
 
       <div style={{ flexGrow: 1, overflowY: 'auto' }}>
         {results.map((p) => {
-          const iso = isoForNation(p.nation, nations);
           return (
             <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px solid rgba(29,41,66,0.5)' }}>
-              {iso
-                ? <span className={`fi fi-${iso}`} style={{ width: 18, height: 13, borderRadius: 1, flexShrink: 0 }} />
-                : <span style={{ width: 18, height: 13, borderRadius: 1, background: 'var(--slot-border)', flexShrink: 0 }} />}
               <span style={{ fontSize: 14, flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
               <button
                 onClick={() => onAddToBench(p.id)}

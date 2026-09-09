@@ -1,42 +1,69 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useCountUp } from './DepthGauge';
+import ChainRow from './ChainRow';
+import Clip from './Clip';
+import Pin, { pinHead } from './Pin';
+import RedString, { type Anchor } from './RedString';
+import { EmptyPlate } from './PlayerCard';
+import { tiltFor } from './swing';
+import { plateName } from '../src/lib/short-name';
 import { shareText } from '../src/lib/chain/result';
-import type { ChainResult, SlotOutcome } from '../src/lib/chain/result';
+import type { ChainResult, PinnedAnswer, SlotOutcome } from '../src/lib/chain/result';
+import type { ChainLink } from '../src/lib/chain/score';
+import type { ChainDifficulty, ChainPuzzle } from '../src/lib/chain/types';
 import type { Player } from '../src/lib/chemistry/types';
-import { clubColour, splitRing } from '../src/lib/club-colours';
+import { clubColour, splitRing, SIGNATURE_CLUB } from '../src/lib/club-colours';
 import { shortClubName } from './ClubBadge';
 import type { ClubView } from '../src/lib/clubs';
 import type { PortraitImage } from '../src/lib/portraits';
 
 /**
- * The lock-in.
+ * The sealed sheet.
  *
  * This screen is the whole game. Everything before it is typing names into a
  * box; this is the only moment the player finds out whether they were right,
- * and the only moment they learn what they walked past. So it takes the screen
- * completely rather than updating a number in a header.
+ * and the only moment they learn what they walked past.
  *
- * The chain resolves one link at a time, left to right, like a current running
- * down the line, each joint holding or failing in turn. Then the score lands,
- * and only then does the board admit what the best available answers were.
+ * It is the SAME sheet they were just filling in — same clip, same masthead,
+ * same chain, drawn by the same component — with the answers on it. That is
+ * deliberate and it is the reason the reveal is not a modal with a score in
+ * it: the thing being handed back has to be recognisably the thing they were
+ * working on, or the result belongs to the application rather than to them.
+ *
+ * The sequence:
+ *
+ *   1. The string goes on, one span at a time, left to right. A span that
+ *      held stays taut; a span that did not parts in the middle and drops.
+ *   2. The verdict lands, with the score in gold foil beside it.
+ *   3. Only then does the sheet admit how many ways it could have gone, and
+ *      show the answers that were sitting there.
  *
  * That order matters. Showing the misses before the verdict would turn relief
  * into arithmetic; showing them at all is what makes the next chain worth
  * playing, because the thing a player remembers is not the 62 they scored, it
- * is the name they had never heard of that was sitting there the whole time.
+ * is the name they had never heard of that was there the whole time.
  */
 
 /** Where the reveal has got to. Each step is one beat of the sequence. */
 type Stage = 'arming' | 'resolving' | 'verdict' | 'score' | 'detail';
 
-const BEAT = 420;
+/** How long one span of string takes to go on. Matches RedString's own draw. */
+const BEAT = 620;
+
+const GRADE: Record<ChainDifficulty, string> = {
+  easy: 'var(--green)',
+  medium: 'var(--gold)',
+  hard: 'var(--accent)',
+};
 
 export default function LockIn({
-  result, chainId, pool, images, clubs, onDismiss,
+  result, puzzle, fill, links, pool, images, clubs, onDismiss,
 }: {
   result: ChainResult;
-  chainId: string;
+  puzzle: ChainPuzzle;
+  fill: readonly (string | null)[];
+  links: readonly ChainLink[];
   pool: ReadonlyMap<string, Player>;
   /** Player id to a ready picture. See src/lib/portraits.ts. */
   images: Record<string, PortraitImage>;
@@ -45,31 +72,101 @@ export default function LockIn({
 }) {
   const [stage, setStage] = useState<Stage>('arming');
   const [resolved, setResolved] = useState(-1);
+  const mode = puzzle.mode ?? 'clubs';
 
   // The whole sequence is one set of timers rather than chained callbacks, so
-  // that unmounting mid-reveal cannot leave a stray one running.
+  // unmounting mid-reveal cannot leave a stray one running.
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
 
-    at(220, () => setStage('resolving'));
+    at(560, () => setStage('resolving'));
 
-    // Every link resolves, including the ones after a break. The first draft
-    // stopped the run dead at the first failure, which read well but lied: the
-    // line under it says "2 of 4 links held" and the player could only see one
-    // verdict. Watching a later link survive a broken chain is also the part
-    // that stings usefully — you were one name away.
-    for (let i = 0; i < result.links.length; i++) at(360 + i * BEAT, () => setResolved(i));
+    // Every span goes on, including the ones after a break. The first draft
+    // stopped the run dead at the first failure, which read well but lied:
+    // the line under it says "2 of 4 links held" and the player could only
+    // see one verdict. Watching a later link survive a broken chain is also
+    // the part that stings usefully — you were one name away.
+    for (let i = 0; i < result.links.length; i++) at(700 + i * BEAT, () => setResolved(i));
 
-    const after = 360 + result.links.length * BEAT;
-    at(after + 160, () => setStage('verdict'));
-    at(after + 780, () => setStage('score'));
-    at(after + 1900, () => setStage('detail'));
+    const after = 700 + result.links.length * BEAT;
+    at(after + 420, () => setStage('verdict'));
+    at(after + 1000, () => setStage('score'));
+    at(after + 2200, () => setStage('detail'));
 
     return () => timers.forEach(clearTimeout);
   }, [result]);
 
   const showScore = stage === 'score' || stage === 'detail';
+  const detail = stage === 'detail';
+
+  /**
+   * The ring on each print, now that the verdict is out: the clubs that
+   * actually made this player fit, split down the middle. A pick whose links
+   * did not hold gets no clubs to show, so it wears the accent instead.
+   */
+  const ringFor = useCallback((i: number): string => {
+    const id = fill[i];
+    if (!id) return 'var(--accent)';
+    if (puzzle.slots[i] != null) {
+      return clubColour(SIGNATURE_CLUB[id] ?? pool.get(id)?.clubIds[0]);
+    }
+    const held = [links[i - 1], links[i]].filter((l) => l?.made);
+    if (held.length === 0) return 'var(--accent)';
+    const [a, b] = held.map((l) => clubColour(l!.required ?? l!.clubs[0]));
+    return b === undefined ? a! : splitRing(a!, b, 'var(--card-a)');
+  }, [fill, puzzle.slots, links, pool]);
+
+  const depthFor = useCallback(
+    (i: number) => result.slots.find((s) => s.index === i)?.depth ?? null,
+    [result.slots],
+  );
+
+  // Where the string is tied. Measured from the mounts rather than computed
+  // from the layout: the row is flexible, the cards carry a small rotation,
+  // and a hard-coded pitch would be wrong at every width but one.
+  const board = useRef<HTMLDivElement>(null);
+  const plates = useRef<(HTMLDivElement | null)[]>([]);
+  const [anchors, setAnchors] = useState<Anchor[]>([]);
+
+  const setPlate = useCallback((i: number, el: HTMLDivElement | null) => {
+    plates.current[i] = el;
+  }, []);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const box = board.current?.getBoundingClientRect();
+      if (!box) return;
+      const head = pinHead();
+      const next = plates.current.slice(0, fill.length).map((el) => {
+        if (!el) return { x: 0, y: 0 };
+        const r = el.getBoundingClientRect();
+        // Tied to the pin's HEAD, not to the top of the card. The offset comes
+        // from the pin itself so that moving the pin moves the string with it
+        // — the first version hard-coded the card's top edge and every string
+        // came adrift the moment the pin was driven in deeper.
+        return {
+          x: r.left + r.width / 2 - box.left + head.cx,
+          y: r.top - box.top + head.cy,
+        };
+      });
+      setAnchors((prev) =>
+        prev.length === next.length && prev.every((p, i) => Math.abs(p.x - next[i]!.x) < 0.5 && Math.abs(p.y - next[i]!.y) < 0.5)
+          ? prev
+          : next,
+      );
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (board.current) ro.observe(board.current);
+    window.addEventListener('resize', measure);
+    // Portraits arrive after first paint and change nothing about the row's
+    // height — but fonts do, so one late pass covers the reflow.
+    const late = setTimeout(measure, 400);
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure); clearTimeout(late); };
+  }, [fill.length]);
+
+  const count = ['no', 'one', 'two', 'three', 'four', 'five'][result.slots.length] ?? String(result.slots.length);
 
   return (
     <div
@@ -79,146 +176,194 @@ export default function LockIn({
       className="sheet"
       style={{
         position: 'fixed', inset: 0, zIndex: 60,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 24, overflowY: 'auto',
-        animation: 'lockin-in 260ms ease-out both',
+        overflowY: 'auto', padding: '40px 26px 44px',
+        animation: 'lockin-in 300ms ease-out both',
       }}
     >
-      <div
-        className="paper"
-        style={{
-          width: '100%', maxWidth: 720, padding: '34px 34px 30px',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22,
-        }}
-      >
+      <div style={{ maxWidth: 980, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 22 }}>
 
-        {/* The run. One segment per link, lit in order. */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: '100%' }}>
-          {result.links.map((made, i) => {
-            const lit = i <= resolved;
-            return (
-              <div
-                key={i}
-                style={{
-                  flex: 1, height: 10, borderRadius: 0,
-                  background: !lit
-                    ? 'rgba(26,20,16,0.14)'
-                    : made ? 'var(--green)' : 'var(--accent)',
-                  boxShadow: 'none',
-                  transform: lit ? 'scaleY(1)' : 'scaleY(0.55)',
-                  transition: 'background 120ms linear, box-shadow 200ms ease, transform 200ms ease',
-                }}
+        {/* ── THE SHEET ───────────────────────────────────────────────── */}
+        <div
+          className="paper"
+          style={{ position: 'relative', padding: '40px 30px 26px', animation: 'sheet-rise 520ms cubic-bezier(0.2,0.9,0.3,1) both' }}
+        >
+          <Clip />
+
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, borderBottom: '3px solid var(--ink)', paddingBottom: 11 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <div className="narrow" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                Scouting sheet &middot; {count} to find
+              </div>
+              <div className="slab misreg" style={{ fontSize: 46, lineHeight: 0.96 }}>
+                <span className="lean">RECALL XI</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20 }}>
+              {puzzle.difficulty ? (
+                <div className="narrow stamp" style={{ fontSize: 15, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: GRADE[puzzle.difficulty] }}>
+                  {puzzle.difficulty}
+                </div>
+              ) : null}
+              <div style={{ width: 1, height: 36, background: 'rgba(26,20,16,0.22)' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                  Chain
+                </div>
+                <div className="slab" style={{ fontSize: 26, lineHeight: 1 }}>{puzzle.id}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* The chain, with the string running over it. The string layer is
+              absolutely positioned inside this box, so this is the coordinate
+              space every anchor is measured in. */}
+          <div ref={board} style={{ position: 'relative', padding: '30px 0 4px' }}>
+            <ChainRow
+              fill={fill}
+              slots={puzzle.slots}
+              links={links}
+              mode={mode}
+              clubs={clubs}
+              images={images}
+              players={pool}
+              revealed
+              interactive={false}
+              ringFor={ringFor}
+              depthFor={(i) => (detail ? depthFor(i) : null)}
+              revealDelayFor={(i) => i * 140}
+              plateRef={setPlate}
+              pinsDriving
+              pinBeat={130}
+              stringed
+            />
+            {anchors.length === fill.length ? (
+              <RedString
+                anchors={anchors}
+                held={result.links}
+                resolved={resolved}
+                beat={BEAT}
               />
-            );
-          })}
-        </div>
+            ) : null}
+          </div>
 
-        {stage !== 'arming' && stage !== 'resolving' ? (
-          <div style={{ textAlign: 'center', animation: 'verdict-in 420ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
+          {/* ── THE VERDICT ─────────────────────────────────────────────
+              Same geometry as the brief band on the live sheet: a statement
+              on the left, a block on the right. The block is gold now. */}
+          <div style={{ marginTop: 20, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)', minHeight: 86 }}>
+            <div style={{ flexGrow: 1, padding: '14px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, minWidth: 0 }}>
+              {stage === 'arming' || stage === 'resolving' ? (
+                <div className="narrow" style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.3em', color: 'var(--muted)' }}>
+                  RUNNING THE STRING&hellip;
+                </div>
+              ) : (
+                <div style={{ animation: 'verdict-in 420ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
+                  <div
+                    className="slab misreg"
+                    style={{ fontSize: 34, lineHeight: 1, color: result.perfect ? 'var(--green)' : 'var(--accent)' }}
+                  >
+                    {result.perfect ? 'CHAIN HELD' : 'CHAIN BROKE'}
+                  </div>
+                  <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', marginTop: 5 }}>
+                    {result.perfect
+                      ? 'Every link a real one.'
+                      : `${result.made} of ${result.total} links held. A broken link scores nothing.`}
+                  </div>
+                </div>
+              )}
+            </div>
             <div
-              className="slab misreg"
               style={{
-                fontSize: 46, lineHeight: 1,
-                color: result.perfect ? 'var(--green)' : 'var(--accent)',
+                width: 176, flexShrink: 0, borderLeft: '2.5px solid var(--ink)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                background: showScore
+                  ? 'linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a)'
+                  : 'var(--panel-2)',
+                transition: 'background 620ms ease',
               }}
             >
-              {result.perfect ? 'CHAIN HELD' : 'CHAIN BROKE'}
-            </div>
-            <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', marginTop: 8 }}>
-              {result.perfect
-                ? 'Every link a real one.'
-                : `${result.made} of ${result.total} links held. A broken link scores nothing.`}
+              {showScore ? <ScoreReveal value={result.score} /> : (
+                <div className="slab" style={{ fontSize: 34, color: 'rgba(26,20,16,0.2)' }}>&mdash;</div>
+              )}
             </div>
           </div>
-        ) : (
-          <div className="narrow" style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.3em', color: 'var(--muted)' }}>
-            CHECKING THE CHAIN
-          </div>
-        )}
 
-        {showScore ? <ScoreReveal value={result.score} /> : null}
+          {/* ── WHAT THE BOARD WAS ──────────────────────────────────────
+              The artboard's foil band. It states the size of the answer
+              space, which is a fact about the answer and therefore could
+              only ever appear here. */}
+          {detail && result.pairs !== null ? (
+            <div style={{ marginTop: 14, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)', animation: 'foil-in 460ms ease-out 120ms both' }}>
+              <div style={{ flexGrow: 1, padding: '13px 20px', display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
+                <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                  {result.slots.map((s, i) => `${s.fieldSize} fit the ${['first', 'second', 'third'][i] ?? `${i + 1}th`}`).join(' · ')}
+                </div>
+                {puzzle.caption ? (
+                  <div className="slab" style={{ fontSize: 20, lineHeight: 1.15 }}>{puzzle.caption}</div>
+                ) : null}
+              </div>
+              <div
+                style={{
+                  width: 150, flexShrink: 0, borderLeft: '2.5px solid var(--ink)',
+                  background: 'linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a)',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '10px 6px',
+                }}
+              >
+                <div className="slab" style={{ fontSize: 38, lineHeight: 0.95, color: '#fffdf7', textShadow: '0 2px 0 rgba(70,48,6,0.55)', fontVariantNumeric: 'tabular-nums' }}>
+                  {result.pairs}
+                </div>
+                <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#46300a' }}>
+                  Ways to fill it
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </div>
 
-        {stage === 'detail' ? (
-          <div style={{ width: '100%', animation: 'verdict-in 420ms ease-out both', display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', borderBottom: '2px solid rgba(26,20,16,0.42)', paddingBottom: 7 }}>
-              <div className="slab misreg" style={{ fontSize: 19 }}>
+        {/* ── THE PINBOARD ────────────────────────────────────────────── */}
+        {detail ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '4px 4px 0', animation: 'foil-in 460ms ease-out 240ms both' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 16, borderBottom: '2px solid rgba(26,20,16,0.42)', paddingBottom: 7, flexWrap: 'wrap' }}>
+              <div className="slab misreg" style={{ fontSize: 20 }}>
                 <span className="lean">WHO WOULD HAVE WORKED</span>
               </div>
               <div className="read" style={{ fontSize: 13, fontStyle: 'italic', color: 'var(--soft)' }}>
-                Split down the middle: the two clubs that made him fit.
+                {result.entry !== null
+                  ? <>The easiest pair here is worth {result.entry} &mdash; that is the grade.</>
+                  : <>Split down the middle: the two clubs that made him fit.</>}
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 22, justifyContent: 'center', flexWrap: 'wrap' }}>
-              {result.slots.map((s) => (
-                <Pinned key={s.index} slot={s} pool={pool} images={images} clubs={clubs} />
+            <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', paddingTop: 6 }}>
+              {result.pinboard.map((answer, i) => (
+                <Pinned key={answer.id} answer={answer} images={images} clubs={clubs} order={i} />
               ))}
             </div>
 
-            {result.slots.map((s) => {
-              const mine = s.playerId ? pool.get(s.playerId) : undefined;
-              const beatMe = s.best && s.depth && s.best.score > s.depth.score;
-              const nailed = s.held && s.best?.id === s.playerId;
-              return (
-                <div
-                  key={s.index}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
+              {result.slots.map((s) => (
+                <Breakdown key={s.index} slot={s} pool={pool} />
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginTop: 8, flexWrap: 'wrap' }}>
+              <div className="read" style={{ fontSize: 13, fontStyle: 'italic', color: 'var(--soft)' }}>
+                Split down the middle: the two clubs that made him fit.
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <button
+                  onClick={onDismiss}
+                  className="narrow"
                   style={{
-                    border: '1.5px solid rgba(26,20,16,0.24)', borderRadius: 0, padding: '13px 16px',
-                    background: 'var(--panel-2)',
-                    display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+                    background: 'transparent', color: 'var(--soft)',
+                    border: '2px solid var(--border)', borderRadius: 0,
+                    padding: '12px 22px', fontWeight: 700, fontSize: 13,
+                    letterSpacing: '0.14em', textTransform: 'uppercase', cursor: 'pointer',
                   }}
                 >
-                  <div style={{ minWidth: 190, flex: 1 }}>
-                    <div className="cond" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--muted)' }}>
-                      YOU PLAYED
-                    </div>
-                    <div className="read" style={{ fontWeight: 500, fontSize: 16, color: s.held ? 'var(--text)' : 'var(--accent)' }}>
-                      {mine?.name ?? '—'}
-                    </div>
-                    <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
-                      {!s.held
-                        ? 'did not link'
-                        : s.depth?.rank
-                          ? `${s.depth.rank} of ${s.depth.fieldSize} for obscurity · scored ${s.depth.score}`
-                          : `scored ${s.depth?.score ?? 0}`}
-                    </div>
-                  </div>
-
-                  {/* The point of the whole screen: what was sitting there.
-                      When the player already found it, saying so outright beats
-                      printing their own name back at them under a heading that
-                      reads like a correction. */}
-                  <div style={{ minWidth: 190, flex: 1 }}>
-                    <div className="cond" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--muted)' }}>
-                      {nailed ? 'NOBODY WENT DEEPER' : 'DEEPEST ANSWER'}
-                    </div>
-                    <div className="read" style={{ fontWeight: 500, fontSize: 16, color: nailed ? 'var(--green)' : beatMe ? 'var(--gold)' : 'var(--green)' }}>
-                      {nailed ? 'You found it' : s.best?.name ?? '—'}
-                    </div>
-                    <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
-                      {nailed
-                        ? `the most obscure of ${s.fieldSize} who fitted`
-                        : `${s.fieldSize} would have fitted · worth ${s.best?.score ?? 0}`}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            <div style={{ display: 'flex', gap: 10, marginTop: 6, flexWrap: 'wrap' }}>
-              <CopyButton text={shareText(result, chainId)} />
-              <button
-                onClick={onDismiss}
-                className="narrow"
-                style={{
-                  background: 'transparent', color: 'var(--soft)',
-                  border: '2px solid var(--border)', borderRadius: 0,
-                  padding: '12px 22px', fontWeight: 700, fontSize: 13,
-                  letterSpacing: '0.14em', textTransform: 'uppercase', cursor: 'pointer',
-                }}
-              >
-                Back to the board
-              </button>
+                  Back to the sheet
+                </button>
+                <CopyButton text={shareText(result, puzzle.id)} />
+              </div>
             </div>
           </div>
         ) : null}
@@ -233,23 +378,71 @@ function ScoreReveal({ value }: { value: number }) {
   return (
     <div style={{ textAlign: 'center', animation: 'verdict-in 380ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
       <div
+        className="slab"
         style={{
-          background: 'linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a)',
-          border: '2.5px solid var(--ink)', padding: '14px 46px 12px',
+          fontSize: 52, lineHeight: 0.92, color: '#fffdf7',
+          fontVariantNumeric: 'tabular-nums',
+          textShadow: '0 2px 0 rgba(70,48,6,0.55)',
         }}
       >
-        <div
-          className="slab"
-          style={{
-            fontSize: 74, lineHeight: 0.92, color: '#fffdf7',
-            fontVariantNumeric: 'tabular-nums',
-            textShadow: '0 2px 0 rgba(70,48,6,0.55)',
-          }}
-        >
-          {score}
+        {score}
+      </div>
+      <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.24em', color: '#46300a', textAlign: 'center' }}>
+        RARITY FOIL
+      </div>
+    </div>
+  );
+}
+
+/** What one slot cost, in words. */
+function Breakdown({ slot, pool }: { slot: SlotOutcome; pool: ReadonlyMap<string, Player> }) {
+  const mine = slot.playerId ? pool.get(slot.playerId) : undefined;
+  const beatMe = slot.best && slot.depth && slot.best.score > slot.depth.score;
+  const nailed = slot.held && slot.best?.id === slot.playerId;
+
+  return (
+    <div
+      style={{
+        border: '1.5px solid rgba(26,20,16,0.24)', padding: '13px 16px',
+        background: 'var(--panel-2)',
+        display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+      }}
+    >
+      <div style={{ minWidth: 190, flex: 1 }}>
+        <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: 'var(--muted)' }}>
+          YOU PLAYED
         </div>
-        <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.24em', color: '#46300a', textAlign: 'center' }}>
-          RARITY FOIL
+        <div className="read" style={{ fontWeight: 500, fontSize: 16, color: slot.held ? 'var(--text)' : 'var(--accent)' }}>
+          {mine?.name ?? '—'}
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
+          {!slot.held
+            ? 'did not link'
+            : slot.depth?.rank
+              ? `${slot.depth.rank} of ${slot.depth.fieldSize} for obscurity · scored ${slot.depth.score}`
+              : `scored ${slot.depth?.score ?? 0}`}
+        </div>
+      </div>
+
+      {/* The point of the whole screen: what was sitting there. When the
+          player already found it, saying so outright beats printing their own
+          name back at them under a heading that reads like a correction.
+
+          It does NOT claim they went deepest, and the wording is careful for
+          a reason: `best` is the deepest answer above a fame floor, while the
+          gauge on the card ranks against the untouched field. On chain 008
+          that put "nobody went deeper" directly beside "4th most obscure of
+          8" — both true of different sets, and flatly contradictory to read.
+          The heading says what happened; the rank is the gauge's job. */}
+      <div style={{ minWidth: 190, flex: 1 }}>
+        <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: 'var(--muted)' }}>
+          {nailed ? 'THE ANSWER WE HAD' : 'DEEPEST ANSWER'}
+        </div>
+        <div className="read" style={{ fontWeight: 500, fontSize: 16, color: nailed ? 'var(--green)' : beatMe ? 'var(--gold)' : 'var(--green)' }}>
+          {nailed ? 'You found it yourself' : slot.best?.name ?? '—'}
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
+          {`${slot.fieldSize} would have fitted · worth ${slot.best?.score ?? 0}`}
         </div>
       </div>
     </div>
@@ -300,29 +493,34 @@ function CopyButton({ text }: { text: string }) {
  * straight off; a face and two colours is the bit that stays.
  */
 function Pinned({
-  slot, pool, images, clubs,
+  answer, images, clubs, order,
 }: {
-  slot: SlotOutcome;
-  pool: ReadonlyMap<string, Player>;
+  answer: PinnedAnswer;
   images: Record<string, PortraitImage>;
   clubs: Record<string, ClubView>;
+  order: number;
 }) {
-  const best = slot.best;
-  if (!best) return null;
-  const nailed = slot.held && best.id === slot.playerId;
-  const photo = images[best.id];
-  const [a, b] = best.clubs;
+  const photo = images[answer.id];
+  const [a, b] = answer.clubs;
   const ring = a === undefined
     ? 'var(--ink)'
     : splitRing(clubColour(a), clubColour(b ?? a), 'var(--card-a)');
+  const tilt = tiltFor(`pinned-${answer.id}`, 2.4);
+  // Deep enough that almost nobody would have got there. The threshold is the
+  // same 80 the depth gauge treats as the far end of the track.
+  const deepCut = answer.score >= 80;
 
   return (
-    <div style={{ width: 132, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, position: 'relative' }}>
-      <svg width="15" height="15" viewBox="0 0 15 15" style={{ position: 'absolute', top: -5, left: '50%', transform: 'translateX(-50%)', zIndex: 2 }} aria-hidden>
-        <circle cx="7.5" cy="7.5" r="6.5" fill="#a8791f" />
-        <circle cx="5.4" cy="5.4" r="2.1" fill="#e6cb8c" />
-      </svg>
-      <div className="mount" style={{ padding: '6px 6px 0' }}>
+    <div
+      style={{
+        width: 132, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+        position: 'relative',
+        ['--tilt' as string]: `${tilt}deg`,
+        animation: `pinned-in 560ms cubic-bezier(0.22, 1.2, 0.36, 1) ${240 + order * 140}ms both`,
+      }}
+    >
+      <div className="mount" style={{ padding: '6px 6px 0', position: 'relative' }}>
+        <Pin colour="#a8791f" driving delay={420 + order * 140} />
         <div className="photo" style={{ width: 120, height: 128, background: ring }}>
           {photo ? (
             <img
@@ -334,32 +532,43 @@ function Pinned({
               }}
             />
           ) : (
-            <div style={{ width: '100%', height: '100%', background: '#e6ded0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="rgba(26,20,16,0.3)" strokeWidth="1.4">
-                <circle cx="12" cy="8" r="3.6" />
-                <path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" />
-              </svg>
-            </div>
+            <EmptyPlate size={34} />
           )}
         </div>
-        <div className="narrow" style={{ width: 120, padding: '5px 0 6px', fontSize: 12, fontWeight: 700, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {best.name.toUpperCase()}
+        {/* The nameplate, by the same rule as every other card on the board.
+            Printing the registered name here truncated "Marcelo António
+            Guedes Filho" to "MARCELO ANTÓNIO G…", which is the one thing a
+            nameplate must never do: the name is the whole payload. */}
+        <div className="narrow" title={answer.name} style={{ width: 120, padding: '5px 0 6px', fontSize: 12, fontWeight: 700, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {plateName(answer.id, answer.name).toUpperCase()}
         </div>
       </div>
-      <div className="read" style={{ fontSize: 11, textAlign: 'center', lineHeight: 1.35, color: 'var(--soft)' }}>
-        {best.clubs.length
-          ? best.clubs.map((c) => shortClubName(clubs[c]?.name ?? c)).join(' and ')
-          : 'the deepest that fitted'}
+      {/* Two lines' worth of room whether the caption needs them or not.
+          Without it a one-line caption pulls its DEEP CUT tag up level with
+          the card above's second line, and a row of five prints reads as
+          five different rows. */}
+      <div className="read" style={{ fontSize: 11, textAlign: 'center', lineHeight: 1.35, color: 'var(--soft)', minHeight: 30, width: '100%' }}>
+        {answer.either ? (
+          <>Fits <em>either</em> gap</>
+        ) : answer.clubs.length === 2 ? (
+          <>{shortClubName(clubs[answer.clubs[0]!]?.name ?? answer.clubs[0]!)} <em>and</em> {shortClubName(clubs[answer.clubs[1]!]?.name ?? answer.clubs[1]!)}</>
+        ) : answer.clubs.length === 1 ? (
+          shortClubName(clubs[answer.clubs[0]!]?.name ?? answer.clubs[0]!)
+        ) : (
+          'one that fitted'
+        )}
       </div>
-      <div
-        className="narrow"
-        style={{
-          fontSize: 9, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase',
-          background: nailed ? 'var(--green)' : 'var(--ink)', color: '#f7f2e6', padding: '3px 8px',
-        }}
-      >
-        {nailed ? 'You found it' : `Deepest of ${slot.fieldSize}`}
-      </div>
+      {answer.mine || deepCut ? (
+        <div
+          className="narrow"
+          style={{
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase',
+            background: answer.mine ? 'var(--green)' : 'var(--ink)', color: '#f7f2e6', padding: '3px 8px',
+          }}
+        >
+          {answer.mine ? 'You found it' : 'Deep cut'}
+        </div>
+      ) : null}
     </div>
   );
 }

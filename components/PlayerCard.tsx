@@ -1,22 +1,34 @@
 'use client';
 import { useDraggable } from '@dnd-kit/core';
-import { isoForNation } from '../src/pipeline/nations';
+import Pin from './Pin';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
 
 export type CardVariant = 'given' | 'found' | 'library';
 
+/** The plate a photo sits on when there is no photo. */
+export function EmptyPlate({ size = 30 }: { size?: number }) {
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#e6ded0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="rgba(26,20,16,0.3)" strokeWidth="1.4">
+        <circle cx="12" cy="8" r="3.6" />
+        <path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" />
+      </svg>
+    </div>
+  );
+}
 
 export default function PlayerCard({
-  player, variant, slotId, nations, images, obscurity,
+  player, variant, slotId, images, obscurity,
   outOfPosition = false, compact = false, revealDelay, ring,
+  tilt = 0, pin = null, pinDriving = false, pinDelay = 0, landing = false,
+  index, plateRef,
 }: {
   player: Player;
   variant: CardVariant;
   /** Undefined when the card is sitting on the bench. */
   slotId?: string;
-  nations: Record<string, string>;
   /** Player id to a ready picture. See src/lib/portraits.ts. */
   images: Record<string, PortraitImage>;
   /**
@@ -43,6 +55,23 @@ export default function PlayerCard({
    * still open would answer the question the player is being asked.
    */
   ring?: string;
+  /**
+   * A degree or two off square. Nothing on a board hangs straight, and the
+   * scatter has to be STABLE — see `tiltFor` in components/swing.ts, which
+   * hashes it out of the position rather than rolling it per render.
+   */
+  tilt?: number;
+  /** A pushpin through the top edge. Red is a pin the string runs through. */
+  pin?: 'red' | 'gold' | null;
+  /** Play the pin's drive-in rather than having it simply be there. */
+  pinDriving?: boolean;
+  pinDelay?: number;
+  /** Play the landing. Set for one beat after the card is dropped here. */
+  landing?: boolean;
+  /** The slot's number, printed on the mount the way a contact sheet is marked. */
+  index?: number;
+  /** Measured to find where the string should be tied. See RedString. */
+  plateRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `${slotId ?? 'lib'}:${player.id}`,
@@ -50,7 +79,6 @@ export default function PlayerCard({
     disabled: variant === 'given',
   });
 
-  const iso = isoForNation(player.nation, nations);
   const photo = images[player.id];
   const given = variant === 'given';
   const w = compact ? 92 : 108;
@@ -60,18 +88,36 @@ export default function PlayerCard({
   if (ring !== undefined) {
     return (
       <div
-        ref={setNodeRef}
+        ref={(el) => { setNodeRef(el); plateRef?.(el); }}
         {...listeners}
         {...attributes}
         className="mount"
         title={player.name}
         style={{
           width: w, flexShrink: 0, position: 'relative',
-          opacity: isDragging ? 0.35 : 1,
+          // The tilt lives in a CSS variable as well as in the transform so
+          // the landing keyframes can return to it rather than to square.
+          ['--tilt' as string]: `${tilt}deg`,
+          ['--land-from' as string]: `${tilt - 3.4}deg`,
+          transform: `rotate(${tilt}deg)`,
+          // The card being carried is a COPY under the cursor, so the
+          // original has to get out of the way — otherwise the same player is
+          // on screen twice and the plate looks occupied while you are
+          // deciding whether to fill it.
+          opacity: isDragging ? 0.28 : 1,
           cursor: given ? 'default' : 'grab',
           touchAction: 'none',
+          animation: landing ? 'mount-land 620ms cubic-bezier(0.22, 1.2, 0.36, 1) both' : undefined,
         }}
       >
+        {pin ? (
+          <Pin
+            colour={pin === 'red' ? '#b3341f' : '#a8791f'}
+            driving={pinDriving}
+            delay={pinDelay}
+          />
+        ) : null}
+
         <div className="photo" style={{ width: w - 10, height: h - 22, background: ring }}>
           {photo ? (
             <img
@@ -83,16 +129,8 @@ export default function PlayerCard({
               }}
             />
           ) : (
-            <div style={{ width: '100%', height: '100%', background: '#e6ded0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(26,20,16,0.3)" strokeWidth="1.4">
-                <circle cx="12" cy="8" r="3.6" />
-                <path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" />
-              </svg>
-            </div>
+            <EmptyPlate />
           )}
-          {iso ? (
-            <span className={`fi fi-${iso}`} style={{ position: 'absolute', left: 8, bottom: 8, width: 18, height: 13, boxShadow: '0 1px 3px rgba(0,0,0,0.55)' }} />
-          ) : null}
         </div>
 
         <div style={{ width: w - 10, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 4, padding: '5px 1px 7px' }}>
@@ -106,7 +144,7 @@ export default function PlayerCard({
           >
             {surname}
           </span>
-          {obscurity !== null && (
+          {obscurity !== null ? (
             <span
               className="slab"
               style={{
@@ -118,7 +156,11 @@ export default function PlayerCard({
             >
               {obscurity}
             </span>
-          )}
+          ) : index !== undefined ? (
+            <span className="slab" style={{ fontSize: 15, lineHeight: 1, color: 'rgba(26,20,16,0.34)', flexShrink: 0 }}>
+              {index}
+            </span>
+          ) : null}
         </div>
       </div>
     );
@@ -184,11 +226,6 @@ export default function PlayerCard({
         </div>
       )}
 
-      {iso ? (
-        <span className={`fi fi-${iso}`} style={{ position: 'absolute', left: 7, top: obscurity !== null ? 40 : 12, width: 18, height: 13, borderRadius: 1, boxShadow: '0 1px 3px rgba(0,0,0,0.6)' }} />
-      ) : (
-        <span style={{ position: 'absolute', left: 7, top: obscurity !== null ? 40 : 12, width: 18, height: 13, borderRadius: 1, background: 'var(--slot-border)' }} />
-      )}
 
       {outOfPosition && (
         <div style={{ position: 'absolute', right: 5, bottom: 34, fontSize: 8, fontWeight: 700, letterSpacing: '0.08em', color: '#e07a6a', background: 'rgba(10,14,22,0.85)', padding: '1px 4px', borderRadius: 2 }}>

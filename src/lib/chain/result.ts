@@ -44,6 +44,23 @@ export interface SlotOutcome {
   fieldSize: number;
 }
 
+/** One print on the wall of answers the sealed sheet puts up. */
+export interface PinnedAnswer {
+  id: string;
+  name: string;
+  /** Obscurity within the field it belongs to, on the same 0–100 scale. */
+  score: number;
+  /** The clubs that made it fit, one per side, in slot order. */
+  clubs: string[];
+  /** Would have worked in BOTH gaps. The most useful card on the wall. */
+  either: boolean;
+  /** The gap it answers, or null when it answers either. */
+  slotIndex: number | null;
+  fieldSize: number;
+  /** The player actually played this one, so the wall can say so. */
+  mine: boolean;
+}
+
 export interface ChainResult {
   made: number;
   total: number;
@@ -62,6 +79,52 @@ export interface ChainResult {
   score: number;
   slots: SlotOutcome[];
   links: readonly boolean[];
+  /**
+   * How many distinct ways the board could have been filled, over all its
+   * blanks at once. Null unless the board has exactly two, which is the only
+   * layout that ships — see the pair-layout measurement in HANDOFF.
+   *
+   * This is a PRODUCT minus a correction, not a sum: the two slots need two
+   * different players, so every pairing that would use the same man twice
+   * comes back off. The correction is the size of the overlap between the two
+   * fields, which on chain 006 is the difference between 256 and 254.
+   */
+  pairs: number | null;
+  /** Up to five answers that would have worked, deepest first. */
+  pinboard: PinnedAnswer[];
+  /**
+   * The grade, re-measured from the board rather than read off its label.
+   *
+   * ENTRY is the fame of the LESS famous half of the most findable legal pair:
+   * "if you took the easiest way in, how obscure is the harder of the two
+   * names you still had to produce". It answers the only question that decides
+   * difficulty — is there an obvious way in — and it is what the shipped
+   * boards were graded on. Null when there is no legal pair at all.
+   */
+  entry: number | null;
+}
+
+/**
+ * The most findable legal pair, without enumerating the pairs.
+ *
+ * The naive version is a double loop, and on a board whose fields run to
+ * hundreds it is a hundred thousand comparisons on the main thread at the
+ * exact moment the reveal is trying to animate. It is also unnecessary: sort
+ * both sides by fame and the answer is at the top. Take the two most famous;
+ * if they are the same player — which is the whole reason this is not just
+ * `min(max(A), max(B))` — the best you can do is that man beside the runner-up
+ * on the other side, so try it both ways round and keep the better.
+ */
+function entryOf(a: readonly Player[], b: readonly Player[]): number | null {
+  if (a.length === 0 || b.length === 0) return null;
+  const byFame = (xs: readonly Player[]) => [...xs].sort((x, y) => y.fame.value - x.fame.value);
+  const A = byFame(a);
+  const B = byFame(b);
+  if (A[0]!.id !== B[0]!.id) return Math.min(A[0]!.fame.value, B[0]!.fame.value);
+  const left = B[1] ? Math.min(A[0]!.fame.value, B[1].fame.value) : null;
+  const right = A[1] ? Math.min(A[1].fame.value, B[0]!.fame.value) : null;
+  if (left === null && right === null) return null;
+  return Math.max(left ?? -Infinity, right ?? -Infinity);
 }
 
 /**
@@ -83,7 +146,33 @@ export function chainResult(
   const links = chainLinks(fill, pool, mode, prescribed);
   const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode, prescribed);
 
+  /**
+   * Which club carried each side for a player sitting at slot `i`.
+   *
+   * Read off the GIVEN neighbours rather than off the player's own fill, for
+   * the same reason `best` is: a wrong pick must not get to decide what the
+   * right answer is said to have in common.
+   */
+  const carriedAt = (p: Player, i: number): string[] => {
+    const out: string[] = [];
+    for (const [n, link] of [[i - 1, i - 1], [i + 1, i]] as const) {
+      // A named club is the rule for that side whatever sits on the far end
+      // of it. On the pair layout the far end IS the other blank, and skipping
+      // it left the reveal painting one colour on both halves of a diagonal
+      // whose whole job is to name two clubs.
+      const named = prescribed[link];
+      if (named !== undefined) { out.push(named); continue; }
+      const other = puzzle.slots[n];
+      if (other == null) continue;
+      const shared = pool.get(other)?.clubIds.find((c) => p.clubIds.includes(c));
+      if (shared) out.push(shared);
+    }
+    return out;
+  };
+
   const slots: SlotOutcome[] = [];
+  /** Kept so the reveal can state how many ways the board could have gone. */
+  const fields: Player[][] = [];
   puzzle.slots.forEach((given, i) => {
     if (given != null) return;
 
@@ -97,6 +186,7 @@ export function chainResult(
     // alternating layout these are the same set; they diverge as soon as two
     // blanks sit next to each other.
     const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed);
+    fields.push(field);
 
     // The deepest answer ABOVE a fame floor, not the deepest outright.
     //
@@ -116,33 +206,13 @@ export function chainResult(
       null,
     );
 
-    // Which club carried each side. Read off the GIVEN neighbours for the same
-    // reason `best` is: the player's own fill may be wrong, and a wrong pick
-    // must not decide what the right answer is said to have in common.
-    const carried = (p: Player): string[] => {
-      const out: string[] = [];
-      for (const [n, link] of [[i - 1, i - 1], [i + 1, i]] as const) {
-        // A named club is the rule for that side whatever sits on the far end
-        // of it. On the pair layout the far end IS the other blank, and
-        // skipping it left the reveal painting one colour on both halves of a
-        // diagonal whose whole job is to name two clubs.
-        const named = prescribed[link];
-        if (named !== undefined) { out.push(named); continue; }
-        const other = puzzle.slots[n];
-        if (other == null) continue;
-        const shared = pool.get(other)?.clubIds.find((c) => p.clubIds.includes(c));
-        if (shared) out.push(shared);
-      }
-      return out;
-    };
-
     slots.push({
       index: i,
       playerId: fill[i] ?? null,
       held,
       depth: depths[i] ?? null,
       best: most
-        ? { id: most.id, name: most.name, score: slotObscurityScore(most, field), clubs: carried(most) }
+        ? { id: most.id, name: most.name, score: slotObscurityScore(most, field), clubs: carriedAt(most, i) }
         : null,
       fieldSize: field.length,
     });
@@ -154,6 +224,72 @@ export function chainResult(
     ? 0
     : Math.round(scored.reduce((a, b) => a + b, 0) / scored.length);
 
+  /**
+   * The wall of answers.
+   *
+   * One name per blank is not a reveal, it is a correction — and it wastes
+   * the most interesting thing the game knows. Sixteen players could have
+   * filled each of chain 006's two gaps and the whole point of the screen is
+   * that a fan has heard of about four of them.
+   *
+   * The order is chosen so the wall makes an argument rather than listing:
+   * anyone who fits EITHER gap goes up first, because that is the single
+   * most useful fact about the board, then the deepest couple from each side.
+   * The fame floor is the same one `best` uses — see the note there about
+   * Rodrigo Riep — so the wall never holds up a Wikidata error as the thing
+   * the player should have known.
+   */
+  const pinboard: PinnedAnswer[] = [];
+  const onWall = new Set<string>();
+  const deepestFirst = (xs: readonly Player[]) =>
+    xs.filter((p) => p.fame.value >= MIN_BEST_FAME).sort((a, b) => a.fame.value - b.fame.value);
+
+  const add = (p: Player, slotIndex: number, either: boolean) => {
+    if (onWall.has(p.id) || pinboard.length >= 5) return;
+    onWall.add(p.id);
+    const field = fields[slots.findIndex((s) => s.index === slotIndex)] ?? [];
+    pinboard.push({
+      id: p.id,
+      name: p.name,
+      score: slotObscurityScore(p, field),
+      // An "either" card is claimed by no single slot, so the clubs on it are
+      // the ones that carry the gap it is standing in.
+      clubs: carriedAt(p, slotIndex),
+      either,
+      slotIndex: either ? null : slotIndex,
+      fieldSize: field.length,
+      mine: fill[slotIndex] === p.id,
+    });
+  };
+
+  if (fields.length === 2 && slots.length === 2) {
+    const bIds = new Set(fields[1]!.map((p) => p.id));
+    const both = deepestFirst(fields[0]!.filter((p) => bIds.has(p.id)));
+    if (both[0]) add(both[0], slots[0]!.index, true);
+  }
+  // One round of the deepest from each side, then a second, so the wall
+  // alternates rather than showing one gap's answers and then the other's.
+  for (let round = 0; round < 2; round++) {
+    slots.forEach((s, si) => {
+      const next = deepestFirst(fields[si] ?? []).find((p) => !onWall.has(p.id));
+      if (next) add(next, s.index, false);
+    });
+  }
+
+  // Only the two-blank layout gets a pair count. Three blanks is not a
+  // product of two fields — the middle one's field depends on what the other
+  // two took — and quoting a number that assumed otherwise would be worse
+  // than quoting none.
+  let pairs: number | null = null;
+  let entry: number | null = null;
+  if (fields.length === 2) {
+    const [a, b] = fields as [Player[], Player[]];
+    const bIds = new Set(b.map((p) => p.id));
+    const both = a.filter((p) => bIds.has(p.id)).length;
+    pairs = a.length * b.length - both;
+    entry = entryOf(a, b);
+  }
+
   return {
     made,
     total: links.length,
@@ -161,6 +297,9 @@ export function chainResult(
     score,
     slots,
     links: links.map((l) => l.made),
+    pairs,
+    pinboard,
+    entry,
   };
 }
 

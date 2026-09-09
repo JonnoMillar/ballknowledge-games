@@ -1,7 +1,6 @@
 'use client';
 import { useMemo, useState } from 'react';
 import { search, type SearchIndex } from '../src/lib/search/index';
-import { isoForNation } from '../src/pipeline/nations';
 import type { ChainState } from '../src/game/chainState';
 
 /**
@@ -13,14 +12,13 @@ import type { ChainState } from '../src/game/chainState';
  * puzzle. `search()` returns [] for an empty query, and this component must
  * never add a list of its own.
  *
- * Results show name and nation. Never fame — that is the whole game.
+ * Results show the name and nothing else. Never fame — that is the whole game.
  */
 export default function ChainSearch({
-  state, index, nations, focused, onAddToBench, onPlace,
+  state, index, focused, onAddToBench, onPlace,
 }: {
   state: ChainState;
   index: SearchIndex;
-  nations: Record<string, string>;
   /** The slot the player has clicked into, if any. */
   focused: number | null;
   onAddToBench: (playerId: string) => void;
@@ -41,10 +39,17 @@ export default function ChainSearch({
         });
 
   return (
-    <div style={{ width: 316, flexShrink: 0, display: 'flex', flexDirection: 'column', borderLeft: '2px solid var(--ink)', background: 'var(--panel)' }}>
-      <div style={{ padding: '18px 18px 14px 18px', borderBottom: '1px solid var(--line)' }}>
-        <div className="cond" style={{ fontWeight: 700, fontSize: 13, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 10 }}>
-          SEARCH
+    // The card index. It was a plain white column, which is the one surface on
+    // this screen that had no idea what world it was in — so it gets the
+    // furniture of the thing it actually is: ruled stock, a red margin down
+    // the left, and a hard ink edge where it meets the desk.
+    <div
+      className="index-card"
+      style={{ width: 316, flexShrink: 0, display: 'flex', flexDirection: 'column', borderLeft: '2px solid var(--ink)', position: 'relative' }}
+    >
+      <div style={{ padding: '18px 18px 14px 46px', borderBottom: '1.5px solid rgba(26,20,16,0.3)' }}>
+        <div className="narrow" style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>
+          The card index
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--panel-2)', border: '1.5px solid var(--ink)', borderRadius: 0, padding: '10px 13px' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round">
@@ -66,15 +71,11 @@ export default function ChainSearch({
 
       <div style={{ flexGrow: 1, overflowY: 'auto' }}>
         {results.map((p) => {
-          const iso = isoForNation(p.nation, nations);
           // A player holds at most one slot. Saying so on the row is clearer
           // than leaving a Place button that silently does nothing.
           const inChain = state.filled.includes(p.id);
           return (
-            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px dotted rgba(26,20,16,0.28)', opacity: inChain ? 0.55 : 1 }}>
-              {iso
-                ? <span className={`fi fi-${iso}`} style={{ width: 18, height: 13, borderRadius: 1, flexShrink: 0 }} />
-                : <span style={{ width: 18, height: 13, borderRadius: 1, background: 'var(--slot-border)', flexShrink: 0 }} />}
+            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px 10px 46px', borderBottom: '1px dotted rgba(26,20,16,0.28)', opacity: inChain ? 0.55 : 1 }}>
               <span className="read" style={{ fontSize: 15, flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
               {inChain ? (
                 <span
@@ -110,7 +111,7 @@ export default function ChainSearch({
       </div>
 
       {focused !== null ? (
-        <div style={{ borderTop: '1px solid var(--line)', padding: 18 }}>
+        <div style={{ borderTop: '1.5px solid rgba(26,20,16,0.3)', padding: '18px 18px 18px 46px' }}>
           <div className="cond" style={{ fontWeight: 700, fontSize: 12, letterSpacing: '0.18em', color: 'var(--muted)', marginBottom: 11 }}>
             THIS SLOT SITS BETWEEN
           </div>

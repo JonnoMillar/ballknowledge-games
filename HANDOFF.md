@@ -1,6 +1,6 @@
 # Recall XI — state of play
 
-**Updated:** 2026-09-09. Read this first in a new session; it is the shortest
+**Updated:** 2026-09-10. Read this first in a new session; it is the shortest
 path back to full context.
 
 ## What this is
@@ -22,7 +22,7 @@ and has been largely untouched since.
 
 ```bash
 npm run dev        # localhost:3000
-npm test           # 282 tests, 23 files
+npm test           # 301 tests, 23 files
 npm run typecheck
 ```
 
@@ -42,7 +42,7 @@ Boards worth opening: `/chain?c=006` (easy), `?c=007` (medium), `?c=008`
 | `src/lib/club-colours.ts` | Hand-checked club colours + the diagonal split. |
 | `src/lib/short-name.ts` | Nameplates. A stopgap for missing aliases — see below. |
 | `src/game/` | Reducers + derived views. No React in a reducer. |
-| `components/` | Next.js UI. `Chain.tsx`, `LockIn.tsx` and `PlayerCard.tsx` carry the sheet design. |
+| `components/` | Next.js UI. `ChainRow.tsx` draws the chain for BOTH the live board and the sealed sheet; `Chain.tsx` and `LockIn.tsx` are the two frames around it. `swing.ts`, `Pin.tsx`, `RedString.tsx` are the physical bits. |
 | `content/chains/` | Eight chains. 006–008 are the graded set. |
 | `design/` | `.dc.html` artboards + `canvas.json` for the design canvas. |
 | `data/pool.json` | 11,741 players. Committed snapshot. |
@@ -184,6 +184,91 @@ The seeded canvas payloads are gitignored — ~3 MB each and almost entirely the
 editor's own minified code. The source (artboards, `design/sheets/`,
 `canvas.json`) is committed.
 
+### The board is the artboard now
+
+`design/Chain007.dc.html` is the reference and the live route follows it: the
+masthead is printed ON the paper rather than in a bar above it, the chain sits
+in mounted prints with a stable per-slot lean, and a band across the bottom of
+the sheet carries a statement on the left and a block on the right.
+
+That band is the one place the live sheet and the sealed sheet deliberately
+differ. The artboard prints how many ways the board could have gone — which is
+a fact about the ANSWER, and quoting field sizes to somebody still searching is
+the same leak as lighting the links green. So the live band keeps the geometry
+and changes the payload: the brief on the left, `n/m` filled on the right, and
+that right block turns from ink to gold foil when the last plate is filled.
+
+**One component draws the chain on both screens** (`components/ChainRow.tsx`).
+The reveal is meant to be the same sheet with the answers on it; two
+implementations would have drifted within a week.
+
+### The physics
+
+Dragging is a spring, not a transition. `components/swing.ts` integrates a
+damped spring per frame against a target set by pointer velocity, and writes
+the transform straight to the node — sixty React renders a second for a value
+nothing else reads is not worth it. The point of a spring here is the
+**overshoot**: a transition eases to its target and stops dead, so the card
+snaps upright the instant your hand does.
+
+`stepSwing` and `tiltTarget` are exported as pure functions and tested in
+`tests/ui/swing.test.ts`. That is not gold-plating: **requestAnimationFrame
+does not run in a hidden tab**, so the behaviour is unobservable in an
+automated browser and the numeric test is the only check there is.
+
+Dropping onto a plate hands over to the plate: the card lands with an
+overshoot, then a beat later a pin drives through it. Three notes worth
+keeping:
+
+- An empty plate has **no** pin. The pin arriving is the reward for the drop.
+- `mount-land` must end on `rotate(var(--tilt))`, not `transform: none` —
+  fill-mode holds the last frame, so ending square left the card bolt upright
+  until the class came off, then it snapped back.
+- `tiltFor` hashes the lean out of the slot index. `Math.random()` would
+  re-roll every card on every keystroke in the search box.
+
+### The red string
+
+`components/RedString.tsx`. Twine between the pins on the sealed sheet, drawn
+one span at a time left to right. It sags, it is drawn rather than faded in,
+and a link that did not hold **snaps**: the string goes on taut, holds a beat,
+then parts in the middle and both ends drop.
+
+Anchors are measured from the mounts at layout time and tied to the pin's head
+via `pinHead()` in `Pin.tsx`, not to the card's top edge — the row is flexible
+and the cards are rotated, so a hard-coded pitch is wrong at every width but
+one. When the string is running, the connector rules are hidden
+(`stringed`): two lines joining the same two cards is one too many.
+
+### What the sealed sheet states
+
+`chainResult` measures three things the reveal prints, rather than reading them
+off a label:
+
+- **`pairs`** — how many ways the board could have been filled. A product minus
+  the overlap between the two fields, because the same player cannot fill both
+  blanks. Two-blank boards only; three blanks is not a product of two fields.
+- **`entry`** — the grade, re-measured. Found by sorting both fields rather
+  than looping over every pair, so it does not block the main thread mid-reveal.
+- **`pinboard`** — up to five answers that would have worked: anyone who fits
+  *either* gap first, then the deepest from each side alternately.
+
+`tests/content/chains.test.ts` checks the two shortcuts against the slow
+obvious versions and against the figures in the table above (006 → 254 ways,
+entry 90). A shortcut that is wrong is worse than no number, because the sheet
+states it as fact.
+
+**`caption`** is a new optional field on a chain: one hand-written line about
+why the board is the shape it is, printed beside the pair count. The generator
+carries an existing caption forward only if the rerun landed on the same
+givens and the same club — a stale observation is worse than none.
+
+**Careful with superlatives on this screen.** `best` applies a fame floor of 30
+and the depth gauge ranks against the untouched field, so they legitimately
+disagree: on 008 the reveal said "nobody went deeper" directly beside "4th most
+obscure of 8". Both true of different sets, and unreadable together. The
+breakdown now states what happened and leaves ranking to the gauge.
+
 ## Data pipeline
 
 Criteria-driven, not club-crawled: the pool is defined by fame floor + era +
@@ -257,6 +342,14 @@ at deprecated rank.
   prescribed links deliberately, and for a measured reason.
 - **Nation is sporting nationality (P1532), not citizenship (P27).** P27
   collapses the home nations into "United Kingdom".
+- **Flags are gone, nation is not.** `player.nation` is still on every player
+  and still load-bearing: `linkColour` scores same-league-plus-same-nation as
+  green and same-club-plus-same-nation as hyper, so chemistry mode reads it on
+  every link. What went is the whole apparatus for *drawing* it — the
+  `flag-icons` dependency, `data/nations.json`, `src/pipeline/nations.ts`
+  (`isoForNation` was its only export), `scripts/fetch-nations.ts` and the
+  `nations` prop that was threaded through nine components to reach two 18×13
+  rectangles. Nothing else used the QID→ISO map, so it went with them.
 - **Club crests are in.** Previously "deliberately absent — trademarks". Jonno's
   call: they are all over football games online.
 

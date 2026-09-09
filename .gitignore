@@ -27,3 +27,6 @@ public/badges/
 # design/sheets/ and canvas.json — and `npm run build:sheets` regenerates it.
 recall-xi-graded-boards.html
 design/recall-xi-design-strands.html
+
+# Screenshot/trace scratch from the Playwright MCP server.
+.playwright-mcp/

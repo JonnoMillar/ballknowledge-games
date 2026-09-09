@@ -52,6 +52,21 @@ export interface ChainPuzzle {
    */
   slots: readonly (string | null)[];
   /**
+   * One line about why this board is the shape it is, printed on the sealed
+   * sheet beside the count of ways it could have gone.
+   *
+   * Hand-written, and deliberately not generated: the interesting thing about
+   * a board is never its statistics, it is the observation the statistics are
+   * evidence for. "16 fit the first, 16 the second" is the measurement;
+   * "half of Everton has been to Barcelona or Madrid" is what it means, and
+   * only the second one is worth reading twice.
+   *
+   * Withheld until lock-in with everything else — it is a remark about the
+   * shape of the answer space, which is not a thing to hand someone who is
+   * still searching it.
+   */
+  caption?: string;
+  /**
    * Links that name the club that has to make them, keyed by link index — link
    * `i` joins slot `i` and slot `i+1`. Shown on the board from the start, as a
    * badge on an empty link.

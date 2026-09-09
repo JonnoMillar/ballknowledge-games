@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { chainFieldFor, chainLinks, chainProgress, linked } from '../../src/lib/chain/score';
+import { chainResult } from '../../src/lib/chain/result';
 import type { ChainPuzzle } from '../../src/lib/chain/types';
 import type { Player } from '../../src/lib/chemistry/types';
 
@@ -13,6 +14,34 @@ const pool = new Map(players.map((p) => [p.id, p]));
 const files = hasPool && existsSync('content/chains')
   ? readdirSync('content/chains').filter((f) => f.endsWith('.json'))
   : [];
+
+/**
+ * The grade has to be a measurement, not a label typed into a JSON file.
+ *
+ * ENTRY is the fame of the less famous half of the most findable legal pair
+ * — the easiest way in that the board actually admits. Taking each blank's
+ * most famous answer separately is the obvious version and it is wrong: the
+ * two slots need two different players, and the boards that measure easiest
+ * are the ones where a single player tops both blanks and can only fill one.
+ * See scripts/build-graded-chains.ts.
+ */
+function entryOf(chain: ChainPuzzle): number {
+  const mode = chain.mode ?? 'chemistry';
+  const blanks = chain.slots.map((s, i) => (s === null ? i : -1)).filter((i) => i >= 0);
+  const fields = blanks.map((i) =>
+    [...chainFieldFor(i, chain.slots, players, pool, mode, chain.prescribedLinks)]
+      .sort((a, b) => b.fame.value - a.fame.value)
+      .slice(0, 2),
+  );
+  let best = 0;
+  for (const x of fields[0] ?? []) {
+    for (const y of fields[1] ?? []) {
+      if (x.id === y.id) continue;
+      best = Math.max(best, Math.min(x.fame.value, y.fame.value));
+    }
+  }
+  return best;
+}
 
 describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
   for (const file of files) {
@@ -102,33 +131,6 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
 });
 
 describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
-  /**
-   * The grade has to be a measurement, not a label typed into a JSON file.
-   *
-   * ENTRY is the fame of the less famous half of the most findable legal pair
-   * — the easiest way in that the board actually admits. Taking each blank's
-   * most famous answer separately is the obvious version and it is wrong: the
-   * two slots need two different players, and the boards that measure easiest
-   * are the ones where a single player tops both blanks and can only fill one.
-   * See scripts/build-graded-chains.ts.
-   */
-  function entryOf(chain: ChainPuzzle): number {
-    const mode = chain.mode ?? 'chemistry';
-    const blanks = chain.slots.map((s, i) => (s === null ? i : -1)).filter((i) => i >= 0);
-    const fields = blanks.map((i) =>
-      [...chainFieldFor(i, chain.slots, players, pool, mode, chain.prescribedLinks)]
-        .sort((a, b) => b.fame.value - a.fame.value)
-        .slice(0, 2),
-    );
-    let best = 0;
-    for (const x of fields[0] ?? []) {
-      for (const y of fields[1] ?? []) {
-        if (x.id === y.id) continue;
-        best = Math.max(best, Math.min(x.fame.value, y.fame.value));
-      }
-    }
-    return best;
-  }
 
   const graded = files
     .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
@@ -157,5 +159,68 @@ describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
         `${b.id} (${b.grade}, entry ${b.entry}) is not harder than ${a.id} (${a.grade}, entry ${a.entry})`,
       ).toBeGreaterThan(b.entry);
     }
+  });
+});
+
+describe.skipIf(!hasPool || files.length === 0)('what the sealed sheet states', () => {
+  /**
+   * The reveal prints two measured numbers on the board: how many ways it
+   * could have been filled, and the grade. Both are computed inside
+   * `chainResult` by shortcuts — a product minus an overlap for the pair
+   * count, and a two-deep sort for ENTRY — because the honest versions are a
+   * double loop over the whole field and this runs on the main thread while
+   * the reveal is trying to animate.
+   *
+   * A shortcut that is wrong is worse than no number at all, because the
+   * sheet states it as fact. So these check the shortcuts against the slow,
+   * obvious versions, and against the figures the design was signed off on.
+   */
+  const graded = files
+    .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
+    .filter((c) => c.difficulty !== undefined && c.slots.filter((s) => s === null).length === 2);
+
+  for (const chain of graded) {
+    const mode = chain.mode ?? 'chemistry';
+    const blanks = chain.slots.map((s, i) => (s === null ? i : -1)).filter((i) => i >= 0);
+    const fields = blanks.map((i) =>
+      chainFieldFor(i, chain.slots, players, pool, mode, chain.prescribedLinks),
+    );
+    const result = chainResult(chain.referenceSolution!, chain, players, pool);
+
+    it(`${chain.id}: the pair count matches counting them one by one`, () => {
+      const [a, b] = fields as [Player[], Player[]];
+      expect(a.length * b.length).toBeLessThan(100_000); // keep the loop honest and quick
+      let counted = 0;
+      for (const x of a) for (const y of b) if (x.id !== y.id) counted++;
+      expect(result.pairs).toBe(counted);
+    });
+
+    it(`${chain.id}: ENTRY agrees with the measure the grader uses`, () => {
+      expect(result.entry).toBe(entryOf(chain));
+    });
+
+    it(`${chain.id}: the wall of answers is real, distinct and legal`, () => {
+      expect(result.pinboard.length).toBeGreaterThan(0);
+      expect(new Set(result.pinboard.map((p) => p.id)).size).toBe(result.pinboard.length);
+      for (const answer of result.pinboard) {
+        expect(pool.has(answer.id), `${answer.id} not in the pool`).toBe(true);
+        // Every card claims the clubs that made it fit, and the sheet paints
+        // them. A card with no clubs would be a blank diagonal.
+        expect(answer.clubs.length, `${answer.name} has no club to show`).toBeGreaterThan(0);
+        const inField = answer.either
+          ? fields.every((f) => f.some((p) => p.id === answer.id))
+          : fields.some((f) => f.some((p) => p.id === answer.id));
+        expect(inField, `${answer.name} would not actually have worked`).toBe(true);
+      }
+    });
+  }
+
+  it('chain 006 states the figures the boards were graded on', () => {
+    // The numbers in HANDOFF.md, held to by the code that prints them.
+    const six = graded.find((c) => c.id === '006');
+    if (!six) return;
+    const result = chainResult(six.referenceSolution!, six, players, pool);
+    expect(result.pairs).toBe(254);
+    expect(result.entry).toBe(90);
   });
 });

@@ -97,18 +97,23 @@ export default function DepthGauge({ depth, delay }: { depth: SlotDepth; delay: 
       <div
         style={{
           position: 'relative', height: 4, borderRadius: 2,
-          // Famous on the left, obscure on the right. The track darkens toward
-          // the obscure end so a marker far right reads as "deep".
-          background: 'linear-gradient(90deg, #223050, var(--gold))',
-          opacity: 0.5,
+          // Famous on the left, obscure on the right, so a marker far right
+          // reads as "deep". The pale end was hardcoded to the dark board's
+          // navy, which on the scouting sheet's parchment drew a navy smear
+          // across a page that has no navy anywhere else in it — the token is
+          // what makes the gauge belong to whichever board it is drawn on.
+          background: 'linear-gradient(90deg, var(--slot-border), var(--gold))',
+          opacity: 0.55,
         }}
       >
         <span
           style={{
             position: 'absolute', top: -3, left: `${armed ? depth.score : 0}%`,
             width: 3, height: 10, borderRadius: 1, marginLeft: -1.5,
-            background: 'var(--gold-light)',
-            boxShadow: '0 0 8px var(--gold)',
+            background: 'var(--gold)',
+            // A glow belongs on a backlit board, not on paper. Ink casts a
+            // shadow instead.
+            boxShadow: '0 1px 2px rgba(26,20,16,0.35)',
             transition: 'left 780ms cubic-bezier(0.16, 0.84, 0.3, 1)',
           }}
         />

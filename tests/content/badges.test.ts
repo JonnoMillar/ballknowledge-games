@@ -42,5 +42,24 @@ describe.skipIf(!hasData)('club crests', () => {
     // Nothing to strip, and nothing invented: an abbreviation no fan uses is
     // worse than the full name.
     expect(shortClubName('Boca Juniors')).toBe('Boca Juniors');
+    expect(shortClubName('FC Bayern Munich')).not.toBe('Bayern');
+  });
+
+  it('uses the name people actually say, where stripping cannot get there', () => {
+    // The exception to the rule above, and the reason it is a hand-written
+    // list rather than another regex: "PSG" is not a shorter Paris
+    // Saint-Germain, it is a different string that happens to be what
+    // everybody says.
+    expect(shortClubName('Paris Saint-Germain FC')).toBe('PSG');
+    expect(shortClubName('Wolverhampton Wanderers F.C.')).toBe('Wolves');
+    expect(shortClubName('1. FC Köln')).toBe('Köln');
+  });
+
+  it('leaves reserve sides alone rather than passing them off as the first team', () => {
+    // The list matches whole names for exactly this reason: "Borussia
+    // Dortmund II" shortening to "Dortmund" would print a reserve team on the
+    // sheet under the first team's name.
+    expect(shortClubName('Borussia Dortmund')).toBe('Dortmund');
+    expect(shortClubName('Borussia Dortmund II')).toBe('Borussia Dortmund II');
   });
 });

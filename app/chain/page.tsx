@@ -9,7 +9,6 @@ export default async function ChainPage(
   { searchParams }: { searchParams: Promise<{ c?: string }> },
 ) {
   const players = JSON.parse(await readFile('data/pool.json', 'utf8')) as Player[];
-  const nations = JSON.parse(await readFile('data/nations.json', 'utf8')) as Record<string, string>;
   const files = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
   // Portraits win over the raw Commons photos, and a resolved "none" empties
   // the card rather than falling back to a retirement-era snap.
@@ -34,8 +33,8 @@ export default async function ChainPage(
   // leak this mode does not repeat.
   const puzzle: ChainPuzzle = {
     id: file.id, mode: file.mode, difficulty: file.difficulty, slots: file.slots,
-    prescribedLinks: file.prescribedLinks,
+    prescribedLinks: file.prescribedLinks, caption: file.caption,
   };
 
-  return <Chain players={players} puzzle={puzzle} nations={nations} images={images} clubs={clubs} />;
+  return <Chain players={players} puzzle={puzzle} images={images} clubs={clubs} />;
 }

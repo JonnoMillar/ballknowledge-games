@@ -307,10 +307,31 @@ for (const band of BANDS) {
   console.log(`  deepest:        ${x.name} (${x.fame.value}) + ${y.name} (${y.fame.value})\n`);
 
   if (WRITE) {
+    // The caption is hand-written and this script cannot write one, so it
+    // carries the existing line forward rather than deleting it. It is kept
+    // only when the board is still the SAME board: a rerun that lands on
+    // different givens or a different club has invalidated whatever the old
+    // line said about it, and a stale observation is worse than none.
+    const existing = await readFile(`content/chains/${band.id}.json`, 'utf8')
+      .then((s) => JSON.parse(s) as {
+        caption?: string;
+        slots?: (string | null)[];
+        prescribedLinks?: Record<string, string>;
+      })
+      .catch(() => null);
+    const sameBoard =
+      existing?.slots?.[0] === pick.left.id &&
+      existing?.slots?.[existing.slots.length - 1] === pick.right.id &&
+      existing?.prescribedLinks?.[1] === pick.club;
+    if (existing?.caption && !sameBoard) {
+      console.log(`  caption dropped — ${band.id} is a different board now`);
+    }
+
     const puzzle = {
       id: band.id,
       mode: 'clubs' as const,
       difficulty: band.difficulty,
+      ...(sameBoard && existing?.caption ? { caption: existing.caption } : {}),
       slots: [pick.left.id, null, null, pick.right.id],
       prescribedLinks: { 1: pick.club },
       referenceSolution: [pick.left.id, x.id, y.id, pick.right.id],

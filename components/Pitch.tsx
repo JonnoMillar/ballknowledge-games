@@ -21,10 +21,10 @@ const STROKE: Record<string, string> = {
 };
 
 function Slot({
-  state, slotId, nations, images, obscurityFor, chem, focused, onFocus,
+  state, slotId, images, obscurityFor, chem, focused, onFocus,
 }: {
   state: GameState; slotId: string;
-  nations: Record<string, string>; images: Record<string, PortraitImage>;
+  images: Record<string, PortraitImage>;
   obscurityFor: (slotId: string) => number | null;
   /** Individual chemistry 0..10 for this slot, or null when empty. */
   chem: number | null;
@@ -45,7 +45,6 @@ function Slot({
             player={player}
             variant={given ? 'given' : 'found'}
             slotId={slotId}
-            nations={nations}
             images={images}
             obscurity={given ? null : obscurityFor(slotId)}
             outOfPosition={!player.positions.includes(
@@ -110,10 +109,10 @@ function Slot({
 }
 
 export default function Pitch({
-  state, nations, images, obscurityFor, perSlotChem, focusedSlot, onFocus,
+  state, images, obscurityFor, perSlotChem, focusedSlot, onFocus,
 }: {
   state: GameState;
-  nations: Record<string, string>; images: Record<string, PortraitImage>;
+  images: Record<string, PortraitImage>;
   obscurityFor: (slotId: string) => number | null;
   perSlotChem: Record<string, number>;
   focusedSlot: string | null; onFocus: (s: string) => void;
@@ -161,7 +160,7 @@ export default function Pitch({
       </svg>
 
       {Object.keys(POS).map((slotId) => (
-        <Slot key={slotId} state={state} slotId={slotId} nations={nations}
+        <Slot key={slotId} state={state} slotId={slotId}
           images={images} obscurityFor={obscurityFor}
           chem={state.placed[slotId] ? (perSlotChem[slotId] ?? 0) : null}
           focused={focusedSlot === slotId} onFocus={onFocus} />

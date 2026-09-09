@@ -16,11 +16,10 @@ import type { Board } from '../src/lib/puzzle/types';
 import type { PortraitImage } from '../src/lib/portraits';
 
 export default function Game({
-  players, board, nations, images,
+  players, board, images,
 }: {
   players: Player[];
   board: Board;
-  nations: Record<string, string>;
   images: Record<string, PortraitImage>;
 }) {
   const pool = useMemo(() => new Map(players.map((p) => [p.id, p])), [players]);
@@ -189,7 +188,7 @@ export default function Game({
         </header>
 
         <div style={{ flexGrow: 1, display: 'flex', minHeight: 0 }}>
-          <Library state={state} nations={nations} images={images} onRemove={(id) => dispatch({ type: 'library/remove', playerId: id })} />
+          <Library state={state} images={images} onRemove={(id) => dispatch({ type: 'library/remove', playerId: id })} />
 
           {/* The pitch is authored at a fixed 880x700 so the slot and link
               geometry stays exactly as designed. Scale it to whatever space is
@@ -203,14 +202,13 @@ export default function Game({
                 transformOrigin: 'center center',
               }}
             >
-              <Pitch state={state} nations={nations} images={images} obscurityFor={obscurityFor} perSlotChem={score.perSlot} focusedSlot={focusedSlot} onFocus={setFocusedSlot} />
+              <Pitch state={state} images={images} obscurityFor={obscurityFor} perSlotChem={score.perSlot} focusedSlot={focusedSlot} onFocus={setFocusedSlot} />
             </div>
           </div>
 
           <SearchPanel
             state={state}
             index={index}
-            nations={nations}
             focusedSlot={focusedSlot}
             onAddToBench={(id) => dispatch({ type: 'library/add', playerId: id })}
             onPlace={(slot, id) => dispatch({ type: 'place', slotId: slot, playerId: id })}
@@ -219,7 +217,7 @@ export default function Game({
       </div>
 
       <DragOverlay>
-        {dragging ? <PlayerCard player={dragging} variant="library" nations={nations} images={images} obscurity={null} /> : null}
+        {dragging ? <PlayerCard player={dragging} variant="library" images={images} obscurity={null} /> : null}
       </DragOverlay>
     </DndContext>
   );
