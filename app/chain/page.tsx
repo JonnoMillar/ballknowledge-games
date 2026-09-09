@@ -33,7 +33,7 @@ export default async function ChainPage(
   // boards currently ship theirs inside the client bundle, which is a standing
   // leak this mode does not repeat.
   const puzzle: ChainPuzzle = {
-    id: file.id, mode: file.mode, slots: file.slots,
+    id: file.id, mode: file.mode, difficulty: file.difficulty, slots: file.slots,
     prescribedLinks: file.prescribedLinks,
   };
 

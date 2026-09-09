@@ -23,11 +23,29 @@
  */
 export type ChainMode = 'chemistry' | 'clubs';
 
+/**
+ * How hard a chain is, as a shipped property of the board rather than a guess.
+ *
+ * The generator grades on ENTRY: the fame of the most famous player who would
+ * satisfy a side, minimised over the two sides. It is the only measure that
+ * predicts whether the first player who comes to mind is a legal answer. Field
+ * size is the second lever and pulls the other way — a large field forgives a
+ * bad guess — so a hard board is narrowed as well as deepened. See
+ * scripts/build-graded-chains.ts.
+ */
+export type ChainDifficulty = 'easy' | 'medium' | 'hard';
+
 /** A published chain. Slots are ordered left to right; links join i and i+1. */
 export interface ChainPuzzle {
   id: string;
   /** Defaults to `chemistry` when absent, so existing content is unchanged. */
   mode?: ChainMode;
+  /**
+   * Absent on the chains generated before grading existed. Shown on the board,
+   * because a score is only comparable between players once they know they
+   * were solving the same difficulty of board.
+   */
+  difficulty?: ChainDifficulty;
   /**
    * One entry per slot, in order: a given player's id, or null for a slot the
    * player must fill. `slots.length` is the chain length.

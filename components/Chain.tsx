@@ -13,7 +13,7 @@ import DepthGauge, { useCountUp } from './DepthGauge';
 import LockIn from './LockIn';
 import { chainResult } from '../src/lib/chain/result';
 import { buildIndex } from '../src/lib/search/index';
-import type { ChainPuzzle } from '../src/lib/chain/types';
+import type { ChainDifficulty, ChainPuzzle } from '../src/lib/chain/types';
 import type { LinkColour, Player } from '../src/lib/chemistry/types';
 
 const STROKE: Record<LinkColour, string> = {
@@ -21,6 +21,13 @@ const STROKE: Record<LinkColour, string> = {
   hyper: 'var(--gold-light)',
   orange: 'var(--gold)',
   red: 'var(--link-red)',
+};
+
+/** Grade colours. Deliberately not the link palette: a grade is not a verdict. */
+const GRADE: Record<ChainDifficulty, string> = {
+  easy: 'var(--green-dim)',
+  medium: 'var(--gold)',
+  hard: 'var(--link-red)',
 };
 
 /**
@@ -367,7 +374,23 @@ export default function Chain({
 
         <header style={{ display: 'flex', alignItems: 'center', gap: 28, padding: '16px 26px', borderBottom: '1px solid var(--line)' }}>
           <div>
-            <div className="cond" style={{ fontWeight: 700, fontSize: 26, lineHeight: 1 }}>CHAIN {puzzle.id}</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+              <div className="cond" style={{ fontWeight: 700, fontSize: 26, lineHeight: 1 }}>CHAIN {puzzle.id}</div>
+              {/* A score only compares across boards once you know the boards
+                  were graded, so the grade is on screen before you start. */}
+              {puzzle.difficulty && (
+                <span
+                  className="cond"
+                  style={{
+                    fontWeight: 600, fontSize: 11, letterSpacing: '0.16em',
+                    padding: '3px 8px', borderRadius: 3, textTransform: 'uppercase',
+                    color: GRADE[puzzle.difficulty], border: `1px solid ${GRADE[puzzle.difficulty]}`,
+                  }}
+                >
+                  {puzzle.difficulty}
+                </span>
+              )}
+            </div>
             <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 3 }}>
               {mode === 'clubs' ? 'Every link a shared club' : 'Every link green'}
               {Object.keys(prescribed).length > 0 ? ' · one club named for you' : ''} · {blanks} to find

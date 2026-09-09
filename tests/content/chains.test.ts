@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { chainLinks, chainProgress, linked } from '../../src/lib/chain/score';
+import { chainFieldFor, chainLinks, chainProgress, linked } from '../../src/lib/chain/score';
 import type { ChainPuzzle } from '../../src/lib/chain/types';
 import type { Player } from '../../src/lib/chemistry/types';
 
@@ -99,4 +99,63 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
       expect(Math.max(...fame)).toBeGreaterThanOrEqual(50);
     });
   }
+});
+
+describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
+  /**
+   * The grade has to be a measurement, not a label typed into a JSON file.
+   *
+   * ENTRY is the fame of the less famous half of the most findable legal pair
+   * — the easiest way in that the board actually admits. Taking each blank's
+   * most famous answer separately is the obvious version and it is wrong: the
+   * two slots need two different players, and the boards that measure easiest
+   * are the ones where a single player tops both blanks and can only fill one.
+   * See scripts/build-graded-chains.ts.
+   */
+  function entryOf(chain: ChainPuzzle): number {
+    const mode = chain.mode ?? 'chemistry';
+    const blanks = chain.slots.map((s, i) => (s === null ? i : -1)).filter((i) => i >= 0);
+    const fields = blanks.map((i) =>
+      [...chainFieldFor(i, chain.slots, players, pool, mode, chain.prescribedLinks)]
+        .sort((a, b) => b.fame.value - a.fame.value)
+        .slice(0, 2),
+    );
+    let best = 0;
+    for (const x of fields[0] ?? []) {
+      for (const y of fields[1] ?? []) {
+        if (x.id === y.id) continue;
+        best = Math.max(best, Math.min(x.fame.value, y.fame.value));
+      }
+    }
+    return best;
+  }
+
+  const graded = files
+    .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
+    .filter((c) => c.difficulty !== undefined);
+
+  it.skipIf(graded.length === 0)('a grade means the same thing on every board', () => {
+    // Only two-blank boards are comparable this way, which is every graded
+    // board we ship. If that stops being true the measure needs generalising
+    // rather than the assertion relaxing.
+    for (const c of graded) {
+      expect(c.slots.filter((s) => s === null), `${c.id} is not a two-blank board`).toHaveLength(2);
+    }
+    const rank = { easy: 0, medium: 1, hard: 2 } as const;
+    const measured = graded
+      .map((c) => ({ id: c.id, grade: c.difficulty!, entry: entryOf(c) }))
+      .sort((a, b) => rank[a.grade] - rank[b.grade]);
+
+    // Harder must never be more findable than easier. Stated as a strict drop
+    // so a set that grades two boards the same is caught rather than tolerated.
+    for (let i = 0; i + 1 < measured.length; i++) {
+      const a = measured[i]!;
+      const b = measured[i + 1]!;
+      if (a.grade === b.grade) continue;
+      expect(
+        a.entry,
+        `${b.id} (${b.grade}, entry ${b.entry}) is not harder than ${a.id} (${a.grade}, entry ${a.entry})`,
+      ).toBeGreaterThan(b.entry);
+    }
+  });
 });
