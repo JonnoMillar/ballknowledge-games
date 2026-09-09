@@ -2,21 +2,23 @@
 import { useDraggable } from '@dnd-kit/core';
 import { isoForNation } from '../src/pipeline/nations';
 import type { Player } from '../src/lib/chemistry/types';
+import type { PortraitImage } from '../src/lib/portraits';
+import { plateName } from '../src/lib/short-name';
 
 export type CardVariant = 'given' | 'found' | 'library';
 
 
 export default function PlayerCard({
   player, variant, slotId, nations, images, obscurity,
-  outOfPosition = false, compact = false, revealDelay,
+  outOfPosition = false, compact = false, revealDelay, ring,
 }: {
   player: Player;
   variant: CardVariant;
   /** Undefined when the card is sitting on the bench. */
   slotId?: string;
   nations: Record<string, string>;
-  /** Player id to a ready image URL. See src/lib/portraits.ts. */
-  images: Record<string, string>;
+  /** Player id to a ready picture. See src/lib/portraits.ts. */
+  images: Record<string, PortraitImage>;
   /**
    * 0–100 for this placement, or null while the player is still on the bench.
    * This is the number on the card — how obscure the pick was, not a rating.
@@ -31,6 +33,16 @@ export default function PlayerCard({
    * number arrives as a result rather than sitting there as a running total.
    */
   revealDelay?: number;
+  /**
+   * A CSS background for the photo's ring, which turns the card into a mounted
+   * print instead of a dark slab. Passing it opts into the scouting-sheet
+   * treatment; the XI board passes nothing and is untouched.
+   *
+   * On the chain board this is deliberately NEUTRAL until lock-in. The ring
+   * shows the clubs that made a player fit, so colouring it while the board is
+   * still open would answer the question the player is being asked.
+   */
+  ring?: string;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `${slotId ?? 'lib'}:${player.id}`,
@@ -43,7 +55,74 @@ export default function PlayerCard({
   const given = variant === 'given';
   const w = compact ? 92 : 108;
   const h = compact ? 120 : 140;
-  const surname = player.name.split(' ').slice(-1)[0]!.toUpperCase();
+  const surname = plateName(player.id, player.name).toUpperCase();
+
+  if (ring !== undefined) {
+    return (
+      <div
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
+        className="mount"
+        title={player.name}
+        style={{
+          width: w, flexShrink: 0, position: 'relative',
+          opacity: isDragging ? 0.35 : 1,
+          cursor: given ? 'default' : 'grab',
+          touchAction: 'none',
+        }}
+      >
+        <div className="photo" style={{ width: w - 10, height: h - 22, background: ring }}>
+          {photo ? (
+            <img
+              src={photo.url}
+              alt=""
+              style={{
+                objectFit: photo.fit,
+                objectPosition: photo.fit === 'cover' ? '50% 18%' : '50% 50%',
+              }}
+            />
+          ) : (
+            <div style={{ width: '100%', height: '100%', background: '#e6ded0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(26,20,16,0.3)" strokeWidth="1.4">
+                <circle cx="12" cy="8" r="3.6" />
+                <path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" />
+              </svg>
+            </div>
+          )}
+          {iso ? (
+            <span className={`fi fi-${iso}`} style={{ position: 'absolute', left: 8, bottom: 8, width: 18, height: 13, boxShadow: '0 1px 3px rgba(0,0,0,0.55)' }} />
+          ) : null}
+        </div>
+
+        <div style={{ width: w - 10, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 4, padding: '5px 1px 7px' }}>
+          <span
+            className="narrow"
+            style={{
+              fontWeight: 700, fontSize: surname.length > 11 ? 10 : 12, letterSpacing: '0.02em',
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              color: given ? 'var(--ink)' : 'var(--accent)',
+            }}
+          >
+            {surname}
+          </span>
+          {obscurity !== null && (
+            <span
+              className="slab"
+              style={{
+                fontSize: 15, lineHeight: 1, color: 'var(--gold)', flexShrink: 0,
+                animation: revealDelay === undefined
+                  ? undefined
+                  : `chip-in 380ms cubic-bezier(0.16,0.84,0.3,1) ${revealDelay}ms both`,
+              }}
+            >
+              {obscurity}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -69,7 +148,7 @@ export default function PlayerCard({
           scrapbook. */}
       {photo ? (
         <img
-          src={photo}
+          src={photo.url}
           alt=""
           style={{
             position: 'absolute', right: 0, top: 0, width: '78%', height: '72%',

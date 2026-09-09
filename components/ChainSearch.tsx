@@ -41,13 +41,13 @@ export default function ChainSearch({
         });
 
   return (
-    <div style={{ width: 316, flexShrink: 0, display: 'flex', flexDirection: 'column', borderLeft: '1px solid var(--line)' }}>
+    <div style={{ width: 316, flexShrink: 0, display: 'flex', flexDirection: 'column', borderLeft: '2px solid var(--ink)', background: 'var(--panel)' }}>
       <div style={{ padding: '18px 18px 14px 18px', borderBottom: '1px solid var(--line)' }}>
         <div className="cond" style={{ fontWeight: 700, fontSize: 13, letterSpacing: '0.2em', color: 'var(--muted)', marginBottom: 10 }}>
           SEARCH
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--panel)', border: '1px solid var(--border)', borderRadius: 5, padding: '10px 13px' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b7396" strokeWidth="2" strokeLinecap="round">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--panel-2)', border: '1.5px solid var(--ink)', borderRadius: 0, padding: '10px 13px' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="7" />
             <path d="M20 20l-4.5-4.5" />
           </svg>
@@ -55,6 +55,7 @@ export default function ChainSearch({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Name a player..."
+            className="read"
             style={{ flexGrow: 1, background: 'transparent', border: 'none', outline: 'none', color: 'var(--text)', fontSize: 15 }}
           />
         </div>
@@ -70,11 +71,11 @@ export default function ChainSearch({
           // than leaving a Place button that silently does nothing.
           const inChain = state.filled.includes(p.id);
           return (
-            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px solid rgba(29,41,66,0.5)', opacity: inChain ? 0.55 : 1 }}>
+            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: '1px dotted rgba(26,20,16,0.28)', opacity: inChain ? 0.55 : 1 }}>
               {iso
                 ? <span className={`fi fi-${iso}`} style={{ width: 18, height: 13, borderRadius: 1, flexShrink: 0 }} />
                 : <span style={{ width: 18, height: 13, borderRadius: 1, background: 'var(--slot-border)', flexShrink: 0 }} />}
-              <span style={{ fontSize: 14, flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
+              <span className="read" style={{ fontSize: 15, flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
               {inChain ? (
                 <span
                   className="cond"
@@ -87,14 +88,16 @@ export default function ChainSearch({
                   <button
                     onClick={() => onAddToBench(p.id)}
                     disabled={state.submitted}
-                    style={{ background: 'var(--panel-2)', border: '1px solid var(--border)', color: 'var(--soft)', borderRadius: 4, padding: '4px 9px', fontSize: 12, cursor: state.submitted ? 'not-allowed' : 'pointer' }}
+                    className="narrow"
+                    style={{ background: 'transparent', border: '1.5px solid var(--border)', color: 'var(--soft)', borderRadius: 0, padding: '4px 9px', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: state.submitted ? 'not-allowed' : 'pointer' }}
                   >
                     Bench
                   </button>
                   {focused !== null && !state.submitted ? (
                     <button
                       onClick={() => onPlace(focused, p.id)}
-                      style={{ background: 'var(--green)', border: 'none', color: 'var(--bg)', borderRadius: 4, padding: '4px 9px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                      className="narrow"
+                      style={{ background: 'var(--ink)', border: '1.5px solid var(--ink)', color: 'var(--panel)', borderRadius: 0, padding: '4px 9px', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}
                     >
                       Place
                     </button>
@@ -116,9 +119,9 @@ export default function ChainSearch({
               <div key={n.index} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: n.name ? 1 : 0.45 }}>
                 <span style={{
                   width: 22, height: 3, borderRadius: 2, flexShrink: 0,
-                  background: n.name ? 'var(--soft)' : 'repeating-linear-gradient(90deg, #33455f 0 3px, transparent 3px 7px)',
+                  background: n.name ? 'var(--soft)' : 'repeating-linear-gradient(90deg, rgba(26,20,16,0.42) 0 3px, transparent 3px 7px)',
                 }} />
-                <span style={{ fontWeight: 600, fontSize: 14, color: n.name ? 'var(--text)' : 'var(--soft)' }}>
+                <span className="read" style={{ fontSize: 15, color: n.name ? 'var(--text)' : 'var(--soft)' }}>
                   {n.name ?? 'empty'}
                 </span>
               </div>

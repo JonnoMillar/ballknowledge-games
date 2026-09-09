@@ -6,6 +6,20 @@
  * trap that sent `clubView` into src/lib/clubs.ts.
  */
 
+/**
+ * A picture ready to put in a frame.
+ *
+ * `fit` is not cosmetic. A cutout is the whole player against transparency and
+ * has to be shown WHOLE — cropping it beheads him. A press photo is the
+ * opposite: Commons framing runs from tight portrait to a figure somewhere in
+ * a stadium, so it is cropped to the frame and anchored high. Getting this
+ * backwards letterboxes every press photo inside its mount.
+ */
+export interface PortraitImage {
+  url: string;
+  fit: 'cover' | 'contain';
+}
+
 /** A portrait resolved by scripts/fetch-portraits.ts. */
 export interface PortraitRecord {
   source: 'cutout' | 'commons' | 'none';
@@ -42,12 +56,18 @@ export function portraitUrls(
   images: Record<string, string>,
   portraits: Record<string, PortraitRecord>,
   width = 200,
-): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const [id, file] of Object.entries(images)) out[id] = commonsThumb(file, width);
+): Record<string, PortraitImage> {
+  const out: Record<string, PortraitImage> = {};
+  // An unresolved player keeps a press photo, which is cropped to the frame.
+  for (const [id, file] of Object.entries(images)) {
+    out[id] = { url: commonsThumb(file, width), fit: 'cover' };
+  }
   for (const [id, p] of Object.entries(portraits)) {
-    if (p.source !== 'none' && p.url) out[id] = p.url;
-    else delete out[id];
+    if (p.source !== 'none' && p.url) {
+      out[id] = { url: p.url, fit: p.source === 'cutout' ? 'contain' : 'cover' };
+    } else {
+      delete out[id];
+    }
   }
   return out;
 }

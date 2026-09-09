@@ -13,6 +13,7 @@ import { buildIndex } from '../src/lib/search/index';
 import { slotObscurityScore } from '../src/lib/fame/obscurity';
 import type { Player } from '../src/lib/chemistry/types';
 import type { Board } from '../src/lib/puzzle/types';
+import type { PortraitImage } from '../src/lib/portraits';
 
 export default function Game({
   players, board, nations, images,
@@ -20,7 +21,7 @@ export default function Game({
   players: Player[];
   board: Board;
   nations: Record<string, string>;
-  images: Record<string, string>;
+  images: Record<string, PortraitImage>;
 }) {
   const pool = useMemo(() => new Map(players.map((p) => [p.id, p])), [players]);
   const formation = FORMATIONS[board.formationId]!;

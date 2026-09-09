@@ -12,10 +12,14 @@ import { crestPath, type ClubView } from '../src/lib/clubs';
  */
 export function shortClubName(name: string): string {
   return name
-    .replace(/\s+(A\.?F\.?C\.?|F\.?C\.?|S\.?C\.?|C\.?F\.?|B\.?C\.?)$/i, '')
-    .replace(/^(A\.?F\.?C\.?|F\.?C\.?|S\.?C\.?|C\.?F\.?)\s+/i, '')
+    .replace(/\s+(A\.?F\.?C\.?|F\.?C\.?|S\.?C\.?|C\.?F\.?|B\.?C\.?|J\.?K\.?|S\.?K\.?)$/i, '')
+    // Leading club-type prefixes. SV, AS, RC and the rest read as noise beside
+    // the name that identifies the club: "SV Werder Bremen and Juventus" is a
+    // caption, "Werder Bremen and Juventus" is a fact.
+    .replace(/^(A\.?F\.?C\.?|F\.?C\.?|S\.?C\.?|C\.?F\.?|S\.?V\.?|A\.?S\.?|R\.?C\.?|V\.?f\.?B\.?|V\.?f\.?L\.?)\s+/i, '')
     .replace(/\s+Club de Fútbol$/i, '')
     .replace(/\s+Football Club$/i, '')
+    .replace(/\s+Balompié$/i, '')
     .trim();
 }
 

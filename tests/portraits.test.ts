@@ -10,12 +10,12 @@ describe('portraitUrls', () => {
     // Mid-migration the board must not empty out: an unresolved player falls
     // back to exactly what it showed before portraits existed.
     const out = portraitUrls({ Q1: 'Old.jpg' }, {});
-    expect(out['Q1']).toBe(commonsThumb('Old.jpg', 200));
+    expect(out['Q1']).toEqual({ url: commonsThumb('Old.jpg', 200), fit: 'cover' });
   });
 
   it('prefers a cutout over the photo we already held', () => {
     const out = portraitUrls({ Q1: 'Old.jpg' }, { Q1: cutout('https://tsdb/q1.png') });
-    expect(out['Q1']).toBe('https://tsdb/q1.png');
+    expect(out['Q1']?.url).toBe('https://tsdb/q1.png');
   });
 
   it('drops the card photo when the resolver found nothing usable', () => {
@@ -31,11 +31,11 @@ describe('portraitUrls', () => {
 
   it('takes an in-era Commons photo the resolver picked over the stored one', () => {
     const out = portraitUrls({ Q1: 'Wrong.jpg' }, { Q1: commons('https://commons/Right.jpg', 2003) });
-    expect(out['Q1']).toBe('https://commons/Right.jpg');
+    expect(out['Q1']?.url).toBe('https://commons/Right.jpg');
   });
 
   it('carries a resolved player who had no stored photo at all', () => {
-    expect(portraitUrls({}, { Q1: cutout('https://tsdb/q1.png') })['Q1']).toBe('https://tsdb/q1.png');
+    expect(portraitUrls({}, { Q1: cutout('https://tsdb/q1.png') })['Q1']?.url).toBe('https://tsdb/q1.png');
   });
 
   it('ignores a resolved record that claims a source but carries no url', () => {
@@ -46,5 +46,18 @@ describe('portraitUrls', () => {
 
   it('encodes a filename that would otherwise break the URL', () => {
     expect(commonsThumb('A player (2003).jpg', 200)).toContain('A%20player%20(2003).jpg');
+  });
+
+  it('shows a cutout whole and crops a press photo', () => {
+    // Getting this backwards is not cosmetic. A cutout cropped to a portrait
+    // frame beheads the player; a press photo shown whole letterboxes inside
+    // its mount with the face a quarter of the height.
+    const out = portraitUrls(
+      { Q2: 'Press.jpg' },
+      { Q1: cutout('https://tsdb/q1.png'), Q3: commons('https://commons/x.jpg', 2003) },
+    );
+    expect(out['Q1']?.fit).toBe('contain');
+    expect(out['Q2']?.fit).toBe('cover');
+    expect(out['Q3']?.fit).toBe('cover');
   });
 });

@@ -2,8 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useCountUp } from './DepthGauge';
 import { shareText } from '../src/lib/chain/result';
-import type { ChainResult } from '../src/lib/chain/result';
+import type { ChainResult, SlotOutcome } from '../src/lib/chain/result';
 import type { Player } from '../src/lib/chemistry/types';
+import { clubColour, splitRing } from '../src/lib/club-colours';
+import { shortClubName } from './ClubBadge';
+import type { ClubView } from '../src/lib/clubs';
+import type { PortraitImage } from '../src/lib/portraits';
 
 /**
  * The lock-in.
@@ -29,11 +33,14 @@ type Stage = 'arming' | 'resolving' | 'verdict' | 'score' | 'detail';
 const BEAT = 420;
 
 export default function LockIn({
-  result, chainId, pool, onDismiss,
+  result, chainId, pool, images, clubs, onDismiss,
 }: {
   result: ChainResult;
   chainId: string;
   pool: ReadonlyMap<string, Player>;
+  /** Player id to a ready picture. See src/lib/portraits.ts. */
+  images: Record<string, PortraitImage>;
+  clubs: Record<string, ClubView>;
   onDismiss: () => void;
 }) {
   const [stage, setStage] = useState<Stage>('arming');
@@ -69,16 +76,21 @@ export default function LockIn({
       role="dialog"
       aria-modal="true"
       aria-label="Chain result"
+      className="sheet"
       style={{
         position: 'fixed', inset: 0, zIndex: 60,
-        background: 'rgba(4,6,11,0.975)',
-        backdropFilter: 'blur(10px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: 24, overflowY: 'auto',
         animation: 'lockin-in 260ms ease-out both',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 700, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 26 }}>
+      <div
+        className="paper"
+        style={{
+          width: '100%', maxWidth: 720, padding: '34px 34px 30px',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22,
+        }}
+      >
 
         {/* The run. One segment per link, lit in order. */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: '100%' }}>
@@ -88,13 +100,11 @@ export default function LockIn({
               <div
                 key={i}
                 style={{
-                  flex: 1, height: 12, borderRadius: 6,
+                  flex: 1, height: 10, borderRadius: 0,
                   background: !lit
-                    ? 'rgba(255,255,255,0.07)'
-                    : made ? 'var(--green)' : 'var(--link-red)',
-                  boxShadow: lit
-                    ? made ? '0 0 22px rgba(94,224,138,0.85)' : '0 0 22px rgba(192,57,43,0.8)'
-                    : 'none',
+                    ? 'rgba(26,20,16,0.14)'
+                    : made ? 'var(--green)' : 'var(--accent)',
+                  boxShadow: 'none',
                   transform: lit ? 'scaleY(1)' : 'scaleY(0.55)',
                   transition: 'background 120ms linear, box-shadow 200ms ease, transform 200ms ease',
                 }}
@@ -106,25 +116,22 @@ export default function LockIn({
         {stage !== 'arming' && stage !== 'resolving' ? (
           <div style={{ textAlign: 'center', animation: 'verdict-in 420ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
             <div
-              className="cond"
+              className="slab misreg"
               style={{
-                fontWeight: 700, fontSize: 52, lineHeight: 1, letterSpacing: '0.02em',
-                color: result.perfect ? 'var(--green)' : 'var(--link-red)',
-                textShadow: result.perfect
-                  ? '0 0 34px rgba(94,224,138,0.55)'
-                  : '0 0 34px rgba(192,57,43,0.45)',
+                fontSize: 46, lineHeight: 1,
+                color: result.perfect ? 'var(--green)' : 'var(--accent)',
               }}
             >
               {result.perfect ? 'CHAIN HELD' : 'CHAIN BROKE'}
             </div>
-            <div style={{ fontSize: 13, color: 'var(--dim)', marginTop: 8 }}>
+            <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', marginTop: 8 }}>
               {result.perfect
                 ? 'Every link a real one.'
                 : `${result.made} of ${result.total} links held. A broken link scores nothing.`}
             </div>
           </div>
         ) : (
-          <div className="cond" style={{ fontSize: 13, letterSpacing: '0.3em', color: 'var(--muted)' }}>
+          <div className="narrow" style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.3em', color: 'var(--muted)' }}>
             CHECKING THE CHAIN
           </div>
         )}
@@ -132,7 +139,22 @@ export default function LockIn({
         {showScore ? <ScoreReveal value={result.score} /> : null}
 
         {stage === 'detail' ? (
-          <div style={{ width: '100%', animation: 'verdict-in 420ms ease-out both', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ width: '100%', animation: 'verdict-in 420ms ease-out both', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', borderBottom: '2px solid rgba(26,20,16,0.42)', paddingBottom: 7 }}>
+              <div className="slab misreg" style={{ fontSize: 19 }}>
+                <span className="lean">WHO WOULD HAVE WORKED</span>
+              </div>
+              <div className="read" style={{ fontSize: 13, fontStyle: 'italic', color: 'var(--soft)' }}>
+                Split down the middle: the two clubs that made him fit.
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 22, justifyContent: 'center', flexWrap: 'wrap' }}>
+              {result.slots.map((s) => (
+                <Pinned key={s.index} slot={s} pool={pool} images={images} clubs={clubs} />
+              ))}
+            </div>
+
             {result.slots.map((s) => {
               const mine = s.playerId ? pool.get(s.playerId) : undefined;
               const beatMe = s.best && s.depth && s.best.score > s.depth.score;
@@ -141,8 +163,8 @@ export default function LockIn({
                 <div
                   key={s.index}
                   style={{
-                    border: '1px solid var(--line)', borderRadius: 8, padding: '14px 16px',
-                    background: 'rgba(255,255,255,0.02)',
+                    border: '1.5px solid rgba(26,20,16,0.24)', borderRadius: 0, padding: '13px 16px',
+                    background: 'var(--panel-2)',
                     display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
                   }}
                 >
@@ -150,7 +172,7 @@ export default function LockIn({
                     <div className="cond" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--muted)' }}>
                       YOU PLAYED
                     </div>
-                    <div style={{ fontWeight: 600, fontSize: 15, color: s.held ? 'var(--text)' : 'var(--link-red)' }}>
+                    <div className="read" style={{ fontWeight: 500, fontSize: 16, color: s.held ? 'var(--text)' : 'var(--accent)' }}>
                       {mine?.name ?? '—'}
                     </div>
                     <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
@@ -170,7 +192,7 @@ export default function LockIn({
                     <div className="cond" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--muted)' }}>
                       {nailed ? 'NOBODY WENT DEEPER' : 'DEEPEST ANSWER'}
                     </div>
-                    <div style={{ fontWeight: 600, fontSize: 15, color: nailed ? 'var(--green)' : beatMe ? 'var(--gold)' : 'var(--green)' }}>
+                    <div className="read" style={{ fontWeight: 500, fontSize: 16, color: nailed ? 'var(--green)' : beatMe ? 'var(--gold)' : 'var(--green)' }}>
                       {nailed ? 'You found it' : s.best?.name ?? '—'}
                     </div>
                     <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
@@ -187,10 +209,12 @@ export default function LockIn({
               <CopyButton text={shareText(result, chainId)} />
               <button
                 onClick={onDismiss}
+                className="narrow"
                 style={{
                   background: 'transparent', color: 'var(--soft)',
-                  border: '1px solid var(--border)', borderRadius: 6,
-                  padding: '12px 20px', fontWeight: 600, fontSize: 13, cursor: 'pointer',
+                  border: '2px solid var(--border)', borderRadius: 0,
+                  padding: '12px 22px', fontWeight: 700, fontSize: 13,
+                  letterSpacing: '0.14em', textTransform: 'uppercase', cursor: 'pointer',
                 }}
               >
                 Back to the board
@@ -209,17 +233,24 @@ function ScoreReveal({ value }: { value: number }) {
   return (
     <div style={{ textAlign: 'center', animation: 'verdict-in 380ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
       <div
-        className="cond"
         style={{
-          fontWeight: 700, fontSize: 96, lineHeight: 0.9, color: 'var(--gold)',
-          fontVariantNumeric: 'tabular-nums',
-          textShadow: '0 0 40px rgba(240,180,41,0.45)',
+          background: 'linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a)',
+          border: '2.5px solid var(--ink)', padding: '14px 46px 12px',
         }}
       >
-        {score}
-      </div>
-      <div className="cond" style={{ fontSize: 12, letterSpacing: '0.28em', color: 'var(--muted)', marginTop: 10 }}>
-        OBSCURITY · OUT OF 100
+        <div
+          className="slab"
+          style={{
+            fontSize: 74, lineHeight: 0.92, color: '#fffdf7',
+            fontVariantNumeric: 'tabular-nums',
+            textShadow: '0 2px 0 rgba(70,48,6,0.55)',
+          }}
+        >
+          {score}
+        </div>
+        <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.24em', color: '#46300a', textAlign: 'center' }}>
+          RARITY FOIL
+        </div>
       </div>
     </div>
   );
@@ -248,12 +279,87 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={copy}
+      className="narrow"
       style={{
-        background: 'var(--green)', color: 'var(--bg)', border: 'none', borderRadius: 6,
-        padding: '12px 22px', fontWeight: 700, fontSize: 13, cursor: 'pointer',
+        background: 'var(--ink)', color: 'var(--panel)', border: '2px solid var(--ink)', borderRadius: 0,
+        padding: '12px 24px', fontWeight: 700, fontSize: 13,
+        letterSpacing: '0.14em', textTransform: 'uppercase', cursor: 'pointer',
       }}
     >
-      {state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed — select it yourself' : 'Copy result'}
+      {state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed — select it yourself' : 'Send the sheet'}
     </button>
+  );
+}
+
+/**
+ * One answer, pinned up.
+ *
+ * The frame is the reveal doing its job: the diagonal is the two clubs that
+ * made this player fit, which is the fact the player was reaching for and did
+ * not have. Text alone said "Raphaël Wicky · 8 would have fitted" and slid
+ * straight off; a face and two colours is the bit that stays.
+ */
+function Pinned({
+  slot, pool, images, clubs,
+}: {
+  slot: SlotOutcome;
+  pool: ReadonlyMap<string, Player>;
+  images: Record<string, PortraitImage>;
+  clubs: Record<string, ClubView>;
+}) {
+  const best = slot.best;
+  if (!best) return null;
+  const nailed = slot.held && best.id === slot.playerId;
+  const photo = images[best.id];
+  const [a, b] = best.clubs;
+  const ring = a === undefined
+    ? 'var(--ink)'
+    : splitRing(clubColour(a), clubColour(b ?? a), 'var(--card-a)');
+
+  return (
+    <div style={{ width: 132, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, position: 'relative' }}>
+      <svg width="15" height="15" viewBox="0 0 15 15" style={{ position: 'absolute', top: -5, left: '50%', transform: 'translateX(-50%)', zIndex: 2 }} aria-hidden>
+        <circle cx="7.5" cy="7.5" r="6.5" fill="#a8791f" />
+        <circle cx="5.4" cy="5.4" r="2.1" fill="#e6cb8c" />
+      </svg>
+      <div className="mount" style={{ padding: '6px 6px 0' }}>
+        <div className="photo" style={{ width: 120, height: 128, background: ring }}>
+          {photo ? (
+            <img
+              src={photo.url}
+              alt=""
+              style={{
+                objectFit: photo.fit,
+                objectPosition: photo.fit === 'cover' ? '50% 18%' : '50% 50%',
+              }}
+            />
+          ) : (
+            <div style={{ width: '100%', height: '100%', background: '#e6ded0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="rgba(26,20,16,0.3)" strokeWidth="1.4">
+                <circle cx="12" cy="8" r="3.6" />
+                <path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" />
+              </svg>
+            </div>
+          )}
+        </div>
+        <div className="narrow" style={{ width: 120, padding: '5px 0 6px', fontSize: 12, fontWeight: 700, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {best.name.toUpperCase()}
+        </div>
+      </div>
+      <div className="read" style={{ fontSize: 11, textAlign: 'center', lineHeight: 1.35, color: 'var(--soft)' }}>
+        {best.clubs.length
+          ? best.clubs.map((c) => shortClubName(clubs[c]?.name ?? c)).join(' and ')
+          : 'the deepest that fitted'}
+      </div>
+      <div
+        className="narrow"
+        style={{
+          fontSize: 9, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase',
+          background: nailed ? 'var(--green)' : 'var(--ink)', color: '#f7f2e6', padding: '3px 8px',
+        }}
+      >
+        {nailed ? 'You found it' : `Deepest of ${slot.fieldSize}`}
+      </div>
+    </div>
   );
 }

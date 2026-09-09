@@ -13,7 +13,10 @@ const mk = (
 // a and c share nothing. Three players bridge them, at three levels of fame.
 const a = mk('a', 'BRA', ['CITY'], 100);
 const c = mk('c', 'ITA', ['ROMA'], 90);
-const obscureBridge = mk('obscureBridge', 'JPN', ['CITY', 'ROMA'], 10);
+// Fame 35, not 10: the reveal will not NAME an answer below the curation
+// floor, so a fixture under it would be testing the floor rather than the
+// ordering these tests are about. The floor has its own tests below.
+const obscureBridge = mk('obscureBridge', 'JPN', ['CITY', 'ROMA'], 35);
 const midBridge = mk('midBridge', 'FRA', ['CITY', 'ROMA'], 55);
 const famousBridge = mk('famousBridge', 'GER', ['CITY', 'ROMA'], 90);
 // Links to nobody in this puzzle.
@@ -104,5 +107,45 @@ describe('shareText', () => {
   it('says a broken chain is broken rather than reporting a score', () => {
     const r = chainResult(['a', 'stranger', 'c'], puzzle, players, pool);
     expect(shareText(r, '004')).toContain('broken');
+  });
+});
+
+describe('the answer the reveal names', () => {
+  it('skips the very bottom of the field, but still counts it', () => {
+    // The reveal presents this name as the thing you should have known, so it
+    // must not point at Wikidata's error tail. Chain 006 shipped naming
+    // Rodrigo Riep — a Chilean journeyman filed at Everton F.C. and FC
+    // Barcelona when he played for Everton de Viña del Mar and Barcelona S.C.
+    // He is still a legal answer and still in the field; he is just not held
+    // up as the one that got away.
+    const players: Player[] = [
+      mk('L', 'ESP', ['c1'], 90),
+      mk('R', 'ESP', ['c2'], 90),
+      mk('phantom', 'CHI', ['c1', 'c2'], 12),
+      mk('deep', 'SUI', ['c1', 'c2'], 34),
+      mk('famous', 'POR', ['c1', 'c2'], 80),
+    ];
+    const pool = new Map(players.map((p) => [p.id, p]));
+    const puzzle: ChainPuzzle = { id: 't', mode: 'clubs', slots: ['L', null, 'R'] };
+
+    const out = chainResult(['L', 'famous', 'R'], puzzle, players, pool);
+    const slot = out.slots[0]!;
+    expect(slot.best?.id).toBe('deep');
+    // Counted in the field, and therefore in the scoring, all the same.
+    expect(slot.fieldSize).toBe(3);
+  });
+
+  it('falls back to the field when every answer is below the floor', () => {
+    // A board whose entire field is obscure must still name something rather
+    // than showing a dash.
+    const players: Player[] = [
+      mk('L2', 'ESP', ['c1'], 90),
+      mk('R2', 'ESP', ['c2'], 90),
+      mk('x', 'CHI', ['c1', 'c2'], 12),
+      mk('y', 'SUI', ['c1', 'c2'], 20),
+    ];
+    const pool = new Map(players.map((p) => [p.id, p]));
+    const puzzle: ChainPuzzle = { id: 't', mode: 'clubs', slots: ['L2', null, 'R2'] };
+    expect(chainResult(['L2', 'y', 'R2'], puzzle, players, pool).slots[0]!.best?.id).toBe('x');
   });
 });

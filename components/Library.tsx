@@ -2,6 +2,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import type { GameState } from '../src/game/state';
+import type { PortraitImage } from '../src/lib/portraits';
 
 /**
  * The bench. Unbounded and free — gathering candidates costs nothing.
@@ -15,7 +16,7 @@ export default function Library({
 }: {
   state: GameState;
   nations: Record<string, string>;
-  images: Record<string, string>;
+  images: Record<string, PortraitImage>;
   onRemove: (playerId: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: 'library' });

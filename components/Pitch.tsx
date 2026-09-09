@@ -3,6 +3,7 @@ import { useDroppable } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import { linkViews } from '../src/game/derive';
 import type { GameState } from '../src/game/state';
+import type { PortraitImage } from '../src/lib/portraits';
 
 // Geometry lifted from design/Main.dc.html. Card centres, and the pill anchors
 // the links are drawn between (pill sits 76px below the card centre).
@@ -23,7 +24,7 @@ function Slot({
   state, slotId, nations, images, obscurityFor, chem, focused, onFocus,
 }: {
   state: GameState; slotId: string;
-  nations: Record<string, string>; images: Record<string, string>;
+  nations: Record<string, string>; images: Record<string, PortraitImage>;
   obscurityFor: (slotId: string) => number | null;
   /** Individual chemistry 0..10 for this slot, or null when empty. */
   chem: number | null;
@@ -112,7 +113,7 @@ export default function Pitch({
   state, nations, images, obscurityFor, perSlotChem, focusedSlot, onFocus,
 }: {
   state: GameState;
-  nations: Record<string, string>; images: Record<string, string>;
+  nations: Record<string, string>; images: Record<string, PortraitImage>;
   obscurityFor: (slotId: string) => number | null;
   perSlotChem: Record<string, number>;
   focusedSlot: string | null; onFocus: (s: string) => void;
