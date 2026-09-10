@@ -195,7 +195,7 @@ export default function LockIn({
                 Scouting sheet &middot; {count} to find
               </div>
               <div className="slab misreg" style={{ fontSize: 46, lineHeight: 0.96 }}>
-                <span className="lean">RECALL XI</span>
+                <span className="lean">CHAIN</span>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20 }}>
@@ -207,7 +207,7 @@ export default function LockIn({
               <div style={{ width: 1, height: 36, background: 'rgba(26,20,16,0.22)' }} />
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
                 <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                  Chain
+                  No.
                 </div>
                 <div className="slab" style={{ fontSize: 26, lineHeight: 1 }}>{puzzle.id}</div>
               </div>

@@ -313,7 +313,7 @@ export function chainResult(
  */
 export function shareText(result: ChainResult, chainId: string): string {
   const grid = result.links.map((made) => (made ? '🟩' : '🟥')).join('');
-  const head = `Recall XI · Chain ${chainId}`;
+  const head = `Chain ${chainId}`;
   const line = result.perfect
     ? `${grid} ${result.score}`
     : `${grid} broken (${result.made}/${result.total})`;

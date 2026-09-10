@@ -9,14 +9,16 @@ A football recall puzzle. **Chemistry is the gate; obscurity is the score.**
 Anyone can solve a board with Mbappé — the game is whether you reach for
 someone nobody else would. The social point is proving that to your friends.
 
-There are two modes. **CHAIN is where the work is**; the XI board came first
-and has been largely untouched since.
+There are two modes. **Chain is the main product** and lives at the root
+route. **Recall XI — the original XI board — is parked**: still in the repo,
+still runnable, but no longer developed and deliberately kept separate (own
+route, own branding). We may come back to it.
 
-- **Chain** (`/chain?c=NNN`) — a line of players. Both ends are given and share
+- **Chain** (`/?c=NNN`) — a line of players. Both ends are given and share
   nothing; you fill the middle so every link holds. This is the mode with
   grading, portraits, the lock-in reveal and the scouting-sheet design.
-- **XI board** (`/`) — the original 4-3-3, three players given, fill eight.
-  Still on the dark treatment and still unplayed by anyone.
+- **Recall XI** (`/recall-xi`) — parked. The original 4-3-3, three players
+  given, fill eight. Still on the dark treatment and still unplayed by anyone.
 
 ## Run it
 
@@ -26,8 +28,8 @@ npm test           # 301 tests, 23 files
 npm run typecheck
 ```
 
-Boards worth opening: `/chain?c=006` (easy), `?c=007` (medium), `?c=008`
-(hard). `?c=` is validated against `/^\d{3}$/` — it reads a file path.
+Boards worth opening: `/?c=006` (easy), `?c=007` (medium), `?c=008` (hard).
+`?c=` is validated against `/^\d{3}$/` — it reads a file path.
 
 ## Where things are
 
