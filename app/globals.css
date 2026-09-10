@@ -127,9 +127,14 @@ button { font-family: inherit; }
 
 /* A photo in its mount. The container's background IS the ring: padding lets
    the diagonal show as an even band on all four sides. */
-.sheet .photo { position: relative; overflow: hidden; padding: 4px; }
-.sheet .photo > img { width: 100%; height: 100%; display: block; background: #e6ded0; }
-.sheet .mount { background: var(--card-a); padding: 5px 5px 0; }
+/* Unscoped, not `.sheet .photo`: dnd-kit's DragOverlay portals its children
+   straight to document.body, outside the `.sheet` ancestor, so a rule that
+   only fires under `.sheet` silently stops constraining the photo the moment
+   a player is picked up — the img renders at its native pixel size instead
+   of the frame's. */
+.photo { position: relative; overflow: hidden; padding: 4px; }
+.photo > img { width: 100%; height: 100%; display: block; background: #e6ded0; }
+.mount { background: var(--card-a); padding: 5px 5px 0; }
 /* Both carry their shadows under THE DESK, where the light is decided. */
 
 .sheet ::-webkit-scrollbar-thumb { background: rgba(26, 20, 16, 0.26); }
@@ -221,7 +226,7 @@ button { font-family: inherit; }
 /* A print in its mount, hung rather than laid down: the shadow is offset
    below because the top edge is pinned and the bottom is standing off the
    wall a little. */
-.sheet .mount {
+.mount {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.6),
     0 1px 0 rgba(26, 20, 16, 0.16),
@@ -233,7 +238,7 @@ button { font-family: inherit; }
    The lift. A card under the cursor is off the wall: bigger, brighter, and
    throwing a shadow that has somewhere to fall. The rotation is NOT here —
    it is driven per-frame from pointer velocity in components/DragPicture. */
-.sheet .lifted {
+.lifted {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.7),
     0 2px 0 rgba(26, 20, 16, 0.10),
