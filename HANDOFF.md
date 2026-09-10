@@ -227,6 +227,17 @@ keeping:
 - `tiltFor` hashes the lean out of the slot index. `Math.random()` would
   re-roll every card on every keystroke in the search box.
 
+**`.mount`, `.photo`, `.lifted` are unscoped in `globals.css`, not
+`.sheet .mount` etc.** They were originally `.sheet`-scoped like everything
+else on this route, which broke the one thing that matters most: dnd-kit's
+`DragOverlay` portals the dragged clone straight to `document.body`, outside
+the `.sheet` ancestor, so a `.sheet`-scoped rule silently stops applying the
+moment a card is picked up. The photo's only sizing rule (`.photo > img
+{ width: 100%; height: 100% }`) was one of them — losing it meant the
+dragged image rendered at its native pixel size instead of the frame's,
+which read as the card "going massive" on pickup. Fixed by unscoping the
+four classes; safe because nothing outside chain mode uses them.
+
 ### The red string
 
 `components/RedString.tsx`. Twine between the pins on the sealed sheet, drawn
