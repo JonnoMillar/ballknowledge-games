@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "recall-xi", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000 }
+    { "name": "recall-xi", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000 },
+    { "name": "design-static", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "8123", "--bind", "127.0.0.1"], "port": 8123 }
   ]
 }

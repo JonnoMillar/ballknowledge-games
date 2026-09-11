@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reveal variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo+Narrow:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* ── Mockup of the sealed sheet: three treatments of the lock-in moment.
+   Everything below mirrors app/globals.css's `.sheet` tokens so what you
+   see here is what the route would look like, not an approximation. ── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; background: #2a2118; color: #1a1410; font-family: 'Newsreader', Georgia, serif; }
+.slab { font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; }
+.read { font-family: 'Newsreader', Georgia, serif; }
+.narrow { font-family: 'Archivo Narrow', 'Helvetica Neue', sans-serif; }
+.misreg { text-shadow: 1.2px 0 rgba(0,170,205,0.42), -1.2px 0 rgba(205,0,120,0.34); }
+.lean { display: inline-block; transform: skewX(-8deg); }
+
+:root {
+  --panel: #f7f2e6; --panel-2: #efe8d8; --ink: #1a1410; --muted: #7a6a52; --dim: #8d7c62; --soft: #5c4e3c;
+  --green: #2f6b3f; --gold: #a8791f; --gold-light: #e6cb8c; --accent: #b3341f; --card-a: #fffdf7;
+  --foil: linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a);
+}
+
+/* ── Page chrome ── */
+.topbar { position: sticky; top: 0; z-index: 50; background: #1a1410; color: #f7f2e6; padding: 12px 22px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.topbar .title { font-size: 15px; letter-spacing: 0.08em; }
+.topbar a { color: #e6cb8c; text-decoration: none; font-family: 'Archivo Narrow'; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 10px; border: 1px solid rgba(230,203,140,0.35); }
+.topbar a:hover { background: rgba(230,203,140,0.12); }
+.topbar .note { font-size: 13px; font-style: italic; color: rgba(247,242,230,0.6); margin-left: auto; }
+
+.variant { padding: 34px 22px 10px; }
+.variant > header { max-width: 960px; margin: 0 auto 14px; color: #f7f2e6; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.variant h2 { margin: 0; font-size: 28px; line-height: 1; }
+.variant h2 small { display: block; font-family: 'Archivo Narrow'; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #e6cb8c; margin-bottom: 8px; }
+.variant .blurb { max-width: 520px; font-size: 14px; font-style: italic; color: rgba(247,242,230,0.72); line-height: 1.4; }
+.controls { display: flex; gap: 8px; }
+.controls button { font-family: 'Archivo Narrow'; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 9px 14px; border: 2px solid #e6cb8c; background: transparent; color: #e6cb8c; cursor: pointer; }
+.controls button:hover { background: #e6cb8c; color: #1a1410; }
+.controls button.on { background: #e6cb8c; color: #1a1410; }
+
+/* ── The board and the sheet ── */
+.board { max-width: 960px; margin: 0 auto; padding: 42px 30px 36px; position: relative;
+  background-color: #c9a06e; background-image: url('../public/board/cork.webp'); background-size: cover; background-position: center; }
+.board::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 96% at 50% 46%, transparent 50%, rgba(60,40,15,0.20) 100%), rgba(120,90,50,0.10); }
+.board > * { position: relative; }
+.paper { background-color: var(--panel); padding: 38px 30px 26px; position: relative;
+  background-image: repeating-linear-gradient(90deg, rgba(120,96,60,0.028) 0 1px, transparent 1px 3px), radial-gradient(rgba(120,96,60,0.05) 0.6px, transparent 1px);
+  background-size: auto, 5px 5px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 1px 0 rgba(26,20,16,0.2), 0 4px 8px rgba(60,40,15,0.22), 0 20px 40px rgba(60,40,15,0.34); }
+.paper.jolt { animation: jolt 220ms cubic-bezier(0.2,0.9,0.3,1) both; }
+.paper.jolt-hard { animation: jolt-hard 300ms cubic-bezier(0.2,0.9,0.3,1) both; }
+@keyframes jolt { 0% { transform: none; } 35% { transform: translateY(2.5px) rotate(0.12deg); } 65% { transform: translateY(-0.8px) rotate(-0.05deg); } 100% { transform: none; } }
+@keyframes jolt-hard { 0% { transform: none; } 30% { transform: translateY(4px) rotate(0.22deg) scale(0.997); } 60% { transform: translateY(-1.4px) rotate(-0.08deg); } 100% { transform: none; } }
+
+.mast { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 3px solid var(--ink); padding-bottom: 11px; }
+.mast .kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted); }
+.mast .name { font-size: 46px; line-height: 0.96; }
+.grade { transform: rotate(-8deg); border: 2.5px solid currentColor; padding: 3px 10px; opacity: 0.86; font-size: 15px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); }
+
+/* The row of prints. Connectors sit between them at print height; the
+   columns hang beneath the two blanks. */
+.row { position: relative; display: grid; grid-template-columns: 132px 1fr 132px 1fr 132px 1fr 132px; align-items: start; padding: 32px 0 6px; column-gap: 0; }
+.print { position: relative; display: flex; flex-direction: column; align-items: center; }
+.mount { position: relative; background: var(--card-a); padding: 5px 5px 0; transform: rotate(var(--tilt, 0deg));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), 0 1px 0 rgba(26,20,16,0.16), 0 7px 14px rgba(26,20,16,0.20); }
+.photo { position: relative; overflow: hidden; padding: 4px; width: 122px; height: 128px; }
+.photo::before { content: ''; position: absolute; inset: 4px; background-image: url('../public/board/muslin.webp'); background-size: 128% auto; background-position: var(--crop, 50%) 100%; background-repeat: no-repeat; }
+.photo img { position: relative; z-index: 1; width: 100%; height: 100%; display: block; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 4px 4px rgba(20,14,8,0.34)) saturate(0.94); }
+.photo::after { content: ''; position: absolute; inset: 4px; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(255,250,240,0.06), transparent 40%, rgba(50,40,25,0.12) 100%), rgba(214,180,120,0.04); }
+.photo .empty { position: absolute; inset: 4px; display: flex; align-items: center; justify-content: center; color: rgba(26,20,16,0.28); z-index: 1; }
+.plate { width: 122px; padding: 6px 0 7px; font-size: 12px; font-weight: 700; text-align: center; letter-spacing: 0.04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.role { margin-top: 9px; font-size: 9px; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: var(--muted); }
+.print.yours .role { color: var(--accent); }
+
+/* The pin. Head at (cx, cy) inside its 18px box, matching Pin.tsx. */
+.pin { position: absolute; top: 1px; left: 50%; transform: translateX(-50%); width: 18px; height: 18px; z-index: 5; pointer-events: none; }
+.pin svg { display: block; overflow: visible; }
+
+/* The connector between two prints. Before the reveal: a pencil rule and a
+   question mark. The stamp lands over the top of it. */
+.link { position: relative; height: 128px; margin-top: 5px; display: flex; align-items: center; justify-content: center; }
+.link .rule { position: absolute; left: 6px; right: 6px; top: 50%; border-top: 1.5px dashed rgba(26,20,16,0.28); }
+.link .q { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: var(--panel); padding: 4px 6px; transition: opacity 200ms ease; }
+.link .q .mark { width: 30px; height: 30px; border: 1.5px solid rgba(26,20,16,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--muted); }
+.link .q .txt { font-size: 7.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); text-align: center; line-height: 1.2; }
+.link.stamped .q { opacity: 0; }
+
+/* ── The stamp ──
+   Arrives from above at 1.7×, lands, and the paper takes the hit. The halo
+   is the ink pressed out from under the die. `--r` is the die's own lean. */
+.stamp { position: absolute; left: 50%; top: 50%; z-index: 3; opacity: 0; transform: translate(-50%, -50%) rotate(var(--r, -7deg)) scale(1.7); }
+.stamp.in { animation: stamp-in 380ms cubic-bezier(0.3, 1.2, 0.4, 1) both; }
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: translate(-50%, -50%) rotate(var(--r, -7deg)) scale(1.7); }
+  48%  { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r, -7deg)) scale(0.93); }
+  72%  { transform: translate(-50%, -50%) rotate(var(--r, -7deg)) scale(1.035); }
+  100% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r, -7deg)) scale(1); }
+}
+.halo { position: absolute; left: 50%; top: 50%; width: 70px; height: 70px; border-radius: 50%; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.4);
+  background: radial-gradient(circle, rgba(47,107,63,0.36), rgba(47,107,63,0.12) 45%, transparent 68%); }
+.halo.red { background: radial-gradient(circle, rgba(179,52,31,0.36), rgba(179,52,31,0.12) 45%, transparent 68%); }
+.halo.in { animation: halo 560ms ease-out 120ms both; }
+@keyframes halo { 0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.45); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.1); } }
+/* Ink never prints evenly. The filter eats the edges a little. */
+.ink { filter: url(#ink); }
+
+/* Style 1: the crest as the die. A round customs-style stamp, crest inside,
+   the club printed round the bottom. */
+.stamp.crest { width: 66px; height: 66px; }
+.stamp.crest .die { width: 66px; height: 66px; border-radius: 50%; border: 2.6px solid var(--green); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--green); background: rgba(247,242,230,0.55); box-shadow: inset 0 0 0 1.5px rgba(247,242,230,0.9), inset 0 0 0 2.6px var(--green); }
+.stamp.crest .die img { width: 30px; height: 30px; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25)); }
+.stamp.crest .die .club { font-size: 7px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-align: center; line-height: 1.05; max-width: 56px; }
+.stamp.crest.broken .die { border-color: var(--accent); color: var(--accent); box-shadow: inset 0 0 0 1.5px rgba(247,242,230,0.9), inset 0 0 0 2.6px var(--accent); }
+.stamp.crest.broken .die .no { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; line-height: 1; }
+.stamp.crest.broken .die .no + .no { font-size: 9px; letter-spacing: 0.2em; }
+
+/* Style 2: a ticket. Rectangular, double-ruled, the word first and the club
+   underneath — a stamp on a form, not a badge. */
+.stamp.ticket { width: 74px; }
+.stamp.ticket .die { border: 2.4px solid var(--green); padding: 5px 6px 5px; color: var(--green); display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; background: rgba(247,242,230,0.6); box-shadow: inset 0 0 0 1.5px rgba(247,242,230,0.9), inset 0 0 0 2.4px var(--green); }
+.stamp.ticket .die img { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+.stamp.ticket .die .word { font-size: 12.5px; line-height: 1; letter-spacing: 0.02em; }
+.stamp.ticket .die .club { font-size: 7px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 2px; white-space: nowrap; }
+.stamp.ticket.broken .die { border-color: var(--accent); color: var(--accent); box-shadow: inset 0 0 0 1.5px rgba(247,242,230,0.9), inset 0 0 0 2.4px var(--accent); }
+
+/* Thread layer over the row. */
+.thread { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; overflow: visible; }
+
+/* ── The Pointless column ──
+   Field size at the top, your rank at the bottom, and the number counts
+   DOWN at a constant tick until it stops. Lower is deeper. */
+.col { grid-row: 2; justify-self: center; width: 122px; margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+/* Before its turn the tower waits in pencil, like an empty plate. */
+.col:not(.armed) .tower { border: 1.5px dashed rgba(26,20,16,0.34); background: transparent; }
+.col:not(.armed) .tower > * { visibility: hidden; }
+.col .tower { transition: border-color 200ms ease, background-color 200ms ease; }
+.tower { position: relative; width: 122px; height: 132px; border: 2.5px solid var(--ink); background: var(--panel-2); overflow: hidden; }
+.tower .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; background: var(--foil); box-shadow: inset 0 2px 0 rgba(255,255,255,0.35); }
+.tower .num { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 46px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; text-shadow: 0 1px 0 rgba(255,253,247,0.6); }
+.tower .num.tick { animation: tick 90ms ease-out; }
+@keyframes tick { 0% { transform: translateY(-3px); } 100% { transform: none; } }
+.tower.jackpot .fill { height: 100% !important; transition: height 420ms cubic-bezier(0.2,0.9,0.3,1); }
+.tower.jackpot .num { color: #fffdf7; text-shadow: 0 2px 0 rgba(70,48,6,0.55); }
+.tower.landed { animation: land 360ms cubic-bezier(0.3,1.3,0.4,1) both; }
+@keyframes land { 0% { transform: scale(1); } 40% { transform: scale(1.06) translateY(2px); } 100% { transform: scale(1); } }
+.tower .flash { z-index: 3; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,253,247,0.95), rgba(230,203,140,0.4) 50%, transparent 72%); opacity: 0; pointer-events: none; }
+.tower .flash.in { animation: flash 700ms ease-out both; }
+@keyframes flash { 0% { opacity: 1; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.8); } }
+/* Rung marks up the side, so the fill has a scale to be read against. */
+.tower .rungs { position: absolute; left: 0; top: 0; bottom: 0; width: 8px; z-index: 1; background: repeating-linear-gradient(180deg, rgba(26,20,16,0.4) 0 1px, transparent 1px 100%); background-size: 100% var(--rung, 8.25px); opacity: 0.55; }
+.tower .nolink { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.tower .nolink .die { border: 2.4px solid var(--accent); color: var(--accent); padding: 5px 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.16em; transform: rotate(-9deg); opacity: 0; }
+.col .rank { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; white-space: nowrap; color: var(--gold); text-align: center; font-variant-numeric: tabular-nums; min-height: 15px; }
+.col .rank.deep { color: var(--gold); }
+.col .of { font-size: 8px; font-weight: 700; letter-spacing: 0.13em; color: var(--muted); text-align: center; margin-top: -4px; }
+.col .worth { font-size: 10px; font-style: italic; color: var(--soft); text-align: center; margin-top: -2px; }
+/* The floor: the deepest answer that was there. A face and a name, no prose. */
+.floor { width: 122px; margin-top: 6px; padding-top: 8px; border-top: 1.5px dashed rgba(26,20,16,0.3); display: flex; align-items: center; gap: 6px; opacity: 0; transition: opacity 320ms ease 200ms; }
+.floor.in { opacity: 1; }
+.floor .face { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: #e6ded0; border: 2px solid var(--ink); flex-shrink: 0; position: relative; }
+.floor .face img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 10%; display: block; }
+.floor .face .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(26,20,16,0.3); }
+.floor .who { min-width: 0; }
+.floor .who .k { font-size: 8px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.floor .who .n { font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em; display: flex; gap: 3px; }
+.floor .who .n span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.floor .who .n em { flex-shrink: 0; }
+.floor .who .n em { font-style: normal; color: var(--gold); }
+.floor.mine .face { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(168,121,31,0.3); }
+.floor.mine .who .k { color: var(--gold); }
+
+/* ── The verdict band. The stamp lands across it. ── */
+.band { margin-top: 22px; display: flex; align-items: stretch; border: 2.5px solid var(--ink); min-height: 92px; position: relative; }
+.band .left { flex: 1; padding: 14px 22px; display: flex; align-items: center; gap: 22px; min-width: 0; position: relative; }
+.band .running { font-size: 12px; font-weight: 600; letter-spacing: 0.3em; color: var(--muted); }
+.band .verdict { position: relative; display: none; align-items: center; gap: 18px; }
+.band.done .running { display: none; }
+.band.done .verdict { display: flex; }
+.vstamp { position: relative; border: 3px solid var(--green); color: var(--green); padding: 4px 14px 6px; font-size: 32px; line-height: 1; transform: rotate(-4deg); box-shadow: inset 0 0 0 2px rgba(247,242,230,0.9), inset 0 0 0 5px var(--green); background: rgba(247,242,230,0.5); opacity: 0; }
+.vstamp.broke { border-color: var(--accent); color: var(--accent); box-shadow: inset 0 0 0 2px rgba(247,242,230,0.9), inset 0 0 0 5px var(--accent); }
+.vstamp.in { animation: vstamp-in 420ms cubic-bezier(0.3,1.25,0.4,1) both; }
+@keyframes vstamp-in { 0% { opacity: 0; transform: rotate(-4deg) scale(1.9); } 50% { opacity: 1; transform: rotate(-4deg) scale(0.94); } 74% { transform: rotate(-4deg) scale(1.03); } 100% { opacity: 1; transform: rotate(-4deg) scale(1); } }
+.band .sub { font-size: 14px; font-style: italic; color: var(--soft); opacity: 0; transition: opacity 300ms ease 300ms; }
+.band.done .sub { opacity: 1; }
+.band .foil { width: 176px; flex-shrink: 0; border-left: 2.5px solid var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--panel-2); transition: background 620ms ease; }
+.band .foil.on { background: var(--foil); }
+.band .foil .score { font-size: 52px; line-height: 0.92; color: rgba(26,20,16,0.2); font-variant-numeric: tabular-nums; }
+.band .foil.on .score { color: #fffdf7; text-shadow: 0 2px 0 rgba(70,48,6,0.55); }
+.band .foil .lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.24em; color: #46300a; opacity: 0; }
+.band .foil.on .lbl { opacity: 1; }
+
+.legend { max-width: 960px; margin: 10px auto 0; color: rgba(247,242,230,0.55); font-size: 12px; font-style: italic; padding: 0 4px; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Rubber-stamp ink: the die never presses evenly, so the edges break up. -->
+    <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feComponentTransfer in="d"><feFuncA type="table" tableValues="0 0.55 1 1"/></feComponentTransfer>
+    </filter>
+    <!-- Felt-tip: a line that wobbles the way a hand does. -->
+    <filter id="pen" x="-10%" y="-30%" width="120%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="1.6"/></filter>
+  </defs>
+</svg>
+
+<div class="topbar">
+  <span class="title slab">REVEAL VARIANTS · 006</span>
+  <a href="#a">A · Twine + crest</a>
+  <a href="#b">B · Pen + crest</a>
+  <a href="#c">C · Twine + ticket</a>
+  <span class="note">Same sequence in all three; only the thread and the die change. Columns and the floor are common.</span>
+</div>
+
+<section class="variant" id="a" data-thread="twine" data-stamp="crest">
+  <header>
+    <div><h2 class="slab"><small>Variant A</small>Twine, tied to the pins · crest stamped in a ring</h2>
+      <div class="blurb read">Heavy two-strand twine, wrapped round each pin head. It goes on slack, the crest slams down, and only then does the string pull taut. A broken link gets NO LINK in red and the string parts.</div></div>
+  </header>
+</section>
+
+<section class="variant" id="b" data-thread="pen" data-stamp="crest">
+  <header>
+    <div><h2 class="slab"><small>Variant B</small>Red felt-tip · crest stamped in a ring</h2>
+      <div class="blurb read">The scout draws the line by hand. Same stamp; the connective is a marker stroke with a hand's wobble, and a broken link gets a scrawled cross through it.</div></div>
+  </header>
+</section>
+
+<section class="variant" id="c" data-thread="twine" data-stamp="ticket">
+  <header>
+    <div><h2 class="slab"><small>Variant C</small>Twine · LINKED ticket stamp</h2>
+      <div class="blurb read">Same twine as A. The die is a rectangular form stamp — the word first, the club under it, crest small — so the row reads as a document that has been through an office.</div></div>
+  </header>
+</section>
+
+<div class="legend">Replay buttons on each variant: <b>Held</b> is the good path (6th of 16 and 14th of 16). <b>Broken</b> snaps the middle link. <b>Jackpot</b> lands the right-hand slot on 1 — the gold moment.</div>
+<div style="height: 60px"></div>
+
+<script>
+/* ── Data for chain 006, as the sealed sheet would see it ─────────────── */
+const B = '../public/badges/';
+const PLAYERS = {
+  messi:    { name: 'MESSI',    img: 'https://r2.thesportsdb.com/images/media/player/cutout/e0i2051750317027.png', ring: ['#A50044', '#A50044'], crop: '40%' },
+  deulofeu: { name: 'DEULOFEU', img: 'https://r2.thesportsdb.com/images/media/player/cutout/3506134.png',          ring: ['#A50044', '#003399'], crop: '62%' },
+  lukaku:   { name: 'LUKAKU',   img: 'https://r2.thesportsdb.com/images/media/player/cutout/qi2z1d1764089572.png',  ring: ['#003399', '#034694'], crop: '30%' },
+  courtois: { name: 'COURTOIS', img: 'https://www.thesportsdb.com/images/media/player/cutout/w5p8eo1788111831.png', ring: ['#FEBE10', '#FEBE10'], crop: '55%' },
+  distin:   { name: 'DISTIN',   img: 'https://r2.thesportsdb.com/images/media/player/cutout/3506134.png' },
+  gravesen: { name: 'GRAVESEN', img: null },
+};
+const CLUBS = { barca: { id: 'Q7156', name: 'Barcelona' }, everton: { id: 'Q5794', name: 'Everton' }, chelsea: { id: 'Q9616', name: 'Chelsea' } };
+
+const SCENARIOS = {
+  held: {
+    links: [ { held: true, club: 'barca' }, { held: true, club: 'everton' }, { held: true, club: 'chelsea' } ],
+    slots: [ { rank: 6, field: 16, score: 64, floor: 'distin', floorScore: 84 }, { rank: 14, field: 16, score: 3, floor: 'gravesen', floorScore: 83 } ],
+    score: 34,
+  },
+  broken: {
+    links: [ { held: true, club: 'barca' }, { held: false }, { held: true, club: 'chelsea' } ],
+    slots: [ { rank: null, field: 16, score: 0, floor: 'distin', floorScore: 84 }, { rank: null, field: 16, score: 0, floor: 'gravesen', floorScore: 83 } ],
+    score: 0, made: 2,
+  },
+  jackpot: {
+    links: [ { held: true, club: 'barca' }, { held: true, club: 'everton' }, { held: true, club: 'chelsea' } ],
+    slots: [ { rank: 6, field: 16, score: 64, floor: 'distin', floorScore: 84 }, { rank: 1, field: 16, score: 100, floor: 'gravesen', floorScore: 100, mine: true } ],
+    score: 82,
+  },
+};
+
+/* ── Markup ───────────────────────────────────────────────────────────── */
+const ordinal = (n) => { const r = n % 100; if (r >= 11 && r <= 13) return n + 'TH'; return n + (['TH','ST','ND','RD'][n % 10] ?? 'TH'); };
+const tilt = (i) => [-1.1, 0.8, -0.6, 1.2][i];
+
+function pinSvg(colour) {
+  return `<svg width="18" height="18" viewBox="0 0 20 20">
+    <ellipse cx="12.4" cy="15.4" rx="5.4" ry="2.5" fill="rgba(26,20,16,0.30)"/>
+    <path d="M10 9.6 L15.1 17.2" stroke="#7f848a" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="9.6" cy="8.2" r="6.2" fill="${colour}"/>
+    <circle cx="9.6" cy="8.2" r="6.2" fill="url(#ph)"/>
+    <circle cx="7.4" cy="6" r="1.5" fill="#fff" opacity="0.85"/>
+  </svg>`;
+}
+
+function printHtml(p, i, role) {
+  const ring = p.ring[0] === p.ring[1] ? p.ring[0] : `linear-gradient(135deg, ${p.ring[0]} 0 50%, ${p.ring[1]} 50% 100%)`;
+  return `<div class="print ${role === 'YOURS' ? 'yours' : ''}" data-print="${i}" style="--tilt:${tilt(i)}deg">
+    <div class="mount"><span class="pin">${pinSvg('#b3341f')}</span>
+      <div class="photo" style="background:${ring}; --crop:${p.crop}"><img src="${p.img}" alt=""></div>
+      <div class="plate narrow">${p.name}</div>
+    </div>
+    <div class="role narrow">${role}</div>
+  </div>`;
+}
+
+function linkHtml(i, stampStyle) {
+  return `<div class="link" data-link="${i}">
+    <div class="rule"></div>
+    <div class="q"><div class="mark read">?</div><div class="txt narrow">${i === 1 ? '<img src="' + B + 'Q5794.png" style="width:22px;height:22px;object-fit:contain"><br>Everton' : 'any<br>shared<br>club'}</div></div>
+    <div class="halo"></div>
+    <div class="stamp ${stampStyle} ink" style="--r:${[-8, 5, -6][i]}deg"><div class="die"></div></div>
+  </div>`;
+}
+
+function colHtml(i) {
+  return `<div class="col" data-col="${i}" style="grid-column:${i === 0 ? 3 : 5}">
+    <div class="tower"><div class="fill"></div><div class="rungs"></div><div class="flash"></div><div class="num slab"></div><div class="nolink"><div class="die narrow">NO LINK</div></div></div>
+    <div class="rank narrow"></div>
+    <div class="of narrow"></div>
+    <div class="worth read"></div>
+    <div class="floor"><div class="face"></div><div class="who narrow"><div class="k"></div><div class="n"></div></div></div>
+  </div>`;
+}
+
+function sceneHtml(stampStyle) {
+  return `<div class="board">
+    <div class="paper">
+      <div class="mast">
+        <div><div class="kicker narrow">Scouting sheet · two to find</div><div class="name slab misreg"><span class="lean">CHAIN</span></div></div>
+        <div style="display:flex;align-items:flex-end;gap:20px"><div class="grade narrow">easy</div>
+          <div style="width:1px;height:36px;background:rgba(26,20,16,0.22)"></div>
+          <div style="text-align:right"><div class="narrow" style="font-size:10px;font-weight:600;letter-spacing:.22em;color:var(--muted)">NO.</div><div class="slab" style="font-size:26px;line-height:1">006</div></div></div>
+      </div>
+      <div class="row">
+        ${printHtml(PLAYERS.messi, 0, 'GIVEN')}${linkHtml(0, stampStyle)}
+        ${printHtml(PLAYERS.deulofeu, 1, 'YOURS')}${linkHtml(1, stampStyle)}
+        ${printHtml(PLAYERS.lukaku, 2, 'YOURS')}${linkHtml(2, stampStyle)}
+        ${printHtml(PLAYERS.courtois, 3, 'GIVEN')}
+        ${colHtml(0)}${colHtml(1)}
+        <svg class="thread"><defs><radialGradient id="ph" cx="34%" cy="30%" r="78%"><stop offset="0%" stop-color="#fff" stop-opacity="0.78"/><stop offset="30%" stop-color="#b3341f" stop-opacity="0"/><stop offset="78%" stop-color="#b3341f" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.34"/></radialGradient></defs></svg>
+      </div>
+      <div class="band">
+        <div class="left">
+          <div class="running narrow">RUNNING THE STRING&hellip;</div>
+          <div class="verdict"><div class="vstamp slab ink"></div><div class="sub read"></div></div>
+        </div>
+        <div class="foil"><div class="score slab">&mdash;</div><div class="lbl narrow">RARITY FOIL</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── The thread ───────────────────────────────────────────────────────── */
+const NS = 'http://www.w3.org/2000/svg';
+const el = (t, a = {}) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+/** Where a print's pin head is, in the row's coordinate space. */
+function anchors(row) {
+  const box = row.getBoundingClientRect();
+  return [...row.querySelectorAll('.print')].map((p) => {
+    const pin = p.querySelector('.pin').getBoundingClientRect();
+    return { x: pin.left - box.left + 18 * (9.6 / 20), y: pin.top - box.top + 18 * (8.2 / 20) };
+  });
+}
+
+/** Twine hanging between two pins with a given slackness (1 = slack, 0 = taut). */
+function sagPath(a, b, slack) {
+  const span = Math.hypot(b.x - a.x, b.y - a.y);
+  const sag = (span * 0.16 + 10) * slack + 2;
+  return `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 + sag * 2} ${b.x} ${b.y}`;
+}
+/** The loop the twine takes round a pin head before it sets off. */
+function wrapPath(a, dir) {
+  const r = 6.2;
+  return `M ${a.x - dir * r} ${a.y + 1} A ${r} ${r} 0 1 ${dir > 0 ? 1 : 0} ${a.x + dir * r} ${a.y + 1}`;
+}
+function frayed(from, to) {
+  const dx = to.x - from.x, dy = to.y - from.y;
+  const ex = from.x + dx * 0.36, ey = from.y + dy * 0.36 + Math.hypot(dx, dy) * 0.34 + 14;
+  return `M ${from.x} ${from.y} Q ${from.x + dx * 0.22} ${from.y + 8} ${ex} ${ey}`;
+}
+
+/** Heavy twine: a blurred shadow, a dark core, a lighter twist over it. */
+function twineGroup(d) {
+  const g = el('g');
+  const shadow = el('path', { d, stroke: 'rgba(60,20,10,0.42)', 'stroke-width': 5.2, fill: 'none', 'stroke-linecap': 'round', transform: 'translate(1.5, 3)', filter: 'url(#soft)' });
+  const core = el('path', { d, stroke: '#8e2416', 'stroke-width': 4.6, fill: 'none', 'stroke-linecap': 'round' });
+  const twist = el('path', { d, stroke: '#c8442c', 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round', 'stroke-dasharray': '5 6.5' });
+  const light = el('path', { d, stroke: '#eea28a', 'stroke-width': 1.3, fill: 'none', 'stroke-linecap': 'round', 'stroke-dasharray': '2.2 9.3', 'stroke-dashoffset': '-1.5', opacity: '0.75' });
+  g.append(shadow, core, twist, light);
+  g._paths = [shadow, core, twist, light];
+  return g;
+}
+/** Felt-tip: one wobbly stroke, multiplied into the paper. */
+function penGroup(d) {
+  const g = el('g', { filter: 'url(#pen)', style: 'mix-blend-mode: multiply' });
+  const under = el('path', { d, stroke: '#b3341f', 'stroke-width': 5, fill: 'none', 'stroke-linecap': 'round', opacity: '0.7' });
+  const over = el('path', { d, stroke: '#a22c18', 'stroke-width': 3, fill: 'none', 'stroke-linecap': 'round', opacity: '0.95', transform: 'translate(0.6, -0.8)' });
+  g.append(under, over);
+  g._paths = [under, over];
+  return g;
+}
+
+/** Draw a group's paths from one end over `ms`. */
+function drawIn(g, ms) {
+  for (const p of g._paths) {
+    const L = p.getTotalLength() + 4;
+    p.style.strokeDasharray = p.getAttribute('stroke-dasharray') ? p.getAttribute('stroke-dasharray') : `${L}`;
+    // Dashed strands cannot be revealed with dashoffset without breaking their pattern, so they fade instead.
+    if (p.getAttribute('stroke-dasharray')) { p.style.opacity = 0; p.style.transition = `opacity 200ms ease ${ms - 160}ms`; requestAnimationFrame(() => { p.style.opacity = p.getAttribute('opacity') ?? 1; }); continue; }
+    p.style.strokeDashoffset = L;
+    p.style.transition = `stroke-dashoffset ${ms}ms cubic-bezier(0.4, 0.05, 0.25, 1)`;
+    requestAnimationFrame(() => { p.style.strokeDashoffset = 0; });
+  }
+}
+
+/** Spring the slack from 1 toward 0.18 with an overshoot: the twang. */
+function tighten(g, a, b, ms = 520) {
+  const t0 = performance.now();
+  const from = 1, to = 0.18;
+  const step = (t) => {
+    const p = Math.min(1, (t - t0) / ms);
+    // Overshoot below the target and come back: c1 = 1.7 back ease.
+    const e = 1 + 2.7 * Math.pow(p - 1, 3) + 1.7 * Math.pow(p - 1, 2);
+    const slack = from + (to - from) * e;
+    const d = sagPath(a, b, slack);
+    for (const path of g._paths) { path.setAttribute('d', d); path.style.strokeDasharray = ''; path.style.strokeDashoffset = ''; }
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── The sequence ─────────────────────────────────────────────────────── */
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function jolt(paper, hard) {
+  const c = hard ? 'jolt-hard' : 'jolt';
+  paper.classList.remove('jolt', 'jolt-hard'); void paper.offsetWidth; paper.classList.add(c);
+}
+
+function fillStamp(stamp, style, link) {
+  const die = stamp.querySelector('.die');
+  stamp.classList.toggle('broken', !link.held);
+  if (style === 'crest') {
+    die.innerHTML = link.held
+      ? `<img src="${B}${CLUBS[link.club].id}.png" alt=""><div class="club narrow">${CLUBS[link.club].name}</div>`
+      : `<div class="no narrow">NO</div><div class="no narrow">LINK</div>`;
+  } else {
+    die.innerHTML = link.held
+      ? `<img src="${B}${CLUBS[link.club].id}.png" alt=""><div><div class="word slab">LINKED</div><div class="club narrow">${CLUBS[link.club].name}</div></div>`
+      : `<div><div class="word slab">NO LINK</div><div class="club narrow">nothing shared</div></div>`;
+  }
+}
+
+async function runColumn(col, slot, paper) {
+  const tower = col.querySelector('.tower'), fill = col.querySelector('.fill'), num = col.querySelector('.num');
+  const rank = col.querySelector('.rank'), of = col.querySelector('.of'), worth = col.querySelector('.worth'), floor = col.querySelector('.floor');
+  col.classList.add('armed');
+  tower.style.setProperty('--rung', `${(132 - 5) / slot.field}px`);
+
+  if (slot.rank === null) {
+    fill.style.height = '0%'; num.textContent = '';
+    await wait(200);
+    const die = col.querySelector('.nolink .die');
+    die.style.opacity = 1; die.classList.add('ink');
+    die.animate([{ opacity: 0, transform: 'rotate(-9deg) scale(1.8)' }, { opacity: 1, transform: 'rotate(-9deg) scale(0.94)', offset: 0.5 }, { transform: 'rotate(-9deg) scale(1)' }], { duration: 380, easing: 'cubic-bezier(0.3,1.2,0.4,1)', fill: 'both' });
+    jolt(paper);
+    rank.textContent = ''; of.textContent = ''; worth.textContent = 'scores nothing';
+    setFloor(floor, slot, false);
+    return;
+  }
+
+  // Constant tick, whatever the field size: a famous pick stops almost at
+  // once, and that is the joke. Clamped so 16 is readable and 254 is not an
+  // afternoon.
+  const ticks = slot.field - slot.rank;
+  const every = Math.max(46, Math.min(170, 1500 / Math.max(ticks, 1)));
+  let n = slot.field;
+  fill.style.transition = 'none';
+  const show = () => { num.textContent = n; fill.style.height = `${(n / slot.field) * 100}%`; };
+  show();
+  await wait(380);
+  while (n > slot.rank) {
+    n -= 1; show();
+    num.classList.remove('tick'); void num.offsetWidth; num.classList.add('tick');
+    await wait(every);
+  }
+  // The stop.
+  tower.classList.add('landed'); jolt(paper, slot.rank === 1);
+  rank.textContent = slot.rank === 1 ? 'NOBODY DEEPER' : `${ordinal(slot.rank)} MOST OBSCURE`;
+  of.textContent = `OF ${slot.field} WHO FIT`;
+  worth.textContent = `worth ${slot.score}`;
+  if (slot.rank === 1) { tower.classList.add('jackpot'); tower.querySelector('.flash').classList.add('in'); }
+  await wait(260);
+  setFloor(floor, slot, !!slot.mine);
+}
+
+function setFloor(floor, slot, mine) {
+  const p = PLAYERS[slot.floor];
+  floor.classList.toggle('mine', mine);
+  floor.querySelector('.face').innerHTML = p.img ? `<img src="${p.img}" alt="">` : `<span class="empty"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>`;
+  floor.querySelector('.k').textContent = mine ? 'You found it' : 'The floor · deepest here';
+  floor.querySelector('.n').innerHTML = `<span${mine ? ' style="color:var(--gold)"' : ''}>${p.name}</span><em>· ${slot.floorScore}</em>`;
+  floor.classList.add('in');
+}
+
+async function play(section, scenarioName) {
+  const thread = section.dataset.thread, stampStyle = section.dataset.stamp;
+  const sc = SCENARIOS[scenarioName];
+  section.querySelector('.board')?.remove();
+  section.insertAdjacentHTML('beforeend', sceneHtml(stampStyle));
+  const board = section.querySelector('.board'), paper = board.querySelector('.paper');
+  const row = board.querySelector('.row'), svg = board.querySelector('.thread');
+  const links = [...board.querySelectorAll('.link')], cols = [...board.querySelectorAll('.col')];
+  const band = board.querySelector('.band');
+  const token = (section._token = (section._token ?? 0) + 1); section._played = true;
+  const live = () => section._token === token;
+
+  await wait(500); if (!live()) return;
+  const A = anchors(row);
+
+  for (let i = 0; i < 3; i++) {
+    const link = sc.links[i], a = A[i], b = A[i + 1];
+    // 1. The thread goes on, slack.
+    const g = thread === 'twine' ? twineGroup(sagPath(a, b, 1)) : penGroup(sagPath(a, b, 0.25));
+    if (thread === 'twine') {
+      const wrapA = el('path', { d: wrapPath(a, 1), stroke: '#8e2416', 'stroke-width': 4.2, fill: 'none', 'stroke-linecap': 'round' });
+      svg.appendChild(wrapA);
+    }
+    svg.appendChild(g);
+    drawIn(g, thread === 'twine' ? 520 : 420);
+    await wait(thread === 'twine' ? 600 : 480); if (!live()) return;
+
+    // 2. The stamp. The paper takes the hit.
+    const stamp = links[i].querySelector('.stamp'), halo = links[i].querySelector('.halo');
+    fillStamp(stamp, stampStyle, link);
+    links[i].classList.add('stamped');
+    halo.classList.toggle('red', !link.held);
+    stamp.classList.add('in'); halo.classList.add('in');
+    await wait(190); if (!live()) return;
+    jolt(paper);
+
+    // 3. The consequence: taut or parted.
+    if (link.held) {
+      if (thread === 'twine') { tighten(g, a, b); const wrapB = el('path', { d: wrapPath(b, -1), stroke: '#8e2416', 'stroke-width': 4.2, fill: 'none', 'stroke-linecap': 'round' }); svg.appendChild(wrapB); }
+      await wait(520);
+    } else {
+      await wait(300); if (!live()) return;
+      if (thread === 'twine') {
+        g.remove();
+        const ends = el('g'); ends.style.animation = 'none';
+        for (const d of [frayed(a, b), frayed(b, a)]) { const fg = twineGroup(d); ends.appendChild(fg); }
+        ends.style.opacity = 0; svg.appendChild(ends); ends.style.transition = 'opacity 180ms ease'; requestAnimationFrame(() => (ends.style.opacity = 1));
+        // The ends drop: a small settle down and out.
+        ends.animate([{ transform: 'translateY(-4px)' }, { transform: 'translateY(2px)', offset: 0.6 }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(0.2,0.9,0.3,1)', fill: 'both' });
+      } else {
+        // A cross scrawled through the stroke, two quick strokes.
+        const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2 + 14;
+        const x1 = el('path', { d: `M ${mx - 16} ${my - 14} L ${mx + 15} ${my + 15}`, stroke: '#a22c18', 'stroke-width': 3.4, fill: 'none', 'stroke-linecap': 'round', filter: 'url(#pen)' });
+        const x2 = el('path', { d: `M ${mx + 15} ${my - 14} L ${mx - 16} ${my + 15}`, stroke: '#a22c18', 'stroke-width': 3.4, fill: 'none', 'stroke-linecap': 'round', filter: 'url(#pen)' });
+        for (const [p, dl] of [[x1, 0], [x2, 130]]) { svg.appendChild(p); const L = p.getTotalLength() + 2; p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.style.transition = `stroke-dashoffset 160ms ease-out ${dl}ms`; requestAnimationFrame(() => (p.style.strokeDashoffset = 0)); }
+        g.style.opacity = 0.45;
+      }
+      await wait(520);
+    }
+    if (!live()) return;
+    await wait(160);
+  }
+
+  // The verdict.
+  await wait(320); if (!live()) return;
+  const perfect = sc.links.every((l) => l.held);
+  const v = band.querySelector('.vstamp'), sub = band.querySelector('.sub');
+  v.textContent = perfect ? 'CHAIN HELD' : 'CHAIN BROKE'; v.classList.toggle('broke', !perfect);
+  sub.textContent = perfect ? 'Every link a real one.' : `${sc.made} of 3 links held. A broken link scores nothing.`;
+  band.classList.add('done'); v.classList.add('in');
+  await wait(200); jolt(paper, true);
+  await wait(500); if (!live()) return;
+  const foil = band.querySelector('.foil'), score = foil.querySelector('.score');
+  foil.classList.add('on');
+  countUp(score, sc.score, 1100);
+
+  // The columns, one after the other.
+  await wait(700); if (!live()) return;
+  for (let i = 0; i < 2; i++) { await runColumn(cols[i], sc.slots[i], paper); if (!live()) return; await wait(380); }
+}
+
+function countUp(node, to, ms) {
+  const t0 = performance.now();
+  const step = (t) => { const p = Math.min(1, (t - t0) / ms); node.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+/* ── Wire up ──────────────────────────────────────────────────────────── */
+for (const section of document.querySelectorAll('.variant')) {
+  const controls = document.createElement('div'); controls.className = 'controls';
+  for (const [key, label] of [['held', 'Held'], ['broken', 'Broken'], ['jackpot', 'Jackpot']]) {
+    const b = document.createElement('button'); b.textContent = `Replay · ${label}`;
+    b.onclick = () => { controls.querySelectorAll('button').forEach((x) => x.classList.remove('on')); b.classList.add('on'); play(section, key); };
+    controls.appendChild(b);
+  }
+  section.querySelector('header').appendChild(controls);
+  controls.querySelector('button').classList.add('on');
+}
+// Play each when it scrolls into view the first time.
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) if (e.isIntersecting && !e.target._played && !e.target._token) { e.target._played = true; play(e.target, 'held'); }
+}, { threshold: 0.1 });
+document.querySelectorAll('.variant').forEach((s) => io.observe(s));
+</script>
+</body>
+</html>
