@@ -5,7 +5,8 @@ import PlayerCard from './PlayerCard';
 import ChainRow from './ChainRow';
 import ChainSearch from './ChainSearch';
 import DragPicture from './DragPicture';
-import Clip from './Clip';
+import Pin from './Pin';
+import SheetPins from './SheetPins';
 import { shortClubName } from './ClubBadge';
 import { tiltFor } from './swing';
 import type { ClubView } from '../src/lib/clubs';
@@ -148,11 +149,14 @@ function Brief({
  * The shortlist.
  *
  * Called the bench before, which borrowed a football word for something that
- * is not a bench: nobody is coming on. It is the pile of prints a scout has
- * pulled out of the drawer and not yet decided about, so it looks like one —
- * on the desk rather than on the sheet, and the cards in it are the same
- * mounted prints as everywhere else, because the thing the player drags has
- * to be the thing that ends up on the board.
+ * is not a bench: nobody is coming on. It is the prints a scout has pulled
+ * and not yet decided about, so it looks like that — pinned to the board
+ * beside the sheet, each on its own pin, because the thing the player drags
+ * has to be the thing that ends up on the sheet.
+ *
+ * The label is on an index card pinned up with them rather than typed onto
+ * the board, and there are no empty slips: on a wall, a dashed rectangle is
+ * a control, and the card saying what goes here is instruction enough.
  */
 function Shortlist({
   state, images, onRemove,
@@ -162,58 +166,54 @@ function Shortlist({
   onRemove: (id: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: 'bench' });
+  const empty = state.library.length === 0;
   return (
     <div
       ref={setNodeRef}
       style={{
-        borderTop: '1px solid rgba(26,20,16,0.18)',
-        boxShadow: isOver ? 'inset 0 0 0 2px rgba(179,52,31,0.4)' : 'inset 0 14px 22px -18px rgba(26,20,16,0.5)',
-        background: isOver ? 'rgba(179,52,31,0.07)' : 'rgba(26,20,16,0.035)',
-        padding: '14px 34px 20px', minHeight: 236, transition: 'background 180ms ease',
+        // The drop target is the board itself. Lit, not outlined: an outline
+        // is the one shape nothing else on the board has.
+        background: isOver ? 'rgba(255, 246, 220, 0.16)' : 'transparent',
+        padding: '6px 34px 22px', minHeight: 236, transition: 'background 180ms ease',
+        display: 'flex', alignItems: 'flex-start', gap: 26,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 10 }}>
-        <div className="narrow" style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.26em', textTransform: 'uppercase', color: 'var(--soft)' }}>
-          The shortlist
-        </div>
-        <div style={{ flexGrow: 1, height: 1, background: 'rgba(26,20,16,0.16)' }} />
-        <div className="narrow" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', color: 'var(--muted)', fontVariantNumeric: 'tabular-nums' }}>
-          {state.library.length} PULLED
-        </div>
-      </div>
-
-      {state.library.length === 0 ? (
-        // Empty slips rather than a sentence on its own. The shape of the
-        // thing that goes here is the clearest instruction available, and a
-        // band of bare desk under the sheet reads as a layout that ran out
-        // rather than as a tray waiting to be filled.
-        <div style={{ display: 'flex', alignItems: 'center', gap: 22, paddingTop: 6 }}>
-          <div style={{ display: 'flex', gap: 14, flexShrink: 0 }}>
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                aria-hidden
-                style={{
-                  width: 82, height: 110,
-                  border: '2px dashed rgba(26,20,16,0.16)',
-                  background: 'rgba(255,253,247,0.28)',
-                  transform: `rotate(${tiltFor(`slip-${i}`, 2.2)}deg)`,
-                }}
-              />
-            ))}
+      {/* The card. Pinned a shade askew, like everything else up here. */}
+      <div
+        className="paper"
+        style={{
+          position: 'relative', flexShrink: 0, width: empty ? 300 : 236,
+          padding: '20px 16px 14px', marginTop: 18,
+          transform: `rotate(${tiltFor('shortlist-card', 1.6)}deg)`,
+          transition: 'width 220ms ease',
+        }}
+      >
+        <span aria-hidden style={{ position: 'absolute', top: 0, left: '50%', width: 0, height: 0 }}>
+          <Pin size={18} colour="#a8791f" />
+        </span>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+          <div className="narrow" style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.26em', textTransform: 'uppercase', color: 'var(--soft)' }}>
+            The shortlist
           </div>
-          <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--dim)', maxWidth: 420, lineHeight: 1.5 }}>
-            Search on the right to pull prints out onto the desk. Costs nothing —
+          <div className="narrow" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', color: 'var(--muted)', fontVariantNumeric: 'tabular-nums' }}>
+            {state.library.length} PULLED
+          </div>
+        </div>
+        {empty ? (
+          <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--dim)', lineHeight: 1.5, marginTop: 8 }}>
+            Search on the right to pull prints out onto the board. Costs nothing —
             nothing counts until the sheet is sealed.
           </div>
-        </div>
-      ) : (
+        ) : null}
+      </div>
+
+      {empty ? null : (
         // Setting `overflow-x` alone does not do what it looks like it does:
         // any non-visible value on one axis computes the OTHER axis to auto
         // as well, so a strip that only meant to scroll sideways was also
         // clipping the top off every pin and the bottom off every nameplate.
         // The vertical padding is what the cards lean and hang into.
-        <div style={{ display: 'flex', gap: 16, overflowX: 'auto', overflowY: 'hidden', paddingTop: 14, paddingBottom: 14, minHeight: 172 }}>
+        <div style={{ flexGrow: 1, display: 'flex', gap: 16, overflowX: 'auto', overflowY: 'hidden', paddingTop: 18, paddingBottom: 14, minHeight: 172, minWidth: 0 }}>
           {state.library.map((id) => {
             const p = state.pool.get(id);
             if (!p) return null;
@@ -229,6 +229,7 @@ function Shortlist({
                   // the ring names the clubs that made a link hold.
                   ring={NEUTRAL}
                   tilt={tiltFor(`bench-${id}`, 2.6)}
+                  pin="gold"
                 />
                 <button
                   onClick={() => onRemove(id)}
@@ -394,13 +395,13 @@ export default function Chain({
         <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0 }}>
 
           <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px 36px 22px', minWidth: 0, minHeight: 0, overflow: 'auto' }}>
-            {/* The sheet is not the only thing on the desk, and a single
+            {/* The sheet is not the only thing on the board, and a single
                 rectangle floating in the middle of a large surface is what
                 made the screen read as empty. Two blank sheets underneath fix
-                it more honestly than decoration would: they give the clip
-                something to be holding, put a real edge and a real shadow
-                behind the paper, and are exactly what a desk with work on it
-                looks like. */}
+                it more honestly than decoration would: the pins go through a
+                stack rather than one leaf, there is a real edge and a real
+                shadow behind the paper, and it is exactly what a board with
+                work on it looks like. */}
             <div style={{ position: 'relative', width: '100%', maxWidth: 1080, flexShrink: 0 }}>
               <div aria-hidden className="paper" style={{ position: 'absolute', inset: '10px -14px -16px -9px', transform: 'rotate(-0.7deg)', opacity: 0.75, zIndex: 0 }} />
               <div aria-hidden className="paper" style={{ position: 'absolute', inset: '5px -6px -8px -13px', transform: 'rotate(0.55deg)', opacity: 0.88, zIndex: 0 }} />
@@ -409,7 +410,7 @@ export default function Chain({
                 className="paper"
                 style={{ position: 'relative', zIndex: 1, padding: '46px 40px 32px' }}
               >
-              <Clip />
+              <SheetPins />
               <Masthead puzzle={puzzle} blanks={blanks} />
 
               <div style={{ padding: '46px 0 22px' }}>

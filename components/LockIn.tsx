@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useCountUp } from './DepthGauge';
 import ChainRow from './ChainRow';
-import Clip from './Clip';
+import SheetPins from './SheetPins';
 import Pin, { pinHead } from './Pin';
 import RedString, { type Anchor } from './RedString';
 import { EmptyPlate } from './PlayerCard';
@@ -187,7 +187,7 @@ export default function LockIn({
           className="paper"
           style={{ position: 'relative', padding: '40px 30px 26px', animation: 'sheet-rise 520ms cubic-bezier(0.2,0.9,0.3,1) both' }}
         >
-          <Clip />
+          <SheetPins />
 
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, borderBottom: '3px solid var(--ink)', paddingBottom: 11 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>

@@ -166,9 +166,15 @@ surface. Premium ($9/mo) was considered and declined — not needed for images.
 
 ## The scouting sheet
 
-The chain route's design: parchment desk, clipboard and bulldog clip, Alfa Slab
-masthead with print misregistration, grade as a rubber stamp, players as mounted
-prints ringed with their clubs. The lock-in is a sealed sheet — links resolve
+The chain route's design: a cork pinboard with the sheet pinned to it at the
+corners, Alfa Slab masthead with print misregistration, grade as a rubber stamp,
+players as mounted prints ringed with their clubs. Cutouts stand on a painted
+studio muslin, feet on the frame's bottom edge; press photos fill their own
+frame. The board and the muslin are one-off Higgsfield renders in
+`public/board/` (illustrated, not photographed — the page's language is flat,
+and a photographed wall made everything drawn on it look like a sticker). See
+`docs/superpowers/specs/2026-09-11-pinboard-design.md`, which also parks the
+follow-on: props at the board's edges. The lock-in is a sealed sheet — links resolve
 left to right, the score lands in gold foil, then the pinboard shows the answers
 you missed with the diagonal naming the two clubs that made each fit.
 

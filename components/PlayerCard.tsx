@@ -1,6 +1,7 @@
 'use client';
 import { useDraggable } from '@dnd-kit/core';
 import Pin from './Pin';
+import { tiltFor } from './swing';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
@@ -118,14 +119,26 @@ export default function PlayerCard({
           />
         ) : null}
 
-        <div className="photo" style={{ width: w - 10, height: h - 22, background: ring }}>
+        {/* A cutout gets the muslin hung behind it; a press photo fills its
+            own frame and needs nothing. The crop slides the canvas sideways
+            per player, so a row of prints is a row of different frames. See
+            THE BACKDROP in globals.css. */}
+        <div
+          className={photo?.fit === 'contain' ? 'photo backdrop' : 'photo'}
+          style={{
+            width: w - 10, height: h - 22, background: ring,
+            ['--crop' as string]: `${50 + tiltFor(`crop-${player.id}`, 28)}%`,
+          }}
+        >
           {photo ? (
             <img
               src={photo.url}
               alt=""
               style={{
                 objectFit: photo.fit,
-                objectPosition: photo.fit === 'cover' ? '50% 18%' : '50% 50%',
+                // A cutout's anchor is in the stylesheet: he stands on the
+                // floor. A press photo is anchored high, where the face is.
+                objectPosition: photo.fit === 'cover' ? '50% 18%' : undefined,
               }}
             />
           ) : (

@@ -135,41 +135,88 @@ button { font-family: inherit; }
 .photo { position: relative; overflow: hidden; padding: 4px; }
 .photo > img { width: 100%; height: 100%; display: block; background: #e6ded0; }
 .mount { background: var(--card-a); padding: 5px 5px 0; }
-/* Both carry their shadows under THE DESK, where the light is decided. */
+/* Both carry their shadows under THE BOARD, where the light is decided. */
+
+/* ── THE BACKDROP ────────────────────────────────────────────────────────
+   A cutout is the whole player against transparency, and the flat plate it
+   used to sit on was within a few points of the mount and the paper — so he
+   floated on parchment. Behind every cutout now hangs the same hand-painted
+   muslin every team photo of the era was shot against: sand, ochre and olive,
+   nothing in it to fight the kit, and enough tone that a print reads as a
+   photograph of a person rather than a sticker of one.
+
+   One canvas, many crops. `--crop` slides the window sideways per card
+   (hashed from the player id in PlayerCard), so five prints in a row are five
+   frames from one session rather than five copies of one frame. The canvas
+   is sized so its bottom edge — the floor line — is the frame's bottom edge,
+   which is what the player's feet stand on.
+
+   Unscoped, like `.photo`: the DragOverlay portals the dragged card outside
+   `.sheet`, and a backdrop that vanished the moment you picked a print up
+   would be the one thing the player was certain to see. */
+/* On a pseudo-element inside the padding, not on `.photo` itself: the
+   element's own background IS the club ring, set inline as a shorthand that
+   would wipe any image put beside it. */
+.photo.backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background-image: url('/board/muslin.webp');
+  background-size: 128% auto;
+  background-position: var(--crop, 50%) 100%;
+  background-repeat: no-repeat;
+}
+.photo.backdrop > img {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  /* A cutout stands on the floor. `contain` left him hovering mid-frame. */
+  object-position: 50% 100%;
+  /* Where his feet meet the canvas; a figure with no contact shadow is
+     pasted on rather than standing in front of. */
+  filter: drop-shadow(0 4px 4px rgba(20, 14, 8, 0.34)) saturate(0.94);
+}
+/* Tone, over both layers: the light falls off toward the floor, and the
+   print takes a little of the paper's warmth so it looks developed on the
+   same stock. */
+.photo.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.06), transparent 40%, rgba(50, 40, 25, 0.12) 100%),
+    rgba(214, 180, 120, 0.04);
+}
 
 .sheet ::-webkit-scrollbar-thumb { background: rgba(26, 20, 16, 0.26); }
 .sheet :where(a, button, input, [tabindex]):focus-visible { outline-color: var(--accent); }
 
-/* ── THE DESK ────────────────────────────────────────────────────────────
-   The parchment was one flat colour with a speckle on it, which reads as a
-   swatch rather than as a surface: no light falls on it, no edge is nearer
-   than another, and a sheet laid on top has nothing to sit against. Four
-   cheap layers fix that without adding an image, and they stack in the order
-   a real desk does — weave, then fibre, then the light in the room.
+/* ── THE BOARD ───────────────────────────────────────────────────────────
+   The sheet is pinned to a cork board. It used to lie on a desk, which was
+   the one thing on the page that made no sense: pins do not go into a desk,
+   and a bulldog clip does not hold paper to one. A board is what the pins,
+   the string and the prints were already saying.
 
-   `.sheet` carries them; `.sheet::before` carries the vignette and the light,
-   which have to sit ABOVE the background and BELOW the content. */
+   The cork is an image — illustrated, not photographed, so it speaks the
+   same flat language as the paper, the pins and the string. A photographed
+   board made everything drawn on top of it look like a sticker. It is
+   painted once with `cover`; there is no tile to find a repeat in.
+
+   `.sheet` carries the cork; `.sheet::before` carries the wash and the
+   vignette, which have to sit ABOVE the image and BELOW the content. */
 .sheet {
   position: relative;
-  background-color: var(--bg);
-  background-image:
-    /* Fibre. Two offset dot grids, one dark one light, so the grain has a
-       direction rather than reading as noise. */
-    radial-gradient(rgba(120, 96, 60, 0.13) 1px, transparent 1.4px),
-    radial-gradient(rgba(255, 255, 255, 0.42) 1px, transparent 1.4px),
-    /* Weave. Barely there on its own; it is what stops the fibre looking
-       like dust when the two are seen together. */
-    repeating-linear-gradient(58deg, rgba(120, 96, 60, 0.045) 0 1px, transparent 1px 5px),
-    repeating-linear-gradient(-58deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 5px),
-    /* The desk's own colour, warmer at the top where the light is. */
-    linear-gradient(172deg, #e6dcc9 0%, #ded4c1 38%, #d3c7b0 100%);
-  background-size: 8px 8px, 13px 13px, auto, auto, auto;
-  background-position: 0 0, 4px 5px, 0 0, 0 0, 0 0;
+  background-color: #c9a06e;
+  background-image: url('/board/cork.webp');
+  background-size: cover;
+  background-position: center;
 }
 
-/* The light in the room and the dark at the edges. A pseudo-element rather
-   than more background layers, because a vignette has to be sized to the
-   element and the fibre has to tile. */
+/* The render came out more caramel than cork. A thin wash of the paper's
+   own brown pulls it toward tan, and the corners fall away a little so the
+   board has a middle for the sheet to sit in. */
 .sheet::before {
   content: '';
   position: absolute;
@@ -177,50 +224,28 @@ button { font-family: inherit; }
   pointer-events: none;
   z-index: 0;
   background:
-    /* A pool of light where the sheet is, so the paper has something to be
-       brighter than and the corners have something to fall away from. */
-    radial-gradient(66% 52% at 46% 40%, rgba(255, 251, 238, 0.72), transparent 74%),
-    radial-gradient(120% 78% at 50% -14%, rgba(255, 250, 236, 0.5), transparent 62%),
-    radial-gradient(120% 96% at 50% 46%, transparent 42%, rgba(58, 40, 18, 0.20) 84%, rgba(44, 29, 10, 0.36) 100%);
-}
-/* Grain.
-   The dot grids give the surface a weave; they cannot give it fibre, because
-   a grid is regular and fibre is not — at any size the eye finds the repeat
-   and the desk goes back to being a swatch. Fractal noise has no repeat to
-   find. It is generated by the browser from four numbers, so it costs nothing
-   to ship and nothing to decode.
-
-   Multiplied rather than laid over: noise at 8% opacity on top washes the
-   colour out, whereas multiplying darkens only where the fibre is and leaves
-   the parchment its own hue. */
-.sheet::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
+    radial-gradient(120% 96% at 50% 46%, transparent 50%, rgba(60, 40, 15, 0.20) 100%),
+    rgba(120, 90, 50, 0.10);
 }
 
-/* Everything the player can see or touch sits above the light and the grain. */
+/* Everything the player can see or touch sits above the wash. */
 .sheet > * { position: relative; z-index: 1; }
 
-/* Paper is not flat either. A sheet gets the same treatment one step brighter,
-   plus a hairline along the top edge where it catches the light. */
+/* Paper is not flat either: a faint weave, plus a hairline along the top edge
+   where it catches the light. */
 .sheet .paper {
   background-color: var(--panel);
   background-image:
     repeating-linear-gradient(90deg, rgba(120, 96, 60, 0.028) 0 1px, transparent 1px 3px),
     radial-gradient(rgba(120, 96, 60, 0.05) 0.6px, transparent 1px);
   background-size: auto, 5px 5px;
+  /* Pinned at the top, so the bottom stands off the board a little: the
+     shadow is deeper and further down than a sheet lying flat would throw. */
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    0 1px 0 rgba(26, 20, 16, 0.12),
-    0 3px 5px rgba(60, 44, 20, 0.10),
-    0 18px 38px rgba(60, 44, 20, 0.24);
+    0 1px 0 rgba(26, 20, 16, 0.2),
+    0 4px 8px rgba(60, 40, 15, 0.22),
+    0 20px 40px rgba(60, 40, 15, 0.34);
 }
 
 /* A print in its mount, hung rather than laid down: the shadow is offset
