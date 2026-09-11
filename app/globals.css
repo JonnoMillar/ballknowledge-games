@@ -231,6 +231,14 @@ button { font-family: inherit; }
 /* Everything the player can see or touch sits above the wash. */
 .sheet > * { position: relative; z-index: 1; }
 
+/* The sealed sheet SCROLLS — the pinboard hangs below the fold — and an
+   absolutely positioned wash on a scroll container covers only the first
+   screenful and then scrolls away with the content, leaving raw cork under
+   a hard seam. Pinned to the viewport instead. The cork image itself needs
+   no help: a scroll container's own background is attached to its box, not
+   to its content. */
+.sheet[role="dialog"]::before { position: fixed; }
+
 /* Paper is not flat either: a faint weave, plus a hairline along the top edge
    where it catches the light. */
 .sheet .paper {
