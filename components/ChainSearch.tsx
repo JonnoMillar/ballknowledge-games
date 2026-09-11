@@ -2,6 +2,7 @@
 import { useMemo, useState } from 'react';
 import PlayerCard from './PlayerCard';
 import { tiltFor } from './swing';
+import { neighboursOf } from '../src/lib/chain/score';
 import { search, type SearchIndex } from '../src/lib/search/index';
 import { NEUTRAL } from '../src/lib/club-colours';
 import type { ChainState } from '../src/game/chainState';
@@ -82,9 +83,8 @@ export default function ChainSearch({
   // link, because working that out is the puzzle.
   const neighbours = focused === null
     ? []
-    : [focused - 1, focused + 1]
-        .filter((i) => i >= 0 && i < state.filled.length)
-        .map((i) => {
+    : neighboursOf(focused, state.filled.length, state.puzzle.closed)
+        .map(({ slot: i }) => {
           const id = state.filled[i];
           return { index: i, name: id ? state.pool.get(id)?.name ?? null : null };
         });

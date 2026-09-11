@@ -98,6 +98,39 @@ sane answer count, median 211 clubs to choose from. See
 `scripts/measure-layouts.ts`. A named club is a **harder** rule than the mode's,
 not a hint: sharing some other club no longer satisfies it.
 
+### The ring (board 009)
+
+`closed: true` on a chain adds one more link, from the last slot back to the
+first, and the board is drawn round the edges of a square: givens in the
+corners, blanks between them, two links each. `/?c=009` is Isak, Drogba,
+Raya and Benzema, fields 84 · 59 · 18 · 60 in that order round (the other two
+orderings are wider). No named clubs.
+
+It is Chain with the ends tied, **not** a single-answer board, and that was
+measured before it was built: over 9,981 pairs of famous givens sharing
+nothing, none had a lone bridge and 94% had more than twenty. Every layout
+that gets to one answer either gives a blank three or four givens (hub,
+cross, the 3×3 with a centre card) or names both clubs on every edge —
+see `scripts/measure-layouts.ts` and the shape-study artboard.
+
+Everything that read "left is i-1, right is i+1" now goes through
+`neighboursOf()` in `src/lib/chain/score.ts`, so a ring cannot be a line in
+one file and a loop in another. `ChainRow` switches to a 5×5 grid for a
+closed eight (`RING` gives each slot its cell); the connectors on the sides
+stand up. Two things the ring changed on the sealed sheet:
+
+- **The columns cannot hang under the edge cards** — the top one would run
+  into the middle and the sides into the bottom corners — so they line up
+  in a row below the square, labelled by plate.
+- **The standing spans of string bow OUT round the cards** (`bowsFor` in
+  `RedString.tsx`). Drawn pin to pin they crossed every face on the way
+  down; the taut rope now sits `CLEAR` px outside the pins' line, on
+  whichever side is away from the board's centre.
+
+`pairs` and `entry` stay null on a ring — four independent fields are not a
+product of two — so the foil band does not print, and the grade test skips
+it because it is not a two-blank board.
+
 ### Grading
 
 ```bash

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   chainLinks, chainProgress, chainFieldFor, chainSlotDepths, chainSlotObscurity,
-  chainObscurity, isGreen, linked,
+  chainObscurity, isGreen, linked, neighboursOf,
 } from '../../src/lib/chain/score';
 import type { Player } from '../../src/lib/chemistry/types';
 
@@ -179,5 +179,52 @@ describe('club mode', () => {
     expect(chem).toContain('natLeague');
     expect(club).not.toContain('natLeague');
     expect(club.sort()).toEqual(['b', 'famousBridge', 'hyper']);
+  });
+});
+
+describe('a closed chain', () => {
+  const mk = (id: string, clubs: string[], fame = 50): Player => ({
+    id, name: id, aliases: [], nation: 'X', clubIds: clubs, leagueIds: clubs.map((c) => `L_${c}`),
+    positions: ['MID'], fame: { value: fame, source: 'sitelinks' },
+  });
+  // Four givens on the corners of a square, sharing nothing with each other.
+  const n = mk('n', ['A']);
+  const e = mk('e', ['B']);
+  const s = mk('s', ['C']);
+  const w = mk('w', ['D']);
+  // One bridge per edge, including the edge that closes the ring (D back to A).
+  const ne = mk('ne', ['A', 'B']);
+  const se = mk('se', ['B', 'C']);
+  const sw = mk('sw', ['C', 'D']);
+  const nw = mk('nw', ['D', 'A']);
+  const players = [n, e, s, w, ne, se, sw, nw];
+  const pool = new Map(players.map((p) => [p.id, p]));
+  const slots = ['n', null, 'e', null, 's', null, 'w', null];
+
+  it('wraps: the last slot neighbours the first through one more link', () => {
+    expect(neighboursOf(7, 8, true)).toEqual([{ slot: 6, link: 6 }, { slot: 0, link: 7 }]);
+    expect(neighboursOf(0, 8, true)).toEqual([{ slot: 7, link: 7 }, { slot: 1, link: 0 }]);
+    expect(neighboursOf(0, 8, false)).toEqual([{ slot: 1, link: 0 }]);
+    expect(chainLinks(slots, pool, 'clubs', {}, true)).toHaveLength(8);
+    expect(chainLinks(slots, pool, 'clubs', {}, false)).toHaveLength(7);
+  });
+
+  it('constrains the closing blank by both corners', () => {
+    // Open, slot 7 sees only slot 6 and any D player fits. Closed, it must
+    // also reach slot 0, and only the D–A bridge does.
+    expect(chainFieldFor(7, slots, players, pool, 'clubs', {}, false).map((p) => p.id).sort()).toEqual(['nw', 'sw']);
+    expect(chainFieldFor(7, slots, players, pool, 'clubs', {}, true).map((p) => p.id)).toEqual(['nw']);
+  });
+
+  it('holds only when the closing link holds too', () => {
+    const fill = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'];
+    const links = chainLinks(fill, pool, 'clubs', {}, true);
+    expect(links.every((l) => l.made)).toBe(true);
+    // The two west bridges swapped: both still touch w, so links 5 and 6
+    // hold, but sw does not reach back to n. That failure is on link 7, the
+    // one an open chain does not have.
+    const wrong = ['n', 'ne', 'e', 'se', 's', 'nw', 'w', 'sw'];
+    const made = chainLinks(wrong, pool, 'clubs', {}, true).map((l) => l.made);
+    expect(made).toEqual([true, true, true, true, false, true, true, false]);
   });
 });

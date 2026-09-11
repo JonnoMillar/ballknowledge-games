@@ -1,5 +1,5 @@
 'use client';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import ClubBadge, { shortClubName } from './ClubBadge';
@@ -35,7 +35,7 @@ import type { PortraitImage } from '../src/lib/portraits';
  * because it is not part of the answer — it is the rule the player is being
  * asked to satisfy, and a harder rule than the mode's own.
  */
-function Connector({ link, mode, clubs, revealed, showRule, stamped }: {
+function Connector({ link, mode, clubs, revealed, showRule, stamped, vertical = false }: {
   link: ChainLink;
   mode: 'chemistry' | 'clubs';
   clubs: Record<string, ClubView>;
@@ -56,6 +56,12 @@ function Connector({ link, mode, clubs, revealed, showRule, stamped }: {
    * stamp on it.
    */
   stamped: boolean | null;
+  /**
+   * Standing up, between a card above and a card below. The ring's sides.
+   * Same rule, same crest, same label — the rule is split around the crest
+   * so the crest sits at the link's midpoint rather than at one end of it.
+   */
+  vertical?: boolean;
 }) {
   // A link the stamp has not reached yet must give nothing away: the sheet
   // is sealed, but the player has not been TOLD yet.
@@ -72,17 +78,28 @@ function Connector({ link, mode, clubs, revealed, showRule, stamped }: {
         ? '2.5px solid var(--accent)'
         : '2px dotted rgba(26,20,16,0.42)';
 
+  // The same rule, drawn along the other axis: `border-top` becomes
+  // `border-left`, and the width becomes a height that fills the gap.
+  const post = showRule
+    ? <div style={{ flexGrow: 1, width: 0, minHeight: 10, borderLeft: rule, transition: 'border-color 260ms ease' }} />
+    : <div style={{ flexGrow: 1, width: 2 }} />;
+
   return (
     <div
-      style={{
+      style={vertical ? {
+        height: '100%', minHeight: 88, width: 116,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
+      } : {
         flexGrow: 1, flexBasis: 74, minWidth: 44,
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
         paddingTop: 46, alignSelf: 'flex-start',
       }}
     >
-      {showRule
-        ? <div style={{ width: '100%', height: 0, borderTop: rule, transition: 'border-color 260ms ease' }} />
-        : <div style={{ height: 2 }} />}
+      {vertical
+        ? post
+        : showRule
+          ? <div style={{ width: '100%', height: 0, borderTop: rule, transition: 'border-color 260ms ease' }} />
+          : <div style={{ height: 2 }} />}
       {stamped ? (
         // The die, centred where the crest would have been. It overflows the
         // crest's box on purpose: nothing below it moves when it lands.
@@ -113,6 +130,7 @@ function Connector({ link, mode, clubs, revealed, showRule, stamped }: {
               : <>Any<br />shared club</>}
         </div>
       )}
+      {vertical ? post : null}
     </div>
   );
 }
@@ -263,7 +281,7 @@ export default function ChainRow({
   fill, slots, links, mode, clubs, images, players, revealed, ringFor, depthFor,
   focused = null, onFocus = () => {}, interactive = true, landedIndex = null,
   pinsDriving = false, pinBeat = 0, plateRef, showPins = true, revealDelayFor, stringed = false,
-  stampedThrough, columnFor, columnRunFor = () => true, columnInstant = false,
+  stampedThrough, columnFor, columnRunFor = () => true, columnInstant = false, closed = false,
 }: {
   /** Player ids in order, or null for a slot still empty. */
   fill: readonly (string | null)[];
@@ -303,6 +321,12 @@ export default function ChainRow({
   columnRunFor?: (i: number) => boolean;
   /** Columns land on their rank at once. See DepthColumn. */
   columnInstant?: boolean;
+  /**
+   * A ring: link `n-1` joins the last slot to the first, and the chain is
+   * drawn round the edges of a square rather than along a line. See
+   * `ChainPuzzle.closed`.
+   */
+  closed?: boolean;
 }) {
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
@@ -330,6 +354,63 @@ export default function ChainRow({
     return () => ro.disconnect();
   }, [fill.length, revealed]);
 
+  const connector = (li: number, vertical = false) => links[li] ? (
+    <Connector
+      link={links[li]!}
+      mode={mode}
+      clubs={clubs}
+      revealed={revealed}
+      showRule={!stringed}
+      stamped={stampedThrough === undefined ? null : li <= stampedThrough}
+      vertical={vertical}
+    />
+  ) : null;
+
+  const slot = (i: number, column: ColumnSpec | null) => (
+    <Slot
+      index={i}
+      player={fill[i] ? players.get(fill[i]!) : undefined}
+      given={slots[i] != null}
+      focused={focused === i}
+      depth={depthFor(i)}
+      revealed={revealed}
+      revealDelay={revealDelayFor?.(i) ?? 0}
+      images={images}
+      onFocus={onFocus}
+      ring={ringFor(i)}
+      tilt={tiltFor(`slot-${i}`)}
+      landing={landedIndex === i}
+      // Two ways a pin goes in: one at a time as the player drops a
+      // card, and all of them in sequence when the sheet is sealed.
+      pinDriving={pinsDriving || landedIndex === i}
+      // A beat AFTER the card lands, never with it. A pin that arrives
+      // on the same frame reads as part of the card rather than as
+      // something done to it.
+      pinDelay={pinsDriving ? i * pinBeat : 210}
+      plateRef={(el) => plateRef?.(i, el)}
+      interactive={interactive}
+      showPin={showPins}
+      column={column}
+      columnRun={columnRunFor(i)}
+      columnInstant={columnInstant}
+    />
+  );
+
+  if (closed && fill.length === RING.length) {
+    return (
+      <Ring
+        fill={fill}
+        slots={slots}
+        slot={slot}
+        connector={connector}
+        revealed={revealed}
+        columnFor={columnFor}
+        columnRunFor={columnRunFor}
+        columnInstant={columnInstant}
+      />
+    );
+  }
+
   return (
     <div ref={outer} style={{ width: '100%' }}>
       <div
@@ -344,48 +425,101 @@ export default function ChainRow({
           marginBottom: fit < 1 ? `${-(1 - fit) * 210}px` : undefined,
         }}
       >
-      {fill.map((id, i) => (
+      {fill.map((_, i) => (
         <div key={i} style={{ display: 'contents' }}>
-          {i > 0 && links[i - 1] ? (
-            <Connector
-              link={links[i - 1]!}
-              mode={mode}
-              clubs={clubs}
-              revealed={revealed}
-              showRule={!stringed}
-              stamped={stampedThrough === undefined ? null : i - 1 <= stampedThrough}
-            />
-          ) : null}
-          <Slot
-            index={i}
-            player={id ? players.get(id) : undefined}
-            given={slots[i] != null}
-            focused={focused === i}
-            depth={depthFor(i)}
-            revealed={revealed}
-            revealDelay={revealDelayFor?.(i) ?? 0}
-            images={images}
-            onFocus={onFocus}
-            ring={ringFor(i)}
-            tilt={tiltFor(`slot-${i}`)}
-            landing={landedIndex === i}
-            // Two ways a pin goes in: one at a time as the player drops a
-            // card, and all of them in sequence when the sheet is sealed.
-            pinDriving={pinsDriving || landedIndex === i}
-            // A beat AFTER the card lands, never with it. A pin that arrives
-            // on the same frame reads as part of the card rather than as
-            // something done to it.
-            pinDelay={pinsDriving ? i * pinBeat : 210}
-            plateRef={(el) => plateRef?.(i, el)}
-            interactive={interactive}
-            showPin={showPins}
-            column={columnFor?.(i) ?? null}
-            columnRun={columnRunFor(i)}
-            columnInstant={columnInstant}
-          />
+          {i > 0 ? connector(i - 1) : null}
+          {slot(i, columnFor?.(i) ?? null)}
         </div>
       ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Where each of a ring's eight slots sits on a 3×3 of cards, clockwise from
+ * the top-left corner. Slot 0 is a corner, so with givens in the corners the
+ * blanks fall on the edges — which is the only arrangement that gives every
+ * blank two givens to link to.
+ */
+const RING: readonly [row: number, col: number][] = [
+  [0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0],
+];
+
+/**
+ * The chain drawn round a square.
+ *
+ * Cards on the odd tracks of a five-by-five grid, connectors on the even
+ * ones between them; the sides stand up. The columns cannot hang under the
+ * edge cards — the top one would run into the middle and the sides into the
+ * bottom corners — so once the sheet is sealed they line up in a row below
+ * the square, in slot order, each labelled with the plate it reads for.
+ */
+function Ring({
+  fill, slots, slot, connector, revealed, columnFor, columnRunFor, columnInstant,
+}: {
+  fill: readonly (string | null)[];
+  slots: readonly (string | null)[];
+  slot: (i: number, column: ColumnSpec | null) => ReactNode;
+  connector: (li: number, vertical?: boolean) => ReactNode;
+  revealed: boolean;
+  columnFor?: (i: number) => ColumnSpec | null;
+  columnRunFor: (i: number) => boolean;
+  columnInstant: boolean;
+}) {
+  const cells: ReactNode[] = [];
+  fill.forEach((_, i) => {
+    const [r, c] = RING[i]!;
+    cells.push(
+      <div key={`s${i}`} style={{ gridRow: 2 * r + 1, gridColumn: 2 * c + 1, display: 'flex', justifyContent: 'center' }}>
+        {slot(i, null)}
+      </div>,
+    );
+    // Link i joins slot i and slot i+1 (round the ring). It sits on the
+    // track between them, standing when they are one above the other.
+    const [r2, c2] = RING[(i + 1) % RING.length]!;
+    const vertical = c === c2;
+    cells.push(
+      <div
+        key={`l${i}`}
+        style={vertical
+          ? { gridRow: 2 * Math.min(r, r2) + 2, gridColumn: 2 * c + 1, display: 'flex', justifyContent: 'center' }
+          : { gridRow: 2 * r + 1, gridColumn: 2 * Math.min(c, c2) + 2, display: 'flex' }}
+      >
+        {connector(i, vertical)}
+      </div>,
+    );
+  });
+
+  const blanks = fill.map((_, i) => i).filter((i) => slots[i] == null);
+
+  return (
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '116px minmax(74px, 150px) 116px minmax(74px, 150px) 116px',
+          gridTemplateRows: 'auto 92px auto 92px auto',
+          width: '100%', maxWidth: 760, justifyContent: 'center',
+        }}
+      >
+        {cells}
+      </div>
+      {revealed && columnFor ? (
+        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', width: '100%', borderTop: '1.5px dashed rgba(26,20,16,0.3)', paddingTop: 10 }}>
+          {blanks.map((i) => {
+            const column = columnFor(i);
+            return column ? (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                  Plate {i + 1}
+                </div>
+                <DepthColumn spec={column} run={columnRunFor(i)} instant={columnInstant} />
+              </div>
+            ) : null;
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default async function ChainPage(
   // leak this mode does not repeat.
   const puzzle: ChainPuzzle = {
     id: file.id, mode: file.mode, difficulty: file.difficulty, slots: file.slots,
-    prescribedLinks: file.prescribedLinks, caption: file.caption,
+    prescribedLinks: file.prescribedLinks, caption: file.caption, closed: file.closed,
   };
 
   return <Chain players={players} puzzle={puzzle} images={images} clubs={clubs} />;

@@ -54,16 +54,45 @@ export function linkedVia(
   return a.clubIds.includes(club) && b.clubIds.includes(club);
 }
 
+/**
+ * The slots either side of `index`, each with the link that joins it.
+ *
+ * On a line the ends have one neighbour; on a ring (`closed`) the last slot
+ * wraps to the first through link `length - 1`. Every place that reads "left
+ * is i-1, right is i+1" goes through here, so a ring cannot be a line in one
+ * file and a loop in another.
+ */
+export function neighboursOf(
+  index: number, length: number, closed = false,
+): { slot: number; link: number }[] {
+  const out: { slot: number; link: number }[] = [];
+  const wraps = closed && length > 2;
+  if (index > 0) out.push({ slot: index - 1, link: index - 1 });
+  else if (wraps) out.push({ slot: length - 1, link: length - 1 });
+  if (index < length - 1) out.push({ slot: index + 1, link: index });
+  else if (wraps) out.push({ slot: 0, link: length - 1 });
+  return out;
+}
+
+/** The pairs of slots each link joins, in link order. */
+export function linkPairs(length: number, closed = false): [number, number][] {
+  const out: [number, number][] = [];
+  for (let i = 0; i < length - 1; i++) out.push([i, i + 1]);
+  if (closed && length > 2) out.push([length - 1, 0]);
+  return out;
+}
+
 export function chainLinks(
   fill: ChainFill,
   pool: ReadonlyMap<string, Player>,
   mode: ChainMode = 'chemistry',
   prescribed: Readonly<Record<number, string>> = {},
+  closed = false,
 ): ChainLink[] {
   const out: ChainLink[] = [];
-  for (let i = 0; i < fill.length - 1; i++) {
-    const a = fill[i];
-    const b = fill[i + 1];
+  for (const [i, [from, to]] of linkPairs(fill.length, closed).entries()) {
+    const a = fill[from];
+    const b = fill[to];
     const pa = a ? pool.get(a) : undefined;
     const pb = b ? pool.get(b) : undefined;
     const required = prescribed[i];
@@ -121,19 +150,21 @@ export function chainFieldFor(
   pool: ReadonlyMap<string, Player>,
   mode: ChainMode = 'chemistry',
   prescribed: Readonly<Record<number, string>> = {},
+  closed = false,
 ): Player[] {
-  // Link index-1 joins this slot to its left neighbour, link index to its
-  // right, so each side carries its own requirement.
+  // Each side carries its own requirement: the neighbour on it, and the
+  // club its link may name.
+  const sides = neighboursOf(index, fill.length, closed);
   const neighbours: { player: Player; club: string | undefined }[] = [];
-  for (const [n, link] of [[index - 1, index - 1], [index + 1, index]] as const) {
-    const id = fill[n];
+  for (const { slot, link } of sides) {
+    const id = fill[slot];
     const p = id ? pool.get(id) : undefined;
     if (p) neighbours.push({ player: p, club: prescribed[link] });
   }
 
   // A prescribed link constrains this slot even with nobody beside it yet:
   // whoever sits here has to have played for that club.
-  const own = [prescribed[index - 1], prescribed[index]].filter(
+  const own = sides.map(({ link }) => prescribed[link]).filter(
     (c): c is string => c !== undefined,
   );
 
@@ -182,13 +213,14 @@ export function chainSlotDepths(
   pool: ReadonlyMap<string, Player>,
   mode: ChainMode = 'chemistry',
   prescribed: Readonly<Record<number, string>> = {},
+  closed = false,
 ): Record<number, SlotDepth> {
   const out: Record<number, SlotDepth> = {};
   fill.forEach((id, i) => {
     if (!id || given[i]) return;
     const chosen = pool.get(id);
     if (!chosen) return;
-    const field = chainFieldFor(i, fill, players, pool, mode, prescribed);
+    const field = chainFieldFor(i, fill, players, pool, mode, prescribed, closed);
     const inField = field.some((p) => p.id === chosen.id);
     out[i] = {
       score: slotObscurityScore(chosen, field),

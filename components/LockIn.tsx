@@ -12,7 +12,7 @@ import { tiltFor } from './swing';
 import { plateName } from '../src/lib/short-name';
 import { shareText } from '../src/lib/chain/result';
 import type { ChainResult, PinnedAnswer } from '../src/lib/chain/result';
-import type { ChainLink } from '../src/lib/chain/score';
+import { neighboursOf, type ChainLink } from '../src/lib/chain/score';
 import type { ChainDifficulty, ChainPuzzle } from '../src/lib/chain/types';
 import type { Player } from '../src/lib/chemistry/types';
 import { clubColour, splitRing, SIGNATURE_CLUB } from '../src/lib/club-colours';
@@ -92,6 +92,7 @@ export default function LockIn({
   const [stampedThrough, setStampedThrough] = useState(-1);
   const [columnsRun, setColumnsRun] = useState(0);
   const mode = puzzle.mode ?? 'clubs';
+  const closed = puzzle.closed ?? false;
   const ink = useInk();
 
   // The paper taking a hit. Written straight to the node rather than through
@@ -176,11 +177,11 @@ export default function LockIn({
     if (puzzle.slots[i] != null) {
       return clubColour(SIGNATURE_CLUB[id] ?? pool.get(id)?.clubIds[0]);
     }
-    const held = [links[i - 1], links[i]].filter((l) => l?.made);
+    const held = neighboursOf(i, fill.length, closed).map(({ link }) => links[link]).filter((l) => l?.made);
     if (held.length === 0) return 'var(--accent)';
     const [a, b] = held.map((l) => clubColour(l!.required ?? l!.clubs[0]));
     return b === undefined ? a! : splitRing(a!, b, 'var(--card-a)');
-  }, [fill, puzzle.slots, links, pool]);
+  }, [fill, puzzle.slots, links, pool, closed]);
 
   const columnFor = useCallback((i: number) => columns.get(i) ?? null, [columns]);
   const columnRunFor = useCallback(
@@ -306,9 +307,10 @@ export default function LockIn({
               stampedThrough={stampedThrough}
               columnFor={columnFor}
               columnRunFor={columnRunFor}
+              closed={closed}
             />
             {anchors.length === fill.length ? (
-              <RedString anchors={anchors} phases={phases} />
+              <RedString anchors={anchors} phases={phases} closed={closed} />
             ) : null}
           </div>
 
@@ -372,7 +374,7 @@ export default function LockIn({
             <div style={{ marginTop: 14, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)', animation: 'foil-in 460ms ease-out 120ms both' }}>
               <div style={{ flexGrow: 1, padding: '13px 20px', display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
                 <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                  {result.slots.map((s, i) => `${s.fieldSize} fit the ${['first', 'second', 'third'][i] ?? `${i + 1}th`}`).join(' · ')}
+                  {result.slots.map((s, i) => `${s.fieldSize} fit the ${['first', 'second', 'third', 'fourth'][i] ?? `${i + 1}th`}`).join(' · ')}
                 </div>
                 {puzzle.caption ? (
                   <div className="slab" style={{ fontSize: 20, lineHeight: 1.15 }}>{puzzle.caption}</div>

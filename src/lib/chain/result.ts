@@ -1,4 +1,4 @@
-import { chainLinks, chainFieldFor, chainSlotDepths } from './score';
+import { chainLinks, chainFieldFor, chainSlotDepths, neighboursOf } from './score';
 import { slotObscurityScore } from '../fame/obscurity';
 import type { SlotDepth } from './score';
 import type { ChainFill, ChainPuzzle } from './types';
@@ -143,8 +143,9 @@ export function chainResult(
 ): ChainResult {
   const mode = puzzle.mode ?? 'chemistry';
   const prescribed = puzzle.prescribedLinks ?? {};
-  const links = chainLinks(fill, pool, mode, prescribed);
-  const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode, prescribed);
+  const closed = puzzle.closed ?? false;
+  const links = chainLinks(fill, pool, mode, prescribed, closed);
+  const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode, prescribed, closed);
 
   /**
    * Which club carried each side for a player sitting at slot `i`.
@@ -155,7 +156,7 @@ export function chainResult(
    */
   const carriedAt = (p: Player, i: number): string[] => {
     const out: string[] = [];
-    for (const [n, link] of [[i - 1, i - 1], [i + 1, i]] as const) {
+    for (const { slot: n, link } of neighboursOf(i, puzzle.slots.length, closed)) {
       // A named club is the rule for that side whatever sits on the far end
       // of it. On the pair layout the far end IS the other blank, and skipping
       // it left the reveal painting one colour on both halves of a diagonal
@@ -178,14 +179,12 @@ export function chainResult(
 
     // A slot is only as good as both its sides. Either link failing means the
     // pick did not do its job, whoever it was.
-    const left = i === 0 ? true : (links[i - 1]?.made ?? false);
-    const right = i === fill.length - 1 ? true : (links[i]?.made ?? false);
-    const held = left && right;
+    const held = neighboursOf(i, fill.length, closed).every(({ link }) => links[link]?.made ?? false);
 
     // Scored against the puzzle, not against the player's own answer. On the
     // alternating layout these are the same set; they diverge as soon as two
     // blanks sit next to each other.
-    const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed);
+    const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed, closed);
     fields.push(field);
 
     // The deepest answer ABOVE a fame floor, not the deepest outright.

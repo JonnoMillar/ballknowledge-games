@@ -11,7 +11,7 @@ import { shortClubName } from './ClubBadge';
 import { tiltFor } from './swing';
 import type { ClubView } from '../src/lib/clubs';
 import { initChain, chainReduce } from '../src/game/chainState';
-import { chainLinks } from '../src/lib/chain/score';
+import { chainLinks, neighboursOf } from '../src/lib/chain/score';
 import LockIn from './LockIn';
 import { columnSpecFor } from './DepthColumn';
 import { chainResult } from '../src/lib/chain/result';
@@ -84,9 +84,11 @@ function Masthead({ puzzle, blanks }: { puzzle: ChainPuzzle; blanks: number }) {
  * says nothing about whether committing is a good idea.
  */
 function Brief({
-  ends, club, mode, placed, blanks, sealed, onSeal,
+  ends, corners, club, mode, placed, blanks, sealed, onSeal,
 }: {
   ends: [string, string];
+  /** The givens of a ring, clockwise. A ring has no ends to take you between. */
+  corners?: string[];
   club: string | undefined;
   mode: 'chemistry' | 'clubs';
   placed: number;
@@ -102,9 +104,11 @@ function Brief({
           The brief &middot; {mode === 'clubs' ? 'every link a shared club' : 'every link green'}
         </div>
         <div className="slab" style={{ fontSize: 20, lineHeight: 1.2 }}>
-          {club
-            ? <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]} — through {club}.</>
-            : <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]}.</>}
+          {corners
+            ? <>Close the ring: {corners.slice(0, -1).join(', ')} and {corners[corners.length - 1]}, a link between each pair.</>
+            : club
+              ? <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]} — through {club}.</>
+              : <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]}.</>}
         </div>
       </div>
 
@@ -278,9 +282,10 @@ export default function Chain({
   const [showResult, setShowResult] = useState(false);
 
   const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
+  const closed = puzzle.closed ?? false;
   const links = useMemo(
-    () => chainLinks(state.filled, pool, mode, prescribed),
-    [state.filled, pool, mode, prescribed],
+    () => chainLinks(state.filled, pool, mode, prescribed, closed),
+    [state.filled, pool, mode, prescribed, closed],
   );
 
   // The full result, computed once on lock-in. Everything the reveal shows —
@@ -362,7 +367,7 @@ export default function Chain({
       return clubColour(SIGNATURE_CLUB[id] ?? pool.get(id)?.clubIds[0]);
     }
     if (!boardRevealed) return NEUTRAL;
-    const held = [links[i - 1], links[i]].filter((l) => l?.made);
+    const held = neighboursOf(i, state.filled.length, closed).map(({ link }) => links[link]).filter((l) => l?.made);
     if (held.length === 0) return 'var(--accent)';
     const [a, b] = held.map((l) => clubColour(l!.required ?? l!.clubs[0]));
     return b === undefined ? a! : splitRing(a!, b, 'var(--card-a)');
@@ -381,6 +386,15 @@ export default function Chain({
     };
     return [named(puzzle.slots[0]), named(puzzle.slots[puzzle.slots.length - 1])];
   }, [puzzle.slots, pool]);
+
+  // On a ring every given is a corner, and the brief names them in order.
+  const corners = useMemo(() => {
+    if (!closed) return undefined;
+    return puzzle.slots.flatMap((id) => {
+      const p = id ? pool.get(id) : undefined;
+      return p ? [plateName(p.id, p.name)] : [];
+    });
+  }, [closed, puzzle.slots, pool]);
 
   const namedClub = useMemo(() => {
     const first = Object.values(prescribed)[0];
@@ -475,11 +489,13 @@ export default function Chain({
                   focused={focused}
                   onFocus={setFocused}
                   landedIndex={landed}
+                  closed={closed}
                 />
               </div>
 
               <Brief
                 ends={ends}
+                corners={corners}
                 club={namedClub}
                 mode={mode}
                 placed={placed}

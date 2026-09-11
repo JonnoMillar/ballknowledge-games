@@ -50,11 +50,32 @@ const LIGHT = '#eea28a';
  * tight as it goes); longer spans hang further. Kept shallow enough that the
  * rope stays clear of the die stamped between the prints below it.
  */
-export function sagPath(a: Anchor, b: Anchor, slack: number): string {
+export function sagPath(a: Anchor, b: Anchor, slack: number, bow?: Bow): string {
   const span = Math.hypot(b.x - a.x, b.y - a.y);
   const sag = (span * 0.075 + 5) * slack + 1.5;
   // A quadratic's midpoint sits halfway to the control point, hence the ×2.
-  return `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 + sag * 2} ${b.x} ${b.y}`;
+  const off = bow
+    ? { x: bow.x * (CLEAR + 24 * slack) * 2, y: 0 }
+    : { x: 0, y: sag * 2 };
+  return `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2 + off.x} ${(a.y + b.y) / 2 + off.y} ${b.x} ${b.y}`;
+}
+
+/**
+ * Which way a standing span is routed, as a unit vector pointing away from
+ * the board. On a ring the sides run pin to pin down the OUTSIDE of the
+ * cards; drawn straight they would cross every face on the way. `CLEAR` is
+ * how far the taut rope sits off the pins' line — past the card's edge.
+ */
+export interface Bow { x: number; y: number }
+const CLEAR = 68;
+
+/** The route for each span: hanging, or bowed out round the cards. */
+export function bowsFor(anchors: readonly Anchor[], spans: readonly [Anchor, Anchor][]): (Bow | undefined)[] {
+  const cx = anchors.reduce((t, p) => t + p.x, 0) / Math.max(anchors.length, 1);
+  return spans.map(([a, b]) => {
+    if (Math.abs(b.y - a.y) <= Math.abs(b.x - a.x)) return undefined;
+    return { x: (a.x + b.x) / 2 < cx ? -1 : 1, y: 0 };
+  });
 }
 
 /** The loop the twine takes round a pin head. `dir` is which way it leaves. */
@@ -64,9 +85,15 @@ export function wrapPath(a: Anchor, dir: 1 | -1): string {
 }
 
 /** One dead end, hanging off its pin after the break. */
-export function frayedPath(from: Anchor, to: Anchor): string {
+export function frayedPath(from: Anchor, to: Anchor, bow?: Bow): string {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
+  if (bow) {
+    // Off the pin the way the rope was routed, then it drops.
+    const ex = from.x + bow.x * CLEAR * 0.8;
+    const ey = from.y + Math.abs(dy) * 0.22 + 18;
+    return `M ${from.x} ${from.y} Q ${from.x + bow.x * CLEAR * 1.1} ${from.y + Math.abs(dy) * 0.05} ${ex} ${ey}`;
+  }
   // Stops well short of centre, and falls: the tension that was holding it
   // up is gone, so what is left is length and gravity.
   const ex = from.x + dx * 0.36;
@@ -112,11 +139,12 @@ function Rope({ d, shadowFilter, pathsRef }: {
   );
 }
 
-function Segment({ a, b, phase, shadowFilter }: {
+function Segment({ a, b, phase, shadowFilter, bow }: {
   a: Anchor;
   b: Anchor;
   phase: SpanPhase;
   shadowFilter: string;
+  bow?: Bow;
 }) {
   const paths = useRef<SVGPathElement[]>([]);
   const frame = useRef(0);
@@ -151,7 +179,7 @@ function Segment({ a, b, phase, shadowFilter }: {
     if (phase !== 'taut') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const set = (slack: number) => {
-      const d = sagPath(a, b, slack);
+      const d = sagPath(a, b, slack, bow);
       for (const p of paths.current) {
         p.setAttribute('d', d);
         // The draw-in's dash settings would clip the new, shorter path.
@@ -169,7 +197,7 @@ function Segment({ a, b, phase, shadowFilter }: {
     // Frames stop in a hidden tab; make sure it ends taut regardless.
     const settle = setTimeout(() => { cancelAnimationFrame(frame.current); set(TAUT); }, TIGHTEN_MS + 60);
     return () => { cancelAnimationFrame(frame.current); clearTimeout(settle); };
-  }, [phase, a, b]);
+  }, [phase, a, b, bow]);
 
   if (phase === 'idle') return null;
 
@@ -178,8 +206,8 @@ function Segment({ a, b, phase, shadowFilter }: {
     return (
       <g style={{ animation: 'string-part 420ms cubic-bezier(0.2,0.9,0.3,1) both' }}>
         <path d={wrapPath(a, 1)} stroke={CORE} strokeWidth="4.2" fill="none" strokeLinecap="round" />
-        <Rope d={frayedPath(a, b)} shadowFilter={shadowFilter} />
-        <Rope d={frayedPath(b, a)} shadowFilter={shadowFilter} />
+        <Rope d={frayedPath(a, b, bow)} shadowFilter={shadowFilter} />
+        <Rope d={frayedPath(b, a, bow)} shadowFilter={shadowFilter} />
       </g>
     );
   }
@@ -187,7 +215,7 @@ function Segment({ a, b, phase, shadowFilter }: {
   return (
     <g>
       <path d={wrapPath(a, 1)} stroke={CORE} strokeWidth="4.2" fill="none" strokeLinecap="round" />
-      <Rope d={sagPath(a, b, 1)} shadowFilter={shadowFilter} pathsRef={(els) => { paths.current = els; }} />
+      <Rope d={sagPath(a, b, 1, bow)} shadowFilter={shadowFilter} pathsRef={(els) => { paths.current = els; }} />
       {phase === 'taut' ? (
         <path d={wrapPath(b, -1)} stroke={CORE} strokeWidth="4.2" fill="none" strokeLinecap="round" style={{ animation: 'frayed-in 160ms ease-out both' }} />
       ) : null}
@@ -195,14 +223,19 @@ function Segment({ a, b, phase, shadowFilter }: {
   );
 }
 
-export default function RedString({ anchors, phases }: {
+export default function RedString({ anchors, phases, closed = false }: {
   /** Pin positions, in the coordinate space of the SVG's own box. */
   anchors: readonly Anchor[];
-  /** One per span — one shorter than `anchors`. */
+  /** One per span — one shorter than `anchors`, or the same length on a ring. */
   phases: readonly SpanPhase[];
+  /** A ring: one more span runs from the last pin back to the first. */
+  closed?: boolean;
 }) {
   const id = useId().replace(/[^a-z0-9]/gi, '');
   if (anchors.length < 2) return null;
+  const spans: [Anchor, Anchor][] = anchors.slice(0, -1).map((a, i) => [a, anchors[i + 1]!]);
+  if (closed && anchors.length > 2) spans.push([anchors[anchors.length - 1]!, anchors[0]!]);
+  const bows = bowsFor(anchors, spans);
 
   return (
     <svg
@@ -217,12 +250,13 @@ export default function RedString({ anchors, phases }: {
           <feGaussianBlur stdDeviation="1.6" />
         </filter>
       </defs>
-      {anchors.slice(0, -1).map((a, i) => (
+      {spans.map(([a, b], i) => (
         <Segment
           key={i}
           a={a}
-          b={anchors[i + 1]!}
+          b={b}
           phase={phases[i] ?? 'idle'}
+          bow={bows[i]}
           shadowFilter={`url(#rope-shadow-${id})`}
         />
       ))}

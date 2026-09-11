@@ -80,7 +80,7 @@ async function required(): Promise<Set<string>> {
     for (const id of chain.slots) if (id) ids.add(id);
     chain.slots.forEach((slot, i) => {
       if (slot !== null) return;
-      for (const p of chainFieldFor(i, chain.slots, pool, byId, mode, chain.prescribedLinks)) {
+      for (const p of chainFieldFor(i, chain.slots, pool, byId, mode, chain.prescribedLinks, chain.closed)) {
         ids.add(p.id);
       }
     });

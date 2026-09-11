@@ -52,6 +52,18 @@ export interface ChainPuzzle {
    */
   slots: readonly (string | null)[];
   /**
+   * The chain is a ring: one more link joins the last slot back to the first,
+   * so every slot has two neighbours and there are no ends. Link `n-1` joins
+   * slot `n-1` and slot `0`.
+   *
+   * Drawn as the edges of a square — givens in the corners, blanks between —
+   * which is the shape the ring board plays on. A ring of eight is four hubs
+   * with two givens each; measured over 9,981 pairs of famous givens, none
+   * had a single bridge, so this shape is Chain with the ends tied rather
+   * than a single-answer puzzle. Every blank keeps a field to dig in.
+   */
+  closed?: boolean;
+  /**
    * One line about why this board is the shape it is, printed on the sealed
    * sheet beside the count of ways it could have gone.
    *

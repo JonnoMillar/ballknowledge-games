@@ -1,0 +1,26 @@
+{
+  "id": "009",
+  "mode": "clubs",
+  "closed": true,
+  "caption": "Raya to Benzema is the narrow side: eighteen names, and Özil is the one everybody reaches for.",
+  "slots": [
+    "Q23759917",
+    null,
+    "Q48892",
+    null,
+    "Q19665907",
+    null,
+    "Q1912",
+    null
+  ],
+  "referenceSolution": [
+    "Q23759917",
+    "Q42731",
+    "Q48892",
+    "Q1911",
+    "Q19665907",
+    "Q83488",
+    "Q1912",
+    "Q208104"
+  ]
+}
