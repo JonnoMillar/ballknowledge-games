@@ -225,6 +225,17 @@ The seeded canvas payloads are gitignored — ~3 MB each and almost entirely the
 editor's own minified code. The source (artboards, `design/sheets/`,
 `canvas.json`) is committed.
 
+### The title card
+
+The masthead and the brief are no longer printed on the sheet. On a ring
+the sheet is a square, and with the paperwork above and below it the
+masthead went under the top of the window and the SEAL button under the
+bottom — the chain could not be sealed at all on a 1250px screen. So the
+sheet holds the chain and nothing else, and the name, number, grade, the
+assignment and the button are a second card pinned up on its left. The
+shortlist strip is shorter, and its prints are the same size as the sheet's:
+a smaller card on the shortlist turned into something else when it landed.
+
 ### The board is the artboard now
 
 `design/Chain007.dc.html` is the reference and the live route follows it: the

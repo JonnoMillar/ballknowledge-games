@@ -41,12 +41,12 @@ const GRADE: Record<ChainDifficulty, string> = {
 function Masthead({ puzzle, blanks }: { puzzle: ChainPuzzle; blanks: number }) {
   const count = ['no', 'one', 'two', 'three', 'four', 'five'][blanks] ?? String(blanks);
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, borderBottom: '3px solid var(--ink)', paddingBottom: 11 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, borderBottom: '3px solid var(--ink)', paddingBottom: 12 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         <div className="narrow" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'var(--muted)' }}>
           Scouting sheet &middot; {count} to find
         </div>
-        <div className="slab misreg" style={{ fontSize: 46, lineHeight: 0.96 }}>
+        <div className="slab misreg" style={{ fontSize: 54, lineHeight: 0.96 }}>
           <span className="lean">CHAIN</span>
         </div>
       </div>
@@ -98,8 +98,8 @@ function Brief({
 }) {
   const complete = placed === blanks;
   return (
-    <div style={{ marginTop: 18, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)' }}>
-      <div style={{ flexGrow: 1, padding: '14px 20px', display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+    <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', alignItems: 'stretch', border: '2.5px solid var(--ink)' }}>
+      <div style={{ padding: '14px 18px 16px', display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0 }}>
         <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--muted)' }}>
           The brief &middot; {mode === 'clubs' ? 'every link a shared club' : 'every link green'}
         </div>
@@ -117,9 +117,9 @@ function Brief({
         disabled={!complete || sealed}
         className="narrow"
         style={{
-          width: 176, flexShrink: 0, border: 'none', borderLeft: '2.5px solid var(--ink)',
+          width: '100%', flexShrink: 0, border: 'none', borderTop: '2.5px solid var(--ink)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3,
-          padding: '10px 12px', cursor: complete && !sealed ? 'pointer' : 'not-allowed',
+          minHeight: 84, padding: '10px 12px', cursor: complete && !sealed ? 'pointer' : 'not-allowed',
           background: complete && !sealed
             ? 'linear-gradient(148deg, #e6cb8c, #a8791f 44%, #dcb968 70%, #85601a)'
             : 'var(--panel-2)',
@@ -179,7 +179,7 @@ function Shortlist({
         // The drop target is the board itself. Lit, not outlined: an outline
         // is the one shape nothing else on the board has.
         background: isOver ? 'rgba(255, 246, 220, 0.16)' : 'transparent',
-        padding: '6px 34px 22px', minHeight: 236, transition: 'background 180ms ease',
+        padding: '0 34px 14px', minHeight: 186, transition: 'background 180ms ease',
         display: 'flex', alignItems: 'flex-start', gap: 26,
       }}
     >
@@ -187,8 +187,8 @@ function Shortlist({
       <div
         className="paper"
         style={{
-          position: 'relative', flexShrink: 0, width: empty ? 300 : 236,
-          padding: '20px 16px 14px', marginTop: 18,
+          position: 'relative', flexShrink: 0, width: empty ? 300 : 220,
+          padding: '18px 16px 12px', marginTop: 22,
           transform: `rotate(${tiltFor('shortlist-card', 1.6)}deg)`,
           transition: 'width 220ms ease',
         }}
@@ -218,7 +218,7 @@ function Shortlist({
         // as well, so a strip that only meant to scroll sideways was also
         // clipping the top off every pin and the bottom off every nameplate.
         // The vertical padding is what the cards lean and hang into.
-        <div style={{ flexGrow: 1, display: 'flex', gap: 16, overflowX: 'auto', overflowY: 'hidden', paddingTop: 18, paddingBottom: 14, minHeight: 172, minWidth: 0 }}>
+        <div style={{ flexGrow: 1, display: 'flex', gap: 16, overflowX: 'auto', overflowY: 'hidden', paddingTop: 16, paddingBottom: 12, minHeight: 172, minWidth: 0 }}>
           {state.library.map((id) => {
             const p = state.pool.get(id);
             if (!p) return null;
@@ -229,7 +229,9 @@ function Shortlist({
                   variant="library"
                   images={images}
                   obscurity={null}
-                  compact
+                  // The same print as the one on the sheet. A smaller card on
+                  // the shortlist made the thing you drag turn into something
+                  // else when it landed.
                   // Neutral until lock-in, like every card the player chose:
                   // the ring names the clubs that made a link hold.
                   ring={NEUTRAL}
@@ -440,7 +442,37 @@ export default function Chain({
       <div className="sheet" style={{ height: '100vh', display: 'flex', minHeight: 0 }}>
         <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0 }}>
 
-          <div ref={area} style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px 36px 22px', minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
+          <div ref={area} style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 30, padding: '30px 36px 16px', minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
+            {/* The title card. The masthead and the brief used to be printed
+                on the sheet itself, above and below the chain; on a ring
+                the sheet is a square and they pushed it off both ends of
+                the screen, with the seal button below the fold. So the
+                sheet holds the chain and nothing else, and the paperwork
+                — name, number, grade, the assignment, the button — is its
+                own card pinned up beside it. */}
+            <div
+              className="paper"
+              style={{
+                position: 'relative', width: 312, flexShrink: 0, padding: '34px 26px 24px',
+                transform: `rotate(${tiltFor('title-card', 1.1)}deg)`, alignSelf: 'center',
+              }}
+            >
+              <span aria-hidden style={{ position: 'absolute', top: 0, left: '50%', width: 0, height: 0 }}>
+                <Pin size={20} colour="#b3341f" />
+              </span>
+              <Masthead puzzle={puzzle} blanks={blanks} />
+              <Brief
+                ends={ends}
+                corners={corners}
+                club={namedClub}
+                mode={mode}
+                placed={placed}
+                blanks={blanks}
+                sealed={state.submitted}
+                onSeal={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
+              />
+            </div>
+
             {/* The sheet is not the only thing on the board, and a single
                 rectangle floating in the middle of a large surface is what
                 made the screen read as empty. Two blank sheets underneath fix
@@ -451,7 +483,8 @@ export default function Chain({
             <div
               ref={stack}
               style={{
-                position: 'relative', width: '100%', maxWidth: 1080, flexShrink: 0,
+                // A ring is a square; a line wants the width.
+                position: 'relative', width: '100%', maxWidth: closed ? 880 : 1080, flexShrink: 1, minWidth: 0,
                 transform: fit < 1 ? `scale(${fit})` : undefined, transformOrigin: 'top center',
                 // A scaled element keeps its unscaled footprint; take it back.
                 marginBottom: fit < 1 ? `${-(1 - fit) * need}px` : undefined,
@@ -462,12 +495,11 @@ export default function Chain({
               <div
                 ref={sheet}
                 className="paper"
-                style={{ position: 'relative', zIndex: 1, padding: '46px 40px 32px' }}
+                style={{ position: 'relative', zIndex: 1, padding: '40px 36px 24px' }}
               >
               <SheetPins />
-              <Masthead puzzle={puzzle} blanks={blanks} />
 
-              <div style={{ padding: '46px 0 22px' }}>
+              <div style={{ padding: '4px 0 0' }}>
                 <ChainRow
                   fill={state.filled}
                   slots={puzzle.slots}
@@ -492,17 +524,6 @@ export default function Chain({
                   closed={closed}
                 />
               </div>
-
-              <Brief
-                ends={ends}
-                corners={corners}
-                club={namedClub}
-                mode={mode}
-                placed={placed}
-                blanks={blanks}
-                sealed={state.submitted}
-                onSeal={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
-              />
               </div>
             </div>
           </div>
