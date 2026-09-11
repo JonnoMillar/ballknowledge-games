@@ -13,6 +13,7 @@ import type { ClubView } from '../src/lib/clubs';
 import { initChain, chainReduce } from '../src/game/chainState';
 import { chainLinks } from '../src/lib/chain/score';
 import LockIn from './LockIn';
+import { columnSpecFor } from './DepthColumn';
 import { chainResult } from '../src/lib/chain/result';
 import { buildIndex } from '../src/lib/search/index';
 import type { ChainDifficulty, ChainPuzzle } from '../src/lib/chain/types';
@@ -425,6 +426,12 @@ export default function Chain({
                   revealed={boardRevealed}
                   ringFor={ringFor}
                   depthFor={(i) => (boardRevealed ? result?.slots.find((sl) => sl.index === i)?.depth ?? null : null)}
+                  // The sealed sheet put away, the board shows the columns as
+                  // they ended up — landed, not counting down a second time.
+                  columnFor={boardRevealed && result
+                    ? (i) => { const o = result.slots.find((sl) => sl.index === i); return o ? columnSpecFor(o, pool, images) : null; }
+                    : undefined}
+                  columnInstant
                   revealDelayFor={(i) => 420 + (revealOrder[i] ?? 0) * 260}
                   focused={focused}
                   onFocus={setFocused}

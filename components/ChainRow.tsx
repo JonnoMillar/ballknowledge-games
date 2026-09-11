@@ -4,7 +4,8 @@ import { useDroppable } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import ClubBadge, { shortClubName } from './ClubBadge';
 import { tiltFor } from './swing';
-import DepthGauge from './DepthGauge';
+import Stamp from './Stamp';
+import DepthColumn, { type ColumnSpec } from './DepthColumn';
 import type { ChainLink } from '../src/lib/chain/score';
 import type { SlotDepth } from '../src/lib/chain/score';
 import type { ClubView } from '../src/lib/clubs';
@@ -34,7 +35,7 @@ import type { PortraitImage } from '../src/lib/portraits';
  * because it is not part of the answer — it is the rule the player is being
  * asked to satisfy, and a harder rule than the mode's own.
  */
-function Connector({ link, mode, clubs, revealed, showRule }: {
+function Connector({ link, mode, clubs, revealed, showRule, stamped }: {
   link: ChainLink;
   mode: 'chemistry' | 'clubs';
   clubs: Record<string, ClubView>;
@@ -47,14 +48,25 @@ function Connector({ link, mode, clubs, revealed, showRule }: {
    * colour.
    */
   showRule: boolean;
+  /**
+   * The verdict on this link, as one of three states. `null` is the live
+   * board: the connector reveals in place. On the sealed sheet the die comes
+   * down one link at a time — `false` is a link the string has not reached
+   * yet, which looks exactly as it did before lock-in, and `true` is the
+   * stamp on it.
+   */
+  stamped: boolean | null;
 }) {
-  const made = revealed && link.made;
+  // A link the stamp has not reached yet must give nothing away: the sheet
+  // is sealed, but the player has not been TOLD yet.
+  const shown = revealed && stamped !== false;
+  const made = shown && link.made;
   const named = link.required;
-  const via = named ?? (revealed && made && mode === 'clubs' ? link.clubs[0] : undefined);
+  const via = named ?? (shown && made && mode === 'clubs' ? link.clubs[0] : undefined);
 
   const rule = made
     ? '2.5px solid var(--green)'
-    : revealed
+    : shown
       ? '2px dashed var(--accent)'
       : named
         ? '2.5px solid var(--accent)'
@@ -71,28 +83,36 @@ function Connector({ link, mode, clubs, revealed, showRule }: {
       {showRule
         ? <div style={{ width: '100%', height: 0, borderTop: rule, transition: 'border-color 260ms ease' }} />
         : <div style={{ height: 2 }} />}
-      {via ? (
+      {stamped ? (
+        // The die, centred where the crest would have been. It overflows the
+        // crest's box on purpose: nothing below it moves when it lands.
+        <div style={{ position: 'relative', width: 28, height: 28 }}>
+          <Stamp held={link.made} clubId={via} club={via ? clubs[via] : undefined} lean={tiltFor(`stamp-${link.clubs.join('-')}-${String(named)}`, 8)} />
+        </div>
+      ) : via ? (
         <ClubBadge clubId={via} club={clubs[via]} size={28} />
       ) : (
-        <div className="slab" style={{ fontSize: 17, lineHeight: 1.2, color: revealed ? 'var(--accent)' : 'rgba(26,20,16,0.34)' }}>
-          {revealed ? '✕' : '?'}
+        <div className="slab" style={{ fontSize: 17, lineHeight: 1.2, color: shown ? 'var(--accent)' : 'rgba(26,20,16,0.34)' }}>
+          {shown ? '✕' : '?'}
         </div>
       )}
-      <div
-        className="narrow"
-        title={via ? clubs[via]?.name ?? via : undefined}
-        style={{
-          fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
-          textAlign: 'center', lineHeight: 1.25, textWrap: 'balance',
-          color: made ? 'var(--green)' : revealed ? 'var(--accent)' : named ? 'var(--accent)' : 'var(--muted)',
-        }}
-      >
-        {via
-          ? shortClubName(clubs[via]?.name ?? via)
-          : revealed
-            ? 'No club\nin common'.split('\n').map((l, i) => <span key={i}>{l}<br /></span>)
-            : <>Any<br />shared club</>}
-      </div>
+      {stamped ? null : (
+        <div
+          className="narrow"
+          title={via ? clubs[via]?.name ?? via : undefined}
+          style={{
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+            textAlign: 'center', lineHeight: 1.25, textWrap: 'balance',
+            color: made ? 'var(--green)' : shown ? 'var(--accent)' : named ? 'var(--accent)' : 'var(--muted)',
+          }}
+        >
+          {via
+            ? shortClubName(clubs[via]?.name ?? via)
+            : shown
+              ? 'No club\nin common'.split('\n').map((l, i) => <span key={i}>{l}<br /></span>)
+              : <>Any<br />shared club</>}
+        </div>
+      )}
     </div>
   );
 }
@@ -157,6 +177,7 @@ function EmptySlot({
 function Slot({
   index, player, given, focused, depth, revealed, revealDelay, images,
   onFocus, ring, tilt, landing, pinDriving, pinDelay, plateRef, interactive, showPin,
+  column, columnRun, columnInstant,
 }: {
   index: number;
   player: Player | undefined;
@@ -177,6 +198,10 @@ function Slot({
   plateRef: (el: HTMLDivElement | null) => void;
   interactive: boolean;
   showPin: boolean;
+  /** The depth column under this print, once the chain is sealed. */
+  column: ColumnSpec | null;
+  columnRun: boolean;
+  columnInstant: boolean;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: `slot:${index}`, disabled: given || !interactive });
 
@@ -190,7 +215,9 @@ function Slot({
               variant={given ? 'given' : 'found'}
               slotId={interactive ? `slot:${index}` : undefined}
               images={images}
-              obscurity={revealed && depth ? depth.score : null}
+              // The column under the card says "worth 64"; printing 64 on
+              // the nameplate as well is the same number twice.
+              obscurity={revealed && depth && !column ? depth.score : null}
               revealDelay={revealed ? revealDelay : undefined}
               ring={ring}
               tilt={tilt}
@@ -227,7 +254,7 @@ function Slot({
       >
         {given ? 'Given' : 'Yours'}
       </span>
-      {revealed && depth ? <DepthGauge depth={depth} delay={revealDelay} /> : null}
+      {revealed && column ? <DepthColumn spec={column} run={columnRun} instant={columnInstant} /> : null}
     </div>
   );
 }
@@ -236,6 +263,7 @@ export default function ChainRow({
   fill, slots, links, mode, clubs, images, players, revealed, ringFor, depthFor,
   focused = null, onFocus = () => {}, interactive = true, landedIndex = null,
   pinsDriving = false, pinBeat = 0, plateRef, showPins = true, revealDelayFor, stringed = false,
+  stampedThrough, columnFor, columnRunFor = () => true, columnInstant = false,
 }: {
   /** Player ids in order, or null for a slot still empty. */
   fill: readonly (string | null)[];
@@ -263,6 +291,18 @@ export default function ChainRow({
   revealDelayFor?: (i: number) => number;
   /** A red string is being run between the pins, so the rules step aside. */
   stringed?: boolean;
+  /**
+   * Links up to and including this index carry their stamp; those after it
+   * still look unrevealed. Undefined means no stamps — the live board's
+   * connectors reveal in place.
+   */
+  stampedThrough?: number;
+  /** The column under each blank, once sealed. Undefined means no columns. */
+  columnFor?: (i: number) => ColumnSpec | null;
+  /** Whether a column has been told to run yet; before that it waits in pencil. */
+  columnRunFor?: (i: number) => boolean;
+  /** Columns land on their rank at once. See DepthColumn. */
+  columnInstant?: boolean;
 }) {
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
@@ -307,7 +347,14 @@ export default function ChainRow({
       {fill.map((id, i) => (
         <div key={i} style={{ display: 'contents' }}>
           {i > 0 && links[i - 1] ? (
-            <Connector link={links[i - 1]!} mode={mode} clubs={clubs} revealed={revealed} showRule={!stringed} />
+            <Connector
+              link={links[i - 1]!}
+              mode={mode}
+              clubs={clubs}
+              revealed={revealed}
+              showRule={!stringed}
+              stamped={stampedThrough === undefined ? null : i - 1 <= stampedThrough}
+            />
           ) : null}
           <Slot
             index={i}
@@ -332,6 +379,9 @@ export default function ChainRow({
             plateRef={(el) => plateRef?.(i, el)}
             interactive={interactive}
             showPin={showPins}
+            column={columnFor?.(i) ?? null}
+            columnRun={columnRunFor(i)}
+            columnInstant={columnInstant}
           />
         </div>
       ))}

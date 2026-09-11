@@ -1,6 +1,6 @@
 # Recall XI — state of play
 
-**Updated:** 2026-09-10. Read this first in a new session; it is the shortest
+**Updated:** 2026-09-11. Read this first in a new session; it is the shortest
 path back to full context.
 
 ## What this is
@@ -24,7 +24,7 @@ route, own branding). We may come back to it.
 
 ```bash
 npm run dev        # localhost:3000
-npm test           # 301 tests, 23 files
+npm test           # 311 tests, 24 files
 npm run typecheck
 ```
 
@@ -246,18 +246,65 @@ dragged image rendered at its native pixel size instead of the frame's,
 which read as the card "going massive" on pickup. Fixed by unscoping the
 four classes; safe because nothing outside chain mode uses them.
 
-### The red string
+### The lock-in sequence
 
-`components/RedString.tsx`. Twine between the pins on the sealed sheet, drawn
-one span at a time left to right. It sags, it is drawn rather than faded in,
-and a link that did not hold **snaps**: the string goes on taut, holds a beat,
-then parts in the middle and both ends drop.
+Spec: `docs/superpowers/specs/2026-09-11-lock-in-reveal-design.md`. Mockup
+with all three states replayable: `design/reveal-variants.html` (serve it —
+`design-static` in `.claude/launch.json` — the crests are relative paths).
+
+`LockIn.tsx` owns one timeline, one set of timers. Per link, left to right
+(`LINK_BEAT` 1150ms): the twine goes on **slack**; the club that made the
+link is **stamped** on the connector (`Stamp.tsx`) and the paper takes a
+1px jolt; then the rope springs **taut** with an overshoot — or, for a link
+that did not hold, a red NO LINK die and the rope **parts**. Cause, then
+effect: the stamp is the verdict and the rope is what it does. Then CHAIN
+HELD / BROKE as a die across the band, the foil count-up, and the columns.
+
+Things that were found out the hard way:
+
+- **The first string was a 2.6px stroke with a dashed strand and it read as
+  a dotted computer line.** Rope is four strands (`RedString.tsx`): blurred
+  shadow, dark core, a lighter twist in short round-capped dashes, a
+  highlight. It **wraps the pin head** at both ends — string drawn to a
+  point is drawn to it; string that loops the pin was tied.
+- **The rope hangs shallow on purpose** — sag ≈ `span × 0.075 + 5` px. The
+  first pass sagged twice that and skimmed the top of the die.
+- **The jolt is 1.2px, no rotation, and the columns do not jolt.** Four
+  hits in as many seconds was already a lot; the first pass had eight.
+- **The jolt is a Web Animation, not a class.** The paper carries its
+  rise-in as an inline `animation`, and a class animation loses to inline.
+- **A connector the stamp has not reached looks exactly as it did before
+  lock-in** (`stamped === false` in `ChainRow`). The sheet is sealed but the
+  player has not been told yet; a crest already sitting there is the leak.
+- The stamp's ink texture is an SVG `feTurbulence` displacement — `useInk()`
+  in `Stamp.tsx`, one filter id per caller.
 
 Anchors are measured from the mounts at layout time and tied to the pin's head
 via `pinHead()` in `Pin.tsx`, not to the card's top edge — the row is flexible
 and the cards are rotated, so a hard-coded pitch is wrong at every width but
 one. When the string is running, the connector rules are hidden
 (`stringed`): two lines joining the same two cards is one too many.
+
+### The column
+
+`DepthColumn.tsx` replaced the depth gauge, which was a 4px track with a 3px
+marker on which 6th of 16 and 14th of 16 were indistinguishable. The
+reference is the Pointless tower: the number starts at the field size and
+counts **down** at a constant tick to the pick's rank, the fill draining with
+it, and stops dead. Lower is deeper; rank 1 floods the tower gold. The tick
+is `clamp(1500 / ticks, 46, 170)` ms — constant so the stop cannot be timed,
+clamped so 16 is readable and 254 is a blur that ends. `columnSchedule()` is
+pure and is how `LockIn` knows when the next column may start.
+
+The **floor** under each column is the deepest answer for that slot as a
+face, a name and a score. It replaced `Breakdown` — two grey boxes of prose
+restating what was already on the cards. It is the player's own face when
+their rank is 1 or their pick is `best` (`columnSpecFor`); see the
+superlatives note below for why those two can disagree.
+
+The live board, once the sealed sheet is put away, shows the columns
+`instant` — landed, not counting down a second time. The obscurity chip on
+the nameplate is gone from both: "worth 64" under the column is that number.
 
 ### What the sealed sheet states
 
@@ -283,10 +330,12 @@ carries an existing caption forward only if the rerun landed on the same
 givens and the same club — a stale observation is worse than none.
 
 **Careful with superlatives on this screen.** `best` applies a fame floor of 30
-and the depth gauge ranks against the untouched field, so they legitimately
-disagree: on 008 the reveal said "nobody went deeper" directly beside "4th most
-obscure of 8". Both true of different sets, and unreadable together. The
-breakdown now states what happened and leaves ranking to the gauge.
+and the column ranks against the untouched field, so they legitimately
+disagree: on 008 an earlier reveal said "nobody went deeper" directly beside
+"4th most obscure of 8". Both true of different sets, and unreadable together.
+The column now says NOBODY DEEPER only at rank 1, and at rank 1 the floor is
+the player's own pick whatever `best` says — the field the column just
+counted is the one the claim is about.
 
 ## Data pipeline
 

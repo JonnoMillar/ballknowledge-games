@@ -1,15 +1,17 @@
 'use client';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useCountUp } from './DepthGauge';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCountUp } from './countUp';
 import ChainRow from './ChainRow';
 import SheetPins from './SheetPins';
 import Pin, { pinHead } from './Pin';
-import RedString, { type Anchor } from './RedString';
+import RedString, { type Anchor, type SpanPhase } from './RedString';
+import { useInk } from './Stamp';
+import { columnSchedule, columnSpecFor, type ColumnSpec } from './DepthColumn';
 import { EmptyPlate } from './PlayerCard';
 import { tiltFor } from './swing';
 import { plateName } from '../src/lib/short-name';
 import { shareText } from '../src/lib/chain/result';
-import type { ChainResult, PinnedAnswer, SlotOutcome } from '../src/lib/chain/result';
+import type { ChainResult, PinnedAnswer } from '../src/lib/chain/result';
 import type { ChainLink } from '../src/lib/chain/score';
 import type { ChainDifficulty, ChainPuzzle } from '../src/lib/chain/types';
 import type { Player } from '../src/lib/chemistry/types';
@@ -33,10 +35,17 @@ import type { PortraitImage } from '../src/lib/portraits';
  *
  * The sequence:
  *
- *   1. The string goes on, one span at a time, left to right. A span that
- *      held stays taut; a span that did not parts in the middle and drops.
- *   2. The verdict lands, with the score in gold foil beside it.
- *   3. Only then does the sheet admit how many ways it could have gone, and
+ *   1. Link by link, left to right: the twine goes on slack, the club that
+ *      made the link is STAMPED onto the connector and the paper takes the
+ *      hit, and only then does the rope pull taut. A link that did not hold
+ *      gets NO LINK in red and the rope parts. Cause, then effect — the
+ *      stamp is the verdict, the rope is what the verdict does.
+ *   2. CHAIN HELD or CHAIN BROKE comes down as a stamp across the band, and
+ *      the score lands in gold foil beside it.
+ *   3. The columns run, one blank at a time: a countdown from the size of
+ *      the field to the rank of the pick, which is the obscurity told as a
+ *      stop rather than as a number. See DepthColumn.
+ *   4. Only then does the sheet admit how many ways it could have gone, and
  *      show the answers that were sitting there.
  *
  * That order matters. Showing the misses before the verdict would turn relief
@@ -48,8 +57,16 @@ import type { PortraitImage } from '../src/lib/portraits';
 /** Where the reveal has got to. Each step is one beat of the sequence. */
 type Stage = 'arming' | 'resolving' | 'verdict' | 'score' | 'detail';
 
-/** How long one span of string takes to go on. Matches RedString's own draw. */
-const BEAT = 620;
+/**
+ * One link's worth of the sequence: rope on, stamp down, rope taut or parted.
+ * The next link's rope starts while this one's spring is still settling,
+ * which is what keeps three links from feeling like three separate events.
+ */
+const LINK_BEAT = 1150;
+const ROPE_ON = 0;
+const STAMP_AT = 600;
+const TAUT_AT = 790;
+const SNAP_AT = 1090;
 
 const GRADE: Record<ChainDifficulty, string> = {
   easy: 'var(--green)',
@@ -71,31 +88,79 @@ export default function LockIn({
   onDismiss: () => void;
 }) {
   const [stage, setStage] = useState<Stage>('arming');
-  const [resolved, setResolved] = useState(-1);
+  const [phases, setPhases] = useState<SpanPhase[]>(() => result.links.map(() => 'idle'));
+  const [stampedThrough, setStampedThrough] = useState(-1);
+  const [columnsRun, setColumnsRun] = useState(0);
   const mode = puzzle.mode ?? 'clubs';
+  const ink = useInk();
+
+  // The paper taking a hit. Written straight to the node rather than through
+  // state, and through the Web Animations API rather than a class, because
+  // the paper already carries its rise-in as an inline animation and a class
+  // would lose to it. A millimetre, not a slam: three stamps and a verdict
+  // are four hits in as many seconds.
+  const paper = useRef<HTMLDivElement>(null);
+  const jolt = useCallback((hard = false) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    paper.current?.animate(
+      [
+        { transform: 'none' },
+        { transform: hard ? 'translateY(2px) rotate(0.06deg)' : 'translateY(1.2px)', offset: 0.35 },
+        { transform: hard ? 'translateY(-0.6px)' : 'translateY(-0.4px)', offset: 0.65 },
+        { transform: 'none' },
+      ],
+      { duration: hard ? 300 : 220, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1)' },
+    );
+  }, []);
+
+  // Everything the columns need, computed once; the row asks per slot.
+  const columns = useMemo(() => {
+    const map = new Map<number, ColumnSpec>();
+    for (const slot of result.slots) map.set(slot.index, columnSpecFor(slot, pool, images));
+    return map;
+  }, [result, pool, images]);
 
   // The whole sequence is one set of timers rather than chained callbacks, so
   // unmounting mid-reveal cannot leave a stray one running.
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+    const phase = (i: number, p: SpanPhase) =>
+      setPhases((prev) => prev.map((q, k) => (k === i ? p : q)));
 
     at(560, () => setStage('resolving'));
 
-    // Every span goes on, including the ones after a break. The first draft
-    // stopped the run dead at the first failure, which read well but lied:
-    // the line under it says "2 of 4 links held" and the player could only
-    // see one verdict. Watching a later link survive a broken chain is also
-    // the part that stings usefully — you were one name away.
-    for (let i = 0; i < result.links.length; i++) at(700 + i * BEAT, () => setResolved(i));
+    // Every link is judged, including the ones after a break. The first
+    // draft stopped the run dead at the first failure, which read well but
+    // lied: the line under it says "2 of 4 links held" and the player could
+    // only see one verdict. Watching a later link survive a broken chain is
+    // also the part that stings usefully — you were one name away.
+    for (let i = 0; i < result.links.length; i++) {
+      const t = 700 + i * LINK_BEAT;
+      const held = result.links[i]!;
+      at(t + ROPE_ON, () => phase(i, 'slack'));
+      at(t + STAMP_AT, () => { setStampedThrough(i); jolt(); });
+      if (held) at(t + TAUT_AT, () => phase(i, 'taut'));
+      else at(t + SNAP_AT, () => phase(i, 'snapped'));
+    }
 
-    const after = 700 + result.links.length * BEAT;
-    at(after + 420, () => setStage('verdict'));
+    const after = 700 + result.links.length * LINK_BEAT;
+    at(after + 300, () => setStage('verdict'));
+    at(after + 500, () => jolt(true));
     at(after + 1000, () => setStage('score'));
-    at(after + 2200, () => setStage('detail'));
+
+    // The columns, one after the other, each given exactly as long as its
+    // countdown needs. Their timing is a pure function of the result, so
+    // the sheet can schedule what follows without waiting on a callback.
+    let t = after + 1600;
+    result.slots.forEach((slot, j) => {
+      at(t, () => setColumnsRun(j + 1));
+      t += columnSchedule(slot.held ? slot.depth : null).total + 380;
+    });
+    at(t + 200, () => setStage('detail'));
 
     return () => timers.forEach(clearTimeout);
-  }, [result]);
+  }, [result, jolt]);
 
   const showScore = stage === 'score' || stage === 'detail';
   const detail = stage === 'detail';
@@ -117,9 +182,10 @@ export default function LockIn({
     return b === undefined ? a! : splitRing(a!, b, 'var(--card-a)');
   }, [fill, puzzle.slots, links, pool]);
 
-  const depthFor = useCallback(
-    (i: number) => result.slots.find((s) => s.index === i)?.depth ?? null,
-    [result.slots],
+  const columnFor = useCallback((i: number) => columns.get(i) ?? null, [columns]);
+  const columnRunFor = useCallback(
+    (i: number) => result.slots.findIndex((s) => s.index === i) < columnsRun,
+    [result.slots, columnsRun],
   );
 
   // Where the string is tied. Measured from the mounts rather than computed
@@ -184,10 +250,12 @@ export default function LockIn({
 
         {/* ── THE SHEET ───────────────────────────────────────────────── */}
         <div
+          ref={paper}
           className="paper"
           style={{ position: 'relative', padding: '40px 30px 26px', animation: 'sheet-rise 520ms cubic-bezier(0.2,0.9,0.3,1) both' }}
         >
           <SheetPins />
+          {ink.defs}
 
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, borderBottom: '3px solid var(--ink)', paddingBottom: 11 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -229,20 +297,18 @@ export default function LockIn({
               revealed
               interactive={false}
               ringFor={ringFor}
-              depthFor={(i) => (detail ? depthFor(i) : null)}
+              depthFor={() => null}
               revealDelayFor={(i) => i * 140}
               plateRef={setPlate}
               pinsDriving
               pinBeat={130}
               stringed
+              stampedThrough={stampedThrough}
+              columnFor={columnFor}
+              columnRunFor={columnRunFor}
             />
             {anchors.length === fill.length ? (
-              <RedString
-                anchors={anchors}
-                held={result.links}
-                resolved={resolved}
-                beat={BEAT}
-              />
+              <RedString anchors={anchors} phases={phases} />
             ) : null}
           </div>
 
@@ -256,14 +322,25 @@ export default function LockIn({
                   RUNNING THE STRING&hellip;
                 </div>
               ) : (
-                <div style={{ animation: 'verdict-in 420ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
+                  {/* The verdict comes down as a die, not as type. */}
                   <div
-                    className="slab misreg"
-                    style={{ fontSize: 34, lineHeight: 1, color: result.perfect ? 'var(--green)' : 'var(--accent)' }}
+                    className="slab"
+                    style={{
+                      display: 'inline-block', position: 'relative',
+                      border: `3px solid ${result.perfect ? 'var(--green)' : 'var(--accent)'}`,
+                      color: result.perfect ? 'var(--green)' : 'var(--accent)',
+                      padding: '4px 14px 6px', fontSize: 30, lineHeight: 1, whiteSpace: 'nowrap',
+                      boxShadow: `inset 0 0 0 2px rgba(247,242,230,0.9), inset 0 0 0 5px ${result.perfect ? 'var(--green)' : 'var(--accent)'}`,
+                      background: 'rgba(247,242,230,0.5)',
+                      filter: ink.filter,
+                      ['--lean' as string]: '-4deg',
+                      animation: 'stamp-in-flow 420ms cubic-bezier(0.3,1.25,0.4,1) both',
+                    }}
                   >
                     {result.perfect ? 'CHAIN HELD' : 'CHAIN BROKE'}
                   </div>
-                  <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', marginTop: 5 }}>
+                  <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', animation: 'frayed-in 300ms ease 300ms both' }}>
                     {result.perfect
                       ? 'Every link a real one.'
                       : `${result.made} of ${result.total} links held. A broken link scores nothing.`}
@@ -322,14 +399,9 @@ export default function LockIn({
         {/* ── THE PINBOARD ────────────────────────────────────────────── */}
         {detail ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '4px 4px 0', animation: 'foil-in 460ms ease-out 240ms both' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 16, borderBottom: '2px solid rgba(26,20,16,0.42)', paddingBottom: 7, flexWrap: 'wrap' }}>
+            <div style={{ borderBottom: '2px solid rgba(26,20,16,0.42)', paddingBottom: 7 }}>
               <div className="slab misreg" style={{ fontSize: 20 }}>
                 <span className="lean">WHO WOULD HAVE WORKED</span>
-              </div>
-              <div className="read" style={{ fontSize: 13, fontStyle: 'italic', color: 'var(--soft)' }}>
-                {result.entry !== null
-                  ? <>The easiest pair here is worth {result.entry} &mdash; that is the grade.</>
-                  : <>Split down the middle: the two clubs that made him fit.</>}
               </div>
             </div>
 
@@ -339,16 +411,7 @@ export default function LockIn({
               ))}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
-              {result.slots.map((s) => (
-                <Breakdown key={s.index} slot={s} pool={pool} />
-              ))}
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginTop: 8, flexWrap: 'wrap' }}>
-              <div className="read" style={{ fontSize: 13, fontStyle: 'italic', color: 'var(--soft)' }}>
-                Split down the middle: the two clubs that made him fit.
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 16, marginTop: 8, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <button
                   onClick={onDismiss}
@@ -389,61 +452,6 @@ function ScoreReveal({ value }: { value: number }) {
       </div>
       <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.24em', color: '#46300a', textAlign: 'center' }}>
         RARITY FOIL
-      </div>
-    </div>
-  );
-}
-
-/** What one slot cost, in words. */
-function Breakdown({ slot, pool }: { slot: SlotOutcome; pool: ReadonlyMap<string, Player> }) {
-  const mine = slot.playerId ? pool.get(slot.playerId) : undefined;
-  const beatMe = slot.best && slot.depth && slot.best.score > slot.depth.score;
-  const nailed = slot.held && slot.best?.id === slot.playerId;
-
-  return (
-    <div
-      style={{
-        border: '1.5px solid rgba(26,20,16,0.24)', padding: '13px 16px',
-        background: 'var(--panel-2)',
-        display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
-      }}
-    >
-      <div style={{ minWidth: 190, flex: 1 }}>
-        <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: 'var(--muted)' }}>
-          YOU PLAYED
-        </div>
-        <div className="read" style={{ fontWeight: 500, fontSize: 16, color: slot.held ? 'var(--text)' : 'var(--accent)' }}>
-          {mine?.name ?? '—'}
-        </div>
-        <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
-          {!slot.held
-            ? 'did not link'
-            : slot.depth?.rank
-              ? `${slot.depth.rank} of ${slot.depth.fieldSize} for obscurity · scored ${slot.depth.score}`
-              : `scored ${slot.depth?.score ?? 0}`}
-        </div>
-      </div>
-
-      {/* The point of the whole screen: what was sitting there. When the
-          player already found it, saying so outright beats printing their own
-          name back at them under a heading that reads like a correction.
-
-          It does NOT claim they went deepest, and the wording is careful for
-          a reason: `best` is the deepest answer above a fame floor, while the
-          gauge on the card ranks against the untouched field. On chain 008
-          that put "nobody went deeper" directly beside "4th most obscure of
-          8" — both true of different sets, and flatly contradictory to read.
-          The heading says what happened; the rank is the gauge's job. */}
-      <div style={{ minWidth: 190, flex: 1 }}>
-        <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: 'var(--muted)' }}>
-          {nailed ? 'THE ANSWER WE HAD' : 'DEEPEST ANSWER'}
-        </div>
-        <div className="read" style={{ fontWeight: 500, fontSize: 16, color: nailed ? 'var(--green)' : beatMe ? 'var(--gold)' : 'var(--green)' }}>
-          {nailed ? 'You found it yourself' : slot.best?.name ?? '—'}
-        </div>
-        <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>
-          {`${slot.fieldSize} would have fitted · worth ${slot.best?.score ?? 0}`}
-        </div>
       </div>
     </div>
   );

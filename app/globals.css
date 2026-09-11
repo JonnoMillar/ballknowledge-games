@@ -317,6 +317,43 @@ button { font-family: inherit; }
   100% { transform: none; }
 }
 @keyframes frayed-in { from { opacity: 0; } to { opacity: 1; } }
+/* The two loose ends dropping into place after a snap. */
+@keyframes string-part {
+  0%   { opacity: 0; transform: translateY(-4px); }
+  30%  { opacity: 1; }
+  60%  { transform: translateY(2px); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ── THE STAMP ───────────────────────────────────────────────────────────
+   A die coming down: from above at near double size, a hard stop, a hair
+   of overshoot. `--lean` is the die's own angle — nobody stamps square.
+   `stamp-in` is for a die centred on a point; `stamp-in-flow` for one that
+   sits in the layout. See components/Stamp.tsx. */
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(1.7); }
+  48%  { opacity: 1; transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(0.93); }
+  72%  { transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(1.035); }
+  100% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(1); }
+}
+@keyframes stamp-in-flow {
+  0%   { opacity: 0; transform: rotate(var(--lean, -4deg)) scale(1.9); }
+  50%  { opacity: 1; transform: rotate(var(--lean, -4deg)) scale(0.94); }
+  74%  { transform: rotate(var(--lean, -4deg)) scale(1.03); }
+  100% { opacity: 1; transform: rotate(var(--lean, -4deg)) scale(1); }
+}
+/* The ink pressed out from under the die, once. */
+@keyframes stamp-halo {
+  0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(0.45); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.1); }
+}
+
+/* ── THE COLUMN ──────────────────────────────────────────────────────────
+   Each tick of the countdown nudges the number; the stop is a thud; rank 1
+   floods the tower and flashes. See components/DepthColumn.tsx. */
+@keyframes column-tick { 0% { transform: translateY(-3px); } 100% { transform: none; } }
+@keyframes column-land { 0% { transform: scale(1); } 40% { transform: scale(1.06) translateY(2px); } 100% { transform: scale(1); } }
+@keyframes column-flash { 0% { opacity: 1; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.8); } }
 
 /* ── ARRIVALS ────────────────────────────────────────────────────────────*/
 @keyframes sheet-rise {

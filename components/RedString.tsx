@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef } from 'react';
 
 /**
  * The red string.
@@ -10,108 +10,198 @@ import { useEffect, useState } from 'react';
  * a length of twine from one pin to the next, one at a time, and you watch
  * the case being made.
  *
- * Three rules keep it from looking like a decorated line chart:
+ * The first version was a 2.6px stroke with a dashed strand over it, and on
+ * parchment it read as a dotted computer line. What makes this one an object:
  *
- * 1. **It sags.** Twine has weight. A straight segment between two pins is a
- *    connector; a catenary is a physical object someone tied.
- * 2. **It is drawn, not faded.** Stroke-dashoffset runs from one pin to the
- *    other, so the string arrives with a direction — which is what makes a
- *    staggered sequence read as a chain being followed rather than as items
- *    appearing in a list.
- * 3. **A broken link snaps.** The string goes on taut, holds for a beat, then
- *    parts in the middle and both ends drop. This is the only honest way to
- *    draw a failure here: the link was attempted and it did not hold.
+ * 1. **It has weight.** A blurred shadow under a dark core with a lighter
+ *    twist over it, four and a half pixels across. Twine, not a rule.
+ * 2. **It is tied.** A loop round the pin head at each end. String that meets
+ *    a pin at a point is drawn to it; string that wraps the pin was tied by
+ *    someone.
+ * 3. **It goes on slack and is pulled taut.** The span is drawn hanging, the
+ *    stamp lands, and only then does the rope spring tight with an overshoot.
+ *    Cause, then effect — which is what makes the stamp the verdict rather
+ *    than decoration.
+ * 4. **A broken link snaps.** The rope parts in the middle and both ends drop.
+ *    This is the only honest way to draw a failure here: the link was
+ *    attempted and it did not hold.
+ *
+ * Each span is driven by a PHASE rather than a resolved index, because the
+ * sealed sheet needs to say "drawn but not yet judged" — the beat between the
+ * rope going on and the stamp coming down is the whole tension of the thing.
  */
 
 export interface Anchor { x: number; y: number }
 
-const DRAW_MS = 620;
-const HOLD_MS = 260;
+/** Where one span of the string has got to. */
+export type SpanPhase = 'idle' | 'slack' | 'taut' | 'snapped';
 
-/** Where the string hangs between two pins. Longer spans sag further. */
-function sagPath(a: Anchor, b: Anchor): string {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const span = Math.hypot(dx, dy);
-  const sag = span * 0.11 + 7;
+const DRAW_MS = 520;
+const TIGHTEN_MS = 520;
+/** How much of the slack hang is left once the rope is pulled tight. */
+const TAUT = 0.18;
+
+const CORE = '#8e2416';
+const TWIST = '#c8442c';
+const LIGHT = '#eea28a';
+
+/**
+ * Twine hanging between two pins. `slack` runs from 1 (just hung) to 0 (as
+ * tight as it goes); longer spans hang further. Kept shallow enough that the
+ * rope stays clear of the die stamped between the prints below it.
+ */
+export function sagPath(a: Anchor, b: Anchor, slack: number): string {
+  const span = Math.hypot(b.x - a.x, b.y - a.y);
+  const sag = (span * 0.075 + 5) * slack + 1.5;
+  // A quadratic's midpoint sits halfway to the control point, hence the ×2.
   return `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 + sag * 2} ${b.x} ${b.y}`;
 }
 
+/** The loop the twine takes round a pin head. `dir` is which way it leaves. */
+export function wrapPath(a: Anchor, dir: 1 | -1): string {
+  const r = 6.2;
+  return `M ${a.x - dir * r} ${a.y + 1} A ${r} ${r} 0 1 ${dir > 0 ? 1 : 0} ${a.x + dir * r} ${a.y + 1}`;
+}
+
 /** One dead end, hanging off its pin after the break. */
-function frayedPath(from: Anchor, to: Anchor): string {
+export function frayedPath(from: Anchor, to: Anchor): string {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   // Stops well short of centre, and falls: the tension that was holding it
-  // horizontal is gone, so what is left is length and gravity.
-  const endX = from.x + dx * 0.34;
-  const endY = from.y + dy * 0.34 + Math.hypot(dx, dy) * 0.3 + 12;
-  return `M ${from.x} ${from.y} Q ${from.x + dx * 0.2} ${from.y + 6} ${endX} ${endY}`;
+  // up is gone, so what is left is length and gravity.
+  const ex = from.x + dx * 0.36;
+  const ey = from.y + dy * 0.36 + Math.hypot(dx, dy) * 0.34 + 14;
+  return `M ${from.x} ${from.y} Q ${from.x + dx * 0.22} ${from.y + 8} ${ex} ${ey}`;
 }
 
-function Segment({
-  a, b, held, delay, length,
-}: {
+/**
+ * How slack the rope is at progress `p` of the tightening, 0..1.
+ *
+ * A back-ease: it passes THROUGH the taut position, goes tighter still, and
+ * settles back. A transition that eased to the target and stopped would read
+ * as the string shrinking; the overshoot is what reads as a pull.
+ */
+export function springSlack(p: number): number {
+  const c1 = 1.7;
+  const e = 1 + (c1 + 1) * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2);
+  return 1 + (TAUT - 1) * e;
+}
+
+/** The four strands of one length of rope, sharing a path. */
+function Rope({ d, shadowFilter, pathsRef }: {
+  d: string;
+  shadowFilter: string;
+  pathsRef?: (els: SVGPathElement[]) => void;
+}) {
+  const els = useRef<SVGPathElement[]>([]);
+  const at = (i: number) => (el: SVGPathElement | null) => {
+    if (el) els.current[i] = el;
+    if (els.current.length === 4) pathsRef?.(els.current);
+  };
+  return (
+    <>
+      <path ref={at(0)} d={d} stroke="rgba(60,20,10,0.42)" strokeWidth="5.2" fill="none" strokeLinecap="round" transform="translate(1.5, 3)" filter={shadowFilter} />
+      <path ref={at(1)} d={d} stroke={CORE} strokeWidth="4.6" fill="none" strokeLinecap="round" />
+      {/* The twist: a lighter strand in short dashes over the core, and a
+          highlight on top of that. With round caps the dashes overlap the
+          core's edge, which is the whole difference between rope and a
+          stroke with a dotted line on it. */}
+      <path ref={at(2)} d={d} stroke={TWIST} strokeWidth="3.2" fill="none" strokeLinecap="round" strokeDasharray="5 6.5" />
+      <path ref={at(3)} d={d} stroke={LIGHT} strokeWidth="1.3" fill="none" strokeLinecap="round" strokeDasharray="2.2 9.3" strokeDashoffset="-1.5" opacity="0.75" />
+    </>
+  );
+}
+
+function Segment({ a, b, phase, shadowFilter }: {
   a: Anchor;
   b: Anchor;
-  held: boolean;
-  delay: number;
-  /** Generous over-estimate of the path length; only has to exceed it. */
-  length: number;
+  phase: SpanPhase;
+  shadowFilter: string;
 }) {
-  const [snapped, setSnapped] = useState(false);
+  const paths = useRef<SVGPathElement[]>([]);
+  const frame = useRef(0);
 
+  // Drawn from one pin to the other, once, when the span first goes on. The
+  // solid strands reveal by dash offset; the dashed ones cannot without
+  // breaking their pattern, so they fade up as the draw finishes.
+  useLayoutEffect(() => {
+    if (phase !== 'slack') return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    for (const p of paths.current) {
+      const dashed = p.getAttribute('stroke-dasharray');
+      if (reduced) continue;
+      if (dashed) {
+        p.style.opacity = '0';
+        p.style.transition = `opacity 200ms ease ${DRAW_MS - 160}ms`;
+        requestAnimationFrame(() => { p.style.opacity = p.getAttribute('opacity') ?? '1'; });
+      } else {
+        const L = p.getTotalLength() + 4;
+        p.style.strokeDasharray = `${L}`;
+        p.style.strokeDashoffset = `${L}`;
+        p.style.transition = `stroke-dashoffset ${DRAW_MS}ms cubic-bezier(0.4, 0.05, 0.25, 1)`;
+        requestAnimationFrame(() => { p.style.strokeDashoffset = '0'; });
+      }
+    }
+  }, [phase]);
+
+  // The pull. Written straight to the nodes per frame, like the swing: sixty
+  // React renders a second for a `d` attribute nothing else reads is not
+  // worth it.
   useEffect(() => {
-    if (held) return;
-    const t = setTimeout(() => setSnapped(true), delay + DRAW_MS + HOLD_MS);
-    return () => clearTimeout(t);
-  }, [held, delay]);
+    if (phase !== 'taut') return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const set = (slack: number) => {
+      const d = sagPath(a, b, slack);
+      for (const p of paths.current) {
+        p.setAttribute('d', d);
+        // The draw-in's dash settings would clip the new, shorter path.
+        if (!p.getAttribute('stroke-dasharray')) { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; }
+      }
+    };
+    if (reduced) { set(TAUT); return; }
+    const t0 = performance.now();
+    const step = (t: number) => {
+      const p = Math.min(1, (t - t0) / TIGHTEN_MS);
+      set(springSlack(p));
+      if (p < 1) frame.current = requestAnimationFrame(step);
+    };
+    frame.current = requestAnimationFrame(step);
+    // Frames stop in a hidden tab; make sure it ends taut regardless.
+    const settle = setTimeout(() => { cancelAnimationFrame(frame.current); set(TAUT); }, TIGHTEN_MS + 60);
+    return () => { cancelAnimationFrame(frame.current); clearTimeout(settle); };
+  }, [phase, a, b]);
 
-  const draw = {
-    strokeDasharray: length,
-    strokeDashoffset: length,
-    animation: `string-draw ${DRAW_MS}ms cubic-bezier(0.4, 0.05, 0.25, 1) ${delay}ms forwards`,
-  } as const;
+  if (phase === 'idle') return null;
 
-  if (snapped) {
-    // Both loose ends, fading up in place of the taut run.
+  if (phase === 'snapped') {
+    // Both loose ends, dropping into place where the taut run was.
     return (
-      <g style={{ animation: 'frayed-in 260ms ease-out both' }}>
-        {[frayedPath(a, b), frayedPath(b, a)].map((d, i) => (
-          <g key={i}>
-            <path d={d} stroke="rgba(90,26,14,0.34)" strokeWidth="3.4" fill="none" strokeLinecap="round" transform="translate(0.8, 1.8)" />
-            <path d={d} stroke="#a52f1b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            <path d={d} stroke="#e07a63" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeDasharray="1.6 3.6" opacity="0.5" />
-          </g>
-        ))}
+      <g style={{ animation: 'string-part 420ms cubic-bezier(0.2,0.9,0.3,1) both' }}>
+        <path d={wrapPath(a, 1)} stroke={CORE} strokeWidth="4.2" fill="none" strokeLinecap="round" />
+        <Rope d={frayedPath(a, b)} shadowFilter={shadowFilter} />
+        <Rope d={frayedPath(b, a)} shadowFilter={shadowFilter} />
       </g>
     );
   }
 
-  const d = sagPath(a, b);
   return (
-    <g style={held ? { animation: `string-tighten 520ms cubic-bezier(0.3,1.4,0.4,1) ${delay + DRAW_MS - 90}ms both` } : undefined}>
-      {/* The string's own shadow on the board, a couple of pixels down. */}
-      <path d={d} stroke="rgba(90,26,14,0.30)" strokeWidth="3.6" fill="none" strokeLinecap="round" transform="translate(1, 2.4)" style={draw} />
-      <path d={d} stroke="#a52f1b" strokeWidth="2.6" fill="none" strokeLinecap="round" style={draw} />
-      {/* The twist. A dashed lighter thread over the solid one is the whole
-          difference between twine and a stroke. */}
-      <path d={d} stroke="#e58068" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeDasharray="1.7 3.7" opacity="0.55" style={{ ...draw, strokeDasharray: undefined, animation: `frayed-in 300ms ease-out ${delay + DRAW_MS - 200}ms both` }} />
+    <g>
+      <path d={wrapPath(a, 1)} stroke={CORE} strokeWidth="4.2" fill="none" strokeLinecap="round" />
+      <Rope d={sagPath(a, b, 1)} shadowFilter={shadowFilter} pathsRef={(els) => { paths.current = els; }} />
+      {phase === 'taut' ? (
+        <path d={wrapPath(b, -1)} stroke={CORE} strokeWidth="4.2" fill="none" strokeLinecap="round" style={{ animation: 'frayed-in 160ms ease-out both' }} />
+      ) : null}
     </g>
   );
 }
 
-export default function RedString({
-  anchors, held, resolved, beat, delay = 0,
-}: {
+export default function RedString({ anchors, phases }: {
   /** Pin positions, in the coordinate space of the SVG's own box. */
   anchors: readonly Anchor[];
-  /** Whether each link held, one shorter than `anchors`. */
-  held: readonly boolean[];
-  /** Segments up to and including this index are allowed to run. -1 for none. */
-  resolved: number;
-  beat: number;
-  delay?: number;
+  /** One per span — one shorter than `anchors`. */
+  phases: readonly SpanPhase[];
 }) {
+  const id = useId().replace(/[^a-z0-9]/gi, '');
   if (anchors.length < 2) return null;
 
   return (
@@ -122,20 +212,20 @@ export default function RedString({
         pointerEvents: 'none', zIndex: 4, overflow: 'visible',
       }}
     >
-      {anchors.slice(0, -1).map((a, i) => {
-        if (i > resolved) return null;
-        const b = anchors[i + 1]!;
-        return (
-          <Segment
-            key={i}
-            a={a}
-            b={b}
-            held={held[i] ?? false}
-            delay={delay + i * beat}
-            length={Math.hypot(b.x - a.x, b.y - a.y) * 1.5 + 80}
-          />
-        );
-      })}
+      <defs>
+        <filter id={`rope-shadow-${id}`} x="-20%" y="-50%" width="140%" height="200%">
+          <feGaussianBlur stdDeviation="1.6" />
+        </filter>
+      </defs>
+      {anchors.slice(0, -1).map((a, i) => (
+        <Segment
+          key={i}
+          a={a}
+          b={anchors[i + 1]!}
+          phase={phases[i] ?? 'idle'}
+          shadowFilter={`url(#rope-shadow-${id})`}
+        />
+      ))}
     </svg>
   );
 }
