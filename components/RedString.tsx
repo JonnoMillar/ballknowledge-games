@@ -54,10 +54,22 @@ export function sagPath(a: Anchor, b: Anchor, slack: number, bow?: Bow): string 
   const span = Math.hypot(b.x - a.x, b.y - a.y);
   const sag = (span * 0.075 + 5) * slack + 1.5;
   // A quadratic's midpoint sits halfway to the control point, hence the ×2.
-  const off = bow
-    ? { x: bow.x * (CLEAR + 24 * slack) * 2, y: 0 }
-    : { x: 0, y: sag * 2 };
-  return `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2 + off.x} ${(a.y + b.y) / 2 + off.y} ${b.x} ${b.y}`;
+  if (bow) {
+    // Round the outside of the cards like a rope round a post: out from the
+    // pin, straight down the margin, back in to the next pin. A single arc
+    // here read as an S — it left one pin outward and arrived at the next
+    // from the same side, crossing the corner of the card in between.
+    const ox = (a.x + b.x) / 2 + bow.x * (CLEAR + 22 * slack);
+    const r = 26;
+    const down = b.y > a.y ? 1 : -1;
+    return [
+      `M ${a.x} ${a.y}`,
+      `Q ${ox} ${a.y} ${ox} ${a.y + down * r}`,
+      `L ${ox} ${b.y - down * r}`,
+      `Q ${ox} ${b.y} ${b.x} ${b.y}`,
+    ].join(' ');
+  }
+  return `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 + sag * 2} ${b.x} ${b.y}`;
 }
 
 /**
@@ -89,10 +101,11 @@ export function frayedPath(from: Anchor, to: Anchor, bow?: Bow): string {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   if (bow) {
-    // Off the pin the way the rope was routed, then it drops.
-    const ex = from.x + bow.x * CLEAR * 0.8;
-    const ey = from.y + Math.abs(dy) * 0.22 + 18;
-    return `M ${from.x} ${from.y} Q ${from.x + bow.x * CLEAR * 1.1} ${from.y + Math.abs(dy) * 0.05} ${ex} ${ey}`;
+    // Off the pin the way the rope was routed, then it drops down the margin
+    // and stops short of the middle, where the break was.
+    const ox = from.x + bow.x * CLEAR;
+    const ey = from.y + dy * 0.34 + 10;
+    return `M ${from.x} ${from.y} Q ${ox} ${from.y} ${ox} ${from.y + 22} L ${ox + bow.x * 4} ${ey}`;
   }
   // Stops well short of centre, and falls: the tension that was holding it
   // up is gone, so what is left is length and gravity.

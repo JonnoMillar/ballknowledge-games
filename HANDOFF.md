@@ -122,10 +122,14 @@ stand up. Two things the ring changed on the sealed sheet:
 - **The columns cannot hang under the edge cards** — the top one would run
   into the middle and the sides into the bottom corners — so they line up
   in a row below the square, labelled by plate.
-- **The standing spans of string bow OUT round the cards** (`bowsFor` in
-  `RedString.tsx`). Drawn pin to pin they crossed every face on the way
-  down; the taut rope now sits `CLEAR` px outside the pins' line, on
-  whichever side is away from the board's centre.
+- **The standing spans of string run round the OUTSIDE of the cards like
+  a rope round a post** (`bowsFor` in `RedString.tsx`): out from the pin,
+  straight down the margin `CLEAR` px off the pins' line, back in to the
+  next pin. Drawn pin to pin they crossed every face on the way down; a
+  single outward arc per span read as an S, leaving one pin outward and
+  arriving at the next from the same side across the card's corner.
+- **Each column is headed by the pick's name.** "Plate 4" alone sent the
+  eye back up to the square to count.
 
 `pairs` and `entry` stay null on a ring — four independent fields are not a
 product of two — so the foil band does not print, and the grade test skips

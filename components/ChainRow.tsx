@@ -11,6 +11,7 @@ import type { SlotDepth } from '../src/lib/chain/score';
 import type { ClubView } from '../src/lib/clubs';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
+import { plateName } from '../src/lib/short-name';
 
 /**
  * The chain itself, as it appears on the clipboard.
@@ -400,6 +401,7 @@ export default function ChainRow({
     return (
       <Ring
         fill={fill}
+        players={players}
         slots={slots}
         slot={slot}
         connector={connector}
@@ -456,9 +458,10 @@ const RING: readonly [row: number, col: number][] = [
  * the square, in slot order, each labelled with the plate it reads for.
  */
 function Ring({
-  fill, slots, slot, connector, revealed, columnFor, columnRunFor, columnInstant,
+  fill, players, slots, slot, connector, revealed, columnFor, columnRunFor, columnInstant,
 }: {
   fill: readonly (string | null)[];
+  players: ReadonlyMap<string, Player>;
   slots: readonly (string | null)[];
   slot: (i: number, column: ColumnSpec | null) => ReactNode;
   connector: (li: number, vertical?: boolean) => ReactNode;
@@ -509,9 +512,17 @@ function Ring({
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', width: '100%', borderTop: '1.5px dashed rgba(26,20,16,0.3)', paddingTop: 10 }}>
           {blanks.map((i) => {
             const column = columnFor(i);
+            const pick = fill[i] ? players.get(fill[i]!) : undefined;
             return column ? (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                {/* The column is a reading of one pick, so it is headed by
+                    that pick's name, the way the nameplate on the card
+                    prints it. "Plate 4" alone sent the eye back up to the
+                    square to count. */}
+                <div className="narrow" style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.02em', color: 'var(--accent)', lineHeight: 1.1 }}>
+                  {pick ? plateName(pick.id, pick.name).toUpperCase() : '—'}
+                </div>
+                <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)' }}>
                   Plate {i + 1}
                 </div>
                 <DepthColumn spec={column} run={columnRunFor(i)} instant={columnInstant} />
