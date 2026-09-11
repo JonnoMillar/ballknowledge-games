@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { DndContext, DragOverlay, useDroppable, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 import ChainRow from './ChainRow';
@@ -327,6 +327,8 @@ export default function Chain({
     if (target === 'bench') {
       const from = e.active.data.current?.fromSlot as string | undefined;
       if (from?.startsWith('slot:')) dispatch({ type: 'unplace', index: Number(from.slice(5)) });
+      // A print dragged out of the album and pinned up with the others.
+      if (from === 'index') dispatch({ type: 'library/add', playerId });
       return;
     }
     if (target.startsWith('slot:')) {
@@ -386,6 +388,35 @@ export default function Chain({
   }, [prescribed, clubs]);
 
   const sheet = useRef<HTMLDivElement>(null);
+  const area = useRef<HTMLDivElement>(null);
+  const stack = useRef<HTMLDivElement>(null);
+  const [{ fit, need }, setFit] = useState({ fit: 1, need: 0 });
+
+  // The sheet fits the height it is given, the way the row fits its width.
+  // Left to its own devices it overflowed its area on any screen under about
+  // 950px tall, and because it was CENTRED there the overflow was split top
+  // and bottom: the masthead went under the edge and a scrollbar appeared
+  // that could not bring it back. Scaling down only — a small screen gets a
+  // smaller sheet, never a scrolling one. The wrapper's height is set to the
+  // scaled size because a transform does not change layout, and an unscaled
+  // footprint would go on overflowing exactly as before.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const box = area.current;
+      const paper = stack.current;
+      if (!box || !paper) return;
+      const cs = getComputedStyle(box);
+      const have = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const need = paper.offsetHeight;
+      if (have <= 0 || need <= 0) return;
+      setFit({ fit: Math.max(0.6, Math.min(1, have / need)), need });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (area.current) ro.observe(area.current);
+    if (stack.current) ro.observe(stack.current);
+    return () => ro.disconnect();
+  }, []);
 
   return (
     // A stable id keeps dnd-kit's aria-describedby ids identical on the server
@@ -395,7 +426,7 @@ export default function Chain({
       <div className="sheet" style={{ height: '100vh', display: 'flex', minHeight: 0 }}>
         <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0 }}>
 
-          <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px 36px 22px', minWidth: 0, minHeight: 0, overflow: 'auto' }}>
+          <div ref={area} style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px 36px 22px', minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
             {/* The sheet is not the only thing on the board, and a single
                 rectangle floating in the middle of a large surface is what
                 made the screen read as empty. Two blank sheets underneath fix
@@ -403,7 +434,15 @@ export default function Chain({
                 stack rather than one leaf, there is a real edge and a real
                 shadow behind the paper, and it is exactly what a board with
                 work on it looks like. */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: 1080, flexShrink: 0 }}>
+            <div
+              ref={stack}
+              style={{
+                position: 'relative', width: '100%', maxWidth: 1080, flexShrink: 0,
+                transform: fit < 1 ? `scale(${fit})` : undefined, transformOrigin: 'top center',
+                // A scaled element keeps its unscaled footprint; take it back.
+                marginBottom: fit < 1 ? `${-(1 - fit) * need}px` : undefined,
+              }}
+            >
               <div aria-hidden className="paper" style={{ position: 'absolute', inset: '10px -14px -16px -9px', transform: 'rotate(-0.7deg)', opacity: 0.75, zIndex: 0 }} />
               <div aria-hidden className="paper" style={{ position: 'absolute', inset: '5px -6px -8px -13px', transform: 'rotate(0.55deg)', opacity: 0.88, zIndex: 0 }} />
               <div
@@ -462,6 +501,7 @@ export default function Chain({
         <ChainSearch
           state={state}
           index={index}
+          images={images}
           focused={focused}
           onAddToBench={(id) => dispatch({ type: 'library/add', playerId: id })}
           onPlace={(i, id) => { dispatch({ type: 'place', index: i, playerId: id }); setLanded(i); }}
