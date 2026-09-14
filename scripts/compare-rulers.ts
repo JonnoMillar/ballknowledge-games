@@ -37,7 +37,8 @@ const closed = puzzle.closed ?? false;
 const spellAt = (p: Player, c: string) => {
   const s = p.spells?.[c];
   if (!s) return '?';
-  return s[0] !== null ? `${s[0]} apps` : s[1] !== null ? `~${s[1]}y` : '?';
+  const len = s[0] !== null ? `${s[0]} apps` : s[1] !== null ? `~${s[1]}y` : '?';
+  return `${len} ${s[2] !== null ? `'${String(s[2]).slice(2)}` : '?'}`;
 };
 
 console.log(`chain ${puzzle.id} (${mode}${closed ? ', ring' : ''})`);

@@ -1,6 +1,6 @@
 # Spell-weighted obscurity
 
-**Date:** 2026-09-11
+**Date:** 2026-09-11 (recency added 2026-09-14)
 **Status:** approved
 
 ## Problem
@@ -51,18 +51,20 @@ for every spell whose club is not a national team (the `Q6979593` exclusion
 from `careersQuery`). Written to `data/raw/_apps.json`:
 
 ```
-playerId → clubId → [apps | null, years | null]
+playerId → clubId → [apps | null, years | null, last | null]
 ```
 
 Multiple spells at one club (loan then permanent, re-signing) are summed for
-both apps and years. Years is `end - start` in calendar years, minimum 1 when
-both dates exist; null when either is missing.
+both apps and years, and the later end is kept. Years is `end - start` in
+calendar years, minimum 1 when both dates exist; null when either is missing.
+`last` is the year the stint ended, or the fetch year when it has a start
+and no end (still there), or null when it has neither.
 
 `build-pool.ts` merges the file into each `Player` as a new optional field:
 
 ```ts
-/** Per club: [league appearances, years at the club]. Null where Wikidata is silent. */
-spells?: Readonly<Record<string, readonly [number | null, number | null]>>;
+/** Per club: [league appearances, years at the club, year it ended]. Null where Wikidata is silent. */
+spells?: Readonly<Record<string, readonly [number | null, number | null, number | null]>>;
 ```
 
 Optional so fixtures and tests that build a `Player` by hand are unaffected.
@@ -71,19 +73,31 @@ not a career refetch.
 
 ### 2. Spell weight — `src/lib/fame/spell.ts`
 
-`spellWeight(apps: number | null, years: number | null): number`, in
-`[0.05, 1]`:
+`spellWeight(spell, now = current year): number`, in `[0.05, 1]` — how well
+known a stint is, the **better of how long it was and how recent it was**:
 
-- apps known → `clamp(apps / 50, 0.05, 1)`. Fifty league appearances is about
-  two seasons as a regular; past that the stint is common knowledge.
-  Kane: Leicester 13 → 0.26, Norwich 3 → 0.06, Tottenham → 1.
-- apps null, years known → estimate `years × 25` apps, same clamp.
-- both null → **1**. Missing data never grants a discount, so uncovered
-  spells cannot be gamed and any error is in the harsh direction.
+- length: `apps / 50`. Fifty league appearances is about two seasons as a
+  regular; past that the stint is common knowledge. Kane: Leicester 13 →
+  0.26, Norwich 3 → 0.06, Tottenham → 1. When apps is null but years is
+  known, estimate `years × 25` apps.
+- recency: 1 for a stint that ended within the last 2 years, fading
+  linearly to 0 over the following 10. A transfer is news: three games for
+  Barcelona this season is a fact everyone holds, whatever the count.
+  Anthony Gordon at Barcelona (2026): length 0.06, recency 1 → **1**, no
+  reward. Kane at Leicester (2013): recency has faded, length decides →
+  0.26.
+- `weight = clamp(max(length, recency), 0.05, 1)`.
+- length unknown **or** end year unknown → **1**. Missing data never grants
+  a discount, so uncovered spells cannot be gamed and any error is in the
+  harsh direction. An undated stint with three appearances is what a
+  just-announced transfer looks like on Wikidata, which is why the date
+  is required and not merely used.
 
-The three constants (`SATURATION_APPS = 50`, `APPS_PER_YEAR = 25`,
-`FLOOR = 0.05`) sit together at the top of the file with this reasoning.
-They are the tuning surface.
+The constants (`SATURATION_APPS = 50`, `APPS_PER_YEAR = 25`, `FLOOR = 0.05`,
+`FRESH_YEARS = 2`, `FADE_YEARS = 10`) sit together at the top of the file
+with this reasoning. They are the tuning surface. `now` is injectable for
+tests; in the app the score ages with the calendar, which is right — a
+stint fades whether or not the pool is refetched.
 
 ### 3. Fact-fame — same file
 
@@ -123,7 +137,9 @@ its harder side. No sides → `fame(p)`.
 
 ### 5. Tests
 
-- `tests/fame/spell.test.ts`: `spellWeight` each branch and both clamps;
+- `tests/fame/spell.test.ts`: `spellWeight` each branch, both clamps, and
+  recency (current stint is 1 whatever its length, fades linearly, the
+  better of the two carries, undated is neutral);
   `factFame` — min over sides, max over shared clubs, prescribed club
   overrides sharing, nation-league link is 1, missing `spells` is 1.
 - `tests/chain/`: a Kane / Maguire / Leicester fixture — a 13-app route

@@ -18,9 +18,10 @@ export interface PlayerFacts {
 
 /**
  * One club stint, summed over every spell at that club: league appearances,
- * and calendar years there. Either is null where Wikidata is silent.
+ * calendar years there, and the year it ended — the fetch year if it is still
+ * going. Each is null where Wikidata is silent.
  */
-export type Spell = readonly [apps: number | null, years: number | null];
+export type Spell = readonly [apps: number | null, years: number | null, last: number | null];
 
 /** A pool entry: facts plus everything the app needs to display and score. */
 export interface Player extends PlayerFacts {

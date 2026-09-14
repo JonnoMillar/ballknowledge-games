@@ -30,27 +30,42 @@ import type { Player, Spell } from '../chemistry/types';
  * FLOOR: a stint never weighs nothing. A player who was on the books and
  * never played still links under the rule the game ships, so the fact is
  * merely very obscure rather than nonexistent.
+ *
+ * FRESH_YEARS and FADE_YEARS: recency. A stint that ended within the last
+ * two years is fully known whatever its length — a transfer is news, and
+ * three games for Barcelona this season is a fact everyone holds. Past that
+ * it fades linearly over ten years to nothing, at which point how long the
+ * stint was is all that is left of it.
  */
 export const SATURATION_APPS = 50;
 export const APPS_PER_YEAR = 25;
 export const FLOOR = 0.05;
+export const FRESH_YEARS = 2;
+export const FADE_YEARS = 10;
 
 /**
- * 0.05..1: how much of a stint this was.
+ * 0.05..1: how well known a stint is — the better of how long it was and how
+ * recently it happened.
  *
  * Missing data is NEUTRAL, deliberately. Around a fifth of spells carry no
- * count and some carry no dates either; if silence meant "obscure", a player
+ * count and a tenth carry no dates; if silence meant "obscure", a player
  * whose page nobody has finished would outscore one whose page is complete,
  * and the pool's least-curated corner would become its best answers. Erring
  * harsh keeps the reward honest: you only get it for a stint Wikidata can
- * vouch was short.
+ * vouch was short AND vouch was a while ago. An undated stint with three
+ * appearances is what a transfer announced last week looks like.
+ *
+ * `now` is injectable for tests; the score otherwise ages with the calendar,
+ * which is right — a stint fades whether or not the pool is refetched.
  */
-export function spellWeight(spell: Spell | undefined): number {
+export function spellWeight(spell: Spell | undefined, now = new Date().getFullYear()): number {
   if (!spell) return 1;
-  const [apps, years] = spell;
+  const [apps, years, last] = spell;
   const estimate = apps ?? (years !== null ? years * APPS_PER_YEAR : null);
-  if (estimate === null) return 1;
-  return Math.min(1, Math.max(FLOOR, estimate / SATURATION_APPS));
+  if (estimate === null || last === null) return 1;
+  const length = estimate / SATURATION_APPS;
+  const recency = 1 - (now - last - FRESH_YEARS) / FADE_YEARS;
+  return Math.min(1, Math.max(FLOOR, length, recency));
 }
 
 const weightAt = (p: Player, club: string): number => spellWeight(p.spells?.[club]);
