@@ -244,3 +244,27 @@ SELECT ?club ?name ?logo ?arms WHERE {
   BIND(COALESCE(?en, ?mul) AS ?name)
 }`.trim();
 }
+
+/**
+ * Appearances per club spell (P1350, "number of matches played/races/starts")
+ * with the spell's dates, for a batch of players.
+ *
+ * Pulled as a side file rather than folded into careersQuery, so adding it
+ * did not mean re-pulling every career. Measured on a random 300 from the
+ * pool on 2026-09-11: 80% of club spells carry a count, 87% carry both dates.
+ * The dates are the fallback where the count is missing.
+ *
+ * Same national-team exclusion as careersQuery: caps are not club spells.
+ */
+export function clubAppsQuery(playerQids: readonly string[]): string {
+  const values = playerQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT ?player ?club ?apps ?start ?end WHERE {
+  VALUES ?player { ${values} }
+  ?player p:P54 ?spell . ?spell ps:P54 ?club .
+  FILTER NOT EXISTS { ?club wdt:P31/wdt:P279* wd:Q6979593 }
+  OPTIONAL { ?spell pq:P1350 ?apps }
+  OPTIONAL { ?spell pq:P580 ?start }
+  OPTIONAL { ?spell pq:P582 ?end }
+}`.trim();
+}

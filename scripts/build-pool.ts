@@ -6,6 +6,7 @@ import { suspiciousName } from '../src/pipeline/sanity';
 import { runQuery } from '../src/pipeline/sparql';
 import { clubLeagueQuery } from '../src/pipeline/queries';
 import type { SparqlBinding, SparqlResponse } from '../src/pipeline/sparql';
+import type { Spell } from '../src/lib/chemistry/types';
 
 // Only batch files. `_ids.json` is a plain id array, not a SPARQL response.
 const files = (await readdir('data/raw')).filter((f) => f.startsWith('batch-'));
@@ -64,6 +65,22 @@ if (GENDER && existsSync('data/raw/_gender.json')) {
   console.log(`gender filter: ${before} -> ${raw.length}`);
 }
 const pool = applyPoolFilters(raw, DEFAULT_POOL_RULES);
+
+// Appearances per club, from `npm run fetch:apps`. Only clubs the player is
+// already recorded at are kept, so the side file cannot widen a career.
+if (existsSync('data/raw/_apps.json')) {
+  const apps = JSON.parse(await readFile('data/raw/_apps.json', 'utf8')) as Record<string, Record<string, Spell>>;
+  let players = 0;
+  let spells = 0;
+  for (const p of pool) {
+    const mine = apps[p.id];
+    if (!mine) continue;
+    const kept: Record<string, Spell> = {};
+    for (const c of p.clubIds) if (mine[c]) { kept[c] = mine[c]; spells++; }
+    if (Object.keys(kept).length > 0) { p.spells = kept; players++; }
+  }
+  console.log(`appearances applied to ${players} players, ${spells} club spells`);
+}
 
 // Name sanity. Flag, never remove — a defaced name still belongs to a real
 // player, so the fix is a manual override. Spec 8.2.

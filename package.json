@@ -10,6 +10,7 @@
     "fetch:club": "tsx scripts/fetch-club.ts",
     "build:pool": "tsx scripts/build-pool.ts",
     "fetch:pool": "tsx scripts/fetch-pool.ts",
+    "fetch:apps": "tsx scripts/fetch-apps.ts",
     "report:coverage": "tsx scripts/coverage-report.ts",
     "review:names": "tsx scripts/name-review.ts",
     "dev": "next dev",

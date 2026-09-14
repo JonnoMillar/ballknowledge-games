@@ -1,4 +1,5 @@
-import { chainLinks, chainFieldFor, chainSlotDepths, neighboursOf } from './score';
+import { chainLinks, chainFieldFor, chainSlotDepths, neighboursOf, sidesOf } from './score';
+import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
 import type { SlotDepth } from './score';
 import type { ChainFill, ChainPuzzle } from './types';
@@ -174,6 +175,13 @@ export function chainResult(
   const slots: SlotOutcome[] = [];
   /** Kept so the reveal can state how many ways the board could have gone. */
   const fields: Player[][] = [];
+  /**
+   * The ruler each field is ranked with: fame scaled by the stint that
+   * carried the link, measured against the GIVEN neighbours — the same ones
+   * the field was built from. Kept per slot because the wall needs it after
+   * this loop is done.
+   */
+  const rulers: ((p: Player) => number)[] = [];
   puzzle.slots.forEach((given, i) => {
     if (given != null) return;
 
@@ -186,6 +194,9 @@ export function chainResult(
     // blanks sit next to each other.
     const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed, closed);
     fields.push(field);
+    const sides = sidesOf(i, puzzle.slots, pool, prescribed, closed);
+    const fameOf = (p: Player) => factFame(p, sides, mode);
+    rulers.push(fameOf);
 
     // The deepest answer ABOVE a fame floor, not the deepest outright.
     //
@@ -199,9 +210,13 @@ export function chainResult(
     // The field is untouched — Riep still counts, still scores, still sits in
     // `fieldSize` — because he IS a legal answer under the rule we ship. He
     // just does not get presented as the thing you should have known.
+    //
+    // The floor is on the NAME and the order is on the FACT. A famous player
+    // passing through on a short loan is exactly the answer worth holding up,
+    // and the floor exists to keep out unfinished pages, not famous ones.
     const eligible = field.filter((p) => p.fame.value >= MIN_BEST_FAME);
     const most = (eligible.length > 0 ? eligible : field).reduce<Player | null>(
-      (best, p) => (best === null || p.fame.value < best.fame.value ? p : best),
+      (best, p) => (best === null || fameOf(p) < fameOf(best) ? p : best),
       null,
     );
 
@@ -211,7 +226,7 @@ export function chainResult(
       held,
       depth: depths[i] ?? null,
       best: most
-        ? { id: most.id, name: most.name, score: slotObscurityScore(most, field), clubs: carriedAt(most, i) }
+        ? { id: most.id, name: most.name, score: slotObscurityScore(most, field, fameOf), clubs: carriedAt(most, i) }
         : null,
       fieldSize: field.length,
     });
@@ -240,17 +255,18 @@ export function chainResult(
    */
   const pinboard: PinnedAnswer[] = [];
   const onWall = new Set<string>();
-  const deepestFirst = (xs: readonly Player[]) =>
-    xs.filter((p) => p.fame.value >= MIN_BEST_FAME).sort((a, b) => a.fame.value - b.fame.value);
+  const deepestFirst = (xs: readonly Player[], fameOf: (p: Player) => number) =>
+    xs.filter((p) => p.fame.value >= MIN_BEST_FAME).sort((a, b) => fameOf(a) - fameOf(b));
 
   const add = (p: Player, slotIndex: number, either: boolean) => {
     if (onWall.has(p.id) || pinboard.length >= 5) return;
     onWall.add(p.id);
-    const field = fields[slots.findIndex((s) => s.index === slotIndex)] ?? [];
+    const si = slots.findIndex((s) => s.index === slotIndex);
+    const field = fields[si] ?? [];
     pinboard.push({
       id: p.id,
       name: p.name,
-      score: slotObscurityScore(p, field),
+      score: slotObscurityScore(p, field, rulers[si]),
       // An "either" card is claimed by no single slot, so the clubs on it are
       // the ones that carry the gap it is standing in.
       clubs: carriedAt(p, slotIndex),
@@ -263,14 +279,17 @@ export function chainResult(
 
   if (fields.length === 2 && slots.length === 2) {
     const bIds = new Set(fields[1]!.map((p) => p.id));
-    const both = deepestFirst(fields[0]!.filter((p) => bIds.has(p.id)));
+    // An either card sits in both gaps, so it is as deep as its shallower
+    // one: the route a player would have taken had they used it easily.
+    const either = (p: Player) => Math.max(rulers[0]!(p), rulers[1]!(p));
+    const both = deepestFirst(fields[0]!.filter((p) => bIds.has(p.id)), either);
     if (both[0]) add(both[0], slots[0]!.index, true);
   }
   // One round of the deepest from each side, then a second, so the wall
   // alternates rather than showing one gap's answers and then the other's.
   for (let round = 0; round < 2; round++) {
     slots.forEach((s, si) => {
-      const next = deepestFirst(fields[si] ?? []).find((p) => !onWall.has(p.id));
+      const next = deepestFirst(fields[si] ?? [], rulers[si]!).find((p) => !onWall.has(p.id));
       if (next) add(next, s.index, false);
     });
   }

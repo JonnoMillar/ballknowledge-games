@@ -1,5 +1,7 @@
 import { linkColour, meetsRequirement, sharedClubs } from '../chemistry/link';
 import { slotObscurityScore } from '../fame/obscurity';
+import { factFame } from '../fame/spell';
+import type { Side } from '../fame/spell';
 import type { LinkColour, Player } from '../chemistry/types';
 import type { ChainFill, ChainMode } from './types';
 
@@ -71,6 +73,29 @@ export function neighboursOf(
   else if (wraps) out.push({ slot: length - 1, link: length - 1 });
   if (index < length - 1) out.push({ slot: index + 1, link: index });
   else if (wraps) out.push({ slot: 0, link: length - 1 });
+  return out;
+}
+
+/**
+ * The occupied neighbours of `index`, each with the club its link names.
+ *
+ * This is the one description of "what is beside this slot" that both the
+ * field (who may sit here) and the ruler (how obscure is sitting here) read,
+ * so they cannot disagree about which neighbours a pick is measured against.
+ */
+export function sidesOf(
+  index: number,
+  fill: ChainFill,
+  pool: ReadonlyMap<string, Player>,
+  prescribed: Readonly<Record<number, string>> = {},
+  closed = false,
+): Side[] {
+  const out: Side[] = [];
+  for (const { slot, link } of neighboursOf(index, fill.length, closed)) {
+    const id = fill[slot];
+    const p = id ? pool.get(id) : undefined;
+    if (p) out.push({ player: p, club: prescribed[link] });
+  }
   return out;
 }
 
@@ -154,19 +179,13 @@ export function chainFieldFor(
 ): Player[] {
   // Each side carries its own requirement: the neighbour on it, and the
   // club its link may name.
-  const sides = neighboursOf(index, fill.length, closed);
-  const neighbours: { player: Player; club: string | undefined }[] = [];
-  for (const { slot, link } of sides) {
-    const id = fill[slot];
-    const p = id ? pool.get(id) : undefined;
-    if (p) neighbours.push({ player: p, club: prescribed[link] });
-  }
+  const neighbours = sidesOf(index, fill, pool, prescribed, closed);
 
   // A prescribed link constrains this slot even with nobody beside it yet:
   // whoever sits here has to have played for that club.
-  const own = sides.map(({ link }) => prescribed[link]).filter(
-    (c): c is string => c !== undefined,
-  );
+  const own = neighboursOf(index, fill.length, closed)
+    .map(({ link }) => prescribed[link])
+    .filter((c): c is string => c !== undefined);
 
   // Nothing placed either side and nothing demanded: everyone is still legal.
   if (neighbours.length === 0 && own.length === 0) return [...players];
@@ -190,6 +209,11 @@ export function chainFieldFor(
  * units a person can actually feel: "the 6th most obscure of 247 players who
  * would have fit". That framing is the point of the mode — the gate is finding
  * anyone who links, the score is finding someone nobody else would have.
+ *
+ * "Obscure" here means the FACT, not the name: the field is ranked by fame
+ * scaled by how much of a stint carried the link, so Harry Kane through his
+ * 13 games at Leicester outranks a journeyman who was there for years. See
+ * src/lib/fame/spell.ts.
  *
  * Rank 1 is the most obscure answer available. Ties take the better rank. A
  * pick outside its own field — one that does not link — has no rank at all.
@@ -221,10 +245,13 @@ export function chainSlotDepths(
     const chosen = pool.get(id);
     if (!chosen) return;
     const field = chainFieldFor(i, fill, players, pool, mode, prescribed, closed);
+    const sides = sidesOf(i, fill, pool, prescribed, closed);
+    const fameOf = (p: Player) => factFame(p, sides, mode);
     const inField = field.some((p) => p.id === chosen.id);
+    const mine = fameOf(chosen);
     out[i] = {
-      score: slotObscurityScore(chosen, field),
-      rank: inField ? field.filter((p) => p.fame.value < chosen.fame.value).length + 1 : null,
+      score: slotObscurityScore(chosen, field, fameOf),
+      rank: inField ? field.filter((p) => fameOf(p) < mine).length + 1 : null,
       fieldSize: field.length,
     };
   });
