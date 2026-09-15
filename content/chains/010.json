@@ -1,0 +1,50 @@
+{
+  "id": "010",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "caption": "Four English-era names, and every link runs through somewhere they were not famous for.",
+  "slots": [
+    "Q128829",
+    null,
+    "Q45901",
+    null,
+    "Q20110",
+    null,
+    "Q41533",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    },
+    "3": {
+      "kind": "position",
+      "value": "GK",
+      "label": "a goalkeeper"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q183",
+      "label": "a German"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    }
+  },
+  "referenceSolution": [
+    "Q128829",
+    "Q161571",
+    "Q45901",
+    "Q188997",
+    "Q20110",
+    "Q96755",
+    "Q41533",
+    "Q43913"
+  ]
+}

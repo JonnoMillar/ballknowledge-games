@@ -84,12 +84,14 @@ function Masthead({ puzzle, blanks }: { puzzle: ChainPuzzle; blanks: number }) {
  * says nothing about whether committing is a good idea.
  */
 function Brief({
-  ends, corners, club, mode, placed, blanks, sealed, onSeal,
+  ends, corners, club, mode, placed, blanks, sealed, completion, onSeal,
 }: {
   ends: [string, string];
   /** The givens of a ring, clockwise. A ring has no ends to take you between. */
   corners?: string[];
   club: string | undefined;
+  /** A completion board: solved or not, and the plates say who fits. */
+  completion: boolean;
   mode: 'chemistry' | 'clubs';
   placed: number;
   blanks: number;
@@ -110,6 +112,14 @@ function Brief({
               ? <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]} — through {club}.</>
               : <>Find the {blanks === 2 ? 'two' : blanks} who take {ends[0]} to {ends[1]}.</>}
         </div>
+        {completion ? (
+          // The one thing a completion board needs saying that a scored
+          // one does not: the plate is part of the rule. There is no score
+          // to explain because there is none.
+          <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', lineHeight: 1.4, marginTop: 2 }}>
+            Each plate says who fits it. No score — the chain holds or it doesn&rsquo;t.
+          </div>
+        ) : null}
       </div>
 
       <button
@@ -132,7 +142,7 @@ function Brief({
               SEAL IT
             </span>
             <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#46300a' }}>
-              One scored submission
+              {completion ? 'One submission' : 'One scored submission'}
             </span>
           </>
         ) : (
@@ -285,6 +295,10 @@ export default function Chain({
 
   const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
   const closed = puzzle.closed ?? false;
+  const clues = useMemo(() => puzzle.clues ?? {}, [puzzle.clues]);
+  // No columns, no rarity, no wall: the sheet says held or broke and shows
+  // the name each plate was built around. See `ChainPuzzle.scoring`.
+  const completion = puzzle.scoring === 'completion';
   const links = useMemo(
     () => chainLinks(state.filled, pool, mode, prescribed, closed),
     [state.filled, pool, mode, prescribed, closed],
@@ -469,6 +483,7 @@ export default function Chain({
                 placed={placed}
                 blanks={blanks}
                 sealed={state.submitted}
+                completion={completion}
                 onSeal={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
               />
             </div>
@@ -510,12 +525,14 @@ export default function Chain({
                   players={pool}
                   revealed={boardRevealed}
                   ringFor={ringFor}
-                  depthFor={(i) => (boardRevealed ? result?.slots.find((sl) => sl.index === i)?.depth ?? null : null)}
+                  depthFor={(i) => (boardRevealed && !completion ? result?.slots.find((sl) => sl.index === i)?.depth ?? null : null)}
                   // The sealed sheet put away, the board shows the columns as
                   // they ended up — landed, not counting down a second time.
-                  columnFor={boardRevealed && result
+                  columnFor={boardRevealed && result && !completion
                     ? (i) => { const o = result.slots.find((sl) => sl.index === i); return o ? columnSpecFor(o, pool, images) : null; }
                     : undefined}
+                  clues={clues}
+                  clueMetFor={(i) => (boardRevealed ? result?.slots.find((sl) => sl.index === i)?.clueMet ?? null : null)}
                   columnInstant
                   revealDelayFor={(i) => 420 + (revealOrder[i] ?? 0) * 260}
                   focused={focused}

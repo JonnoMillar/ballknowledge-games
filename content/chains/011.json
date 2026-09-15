@@ -1,0 +1,39 @@
+{
+  "id": "011",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "caption": "Three corners, three routes, and the Galatasaray badge is the one that tells you where to look.",
+  "slots": [
+    "Q615",
+    null,
+    "Q124086",
+    null,
+    "Q152377",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "5": {
+      "kind": "position",
+      "value": "GK",
+      "label": "a goalkeeper"
+    }
+  },
+  "prescribedLinks": {
+    "2": "Q495299"
+  },
+  "referenceSolution": [
+    "Q615",
+    "Q483145",
+    "Q124086",
+    "Q161089",
+    "Q152377",
+    "Q160472"
+  ]
+}

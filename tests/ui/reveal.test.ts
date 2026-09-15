@@ -69,7 +69,7 @@ describe('the floor', () => {
     ({ id, name, clubIds: [], fame: { value: 50 }, nation: null, positions: [] } as unknown as Player);
   const pool = new Map([['me', player('me', 'Gerard Deulofeu')], ['best', player('best', 'Sylvain Distin')]]);
   const outcome = (over: Partial<SlotOutcome>): SlotOutcome => ({
-    index: 1, playerId: 'me', held: true,
+    index: 1, playerId: 'me', held: true, clueMet: true, obvious: null,
     depth: { score: 64, rank: 6, fieldSize: 16 },
     best: { id: 'best', name: 'Sylvain Distin', score: 84, clubs: [] },
     fieldSize: 16,

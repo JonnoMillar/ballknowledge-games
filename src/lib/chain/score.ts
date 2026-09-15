@@ -3,7 +3,7 @@ import { slotObscurityScore } from '../fame/obscurity';
 import { factFame } from '../fame/spell';
 import type { Side } from '../fame/spell';
 import type { LinkColour, Player } from '../chemistry/types';
-import type { ChainFill, ChainMode } from './types';
+import type { ChainFill, ChainMode, SlotClue } from './types';
 
 /** Link i joins slot i and slot i+1. Null colour while either end is empty. */
 export interface ChainLink {
@@ -54,6 +54,19 @@ export function linkedVia(
 ): boolean {
   if (club === undefined) return linked(a, b, mode);
   return a.clubIds.includes(club) && b.clubIds.includes(club);
+}
+
+/**
+ * Whether a player satisfies the clue on a plate. No clue, anyone.
+ *
+ * A position clue is met by anyone LISTED at that position: Mascherano is a
+ * midfielder and a defender, and a board that asked for a defender and
+ * refused him would be wrong in the way that loses an argument in a pub.
+ */
+export function clueMet(p: Player, clue: SlotClue | undefined): boolean {
+  if (!clue) return true;
+  if (clue.kind === 'nation') return p.nation === clue.value;
+  return p.positions.includes(clue.value as Player['positions'][number]);
 }
 
 /**
@@ -176,10 +189,12 @@ export function chainFieldFor(
   mode: ChainMode = 'chemistry',
   prescribed: Readonly<Record<number, string>> = {},
   closed = false,
+  clues: Readonly<Record<number, SlotClue>> = {},
 ): Player[] {
   // Each side carries its own requirement: the neighbour on it, and the
   // club its link may name.
   const neighbours = sidesOf(index, fill, pool, prescribed, closed);
+  const clue = clues[index];
 
   // A prescribed link constrains this slot even with nobody beside it yet:
   // whoever sits here has to have played for that club.
@@ -188,7 +203,7 @@ export function chainFieldFor(
     .filter((c): c is string => c !== undefined);
 
   // Nothing placed either side and nothing demanded: everyone is still legal.
-  if (neighbours.length === 0 && own.length === 0) return [...players];
+  if (neighbours.length === 0 && own.length === 0 && !clue) return [...players];
 
   // The occupant of this slot must stay in its own field, or it would score 0
   // against a set it is excluded from by definition.
@@ -197,6 +212,7 @@ export function chainFieldFor(
 
   return players.filter(
     (p) => !usedElsewhere.has(p.id)
+      && clueMet(p, clue)
       && own.every((c) => p.clubIds.includes(c))
       && neighbours.every((n) => linkedVia(p, n.player, mode, n.club)),
   );
@@ -238,13 +254,14 @@ export function chainSlotDepths(
   mode: ChainMode = 'chemistry',
   prescribed: Readonly<Record<number, string>> = {},
   closed = false,
+  clues: Readonly<Record<number, SlotClue>> = {},
 ): Record<number, SlotDepth> {
   const out: Record<number, SlotDepth> = {};
   fill.forEach((id, i) => {
     if (!id || given[i]) return;
     const chosen = pool.get(id);
     if (!chosen) return;
-    const field = chainFieldFor(i, fill, players, pool, mode, prescribed, closed);
+    const field = chainFieldFor(i, fill, players, pool, mode, prescribed, closed, clues);
     const sides = sidesOf(i, fill, pool, prescribed, closed);
     const fameOf = (p: Player) => factFame(p, sides, mode);
     const inField = field.some((p) => p.id === chosen.id);

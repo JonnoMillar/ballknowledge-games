@@ -35,6 +35,30 @@ export type ChainMode = 'chemistry' | 'clubs';
  */
 export type ChainDifficulty = 'easy' | 'medium' | 'hard';
 
+/**
+ * A clue printed on an empty plate: the nationality or the position of
+ * whoever belongs there. Part of the rule, not a hint — a player who links
+ * both neighbours but is not Argentine has not filled an "Argentine" plate.
+ *
+ * This is what makes a completion board possible. Two givens on their own
+ * never pin a blank down: measured over 9,998 pairs of famous givens, 84%
+ * have six or more answers a normal fan would think of. One clue on the
+ * plate — measured with the same fact-fame ruler the obscurity boards rank
+ * by, used as a cut-off instead — leaves 38,811 of those pairs with exactly
+ * one answer in reach and nothing else above the floor. The clue gives the
+ * solver the list to run through; the board is built so that the list has
+ * one name on it.
+ *
+ * The label is hand-written ("an Argentine", "a goalkeeper") because the
+ * pool carries Wikidata ids for nations and nothing to print them as.
+ */
+export interface SlotClue {
+  kind: 'nation' | 'position';
+  /** A nation QID, or a `PositionClass`. */
+  value: string;
+  label: string;
+}
+
 /** A published chain. Slots are ordered left to right; links join i and i+1. */
 export interface ChainPuzzle {
   id: string;
@@ -63,6 +87,20 @@ export interface ChainPuzzle {
    * than a single-answer puzzle. Every blank keeps a field to dig in.
    */
   closed?: boolean;
+  /**
+   * One clue per blank, keyed by slot index. See `SlotClue`.
+   */
+  clues?: Readonly<Record<number, SlotClue>>;
+  /**
+   * How the sealed sheet reads the board.
+   *
+   * `obscurity` (the default) ranks every pick within its field and pays in
+   * rarity foil. `completion` asks only whether the chain held: no columns,
+   * no score, no wall of deeper answers — the sheet says solved or broken,
+   * and for each plate shows the one name it was built around. A board that
+   * is made so that one answer is in reach has nothing to rank.
+   */
+  scoring?: 'obscurity' | 'completion';
   /**
    * One line about why this board is the shape it is, printed on the sealed
    * sheet beside the count of ways it could have gone.

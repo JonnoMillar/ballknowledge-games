@@ -7,6 +7,7 @@ import { tiltFor } from './swing';
 import Stamp from './Stamp';
 import DepthColumn, { type ColumnSpec } from './DepthColumn';
 import type { ChainLink } from '../src/lib/chain/score';
+import type { SlotClue } from '../src/lib/chain/types';
 import type { SlotDepth } from '../src/lib/chain/score';
 import type { ClubView } from '../src/lib/clubs';
 import type { Player } from '../src/lib/chemistry/types';
@@ -196,7 +197,7 @@ function EmptySlot({
 function Slot({
   index, player, given, focused, depth, revealed, revealDelay, images,
   onFocus, ring, tilt, landing, pinDriving, pinDelay, plateRef, interactive, showPin,
-  column, columnRun, columnInstant,
+  column, columnRun, columnInstant, clue, clueMet,
 }: {
   index: number;
   player: Player | undefined;
@@ -221,8 +222,28 @@ function Slot({
   column: ColumnSpec | null;
   columnRun: boolean;
   columnInstant: boolean;
+  /** The clue printed on this plate, if the board gave it one. */
+  clue?: SlotClue;
+  /** The verdict on the clue once revealed; null while the sheet is open. */
+  clueMet: boolean | null;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: `slot:${index}`, disabled: given || !interactive });
+
+  // The caption under the plate. "Yours" on a plain blank; on a clued one it
+  // is the clue itself, because the clue is what the plate says. Once the
+  // sheet is sealed it becomes the verdict on the clue — met in green, or
+  // "not a goalkeeper" in red — so a pick that linked both ends and still
+  // failed can see why.
+  const caption = given
+    ? 'Given'
+    : clue
+      ? (clueMet === null ? clue.label : clueMet ? clue.label : `not ${clue.label}`)
+      : 'Yours';
+  const captionColour = given
+    ? 'var(--muted)'
+    : clue && clueMet !== null
+      ? (clueMet ? 'var(--green)' : 'var(--accent)')
+      : 'var(--accent)';
 
   return (
     <div style={{ width: 116, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
@@ -267,11 +288,12 @@ function Slot({
       <span
         className="narrow"
         style={{
-          fontSize: 10, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase',
-          color: given ? 'var(--muted)' : 'var(--accent)',
+          fontSize: clue && !given ? 11 : 10, fontWeight: clue && !given ? 700 : 600,
+          letterSpacing: clue && !given ? '0.12em' : '0.2em', textTransform: 'uppercase',
+          color: captionColour, textAlign: 'center', lineHeight: 1.2, maxWidth: 116,
         }}
       >
-        {given ? 'Given' : 'Yours'}
+        {caption}
       </span>
       {revealed && column ? <DepthColumn spec={column} run={columnRun} instant={columnInstant} /> : null}
     </div>
@@ -283,6 +305,7 @@ export default function ChainRow({
   focused = null, onFocus = () => {}, interactive = true, landedIndex = null,
   pinsDriving = false, pinBeat = 0, plateRef, showPins = true, revealDelayFor, stringed = false,
   stampedThrough, columnFor, columnRunFor = () => true, columnInstant = false, closed = false,
+  clues = {}, clueMetFor = () => null,
 }: {
   /** Player ids in order, or null for a slot still empty. */
   fill: readonly (string | null)[];
@@ -328,6 +351,10 @@ export default function ChainRow({
    * `ChainPuzzle.closed`.
    */
   closed?: boolean;
+  /** The clue on each blank, keyed by slot. See `ChainPuzzle.clues`. */
+  clues?: Readonly<Record<number, SlotClue>>;
+  /** The verdict on a slot's clue once sealed; null while the sheet is open. */
+  clueMetFor?: (i: number) => boolean | null;
 }) {
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
@@ -394,10 +421,12 @@ export default function ChainRow({
       column={column}
       columnRun={columnRunFor(i)}
       columnInstant={columnInstant}
+      clue={clues[i]}
+      clueMet={clueMetFor(i)}
     />
   );
 
-  if (closed && fill.length === RING.length) {
+  if (closed && RINGS[fill.length]) {
     return (
       <Ring
         fill={fill}
@@ -439,14 +468,24 @@ export default function ChainRow({
 }
 
 /**
- * Where each of a ring's eight slots sits on a 3×3 of cards, clockwise from
- * the top-left corner. Slot 0 is a corner, so with givens in the corners the
- * blanks fall on the edges — which is the only arrangement that gives every
- * blank two givens to link to.
+ * Where each slot of a ring sits on a grid of cards, clockwise from slot 0,
+ * by ring length.
+ *
+ * Eight is a square: 3×3 of cards with the middle empty, slot 0 top-left.
+ * With givens in the corners the blanks fall on the edges — the only
+ * arrangement that gives every blank two givens to link to.
+ *
+ * Six is a triangle in everything but the drawing: three givens, three
+ * blanks, each blank between two givens. It is drawn as a 3×2 loop — the
+ * top corner in the middle of the top row, the other two at the ends of the
+ * bottom — because every link then runs along a row or down a column, and
+ * the connectors and the string already know how to do both. A true
+ * triangle needs diagonals, which neither does yet.
  */
-const RING: readonly [row: number, col: number][] = [
-  [0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0],
-];
+const RINGS: Readonly<Record<number, readonly [row: number, col: number][]>> = {
+  8: [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0]],
+  6: [[0, 1], [0, 2], [1, 2], [1, 1], [1, 0], [0, 0]],
+};
 
 /**
  * The chain drawn round a square.
@@ -470,9 +509,11 @@ function Ring({
   columnRunFor: (i: number) => boolean;
   columnInstant: boolean;
 }) {
+  const layout = RINGS[fill.length]!;
+  const rows = Math.max(...layout.map(([r]) => r)) + 1;
   const cells: ReactNode[] = [];
   fill.forEach((_, i) => {
-    const [r, c] = RING[i]!;
+    const [r, c] = layout[i]!;
     cells.push(
       <div key={`s${i}`} style={{ gridRow: 2 * r + 1, gridColumn: 2 * c + 1, display: 'flex', justifyContent: 'center' }}>
         {slot(i, null)}
@@ -480,7 +521,7 @@ function Ring({
     );
     // Link i joins slot i and slot i+1 (round the ring). It sits on the
     // track between them, standing when they are one above the other.
-    const [r2, c2] = RING[(i + 1) % RING.length]!;
+    const [r2, c2] = layout[(i + 1) % layout.length]!;
     const vertical = c === c2;
     cells.push(
       <div
@@ -502,7 +543,7 @@ function Ring({
         style={{
           display: 'grid',
           gridTemplateColumns: '116px minmax(74px, 150px) 116px minmax(74px, 150px) 116px',
-          gridTemplateRows: 'auto 92px auto 92px auto',
+          gridTemplateRows: Array.from({ length: rows }, (_, r) => (r === 0 ? 'auto' : '92px auto')).join(' '),
           width: '100%', maxWidth: 760, justifyContent: 'center',
         }}
       >

@@ -135,6 +135,61 @@ stand up. Two things the ring changed on the sealed sheet:
 product of two — so the foil band does not print, and the grade test skips
 it because it is not a two-blank board.
 
+### Completion boards (010, 011)
+
+A board with `scoring: "completion"` asks one question — did the chain hold
+— and ranks nothing. No columns, no rarity foil, no wall of deeper answers.
+The sealed sheet says CHAIN HELD or CHAIN BROKE (or NOT SOLVED, when every
+link held but a plate was answered by someone it did not ask for), counts
+plates held, and pins up "the ones we had in mind": one print per plate,
+the most findable member of its field, tagged "You found it" or "Yours held
+too" if the player's own pick held.
+
+What makes such a board possible is a **clue on each empty plate** —
+`ChainPuzzle.clues`, keyed by slot: the nationality or the position of
+whoever belongs there, or (already) a club badge on one of its links. The
+clue is part of the rule, not a hint: `clueMet()` in `score.ts` filters the
+field, and `chainResult` will not count a slot as held, or the board as
+perfect, unless the pick answers it. The label is hand-written ("an
+Argentine", "a goalkeeper") because the pool has nation QIDs and nothing to
+print them as. The caption under the plate carries it — "Yours" on a plain
+blank, the clue on a clued one, and after the seal the verdict on it: green
+if met, red "not a German" if not.
+
+Measured before it was built (scratchpad `realistic.ts`, `layouts2.ts`),
+using the fact-fame ruler as a cut-off rather than a rank — 50 and up is a
+fact a fan holds, under 35 nobody reaches for: two givens alone leave 84%
+of famous pairs with six or more answers in reach; one clue on the plate
+leaves 38,811 of the same 229,950 pair-and-clue boards with exactly one
+answer in reach and nothing else above the floor. Nationality supplies
+most of them (2,693 of 3,779 medium blanks), then position (465), a club
+badge (267), a league (354 — not built; "never played in X" reads as the
+setter hiding something). The eleven big footballing nations only: a niche
+nationality collapses the list to one name and there is no puzzle left.
+
+The tests in `tests/content/chains.test.ts` hold every completion board
+to that promise: each blank carries a clue or a badge, its reference
+answer is the top of its clued field by fact-fame, sits at 50 or above,
+and the runner-up is under 35. A board that fails that is a scored board
+with the score hidden.
+
+010 is the ring: Owen · Henry · Totti · Lampard, plates an Argentine
+(Mascherano), a goalkeeper (Szczęsny), a German (Rüdiger), a Dutchman
+(Robben). 011 is the triangle: Messi · Sneijder · Reus, plates a
+Portuguese (Figo), the Galatasaray badge (Gündoğan), a goalkeeper (ter
+Stegen). A ring of SIX is drawn as a 3×2 loop — top corner in the middle
+of the top row, the others at the ends of the bottom — because every link
+then runs along a row or down a column and the connectors and the string
+already do both; `RINGS` in `ChainRow.tsx` keys the cell layout by length.
+A true triangle needs diagonals, which neither the connector nor the
+string draws yet.
+
+Things to know before shipping more of these: fame is global sitelinks,
+so a given can qualify that a British audience will not place; a phantom
+Wikidata stint is now a PUZZLE bug rather than a scoring quirk, because it
+can create a second answer in reach; and the recency rule counts this
+season's loans as fully known, which is right today and ages.
+
 ### Grading
 
 ```bash

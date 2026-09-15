@@ -1,4 +1,4 @@
-import { chainLinks, chainFieldFor, chainSlotDepths, neighboursOf, sidesOf } from './score';
+import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, sidesOf } from './score';
 import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
 import type { SlotDepth } from './score';
@@ -19,8 +19,13 @@ import type { Player } from '../chemistry/types';
 export interface SlotOutcome {
   index: number;
   playerId: string | null;
-  /** Both of this slot's links held. A slot with one bad side scores nothing. */
+  /**
+   * Both of this slot's links held and the plate's clue, if it had one, was
+   * met. A slot with one bad side scores nothing.
+   */
   held: boolean;
+  /** Whether the pick answered the clue on the plate. True when there was none. */
+  clueMet: boolean;
   /** Null when the slot was left empty or the pick linked to nothing. */
   depth: SlotDepth | null;
   /**
@@ -43,6 +48,13 @@ export interface SlotOutcome {
   } | null;
   /** How many answers existed, by the same measure as `best`. */
   fieldSize: number;
+  /**
+   * The answer the board was built around: the most findable member of the
+   * field, by the same fact-fame ruler `best` is the far end of. A
+   * completion board is made so that this is the ONE name in reach, and
+   * the sealed sheet holds it up in place of the wall.
+   */
+  obvious: { id: string; name: string; clubs: string[] } | null;
 }
 
 /** One print on the wall of answers the sealed sheet puts up. */
@@ -145,8 +157,9 @@ export function chainResult(
   const mode = puzzle.mode ?? 'chemistry';
   const prescribed = puzzle.prescribedLinks ?? {};
   const closed = puzzle.closed ?? false;
+  const clues = puzzle.clues ?? {};
   const links = chainLinks(fill, pool, mode, prescribed, closed);
-  const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode, prescribed, closed);
+  const depths = chainSlotDepths(fill, puzzle.slots, players, pool, mode, prescribed, closed, clues);
 
   /**
    * Which club carried each side for a player sitting at slot `i`.
@@ -185,14 +198,18 @@ export function chainResult(
   puzzle.slots.forEach((given, i) => {
     if (given != null) return;
 
-    // A slot is only as good as both its sides. Either link failing means the
-    // pick did not do its job, whoever it was.
-    const held = neighboursOf(i, fill.length, closed).every(({ link }) => links[link]?.made ?? false);
+    // A slot is only as good as both its sides, and as the clue on its
+    // plate. Either link failing means the pick did not do its job, whoever
+    // it was; linking both ends while not being the Argentine the plate
+    // asked for is the same failure by another route.
+    const pick = fill[i] ? pool.get(fill[i]!) : undefined;
+    const met = pick ? clueMet(pick, clues[i]) : false;
+    const held = met && neighboursOf(i, fill.length, closed).every(({ link }) => links[link]?.made ?? false);
 
     // Scored against the puzzle, not against the player's own answer. On the
     // alternating layout these are the same set; they diverge as soon as two
     // blanks sit next to each other.
-    const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed, closed);
+    const field = chainFieldFor(i, puzzle.slots, players, pool, mode, prescribed, closed, clues);
     fields.push(field);
     const sides = sidesOf(i, puzzle.slots, pool, prescribed, closed);
     const fameOf = (p: Player) => factFame(p, sides, mode);
@@ -220,11 +237,18 @@ export function chainResult(
       null,
     );
 
+    const findable = field.reduce<Player | null>(
+      (top, p) => (top === null || fameOf(p) > fameOf(top) ? p : top),
+      null,
+    );
+
     slots.push({
       index: i,
       playerId: fill[i] ?? null,
       held,
+      clueMet: met,
       depth: depths[i] ?? null,
+      obvious: findable ? { id: findable.id, name: findable.name, clubs: carriedAt(findable, i) } : null,
       best: most
         ? { id: most.id, name: most.name, score: slotObscurityScore(most, field, fameOf), clubs: carriedAt(most, i) }
         : null,
@@ -311,7 +335,9 @@ export function chainResult(
   return {
     made,
     total: links.length,
-    perfect: links.length > 0 && made === links.length,
+    // Every link, and every clue. On a board with clues a chain can be all
+    // green and still not be the chain that was asked for.
+    perfect: links.length > 0 && made === links.length && slots.every((s) => s.clueMet),
     score,
     slots,
     links: links.map((l) => l.made),

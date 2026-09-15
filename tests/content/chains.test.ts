@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { chainFieldFor, chainLinks, chainProgress, linked, neighboursOf } from '../../src/lib/chain/score';
+import { chainFieldFor, chainLinks, chainProgress, clueMet, linked, neighboursOf, sidesOf } from '../../src/lib/chain/score';
+import { factFame } from '../../src/lib/fame/spell';
 import { chainResult } from '../../src/lib/chain/result';
 import type { ChainPuzzle } from '../../src/lib/chain/types';
 import type { Player } from '../../src/lib/chemistry/types';
@@ -116,6 +117,13 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
       }
     });
 
+    it(`${file}: the reference solution answers every clue on a plate`, () => {
+      for (const [slot, clue] of Object.entries(chain.clues ?? {})) {
+        const p = pool.get(ref[Number(slot)]!)!;
+        expect(clueMet(p, clue), `${p.name} is not ${clue.label}`).toBe(true);
+      }
+    });
+
     it(`${file}: no player appears twice`, () => {
       expect(new Set(ref).size).toBe(ref.length);
     });
@@ -132,9 +140,12 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
 
 describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
 
+  // ENTRY grades a scored board. A completion board is graded on a different
+  // measure — where its one answer sits on the fact-fame ruler — and is
+  // checked below, not here.
   const graded = files
     .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
-    .filter((c) => c.difficulty !== undefined);
+    .filter((c) => c.difficulty !== undefined && c.scoring !== 'completion');
 
   it.skipIf(graded.length === 0)('a grade means the same thing on every board', () => {
     // Only two-blank boards are comparable this way, which is every graded
@@ -160,6 +171,51 @@ describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
       ).toBeGreaterThan(b.entry);
     }
   });
+});
+
+/**
+ * A completion board is a promise: each plate has ONE answer a fan can reach,
+ * and nothing else within reach of it. The same fact-fame ruler the scored
+ * boards rank by is used here as a cut-off — 50 and up is a fact people hold,
+ * under 35 is one nobody reaches for — and the board has to clear both bars
+ * on every plate, or it is a scored board with the score hidden.
+ */
+describe.skipIf(!hasPool || files.length === 0)('completion boards', () => {
+  const REACH = 50;
+  const CLIFF = 35;
+  const boards = files
+    .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
+    .filter((c) => c.scoring === 'completion');
+
+  for (const chain of boards) {
+    const mode = chain.mode ?? 'clubs';
+    const ref = chain.referenceSolution!;
+
+    it(`${chain.id}: every blank carries a clue or a named club`, () => {
+      // Two givens alone never pin a blank down (see SlotClue). Every blank
+      // needs the plate to say something, or a badge on one of its links.
+      const prescribed = chain.prescribedLinks ?? {};
+      chain.slots.forEach((id, i) => {
+        if (id !== null) return;
+        const badged = neighboursOf(i, chain.slots.length, chain.closed).some(({ link }) => prescribed[link] !== undefined);
+        expect(chain.clues?.[i] !== undefined || badged, `slot ${i} has nothing on its plate`).toBe(true);
+      });
+    });
+
+    it(`${chain.id}: each plate has one answer in reach, and a cliff behind it`, () => {
+      chain.slots.forEach((id, i) => {
+        if (id !== null) return;
+        const field = chainFieldFor(i, chain.slots, players, pool, mode, chain.prescribedLinks, chain.closed, chain.clues);
+        const sides = sidesOf(i, chain.slots, pool, chain.prescribedLinks, chain.closed);
+        const ranked = field.map((p) => ({ p, f: factFame(p, sides, mode) })).sort((a, b) => b.f - a.f);
+        expect(ranked[0]?.p.id, `slot ${i}: the reference answer is not the findable one`).toBe(ref[i]);
+        expect(ranked[0]!.f, `slot ${i}: ${ranked[0]!.p.name} is out of reach`).toBeGreaterThanOrEqual(REACH);
+        if (ranked[1]) {
+          expect(ranked[1].f, `slot ${i}: ${ranked[1].p.name} is a second answer in reach`).toBeLessThan(CLIFF);
+        }
+      });
+    });
+  }
 });
 
 describe.skipIf(!hasPool || files.length === 0)('what the sealed sheet states', () => {

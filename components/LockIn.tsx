@@ -93,6 +93,12 @@ export default function LockIn({
   const [columnsRun, setColumnsRun] = useState(0);
   const mode = puzzle.mode ?? 'clubs';
   const closed = puzzle.closed ?? false;
+  const clues = puzzle.clues ?? {};
+  // A completion board: the string runs and the verdict comes down as
+  // before, but there are no columns to run, no foil to count up and no
+  // wall of deeper answers — the sheet holds up the name each plate was
+  // built around, and that is the reveal. See `ChainPuzzle.scoring`.
+  const completion = puzzle.scoring === 'completion';
   const ink = useInk();
 
   // The paper taking a hit. Written straight to the node rather than through
@@ -154,17 +160,32 @@ export default function LockIn({
     // countdown needs. Their timing is a pure function of the result, so
     // the sheet can schedule what follows without waiting on a callback.
     let t = after + 1600;
-    result.slots.forEach((slot, j) => {
-      at(t, () => setColumnsRun(j + 1));
-      t += columnSchedule(slot.held ? slot.depth : null).total + 380;
-    });
+    if (!completion) {
+      result.slots.forEach((slot, j) => {
+        at(t, () => setColumnsRun(j + 1));
+        t += columnSchedule(slot.held ? slot.depth : null).total + 380;
+      });
+    }
     at(t + 200, () => setStage('detail'));
 
     return () => timers.forEach(clearTimeout);
-  }, [result, jolt]);
+  }, [result, jolt, completion]);
 
   const showScore = stage === 'score' || stage === 'detail';
   const detail = stage === 'detail';
+  // The clue on a plate is judged with the verdict, not link by link: it is
+  // a fact about the pick, not about either of its links.
+  const judged = stage === 'verdict' || showScore;
+  const plateCount = result.slots.length;
+  const platesHeld = result.slots.filter((s) => s.held).length;
+  // Every link real and the board still not solved: a plate answered by
+  // someone it did not ask for. Named, because "3 of 4 plates held" under
+  // a string that is taut all the way round explains nothing.
+  const missedClues = result.slots.filter((s) => !s.clueMet && clues[s.index]);
+  const cluesOnly = completion && result.made === result.total && !result.perfect;
+  const missedLine = missedClues
+    .map((s) => `plate ${s.index + 1} asked for ${clues[s.index]!.label}`)
+    .join(', ');
 
   /**
    * The ring on each print, now that the verdict is out: the clubs that
@@ -305,9 +326,11 @@ export default function LockIn({
               pinBeat={130}
               stringed
               stampedThrough={stampedThrough}
-              columnFor={columnFor}
+              columnFor={completion ? undefined : columnFor}
               columnRunFor={columnRunFor}
               closed={closed}
+              clues={clues}
+              clueMetFor={(i) => (judged ? result.slots.find((s) => s.index === i)?.clueMet ?? null : null)}
             />
             {anchors.length === fill.length ? (
               <RedString anchors={anchors} phases={phases} closed={closed} />
@@ -340,12 +363,18 @@ export default function LockIn({
                       animation: 'stamp-in-flow 420ms cubic-bezier(0.3,1.25,0.4,1) both',
                     }}
                   >
-                    {result.perfect ? 'CHAIN HELD' : 'CHAIN BROKE'}
+                    {result.perfect ? 'CHAIN HELD' : cluesOnly ? 'NOT SOLVED' : 'CHAIN BROKE'}
                   </div>
                   <div className="read" style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--soft)', animation: 'frayed-in 300ms ease 300ms both' }}>
-                    {result.perfect
-                      ? 'Every link a real one.'
-                      : `${result.made} of ${result.total} links held. A broken link scores nothing.`}
+                    {completion
+                      ? result.perfect
+                        ? 'Every link a real one, every plate answered.'
+                        : cluesOnly
+                          ? `Every link held, but ${missedLine}.`
+                          : `${platesHeld} of ${plateCount} plates held.`
+                      : result.perfect
+                        ? 'Every link a real one.'
+                        : `${result.made} of ${result.total} links held. A broken link scores nothing.`}
                   </div>
                 </div>
               )}
@@ -360,9 +389,13 @@ export default function LockIn({
                 transition: 'background 620ms ease',
               }}
             >
-              {showScore ? <ScoreReveal value={result.score} /> : (
-                <div className="slab" style={{ fontSize: 34, color: 'rgba(26,20,16,0.2)' }}>&mdash;</div>
-              )}
+              {showScore
+                ? completion
+                  ? <PlatesReveal held={platesHeld} of={plateCount} />
+                  : <ScoreReveal value={result.score} />
+                : (
+                  <div className="slab" style={{ fontSize: 34, color: 'rgba(26,20,16,0.2)' }}>&mdash;</div>
+                )}
             </div>
           </div>
 
@@ -370,7 +403,7 @@ export default function LockIn({
               The artboard's foil band. It states the size of the answer
               space, which is a fact about the answer and therefore could
               only ever appear here. */}
-          {detail && result.pairs !== null ? (
+          {detail && !completion && result.pairs !== null ? (
             <div style={{ marginTop: 14, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)', animation: 'foil-in 460ms ease-out 120ms both' }}>
               <div style={{ flexGrow: 1, padding: '13px 20px', display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
                 <div className="narrow" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--muted)' }}>
@@ -403,14 +436,32 @@ export default function LockIn({
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '4px 4px 0', animation: 'foil-in 460ms ease-out 240ms both' }}>
             <div style={{ borderBottom: '2px solid rgba(26,20,16,0.42)', paddingBottom: 7 }}>
               <div className="slab misreg" style={{ fontSize: 20 }}>
-                <span className="lean">WHO WOULD HAVE WORKED</span>
+                <span className="lean">{completion ? 'THE ONES WE HAD IN MIND' : 'WHO WOULD HAVE WORKED'}</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', paddingTop: 6 }}>
-              {result.pinboard.map((answer, i) => (
-                <Pinned key={answer.id} answer={answer} images={images} clubs={clubs} order={i} />
-              ))}
+              {completion
+                // One print per plate, in plate order: the answer the board
+                // was made around. A different name that also held is not
+                // wrong — the tag says so — it is just not the one we meant.
+                ? result.slots.map((slot, i) => slot.obvious ? (
+                  <div key={slot.index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <div className="narrow" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                      Plate {slot.index + 1}
+                    </div>
+                    <Pinned
+                      answer={{ ...slot.obvious, score: 0, either: false, slotIndex: slot.index, fieldSize: slot.fieldSize, mine: slot.playerId === slot.obvious.id }}
+                      images={images}
+                      clubs={clubs}
+                      order={i}
+                      tag={slot.playerId === slot.obvious.id ? 'You found it' : slot.held ? 'Yours held too' : null}
+                    />
+                  </div>
+                ) : null)
+                : result.pinboard.map((answer, i) => (
+                  <Pinned key={answer.id} answer={answer} images={images} clubs={clubs} order={i} />
+                ))}
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 16, marginTop: 8, flexWrap: 'wrap' }}>
@@ -454,6 +505,27 @@ function ScoreReveal({ value }: { value: number }) {
       </div>
       <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.24em', color: '#46300a', textAlign: 'center' }}>
         RARITY FOIL
+      </div>
+    </div>
+  );
+}
+
+/** The completion board's gold block: plates held, out of plates. */
+function PlatesReveal({ held, of }: { held: number; of: number }) {
+  return (
+    <div style={{ textAlign: 'center', animation: 'verdict-in 380ms cubic-bezier(0.2,1.4,0.4,1) both' }}>
+      <div
+        className="slab"
+        style={{
+          fontSize: 44, lineHeight: 0.92, color: '#fffdf7',
+          fontVariantNumeric: 'tabular-nums',
+          textShadow: '0 2px 0 rgba(70,48,6,0.55)',
+        }}
+      >
+        {held}/{of}
+      </div>
+      <div className="narrow" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.24em', color: '#46300a', textAlign: 'center' }}>
+        PLATES HELD
       </div>
     </div>
   );
@@ -503,12 +575,18 @@ function CopyButton({ text }: { text: string }) {
  * straight off; a face and two colours is the bit that stays.
  */
 function Pinned({
-  answer, images, clubs, order,
+  answer, images, clubs, order, tag,
 }: {
   answer: PinnedAnswer;
   images: Record<string, PortraitImage>;
   clubs: Record<string, ClubView>;
   order: number;
+  /**
+   * What the label under the print says, when the caller knows better
+   * than the score does. Undefined leaves it to the answer; null prints
+   * nothing.
+   */
+  tag?: string | null;
 }) {
   const photo = images[answer.id];
   const [a, b] = answer.clubs;
@@ -519,6 +597,7 @@ function Pinned({
   // Deep enough that almost nobody would have got there. The threshold is the
   // same 80 the depth gauge treats as the far end of the track.
   const deepCut = answer.score >= 80;
+  const label = tag !== undefined ? tag : answer.mine ? 'You found it' : deepCut ? 'Deep cut' : null;
 
   return (
     <div
@@ -568,15 +647,15 @@ function Pinned({
           'one that fitted'
         )}
       </div>
-      {answer.mine || deepCut ? (
+      {label ? (
         <div
           className="narrow"
           style={{
             fontSize: 9, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase',
-            background: answer.mine ? 'var(--green)' : 'var(--ink)', color: '#f7f2e6', padding: '3px 8px',
+            background: label === 'Deep cut' ? 'var(--ink)' : 'var(--green)', color: '#f7f2e6', padding: '3px 8px',
           }}
         >
-          {answer.mine ? 'You found it' : 'Deep cut'}
+          {label}
         </div>
       ) : null}
     </div>

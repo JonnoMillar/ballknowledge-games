@@ -149,3 +149,38 @@ describe('the answer the reveal names', () => {
     expect(chainResult(['L2', 'y', 'R2'], puzzle, players, pool).slots[0]!.best?.id).toBe('x');
   });
 });
+
+describe('a plate with a clue on it', () => {
+  // The same bridge, but the plate asks for a German. Only famousBridge is.
+  const clued: ChainPuzzle = {
+    id: 'clued', mode: 'clubs', scoring: 'completion', slots: ['a', null, 'c'],
+    clues: { 1: { kind: 'nation', value: 'GER', label: 'a German' } },
+  };
+
+  it('is not held by a pick that links both ends but is not who the plate asked for', () => {
+    const r = chainResult(['a', 'midBridge', 'c'], clued, players, pool);
+    // Both links are real: the chain is green and still not the one asked for.
+    expect(r.made).toBe(2);
+    expect(r.slots[0]!.clueMet).toBe(false);
+    expect(r.slots[0]!.held).toBe(false);
+    expect(r.perfect).toBe(false);
+  });
+
+  it('is held by the pick the plate describes', () => {
+    const r = chainResult(['a', 'famousBridge', 'c'], clued, players, pool);
+    expect(r.slots[0]!.clueMet).toBe(true);
+    expect(r.perfect).toBe(true);
+  });
+
+  it('narrows the field to the clue, and names the findable answer in it', () => {
+    const r = chainResult(['a', 'midBridge', 'c'], clued, players, pool);
+    expect(r.slots[0]!.fieldSize).toBe(1);
+    expect(r.slots[0]!.obvious?.id).toBe('famousBridge');
+    expect(r.slots[0]!.obvious?.clubs).toEqual(['CITY', 'ROMA']);
+  });
+
+  it('names the most findable answer on a plain board too', () => {
+    const r = chainResult(['a', 'obscureBridge', 'c'], puzzle, players, pool);
+    expect(r.slots[0]!.obvious?.id).toBe('famousBridge');
+  });
+});

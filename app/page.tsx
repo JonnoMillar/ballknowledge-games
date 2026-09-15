@@ -34,6 +34,7 @@ export default async function ChainPage(
   const puzzle: ChainPuzzle = {
     id: file.id, mode: file.mode, difficulty: file.difficulty, slots: file.slots,
     prescribedLinks: file.prescribedLinks, caption: file.caption, closed: file.closed,
+    clues: file.clues, scoring: file.scoring,
   };
 
   return <Chain players={players} puzzle={puzzle} images={images} clubs={clubs} />;
