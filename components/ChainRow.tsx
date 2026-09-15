@@ -6,6 +6,7 @@ import ClubBadge, { shortClubName } from './ClubBadge';
 import { tiltFor } from './swing';
 import Stamp from './Stamp';
 import DepthColumn, { type ColumnSpec } from './DepthColumn';
+import ClueBadge from './ClueBadge';
 import type { ChainLink } from '../src/lib/chain/score';
 import type { SlotClue } from '../src/lib/chain/types';
 import type { SlotDepth } from '../src/lib/chain/score';
@@ -285,16 +286,32 @@ function Slot({
           </div>
         )}
       </div>
-      <span
-        className="narrow"
-        style={{
-          fontSize: clue && !given ? 11 : 10, fontWeight: clue && !given ? 700 : 600,
-          letterSpacing: clue && !given ? '0.12em' : '0.2em', textTransform: 'uppercase',
-          color: captionColour, textAlign: 'center', lineHeight: 1.2, maxWidth: 116,
-        }}
-      >
-        {caption}
-      </span>
+      {clue && !given ? (
+        // The clue is a thing on the plate — a flag, a roundel — with the
+        // words beside it. See ClueBadge.
+        <span style={{ display: 'flex', alignItems: 'center', gap: 7, maxWidth: 116 }}>
+          <ClueBadge clue={clue} colour={captionColour} />
+          <span
+            className="narrow"
+            style={{
+              fontSize: 10.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+              color: captionColour, lineHeight: 1.15, textAlign: 'left',
+            }}
+          >
+            {caption}
+          </span>
+        </span>
+      ) : (
+        <span
+          className="narrow"
+          style={{
+            fontSize: 10, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: captionColour, textAlign: 'center', lineHeight: 1.2, maxWidth: 116,
+          }}
+        >
+          {caption}
+        </span>
+      )}
       {revealed && column ? <DepthColumn spec={column} run={columnRun} instant={columnInstant} /> : null}
     </div>
   );

@@ -210,7 +210,13 @@ function Segment({ a, b, phase, shadowFilter, bow }: {
     // Frames stop in a hidden tab; make sure it ends taut regardless.
     const settle = setTimeout(() => { cancelAnimationFrame(frame.current); set(TAUT); }, TIGHTEN_MS + 60);
     return () => { cancelAnimationFrame(frame.current); clearTimeout(settle); };
-  }, [phase, a, b, bow]);
+    // The bow by VALUE, not by object. `bowsFor` builds a fresh object every
+    // render, and the sheet re-renders on every phase change of every span —
+    // so keyed on the object, a standing span that had already pulled taut
+    // re-ran its pull each time another link was stamped, and the ring's
+    // sides twanged four times over.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, a, b, bow?.x, bow?.y]);
 
   if (phase === 'idle') return null;
 
