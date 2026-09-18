@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { sagPath, springSlack } from '../../components/RedString';
 import { columnSchedule, columnSpecFor } from '../../components/DepthColumn';
 import type { SlotOutcome } from '../../src/lib/chain/result';
 import type { Player } from '../../src/lib/chemistry/types';
@@ -11,32 +10,6 @@ import type { Player } from '../../src/lib/chemistry/types';
  * does not run in a hidden tab, and the countdown is a chain of timers whose
  * whole point is when it stops — so the numbers are pinned here instead.
  */
-
-describe('the rope', () => {
-  const a = { x: 0, y: 0 };
-  const b = { x: 190, y: 0 };
-
-  /** The lowest point of the quadratic, which is halfway to its control point. */
-  const hang = (slack: number): number => {
-    const m = sagPath(a, b, slack).match(/Q [\d.]+ ([\d.]+)/);
-    return Number(m![1]) / 2;
-  };
-
-  it('hangs shallow enough to clear the die stamped beneath it', () => {
-    // The die is centred ~64px below the pin line and is 62px across, so its
-    // top edge is ~33px down. Slack rope must stay well above that.
-    expect(hang(1)).toBeLessThan(26);
-    expect(hang(1)).toBeGreaterThan(12);
-  });
-
-  it('is pulled tight with an overshoot, not eased to a stop', () => {
-    const trace = Array.from({ length: 61 }, (_, i) => springSlack(i / 60));
-    expect(trace[0]).toBeCloseTo(1, 5);
-    expect(trace[60]).toBeCloseTo(0.18, 5);
-    // It passes THROUGH taut and goes tighter still before settling back.
-    expect(Math.min(...trace)).toBeLessThan(0.18);
-  });
-});
 
 describe('the column', () => {
   it('ticks at a constant, readable rate on a small field', () => {

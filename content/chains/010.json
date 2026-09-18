@@ -4,7 +4,7 @@
   "difficulty": "medium",
   "closed": true,
   "scoring": "completion",
-  "caption": "Four English-era names, and every link runs through somewhere they were not famous for.",
+  "caption": "Four names from the same decade of English football, and the plate between Henry and Totti asks nothing: five people fit it, and one of them is the obvious one.",
   "slots": [
     "Q128829",
     null,
@@ -20,11 +20,6 @@
       "kind": "nation",
       "value": "Q414",
       "label": "an Argentine"
-    },
-    "3": {
-      "kind": "position",
-      "value": "GK",
-      "label": "a goalkeeper"
     },
     "5": {
       "kind": "nation",

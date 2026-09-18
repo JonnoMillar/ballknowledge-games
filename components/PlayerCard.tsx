@@ -71,7 +71,7 @@ export default function PlayerCard({
   landing?: boolean;
   /** The slot's number, printed on the mount the way a contact sheet is marked. */
   index?: number;
-  /** Measured to find where the string should be tied. See RedString. */
+  /** Reports the mount's node to whoever needs to know where a card is. */
   plateRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({

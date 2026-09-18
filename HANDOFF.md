@@ -44,7 +44,7 @@ Boards worth opening: `/?c=006` (easy), `?c=007` (medium), `?c=008` (hard).
 | `src/lib/club-colours.ts` | Hand-checked club colours + the diagonal split. |
 | `src/lib/short-name.ts` | Nameplates. A stopgap for missing aliases — see below. |
 | `src/game/` | Reducers + derived views. No React in a reducer. |
-| `components/` | Next.js UI. `ChainRow.tsx` draws the chain for BOTH the live board and the sealed sheet; `Chain.tsx` and `LockIn.tsx` are the two frames around it. `swing.ts`, `Pin.tsx`, `RedString.tsx` are the physical bits. |
+| `components/` | Next.js UI. `ChainRow.tsx` draws the chain for BOTH the live board and the sealed sheet; `Chain.tsx` and `LockIn.tsx` are the two frames around it. `swing.ts`, `Pin.tsx`, `Stamp.tsx` are the physical bits. |
 | `content/chains/` | Eight chains. 006–008 are the graded set. |
 | `design/` | `.dc.html` artboards + `canvas.json` for the design canvas. |
 | `data/pool.json` | 11,741 players. Committed snapshot. |
@@ -122,12 +122,6 @@ stand up. Two things the ring changed on the sealed sheet:
 - **The columns cannot hang under the edge cards** — the top one would run
   into the middle and the sides into the bottom corners — so they line up
   in a row below the square, labelled by plate.
-- **The standing spans of string run round the OUTSIDE of the cards like
-  a rope round a post** (`bowsFor` in `RedString.tsx`): out from the pin,
-  straight down the margin `CLEAR` px off the pins' line, back in to the
-  next pin. Drawn pin to pin they crossed every face on the way down; a
-  single outward arc per span read as an S, leaving one pin outward and
-  arriving at the next from the same side across the card's corner.
 - **Each column is headed by the pick's name.** "Plate 4" alone sent the
   eye back up to the square to count.
 
@@ -156,6 +150,16 @@ print them as. The caption under the plate carries it — "Yours" on a plain
 blank, the clue on a clued one, and after the seal the verdict on it: green
 if met, red "not a German" if not.
 
+Which clue, after playing them: **nationality first, nearly always.** A
+nation clue still tests the thing the game is about — which clubs these
+two played for — it just tells you which shelf to look on. A position
+clue ("a goalkeeper") felt limiting and slightly annoying; a club badge
+on a link tells you the answer's club and skips the recall. Both stay
+in the engine, neither should be the default. A plate with **no clue at
+all** is the nicest kind, and is allowed wherever the field is naturally
+narrow — at most `OPEN` (5) answers in reach — which the content test
+enforces; 010's Henry–Totti plate is one (five fit, Szczęsny first).
+
 Measured before it was built (scratchpad `realistic.ts`, `layouts2.ts`),
 using the fact-fame ruler as a cut-off rather than a rank — 50 and up is a
 fact a fan holds, under 35 nobody reaches for: two givens alone leave 84%
@@ -174,15 +178,13 @@ and the runner-up is under 35. A board that fails that is a scored board
 with the score hidden.
 
 010 is the ring: Owen · Henry · Totti · Lampard, plates an Argentine
-(Mascherano), a goalkeeper (Szczęsny), a German (Rüdiger), a Dutchman
+(Mascherano), nothing (Szczęsny), a German (Rüdiger), a Dutchman
 (Robben). 011 is the triangle: Messi · Sneijder · Reus, plates a
-Portuguese (Figo), the Galatasaray badge (Gündoğan), a goalkeeper (ter
-Stegen). A ring of SIX is drawn as a 3×2 loop — top corner in the middle
+Portuguese (Figo), a Croatian (Perišić), a Dane (Christensen). A ring of SIX is drawn as a 3×2 loop — top corner in the middle
 of the top row, the others at the ends of the bottom — because every link
-then runs along a row or down a column and the connectors and the string
-already do both; `RINGS` in `ChainRow.tsx` keys the cell layout by length.
-A true triangle needs diagonals, which neither the connector nor the
-string draws yet.
+then runs along a row or down a column and the connectors already do
+both; `RINGS` in `ChainRow.tsx` keys the cell layout by length. A true
+triangle needs diagonal connectors, which do not exist yet.
 
 Things to know before shipping more of these: fame is global sitelinks,
 so a given can qualify that a British audience will not place; a phantom
@@ -356,22 +358,32 @@ with all three states replayable: `design/reveal-variants.html` (serve it —
 `design-static` in `.claude/launch.json` — the crests are relative paths).
 
 `LockIn.tsx` owns one timeline, one set of timers. Per link, left to right
-(`LINK_BEAT` 1150ms): the twine goes on **slack**; the club that made the
-link is **stamped** on the connector (`Stamp.tsx`) and the paper takes a
-1px jolt; then the rope springs **taut** with an overshoot — or, for a link
-that did not hold, a red NO LINK die and the rope **parts**. Cause, then
-effect: the stamp is the verdict and the rope is what it does. Then CHAIN
-HELD / BROKE as a die across the band, the foil count-up, and the columns.
+(`LINK_BEAT` 640ms): the club that made the link is **stamped** on the
+connector (`Stamp.tsx`), the paper takes a 1px jolt, and the dotted rule
+takes the die's colour — green dotted for a link that held, red dashed
+with a NO LINK die for one that did not. Then, only if every link held,
+**the current**: a bead of light runs each link in turn (`FLOW_MS` 230ms a
+link, `flow-x` / `flow-y` in `globals.css`), passing under the die and
+lighting each card as it arrives, round the whole ring; then the chain
+**locks** — rules go solid and glow, dies and cards take one pulse — and
+CHAIN HELD comes down on a board that has just proved itself. A chain
+that broke skips straight to the verdict. Then the foil count-up and the
+columns on a scored board, or plates-held and the answers on a completion
+one.
+
+The red string that used to run pin to pin is gone (`RedString.tsx`,
+deleted 2026-09-18). Four strands of twine drawn in SVG never stopped
+reading as a computer drawing of twine, and its slack/taut/snapped
+choreography was a second, noisier account of what the dies already said.
+The current is the opposite bet: the rules that were always there simply
+change colour, and the one flourish is saved for the moment the whole
+chain holds. The bead rides the rule's own line (47px down on a lying
+link, the centre on a standing one) and each link's bead runs in the
+direction the chain reads — `reverse` on a ring's bottom row and left
+side, worked out from the `RINGS` cell layout in `ChainRow.tsx`.
 
 Things that were found out the hard way:
 
-- **The first string was a 2.6px stroke with a dashed strand and it read as
-  a dotted computer line.** Rope is four strands (`RedString.tsx`): blurred
-  shadow, dark core, a lighter twist in short round-capped dashes, a
-  highlight. It **wraps the pin head** at both ends — string drawn to a
-  point is drawn to it; string that loops the pin was tied.
-- **The rope hangs shallow on purpose** — sag ≈ `span × 0.075 + 5` px. The
-  first pass sagged twice that and skimmed the top of the die.
 - **The jolt is 1.2px, no rotation, and the columns do not jolt.** Four
   hits in as many seconds was already a lot; the first pass had eight.
 - **The jolt is a Web Animation, not a class.** The paper carries its
@@ -381,12 +393,12 @@ Things that were found out the hard way:
   player has not been told yet; a crest already sitting there is the leak.
 - The stamp's ink texture is an SVG `feTurbulence` displacement — `useInk()`
   in `Stamp.tsx`, one filter id per caller.
-
-Anchors are measured from the mounts at layout time and tied to the pin's head
-via `pinHead()` in `Pin.tsx`, not to the card's top edge — the row is flexible
-and the cards are rotated, so a hard-coded pitch is wrong at every width but
-one. When the string is running, the connector rules are hidden
-(`stringed`): two lines joining the same two cards is one too many.
+- **The club's name on the die sits below the centre, where the ring is
+  narrower than the die is wide.** Given a diameter's width and an
+  ellipsis, REAL MADRID arrived as REAL MADR. It gets a chord (66% of the
+  die) and two lines.
+- **The bead has to be bright.** The first one was a pale 30px pill and
+  read as a smudge; it is 52px with a white core and a 14px glow now.
 
 ### The column
 

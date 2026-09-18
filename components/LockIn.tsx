@@ -1,10 +1,9 @@
 'use client';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCountUp } from './countUp';
 import ChainRow from './ChainRow';
 import SheetPins from './SheetPins';
-import Pin, { pinHead } from './Pin';
-import RedString, { type Anchor, type SpanPhase } from './RedString';
+import Pin from './Pin';
 import { useInk } from './Stamp';
 import { columnSchedule, columnSpecFor, type ColumnSpec } from './DepthColumn';
 import { EmptyPlate } from './PlayerCard';
@@ -55,18 +54,12 @@ import type { PortraitImage } from '../src/lib/portraits';
  */
 
 /** Where the reveal has got to. Each step is one beat of the sequence. */
-type Stage = 'arming' | 'resolving' | 'verdict' | 'score' | 'detail';
+type Stage = 'arming' | 'resolving' | 'current' | 'locked' | 'verdict' | 'score' | 'detail';
 
-/**
- * One link's worth of the sequence: rope on, stamp down, rope taut or parted.
- * The next link's rope starts while this one's spring is still settling,
- * which is what keeps three links from feeling like three separate events.
- */
-const LINK_BEAT = 1150;
-const ROPE_ON = 0;
-const STAMP_AT = 600;
-const TAUT_AT = 790;
-const SNAP_AT = 1090;
+/** One link's worth of the sequence: the die comes down, the rule takes its colour. */
+const LINK_BEAT = 640;
+/** How long the charge takes to run one link, once every link has held. */
+const FLOW_MS = 230;
 
 const GRADE: Record<ChainDifficulty, string> = {
   easy: 'var(--green)',
@@ -88,7 +81,6 @@ export default function LockIn({
   onDismiss: () => void;
 }) {
   const [stage, setStage] = useState<Stage>('arming');
-  const [phases, setPhases] = useState<SpanPhase[]>(() => result.links.map(() => 'idle'));
   const [stampedThrough, setStampedThrough] = useState(-1);
   const [columnsRun, setColumnsRun] = useState(0);
   const mode = puzzle.mode ?? 'clubs';
@@ -132,8 +124,6 @@ export default function LockIn({
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
-    const phase = (i: number, p: SpanPhase) =>
-      setPhases((prev) => prev.map((q, k) => (k === i ? p : q)));
 
     at(560, () => setStage('resolving'));
 
@@ -143,15 +133,20 @@ export default function LockIn({
     // only see one verdict. Watching a later link survive a broken chain is
     // also the part that stings usefully — you were one name away.
     for (let i = 0; i < result.links.length; i++) {
-      const t = 700 + i * LINK_BEAT;
-      const held = result.links[i]!;
-      at(t + ROPE_ON, () => phase(i, 'slack'));
-      at(t + STAMP_AT, () => { setStampedThrough(i); jolt(); });
-      if (held) at(t + TAUT_AT, () => phase(i, 'taut'));
-      else at(t + SNAP_AT, () => phase(i, 'snapped'));
+      at(700 + i * LINK_BEAT, () => { setStampedThrough(i); jolt(); });
     }
 
-    const after = 700 + result.links.length * LINK_BEAT;
+    // A chain that held gets the current before the verdict: the charge
+    // runs every link in turn and the whole thing locks, so CHAIN HELD
+    // lands on a board that has just shown it. A chain that broke gets
+    // the verdict straight away — there is nothing to run.
+    let after = 700 + result.links.length * LINK_BEAT;
+    if (result.perfect) {
+      at(after + 200, () => setStage('current'));
+      const run = 200 + result.links.length * FLOW_MS + (closed ? 0 : 0);
+      at(after + run + 120, () => { setStage('locked'); jolt(true); });
+      after += run + 120 + 560;
+    }
     at(after + 300, () => setStage('verdict'));
     at(after + 500, () => jolt(true));
     at(after + 1000, () => setStage('score'));
@@ -169,13 +164,16 @@ export default function LockIn({
     at(t + 200, () => setStage('detail'));
 
     return () => timers.forEach(clearTimeout);
-  }, [result, jolt, completion]);
+  }, [result, jolt, completion, closed]);
 
   const showScore = stage === 'score' || stage === 'detail';
   const detail = stage === 'detail';
+  const locked = result.perfect && (stage === 'locked' || stage === 'verdict' || showScore);
+  const current = stage === 'current' ? { delay: 200, ms: FLOW_MS } : null;
+  const verdictUp = stage === 'verdict' || showScore;
   // The clue on a plate is judged with the verdict, not link by link: it is
   // a fact about the pick, not about either of its links.
-  const judged = stage === 'verdict' || showScore;
+  const judged = stage === 'current' || stage === 'locked' || stage === 'verdict' || showScore;
   const plateCount = result.slots.length;
   const platesHeld = result.slots.filter((s) => s.held).length;
   // Every link real and the board still not solved: a plate answered by
@@ -209,50 +207,6 @@ export default function LockIn({
     (i: number) => result.slots.findIndex((s) => s.index === i) < columnsRun,
     [result.slots, columnsRun],
   );
-
-  // Where the string is tied. Measured from the mounts rather than computed
-  // from the layout: the row is flexible, the cards carry a small rotation,
-  // and a hard-coded pitch would be wrong at every width but one.
-  const board = useRef<HTMLDivElement>(null);
-  const plates = useRef<(HTMLDivElement | null)[]>([]);
-  const [anchors, setAnchors] = useState<Anchor[]>([]);
-
-  const setPlate = useCallback((i: number, el: HTMLDivElement | null) => {
-    plates.current[i] = el;
-  }, []);
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      const box = board.current?.getBoundingClientRect();
-      if (!box) return;
-      const head = pinHead();
-      const next = plates.current.slice(0, fill.length).map((el) => {
-        if (!el) return { x: 0, y: 0 };
-        const r = el.getBoundingClientRect();
-        // Tied to the pin's HEAD, not to the top of the card. The offset comes
-        // from the pin itself so that moving the pin moves the string with it
-        // — the first version hard-coded the card's top edge and every string
-        // came adrift the moment the pin was driven in deeper.
-        return {
-          x: r.left + r.width / 2 - box.left + head.cx,
-          y: r.top - box.top + head.cy,
-        };
-      });
-      setAnchors((prev) =>
-        prev.length === next.length && prev.every((p, i) => Math.abs(p.x - next[i]!.x) < 0.5 && Math.abs(p.y - next[i]!.y) < 0.5)
-          ? prev
-          : next,
-      );
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (board.current) ro.observe(board.current);
-    window.addEventListener('resize', measure);
-    // Portraits arrive after first paint and change nothing about the row's
-    // height — but fonts do, so one late pass covers the reflow.
-    const late = setTimeout(measure, 400);
-    return () => { ro.disconnect(); window.removeEventListener('resize', measure); clearTimeout(late); };
-  }, [fill.length]);
 
   const count = ['no', 'one', 'two', 'three', 'four', 'five'][result.slots.length] ?? String(result.slots.length);
 
@@ -304,10 +258,9 @@ export default function LockIn({
             </div>
           </div>
 
-          {/* The chain, with the string running over it. The string layer is
-              absolutely positioned inside this box, so this is the coordinate
-              space every anchor is measured in. */}
-          <div ref={board} style={{ position: 'relative', padding: '30px 0 4px' }}>
+          {/* The chain. The dies come down on it link by link; if every one
+              held, the current runs it and it locks. See ChainRow. */}
+          <div style={{ position: 'relative', padding: '30px 0 4px' }}>
             <ChainRow
               fill={fill}
               slots={puzzle.slots}
@@ -321,20 +274,17 @@ export default function LockIn({
               ringFor={ringFor}
               depthFor={() => null}
               revealDelayFor={(i) => i * 140}
-              plateRef={setPlate}
               pinsDriving
               pinBeat={130}
-              stringed
               stampedThrough={stampedThrough}
               columnFor={completion ? undefined : columnFor}
               columnRunFor={columnRunFor}
               closed={closed}
               clues={clues}
               clueMetFor={(i) => (judged ? result.slots.find((s) => s.index === i)?.clueMet ?? null : null)}
+              current={current}
+              locked={locked}
             />
-            {anchors.length === fill.length ? (
-              <RedString anchors={anchors} phases={phases} closed={closed} />
-            ) : null}
           </div>
 
           {/* ── THE VERDICT ─────────────────────────────────────────────
@@ -342,9 +292,9 @@ export default function LockIn({
               on the left, a block on the right. The block is gold now. */}
           <div style={{ marginTop: 20, display: 'flex', alignItems: 'stretch', border: '2.5px solid var(--ink)', minHeight: 86 }}>
             <div style={{ flexGrow: 1, padding: '14px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, minWidth: 0 }}>
-              {stage === 'arming' || stage === 'resolving' ? (
+              {!verdictUp ? (
                 <div className="narrow" style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.3em', color: 'var(--muted)' }}>
-                  RUNNING THE STRING&hellip;
+                  {stage === 'current' || stage === 'locked' ? 'EVERY LINK HELD…' : 'CHECKING THE LINKS…'}
                 </div>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>

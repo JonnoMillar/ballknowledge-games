@@ -183,6 +183,7 @@ describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
 describe.skipIf(!hasPool || files.length === 0)('completion boards', () => {
   const REACH = 50;
   const CLIFF = 35;
+  const OPEN = 5;
   const boards = files
     .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
     .filter((c) => c.scoring === 'completion');
@@ -191,18 +192,13 @@ describe.skipIf(!hasPool || files.length === 0)('completion boards', () => {
     const mode = chain.mode ?? 'clubs';
     const ref = chain.referenceSolution!;
 
-    it(`${chain.id}: every blank carries a clue or a named club`, () => {
-      // Two givens alone never pin a blank down (see SlotClue). Every blank
-      // needs the plate to say something, or a badge on one of its links.
+    it(`${chain.id}: each plate has one answer in reach and a cliff behind it, or asks nothing and has a few`, () => {
+      // A plate with a clue on it promises ONE answer in reach. A plate with
+      // nothing on it is allowed — it is the nicer kind, a plain "who links
+      // these two" — but only where the field is naturally narrow: at most
+      // OPEN answers a fan would think of, or it is a scored board with the
+      // score hidden.
       const prescribed = chain.prescribedLinks ?? {};
-      chain.slots.forEach((id, i) => {
-        if (id !== null) return;
-        const badged = neighboursOf(i, chain.slots.length, chain.closed).some(({ link }) => prescribed[link] !== undefined);
-        expect(chain.clues?.[i] !== undefined || badged, `slot ${i} has nothing on its plate`).toBe(true);
-      });
-    });
-
-    it(`${chain.id}: each plate has one answer in reach, and a cliff behind it`, () => {
       chain.slots.forEach((id, i) => {
         if (id !== null) return;
         const field = chainFieldFor(i, chain.slots, players, pool, mode, chain.prescribedLinks, chain.closed, chain.clues);
@@ -210,8 +206,14 @@ describe.skipIf(!hasPool || files.length === 0)('completion boards', () => {
         const ranked = field.map((p) => ({ p, f: factFame(p, sides, mode) })).sort((a, b) => b.f - a.f);
         expect(ranked[0]?.p.id, `slot ${i}: the reference answer is not the findable one`).toBe(ref[i]);
         expect(ranked[0]!.f, `slot ${i}: ${ranked[0]!.p.name} is out of reach`).toBeGreaterThanOrEqual(REACH);
-        if (ranked[1]) {
-          expect(ranked[1].f, `slot ${i}: ${ranked[1].p.name} is a second answer in reach`).toBeLessThan(CLIFF);
+        const badged = neighboursOf(i, chain.slots.length, chain.closed).some(({ link }) => prescribed[link] !== undefined);
+        if (chain.clues?.[i] !== undefined || badged) {
+          if (ranked[1]) {
+            expect(ranked[1].f, `slot ${i}: ${ranked[1].p.name} is a second answer in reach`).toBeLessThan(CLIFF);
+          }
+        } else {
+          const inReach = ranked.filter((r) => r.f >= REACH).length;
+          expect(inReach, `slot ${i} asks nothing and ${inReach} fit it`).toBeLessThanOrEqual(OPEN);
         }
       });
     });

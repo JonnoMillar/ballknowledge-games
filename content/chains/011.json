@@ -4,7 +4,7 @@
   "difficulty": "medium",
   "closed": true,
   "scoring": "completion",
-  "caption": "Three corners, three routes, and the Galatasaray badge is the one that tells you where to look.",
+  "caption": "Three corners, three flags. Sneijder to Reus is Inter to Dortmund, and the Croatian who did both is the one you have seen in a Spurs shirt.",
   "slots": [
     "Q615",
     null,
@@ -19,21 +19,23 @@
       "value": "Q45",
       "label": "a Portuguese"
     },
+    "3": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    },
     "5": {
-      "kind": "position",
-      "value": "GK",
-      "label": "a goalkeeper"
+      "kind": "nation",
+      "value": "Q35",
+      "label": "a Dane"
     }
-  },
-  "prescribedLinks": {
-    "2": "Q495299"
   },
   "referenceSolution": [
     "Q615",
     "Q483145",
     "Q124086",
-    "Q161089",
+    "Q161054",
     "Q152377",
-    "Q160472"
+    "Q16063229"
   ]
 }
