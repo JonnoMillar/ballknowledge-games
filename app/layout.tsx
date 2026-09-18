@@ -1,12 +1,41 @@
 import type { ReactNode } from 'react';
+import { Big_Shoulders, Libre_Franklin } from 'next/font/google';
 import './globals.css';
 
-export const metadata = { title: 'Chain' };
+/**
+ * The two faces, self-hosted at build time by next/font so the page never
+ * waits on a third-party stylesheet.
+ *
+ * Big Shoulders is the album's voice: condensed, athletic, made for a
+ * nameplate in caps and a number in a corner. Libre Franklin does the
+ * reading. Both are exposed as CSS variables and picked up in globals.css.
+ */
+const display = Big_Shoulders({
+  subsets: ['latin'],
+  weight: 'variable',
+  axes: ['opsz'],
+  variable: '--font-display',
+  display: 'swap',
+});
+const text = Libre_Franklin({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-text',
+  display: 'swap',
+});
+
+export const metadata = {
+  title: 'Chain',
+  description: 'A football chain a day. Name the players who link the givens.',
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${text.variable}`}>
       <head>
+        {/* The scouting-sheet faces. Still loaded because the sealed sheet
+            (LockIn) and the search rail are drawn in them until their own
+            rebuild stages; this tag goes with them. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="stylesheet"

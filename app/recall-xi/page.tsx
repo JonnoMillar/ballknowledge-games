@@ -18,5 +18,7 @@ export default async function Page() {
     .then((s) => JSON.parse(s) as Record<string, PortraitRecord>)
     .catch(() => ({}));
   const images = portraitUrls(files, resolved);
-  return <Game players={players} board={board} images={images} />;
+  // Its own scope: the dark tokens live under `.xi` now that the album's
+  // light tokens are the default. See globals.css.
+  return <div className="xi"><Game players={players} board={board} images={images} /></div>;
 }
