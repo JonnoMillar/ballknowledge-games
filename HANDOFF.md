@@ -357,30 +357,45 @@ Spec: `docs/superpowers/specs/2026-09-11-lock-in-reveal-design.md`. Mockup
 with all three states replayable: `design/reveal-variants.html` (serve it —
 `design-static` in `.claude/launch.json` — the crests are relative paths).
 
-`LockIn.tsx` owns one timeline, one set of timers. Per link, left to right
-(`LINK_BEAT` 640ms): the club that made the link is **stamped** on the
-connector (`Stamp.tsx`), the paper takes a 1px jolt, and the dotted rule
-takes the die's colour — green dotted for a link that held, red dashed
-with a NO LINK die for one that did not. Then, only if every link held,
-**the current**: a bead of light runs each link in turn (`FLOW_MS` 230ms a
-link, `flow-x` / `flow-y` in `globals.css`), passing under the die and
-lighting each card as it arrives, round the whole ring; then the chain
-**locks** — rules go solid and glow, dies and cards take one pulse — and
-CHAIN HELD comes down on a board that has just proved itself. A chain
-that broke skips straight to the verdict. Then the foil count-up and the
-columns on a scored board, or plates-held and the answers on a completion
-one.
+`LockIn.tsx` owns ONE GSAP timeline (`gsap`, free licence since 3.13),
+built once `ChainInk` knows where every card and die is, and everything
+the reveal does is placed at a time on it. Per link (`LINK_EVERY` 0.62s,
+overlapping): **the pen** draws a dotted pencil line from the card to the
+die (`PEN_IN`, `power3.out`); **the die** comes down (`Stamp.tsx`) and the
+paper takes a 1px jolt; the line **takes the die's colour** (green held,
+red not); the pen carries on to the next card (`PEN_OUT`, `power2.inOut`).
+Then, only if every link held, **the seal**: one solid green stroke runs
+every link in a single motion (`SEAL_PER_LINK`, `power2.inOut` over the
+whole run), pressing each die a fraction as it passes, and the dotted
+layer fades under it. CHAIN HELD comes down on a board that has just
+closed its own loop. A chain that broke goes straight to the verdict.
+Then the foil count-up and the columns on a scored board, or plates-held
+and the answers on a completion one.
 
-The red string that used to run pin to pin is gone (`RedString.tsx`,
-deleted 2026-09-18). Four strands of twine drawn in SVG never stopped
-reading as a computer drawing of twine, and its slack/taut/snapped
-choreography was a second, noisier account of what the dies already said.
-The current is the opposite bet: the rules that were always there simply
-change colour, and the one flourish is saved for the moment the whole
-chain holds. The bead rides the rule's own line (47px down on a lying
-link, the centre on a standing one) and each link's bead runs in the
-direction the chain reads — `reverse` on a ring's bottom row and left
-side, worked out from the `RINGS` cell layout in `ChainRow.tsx`.
+The lines are drawn, not laid out: `components/ChainInk.tsx` is an SVG
+over the chain that measures every slot cell and crest box (`cellRef`,
+`crestRef` from `ChainRow`) and lays a path from the edge of one cell,
+through the die's centre, to the edge of the next. A dotted line cannot
+be drawn with the dash-offset trick — its dashes ARE the dots — so each
+dotted path is revealed through a mask whose solid twin is drawn. The
+seal is one master tween over the total length, handed out to each link's
+solid path in turn, so one ease covers the whole loop. On the sealed
+sheet the connectors' own rules are hidden (`inked`) and the crest box
+sits at z-index 3, above the ink, so a line drawn through it passes
+under the die; the card wrappers sit at 2 for the same reason.
+
+Two reveals came before this one and were thrown out on sight. The red
+string (`RedString.tsx`, four strands of SVG twine, slack/taut/snapped)
+never stopped reading as a computer drawing of twine. The "current" that
+replaced it — a glowing bead on CSS keyframes, brightness filters on the
+cards, a box-shadow "lock" — read as a game UI and was, in Emil
+Kowalski's terms, everything a good animation is not: effects instead of
+motion, decoration instead of purpose. The rule now is that the reveal is
+made of the sheet's own materials — pencil, die, ink — and the one
+flourish is a line being drawn well, with strong eases and no glow.
+
+In development the timeline is on `window.__reveal`: `__reveal.pause()`,
+`.seek(t)`, `.timeScale(0.25)`. Judge timing slow, and the next day.
 
 Things that were found out the hard way:
 
@@ -397,8 +412,6 @@ Things that were found out the hard way:
   narrower than the die is wide.** Given a diameter's width and an
   ellipsis, REAL MADRID arrived as REAL MADR. It gets a chord (66% of the
   die) and two lines.
-- **The bead has to be bright.** The first one was a pale 30px pill and
-  read as a smudge; it is 52px with a white core and a 14px glow now.
 
 ### The column
 

@@ -45,7 +45,7 @@ export function useInk(): { defs: ReactNode; filter: string } {
 }
 
 export default function Stamp({
-  held, clubId, club, size = 62, lean = -7, delay = 0, locked = false,
+  held, clubId, club, size = 62, lean = -7, delay = 0,
 }: {
   held: boolean;
   /** The club that made the link. Ignored when `held` is false. */
@@ -55,8 +55,6 @@ export default function Stamp({
   /** Degrees. Nobody stamps square. */
   lean?: number;
   delay?: number;
-  /** The chain has locked: the die takes one pulse. See `card-lock`. */
-  locked?: boolean;
 }) {
   const { defs, filter } = useInk();
   const ink = held ? 'var(--green)' : 'var(--accent)';
@@ -87,9 +85,7 @@ export default function Stamp({
           background: 'rgba(247,242,230,0.55)',
           boxShadow: `inset 0 0 0 1.5px rgba(247,242,230,0.9), inset 0 0 0 2.6px ${ink}`,
           filter,
-          animation: locked
-            ? 'die-lock 520ms cubic-bezier(0.3, 1.2, 0.4, 1) both'
-            : `stamp-in 380ms cubic-bezier(0.3, 1.2, 0.4, 1) ${delay}ms both`,
+          animation: `stamp-in 380ms cubic-bezier(0.3, 1.2, 0.4, 1) ${delay}ms both`,
         }}
       >
         {held && clubId ? (

@@ -1,5 +1,8 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
+import ChainInk, { type InkHandle } from './ChainInk';
+import { linkPairs } from '../src/lib/chain/score';
 import { useCountUp } from './countUp';
 import ChainRow from './ChainRow';
 import SheetPins from './SheetPins';
@@ -54,12 +57,27 @@ import type { PortraitImage } from '../src/lib/portraits';
  */
 
 /** Where the reveal has got to. Each step is one beat of the sequence. */
-type Stage = 'arming' | 'resolving' | 'current' | 'locked' | 'verdict' | 'score' | 'detail';
+type Stage = 'arming' | 'resolving' | 'sealing' | 'verdict' | 'score' | 'detail';
 
-/** One link's worth of the sequence: the die comes down, the rule takes its colour. */
-const LINK_BEAT = 640;
-/** How long the charge takes to run one link, once every link has held. */
-const FLOW_MS = 230;
+/**
+ * The reveal's tempo, in seconds. One link is: the pen draws to the die,
+ * the die comes down, the line takes its colour, the pen carries on. The
+ * next link's pen sets off while this one's is finishing, so the run reads
+ * as one hand at work rather than a list of events.
+ */
+const PEN_IN = 0.3;       // card to die
+const PEN_OUT = 0.32;     // die to next card
+const AFTER_DIE = 0.14;   // the pause between the die landing and the pen moving on
+const LINK_EVERY = 0.62;  // one link's start to the next's
+const SEAL_PER_LINK = 0.22; // the seal's stroke, per link, before easing
+
+/** The strong curves. Built-in eases are too weak to feel intentional. */
+const EASE_OUT = 'power3.out';
+const EASE_IN_OUT = 'power2.inOut';
+
+const PENCIL = 'rgba(26,20,16,0.5)';
+const GREEN = '#2f6b3f';
+const RED = '#b3341f';
 
 const GRADE: Record<ChainDifficulty, string> = {
   easy: 'var(--green)',
@@ -82,6 +100,13 @@ export default function LockIn({
 }) {
   const [stage, setStage] = useState<Stage>('arming');
   const [stampedThrough, setStampedThrough] = useState(-1);
+  const [inkReady, setInkReady] = useState(false);
+  const pen = useRef<InkHandle>(null);
+  const board = useRef<HTMLDivElement>(null);
+  const cells = useRef<(HTMLElement | null)[]>([]);
+  const crests = useRef<(HTMLElement | null)[]>([]);
+  const pairs = useMemo(() => linkPairs(fill.length, puzzle.closed ?? false), [fill.length, puzzle.closed]);
+  const onInkReady = useCallback(() => setInkReady(true), []);
   const [columnsRun, setColumnsRun] = useState(0);
   const mode = puzzle.mode ?? 'clubs';
   const closed = puzzle.closed ?? false;
@@ -119,61 +144,81 @@ export default function LockIn({
     return map;
   }, [result, pool, images]);
 
-  // The whole sequence is one set of timers rather than chained callbacks, so
-  // unmounting mid-reveal cannot leave a stray one running.
+  // The whole reveal is ONE timeline, built once the ink knows where every
+  // card and die is. Everything on it — the pen, the dies, the seal, the
+  // verdict, the columns — is placed at a time on that one clock, so the
+  // sequence can be read top to bottom here and nothing can drift.
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+    if (!inkReady || !pen.current) return;
+    const draw = pen.current;
+    const tl = gsap.timeline({ defaults: { overwrite: 'auto' } });
+    // Reduced motion: the same sheet, arrived at rather than performed.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) tl.timeScale(12);
 
-    at(560, () => setStage('resolving'));
+    tl.call(() => setStage('resolving'), [], 0.5);
 
     // Every link is judged, including the ones after a break. The first
     // draft stopped the run dead at the first failure, which read well but
     // lied: the line under it says "2 of 4 links held" and the player could
     // only see one verdict. Watching a later link survive a broken chain is
     // also the part that stings usefully — you were one name away.
+    let t = 0.6;
     for (let i = 0; i < result.links.length; i++) {
-      at(700 + i * LINK_BEAT, () => { setStampedThrough(i); jolt(); });
+      const held = result.links[i]!;
+      const die = t + PEN_IN;
+      tl.add(draw.draw(i, 'crest', PEN_IN, EASE_OUT), t);
+      tl.call(() => { setStampedThrough(i); jolt(); }, [], die);
+      tl.add(draw.tint(i, held ? GREEN : RED, 0.28), die + 0.05);
+      tl.add(draw.draw(i, 'end', PEN_OUT, EASE_IN_OUT), die + AFTER_DIE);
+      t += LINK_EVERY;
     }
+    let after = t - LINK_EVERY + PEN_IN + AFTER_DIE + PEN_OUT;
 
-    // A chain that held gets the current before the verdict: the charge
-    // runs every link in turn and the whole thing locks, so CHAIN HELD
-    // lands on a board that has just shown it. A chain that broke gets
-    // the verdict straight away — there is nothing to run.
-    let after = 700 + result.links.length * LINK_BEAT;
+    // A chain that held gets the seal before the verdict: one solid stroke
+    // runs every link in a single motion, pressing each die as it passes,
+    // and the loop is closed. CHAIN HELD then lands on a board that has
+    // just shown it. A chain that broke gets the verdict straight away.
     if (result.perfect) {
-      at(after + 200, () => setStage('current'));
-      const run = 200 + result.links.length * FLOW_MS + (closed ? 0 : 0);
-      at(after + run + 120, () => { setStage('locked'); jolt(true); });
-      after += run + 120 + 560;
+      const run = 0.4 + result.links.length * SEAL_PER_LINK;
+      tl.call(() => setStage('sealing'), [], after + 0.2);
+      tl.add(draw.seal(run, EASE_IN_OUT, (li) => {
+        const die = crests.current[li];
+        if (die) gsap.fromTo(die, { scale: 1 }, { scale: 0.93, duration: 0.11, ease: 'power2.out', yoyo: true, repeat: 1 });
+      }), after + 0.3);
+      tl.add(draw.fade(0.5), after + 0.3 + run - 0.1);
+      after += 0.3 + run + 0.35;
     }
-    at(after + 300, () => setStage('verdict'));
-    at(after + 500, () => jolt(true));
-    at(after + 1000, () => setStage('score'));
+    tl.call(() => setStage('verdict'), [], after + 0.2);
+    tl.call(() => jolt(true), [], after + 0.4);
+    tl.call(() => setStage('score'), [], after + 0.9);
 
     // The columns, one after the other, each given exactly as long as its
     // countdown needs. Their timing is a pure function of the result, so
     // the sheet can schedule what follows without waiting on a callback.
-    let t = after + 1600;
+    let c = after + 1.5;
     if (!completion) {
       result.slots.forEach((slot, j) => {
-        at(t, () => setColumnsRun(j + 1));
-        t += columnSchedule(slot.held ? slot.depth : null).total + 380;
+        tl.call(() => setColumnsRun(j + 1), [], c);
+        c += (columnSchedule(slot.held ? slot.depth : null).total + 380) / 1000;
       });
     }
-    at(t + 200, () => setStage('detail'));
+    tl.call(() => setStage('detail'), [], c + 0.2);
 
-    return () => timers.forEach(clearTimeout);
-  }, [result, jolt, completion, closed]);
+    // In development the timeline is on the window, so the reveal can be
+    // paused, scrubbed or played at quarter speed from the console —
+    // `__reveal.timeScale(0.25)` — which is how timing gets judged: slow,
+    // and the next day.
+    if (process.env.NODE_ENV !== 'production') (window as unknown as { __reveal?: gsap.core.Timeline }).__reveal = tl;
+
+    return () => { tl.kill(); };
+  }, [inkReady, result, jolt, completion]);
 
   const showScore = stage === 'score' || stage === 'detail';
   const detail = stage === 'detail';
-  const locked = result.perfect && (stage === 'locked' || stage === 'verdict' || showScore);
-  const current = stage === 'current' ? { delay: 200, ms: FLOW_MS } : null;
   const verdictUp = stage === 'verdict' || showScore;
   // The clue on a plate is judged with the verdict, not link by link: it is
   // a fact about the pick, not about either of its links.
-  const judged = stage === 'current' || stage === 'locked' || stage === 'verdict' || showScore;
+  const judged = stage === 'sealing' || stage === 'verdict' || showScore;
   const plateCount = result.slots.length;
   const platesHeld = result.slots.filter((s) => s.held).length;
   // Every link real and the board still not solved: a plate answered by
@@ -258,9 +303,10 @@ export default function LockIn({
             </div>
           </div>
 
-          {/* The chain. The dies come down on it link by link; if every one
-              held, the current runs it and it locks. See ChainRow. */}
-          <div style={{ position: 'relative', padding: '30px 0 4px' }}>
+          {/* The chain. The ink draws it link by link as the dies come down;
+              if every one held, the seal runs it. This box is the ink's
+              coordinate space. */}
+          <div ref={board} style={{ position: 'relative', padding: '30px 0 4px' }}>
             <ChainRow
               fill={fill}
               slots={puzzle.slots}
@@ -282,8 +328,19 @@ export default function LockIn({
               closed={closed}
               clues={clues}
               clueMetFor={(i) => (judged ? result.slots.find((s) => s.index === i)?.clueMet ?? null : null)}
-              current={current}
-              locked={locked}
+              inked
+              cellRef={(i, el) => { cells.current[i] = el; }}
+              crestRef={(li, el) => { crests.current[li] = el; }}
+            />
+            <ChainInk
+              ref={pen}
+              box={board}
+              cells={cells}
+              crests={crests}
+              pairs={pairs}
+              pencil={PENCIL}
+              ink={GREEN}
+              onReady={onInkReady}
             />
           </div>
 
@@ -294,7 +351,7 @@ export default function LockIn({
             <div style={{ flexGrow: 1, padding: '14px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, minWidth: 0 }}>
               {!verdictUp ? (
                 <div className="narrow" style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.3em', color: 'var(--muted)' }}>
-                  {stage === 'current' || stage === 'locked' ? 'EVERY LINK HELD…' : 'CHECKING THE LINKS…'}
+                  {stage === 'sealing' ? 'EVERY LINK HELD…' : 'CHECKING THE LINKS…'}
                 </div>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>

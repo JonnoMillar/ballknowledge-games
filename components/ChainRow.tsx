@@ -38,7 +38,7 @@ import { plateName } from '../src/lib/short-name';
  * because it is not part of the answer — it is the rule the player is being
  * asked to satisfy, and a harder rule than the mode's own.
  */
-function Connector({ link, mode, clubs, revealed, stamped, vertical = false, flow = null, locked = false }: {
+function Connector({ link, mode, clubs, revealed, stamped, vertical = false, inked = false, crestRef }: {
   link: ChainLink;
   mode: 'chemistry' | 'clubs';
   clubs: Record<string, ClubView>;
@@ -58,13 +58,13 @@ function Connector({ link, mode, clubs, revealed, stamped, vertical = false, flo
    */
   vertical?: boolean;
   /**
-   * The current: a bead of light runs this link, `delay` ms from now, in
-   * `ms`, from slot i to slot i+1 — which on a ring may be leftward or
-   * upward, hence `reverse`. Null until every link has held.
+   * The sealed sheet draws its own lines (ChainInk), so the rule steps
+   * aside and only the crest and the die remain. Two lines joining the
+   * same two cards is one too many.
    */
-  flow?: { delay: number; ms: number; reverse: boolean } | null;
-  /** The chain has locked: the rule goes solid and glows, the die pulses. */
-  locked?: boolean;
+  inked?: boolean;
+  /** Reports the crest box, so the ink knows where the die is. */
+  crestRef?: (el: HTMLDivElement | null) => void;
 }) {
   // A link the stamp has not reached yet must give nothing away: the sheet
   // is sealed, but the player has not been TOLD yet.
@@ -73,39 +73,22 @@ function Connector({ link, mode, clubs, revealed, stamped, vertical = false, flo
   const named = link.required;
   const via = named ?? (shown && made && mode === 'clubs' ? link.clubs[0] : undefined);
 
-  // The rule is the same dotted line before and after the verdict; only
-  // its colour changes, to the colour of the die that came down on it. It
-  // goes solid once — when the whole chain locks.
-  const rule = made
-    ? locked ? '2.5px solid var(--green)' : '2.5px dotted var(--green)'
-    : shown
-      ? '2px dashed var(--accent)'
-      : named
-        ? '2.5px solid var(--accent)'
-        : '2px dotted rgba(26,20,16,0.42)';
-  const lock = locked && made ? { animation: 'link-lock 700ms ease-out both' } : {};
+  // The live board's rule: the same dotted line before and after the
+  // verdict, changing only to the colour of the die that came down on it.
+  // On the sealed sheet the ink draws its own and this one is invisible.
+  const rule = inked
+    ? 'none'
+    : made
+      ? '2.5px dotted var(--green)'
+      : shown
+        ? '2px dashed var(--accent)'
+        : named
+          ? '2.5px solid var(--accent)'
+          : '2px dotted rgba(26,20,16,0.42)';
 
   // The same rule, drawn along the other axis: `border-top` becomes
   // `border-left`, and the width becomes a height that fills the gap.
-  const post = <div style={{ flexGrow: 1, width: 0, minHeight: 10, borderLeft: rule, transition: 'border-color 260ms ease', ...lock }} />;
-
-  // The bead. It rides the rule's own line — 46px down on a lying link,
-  // the centre on a standing one — and passes UNDER the die, which sits
-  // above it in the stack, so the charge reads as going through the seal.
-  const bead = flow ? (
-    <span
-      aria-hidden
-      style={{
-        position: 'absolute', zIndex: 2, pointerEvents: 'none',
-        ...(vertical
-          ? { left: '50%', width: 7, height: 52, borderRadius: 4, background: `linear-gradient(${flow.reverse ? 0 : 180}deg, rgba(122,214,150,0), #baf0cb 55%, #ffffff 82%, #baf0cb)` }
-          : { top: 47, width: 52, height: 7, borderRadius: 4, background: `linear-gradient(${flow.reverse ? 270 : 90}deg, rgba(122,214,150,0), #baf0cb 55%, #ffffff 82%, #baf0cb)` }),
-        boxShadow: '0 0 14px 5px rgba(95,208,138,0.85), 0 0 3px 1px rgba(255,255,255,0.9)',
-        animation: `${vertical ? 'flow-y' : 'flow-x'} ${flow.ms}ms linear ${flow.delay}ms both`,
-        animationDirection: flow.reverse ? 'reverse' : 'normal',
-      }}
-    />
-  ) : null;
+  const post = <div style={{ flexGrow: 1, width: 0, minHeight: 10, borderLeft: rule, transition: 'border-color 260ms ease' }} />;
 
   return (
     <div
@@ -118,24 +101,28 @@ function Connector({ link, mode, clubs, revealed, stamped, vertical = false, flo
         paddingTop: 46, alignSelf: 'flex-start',
       }}
     >
-      {bead}
       {vertical
         ? post
-        : <div style={{ width: '100%', height: 0, borderTop: rule, transition: 'border-color 260ms ease', ...lock }} />}
+        : <div style={{ width: '100%', height: 0, borderTop: rule, transition: 'border-color 260ms ease' }} />}
+      {/* The crest box: the die lands on it, and the ink is measured to it.
+          Above the ink, so a line drawn through it passes under the die. */}
+      <div ref={crestRef} style={{ position: 'relative', width: 28, height: 28, zIndex: 3 }}>
       {stamped ? (
         // The die, centred where the crest would have been. It overflows the
         // crest's box on purpose: nothing below it moves when it lands.
-        <div style={{ position: 'relative', width: 28, height: 28 }}>
-          <Stamp held={link.made} clubId={via} club={via ? clubs[via] : undefined} lean={tiltFor(`stamp-${link.clubs.join('-')}-${String(named)}`, 8)} locked={locked && made} />
-        </div>
+        <Stamp held={link.made} clubId={via} club={via ? clubs[via] : undefined} lean={tiltFor(`stamp-${link.clubs.join('-')}-${String(named)}`, 8)} />
       ) : via ? (
         <ClubBadge clubId={via} club={clubs[via]} size={28} />
-      ) : (
-        <div className="slab" style={{ fontSize: 17, lineHeight: 1.2, color: shown ? 'var(--accent)' : 'rgba(26,20,16,0.34)' }}>
+      ) : inked ? null : (
+        // Nothing here on the sealed sheet: the pen draws to this point
+        // and the die lands on it, and a question mark waiting there
+        // would be furniture in the way.
+        <div className="slab" style={{ fontSize: 17, lineHeight: 1.2, textAlign: 'center', color: shown ? 'var(--accent)' : 'rgba(26,20,16,0.34)' }}>
           {shown ? '✕' : '?'}
         </div>
       )}
-      {stamped ? null : (
+      </div>
+      {stamped || inked ? null : (
         <div
           className="narrow"
           title={via ? clubs[via]?.name ?? via : undefined}
@@ -217,7 +204,7 @@ function EmptySlot({
 function Slot({
   index, player, given, focused, depth, revealed, revealDelay, images,
   onFocus, ring, tilt, landing, pinDriving, pinDelay, plateRef, interactive, showPin,
-  column, columnRun, columnInstant, clue, clueMet, chargeAt = null, locked = false,
+  column, columnRun, columnInstant, clue, clueMet, cellRef,
 }: {
   index: number;
   player: Player | undefined;
@@ -246,20 +233,10 @@ function Slot({
   clue?: SlotClue;
   /** The verdict on the clue once revealed; null while the sheet is open. */
   clueMet: boolean | null;
-  /** When the current reaches this card, in ms from now. Null: no current. */
-  chargeAt?: number | null;
-  /** The chain has locked: the card takes one green pulse. */
-  locked?: boolean;
+  /** Reports the whole cell — card and caption — so the ink can meet its edge. */
+  cellRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: `slot:${index}`, disabled: given || !interactive });
-  // The card lights as the charge arrives, then glows once the chain locks.
-  // On the card's wrapper rather than the card, so the pin and the ring
-  // come with it. Above the connectors, so the bead passes behind it.
-  const charge = locked
-    ? { animation: 'card-lock 700ms ease-out both' }
-    : chargeAt !== null
-      ? { animation: `card-charge 420ms ease-out ${chargeAt}ms both` }
-      : {};
 
   // The caption under the plate. "Yours" on a plain blank; on a clued one it
   // is the clue itself, because the clue is what the plate says. Once the
@@ -278,8 +255,9 @@ function Slot({
       : 'var(--accent)';
 
   return (
-    <div style={{ width: 116, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
-      <div ref={setNodeRef} style={{ position: 'relative', zIndex: 2, ...charge }}>
+    <div ref={cellRef} style={{ width: 116, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
+      {/* Above the ink, so a line drawn into the cell passes under the card. */}
+      <div ref={setNodeRef} style={{ position: 'relative', zIndex: 2 }}>
         {player ? (
           <div onClick={() => interactive && !given && onFocus(index)}>
             <PlayerCard
@@ -353,7 +331,7 @@ export default function ChainRow({
   focused = null, onFocus = () => {}, interactive = true, landedIndex = null,
   pinsDriving = false, pinBeat = 0, plateRef, showPins = true, revealDelayFor,
   stampedThrough, columnFor, columnRunFor = () => true, columnInstant = false, closed = false,
-  clues = {}, clueMetFor = () => null, current = null, locked = false,
+  clues = {}, clueMetFor = () => null, inked = false, cellRef, crestRef,
 }: {
   /** Player ids in order, or null for a slot still empty. */
   fill: readonly (string | null)[];
@@ -379,13 +357,11 @@ export default function ChainRow({
   plateRef?: (i: number, el: HTMLDivElement | null) => void;
   showPins?: boolean;
   revealDelayFor?: (i: number) => number;
-  /**
-   * The current runs the chain: link 0 at `delay` ms from now, each link
-   * taking `ms`, each card lighting as it is reached. Null: no current.
-   */
-  current?: { delay: number; ms: number } | null;
-  /** The chain has locked: rules solid, dies and cards pulsing, once. */
-  locked?: boolean;
+  /** The sealed sheet: the rules step aside for the ink. See ChainInk. */
+  inked?: boolean;
+  /** Reports each slot's cell and each link's crest box, for the ink. */
+  cellRef?: (i: number, el: HTMLDivElement | null) => void;
+  crestRef?: (li: number, el: HTMLDivElement | null) => void;
   /**
    * Links up to and including this index carry their stamp; those after it
    * still look unrevealed. Undefined means no stamps — the live board's
@@ -435,7 +411,7 @@ export default function ChainRow({
     return () => ro.disconnect();
   }, [fill.length, revealed]);
 
-  const connector = (li: number, vertical = false, reverse = false) => links[li] ? (
+  const connector = (li: number, vertical = false) => links[li] ? (
     <Connector
       link={links[li]!}
       mode={mode}
@@ -443,8 +419,8 @@ export default function ChainRow({
       revealed={revealed}
       stamped={stampedThrough === undefined ? null : li <= stampedThrough}
       vertical={vertical}
-      flow={current ? { delay: current.delay + li * current.ms, ms: current.ms, reverse } : null}
-      locked={locked}
+      inked={inked}
+      crestRef={(el) => crestRef?.(li, el)}
     />
   ) : null;
 
@@ -477,11 +453,7 @@ export default function ChainRow({
       columnInstant={columnInstant}
       clue={clues[i]}
       clueMet={clueMetFor(i)}
-      // The charge reaches slot i as link i-1 finishes; on a ring slot 0 is
-      // reached again as the last link finishes, which is the moment the
-      // loop closes.
-      chargeAt={current ? current.delay + (i === 0 ? (closed ? fill.length : 0) : i) * current.ms : null}
-      locked={locked}
+      cellRef={(el) => cellRef?.(i, el)}
     />
   );
 
@@ -562,7 +534,7 @@ function Ring({
   players: ReadonlyMap<string, Player>;
   slots: readonly (string | null)[];
   slot: (i: number, column: ColumnSpec | null) => ReactNode;
-  connector: (li: number, vertical?: boolean, reverse?: boolean) => ReactNode;
+  connector: (li: number, vertical?: boolean) => ReactNode;
   revealed: boolean;
   columnFor?: (i: number) => ColumnSpec | null;
   columnRunFor: (i: number) => boolean;
@@ -582,9 +554,6 @@ function Ring({
     // track between them, standing when they are one above the other.
     const [r2, c2] = layout[(i + 1) % layout.length]!;
     const vertical = c === c2;
-    // The current runs slot i → slot i+1, which round a ring is leftward
-    // along the bottom and upward on the left side.
-    const reverse = vertical ? r2 < r : c2 < c;
     cells.push(
       <div
         key={`l${i}`}
@@ -592,7 +561,7 @@ function Ring({
           ? { gridRow: 2 * Math.min(r, r2) + 2, gridColumn: 2 * c + 1, display: 'flex', justifyContent: 'center' }
           : { gridRow: 2 * r + 1, gridColumn: 2 * Math.min(c, c2) + 2, display: 'flex' }}
       >
-        {connector(i, vertical, reverse)}
+        {connector(i, vertical)}
       </div>,
     );
   });
