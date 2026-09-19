@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Sticker from './Sticker';
+import Sticker, { neutral } from './Sticker';
 import { search, type SearchIndex } from '../src/lib/search/index';
 import type { NameEntry } from '../src/lib/chain/client';
 
@@ -124,7 +124,7 @@ export default function SearchSheet({
                     onClick={() => onPick(p.id)}
                     aria-label={inChain ? `${p.name}, already on the board` : `Place ${p.name}`}
                   >
-                    <Sticker player={p} image={p.image} ground="var(--ground-neutral)" />
+                    <Sticker player={p} image={p.image} ground={neutral()} />
                     <span className="result__name">{p.name}</span>
                     {inChain ? <span className="result__taken">On the board</span> : null}
                   </button>

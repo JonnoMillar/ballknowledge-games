@@ -1,24 +1,23 @@
 'use client';
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core';
 import ChainBoard from './ChainBoard';
 import SearchSheet from './SearchSheet';
-import Sticker from './Sticker';
+import Sticker, { neutral, solid, type Ground } from './Sticker';
+import { DepthBar, PlateTag, ShareButton, useReveal, Verdict, Wall } from './Reveal';
 import { useSwing } from './swing';
 import { shortClubName } from './ClubBadge';
 import type { ClubView } from '../src/lib/clubs';
 import { initChain, chainReduce } from '../src/game/chainState';
 import { neighboursOf } from '../src/lib/chain/score';
-import LockIn from './LockIn';
+import { shareText } from '../src/lib/chain/result';
 import { buildIndex, type SearchIndex } from '../src/lib/search/index';
 import type { ChainPuzzle } from '../src/lib/chain/types';
 import { blankLinks, decodeNames, type Given, type NameEntry, type NameRow, type SealResponse } from '../src/lib/chain/client';
-import { clubColour, splitRing } from '../src/lib/club-colours';
+import { clubColour } from '../src/lib/club-colours';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
-
-const NEUTRAL_GROUND = 'var(--ground-neutral)';
 
 /** The silhouette, as the mark. */
 export function Mark({ className }: { className?: string }) {
@@ -36,7 +35,7 @@ function DragSticker({ player, image }: { player: NameEntry; image: PortraitImag
   const ref = useSwing({ active: true, scale: 1.05 });
   return (
     <div ref={ref} style={{ pointerEvents: 'none' }}>
-      <Sticker player={player} image={image} ground={NEUTRAL_GROUND} lifted />
+      <Sticker player={player} image={image} ground={neutral()} lifted />
     </div>
   );
 }
@@ -47,7 +46,7 @@ interface Sealed extends SealResponse {
 }
 
 export default function Chain({
-  puzzle, givens, images: givenImages, clubs: givenClubs,
+  puzzle, givens, images: givenImages, clubs: givenClubs, title, onSealed, streak,
 }: {
   puzzle: ChainPuzzle;
   givens: Record<string, Given>;
@@ -55,12 +54,19 @@ export default function Chain({
   images: Record<string, PortraitImage>;
   /** The clubs the board names up front. The seal brings the rest. */
   clubs: Record<string, ClubView>;
+  /** What the masthead and the share line call this board. */
+  title?: string;
+  /** Told once the server has judged the board. */
+  onSealed?: (sealed: SealResponse) => void;
+  /** The daily streak to print on a held verdict, if this is the daily. */
+  streak?: number | null;
 }) {
   const mode = puzzle.mode ?? 'chemistry';
   const closed = puzzle.closed ?? false;
   const clues = useMemo(() => puzzle.clues ?? {}, [puzzle.clues]);
   const completion = puzzle.scoring === 'completion';
   const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
+  const boardTitle = title ?? `Chain ${puzzle.id}`;
 
   // The album. Names only, fetched once the board is up. Until it lands the
   // pool is the givens, which is enough to draw the board.
@@ -102,10 +108,10 @@ export default function Chain({
   const [overSlot, setOverSlot] = useState(false);
   // The slot filled a moment ago plays the stick-down, then clears itself.
   const [landed, setLanded] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState(false);
   const [sealing, setSealing] = useState(false);
   const [sealError, setSealError] = useState<string | null>(null);
   const [sealed, setSealed] = useState<Sealed | null>(null);
+  const board = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (landed === null) return;
@@ -167,7 +173,9 @@ export default function Chain({
       const data = (await res.json()) as SealResponse;
       setSealed({ ...data, pool: new Map(data.players.map((p) => [p.id, p])) });
       dispatch({ type: 'submit' });
-      setShowResult(true);
+      onSealed?.(data);
+      // The reveal happens on the board, so the board is what is on screen.
+      board.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
       setSealError(err instanceof Error ? err.message : 'The seal did not go through.');
     } finally {
@@ -175,28 +183,49 @@ export default function Chain({
     }
   }
 
-  // While the takeover is up, the board behind it stays as the player left
-  // it; otherwise the links would turn green under the overlay first.
-  const boardRevealed = sealed !== null && !showResult;
   const links = useMemo(() => sealed?.links ?? blankLinks(puzzle), [sealed, puzzle]);
   const clubs = useMemo(() => ({ ...givenClubs, ...(sealed?.clubs ?? {}) }), [givenClubs, sealed]);
+  const result = sealed?.result ?? null;
+  const phase = useReveal(sealed !== null, links.length, completion);
+  const revealed = sealed !== null;
 
   /**
    * The ground behind each sticker: the clubs that put the player there.
+   *
    * A given wears its signature club from the start. A pick wears neutral
-   * until the seal, because the ground would otherwise answer the question.
+   * until the seal, then each half develops as its link is judged: the club
+   * that made the link, or red where it did not hold. The first neighbour
+   * takes the upper-left half, the second the lower-right.
    */
-  const groundFor = (i: number): string => {
+  const groundFor = (i: number): Ground => {
     const id = state.filled[i];
-    if (!id) return NEUTRAL_GROUND;
+    if (!id) return neutral();
     const given = givens[id];
-    if (given) return given.ground;
-    if (!boardRevealed) return NEUTRAL_GROUND;
-    const held = neighboursOf(i, state.filled.length, closed).map(({ link }) => links[link]).filter((l) => l?.made);
-    if (held.length === 0) return 'var(--red)';
-    const [a, b] = held.map((l) => clubColour(l!.required ?? l!.clubs[0]));
-    return b === undefined ? a! : splitRing(a!, b, 'var(--sticker)');
+    if (given) return solid(given.ground);
+    if (!revealed) return neutral();
+    const sides = neighboursOf(i, state.filled.length, closed).map(({ link }) => {
+      const l = links[link];
+      const judged = phase.stampedThrough >= link;
+      const colour = l?.made ? clubColour(l.required ?? l.clubs[0]) : 'var(--red)';
+      return { colour, judged };
+    });
+    const [a, b] = sides;
+    if (!a) return neutral();
+    return {
+      a: a.colour,
+      b: (b ?? a).colour,
+      liveA: a.judged,
+      liveB: (b ?? a).judged,
+    };
   };
+
+  /** One shake, on the beat the link on this sticker breaks. */
+  const shakeFor = (i: number): boolean => {
+    if (!revealed || state.filled[i] == null || givens[state.filled[i]!]) return false;
+    return neighboursOf(i, state.filled.length, closed).some(({ link }) => phase.stampedThrough === link && !links[link]?.made);
+  };
+
+  const outcome = (i: number) => result?.slots.find((s) => s.index === i) ?? null;
 
   const complete = state.filled.every((id) => id !== null);
   const blanks = puzzle.slots.filter((s) => s == null).length;
@@ -235,13 +264,13 @@ export default function Chain({
             Chain
           </a>
           <div className="masthead__meta">
-            <span>Board {puzzle.id}</span>
+            <span>{boardTitle}</span>
             {grade ? <span className="pill">{grade}</span> : null}
           </div>
         </header>
 
         <main className="stage">
-          <div className="board-col">
+          <div className="board-col" ref={board}>
             <p className="brief">
               {corners ? (
                 <>Close the ring: <b>{corners.slice(0, -1).join(', ')}</b> and <b>{corners[corners.length - 1]}</b>, with a link between each pair.</>
@@ -267,36 +296,53 @@ export default function Chain({
               clubs={clubs}
               images={images}
               players={state.pool}
-              revealed={boardRevealed}
+              revealed={revealed}
               groundFor={groundFor}
+              shakeFor={shakeFor}
+              stuck={phase.verdict && result?.perfect === true}
               focused={focused}
               onFocus={setFocused}
               landedIndex={landed}
+              stampedThrough={revealed ? phase.stampedThrough : undefined}
               closed={closed}
               clues={clues}
-              clueMetFor={(i) => (boardRevealed ? sealed?.result.slots.find((s) => s.index === i)?.clueMet ?? null : null)}
+              clueMetFor={(i) => (phase.verdict ? outcome(i)?.clueMet ?? null : null)}
               interactive={!state.submitted}
+              below={revealed ? (i) => {
+                const o = outcome(i);
+                if (!o) return null;
+                return completion ? <PlateTag slot={o} run={phase.depth} /> : <DepthBar slot={o} run={phase.depth} />;
+              } : undefined}
             />
 
-            <div className="actions">
-              <button
-                type="button"
-                className="seal"
-                disabled={!complete || state.submitted || sealing}
-                onClick={seal}
-              >
-                {state.submitted ? 'Sealed' : sealing ? 'Sealing…' : 'Seal it'}
-              </button>
-              {sealError ? (
-                <span className="actions__note actions__note--error">{sealError} Try again.</span>
-              ) : albumFailed ? (
-                <span className="actions__note actions__note--error">The album did not load. Reload the page.</span>
-              ) : (
-                <span className="actions__count">
-                  {state.submitted ? 'One submission, and this was it.' : `${placed} of ${blanks} filled`}
-                </span>
-              )}
-            </div>
+            {result ? (
+              <>
+                <Verdict result={result} completion={completion} streak={streak} show={phase.verdict} />
+                <Wall result={result} completion={completion} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} />
+                <div className={`actions actions--after ${phase.wall ? 'is-shown' : ''}`}>
+                  <ShareButton text={shareText(result, boardTitle, !completion)} />
+                  <a className="actions__link" href="/">Another chain</a>
+                </div>
+              </>
+            ) : (
+              <div className="actions">
+                <button
+                  type="button"
+                  className="seal"
+                  disabled={!complete || sealing}
+                  onClick={seal}
+                >
+                  {sealing ? 'Sealing…' : 'Seal it'}
+                </button>
+                {sealError ? (
+                  <span className="actions__note actions__note--error">{sealError} Try again.</span>
+                ) : albumFailed ? (
+                  <span className="actions__note actions__note--error">The album did not load. Reload the page.</span>
+                ) : (
+                  <span className="actions__count">{placed} of {blanks} filled</span>
+                )}
+              </div>
+            )}
           </div>
         </main>
       </div>
@@ -311,19 +357,6 @@ export default function Chain({
         onRemove={() => { if (focused !== null) { dispatch({ type: 'unplace', index: focused }); setFocused(null); } }}
         onClose={close}
       />
-
-      {sealed && showResult ? (
-        <LockIn
-          result={sealed.result}
-          puzzle={puzzle}
-          fill={state.filled}
-          links={sealed.links}
-          pool={sealed.pool}
-          images={images}
-          clubs={clubs}
-          onDismiss={() => setShowResult(false)}
-        />
-      ) : null}
 
       <DragOverlay dropAnimation={overSlot ? null : { duration: 240, easing: 'cubic-bezier(0.2, 0.9, 0.25, 1)' }}>
         {dragging ? <DragSticker player={dragging} image={images[dragging.id]} /> : null}

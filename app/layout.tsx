@@ -33,14 +33,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${text.variable}`}>
       <head>
-        {/* The scouting-sheet faces. Still loaded because the sealed sheet
-            (LockIn) and the search rail are drawn in them until their own
-            rebuild stages; this tag goes with them. */}
+        {/* The parked XI board's face. Nothing else loads from here. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Alfa+Slab+One&family=Archivo+Narrow:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
-        />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" />
       </head>
       <body>{children}</body>
     </html>

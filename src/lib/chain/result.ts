@@ -1,6 +1,7 @@
 import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, sharedClubsByProminence, sidesOf } from './score';
 import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
+import { depthRead, shareLine } from './tier';
 import type { SlotDepth } from './score';
 import type { ChainFill, ChainPuzzle } from './types';
 import type { Player } from '../chemistry/types';
@@ -349,18 +350,13 @@ export function chainResult(
 }
 
 /**
- * The result as a line of text worth pasting to a group chat.
- *
- * Wordle's grid works because it proves the shape of your attempt without
- * giving the answer away, so a friend who has not played yet still can. The
- * links do that here: they show exactly how well the chain held and nothing
- * about who is in it.
+ * The result as a line of text worth pasting to a group chat. See
+ * `shareLine` in tier.ts for the shape; this fills it from a result.
  */
-export function shareText(result: ChainResult, chainId: string): string {
-  const grid = result.links.map((made) => (made ? '🟩' : '🟥')).join('');
-  const head = `Chain ${chainId}`;
-  const line = result.perfect
-    ? `${grid} ${result.score}`
-    : `${grid} broken (${result.made}/${result.total})`;
-  return `${head}\n${line}`;
+export function shareText(result: ChainResult, title: string, scored = true): string {
+  return shareLine({
+    title: /^\d{3}$/.test(title) ? `Chain ${title}` : title,
+    links: result.links,
+    tiers: scored ? result.slots.map((s) => (s.held ? depthRead(s.depth)?.tier ?? null : null)) : [],
+  });
 }

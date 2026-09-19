@@ -335,9 +335,29 @@ button { font-family: inherit; }
   overflow: hidden;
   width: 100%;
   aspect-ratio: 4 / 5;
-  background: var(--ground, var(--ground-neutral));
-  transition: background var(--t-slow) var(--ease-in-out);
+  background: var(--ground-neutral);
 }
+/* The two halves of the ground, split on the diagonal. Each develops from
+   its own corner when its link is judged; before that the neutral grey
+   shows through. A given has both on from the first paint, and a CSS
+   transition does not run on the first paint, so nothing animates there. */
+.sticker__half {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: transform var(--t-slow) var(--ease-out), opacity var(--t-base) var(--ease-out);
+}
+.sticker__half--a { clip-path: polygon(0 0, 100% 0, 0 100%); transform: translate(-22%, -22%); }
+.sticker__half--b { clip-path: polygon(100% 0, 100% 100%, 0 100%); transform: translate(22%, 22%); }
+.sticker__half.is-live { opacity: 1; transform: none; }
+.sticker__seam {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease-out);
+  background: linear-gradient(to bottom left, transparent calc(50% - 1px), var(--sticker) calc(50% - 1px), var(--sticker) calc(50% + 1px), transparent calc(50% + 1px));
+}
+.sticker__seam.is-live { opacity: 1; }
 .sticker__photo > img {
   position: absolute;
   inset: 0;
@@ -345,6 +365,7 @@ button { font-family: inherit; }
   height: 100%;
   display: block;
   pointer-events: none;
+  z-index: 1;
 }
 .sticker__photo--contain > img {
   object-fit: contain;
@@ -354,7 +375,11 @@ button { font-family: inherit; }
   filter: drop-shadow(0 3px 3px rgba(20, 18, 16, 0.26));
 }
 .sticker__photo--cover > img { object-fit: cover; object-position: 50% 18%; }
-.sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* A press photo fills its box, so the ground would be invisible behind it.
+   It gets the ground as a frame instead: the coloured border a sticker has
+   always had, and the reveal still changes the card. */
+.sticker__photo--cover > img { inset: 7px; width: calc(100% - 14px); height: calc(100% - 14px); }
+.sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 .sticker__plate {
   display: flex;
   align-items: baseline;
@@ -412,6 +437,145 @@ button { font-family: inherit; }
   60%  { transform: scale(0.94); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+
+/* ── THE REVEAL ────────────────────────────────────────────────────────
+   On the board, in place. See components/Reveal.tsx for the clock. */
+
+/* A sticker that would not stick. */
+.sticker--shake { animation: unstick 320ms var(--ease-out) both; }
+@keyframes unstick {
+  0% { transform: none; }
+  25% { transform: translateX(-4px) rotate(-1.2deg); }
+  55% { transform: translateX(3px) rotate(0.8deg); }
+  80% { transform: translateX(-1.5px); }
+  100% { transform: none; }
+}
+
+/* The whole page pressed flat, once, on a held chain. */
+.chain--stuck .sticker { animation: press var(--t-slow) var(--ease-out) both; }
+@keyframes press {
+  0% { transform: scale(1.03); box-shadow: 0 6px 16px rgba(20, 18, 16, 0.22); }
+  100% { transform: none; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 2px 6px rgba(20, 18, 16, 0.12); }
+}
+
+/* The fuse: the dotted rule becomes solid up to the die as it is judged. */
+.link__rule { transition: border-color var(--t-base) var(--ease-out); }
+
+.verdict {
+  width: 100%;
+  max-width: 34em;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
+  margin-top: 4px;
+}
+.verdict.is-shown { opacity: 1; transform: none; }
+.verdict__head {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(44px, 12vw, 72px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.verdict--held .verdict__head { color: var(--green); }
+.verdict--broke .verdict__head { color: var(--red); }
+.verdict__sub { margin: 8px 0 0; font-size: 16px; color: var(--muted); text-wrap: balance; }
+.verdict__streak { color: var(--ink); font-weight: 600; }
+
+/* How deep a pick went, under its sticker. */
+.depth {
+  width: var(--sticker-w);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease-out);
+}
+.depth.is-run { opacity: 1; }
+.depth__track { display: block; height: 6px; border-radius: 3px; background: rgba(20, 18, 16, 0.12); overflow: hidden; }
+.depth__fill { display: block; height: 100%; border-radius: 3px; background: var(--muted); transition: width 900ms var(--ease-in-out); }
+.depth--shout .depth__fill { background: var(--gold); }
+.depth--deep .depth__fill { background: var(--green); }
+.depth__label {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--t-base) var(--ease-out) 700ms, transform var(--t-base) var(--ease-out) 700ms;
+}
+.depth.is-run .depth__label { opacity: 1; transform: none; }
+.depth--shout .depth__label { color: #9a7513; }
+.depth--deep .depth__label { color: var(--green); }
+.depth--none .depth__label { color: var(--red); transition-delay: 0ms; }
+.depth__note { font-size: 11.5px; line-height: 1.25; color: var(--muted); opacity: 0; transition: opacity var(--t-base) var(--ease-out) 900ms; }
+.depth.is-run .depth__note { opacity: 1; }
+.depth--none .depth__label, .depth--none.depth--none .depth__label { transition-delay: 0ms; }
+
+/* Who else fitted. */
+.wall {
+  width: 100%;
+  max-width: 880px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
+}
+.wall.is-shown { opacity: 1; transform: none; }
+.wall__head {
+  margin: 0 0 14px;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.wall__row {
+  --sticker-w: clamp(88px, calc((100vw - 32px - 3 * 12px) / 4), 128px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px 12px;
+}
+.wall__item {
+  width: var(--sticker-w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.wall.is-shown .wall__item { opacity: 1; transform: none; }
+.wall__slot { font-size: 12px; color: var(--muted); }
+.wall__clubs { font-size: 12px; line-height: 1.25; text-align: center; color: var(--muted); min-height: 30px; }
+.wall__tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+}
+.wall__tag--deep { background: var(--ink); }
+
+.actions--after { opacity: 0; transition: opacity var(--t-slow) var(--ease-out); }
+.actions--after.is-shown { opacity: 1; }
+.actions__link { font-size: 15px; font-weight: 600; color: var(--ink); }
 
 /* ── THE PARKED XI BOARD ───────────────────────────────────────────────
    Its dark tokens, exactly as they were at :root, now scoped to its own
@@ -600,369 +764,11 @@ button { font-family: inherit; }
 .actions__note { font-size: 14px; color: var(--muted); }
 .actions__note--error { color: var(--red); }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   LEGACY — everything below belongs to the scouting-sheet treatment and
-   is used only by the sealed sheet (LockIn) and the search rail until
-   their own rebuild stages delete it. Nothing new goes here.
-   ═══════════════════════════════════════════════════════════════════════ */
 
-.cond { font-family: 'Barlow Condensed', system-ui, sans-serif; }
+/* What the XI board's cards still use. */
+.xi .cond { font-family: 'Barlow Condensed', system-ui, sans-serif; }
 .card-shape { clip-path: polygon(9% 0, 91% 0, 100% 7%, 100% 100%, 0 100%, 0 7%); }
-button { font-family: inherit; }
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
-
-/* The lock-in reveal. One orchestrated moment, not scattered effects: the
-   links confirm, then each pick's obscurity rises in and its depth gauge
-   draws, staggered left to right. */
 @keyframes chip-in {
   from { opacity: 0; transform: translateY(7px) scale(0.88); }
   to   { opacity: 1; transform: none; }
-}
-
-@keyframes link-settle {
-  0%, 100% { box-shadow: 0 0 12px rgba(94, 224, 138, 0.6); }
-  45%      { box-shadow: 0 0 26px rgba(94, 224, 138, 1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-:where(a, button, input, [tabindex]):focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 2px;
-}
-
-/* The lock-in takeover. See components/LockIn.tsx. */
-@keyframes lockin-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes verdict-in {
-  from { opacity: 0; transform: translateY(14px) scale(0.94); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ── THE SCOUTING SHEET ──────────────────────────────────────────────────
-   The chain board's own world: paper, print and a bulldog clip. Scoped to
-   `.sheet` rather than :root so the XI board keeps the dark treatment — the
-   two modes look nothing alike on purpose, and one palette cannot serve both.
-
-   Everything below re-points the SAME tokens the components already use, so
-   the conversion is mostly a matter of wrapping the route. */
-.sheet {
-  --bg: #ded4c1;
-  --bg-deep: #cfc3ac;
-  --panel: #f7f2e6;
-  --panel-2: #efe8d8;
-  --line: rgba(26, 20, 16, 0.22);
-  --border: rgba(26, 20, 16, 0.3);
-  --card-a: #fffdf7;
-  --card-b: #f2ece0;
-  --given-a: #fffdf7;
-  --given-b: #f2ece0;
-  --text: #1a1410;
-  --muted: #7a6a52;
-  --dim: #8d7c62;
-  --soft: #5c4e3c;
-  --green: #2f6b3f;
-  --green-dim: #3f7d4f;
-  --green-pill: #2f6b3f;
-  --gold: #a8791f;
-  --gold-light: #e6cb8c;
-  /* An empty plate waits in pencil; the accent is reserved for the one you
-     have clicked into, so focus is visible at a glance. */
-  --slot-border: rgba(26, 20, 16, 0.34);
-  --link-red: #b3341f;
-  --accent: #b3341f;
-  --ink: #1a1410;
-
-  color: var(--text);
-  font-family: 'Newsreader', Georgia, serif;
-  /* The surface itself is under THE DESK, further down. */
-  background-color: var(--bg);
-}
-
-.sheet .slab { font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; }
-.sheet .read { font-family: 'Newsreader', Georgia, serif; }
-/* `.cond` is the dark board's condensed face. Re-pointing it here converts
-   every existing label on the chain route without touching the markup. */
-.sheet .cond,
-.sheet .narrow { font-family: 'Archivo Narrow', 'Helvetica Neue', sans-serif; }
-.sheet input, .sheet button { font-family: 'Archivo Narrow', 'Helvetica Neue', sans-serif; }
-
-/* Cheap four-colour print never quite registers. One pixel of cyan one way and
-   magenta the other is the artefact of every old programme and sticker album,
-   and it is far more specific than a halftone screen. */
-.sheet .misreg { text-shadow: 1.2px 0 rgba(0, 170, 205, 0.42), -1.2px 0 rgba(205, 0, 120, 0.34); }
-/* Sporting print has always leaned. */
-.sheet .lean { display: inline-block; transform: skewX(-8deg); }
-/* Graded in the margin, the way a scout initials a sheet. */
-.sheet .stamp { transform: rotate(-8deg); border: 2.5px solid currentColor; padding: 3px 10px; opacity: 0.86; }
-
-/* A photo in its mount. The container's background IS the ring: padding lets
-   the diagonal show as an even band on all four sides. */
-/* Unscoped, not `.sheet .photo`: dnd-kit's DragOverlay portals its children
-   straight to document.body, outside the `.sheet` ancestor, so a rule that
-   only fires under `.sheet` silently stops constraining the photo the moment
-   a player is picked up — the img renders at its native pixel size instead
-   of the frame's. */
-.photo { position: relative; overflow: hidden; padding: 4px; }
-.photo > img { width: 100%; height: 100%; display: block; background: #e6ded0; }
-.mount { background: var(--card-a); padding: 5px 5px 0; }
-/* Both carry their shadows under THE BOARD, where the light is decided. */
-
-/* ── THE BACKDROP ────────────────────────────────────────────────────────
-   A cutout is the whole player against transparency, and the flat plate it
-   used to sit on was within a few points of the mount and the paper — so he
-   floated on parchment. Behind every cutout now hangs the same hand-painted
-   muslin every team photo of the era was shot against: sand, ochre and olive,
-   nothing in it to fight the kit, and enough tone that a print reads as a
-   photograph of a person rather than a sticker of one.
-
-   One canvas, many crops. `--crop` slides the window sideways per card
-   (hashed from the player id in PlayerCard), so five prints in a row are five
-   frames from one session rather than five copies of one frame. The canvas
-   is sized so its bottom edge — the floor line — is the frame's bottom edge,
-   which is what the player's feet stand on.
-
-   Unscoped, like `.photo`: the DragOverlay portals the dragged card outside
-   `.sheet`, and a backdrop that vanished the moment you picked a print up
-   would be the one thing the player was certain to see. */
-/* On a pseudo-element inside the padding, not on `.photo` itself: the
-   element's own background IS the club ring, set inline as a shorthand that
-   would wipe any image put beside it. */
-.photo.backdrop::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  background-image: url('/board/muslin.webp');
-  background-size: 128% auto;
-  background-position: var(--crop, 50%) 100%;
-  background-repeat: no-repeat;
-}
-.photo.backdrop > img {
-  position: relative;
-  z-index: 1;
-  background: transparent;
-  /* A cutout stands on the floor. `contain` left him hovering mid-frame. */
-  object-position: 50% 100%;
-  /* Where his feet meet the canvas; a figure with no contact shadow is
-     pasted on rather than standing in front of. */
-  filter: drop-shadow(0 4px 4px rgba(20, 14, 8, 0.34)) saturate(0.94);
-}
-/* Tone, over both layers: the light falls off toward the floor, and the
-   print takes a little of the paper's warmth so it looks developed on the
-   same stock. */
-.photo.backdrop::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(255, 250, 240, 0.06), transparent 40%, rgba(50, 40, 25, 0.12) 100%),
-    rgba(214, 180, 120, 0.04);
-}
-
-.sheet ::-webkit-scrollbar-thumb { background: rgba(26, 20, 16, 0.26); }
-.sheet :where(a, button, input, [tabindex]):focus-visible { outline-color: var(--accent); }
-
-/* ── THE BOARD ───────────────────────────────────────────────────────────
-   The sheet is pinned to a cork board. It used to lie on a desk, which was
-   the one thing on the page that made no sense: pins do not go into a desk,
-   and a bulldog clip does not hold paper to one. A board is what the pins,
-   the string and the prints were already saying.
-
-   The cork is an image — illustrated, not photographed, so it speaks the
-   same flat language as the paper, the pins and the string. A photographed
-   board made everything drawn on top of it look like a sticker. It is
-   painted once with `cover`; there is no tile to find a repeat in.
-
-   `.sheet` carries the cork; `.sheet::before` carries the wash and the
-   vignette, which have to sit ABOVE the image and BELOW the content. */
-.sheet {
-  position: relative;
-  background-color: #c9a06e;
-  background-image: url('/board/cork.webp');
-  background-size: cover;
-  background-position: center;
-}
-
-/* The render came out more caramel than cork. A thin wash of the paper's
-   own brown pulls it toward tan, and the corners fall away a little so the
-   board has a middle for the sheet to sit in. */
-.sheet::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(120% 96% at 50% 46%, transparent 50%, rgba(60, 40, 15, 0.20) 100%),
-    rgba(120, 90, 50, 0.10);
-}
-
-/* Everything the player can see or touch sits above the wash. */
-.sheet > * { position: relative; z-index: 1; }
-
-/* The sealed sheet SCROLLS — the pinboard hangs below the fold — and an
-   absolutely positioned wash on a scroll container covers only the first
-   screenful and then scrolls away with the content, leaving raw cork under
-   a hard seam. Pinned to the viewport instead. The cork image itself needs
-   no help: a scroll container's own background is attached to its box, not
-   to its content. */
-.sheet[role="dialog"]::before { position: fixed; }
-
-/* Paper is not flat either: a faint weave, plus a hairline along the top edge
-   where it catches the light. */
-.sheet .paper {
-  background-color: var(--panel);
-  background-image:
-    repeating-linear-gradient(90deg, rgba(120, 96, 60, 0.028) 0 1px, transparent 1px 3px),
-    radial-gradient(rgba(120, 96, 60, 0.05) 0.6px, transparent 1px);
-  background-size: auto, 5px 5px;
-  /* Pinned at the top, so the bottom stands off the board a little: the
-     shadow is deeper and further down than a sheet lying flat would throw. */
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    0 1px 0 rgba(26, 20, 16, 0.2),
-    0 4px 8px rgba(60, 40, 15, 0.22),
-    0 20px 40px rgba(60, 40, 15, 0.34);
-}
-
-/* A print in its mount, hung rather than laid down: the shadow is offset
-   below because the top edge is pinned and the bottom is standing off the
-   wall a little. */
-.mount {
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
-    0 1px 0 rgba(26, 20, 16, 0.16),
-    0 7px 14px rgba(26, 20, 16, 0.20);
-  transition: box-shadow 220ms ease, transform 220ms cubic-bezier(0.2, 0.9, 0.3, 1);
-}
-
-/* ── PICKING A PICTURE UP ────────────────────────────────────────────────
-   The lift. A card under the cursor is off the wall: bigger, brighter, and
-   throwing a shadow that has somewhere to fall. The rotation is NOT here —
-   it is driven per-frame from pointer velocity in components/DragPicture. */
-.lifted {
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
-    0 2px 0 rgba(26, 20, 16, 0.10),
-    0 26px 42px rgba(26, 20, 16, 0.34),
-    0 52px 70px rgba(26, 20, 16, 0.18);
-  cursor: grabbing;
-}
-
-/* The hole the picture came off. */
-@keyframes hole-in {
-  from { opacity: 0; transform: scale(0.6); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ── PINNING IT UP ───────────────────────────────────────────────────────
-   Three things happen on a drop and they are deliberately not simultaneous:
-   the picture lands and overshoots, the pin drives in a beat later, and the
-   frame takes one small swing on the pin before it settles. That order is
-   what makes it read as "pinned to a wall" rather than "snapped to a grid". */
-@keyframes mount-land {
-  0%   { transform: translateY(-13px) scale(1.075) rotate(var(--land-from, -2.6deg)); }
-  46%  { transform: translateY(2px) scale(0.985) rotate(calc(var(--tilt, 0deg) + 1.1deg)); }
-  70%  { transform: translateY(0) scale(1.004) rotate(calc(var(--tilt, 0deg) - 0.5deg)); }
-  /* Lands on the card's OWN lean, not on square. `transform: none` here is
-     the obvious thing to write and it is wrong: the animation is held by
-     fill-mode after it finishes, so the card sat bolt upright for the rest of
-     the beat and then snapped back to its tilt when the class came off. */
-  100% { transform: rotate(var(--tilt, 0deg)); }
-}
-
-@keyframes pin-drive {
-  0%   { opacity: 0; transform: translate(-50%, -19px) scale(1.5); }
-  52%  { opacity: 1; transform: translate(-50%, 1.5px) scale(0.9); }
-  76%  { transform: translate(-50%, -1px) scale(1.04); }
-  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
-}
-
-/* The wall takes the hit. A ring of shadow spreading out from under the pin,
-   once, at the moment it goes in. */
-@keyframes pin-thud {
-  0%   { opacity: 0.42; transform: translate(-50%, -50%) scale(0.25); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.6); }
-}
-
-/* ── THE INK ─────────────────────────────────────────────────────────────
-   The sealed sheet draws its lines rather than having them: see
-   components/ChainInk.tsx, which is driven by the GSAP timeline in
-   LockIn.tsx. Nothing here but the one fade the verdict line uses. */
-@keyframes frayed-in { from { opacity: 0; } to { opacity: 1; } }
-
-/* ── THE STAMP ───────────────────────────────────────────────────────────
-   A die coming down: from above at near double size, a hard stop, a hair
-   of overshoot. `--lean` is the die's own angle — nobody stamps square.
-   `stamp-in` is for a die centred on a point; `stamp-in-flow` for one that
-   sits in the layout. See components/Stamp.tsx. */
-@keyframes stamp-in {
-  0%   { opacity: 0; transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(1.7); }
-  48%  { opacity: 1; transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(0.93); }
-  72%  { transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(1.035); }
-  100% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--lean, -7deg)) scale(1); }
-}
-@keyframes stamp-in-flow {
-  0%   { opacity: 0; transform: rotate(var(--lean, -4deg)) scale(1.9); }
-  50%  { opacity: 1; transform: rotate(var(--lean, -4deg)) scale(0.94); }
-  74%  { transform: rotate(var(--lean, -4deg)) scale(1.03); }
-  100% { opacity: 1; transform: rotate(var(--lean, -4deg)) scale(1); }
-}
-/* The ink pressed out from under the die, once. */
-@keyframes stamp-halo {
-  0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(0.45); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.1); }
-}
-
-/* ── THE COLUMN ──────────────────────────────────────────────────────────
-   Each tick of the countdown nudges the number; the stop is a thud; rank 1
-   floods the tower and flashes. See components/DepthColumn.tsx. */
-@keyframes column-tick { 0% { transform: translateY(-3px); } 100% { transform: none; } }
-@keyframes column-land { 0% { transform: scale(1); } 40% { transform: scale(1.06) translateY(2px); } 100% { transform: scale(1); } }
-@keyframes column-flash { 0% { opacity: 1; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.8); } }
-
-/* ── ARRIVALS ────────────────────────────────────────────────────────────*/
-@keyframes sheet-rise {
-  from { opacity: 0; transform: translateY(22px) scale(0.985); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes pinned-in {
-  0%   { opacity: 0; transform: translateY(-16px) rotate(var(--tilt, 0deg)) scale(1.04); }
-  70%  { opacity: 1; transform: translateY(2px) rotate(calc(var(--tilt, 0deg) + 0.8deg)) scale(0.995); }
-  100% { opacity: 1; transform: rotate(var(--tilt, 0deg)); }
-}
-@keyframes foil-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ── THE CARD INDEX ──────────────────────────────────────────────────────
-   The search rail. It was a plain panel, which on a screen made of paper is
-   the one surface that looks like software. Ruled stock and a red margin is
-   what a pile of index cards actually looks like, and the rules are set to
-   the row pitch so the names sit ON them rather than across them. */
-.sheet .index-card {
-  background-color: var(--panel);
-  background-image:
-    /* The margin rule. Content clears it — see the left padding in
-       ChainSearch — because a margin the text runs straight through is just
-       a stripe. */
-    linear-gradient(90deg, transparent 0 33px, rgba(179, 52, 31, 0.3) 33px 34px, transparent 34px),
-    /* Feint. Deliberately weak: it is texture, not a grid to align to. */
-    repeating-linear-gradient(180deg, transparent 0 40px, rgba(26, 20, 16, 0.05) 40px 41px),
-    radial-gradient(rgba(120, 96, 60, 0.05) 0.6px, transparent 1px);
-  background-size: auto, auto, 5px 5px;
-  box-shadow: inset 6px 0 12px -8px rgba(26, 20, 16, 0.4);
 }

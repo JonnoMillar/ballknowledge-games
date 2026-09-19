@@ -5,24 +5,36 @@ import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
 
 /**
- * A player, as a sticker.
+ * The ground behind a sticker's photo: two halves, split on the diagonal.
  *
- * White border, a photo on a flat ground, the name in caps on the plate and
- * the slot number in the corner. The ground is the card's one variable: a
- * given wears its club from the start, a pick wears neutral grey until the
- * chain is sealed, and after the seal the ground names the clubs that made
- * the pick fit. See `groundFor` in Chain.tsx.
- *
- * Draggable when `dragId` is given (desktop drag-to-swap); otherwise inert,
- * which is also what the drag overlay renders.
+ * Each half is one of the sticker's two links. A given wears its signature
+ * club on both halves from the first render. A pick wears the neutral grey
+ * until the chain is sealed, then each half DEVELOPS as its link is judged:
+ * the club colour arrives from that link's corner, or red if the link did
+ * not hold. That is the reveal changing the card, rather than a stamp
+ * changing the page around it.
  */
+export interface Ground {
+  /** The upper-left half: the first link's side. */
+  a: string;
+  /** The lower-right half: the second link's side. */
+  b: string;
+  liveA: boolean;
+  liveB: boolean;
+}
+
+export const NEUTRAL_GROUND = 'var(--ground-neutral)';
+
+/** A plain ground, on from the start. */
+export const solid = (colour: string): Ground => ({ a: colour, b: colour, liveA: true, liveB: true });
+export const neutral = (): Ground => ({ a: NEUTRAL_GROUND, b: NEUTRAL_GROUND, liveA: false, liveB: false });
+
 export default function Sticker({
-  player, image, ground, index, dragId, fromSlot, landing = false, lifted = false,
+  player, image, ground, index, dragId, fromSlot, landing = false, lifted = false, shake = false,
 }: {
   player: Named;
   image: PortraitImage | undefined;
-  /** CSS background for the ground behind the photo. */
-  ground: string;
+  ground: Ground;
   /** The slot number printed in the corner. */
   index?: number;
   /** A draggable id; omit to make the sticker inert. */
@@ -32,6 +44,8 @@ export default function Sticker({
   landing?: boolean;
   /** The copy under the cursor. */
   lifted?: boolean;
+  /** A sticker that would not stick: one shake, when a link on it breaks. */
+  shake?: boolean;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: dragId ?? `inert:${player.id}`,
@@ -45,7 +59,9 @@ export default function Sticker({
     isDragging ? 'sticker--dragging' : '',
     landing ? 'sticker--landing' : '',
     lifted ? 'sticker--lifted' : '',
+    shake ? 'sticker--shake' : '',
   ].filter(Boolean).join(' ');
+  const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
 
   return (
     <div
@@ -55,10 +71,10 @@ export default function Sticker({
       className={classes}
       title={player.name}
     >
-      <div
-        className={`sticker__photo ${image?.fit === 'contain' ? 'sticker__photo--contain' : 'sticker__photo--cover'}`}
-        style={{ ['--ground' as string]: ground }}
-      >
+      <div className={`sticker__photo ${image?.fit === 'contain' ? 'sticker__photo--contain' : 'sticker__photo--cover'}`}>
+        <span className={`sticker__half sticker__half--a ${ground.liveA ? 'is-live' : ''}`} style={{ background: ground.a }} aria-hidden />
+        <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />
+        <span className={`sticker__seam ${seam ? 'is-live' : ''}`} aria-hidden />
         {image ? <img src={image.url} alt="" draggable={false} /> : <Figure tone="rgba(255,255,255,0.45)" />}
       </div>
       <div className="sticker__plate">

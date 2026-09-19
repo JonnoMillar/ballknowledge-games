@@ -1,7 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useDroppable } from '@dnd-kit/core';
-import Sticker, { EmptySticker } from './Sticker';
+import Sticker, { EmptySticker, type Ground } from './Sticker';
 import ClubBadge, { shortClubName } from './ClubBadge';
 import ClueBadge from './ClueBadge';
 import type { ChainLink } from '../src/lib/chain/score';
@@ -63,14 +63,15 @@ function Link({ link, mode, clubs, revealed, stamped, vertical }: {
 }
 
 function Slot({
-  index, player, given, focused, image, ground, onFocus, interactive, landing, clue, clueMet,
+  index, player, given, focused, image, ground, onFocus, interactive, landing, shake, clue, clueMet,
 }: {
   index: number;
   player: Named | undefined;
   given: boolean;
   focused: boolean;
   image: PortraitImage | undefined;
-  ground: string;
+  ground: Ground;
+  shake: boolean;
   onFocus: (i: number) => void;
   interactive: boolean;
   landing: boolean;
@@ -95,6 +96,7 @@ function Slot({
               dragId={interactive && !given ? `slot:${index}:${player.id}` : undefined}
               fromSlot={`slot:${index}`}
               landing={landing}
+              shake={shake}
             />
           </div>
         ) : (
@@ -124,7 +126,7 @@ const RINGS: Readonly<Record<number, readonly [row: number, col: number][]>> = {
 export default function ChainBoard({
   fill, slots, links, mode, clubs, images, players, revealed, groundFor,
   focused = null, onFocus = () => {}, interactive = true, landedIndex = null,
-  stampedThrough, closed = false, clues = {}, clueMetFor = () => null, below,
+  stampedThrough, closed = false, clues = {}, clueMetFor = () => null, below, shakeFor = () => false, stuck = false,
 }: {
   fill: readonly (string | null)[];
   slots: readonly (string | null)[];
@@ -135,7 +137,11 @@ export default function ChainBoard({
   players: ReadonlyMap<string, Named>;
   revealed: boolean;
   /** The ground behind each sticker's photo. */
-  groundFor: (i: number) => string;
+  groundFor: (i: number) => Ground;
+  /** A sticker that has just had a link break on it. */
+  shakeFor?: (i: number) => boolean;
+  /** The whole page pressed flat: the verdict on a held chain. */
+  stuck?: boolean;
   focused?: number | null;
   onFocus?: (i: number) => void;
   interactive?: boolean;
@@ -170,6 +176,7 @@ export default function ChainBoard({
       onFocus={onFocus}
       interactive={interactive}
       landing={landedIndex === i}
+      shake={shakeFor(i)}
       clue={clues[i]}
       clueMet={clueMetFor(i)}
     />
@@ -202,7 +209,7 @@ export default function ChainBoard({
     });
     return (
       <div
-        className="chain chain--ring"
+        className={`chain chain--ring ${stuck ? 'chain--stuck' : ''}`}
         style={{ gridTemplateRows: Array.from({ length: rows }, (_, r) => (r === 0 ? 'auto' : 'var(--link-h) auto')).join(' ') }}
       >
         {cells}
@@ -211,7 +218,7 @@ export default function ChainBoard({
   }
 
   return (
-    <div className="chain chain--line">
+    <div className={`chain chain--line ${stuck ? 'chain--stuck' : ''}`}>
       {fill.map((_, i) => (
         <div key={i} style={{ display: 'contents' }}>
           {i > 0 ? (
