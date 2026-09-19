@@ -282,7 +282,7 @@ button { font-family: inherit; }
 .die--named { border-color: var(--ink); }
 .die--held { border-color: var(--green); border-width: 3px; }
 .die--broken { background: var(--red); border-color: var(--red); color: #fff; }
-.die--pressed { animation: die-press var(--t-base) var(--ease-out) both; }
+.die--pressed { animation: die-press var(--t-slow) var(--ease-out) both; }
 .link__club {
   position: absolute;
   font-size: 11px;
@@ -308,6 +308,35 @@ button { font-family: inherit; }
 }
 .clue--met { color: var(--green); }
 .clue--missed { color: var(--red); }
+
+/* A hint: the answer's clubs as badges under the plate. */
+.hint-btn {
+  appearance: none;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 4px 9px 5px;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+.hint-btn:hover { color: var(--ink); border-color: var(--ink); }
+.hint {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  max-width: var(--sticker-w);
+  padding: 4px 5px;
+  background: var(--sticker);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  animation: stick-down var(--t-base) var(--ease-out) both;
+}
 
 /* ── THE STICKER ───────────────────────────────────────────────────────── */
 .sticker {
@@ -347,19 +376,33 @@ button { font-family: inherit; }
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: transform var(--t-slow) var(--ease-out), opacity var(--t-base) var(--ease-out);
+  transition: transform 600ms var(--ease-out), opacity var(--t-slow) var(--ease-out);
 }
 .sticker__half--a { clip-path: polygon(0 0, 100% 0, 0 100%); transform: translate(-22%, -22%); }
 .sticker__half--b { clip-path: polygon(100% 0, 100% 100%, 0 100%); transform: translate(22%, 22%); }
 .sticker__half.is-live { opacity: 1; transform: none; }
+/* The split is the line from the top-right corner to the bottom-left, so
+   the seam is drawn along a "to bottom right" gradient: its 50% line joins
+   those two corners. An ink hairline, and an ink edge round the photo, so
+   each half reads as its own shape whatever two colours land together. */
 .sticker__seam {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity var(--t-base) var(--ease-out);
-  background: linear-gradient(to bottom left, transparent calc(50% - 1px), var(--sticker) calc(50% - 1px), var(--sticker) calc(50% + 1px), transparent calc(50% + 1px));
+  background: linear-gradient(to bottom right, transparent calc(50% - 0.75px), var(--ink) calc(50% - 0.75px), var(--ink) calc(50% + 0.75px), transparent calc(50% + 0.75px));
 }
 .sticker__seam.is-live { opacity: 1; }
+.sticker__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--ink);
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease-out);
+  pointer-events: none;
+}
+.sticker__photo:has(.sticker__half.is-live)::after { opacity: 0.85; }
 .sticker__photo > img {
   position: absolute;
   inset: 0;
@@ -435,8 +478,8 @@ button { font-family: inherit; }
   100% { transform: none; opacity: 1; }
 }
 @keyframes die-press {
-  0%   { transform: scale(1.6); opacity: 0; }
-  60%  { transform: scale(0.94); opacity: 1; }
+  0%   { transform: scale(2); opacity: 0; }
+  55%  { transform: scale(0.92); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
 

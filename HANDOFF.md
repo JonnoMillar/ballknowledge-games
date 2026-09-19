@@ -22,9 +22,16 @@ Two kinds of board, same rules:
   answer a fan can reach. Day 1 is 2026-09-19; each day takes the next board
   from a fixed shuffle of the clued boards, so everyone gets the same one.
   The streak counts consecutive dailies held.
-- **The ladder** — 006 easy, 007 medium, 008 hard, and 009 the ring. No
-  clues, and no single right answer: anyone who links will do. Harder means
-  fewer people who do.
+- **The ladder** — 006 easy, 007 medium, 008 hard, and 009 the ring (hard,
+  four clued plates with several answers each). No single right answer:
+  anyone who fits will do. Harder means fewer people who do.
+
+A clue is a **restriction, not a hint**: a plate that asks for a German is
+not held by a Frenchman who links both sides. The hint is separate and
+optional — "Show clubs" under a plate fetches the badges of the clubs the
+intended answer played for (`/api/hint`), and the plate is marked yellow in
+the share line and the album (`PlateMark`: held / hinted / missed). The
+streak does not care; the share line does.
 
 **Recall XI** (`/recall-xi`), the original 4-3-3 board, is parked: still in
 the repo on its own dark theme, not developed.
@@ -33,7 +40,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 995 tests, 29 files
+npm test             # 997 tests, 29 files
 npm run typecheck
 ```
 
@@ -54,14 +61,15 @@ to it. A board id is a file path and is validated against `/^\d{3}$/`.
 | `components/SearchSheet.tsx` | The search: a bottom sheet on a phone, a panel on a desk. |
 | `app/api/names/route.ts` | The searchable album: names, aliases and picture keys for the whole pool, ~880 KB, cached a day. |
 | `app/api/seal/route.ts` | Judges a fill server-side and returns the result plus the handful of full records the reveal draws. |
+| `app/api/hint/route.ts` | The clubs the intended answer to one plate played for, as badges. The only thing said about an answer before the seal. |
 | `src/server/board.ts` | Reads the pool once and keeps it; `loadBoard` strips the reference solution; `listBoards` builds the home page's summaries. Warmed by `instrumentation.ts`. |
-| `src/lib/chain/` | The rules. `score.ts` (links, fields, neighbours on a line or a ring), `result.ts` (everything true at the seal), `client.ts` (what crosses the wire), `share.ts` (the share line). |
+| `src/lib/chain/` | The rules. `score.ts` (links, fields, neighbours on a line or a ring), `result.ts` (everything true at the seal), `client.ts` (what crosses the wire), `share.ts` (plate marks and the share line). |
 | `src/lib/daily.ts`, `src/lib/progress.ts` | Day numbers from the epoch, the fixed shuffle, plays and the streak in `localStorage` (`chain.progress.v1`). |
 | `src/lib/club-colours.ts` | Hand-checked club colours, and the club a given wears (`signatureClub`: most league appearances, with a few overrides). |
 | `src/lib/short-name.ts` | Nameplates. A stopgap for missing aliases. |
 | `src/lib/chain/demonyms.ts` | Nation QID → "a German", for the generator. |
 | `scripts/build-completion.ts` | The daily generator. `npm run build:completion -- --count 60 --write`. |
-| `content/chains/` | 006–009 the ladder; 010–071 the clued boards the daily draws from. |
+| `content/chains/` | 006–009 the ladder (they carry a `difficulty`); 010–071 the boards the daily draws from (they do not). |
 | `data/pool.json` | 11,741 players. Committed snapshot. |
 | `data/portraits.json` | Resolved portraits for everyone a shipped board can show. |
 | `app/globals.css` | The whole album stylesheet. Light tokens at `:root`; the XI board's dark tokens scoped under `.xi`. |
@@ -96,11 +104,11 @@ must be *that* club — harder than the rule, not a hint), optional `closed`
 (the last slot links back to the first, drawn round a grid), optional
 `clues` keyed by slot, `difficulty` on the ladder, and a `referenceSolution`.
 
-**Clued boards.** A clue is part of the rule: `clueMet()` filters the field
-and a plate is not held unless the pick answers it. Nationality only, and
-only the nations in `DEMONYM` — a niche nationality collapses the shelf to
-one name. `tests/content/chains.test.ts` holds every clued board to the
-promise the daily makes: each plate's reference answer tops its clued field
+**Clues.** A clue is part of the rule: `clueMet()` filters the field and a
+plate is not held unless the pick answers it. Nationality only, and only
+the nations in `DEMONYM` — a niche nationality collapses the shelf to one
+name. `tests/content/chains.test.ts` holds every daily board (no
+`difficulty`) to the promise the daily makes: each plate's reference answer tops its clued field
 by fact-fame at 50 or above, and the runner-up is under 35; a plate with no
 clue is allowed only where at most five answers are in reach.
 
@@ -113,8 +121,9 @@ Werder Bremen (entry 45) and nobody got it; the pair count is not the
 difficulty, the famous pair is.
 
 **The reveal**, on the board, in place: links judged one after another at
-350 ms, each pick's ground developing from that link's corner, a shake
-where a link broke; the verdict inside four seconds; then the tags under
+800 ms — slow enough to watch — each pick's ground developing from that
+link's corner behind an ink seam, a shake where a link broke; then the
+verdict; then the tags under
 the plates and the wall with one sticker per plate — the most findable
 member of its field, "You found it" or "Yours held too". Reduced motion
 lands on the finished board at once. See `useReveal` in `Reveal.tsx`.
@@ -223,6 +232,8 @@ is not; club crests are in.
 
 ## Known rough edges
 
+- `.sticker__photo::after` uses `:has()` for the ink edge; fine in every
+  current browser, absent in Firefox before 121.
 - The pane browser's `Return` key does not reach the search input's Enter
   handler; a synthetic keydown does and a real keyboard does. Harness, not
   the app.

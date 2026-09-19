@@ -6,7 +6,7 @@ import { Figure } from './Sticker';
 import type { BoardSummary, Given } from '../src/lib/chain/client';
 import { boardForDay, dateOfDay, dayNumber, localDate, longDate } from '../src/lib/daily';
 import { readProgress, streakOf, type Play, type Progress } from '../src/lib/progress';
-import { shareLine } from '../src/lib/chain/share';
+import { MARK_GLYPH, shareLine } from '../src/lib/chain/share';
 import { plateName } from '../src/lib/short-name';
 
 /**
@@ -81,7 +81,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
               <div className="how__art" aria-hidden>
                 <MiniSticker ground="var(--silhouette)" empty hint="a German" />
               </div>
-              <p><b>Each empty sticker says who fits it.</b> Tap it, name the player. No lists, no hints: you either know it or you don’t.</p>
+              <p><b>Each empty sticker says who fits it.</b> A plate that asks for a German only holds with a German. Tap it, name the player. Stuck? Show the answer’s clubs, at the cost of a yellow square.</p>
             </li>
             <li className="how__step">
               <div className="how__art" aria-hidden>
@@ -96,15 +96,15 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
         {ladder.length > 0 ? (
           <section className="ladder">
             <h2 className="home__head display">The ladder</h2>
-            <p className="track__blurb">No clues, and no right answer: anyone who links will do. The easy one has seventy ways in. The hard one has a handful.</p>
+            <p className="track__blurb">No single right answer: anyone who fits will do. The easy one has seventy ways in, the hard one a handful, and the ring asks four questions at once.</p>
             <ul className="ladder__list">
               {ladder.map((b) => {
                 const play = progress.plays[b.id];
-                const label = b.difficulty ? b.difficulty[0]!.toUpperCase() + b.difficulty.slice(1) : 'The ring';
+                const label = b.closed ? 'The ring' : b.difficulty ? b.difficulty[0]!.toUpperCase() + b.difficulty.slice(1) : 'Open';
                 return (
                   <li key={b.id}>
                     <a className={`page page--card ${play ? (play.held ? 'page--held' : 'page--broke') : ''}`} href={`/play/${b.id}`}>
-                      <span className={`page__tab page__tab--${b.difficulty ?? 'ring'} display`}>{label}</span>
+                      <span className={`page__tab page__tab--${b.closed ? 'ring' : b.difficulty ?? 'ring'} display`}>{label}</span>
                       <BoardPreview board={b} links={play?.links ?? null} plates={false} />
                       <span className="page__foot">
                         <span className="page__name">{givensLine(b.slots)}</span>
@@ -167,7 +167,7 @@ function Hero({ board, day, play, streak }: {
               {streak.best > streak.current ? ` Your best is ${streak.best}.` : ''}
             </p>
             <div className="hero__actions">
-              <ShareButton text={shareLine({ title: `Chain #${day}`, links: play.links })} />
+              <ShareButton text={shareLine({ title: `Chain #${day}`, plates: play.plates ?? [] })} />
               <a className="actions__link" href={`/play/${board.id}`}>Look at the board</a>
             </div>
           </>
@@ -193,7 +193,7 @@ function Hero({ board, day, play, streak }: {
 
 /** The result as glyphs, the same ones the share line uses. */
 function Grid({ play }: { play: Play }) {
-  return <span className="grid">{play.links.map((l) => (l ? '🟩' : '🟥')).join('')}</span>;
+  return <span className="grid">{(play.plates ?? []).map((m) => MARK_GLYPH[m]).join('')}</span>;
 }
 
 function givensLine(slots: readonly (Given | null)[]): string {

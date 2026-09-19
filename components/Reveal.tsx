@@ -11,8 +11,9 @@ import type { Named } from '../src/lib/chain/client';
 /**
  * The reveal, as a clock.
  *
- * Verdict inside four seconds, everything on the page inside six. The
- * links are judged one after another; the verdict lands; then the tags
+ * One link at a time, slowly enough to watch: a link every 800 ms, so a
+ * ring of six reaches its verdict in about six seconds. The verdict lands;
+ * then the tags
  * under the plates and the answers the board had in mind. It is a handful
  * of timers, not a timeline library: every beat is a state and the board
  * draws whatever state it is in, so a reload mid-reveal, reduced motion,
@@ -26,10 +27,10 @@ export interface RevealPhase {
   wall: boolean;
 }
 
-export const LINK_EVERY = 350;
-const FIRST_LINK = 300;
-const AFTER_LINKS = 250;
-const AFTER_VERDICT = 900;
+export const LINK_EVERY = 800;
+const FIRST_LINK = 700;
+const AFTER_LINKS = 600;
+const AFTER_VERDICT = 1000;
 
 export function useReveal(active: boolean, linkCount: number): RevealPhase {
   const [phase, setPhase] = useState<RevealPhase>({ stampedThrough: -1, verdict: false, wall: false });
@@ -84,9 +85,9 @@ export function Verdict({ result, streak, show }: {
 }
 
 /** The tag under a plate: found it, held anyway, or nothing. */
-export function PlateTag({ slot, run }: { slot: SlotOutcome; run: boolean }) {
+export function PlateTag({ slot, hinted, run }: { slot: SlotOutcome; hinted: boolean; run: boolean }) {
   const found = slot.obvious && slot.playerId === slot.obvious.id;
-  const label = found ? 'You found it' : slot.held ? 'Yours held too' : null;
+  const label = found ? (hinted ? 'Found, with a hint' : 'You found it') : slot.held ? 'Yours held too' : null;
   if (!label) return null;
   return (
     <div className={`plate-tag ${found ? 'plate-tag--found' : ''} ${run ? 'is-run' : ''}`}>

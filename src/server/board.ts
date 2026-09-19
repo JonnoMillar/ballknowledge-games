@@ -105,7 +105,7 @@ export function listBoards(): Promise<BoardSummary[]> {
       });
       const clues: Record<number, string> = {};
       for (const [i, clue] of Object.entries(p.clues ?? {})) clues[Number(i)] = clue.label;
-      out.push({ id: p.id, daily: p.clues !== undefined, difficulty: p.difficulty, closed: p.closed ?? false, slots, clues, images });
+      out.push({ id: p.id, daily: p.difficulty === undefined, difficulty: p.difficulty, closed: p.closed ?? false, slots, clues, images });
     }
     return out;
   })();

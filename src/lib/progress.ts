@@ -1,3 +1,5 @@
+import type { PlateMark } from './chain/share';
+
 /**
  * What the player has done, kept in the browser.
  *
@@ -10,7 +12,10 @@ export interface Play {
   /** The daily's day number when this board was played as the daily, else null. */
   day: number | null;
   held: boolean;
+  /** Link by link, for drawing the board. */
   links: boolean[];
+  /** Plate by plate, for the share line: held, held with a hint, missed. */
+  plates: PlateMark[];
   /** The local date it was played, YYYY-MM-DD. */
   date: string;
 }

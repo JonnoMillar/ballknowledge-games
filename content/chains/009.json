@@ -1,8 +1,9 @@
 {
   "id": "009",
   "mode": "clubs",
+  "difficulty": "hard",
   "closed": true,
-  "caption": "Raya to Benzema is the narrow side: eighteen names, and Özil is the one everybody reaches for.",
+  "caption": "Four corners, four flags. Raya to Benzema is the narrow side: eighteen names, and the Spaniard everybody reaches for is Kepa.",
   "slots": [
     "Q23759917",
     null,
@@ -13,14 +14,36 @@
     "Q1912",
     null
   ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q29",
+      "label": "a Spaniard"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q183",
+      "label": "a German"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q29",
+      "label": "a Spaniard"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    }
+  },
   "referenceSolution": [
     "Q23759917",
     "Q42731",
     "Q48892",
-    "Q1911",
+    "Q134976",
     "Q19665907",
-    "Q83488",
+    "Q3195361",
     "Q1912",
-    "Q208104"
+    "Q27569376"
   ]
 }

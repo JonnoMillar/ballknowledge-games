@@ -13,7 +13,7 @@ import { neighboursOf } from '../src/lib/chain/score';
 import { shareText } from '../src/lib/chain/result';
 import { buildIndex, type SearchIndex } from '../src/lib/search/index';
 import type { ChainPuzzle } from '../src/lib/chain/types';
-import { blankLinks, decodeNames, type Given, type NameEntry, type NameRow, type SealResponse } from '../src/lib/chain/client';
+import { blankLinks, decodeNames, type Given, type HintResponse, type NameEntry, type NameRow, type SealResponse } from '../src/lib/chain/client';
 import { clubColour } from '../src/lib/club-colours';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
@@ -56,8 +56,8 @@ export default function Chain({
   clubs: Record<string, ClubView>;
   /** What the masthead and the share line call this board. */
   title?: string;
-  /** Told once the server has judged the board. */
-  onSealed?: (sealed: SealResponse) => void;
+  /** Told once the server has judged the board, with the plates a hint was taken on. */
+  onSealed?: (sealed: SealResponse, hinted: number[]) => void;
   /** The daily streak to print on a held verdict, if this is the daily. */
   streak?: number | null;
   /** A line under the masthead, such as "you have played this one". */
@@ -112,6 +112,11 @@ export default function Chain({
   const [sealing, setSealing] = useState(false);
   const [sealError, setSealError] = useState<string | null>(null);
   const [sealed, setSealed] = useState<Sealed | null>(null);
+  // The clubs shown for a plate, once asked for. A hint is the one thing the
+  // board says about an answer before the seal, and taking one is recorded:
+  // the share line shows that plate in yellow.
+  const [hints, setHints] = useState<Record<number, HintResponse['clubs']>>({});
+  const hinted = useMemo(() => Object.keys(hints).map(Number).sort((a, b) => a - b), [hints]);
   const board = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -160,6 +165,22 @@ export default function Chain({
     if (from?.startsWith('slot:')) dispatch({ type: 'unplace', index: Number(from.slice(5)) });
   }
 
+  async function hint(i: number) {
+    if (hints[i] || state.submitted) return;
+    try {
+      const res = await fetch('/api/hint', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ board: puzzle.id, slot: i }),
+      });
+      if (!res.ok) return;
+      const data = (await res.json()) as HintResponse;
+      setHints((h) => ({ ...h, [i]: data.clubs }));
+    } catch {
+      // A hint that did not arrive is a hint not taken.
+    }
+  }
+
   async function seal() {
     if (sealing || sealed) return;
     setSealing(true);
@@ -174,7 +195,7 @@ export default function Chain({
       const data = (await res.json()) as SealResponse;
       setSealed({ ...data, pool: new Map(data.players.map((p) => [p.id, p])) });
       dispatch({ type: 'submit' });
-      onSealed?.(data);
+      onSealed?.(data, hinted);
       // The reveal happens on the board, so the board is what is on screen.
       board.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
@@ -283,7 +304,7 @@ export default function Chain({
               )}
               <span className="brief__note">
                 {Object.keys(clues).length > 0
-                  ? 'Every link is a shared club, and each plate says who fits it. The chain holds or it doesn’t.'
+                  ? 'Every link is a shared club, and a plate that asks for a German only holds with a German. Stuck? Show a plate’s clubs, and the share line says you did.'
                   : 'Every link is a shared club. Anyone who links will do, and the chain holds or it doesn’t.'}
               </span>
             </p>
@@ -308,10 +329,12 @@ export default function Chain({
               clues={clues}
               clueMetFor={(i) => (phase.verdict ? outcome(i)?.clueMet ?? null : null)}
               interactive={!state.submitted}
+              hintFor={(i) => hints[i] ?? null}
+              onHint={hint}
               below={revealed ? (i) => {
                 const o = outcome(i);
                 if (!o) return null;
-                return <PlateTag slot={o} run={phase.wall} />;
+                return <PlateTag slot={o} hinted={hints[i] !== undefined} run={phase.wall} />;
               } : undefined}
             />
 
@@ -320,7 +343,7 @@ export default function Chain({
                 <Verdict result={result} streak={streak} show={phase.verdict} />
                 <Wall result={result} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} />
                 <div className={`actions actions--after ${phase.wall ? 'is-shown' : ''}`}>
-                  <ShareButton text={shareText(result, boardTitle)} />
+                  <ShareButton text={shareText(result, boardTitle, hinted)} />
                   <a className="actions__link" href="/">Another chain</a>
                 </div>
               </>

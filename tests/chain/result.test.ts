@@ -94,7 +94,9 @@ describe('shareText', () => {
   it('shows the shape of the attempt and none of the answer', () => {
     const r = chainResult(['a', 'obscureBridge', 'c'], puzzle, players, pool);
     const text = shareText(r, '004');
-    expect(text).toContain('🟩🟩');
+    // One plate on this board, and it held: one glyph, not one per link.
+    expect(text).toContain('\n🟩');
+    expect(text).not.toContain('🟩🟩');
     expect(text).toContain('004');
     // The whole point: a friend who has not played can still play. Only the
     // fixture names long enough to be distinctive are checked — 'a' and 'c'

@@ -1,7 +1,7 @@
 import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, sharedClubsByProminence, sidesOf } from './score';
 import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
-import { shareLine } from './share';
+import { plateMarks, shareLine } from './share';
 import type { SlotDepth } from './score';
 import type { ChainFill, ChainPuzzle } from './types';
 import type { Player } from '../chemistry/types';
@@ -353,6 +353,6 @@ export function chainResult(
  * The result as a line of text worth pasting to a group chat. See
  * `shareLine` in share.ts for the shape; this fills it from a result.
  */
-export function shareText(result: ChainResult, title: string): string {
-  return shareLine({ title: /^\d{3}$/.test(title) ? `Chain ${title}` : title, links: result.links });
+export function shareText(result: ChainResult, title: string, hinted: readonly number[] = []): string {
+  return shareLine({ title: /^\d{3}$/.test(title) ? `Chain ${title}` : title, plates: plateMarks(result.slots, hinted) });
 }

@@ -76,6 +76,17 @@ export interface SealRequest {
   fill: readonly string[];
 }
 
+/** A hint asks about one empty plate. */
+export interface HintRequest {
+  board: string;
+  slot: number;
+}
+
+/** What a hint returns: the clubs the plate's answer played for, as badges. */
+export interface HintResponse {
+  clubs: { id: string; club: ClubView }[];
+}
+
 /** What sealing returns: the result, and everything the reveal draws. */
 export interface SealResponse {
   result: ChainResult;
@@ -119,7 +130,7 @@ export interface BoardProps {
  */
 export interface BoardSummary {
   id: string;
-  /** A clued ring: the kind the daily is. */
+  /** A board the daily draws from: generated, and ungraded. The ladder is the rest. */
   daily: boolean;
   difficulty?: string;
   closed: boolean;

@@ -7,7 +7,7 @@ import ClueBadge from './ClueBadge';
 import type { ChainLink } from '../src/lib/chain/score';
 import type { SlotClue } from '../src/lib/chain/types';
 import type { ClubView } from '../src/lib/clubs';
-import type { Named } from '../src/lib/chain/client';
+import type { HintResponse, Named } from '../src/lib/chain/client';
 import type { PortraitImage } from '../src/lib/portraits';
 
 /**
@@ -62,8 +62,17 @@ function Link({ link, mode, clubs, revealed, stamped, vertical }: {
   );
 }
 
+/** The clubs an answer played for, as a row of badges under the plate. */
+function Hint({ clubs }: { clubs: HintResponse['clubs'] }) {
+  return (
+    <span className="hint" title={clubs.map((c) => shortClubName(c.club.name)).join(', ')}>
+      {clubs.map(({ id, club }) => <ClubBadge key={id} clubId={id} club={club} size={22} />)}
+    </span>
+  );
+}
+
 function Slot({
-  index, player, given, focused, image, ground, onFocus, interactive, landing, shake, clue, clueMet,
+  index, player, given, focused, image, ground, onFocus, interactive, landing, shake, clue, clueMet, hint, onHint,
 }: {
   index: number;
   player: Named | undefined;
@@ -78,6 +87,10 @@ function Slot({
   clue?: SlotClue;
   /** The verdict on the clue once sealed; null while the board is open. */
   clueMet: boolean | null;
+  /** The clubs shown for this plate, once a hint has been taken. */
+  hint?: HintResponse['clubs'] | null;
+  /** Asks for the hint. Absent where hints are not on offer. */
+  onHint?: (i: number) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: `slot:${index}`, disabled: given || !interactive });
   const clueState = clueMet === null ? '' : clueMet ? 'clue--met' : 'clue--missed';
@@ -109,6 +122,11 @@ function Slot({
           <span>{clueMet === false ? `not ${clue.label}` : clue.label}</span>
         </span>
       ) : null}
+      {!given && hint ? (
+        <Hint clubs={hint} />
+      ) : !given && interactive && onHint ? (
+        <button type="button" className="hint-btn" onClick={() => onHint(index)}>Show clubs</button>
+      ) : null}
     </div>
   );
 }
@@ -127,6 +145,7 @@ export default function ChainBoard({
   fill, slots, links, mode, clubs, images, players, revealed, groundFor,
   focused = null, onFocus = () => {}, interactive = true, landedIndex = null,
   stampedThrough, closed = false, clues = {}, clueMetFor = () => null, below, shakeFor = () => false, stuck = false,
+  hintFor = () => null, onHint,
 }: {
   fill: readonly (string | null)[];
   slots: readonly (string | null)[];
@@ -151,8 +170,10 @@ export default function ChainBoard({
   closed?: boolean;
   clues?: Readonly<Record<number, SlotClue>>;
   clueMetFor?: (i: number) => boolean | null;
-  /** Anything to hang under a slot once sealed (the depth column). */
+  /** Anything to hang under a slot once sealed (the tag). */
   below?: (i: number) => ReactNode;
+  hintFor?: (i: number) => HintResponse['clubs'] | null;
+  onHint?: (i: number) => void;
 }) {
   const link = (li: number, vertical: boolean) => links[li] ? (
     <Link
@@ -179,6 +200,8 @@ export default function ChainBoard({
       shake={shakeFor(i)}
       clue={clues[i]}
       clueMet={clueMetFor(i)}
+      hint={hintFor(i)}
+      onHint={onHint}
     />
   );
 

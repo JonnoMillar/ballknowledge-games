@@ -5,6 +5,7 @@ import type { BoardProps } from '../src/lib/chain/client';
 import type { SealResponse } from '../src/lib/chain/client';
 import { dayNumber, dayOfBoard, localDate } from '../src/lib/daily';
 import { readProgress, recordPlay, streakOf, type Play } from '../src/lib/progress';
+import { MARK_GLYPH, plateMarks } from '../src/lib/chain/share';
 
 /**
  * The board, with a memory.
@@ -30,13 +31,14 @@ export default function PlayClient({ board, dailyIds }: { board: BoardProps; dai
   const isToday = day !== null && day === dayNumber(localDate());
   const title = day !== null ? `Chain #${day}` : `Chain ${board.puzzle.id}`;
 
-  function onSealed(sealed: SealResponse) {
+  function onSealed(sealed: SealResponse, hinted: number[]) {
     const r = sealed.result;
     const today = dayNumber(localDate());
     const progress = recordPlay(board.puzzle.id, {
       day: isToday ? day : null,
       held: r.perfect,
       links: [...r.links],
+      plates: plateMarks(r.slots, hinted),
       date: localDate(),
     });
     setStreak(streakOf(progress, today).current);
@@ -44,7 +46,7 @@ export default function PlayClient({ board, dailyIds }: { board: BoardProps; dai
 
   const notice = played ? (
     <p className="replay">
-      You have played this one: {played.links.map((l) => (l ? '🟩' : '🟥')).join('')}. Another go is free, and your first one is the one that counts.
+      You have played this one: {(played.plates ?? []).map((m) => MARK_GLYPH[m]).join('')}. Another go is free, and your first one is the one that counts.
     </p>
   ) : null;
 
