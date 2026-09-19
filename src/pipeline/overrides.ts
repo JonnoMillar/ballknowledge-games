@@ -13,6 +13,8 @@ export const NAME_OVERRIDES: Readonly<Record<string, string>> = {
   Q3779221: 'Guido Carrillo',   // was "Guido Carrillo EL GOAT"
   Q222151: 'João Moutinho',     // was "João Moutinh0" (zero for the letter o)
   Q22082660: 'Roberto Arboleda', // was "Robert0 Arboleda" (zero for the letter o)
+  Q44977: 'Pierre-Emerick Aubameyang', // was "Pierre Cardin picha grande"
+  Q186330: 'Rafael Márquez',    // was "Rafael Márquez El piojo"
 };
 
 export function applyNameOverride(id: string, name: string): string {

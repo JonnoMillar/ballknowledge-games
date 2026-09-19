@@ -1,7 +1,7 @@
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import type { Player } from '../src/lib/chemistry/types';
 import type { ChainPuzzle, SlotClue } from '../src/lib/chain/types';
-import { chainFieldFor, sidesOf, sharedClubsByProminence } from '../src/lib/chain/score';
+import { chainFieldFor, sidesOf } from '../src/lib/chain/score';
 import { factFame } from '../src/lib/fame/spell';
 import { DEMONYM } from '../src/lib/chain/demonyms';
 
@@ -178,7 +178,7 @@ function build(ring: Player[]): ChainPuzzle | null {
     if (plate.clue) clues[2 * i + 1] = plate.clue;
   }
   const puzzle: ChainPuzzle = {
-    id: '000', mode: 'clubs', difficulty: 'medium', closed: true, scoring: 'completion',
+    id: '000', mode: 'clubs', closed: true,
     slots, clues, referenceSolution: ref,
   };
   return passes(puzzle) ? puzzle : null;
@@ -224,6 +224,3 @@ for (const b of boards) {
   if (WRITE) await writeFile(`content/chains/${id}.json`, JSON.stringify(b, null, 2) + '\n');
 }
 if (!WRITE) console.log('(dry run; pass --write to keep them)');
-
-// Keep the linter honest about an import the passes() check does not use.
-void sharedClubsByProminence;

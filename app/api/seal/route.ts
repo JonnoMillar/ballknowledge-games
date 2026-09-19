@@ -40,13 +40,13 @@ export async function POST(req: Request) {
   const result = chainResult(fill, puzzle, players, byId);
   const links = chainLinks(fill, byId, mode, puzzle.prescribedLinks ?? {}, puzzle.closed ?? false);
 
+  // Everyone the reveal draws: the fill, and the one name per plate the
+  // board had in mind. The rest of the result stays a number.
   const ids = new Set<string>(fill);
   const clubIds = new Set<string>();
   for (const s of result.slots) {
-    if (s.best) { ids.add(s.best.id); s.best.clubs.forEach((c) => clubIds.add(c)); }
     if (s.obvious) { ids.add(s.obvious.id); s.obvious.clubs.forEach((c) => clubIds.add(c)); }
   }
-  for (const p of result.pinboard) { ids.add(p.id); p.clubs.forEach((c) => clubIds.add(c)); }
   for (const l of links) { l.clubs.forEach((c) => clubIds.add(c)); if (l.required) clubIds.add(l.required); }
 
   const views: Record<string, ClubView> = {};

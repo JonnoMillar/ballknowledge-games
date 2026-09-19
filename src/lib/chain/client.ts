@@ -112,14 +112,21 @@ export interface BoardProps {
   clubs: Record<string, ClubView>;
 }
 
-/** A board as the home page lists it: enough to name it, never its answer. */
+/**
+ * A board as the home page draws it: the givens on their grounds, the
+ * plates to fill and what each asks for. Enough to show the board, never
+ * its answer.
+ */
 export interface BoardSummary {
   id: string;
-  completion: boolean;
+  /** A clued ring: the kind the daily is. */
+  daily: boolean;
   difficulty?: string;
-  /** How many the player has to find. */
-  blanks: number;
   closed: boolean;
-  /** The givens' plate names, for a line like "Owen, Henry, Totti and Lampard". */
-  givens: string[];
+  /** Slot order: a given, or null for a plate to fill. */
+  slots: (Given | null)[];
+  /** The clue on each empty plate, where there is one, as its label. */
+  clues: Record<number, string>;
+  /** Pictures for the givens. */
+  images: Record<string, PortraitImage>;
 }

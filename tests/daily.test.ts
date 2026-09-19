@@ -41,7 +41,7 @@ describe('the daily', () => {
 });
 
 describe('the streak', () => {
-  const play = (day: number, held: boolean) => ({ day, held, links: [held], tiers: [], date: 'x' });
+  const play = (day: number, held: boolean) => ({ day, held, links: [held], date: 'x' });
   it('counts consecutive held days ending today or yesterday', () => {
     const p: Progress = { plays: { a: play(3, true), b: play(4, true), c: play(5, true) } };
     expect(streakOf(p, 5).current).toBe(3);
@@ -53,7 +53,7 @@ describe('the streak', () => {
     expect(streakOf(p, 4)).toEqual({ current: 1, best: 2 });
   });
   it('ignores boards not played as the daily', () => {
-    const p: Progress = { plays: { a: { day: null, held: true, links: [true], tiers: [], date: 'x' } } };
+    const p: Progress = { plays: { a: { day: null, held: true, links: [true], date: 'x' } } };
     expect(streakOf(p, 1)).toEqual({ current: 0, best: 0 });
   });
 });

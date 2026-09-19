@@ -1,9 +1,7 @@
 {
   "id": "069",
   "mode": "clubs",
-  "difficulty": "medium",
   "closed": true,
-  "scoring": "completion",
   "slots": [
     "Q20851003",
     null,

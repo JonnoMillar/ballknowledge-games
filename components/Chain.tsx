@@ -4,7 +4,7 @@ import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type Dra
 import ChainBoard from './ChainBoard';
 import SearchSheet from './SearchSheet';
 import Sticker, { neutral, solid, type Ground } from './Sticker';
-import { DepthBar, PlateTag, ShareButton, useReveal, Verdict, Wall } from './Reveal';
+import { PlateTag, ShareButton, useReveal, Verdict, Wall } from './Reveal';
 import { useSwing } from './swing';
 import { shortClubName } from './ClubBadge';
 import type { ClubView } from '../src/lib/clubs';
@@ -66,7 +66,6 @@ export default function Chain({
   const mode = puzzle.mode ?? 'chemistry';
   const closed = puzzle.closed ?? false;
   const clues = useMemo(() => puzzle.clues ?? {}, [puzzle.clues]);
-  const completion = puzzle.scoring === 'completion';
   const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
   const boardTitle = title ?? `Chain ${puzzle.id}`;
 
@@ -188,7 +187,7 @@ export default function Chain({
   const links = useMemo(() => sealed?.links ?? blankLinks(puzzle), [sealed, puzzle]);
   const clubs = useMemo(() => ({ ...givenClubs, ...(sealed?.clubs ?? {}) }), [givenClubs, sealed]);
   const result = sealed?.result ?? null;
-  const phase = useReveal(sealed !== null, links.length, completion);
+  const phase = useReveal(sealed !== null, links.length);
   const revealed = sealed !== null;
 
   /**
@@ -283,11 +282,9 @@ export default function Chain({
                 <>Find the {count} who take <b>{ends[0]}</b> to <b>{ends[1]}</b>.</>
               )}
               <span className="brief__note">
-                {completion
+                {Object.keys(clues).length > 0
                   ? 'Every link is a shared club, and each plate says who fits it. The chain holds or it doesn’t.'
-                  : mode === 'clubs'
-                    ? 'Every link is a shared club. The less obvious the name, the better.'
-                    : 'Every link green. The less obvious the name, the better.'}
+                  : 'Every link is a shared club. Anyone who links will do, and the chain holds or it doesn’t.'}
               </span>
             </p>
 
@@ -314,16 +311,16 @@ export default function Chain({
               below={revealed ? (i) => {
                 const o = outcome(i);
                 if (!o) return null;
-                return completion ? <PlateTag slot={o} run={phase.depth} /> : <DepthBar slot={o} run={phase.depth} />;
+                return <PlateTag slot={o} run={phase.wall} />;
               } : undefined}
             />
 
             {result ? (
               <>
-                <Verdict result={result} completion={completion} streak={streak} show={phase.verdict} />
-                <Wall result={result} completion={completion} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} />
+                <Verdict result={result} streak={streak} show={phase.verdict} />
+                <Wall result={result} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} />
                 <div className={`actions actions--after ${phase.wall ? 'is-shown' : ''}`}>
-                  <ShareButton text={shareText(result, boardTitle, !completion)} />
+                  <ShareButton text={shareText(result, boardTitle)} />
                   <a className="actions__link" href="/">Another chain</a>
                 </div>
               </>

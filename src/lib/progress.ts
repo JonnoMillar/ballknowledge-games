@@ -1,5 +1,3 @@
-import type { Tier } from './chain/tier';
-
 /**
  * What the player has done, kept in the browser.
  *
@@ -13,7 +11,6 @@ export interface Play {
   day: number | null;
   held: boolean;
   links: boolean[];
-  tiers: (Tier | null)[];
   /** The local date it was played, YYYY-MM-DD. */
   date: string;
 }

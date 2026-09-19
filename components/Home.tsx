@@ -1,21 +1,25 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Mark } from './Chain';
-import type { BoardSummary } from '../src/lib/chain/client';
-import { boardForDay, dateOfDay, dayNumber, localDate } from '../src/lib/daily';
-import { readProgress, streakOf, type Progress } from '../src/lib/progress';
-import { shareLine } from '../src/lib/chain/tier';
+import BoardPreview from './BoardPreview';
+import { Figure } from './Sticker';
+import type { BoardSummary, Given } from '../src/lib/chain/client';
+import { boardForDay, dateOfDay, dayNumber, localDate, longDate } from '../src/lib/daily';
+import { readProgress, streakOf, type Play, type Progress } from '../src/lib/progress';
+import { shareLine } from '../src/lib/chain/share';
+import { plateName } from '../src/lib/short-name';
 
 /**
- * The home page.
+ * The home page: an album page with today's stickers on it.
  *
- * One thing first: today's chain, or the result if it has been played.
- * Then the streak, the Deep Cuts track for anyone who wants a score, the
- * archive of past dailies, and how to play. Everything the page knows
- * about the player is in localStorage, read once on mount.
+ * The board itself is the front door, drawn as it will be played, with
+ * the givens on their grounds and the plates still grey. Then the streak,
+ * how it works, the ladder for anyone who wants a harder board, and the
+ * dailies gone by. Everything the page knows about the player is in
+ * localStorage, read once on mount.
  */
 export default function Home({ boards }: { boards: BoardSummary[] }) {
-  const dailyIds = boards.filter((b) => b.completion).map((b) => b.id);
+  const dailyIds = boards.filter((b) => b.daily).map((b) => b.id);
   const byId = new Map(boards.map((b) => [b.id, b]));
   const [today, setToday] = useState<number | null>(null);
   const [progress, setProgress] = useState<Progress>({ plays: {} });
@@ -30,18 +34,12 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
   const todayPlay = todayId ? progress.plays[todayId] : undefined;
   const streak = today !== null ? streakOf(progress, today) : { current: 0, best: 0 };
 
-  const deepCuts = boards.filter((b) => !b.completion && b.difficulty !== undefined || (!b.completion && b.closed));
+  const ladder = boards.filter((b) => !b.daily);
   const archive = today !== null
     ? Array.from({ length: Math.min(today - 1, 30) }, (_, i) => today - 1 - i)
         .map((day) => ({ day, id: boardForDay(day, dailyIds)! }))
         .filter(({ id }) => byId.has(id))
     : [];
-
-  const count = (n: number) => ['no', 'one', 'two', 'three', 'four', 'five'][n] ?? String(n);
-  const givensLine = (b: BoardSummary) => {
-    const g = b.givens;
-    return g.length <= 1 ? g.join('') : `${g.slice(0, -1).join(', ')} and ${g[g.length - 1]}`;
-  };
 
   return (
     <div className="app">
@@ -56,65 +54,61 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
       </header>
 
       <main className="home">
-        <section className="hero">
+        <section className="page page--hero">
+          <span className="page__tab display">Today</span>
           {today === null || !todayBoard ? (
-            <p className="brief">Loading today’s chain…</p>
-          ) : todayPlay ? (
-            <>
-              <p className="hero__eyebrow">Chain #{today} · {dateOfDay(today)}</p>
-              <h1 className={`hero__head display ${todayPlay.held ? 'hero__head--held' : 'hero__head--broke'}`}>
-                {todayPlay.held ? 'Chain held' : 'Chain broke'}
-              </h1>
-              <p className="hero__grid">{todayPlay.links.map((l) => (l ? '🟩' : '🟥')).join('')}</p>
-              <p className="brief__note">
-                {streak.current > 0 ? `Day ${streak.current} of your streak.` : 'Tomorrow is a new chain.'}
-                {streak.best > streak.current ? ` Your best is ${streak.best}.` : ''}
-              </p>
-              <div className="hero__actions">
-                <ShareButton text={shareLine({ title: `Chain #${today}`, links: todayPlay.links, tiers: [] })} />
-                <a className="actions__link" href={`/play/${todayId}`}>Look at the board</a>
-              </div>
-            </>
+            <div className="hero hero--loading" aria-busy="true">
+              <p className="hero__eyebrow">Chain</p>
+              <h1 className="hero__head display">Today’s chain</h1>
+            </div>
           ) : (
-            <>
-              <p className="hero__eyebrow">Chain #{today} · {dateOfDay(today)}</p>
-              <h1 className="hero__head display">
-                {todayBoard.closed ? 'Close the ring' : 'Link the ends'}
-              </h1>
-              <p className="brief">
-                <b>{givensLine(todayBoard)}</b>. {count(todayBoard.blanks)[0]!.toUpperCase() + count(todayBoard.blanks).slice(1)} to find, a clue on each.
-              </p>
-              <div className="hero__actions">
-                <a className="seal seal--link" href={`/play/${todayId}`}>Play today’s chain</a>
-              </div>
-              {streak.current > 0 ? <p className="brief__note">Day {streak.current} of your streak. Keep it going.</p> : null}
-            </>
+            <Hero board={todayBoard} day={today} play={todayPlay} streak={streak} />
           )}
         </section>
 
         <section className="how">
           <h2 className="home__head display">How it works</h2>
-          <ol className="how__list">
-            <li>Every link is a club two players both played for. The givens share nothing.</li>
-            <li>Each empty sticker says who fits it, like “a German”. Tap it, name the player.</li>
-            <li>Seal it once. The chain holds or it doesn’t, and the streak counts the days it held.</li>
+          <ol className="how__steps">
+            <li className="how__step">
+              <div className="how__art" aria-hidden>
+                <MiniSticker ground="#A50044" name="Messi" />
+                <span className="plink plink--h"><span className="plink__rule" /><span className="plink__die" /></span>
+                <MiniSticker ground="var(--silhouette)" empty />
+              </div>
+              <p><b>Every link is a club two players both played for.</b> The givens are on the page. The gaps are yours.</p>
+            </li>
+            <li className="how__step">
+              <div className="how__art" aria-hidden>
+                <MiniSticker ground="var(--silhouette)" empty hint="a German" />
+              </div>
+              <p><b>Each empty sticker says who fits it.</b> Tap it, name the player. No lists, no hints: you either know it or you don’t.</p>
+            </li>
+            <li className="how__step">
+              <div className="how__art" aria-hidden>
+                <span className="seal seal--art">Seal it</span>
+                <span className="how__grid">🟩🟩🟩</span>
+              </div>
+              <p><b>Seal it once.</b> The chain holds or it doesn’t, and your streak counts the days it held.</p>
+            </li>
           </ol>
         </section>
 
-        {deepCuts.length > 0 ? (
-          <section className="track">
-            <h2 className="home__head display">Deep Cuts</h2>
-            <p className="track__blurb">No clues, and a score for how far from the obvious you went. Name Messi and you’re a banker. Name the loanee and you’re a deep cut.</p>
-            <ul className="board-list">
-              {deepCuts.map((b) => {
+        {ladder.length > 0 ? (
+          <section className="ladder">
+            <h2 className="home__head display">The ladder</h2>
+            <p className="track__blurb">No clues, and no right answer: anyone who links will do. The easy one has seventy ways in. The hard one has a handful.</p>
+            <ul className="ladder__list">
+              {ladder.map((b) => {
                 const play = progress.plays[b.id];
+                const label = b.difficulty ? b.difficulty[0]!.toUpperCase() + b.difficulty.slice(1) : 'The ring';
                 return (
                   <li key={b.id}>
-                    <a className="board-row" href={`/play/${b.id}`}>
-                      <span className="board-row__id display">{b.id}</span>
-                      <span className="board-row__name">{givensLine(b)}</span>
-                      <span className="board-row__meta">
-                        {play ? play.links.map((l) => (l ? '🟩' : '🟥')).join('') + (play.tiers.every((t) => t) ? ' ' + play.tiers.map((t) => (t === 'deep' ? '💎' : t === 'shout' ? '🔷' : '⚪')).join('') : '') : b.difficulty ? <span className="pill pill--ink">{b.difficulty}</span> : null}
+                    <a className={`page page--card ${play ? (play.held ? 'page--held' : 'page--broke') : ''}`} href={`/play/${b.id}`}>
+                      <span className={`page__tab page__tab--${b.difficulty ?? 'ring'} display`}>{label}</span>
+                      <BoardPreview board={b} links={play?.links ?? null} plates={false} />
+                      <span className="page__foot">
+                        <span className="page__name">{givensLine(b.slots)}</span>
+                        <span className="page__meta">{play ? <Grid play={play} /> : `${b.slots.filter((s) => !s).length} to find`}</span>
                       </span>
                     </a>
                   </li>
@@ -125,7 +119,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
         ) : null}
 
         {archive.length > 0 ? (
-          <section className="track">
+          <section className="archive">
             <h2 className="home__head display">Past chains</h2>
             <ul className="board-list">
               {archive.map(({ day, id }) => {
@@ -135,8 +129,11 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
                   <li key={day}>
                     <a className="board-row" href={`/play/${id}`}>
                       <span className="board-row__id display">#{day}</span>
-                      <span className="board-row__name">{givensLine(b)}</span>
-                      <span className="board-row__meta">{play ? play.links.map((l) => (l ? '🟩' : '🟥')).join('') : <span className="board-row__todo">Not played</span>}</span>
+                      <span className="board-row__strip" aria-hidden>
+                        {b.slots.flatMap((s) => (s ? [<i key={s.id} style={{ background: s.ground }} />] : []))}
+                      </span>
+                      <span className="board-row__name">{givensLine(b.slots)}</span>
+                      <span className="board-row__meta">{play ? <Grid play={play} /> : <span className="board-row__todo">Not played</span>}</span>
                     </a>
                   </li>
                 );
@@ -146,6 +143,75 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
         ) : null}
       </main>
     </div>
+  );
+}
+
+/** Today's board, or the result if it has been played. */
+function Hero({ board, day, play, streak }: {
+  board: BoardSummary;
+  day: number;
+  play: Play | undefined;
+  streak: { current: number; best: number };
+}) {
+  const blanks = board.slots.filter((s) => !s).length;
+  const count = ['no', 'one', 'two', 'three', 'four', 'five'][blanks] ?? String(blanks);
+  return (
+    <div className={`hero ${play ? (play.held ? 'hero--held' : 'hero--broke') : ''}`}>
+      <div className="hero__copy">
+        <p className="hero__eyebrow">Chain #{day} · {longDate(dateOfDay(day))}</p>
+        {play ? (
+          <>
+            <h1 className="hero__head display">{play.held ? 'Chain held' : 'Chain broke'}</h1>
+            <p className="brief">
+              {streak.current > 0 ? `Day ${streak.current} of your streak.` : 'Tomorrow is a new chain.'}
+              {streak.best > streak.current ? ` Your best is ${streak.best}.` : ''}
+            </p>
+            <div className="hero__actions">
+              <ShareButton text={shareLine({ title: `Chain #${day}`, links: play.links })} />
+              <a className="actions__link" href={`/play/${board.id}`}>Look at the board</a>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1 className="hero__head display">{board.closed ? 'Close the ring' : 'Link the ends'}</h1>
+            <p className="brief">
+              <b>{givensLine(board.slots)}</b>. {count[0]!.toUpperCase() + count.slice(1)} to find, a clue on each.
+            </p>
+            <div className="hero__actions">
+              <a className="seal seal--link" href={`/play/${board.id}`}>Play today’s chain</a>
+            </div>
+            {streak.current > 0 ? <p className="brief__note">Day {streak.current} of your streak. Keep it going.</p> : null}
+          </>
+        )}
+      </div>
+      <a className="hero__board" href={`/play/${board.id}`} aria-label={play ? 'Look at the board' : 'Play today’s chain'}>
+        <BoardPreview board={board} links={play?.links ?? null} />
+      </a>
+    </div>
+  );
+}
+
+/** The result as glyphs, the same ones the share line uses. */
+function Grid({ play }: { play: Play }) {
+  return <span className="grid">{play.links.map((l) => (l ? '🟩' : '🟥')).join('')}</span>;
+}
+
+function givensLine(slots: readonly (Given | null)[]): string {
+  const g = slots.flatMap((s) => (s ? [plateName(s.id, s.name)] : []));
+  return g.length <= 1 ? g.join('') : `${g.slice(0, -1).join(', ')} and ${g[g.length - 1]}`;
+}
+
+/** A sticker for the how-to strip: no player, just the shape. */
+function MiniSticker({ ground, name, empty = false, hint = '' }: { ground: string; name?: string; empty?: boolean; hint?: string }) {
+  return (
+    <span className={`sticker sticker--still ${empty ? 'sticker--empty' : ''}`}>
+      <span className="sticker__photo" style={empty ? undefined : { background: ground }}>
+        <Figure tone={empty ? 'var(--silhouette-figure)' : 'rgba(255,255,255,0.45)'} />
+      </span>
+      <span className="sticker__plate">
+        {empty ? <span className="sticker__hint">{hint}</span> : <span className="sticker__name">{name?.toUpperCase()}</span>}
+      </span>
+    </span>
   );
 }
 

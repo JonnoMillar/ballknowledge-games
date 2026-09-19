@@ -15,7 +15,7 @@ import type { Player } from '../src/lib/chemistry/types';
 const players = JSON.parse(await readFile('data/pool.json', 'utf8')) as Player[];
 const pool = new Map(players.map((p) => [p.id, p]));
 
-const id = process.argv[2] ?? '001';
+const id = process.argv[2] ?? '006';
 const chain = JSON.parse(await readFile(`content/chains/${id}.json`, 'utf8')) as ChainPuzzle;
 const mode = chain.mode ?? 'chemistry';
 

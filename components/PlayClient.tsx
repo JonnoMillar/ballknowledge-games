@@ -5,7 +5,6 @@ import type { BoardProps } from '../src/lib/chain/client';
 import type { SealResponse } from '../src/lib/chain/client';
 import { dayNumber, dayOfBoard, localDate } from '../src/lib/daily';
 import { readProgress, recordPlay, streakOf, type Play } from '../src/lib/progress';
-import { depthRead } from '../src/lib/chain/tier';
 
 /**
  * The board, with a memory.
@@ -38,7 +37,6 @@ export default function PlayClient({ board, dailyIds }: { board: BoardProps; dai
       day: isToday ? day : null,
       held: r.perfect,
       links: [...r.links],
-      tiers: r.slots.map((s) => (s.held ? depthRead(s.depth)?.tier ?? null : null)),
       date: localDate(),
     });
     setStreak(streakOf(progress, today).current);

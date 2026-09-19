@@ -15,6 +15,6 @@ export default async function PlayPage({ params }: { params: Promise<{ id: strin
   if (!isBoardId(id)) notFound();
   const board = await loadBoard(id);
   if (!board) notFound();
-  const daily = (await listBoards()).filter((b) => b.completion).map((b) => b.id);
+  const daily = (await listBoards()).filter((b) => b.daily).map((b) => b.id);
   return <PlayClient board={board} dailyIds={daily} />;
 }

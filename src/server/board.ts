@@ -3,9 +3,8 @@ import type { Player } from '../lib/chemistry/types';
 import type { ChainPuzzle } from '../lib/chain/types';
 import type { BoardProps, BoardSummary, Given } from '../lib/chain/client';
 import { clubView, type ClubRecord, type ClubView } from '../lib/clubs';
-import { clubColour, SIGNATURE_CLUB } from '../lib/club-colours';
+import { clubColour, signatureClub } from '../lib/club-colours';
 import { portraitUrls, type PortraitImage, type PortraitRecord } from '../lib/portraits';
-import { plateName } from '../lib/short-name';
 
 /**
  * The data the server reads, read once and kept.
@@ -49,6 +48,9 @@ export async function readPuzzleFile(id: string): Promise<ChainPuzzle | null> {
     .catch(() => null);
 }
 
+/** A given as the page ships it: a name and the club it wears. */
+const givenOf = (p: Player): Given => ({ id: p.id, name: p.name, ground: clubColour(signatureClub(p)) });
+
 export async function loadBoard(id: string): Promise<BoardProps | null> {
   const file = await readPuzzleFile(id);
   if (!file) return null;
@@ -59,7 +61,7 @@ export async function loadBoard(id: string): Promise<BoardProps | null> {
   const puzzle: ChainPuzzle = {
     id: file.id, mode: file.mode, difficulty: file.difficulty, slots: file.slots,
     prescribedLinks: file.prescribedLinks, caption: file.caption, closed: file.closed,
-    clues: file.clues, scoring: file.scoring,
+    clues: file.clues,
   };
 
   // The givens: a name and the ground they stand on. Their signature club is
@@ -70,7 +72,7 @@ export async function loadBoard(id: string): Promise<BoardProps | null> {
     if (gid == null) continue;
     const p = byId.get(gid);
     if (!p) continue;
-    givens[gid] = { id: gid, name: p.name, ground: clubColour(SIGNATURE_CLUB[gid] ?? p.clubIds[0]) };
+    givens[gid] = givenOf(p);
     if (allImages[gid]) images[gid] = allImages[gid]!;
   }
 
@@ -88,20 +90,22 @@ let summaries: Promise<BoardSummary[]> | null = null;
 
 export function listBoards(): Promise<BoardSummary[]> {
   summaries ??= (async () => {
-    const { byId } = await loadData();
+    const { byId, images: allImages } = await loadData();
     const files = (await readdir('content/chains')).filter((f) => /^\d{3}\.json$/.test(f)).sort();
     const out: BoardSummary[] = [];
     for (const f of files) {
       const p = await readPuzzleFile(f.slice(0, 3));
       if (!p) continue;
-      out.push({
-        id: p.id,
-        completion: p.scoring === 'completion',
-        difficulty: p.difficulty,
-        blanks: p.slots.filter((s) => s == null).length,
-        closed: p.closed ?? false,
-        givens: p.slots.flatMap((id) => (id && byId.get(id) ? [plateName(id, byId.get(id)!.name)] : [])),
+      const images: Record<string, PortraitImage> = {};
+      const slots = p.slots.map((id): Given | null => {
+        const player = id ? byId.get(id) : undefined;
+        if (!id || !player) return null;
+        if (allImages[id]) images[id] = allImages[id]!;
+        return givenOf(player);
       });
+      const clues: Record<number, string> = {};
+      for (const [i, clue] of Object.entries(p.clues ?? {})) clues[Number(i)] = clue.label;
+      out.push({ id: p.id, daily: p.clues !== undefined, difficulty: p.difficulty, closed: p.closed ?? false, slots, clues, images });
     }
     return out;
   })();

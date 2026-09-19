@@ -118,7 +118,7 @@ function Slot({
  * Eight is a square with the middle empty; six is a 3×2 loop, so every link
  * runs along a row or down a column.
  */
-const RINGS: Readonly<Record<number, readonly [row: number, col: number][]>> = {
+export const RINGS: Readonly<Record<number, readonly [row: number, col: number][]>> = {
   8: [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0]],
   6: [[0, 1], [0, 2], [1, 2], [1, 1], [1, 0], [0, 0]],
 };

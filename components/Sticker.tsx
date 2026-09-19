@@ -1,4 +1,5 @@
 'use client';
+import type React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import type { Named } from '../src/lib/chain/client';
 import type { PortraitImage } from '../src/lib/portraits';
@@ -52,25 +53,47 @@ export default function Sticker({
     data: { playerId: player.id, fromSlot },
     disabled: dragId === undefined,
   });
-  const name = plateName(player.id, player.name).toUpperCase();
   const classes = [
-    'sticker',
     dragId ? 'sticker--draggable' : '',
     isDragging ? 'sticker--dragging' : '',
     landing ? 'sticker--landing' : '',
     lifted ? 'sticker--lifted' : '',
     shake ? 'sticker--shake' : '',
   ].filter(Boolean).join(' ');
-  const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
 
   return (
-    <div
+    <StickerFace
       ref={setNodeRef}
       {...(dragId ? listeners : {})}
       {...(dragId ? attributes : {})}
       className={classes}
-      title={player.name}
-    >
+      player={player}
+      image={image}
+      ground={ground}
+      index={index}
+    />
+  );
+}
+
+/**
+ * The sticker itself, with no behaviour: the photo on its ground, the
+ * plate, the number. The board wraps it in a draggable; the home page and
+ * the wall draw it as it is.
+ */
+export function StickerFace({
+  player, image, ground, index, className = '', ref, ...rest
+}: {
+  player: Named;
+  image: PortraitImage | undefined;
+  ground: Ground;
+  index?: number;
+  className?: string;
+  ref?: (node: HTMLElement | null) => void;
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
+  const name = plateName(player.id, player.name).toUpperCase();
+  const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
+  return (
+    <div ref={ref} {...rest} className={`sticker ${className}`} title={player.name}>
       <div className={`sticker__photo ${image?.fit === 'contain' ? 'sticker__photo--contain' : 'sticker__photo--cover'}`}>
         <span className={`sticker__half sticker__half--a ${ground.liveA ? 'is-live' : ''}`} style={{ background: ground.a }} aria-hidden />
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />

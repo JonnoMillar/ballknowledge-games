@@ -32,6 +32,11 @@ export function dateOfDay(day: number): string {
   return new Date(ms).toISOString().slice(0, 10);
 }
 
+/** A date as the page prints it: "19 September 2026". */
+export function longDate(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+}
+
 /** A fixed shuffle: the same ids in the same order on every machine. */
 export function dailyOrder(ids: readonly string[]): string[] {
   const out = [...ids].sort();

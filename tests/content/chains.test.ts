@@ -140,12 +140,12 @@ describe.skipIf(!hasPool || files.length === 0)('shipped chains', () => {
 
 describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
 
-  // ENTRY grades a scored board. A completion board is graded on a different
+  // ENTRY grades an open board. A clued board is graded on a different
   // measure — where its one answer sits on the fact-fame ruler — and is
   // checked below, not here.
   const graded = files
     .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
-    .filter((c) => c.difficulty !== undefined && c.scoring !== 'completion');
+    .filter((c) => c.difficulty !== undefined && c.clues === undefined);
 
   it.skipIf(graded.length === 0)('a grade means the same thing on every board', () => {
     // Only two-blank boards are comparable this way, which is every graded
@@ -174,19 +174,19 @@ describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
 });
 
 /**
- * A completion board is a promise: each plate has ONE answer a fan can reach,
- * and nothing else within reach of it. The same fact-fame ruler the scored
- * boards rank by is used here as a cut-off — 50 and up is a fact people hold,
+ * A clued board is a promise: each plate has ONE answer a fan can reach,
+ * and nothing else within reach of it. The same fact-fame ruler the open
+ * boards are graded by is used here as a cut-off — 50 and up is a fact people hold,
  * under 35 is one nobody reaches for — and the board has to clear both bars
  * on every plate, or it is a scored board with the score hidden.
  */
-describe.skipIf(!hasPool || files.length === 0)('completion boards', () => {
+describe.skipIf(!hasPool || files.length === 0)('clued boards', () => {
   const REACH = 50;
   const CLIFF = 35;
   const OPEN = 5;
   const boards = files
     .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
-    .filter((c) => c.scoring === 'completion');
+    .filter((c) => c.clues !== undefined);
 
   for (const chain of boards) {
     const mode = chain.mode ?? 'clubs';

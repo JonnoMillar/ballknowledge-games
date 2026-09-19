@@ -153,7 +153,7 @@ describe('the answer the reveal names', () => {
 describe('a plate with a clue on it', () => {
   // The same bridge, but the plate asks for a German. Only famousBridge is.
   const clued: ChainPuzzle = {
-    id: 'clued', mode: 'clubs', scoring: 'completion', slots: ['a', null, 'c'],
+    id: 'clued', mode: 'clubs', slots: ['a', null, 'c'],
     clues: { 1: { kind: 'nation', value: 'GER', label: 'a German' } },
   };
 

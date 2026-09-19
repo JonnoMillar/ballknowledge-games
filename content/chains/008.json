@@ -2,7 +2,7 @@
   "id": "008",
   "mode": "clubs",
   "difficulty": "hard",
-  "caption": "Bremen is where the almost-made-its and the already-weres meet.",
+  "caption": "Gelsenkirchen is a stop on the way to Barcelona and a stop on the way out of Turin.",
   "slots": [
     "Q455462",
     null,
@@ -10,12 +10,12 @@
     "Q129027"
   ],
   "prescribedLinks": {
-    "1": "Q51976"
+    "1": "Q32494"
   },
   "referenceSolution": [
     "Q455462",
-    "Q449715",
-    "Q60597",
+    "Q115453",
+    "Q15956282",
     "Q129027"
   ]
 }

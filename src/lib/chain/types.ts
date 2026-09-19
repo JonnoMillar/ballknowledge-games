@@ -92,16 +92,6 @@ export interface ChainPuzzle {
    */
   clues?: Readonly<Record<number, SlotClue>>;
   /**
-   * How the sealed sheet reads the board.
-   *
-   * `obscurity` (the default) ranks every pick within its field and pays in
-   * rarity foil. `completion` asks only whether the chain held: no columns,
-   * no score, no wall of deeper answers — the sheet says solved or broken,
-   * and for each plate shows the one name it was built around. A board that
-   * is made so that one answer is in reach has nothing to rank.
-   */
-  scoring?: 'obscurity' | 'completion';
-  /**
    * One line about why this board is the shape it is, printed on the sealed
    * sheet beside the count of ways it could have gone.
    *
