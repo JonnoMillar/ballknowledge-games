@@ -120,6 +120,20 @@ export function linkPairs(length: number, closed = false): [number, number][] {
   return out;
 }
 
+/**
+ * The clubs two players share, the one that most made the link first.
+ *
+ * `sharedClubs` returns them in the order Wikidata happened to list them,
+ * which put Barcelona Atlètic ahead of Barcelona on a Messi link: the B team
+ * he played ten games for, named as the club that joined him to Deulofeu.
+ * Ranked by the two players' combined appearances there, the first club is
+ * the one a fan would say.
+ */
+export function sharedClubsByProminence(a: Player, b: Player): string[] {
+  const apps = (p: Player, c: string) => p.spells?.[c]?.[0] ?? 0;
+  return [...sharedClubs(a, b)].sort((x, y) => (apps(a, y) + apps(b, y)) - (apps(a, x) + apps(b, x)));
+}
+
 export function chainLinks(
   fill: ChainFill,
   pool: ReadonlyMap<string, Player>,
@@ -140,7 +154,7 @@ export function chainLinks(
       // A prescribed link shows the club it demands, not the clubs the two
       // players happen to share, so the board says the same thing before and
       // after the reveal.
-      clubs: required !== undefined ? [required] : pa && pb ? sharedClubs(pa, pb) : [],
+      clubs: required !== undefined ? [required] : pa && pb ? sharedClubsByProminence(pa, pb) : [],
       made: pa && pb ? linkedVia(pa, pb, mode, required) : false,
       required,
     });

@@ -7,7 +7,7 @@ import ClueBadge from './ClueBadge';
 import type { ChainLink } from '../src/lib/chain/score';
 import type { SlotClue } from '../src/lib/chain/types';
 import type { ClubView } from '../src/lib/clubs';
-import type { Player } from '../src/lib/chemistry/types';
+import type { Named } from '../src/lib/chain/client';
 import type { PortraitImage } from '../src/lib/portraits';
 
 /**
@@ -66,7 +66,7 @@ function Slot({
   index, player, given, focused, image, ground, onFocus, interactive, landing, clue, clueMet,
 }: {
   index: number;
-  player: Player | undefined;
+  player: Named | undefined;
   given: boolean;
   focused: boolean;
   image: PortraitImage | undefined;
@@ -132,7 +132,7 @@ export default function ChainBoard({
   mode: 'chemistry' | 'clubs';
   clubs: Record<string, ClubView>;
   images: Record<string, PortraitImage>;
-  players: ReadonlyMap<string, Player>;
+  players: ReadonlyMap<string, Named>;
   revealed: boolean;
   /** The ground behind each sticker's photo. */
   groundFor: (i: number) => string;

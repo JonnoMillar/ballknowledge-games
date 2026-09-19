@@ -1,4 +1,4 @@
-import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, sidesOf } from './score';
+import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, sharedClubsByProminence, sidesOf } from './score';
 import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
 import type { SlotDepth } from './score';
@@ -179,7 +179,8 @@ export function chainResult(
       if (named !== undefined) { out.push(named); continue; }
       const other = puzzle.slots[n];
       if (other == null) continue;
-      const shared = pool.get(other)?.clubIds.find((c) => p.clubIds.includes(c));
+      const otherPlayer = pool.get(other);
+      const shared = otherPlayer ? sharedClubsByProminence(p, otherPlayer)[0] : undefined;
       if (shared) out.push(shared);
     }
     return out;

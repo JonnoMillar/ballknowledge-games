@@ -1,6 +1,6 @@
 'use client';
 import { useDraggable } from '@dnd-kit/core';
-import type { Player } from '../src/lib/chemistry/types';
+import type { Named } from '../src/lib/chain/client';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
 
@@ -19,7 +19,7 @@ import { plateName } from '../src/lib/short-name';
 export default function Sticker({
   player, image, ground, index, dragId, fromSlot, landing = false, lifted = false,
 }: {
-  player: Player;
+  player: Named;
   image: PortraitImage | undefined;
   /** CSS background for the ground behind the photo. */
   ground: string;

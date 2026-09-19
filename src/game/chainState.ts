@@ -1,9 +1,14 @@
 import type { ChainPuzzle } from '../lib/chain/types';
-import type { Player } from '../lib/chemistry/types';
+import type { Named } from '../lib/chain/client';
 
 export interface ChainState {
   puzzle: ChainPuzzle;
-  pool: ReadonlyMap<string, Player>;
+  /**
+   * Everyone the board may name. In the browser this is the album index —
+   * names only — and it arrives after the board does, so it starts as the
+   * givens and is replaced once the index loads. See `pool/set`.
+   */
+  pool: ReadonlyMap<string, Named>;
   /** The line as it stands. Index 0 is the left end. */
   filled: (string | null)[];
   /** Candidates the player has gathered. Unbounded and free. */
@@ -12,13 +17,14 @@ export interface ChainState {
 }
 
 export type ChainAction =
+  | { type: 'pool/set'; pool: ReadonlyMap<string, Named> }
   | { type: 'library/add'; playerId: string }
   | { type: 'library/remove'; playerId: string }
   | { type: 'place'; index: number; playerId: string }
   | { type: 'unplace'; index: number }
   | { type: 'submit' };
 
-export function initChain(puzzle: ChainPuzzle, pool: ReadonlyMap<string, Player>): ChainState {
+export function initChain(puzzle: ChainPuzzle, pool: ReadonlyMap<string, Named>): ChainState {
   return {
     puzzle,
     pool,
@@ -35,6 +41,9 @@ export function chainReduce(s: ChainState, a: ChainAction): ChainState {
   if (s.submitted) return s;
 
   switch (a.type) {
+    case 'pool/set':
+      return { ...s, pool: a.pool };
+
     case 'library/add':
       if (s.library.includes(a.playerId)) return s;
       if (s.filled.includes(a.playerId)) return s;

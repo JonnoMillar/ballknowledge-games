@@ -1,19 +1,19 @@
 'use client';
-import { useEffect, useMemo, useReducer, useState } from 'react';
-import { DndContext, DragOverlay, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core';
 import ChainBoard from './ChainBoard';
-import ChainSearch from './ChainSearch';
+import SearchSheet from './SearchSheet';
 import Sticker from './Sticker';
 import { useSwing } from './swing';
 import { shortClubName } from './ClubBadge';
 import type { ClubView } from '../src/lib/clubs';
 import { initChain, chainReduce } from '../src/game/chainState';
-import { chainLinks, neighboursOf } from '../src/lib/chain/score';
+import { neighboursOf } from '../src/lib/chain/score';
 import LockIn from './LockIn';
-import { chainResult } from '../src/lib/chain/result';
-import { buildIndex } from '../src/lib/search/index';
+import { buildIndex, type SearchIndex } from '../src/lib/search/index';
 import type { ChainPuzzle } from '../src/lib/chain/types';
-import { clubColour, splitRing, SIGNATURE_CLUB } from '../src/lib/club-colours';
+import { blankLinks, decodeNames, type Given, type NameEntry, type NameRow, type SealResponse } from '../src/lib/chain/client';
+import { clubColour, splitRing } from '../src/lib/club-colours';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
@@ -32,7 +32,7 @@ export function Mark({ className }: { className?: string }) {
 }
 
 /** The copy under the cursor: the same sticker, lifted, on a spring. */
-function DragSticker({ player, image }: { player: Player; image: PortraitImage | undefined }) {
+function DragSticker({ player, image }: { player: NameEntry; image: PortraitImage | undefined }) {
   const ref = useSwing({ active: true, scale: 1.05 });
   return (
     <div ref={ref} style={{ pointerEvents: 'none' }}>
@@ -41,41 +41,71 @@ function DragSticker({ player, image }: { player: Player; image: PortraitImage |
   );
 }
 
+/** The sealed board, as the server judged it, plus what the reveal draws. */
+interface Sealed extends SealResponse {
+  pool: Map<string, Player>;
+}
+
 export default function Chain({
-  players, puzzle, images, clubs,
+  puzzle, givens, images: givenImages, clubs: givenClubs,
 }: {
-  players: Player[];
   puzzle: ChainPuzzle;
+  givens: Record<string, Given>;
+  /** Pictures for the givens. The album brings everyone else's. */
   images: Record<string, PortraitImage>;
+  /** The clubs the board names up front. The seal brings the rest. */
   clubs: Record<string, ClubView>;
 }) {
   const mode = puzzle.mode ?? 'chemistry';
-  const pool = useMemo(() => new Map(players.map((p) => [p.id, p])), [players]);
-  const index = useMemo(() => buildIndex(players), [players]);
+  const closed = puzzle.closed ?? false;
+  const clues = useMemo(() => puzzle.clues ?? {}, [puzzle.clues]);
+  const completion = puzzle.scoring === 'completion';
+  const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
 
-  const [state, dispatch] = useReducer(chainReduce, undefined, () => initChain(puzzle, pool));
+  // The album. Names only, fetched once the board is up. Until it lands the
+  // pool is the givens, which is enough to draw the board.
+  const [album, setAlbum] = useState<Map<string, NameEntry> | null>(null);
+  const [albumFailed, setAlbumFailed] = useState(false);
+  const index = useMemo<SearchIndex<NameEntry> | null>(() => (album ? buildIndex([...album.values()]) : null), [album]);
+
+  const [state, dispatch] = useReducer(chainReduce, undefined, () => initChain(
+    puzzle,
+    new Map(Object.values(givens).map((g) => [g.id, { id: g.id, name: g.name }])),
+  ));
+
+  useEffect(() => {
+    let live = true;
+    fetch('/api/names')
+      .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json() as Promise<{ players: NameRow[] }>; })
+      .then((data) => {
+        if (!live) return;
+        const map = new Map(decodeNames(data.players).map((e) => [e.id, e]));
+        setAlbum(map);
+        dispatch({ type: 'pool/set', pool: map });
+      })
+      .catch(() => { if (live) setAlbumFailed(true); });
+    return () => { live = false; };
+  }, []);
+
+  const images = useMemo<Record<string, PortraitImage>>(() => {
+    const out: Record<string, PortraitImage> = { ...givenImages };
+    if (album) for (const e of album.values()) if (e.image) out[e.id] = e.image;
+    return out;
+  }, [givenImages, album]);
+
   const [focused, setFocused] = useState<number | null>(null);
-  const [dragging, setDragging] = useState<Player | null>(null);
+  const [dragging, setDragging] = useState<NameEntry | null>(null);
+  // A tap is a tap. Without a distance to travel first, the pointer sensor
+  // takes every pointerdown as the start of a drag and the click never
+  // reaches the sticker, so a placed player could not be swapped or removed.
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
   const [overSlot, setOverSlot] = useState(false);
   // The slot filled a moment ago plays the stick-down, then clears itself.
   const [landed, setLanded] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
-
-  const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
-  const closed = puzzle.closed ?? false;
-  const clues = useMemo(() => puzzle.clues ?? {}, [puzzle.clues]);
-  const completion = puzzle.scoring === 'completion';
-  const links = useMemo(
-    () => chainLinks(state.filled, pool, mode, prescribed, closed),
-    [state.filled, pool, mode, prescribed, closed],
-  );
-
-  const result = useMemo(
-    () => (state.submitted ? chainResult(state.filled, puzzle, players, pool) : null),
-    [state.submitted, state.filled, puzzle, players, pool],
-  );
-
-  const blanks = puzzle.slots.filter((s) => s == null).length;
+  const [sealing, setSealing] = useState(false);
+  const [sealError, setSealError] = useState<string | null>(null);
+  const [sealed, setSealed] = useState<Sealed | null>(null);
 
   useEffect(() => {
     if (landed === null) return;
@@ -83,9 +113,23 @@ export default function Chain({
     return () => clearTimeout(t);
   }, [landed]);
 
+  const named = useCallback((id: string | null | undefined): NameEntry | null => {
+    if (!id) return null;
+    const e = album?.get(id);
+    if (e) return e;
+    const g = givens[id];
+    return g ? { id: g.id, name: g.name, aliases: [] } : null;
+  }, [album, givens]);
+
+  const place = useCallback((i: number, id: string) => {
+    dispatch({ type: 'place', index: i, playerId: id });
+    setLanded(i);
+    setFocused(null);
+  }, []);
+
   function onDragStart(e: DragStartEvent) {
     const id = e.active.data.current?.playerId as string | undefined;
-    setDragging(id ? pool.get(id) ?? null : null);
+    setDragging(id ? named(id) : null);
   }
 
   function onDragOver(e: DragOverEvent) {
@@ -109,9 +153,33 @@ export default function Chain({
     if (from?.startsWith('slot:')) dispatch({ type: 'unplace', index: Number(from.slice(5)) });
   }
 
+  async function seal() {
+    if (sealing || sealed) return;
+    setSealing(true);
+    setSealError(null);
+    try {
+      const res = await fetch('/api/seal', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ board: puzzle.id, fill: state.filled }),
+      });
+      if (!res.ok) throw new Error(`The seal came back ${res.status}.`);
+      const data = (await res.json()) as SealResponse;
+      setSealed({ ...data, pool: new Map(data.players.map((p) => [p.id, p])) });
+      dispatch({ type: 'submit' });
+      setShowResult(true);
+    } catch (err) {
+      setSealError(err instanceof Error ? err.message : 'The seal did not go through.');
+    } finally {
+      setSealing(false);
+    }
+  }
+
   // While the takeover is up, the board behind it stays as the player left
   // it; otherwise the links would turn green under the overlay first.
-  const boardRevealed = state.submitted && !showResult;
+  const boardRevealed = sealed !== null && !showResult;
+  const links = useMemo(() => sealed?.links ?? blankLinks(puzzle), [sealed, puzzle]);
+  const clubs = useMemo(() => ({ ...givenClubs, ...(sealed?.clubs ?? {}) }), [givenClubs, sealed]);
 
   /**
    * The ground behind each sticker: the clubs that put the player there.
@@ -121,9 +189,8 @@ export default function Chain({
   const groundFor = (i: number): string => {
     const id = state.filled[i];
     if (!id) return NEUTRAL_GROUND;
-    if (puzzle.slots[i] != null) {
-      return clubColour(SIGNATURE_CLUB[id] ?? pool.get(id)?.clubIds[0]);
-    }
+    const given = givens[id];
+    if (given) return given.ground;
     if (!boardRevealed) return NEUTRAL_GROUND;
     const held = neighboursOf(i, state.filled.length, closed).map(({ link }) => links[link]).filter((l) => l?.made);
     if (held.length === 0) return 'var(--red)';
@@ -132,14 +199,16 @@ export default function Chain({
   };
 
   const complete = state.filled.every((id) => id !== null);
+  const blanks = puzzle.slots.filter((s) => s == null).length;
   const placed = state.filled.filter((id, i) => id !== null && puzzle.slots[i] == null).length;
+  const taken = useMemo(() => new Set(state.filled.filter((id): id is string => id !== null)), [state.filled]);
 
-  const name = (id: string | null | undefined) => {
-    const p = id ? pool.get(id) : undefined;
-    return p ? plateName(p.id, p.name) : '?';
+  const plate = (id: string | null | undefined) => {
+    const e = named(id);
+    return e ? plateName(e.id, e.name) : '?';
   };
-  const ends: [string, string] = [name(puzzle.slots[0]), name(puzzle.slots[puzzle.slots.length - 1])];
-  const corners = closed ? puzzle.slots.flatMap((id) => (id ? [name(id)] : [])) : undefined;
+  const ends: [string, string] = [plate(puzzle.slots[0]), plate(puzzle.slots[puzzle.slots.length - 1])];
+  const corners = closed ? puzzle.slots.flatMap((id) => (id ? [plate(id)] : [])) : undefined;
   const namedClub = useMemo(() => {
     const first = Object.values(prescribed)[0];
     return first ? shortClubName(clubs[first]?.name ?? first) : undefined;
@@ -147,8 +216,18 @@ export default function Chain({
   const count = ['no', 'one', 'two', 'three', 'four', 'five'][blanks] ?? String(blanks);
   const grade = puzzle.difficulty ? puzzle.difficulty[0]!.toUpperCase() + puzzle.difficulty.slice(1) : null;
 
+  // Who the focused slot sits between. Names only, never a hint at the link.
+  const between = focused === null
+    ? []
+    : neighboursOf(focused, state.filled.length, closed)
+        .map(({ slot }) => named(state.filled[slot]))
+        .filter((e): e is NameEntry => e !== null)
+        .map((e) => plateName(e.id, e.name));
+
+  const close = useCallback(() => setFocused(null), []);
+
   return (
-    <DndContext id="chain" onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
+    <DndContext id="chain" sensors={sensors} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
       <div className="app">
         <header className="masthead">
           <a className="masthead__brand display" href="/">
@@ -187,7 +266,7 @@ export default function Chain({
               mode={mode}
               clubs={clubs}
               images={images}
-              players={pool}
+              players={state.pool}
               revealed={boardRevealed}
               groundFor={groundFor}
               focused={focused}
@@ -195,7 +274,7 @@ export default function Chain({
               landedIndex={landed}
               closed={closed}
               clues={clues}
-              clueMetFor={(i) => (boardRevealed ? result?.slots.find((s) => s.index === i)?.clueMet ?? null : null)}
+              clueMetFor={(i) => (boardRevealed ? sealed?.result.slots.find((s) => s.index === i)?.clueMet ?? null : null)}
               interactive={!state.submitted}
             />
 
@@ -203,40 +282,43 @@ export default function Chain({
               <button
                 type="button"
                 className="seal"
-                disabled={!complete || state.submitted}
-                onClick={() => { setShowResult(true); dispatch({ type: 'submit' }); }}
+                disabled={!complete || state.submitted || sealing}
+                onClick={seal}
               >
-                {state.submitted ? 'Sealed' : 'Seal it'}
+                {state.submitted ? 'Sealed' : sealing ? 'Sealing…' : 'Seal it'}
               </button>
-              <span className="actions__count">
-                {state.submitted
-                  ? 'One submission, and this was it.'
-                  : `${placed} of ${blanks} filled`}
-              </span>
+              {sealError ? (
+                <span className="actions__note actions__note--error">{sealError} Try again.</span>
+              ) : albumFailed ? (
+                <span className="actions__note actions__note--error">The album did not load. Reload the page.</span>
+              ) : (
+                <span className="actions__count">
+                  {state.submitted ? 'One submission, and this was it.' : `${placed} of ${blanks} filled`}
+                </span>
+              )}
             </div>
           </div>
-
-          {/* The old search rail, until the search sheet replaces it. */}
-          <aside className="rail">
-            <ChainSearch
-              state={state}
-              index={index}
-              images={images}
-              focused={focused}
-              onAddToBench={() => {}}
-              onPlace={(i, id) => { dispatch({ type: 'place', index: i, playerId: id }); setLanded(i); }}
-            />
-          </aside>
         </main>
       </div>
 
-      {result && showResult ? (
+      <SearchSheet
+        slot={state.submitted ? null : focused}
+        between={between}
+        current={focused === null ? null : named(state.filled[focused])}
+        index={index}
+        taken={taken}
+        onPick={(id) => { if (focused !== null) place(focused, id); }}
+        onRemove={() => { if (focused !== null) { dispatch({ type: 'unplace', index: focused }); setFocused(null); } }}
+        onClose={close}
+      />
+
+      {sealed && showResult ? (
         <LockIn
-          result={result}
+          result={sealed.result}
           puzzle={puzzle}
           fill={state.filled}
-          links={links}
-          pool={pool}
+          links={sealed.links}
+          pool={sealed.pool}
           images={images}
           clubs={clubs}
           onDismiss={() => setShowResult(false)}
