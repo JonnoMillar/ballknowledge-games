@@ -1,0 +1,40 @@
+{
+  "id": "056",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q969423",
+    null,
+    "Q160206",
+    null,
+    "Q439722",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q1028",
+      "label": "a Moroccan"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    }
+  },
+  "referenceSolution": [
+    "Q969423",
+    "Q26932598",
+    "Q160206",
+    "Q156822",
+    "Q439722",
+    "Q312886"
+  ]
+}

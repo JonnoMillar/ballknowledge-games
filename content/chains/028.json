@@ -1,0 +1,40 @@
+{
+  "id": "028",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q531814",
+    null,
+    "Q45766",
+    null,
+    "Q187125",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    }
+  },
+  "referenceSolution": [
+    "Q531814",
+    "Q329451",
+    "Q45766",
+    "Q6298063",
+    "Q187125",
+    "Q455462"
+  ]
+}

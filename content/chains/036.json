@@ -1,0 +1,40 @@
+{
+  "id": "036",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q261534",
+    null,
+    "Q250901",
+    null,
+    "Q45766",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q39",
+      "label": "a Swiss"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q35",
+      "label": "a Dane"
+    }
+  },
+  "referenceSolution": [
+    "Q261534",
+    "Q489039",
+    "Q250901",
+    "Q252190",
+    "Q45766",
+    "Q294951"
+  ]
+}

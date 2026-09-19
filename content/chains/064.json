@@ -1,0 +1,40 @@
+{
+  "id": "064",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q48770",
+    null,
+    "Q47778",
+    null,
+    "Q209942",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    }
+  },
+  "referenceSolution": [
+    "Q48770",
+    "Q483837",
+    "Q47778",
+    "Q161571",
+    "Q209942",
+    "Q4254043"
+  ]
+}

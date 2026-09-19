@@ -1,0 +1,49 @@
+{
+  "id": "017",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q250901",
+    null,
+    "Q150268",
+    null,
+    "Q188997",
+    null,
+    "Q80471",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q34",
+      "label": "a Swede"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q39",
+      "label": "a Swiss"
+    }
+  },
+  "referenceSolution": [
+    "Q250901",
+    "Q26517",
+    "Q150268",
+    "Q46896",
+    "Q188997",
+    "Q26259982",
+    "Q80471",
+    "Q252190"
+  ]
+}

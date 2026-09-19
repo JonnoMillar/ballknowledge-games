@@ -1,0 +1,40 @@
+{
+  "id": "070",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q164038",
+    null,
+    "Q2339",
+    null,
+    "Q483846",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q183",
+      "label": "a German"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q298",
+      "label": "a Chilean"
+    }
+  },
+  "referenceSolution": [
+    "Q164038",
+    "Q45901",
+    "Q2339",
+    "Q83488",
+    "Q483846",
+    "Q192671"
+  ]
+}

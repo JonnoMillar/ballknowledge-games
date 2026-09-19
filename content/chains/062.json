@@ -1,0 +1,40 @@
+{
+  "id": "062",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q48892",
+    null,
+    "Q11584",
+    null,
+    "Q46347",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q1008",
+      "label": "an Ivorian"
+    }
+  },
+  "referenceSolution": [
+    "Q48892",
+    "Q210453",
+    "Q11584",
+    "Q1835",
+    "Q46347",
+    "Q208025"
+  ]
+}

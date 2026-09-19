@@ -1,0 +1,40 @@
+{
+  "id": "016",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q22951255",
+    null,
+    "Q252190",
+    null,
+    "Q213427",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q298",
+      "label": "a Chilean"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q34",
+      "label": "a Swede"
+    }
+  },
+  "referenceSolution": [
+    "Q22951255",
+    "Q6298063",
+    "Q252190",
+    "Q192671",
+    "Q213427",
+    "Q46896"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "044",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q187125",
+    null,
+    "Q66241169",
+    null,
+    "Q173972",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q29",
+      "label": "a Spaniard"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    }
+  },
+  "referenceSolution": [
+    "Q187125",
+    "Q222789",
+    "Q66241169",
+    "Q168287",
+    "Q173972",
+    "Q182907"
+  ]
+}

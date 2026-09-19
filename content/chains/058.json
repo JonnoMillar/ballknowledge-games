@@ -1,0 +1,40 @@
+{
+  "id": "058",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q46347",
+    null,
+    "Q11584",
+    null,
+    "Q160472",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    }
+  },
+  "referenceSolution": [
+    "Q46347",
+    "Q1835",
+    "Q11584",
+    "Q529207",
+    "Q160472",
+    "Q191885"
+  ]
+}

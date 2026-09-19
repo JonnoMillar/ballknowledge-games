@@ -1,0 +1,44 @@
+{
+  "id": "063",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q273715",
+    null,
+    "Q386876",
+    null,
+    "Q214903",
+    null,
+    "Q110053",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q1033",
+      "label": "a Nigerian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q43",
+      "label": "a Turk"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q20",
+      "label": "a Norwegian"
+    }
+  },
+  "referenceSolution": [
+    "Q273715",
+    "Q599675",
+    "Q386876",
+    "Q487459",
+    "Q214903",
+    "Q151838",
+    "Q110053",
+    "Q189827"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "052",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q10602",
+    null,
+    "Q73360",
+    null,
+    "Q178649",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q739",
+      "label": "a Colombian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    }
+  },
+  "referenceSolution": [
+    "Q10602",
+    "Q368441",
+    "Q73360",
+    "Q3810078",
+    "Q178649",
+    "Q30881092"
+  ]
+}

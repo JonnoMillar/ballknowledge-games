@@ -103,3 +103,23 @@ export function blankLinks(puzzle: ChainPuzzle): ChainLink[] {
     };
   });
 }
+
+/** What the board page ships. Nothing about the pool but the givens. */
+export interface BoardProps {
+  puzzle: ChainPuzzle;
+  givens: Record<string, Given>;
+  images: Record<string, PortraitImage>;
+  clubs: Record<string, ClubView>;
+}
+
+/** A board as the home page lists it: enough to name it, never its answer. */
+export interface BoardSummary {
+  id: string;
+  completion: boolean;
+  difficulty?: string;
+  /** How many the player has to find. */
+  blanks: number;
+  closed: boolean;
+  /** The givens' plate names, for a line like "Owen, Henry, Totti and Lampard". */
+  givens: string[];
+}

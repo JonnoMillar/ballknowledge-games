@@ -1,0 +1,40 @@
+{
+  "id": "038",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q482955",
+    null,
+    "Q115453",
+    null,
+    "Q124086",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q1009",
+      "label": "a Cameroonian"
+    }
+  },
+  "referenceSolution": [
+    "Q482955",
+    "Q182907",
+    "Q115453",
+    "Q483145",
+    "Q124086",
+    "Q19116103"
+  ]
+}

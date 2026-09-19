@@ -1,0 +1,35 @@
+{
+  "id": "032",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q311872",
+    null,
+    "Q485697",
+    null,
+    "Q128725",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    }
+  },
+  "referenceSolution": [
+    "Q311872",
+    "Q30301454",
+    "Q485697",
+    "Q102027",
+    "Q128725",
+    "Q10526787"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "066",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q616664",
+    null,
+    "Q214903",
+    null,
+    "Q164038",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q96",
+      "label": "a Mexican"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    }
+  },
+  "referenceSolution": [
+    "Q616664",
+    "Q487155",
+    "Q214903",
+    "Q1894",
+    "Q164038",
+    "Q615"
+  ]
+}

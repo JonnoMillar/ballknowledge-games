@@ -1,0 +1,35 @@
+{
+  "id": "020",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q529207",
+    null,
+    "Q266613",
+    null,
+    "Q18237361",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    }
+  },
+  "referenceSolution": [
+    "Q529207",
+    "Q616664",
+    "Q266613",
+    "Q313316",
+    "Q18237361",
+    "Q30301454"
+  ]
+}

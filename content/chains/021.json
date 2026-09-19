@@ -1,0 +1,44 @@
+{
+  "id": "021",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q127452",
+    null,
+    "Q41533",
+    null,
+    "Q44298",
+    null,
+    "Q208050",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    }
+  },
+  "referenceSolution": [
+    "Q127452",
+    "Q184362",
+    "Q41533",
+    "Q43913",
+    "Q44298",
+    "Q187171",
+    "Q208050",
+    "Q483837"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "018",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q54094",
+    null,
+    "Q48892",
+    null,
+    "Q184277",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q29",
+      "label": "a Spaniard"
+    }
+  },
+  "referenceSolution": [
+    "Q54094",
+    "Q239688",
+    "Q48892",
+    "Q357984",
+    "Q184277",
+    "Q222789"
+  ]
+}

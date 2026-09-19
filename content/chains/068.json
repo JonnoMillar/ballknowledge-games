@@ -1,0 +1,40 @@
+{
+  "id": "068",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q128829",
+    null,
+    "Q1918",
+    null,
+    "Q210453",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q183",
+      "label": "a German"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    }
+  },
+  "referenceSolution": [
+    "Q128829",
+    "Q26704703",
+    "Q1918",
+    "Q11948",
+    "Q210453",
+    "Q167790"
+  ]
+}

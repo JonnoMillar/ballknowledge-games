@@ -19,6 +19,7 @@ const PLATE: Record<string, string> = {
   Q18719633: 'Borré', // Rafael Santos Borré
   Q603190: 'Júlio César',
   Q1988686: 'Douglas',
+  Q186330: 'Márquez', // Rafael Márquez, whose Wikidata label carries his nickname
 };
 
 export function plateName(id: string, name: string): string {

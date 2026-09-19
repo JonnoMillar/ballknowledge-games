@@ -1,0 +1,40 @@
+{
+  "id": "048",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q54094",
+    null,
+    "Q312157",
+    null,
+    "Q47548",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q183",
+      "label": "a German"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    }
+  },
+  "referenceSolution": [
+    "Q54094",
+    "Q43913",
+    "Q312157",
+    "Q161089",
+    "Q47548",
+    "Q180326"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "025",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q180553",
+    null,
+    "Q483583",
+    null,
+    "Q104454",
+    null,
+    "Q1354960",
+    null
+  ],
+  "clues": {
+    "5": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q183",
+      "label": "a German"
+    }
+  },
+  "referenceSolution": [
+    "Q180553",
+    "Q29516",
+    "Q483583",
+    "Q209942",
+    "Q104454",
+    "Q2036160",
+    "Q1354960",
+    "Q44464"
+  ]
+}

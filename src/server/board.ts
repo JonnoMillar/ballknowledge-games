@@ -1,10 +1,11 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import type { Player } from '../lib/chemistry/types';
 import type { ChainPuzzle } from '../lib/chain/types';
-import type { Given } from '../lib/chain/client';
+import type { BoardProps, BoardSummary, Given } from '../lib/chain/client';
 import { clubView, type ClubRecord, type ClubView } from '../lib/clubs';
 import { clubColour, SIGNATURE_CLUB } from '../lib/club-colours';
 import { portraitUrls, type PortraitImage, type PortraitRecord } from '../lib/portraits';
+import { plateName } from '../lib/short-name';
 
 /**
  * The data the server reads, read once and kept.
@@ -48,14 +49,6 @@ export async function readPuzzleFile(id: string): Promise<ChainPuzzle | null> {
     .catch(() => null);
 }
 
-/** What the board page ships. Nothing about the pool but the givens. */
-export interface BoardProps {
-  puzzle: ChainPuzzle;
-  givens: Record<string, Given>;
-  images: Record<string, PortraitImage>;
-  clubs: Record<string, ClubView>;
-}
-
 export async function loadBoard(id: string): Promise<BoardProps | null> {
   const file = await readPuzzleFile(id);
   if (!file) return null;
@@ -89,4 +82,28 @@ export async function loadBoard(id: string): Promise<BoardProps | null> {
   }
 
   return { puzzle, givens, images, clubs };
+}
+
+let summaries: Promise<BoardSummary[]> | null = null;
+
+export function listBoards(): Promise<BoardSummary[]> {
+  summaries ??= (async () => {
+    const { byId } = await loadData();
+    const files = (await readdir('content/chains')).filter((f) => /^\d{3}\.json$/.test(f)).sort();
+    const out: BoardSummary[] = [];
+    for (const f of files) {
+      const p = await readPuzzleFile(f.slice(0, 3));
+      if (!p) continue;
+      out.push({
+        id: p.id,
+        completion: p.scoring === 'completion',
+        difficulty: p.difficulty,
+        blanks: p.slots.filter((s) => s == null).length,
+        closed: p.closed ?? false,
+        givens: p.slots.flatMap((id) => (id && byId.get(id) ? [plateName(id, byId.get(id)!.name)] : [])),
+      });
+    }
+    return out;
+  })();
+  return summaries;
 }

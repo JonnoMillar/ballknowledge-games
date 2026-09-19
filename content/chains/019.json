@@ -1,0 +1,44 @@
+{
+  "id": "019",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q11948",
+    null,
+    "Q28967995",
+    null,
+    "Q180553",
+    null,
+    "Q483583",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q39",
+      "label": "a Swiss"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    }
+  },
+  "referenceSolution": [
+    "Q11948",
+    "Q357984",
+    "Q28967995",
+    "Q19938984",
+    "Q180553",
+    "Q29516",
+    "Q483583",
+    "Q206677"
+  ]
+}

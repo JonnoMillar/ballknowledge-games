@@ -1,0 +1,44 @@
+{
+  "id": "031",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q482955",
+    null,
+    "Q48892",
+    null,
+    "Q178649",
+    null,
+    "Q128725",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    }
+  },
+  "referenceSolution": [
+    "Q482955",
+    "Q239688",
+    "Q48892",
+    "Q3810078",
+    "Q178649",
+    "Q180326",
+    "Q128725",
+    "Q68060"
+  ]
+}

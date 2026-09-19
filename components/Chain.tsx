@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from 'react';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core';
 import ChainBoard from './ChainBoard';
 import SearchSheet from './SearchSheet';
@@ -46,7 +46,7 @@ interface Sealed extends SealResponse {
 }
 
 export default function Chain({
-  puzzle, givens, images: givenImages, clubs: givenClubs, title, onSealed, streak,
+  puzzle, givens, images: givenImages, clubs: givenClubs, title, onSealed, streak, notice,
 }: {
   puzzle: ChainPuzzle;
   givens: Record<string, Given>;
@@ -60,6 +60,8 @@ export default function Chain({
   onSealed?: (sealed: SealResponse) => void;
   /** The daily streak to print on a held verdict, if this is the daily. */
   streak?: number | null;
+  /** A line under the masthead, such as "you have played this one". */
+  notice?: ReactNode;
 }) {
   const mode = puzzle.mode ?? 'chemistry';
   const closed = puzzle.closed ?? false;
@@ -268,6 +270,7 @@ export default function Chain({
             {grade ? <span className="pill">{grade}</span> : null}
           </div>
         </header>
+        {notice}
 
         <main className="stage">
           <div className="board-col" ref={board}>

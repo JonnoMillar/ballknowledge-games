@@ -1,0 +1,49 @@
+{
+  "id": "055",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q1911",
+    null,
+    "Q133903",
+    null,
+    "Q164038",
+    null,
+    "Q150268",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    }
+  },
+  "referenceSolution": [
+    "Q1911",
+    "Q4254043",
+    "Q133903",
+    "Q192635",
+    "Q164038",
+    "Q119562",
+    "Q150268",
+    "Q1839"
+  ]
+}

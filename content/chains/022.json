@@ -1,0 +1,40 @@
+{
+  "id": "022",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q169098",
+    null,
+    "Q184277",
+    null,
+    "Q266613",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    }
+  },
+  "referenceSolution": [
+    "Q169098",
+    "Q27049064",
+    "Q184277",
+    "Q50600",
+    "Q266613",
+    "Q30881092"
+  ]
+}

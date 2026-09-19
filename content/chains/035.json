@@ -1,0 +1,49 @@
+{
+  "id": "035",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q969423",
+    null,
+    "Q209942",
+    null,
+    "Q313316",
+    null,
+    "Q119562",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q25",
+      "label": "a Welshman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q39",
+      "label": "a Swiss"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q96",
+      "label": "a Mexican"
+    }
+  },
+  "referenceSolution": [
+    "Q969423",
+    "Q184586",
+    "Q209942",
+    "Q667596",
+    "Q313316",
+    "Q701297",
+    "Q119562",
+    "Q487155"
+  ]
+}

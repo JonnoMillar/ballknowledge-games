@@ -1,19 +1,19 @@
-import Chain from '../components/Chain';
-import { isBoardId, loadBoard } from '../src/server/board';
+import { redirect } from 'next/navigation';
+import Home from '../components/Home';
+import { isBoardId, listBoards } from '../src/server/board';
 
 /**
- * The board page.
+ * The front door: today's chain, the streak, Deep Cuts and the archive.
  *
- * Ships the puzzle, the givens and nothing else about the pool. The album
- * index comes from /api/names once the page is up, and the seal goes to
- * /api/seal, which is where the pool is read and the result computed. See
- * src/lib/chain/client.ts and src/server/board.ts.
+ * Which board is today's is decided in the browser from the player's own
+ * clock, so this ships the list and the client picks. `?c=NNN` is how the
+ * old links reached a board; they still work.
  */
-export default async function ChainPage(
+export default async function HomePage(
   { searchParams }: { searchParams: Promise<{ c?: string }> },
 ) {
   const { c } = await searchParams;
-  const board = await loadBoard(isBoardId(c) ? c : '004');
-  if (!board) return <main className="board-col"><p className="brief">No such board.</p></main>;
-  return <Chain puzzle={board.puzzle} givens={board.givens} images={board.images} clubs={board.clubs} />;
+  if (isBoardId(c)) redirect(`/play/${c}`);
+  const boards = await listBoards();
+  return <Home boards={boards} />;
 }

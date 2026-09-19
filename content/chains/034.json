@@ -1,0 +1,40 @@
+{
+  "id": "034",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q188720",
+    null,
+    "Q133903",
+    null,
+    "Q133556",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q25",
+      "label": "a Welshman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q25",
+      "label": "a Welshman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    }
+  },
+  "referenceSolution": [
+    "Q188720",
+    "Q184586",
+    "Q133903",
+    "Q214513",
+    "Q133556",
+    "Q10520"
+  ]
+}

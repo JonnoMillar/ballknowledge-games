@@ -1,0 +1,44 @@
+{
+  "id": "067",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q68060",
+    null,
+    "Q18237361",
+    null,
+    "Q11576",
+    null,
+    "Q483577",
+    null
+  ],
+  "clues": {
+    "3": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    }
+  },
+  "referenceSolution": [
+    "Q68060",
+    "Q26704703",
+    "Q18237361",
+    "Q602525",
+    "Q11576",
+    "Q286511",
+    "Q483577",
+    "Q615"
+  ]
+}

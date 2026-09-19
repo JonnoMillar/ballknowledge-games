@@ -1,0 +1,40 @@
+{
+  "id": "040",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q1918",
+    null,
+    "Q20851003",
+    null,
+    "Q185389",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q1028",
+      "label": "a Moroccan"
+    }
+  },
+  "referenceSolution": [
+    "Q1918",
+    "Q63659",
+    "Q20851003",
+    "Q483145",
+    "Q185389",
+    "Q18428483"
+  ]
+}

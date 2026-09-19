@@ -1,0 +1,40 @@
+{
+  "id": "024",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q659634",
+    null,
+    "Q266613",
+    null,
+    "Q169098",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q739",
+      "label": "a Colombian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    }
+  },
+  "referenceSolution": [
+    "Q659634",
+    "Q368441",
+    "Q266613",
+    "Q30881092",
+    "Q169098",
+    "Q26517"
+  ]
+}

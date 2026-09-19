@@ -1,0 +1,40 @@
+{
+  "id": "060",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q482947",
+    null,
+    "Q1255625",
+    null,
+    "Q104454",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q29",
+      "label": "a Spaniard"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    }
+  },
+  "referenceSolution": [
+    "Q482947",
+    "Q313316",
+    "Q1255625",
+    "Q17493",
+    "Q104454",
+    "Q30148558"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "050",
+  "mode": "clubs",
+  "difficulty": "medium",
+  "closed": true,
+  "scoring": "completion",
+  "slots": [
+    "Q16665941",
+    null,
+    "Q119562",
+    null,
+    "Q57079",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q43",
+      "label": "a Turk"
+    }
+  },
+  "referenceSolution": [
+    "Q16665941",
+    "Q1939",
+    "Q119562",
+    "Q4284482",
+    "Q57079",
+    "Q202569"
+  ]
+}
