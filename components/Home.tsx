@@ -150,6 +150,13 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             </span>
             <span className="also__go">Fancy a game? →</span>
           </a>
+          <a className="also__card also__card--slugger" href="/slugger">
+            <span className="also__band display">Slugger</span>
+            <span className="also__copy">
+              <b>Football, played as baseball.</b> The pitcher throws a club; the batter names someone who played for it. Kane at Spurs is a single. Kane at Leicester is a home run.
+            </span>
+            <span className="also__go">Play ball →</span>
+          </a>
         </section>
       </main>
     </div>

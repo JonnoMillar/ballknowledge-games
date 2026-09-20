@@ -1129,3 +1129,6 @@ button { font-family: inherit; }
 .also__copy { font-size: 14.5px; line-height: 1.45; color: var(--muted); }
 .also__copy b { color: var(--ink); font-weight: 600; }
 .also__go { font-size: 14px; font-weight: 600; color: #F26B1D; }
+.also { display: flex; flex-direction: column; gap: 10px; }
+.also__card--slugger .also__band { background: #1F6F43; }
+.also__card--slugger .also__go { color: #1F6F43; }
