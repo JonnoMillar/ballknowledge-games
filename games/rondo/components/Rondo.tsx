@@ -5,13 +5,13 @@ import LossCard from './LossCard';
 import PassBox from './PassBox';
 import Scoreboard from './Scoreboard';
 import Setup from './Setup';
-import { buildIndex, type SearchIndex } from '../../src/lib/search/index';
-import { decodeNames, type NameEntry, type NameRow } from '../../src/lib/chain/client';
+import { buildIndex, type SearchIndex } from '../../../src/lib/search/index';
+import { decodeNames, type NameEntry, type NameRow } from '../../../src/lib/chain/client';
 import {
   dealt, lost, newMatch, nextBall, passed, rematch, winner,
   type Carrier, type Clock, type Match,
-} from '../../src/lib/rondo/match';
-import type { PassResponse } from '../../src/lib/rondo/wire';
+} from '../lib/match';
+import type { PassResponse } from '../lib/wire';
 
 /**
  * Rondo: the phone on the table.
@@ -19,7 +19,7 @@ import type { PassResponse } from '../../src/lib/rondo/wire';
  * The match lives here and in localStorage, so a knocked phone or a
  * refresh does not lose the score. The server deals the starter and
  * judges every pass; this component runs the clock, the turn, and the
- * cards. See docs/superpowers/specs/2026-09-20-rondo-design.md.
+ * cards. See games/rondo/DESIGN.md.
  */
 
 const MATCH_KEY = 'rondo.match.v1';

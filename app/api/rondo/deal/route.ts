@@ -1,4 +1,4 @@
-import { deal } from '../../../../src/server/rondo';
+import { deal } from '../../../../games/rondo/server';
 
 /**
  * A starter for a new ball: famous, several clubs, every club open.

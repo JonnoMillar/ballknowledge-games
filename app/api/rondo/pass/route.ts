@@ -1,4 +1,4 @@
-import { judge } from '../../../../src/server/rondo';
+import { judge } from '../../../../games/rondo/server';
 
 /**
  * A pass, judged. The body is the ball as the page carries it and the id

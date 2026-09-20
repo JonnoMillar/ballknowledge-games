@@ -143,17 +143,18 @@ the referee. Someone is on the ball; pass to anyone who shared a club with
 them; every club a pass goes through is burnt for the rest of that ball;
 lose it (no open link, a repeat, a pass nobody could take on, the clock,
 or "I've got nothing") and you take a bib; three bibs and you are out.
-Two to four players, pass the phone. Design and rules:
-`docs/superpowers/specs/2026-09-20-rondo-design.md`.
+Everything of its own lives in `games/rondo/`; only the Next.js route files
+sit under `app/`. Two to four players, pass the phone. Design and rules:
+`games/rondo/DESIGN.md`.
 
 | Path | What |
 |---|---|
-| `src/lib/rondo/rules.ts` | `judgePass`: the rule, pure. The dead-end check is the bust. |
-| `src/lib/rondo/match.ts` | The match reducer: bibs, turn order, the loser kicks off. |
-| `src/server/rondo.ts` | Club index over the pool, the deal (288 starters at fame ≥ 60), the judged pass. |
-| `app/api/rondo/{deal,pass}/route.ts` | The two routes. |
-| `components/rondo/` | Setup, Scoreboard, BallView, PassBox, LossCard, and `Rondo.tsx` holding the match (`localStorage` key `rondo.match.v1`). |
-| `app/rondo/rondo.css` | Its stylesheet. The bib orange is its one loud colour. |
+| `games/rondo/lib/rules.ts` | `judgePass`: the rule, pure. The dead-end check is the bust. |
+| `games/rondo/lib/match.ts` | The match reducer: bibs, turn order, the loser kicks off. |
+| `games/rondo/server.ts` | Club index over the pool, the deal (288 starters at fame ≥ 60), the judged pass. |
+| `app/rondo/page.tsx`, `app/api/rondo/{deal,pass}/route.ts` | The routes: thin, they import from `games/rondo/`. |
+| `games/rondo/components/` | Setup, Scoreboard, BallView, PassBox, LossCard, and `Rondo.tsx` holding the match (`localStorage` key `rondo.match.v1`). |
+| `games/rondo/rondo.css` | Its stylesheet. The bib orange is its one loud colour. |
 
 The same rules as Chain apply: the pool is searched, never listed; the
 carrier's open clubs are never shown while the ball is live (only on the

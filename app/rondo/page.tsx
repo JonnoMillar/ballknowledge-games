@@ -1,5 +1,5 @@
-import Rondo from '../../components/rondo/Rondo';
-import './rondo.css';
+import Rondo from '../../games/rondo/components/Rondo';
+import '../../games/rondo/rondo.css';
 
 export const metadata = {
   title: 'Rondo',
@@ -8,7 +8,7 @@ export const metadata = {
 
 /**
  * Rondo. One phone on the table; the album is the ref.
- * See docs/superpowers/specs/2026-09-20-rondo-design.md.
+ * See games/rondo/DESIGN.md.
  */
 export default function RondoPage() {
   return (

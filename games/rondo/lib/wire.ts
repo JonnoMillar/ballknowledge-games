@@ -1,4 +1,4 @@
-import type { ClubView } from '../clubs';
+import type { ClubView } from '../../../src/lib/clubs';
 import type { Carrier } from './match';
 import type { LossReason } from './rules';
 

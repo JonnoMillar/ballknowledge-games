@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { CLOCKS, type Clock } from '../../src/lib/rondo/match';
+import { CLOCKS, type Clock } from '../lib/match';
 
 const MAX_PLAYERS = 4;
 

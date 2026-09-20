@@ -1,6 +1,6 @@
 'use client';
 import Bib from './Bib';
-import { BIBS_OUT, type Side } from '../../src/lib/rondo/match';
+import { BIBS_OUT, type Side } from '../lib/match';
 
 /**
  * Who is playing, how many bibs each has, and whose pass it is. The name

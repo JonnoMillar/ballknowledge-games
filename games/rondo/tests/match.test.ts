@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { alive, dealt, lost, newMatch, nextBall, passed, rematch, winner } from '../../src/lib/rondo/match';
-import type { Carrier } from '../../src/lib/rondo/match';
+import { alive, dealt, lost, newMatch, nextBall, passed, rematch, winner } from '../lib/match';
+import type { Carrier } from '../lib/match';
 
 const c = (id: string): Carrier => ({ id, name: id, ground: '#000' });
 const start = (names: string[]) => dealt(newMatch(names, 30), c('kane'));

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { buildClubIndex, judgePass, openClubs, receivable } from '../../src/lib/rondo/rules';
-import type { RondoFacts } from '../../src/lib/rondo/rules';
+import { buildClubIndex, judgePass, openClubs, receivable } from '../lib/rules';
+import type { RondoFacts } from '../lib/rules';
 
 const mk = (id: string, clubs: string[]): RondoFacts => ({ id, name: id, clubIds: clubs });
 

@@ -1,5 +1,5 @@
-import type { ClubView } from '../clubs';
-import type { PortraitImage } from '../portraits';
+import type { ClubView } from '../../../src/lib/clubs';
+import type { PortraitImage } from '../../../src/lib/portraits';
 import type { LossReason } from './rules';
 
 /**

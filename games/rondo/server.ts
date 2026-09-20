@@ -1,10 +1,10 @@
-import { clubColour, signatureClub } from '../lib/club-colours';
-import { clubView, type ClubView } from '../lib/clubs';
-import { buildClubIndex, judgePass, type Ball, type ClubIndex } from '../lib/rondo/rules';
-import type { Carrier } from '../lib/rondo/match';
-import type { PassResponse } from '../lib/rondo/wire';
-import type { Player } from '../lib/chemistry/types';
-import { loadData } from './board';
+import { clubColour, signatureClub } from '../../src/lib/club-colours';
+import { clubView, type ClubView } from '../../src/lib/clubs';
+import { buildClubIndex, judgePass, type Ball, type ClubIndex } from './lib/rules';
+import type { Carrier } from './lib/match';
+import type { PassResponse } from './lib/wire';
+import type { Player } from '../../src/lib/chemistry/types';
+import { loadData } from '../../src/server/board';
 
 /**
  * Rondo's referee.

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { search, type SearchIndex } from '../../src/lib/search/index';
-import type { NameEntry } from '../../src/lib/chain/client';
+import { search, type SearchIndex } from '../../../src/lib/search/index';
+import type { NameEntry } from '../../../src/lib/chain/client';
 
 /**
  * The pass. Whose it is, the clock, a name typed, the name confirmed.

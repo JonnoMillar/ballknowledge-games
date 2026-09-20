@@ -1,8 +1,8 @@
 'use client';
-import ClubBadge, { shortClubName } from '../ClubBadge';
-import { StickerFace, solid } from '../Sticker';
-import type { ClubView } from '../../src/lib/clubs';
-import type { Carrier, Touch } from '../../src/lib/rondo/match';
+import ClubBadge, { shortClubName } from '../../../components/ClubBadge';
+import { StickerFace, solid } from '../../../components/Sticker';
+import type { ClubView } from '../../../src/lib/clubs';
+import type { Carrier, Touch } from '../lib/match';
 
 /**
  * The ball: who has it, how it got there, and what has burnt.

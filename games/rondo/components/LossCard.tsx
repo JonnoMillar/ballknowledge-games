@@ -1,8 +1,8 @@
 'use client';
-import ClubBadge, { shortClubName } from '../ClubBadge';
+import ClubBadge, { shortClubName } from '../../../components/ClubBadge';
 import Bib from './Bib';
-import type { ClubView } from '../../src/lib/clubs';
-import { BIBS_OUT, type Loss, type Side } from '../../src/lib/rondo/match';
+import type { ClubView } from '../../../src/lib/clubs';
+import { BIBS_OUT, type Loss, type Side } from '../lib/match';
 
 /**
  * The ball is lost. Who lost it, why, and the "ahh": the clubs that were

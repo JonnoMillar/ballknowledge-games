@@ -33,6 +33,7 @@
     "tests",
     "app",
     "components",
+    "games",
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],

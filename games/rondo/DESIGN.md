@@ -2,8 +2,8 @@
 
 **Date:** 2026-09-20
 **Status:** First draft, built in this session
-**Route:** `/rondo`. Shares the pool, the search index, the sticker and the
-club crests with Chain. Its own stylesheet (`app/rondo/rondo.css`), its own
+**Route:** `/rondo`. Lives in `games/rondo/`. Shares the pool, the search index, the sticker and the
+club crests with Chain. Its own stylesheet (`games/rondo/rondo.css`), its own
 accent.
 
 ## The pitch
@@ -103,13 +103,13 @@ Full time is the same card with the result and "Rematch".
 
 | Path | What |
 |---|---|
-| `src/lib/rondo/rules.ts` | `judgePass`, `openClubs`, `receivable`: the rule, pure. |
-| `src/lib/rondo/match.ts` | The match reducer: players, bibs, turn order, the ball. Pure, tested. |
-| `src/server/rondo.ts` | The club index over the pool, the deal, the judged pass with club views. |
+| `games/rondo/lib/rules.ts` | `judgePass`, `openClubs`, `receivable`: the rule, pure. |
+| `games/rondo/lib/match.ts` | The match reducer: players, bibs, turn order, the ball. Pure, tested. |
+| `games/rondo/server.ts` | The club index over the pool, the deal, the judged pass with club views. |
 | `app/api/rondo/deal/route.ts` | A starter. |
 | `app/api/rondo/pass/route.ts` | A pass, or a forfeit, judged. |
-| `components/rondo/*.tsx` | The page. |
-| `app/rondo/page.tsx`, `app/rondo/rondo.css` | Route and stylesheet. |
+| `games/rondo/components/` | The page. |
+| `app/rondo/page.tsx`, `app/api/rondo/` | The Next.js routes, thin. `games/rondo/rondo.css` is the stylesheet. |
 
 ## Known limits in this draft
 
