@@ -141,6 +141,16 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             </ul>
           </section>
         ) : null}
+
+        <section className="also">
+          <a className="also__card" href="/rondo">
+            <span className="also__band display">Rondo</span>
+            <span className="also__copy">
+              <b>A passing game for the pub.</b> Two to four mates, one phone. Pass to anyone who shared a club; every club you go through is burnt. Three bibs and you’re in the middle.
+            </span>
+            <span className="also__go">Fancy a game? →</span>
+          </a>
+        </section>
       </main>
     </div>
   );

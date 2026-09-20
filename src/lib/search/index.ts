@@ -56,11 +56,15 @@ export function search<T extends Nameable>(index: SearchIndex<T>, query: string,
     if (out.length >= limit * 4) break;
   }
 
-  // Prefix matches first. No fame ordering — fame is hidden until placement.
-  out.sort((a, b) => {
-    const ap = fold(a.name).startsWith(q) ? 0 : 1;
-    const bp = fold(b.name).startsWith(q) ? 0 : 1;
-    return ap - bp || a.name.localeCompare(b.name);
-  });
+  // Matches at the start of the name first, then at the start of any word
+  // (a surname typed on its own is how most names are typed), then the rest.
+  // No fame ordering — fame is hidden until placement.
+  const rank = (name: string): number => {
+    const f = fold(name);
+    if (f.startsWith(q)) return 0;
+    if (f.includes(' ' + q)) return 1;
+    return 2;
+  };
+  out.sort((a, b) => rank(a.name) - rank(b.name) || a.name.localeCompare(b.name));
   return out.slice(0, limit);
 }

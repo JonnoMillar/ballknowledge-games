@@ -136,6 +136,30 @@ plate, rings of three and four that close, no given or answer used more
 than three times across the set, and every board re-checked with the test's
 own rule before it is kept. Seeded, so a rerun writes the same boards.
 
+## Rondo (`/rondo`)
+
+The second game, added 2026-09-20: a passing duel for the pub, one phone as
+the referee. Someone is on the ball; pass to anyone who shared a club with
+them; every club a pass goes through is burnt for the rest of that ball;
+lose it (no open link, a repeat, a pass nobody could take on, the clock,
+or "I've got nothing") and you take a bib; three bibs and you are out.
+Two to four players, pass the phone. Design and rules:
+`docs/superpowers/specs/2026-09-20-rondo-design.md`.
+
+| Path | What |
+|---|---|
+| `src/lib/rondo/rules.ts` | `judgePass`: the rule, pure. The dead-end check is the bust. |
+| `src/lib/rondo/match.ts` | The match reducer: bibs, turn order, the loser kicks off. |
+| `src/server/rondo.ts` | Club index over the pool, the deal (288 starters at fame ≥ 60), the judged pass. |
+| `app/api/rondo/{deal,pass}/route.ts` | The two routes. |
+| `components/rondo/` | Setup, Scoreboard, BallView, PassBox, LossCard, and `Rondo.tsx` holding the match (`localStorage` key `rondo.match.v1`). |
+| `app/rondo/rondo.css` | Its stylesheet. The bib orange is its one loud colour. |
+
+The same rules as Chain apply: the pool is searched, never listed; the
+carrier's open clubs are never shown while the ball is live (only on the
+loss card). Portraits exist only for players on shipped Chain boards, so
+most Rondo stickers are the silhouette on the club ground.
+
 ## Client and server
 
 The page ships the puzzle and the givens (~20 KB). The album index comes

@@ -63,3 +63,14 @@ describe('search', () => {
     expect(search(index, 'a', 3).length).toBeLessThanOrEqual(3);
   });
 });
+
+describe('search ranking', () => {
+  it('puts a surname typed on its own above a name that merely contains it', () => {
+    const extra = buildIndex([
+      mk('musaev', 'Fozil Musaev'),
+      mk('ozil', 'Mesut Özil'),
+      mk('ozilx', 'Ozilio Santos'),
+    ]);
+    expect(search(extra, 'ozil').map((p) => p.id)).toEqual(['ozilx', 'ozil', 'musaev']);
+  });
+});
