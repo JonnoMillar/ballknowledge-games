@@ -241,7 +241,21 @@ npm run fetch:pool      # 2-phase: ids, then careers in batches of 250
 npm run build:pool      # -> data/pool.json
 npm run review:names    # vandalism check
 npm run fetch:badges    # crests -> public/badges (gitignored, ~95 MB)
+npm run fetch:careers   # en-wiki infobox careers -> data/careers.json (~15 min)
+npm run merge:careers   # dry run: what the merge adds, which dailies break
+npm run merge:careers -- --write   # union into pool.json + clubs.json
 ```
+
+**Careers come from two sources.** Wikidata's P54 stops mid-career for a
+third of the pool (Gabbiadini "at Napoli since 2015", no Southampton;
+Tarkowski with no Everton). Since 2026-09-20 the English Wikipedia
+infobox (`clubs1 = [[Southampton F.C.]]`, `years1`, `caps1`) is merged in
+as a union: 7,057 players gained 14,795 clubs, 4,631 stale open-ended
+spells were closed. Nothing Wikidata had is removed. Rebuilding the pool
+means running both again — `build:pool` then `merge:careers --write` — or
+the stints come back missing. Five daily boards the corrected pool broke
+(a missing club made a second answer reachable) are in
+`content/chains/retired/`, which nothing reads.
 
 Three traps that produce silently wrong data, all guarded by
 `tests/pipeline/traps.test.ts`: the `mul` label migration (an `en`-only
