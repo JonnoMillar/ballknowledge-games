@@ -42,7 +42,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 1041 tests, 34 files
+npm test             # 1040 tests, 34 files
 npm run typecheck
 ```
 
@@ -165,38 +165,34 @@ most Rondo stickers are the silhouette on the club ground.
 
 The third game, added 2026-09-20: football played as baseball, for the pub,
 one phone as the umpire. The pitcher throws a club; the batter names
-someone who played for it. A hit is graded by how deep the cut is (the
-spell-weighted fame Chain ranks by): single at 55 and over, double 38–54,
-triple 26–37, home run under 26. Runners move that many bases. Never
-played there — a strike; three strikes an out; three outs and sides change.
-A name already hit is a foul ball (a strike unless the count is two). Three
-innings by default, with the home side skipping its last half if ahead,
-walk-offs, and extras. Design and rules:
+someone who played for it — one swing, a hit or an out. **A hit is worth
+what the pitch was worth**: fastball single, curveball double, slider
+triple, knuckleball home run. Runners move up; anyone on second or third
+comes home on any hit. Three batters a half, three innings, the home side
+skips its last half if ahead, walk-offs, extras. A name already hit is a
+foul (swing again). Knuckleballs are three a side per game. Design, the
+pitcher's decision, and what the first draft got wrong:
 `docs/superpowers/specs/2026-09-20-slugger-design.md`.
 
-Each pitch is one swing and the pitcher deals afresh — a hand of three,
-one of each kind: **fastball** (a giant), **curveball** (a mid-size club),
-**knuckleball** (a small one) — and cannot throw the same kind twice in a
-row in one at-bat. A fastball is unmissable, so this is what makes a
-strikeout possible without letting a pitcher spam knuckleballs at a casual
-mate. The deck is hand-picked (`src/lib/slugger/deck.ts`, ~190 clubs a
-British pub would rate, tiered by how many well-known players the pool has
-for them) because by raw depth the pool ranks Tokyo Verdy above Spurs.
+The first draft graded hits by obscurity, gave batters three strikes and
+halves three outs; it was invisible to the batter, the big club was never
+worth throwing, and it ran twenty minutes. The current shape is the answer
+to those three complaints; the tiers and the knuckleball budget are the
+numbers to move first after a real game.
 
 | Path | What |
 |---|---|
-| `src/lib/slugger/grade.ts` | The bands: stint-fame → bases. |
-| `src/lib/slugger/deck.ts` | The three piles, by hand; held to the pool by `tests/slugger/deck.test.ts`. |
-| `src/lib/slugger/match.ts` | The match reducer: lineups, count, bases, runs, innings, the end. Pure, tested. |
-| `src/server/slugger.ts` | Club index over the pool, the deal, the judged swing. |
+| `src/lib/slugger/grade.ts` | Kind → bases; `stintFame`, the ruler the deck is tiered with. |
+| `src/lib/slugger/deck.ts` | Four piles, by hand (~200 clubs a British pub rates); held to the pool by `tests/slugger/deck.test.ts`. |
+| `src/lib/slugger/match.ts` | The match reducer: lineups, three-up halves, bases, runs, innings, the knuckleball budget, the end. Pure, tested. |
+| `src/server/slugger.ts` | Club index over the pool, the deal, the judged swing (hit or miss; no grading). |
 | `app/api/slugger/{pitch,swing}/route.ts` | The two routes. |
-| `components/slugger/` | Setup, LineScore, Diamond, Hand, AtBat, CallCard, FullTime, and `Slugger.tsx` holding the match (`localStorage` key `slugger.match.v1`). |
+| `components/slugger/` | Setup, LineScore, Diamond, Hand, AtBat, CallCard (auto-advances), FullTime, and `Slugger.tsx` holding the match (`localStorage` key `slugger.match.v2`). |
 | `app/slugger/slugger.css` | Its stylesheet. Outfield green, infield dirt, stitch red. |
 
-Untested at a real table: the bands and the deck tiers are calibrated
-against the pool's numbers, not against mates. The first thing to learn
-from a real game is whether knuckleballs strike out a normal fan often
-enough, and whether fastball singles make the innings drag.
+**Dev gotcha, 2026-09-20:** two `next dev` servers in this folder share
+`.next/` and clobber each other's route manifests — the symptom is
+intermittent HTML 404s from `/api/slugger/*`. One dev server at a time.
 
 ## Client and server
 

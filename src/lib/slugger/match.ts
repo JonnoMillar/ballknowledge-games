@@ -1,14 +1,28 @@
-import type { Bases } from './grade';
-import type { PitchKind } from './deck';
+import { BASES_FOR, type Bases } from './grade';
+import { KNUCKLEBALLS_PER_GAME, type PitchKind } from './deck';
 
 /**
  * SLUGGER — the match, as a pure value.
  *
  * Everything the phone knows about the game is here, and every rule of
  * baseball the game keeps is a function from one Match to the next. The
- * server judges a swing (did they play there, how deep a cut) and this
- * applies the count, the bases, the innings and the end. Nothing here reads
- * the pool. See docs/superpowers/specs/2026-09-20-slugger-design.md.
+ * server rules on a swing (did they play there); this applies the bases,
+ * the runs, the innings and the end. Nothing here reads the pool. See
+ * docs/superpowers/specs/2026-09-20-slugger-design.md.
+ *
+ * The shape, after the first draft played too long:
+ *
+ * - Every batter gets ONE swing: a hit or an out. No count.
+ * - Three batters a half, hit or out, then sides change. Runners left on
+ *   base are stranded. A half is three names and a minute.
+ * - A hit is worth what the pitch was worth: fastball single, curveball
+ *   double, slider triple, knuckleball home run.
+ * - A runner on second or third comes home on any hit. Without this, three
+ *   singles never score and the safe pitch costs nothing; with it, three
+ *   fastballs concede exactly one run, and every off-speed pitch is a
+ *   gamble to stop it.
+ * - Three knuckleballs a side per game, so the small club is a card you
+ *   spend, not a setting you leave on.
  */
 
 export interface Side {
@@ -33,7 +47,7 @@ export interface Named { id: string; name: string }
 
 /** The server's ruling on a name against a club. */
 export type Verdict =
-  | { verdict: 'hit'; player: Named; bases: Bases; apps: number | null; club: ClubRef }
+  | { verdict: 'hit'; player: Named; apps: number | null; club: ClubRef }
   | { verdict: 'miss'; player: Named; clubs: readonly ClubRef[] };
 
 /** What the umpire says after a swing, for the call card. */
@@ -49,25 +63,18 @@ export type Call =
       /** Bases loaded and a home run: four runs. */
       grandSlam: boolean;
       walkOff: boolean;
+      sideRetired: boolean;
     }
   | {
-      kind: 'strike';
+      kind: 'out';
       reason: 'miss' | 'clock' | 'nothing';
       /** The club that was pitched. */
       club: ClubRef | null;
       /** The name, and the clubs it did play for, on a miss. */
       player?: Named;
       clubs?: readonly ClubRef[];
-      /** Strike three. */
-      out: boolean;
-      /** The third out: the side is retired. */
+      /** The third batter: the side is retired. */
       sideRetired: boolean;
-    }
-  | {
-      kind: 'foul';
-      player: Named;
-      /** A foul counts as a strike, unless the batter already had two. */
-      counted: boolean;
     };
 
 export type Half = 'top' | 'bottom';
@@ -79,8 +86,8 @@ export interface Match {
   sides: readonly [Side, Side];
   inning: number;
   half: Half;
-  strikes: number;
-  outs: number;
+  /** Batters retired or on base this half, 0..2. The third ends it. */
+  up: number;
   /** First, second, third. */
   bases: readonly [Named | null, Named | null, Named | null];
   /** Per side, the lineup index due up. */
@@ -88,17 +95,19 @@ export interface Match {
   /** Per side, runs per inning. Grows with extras. */
   runs: readonly [readonly number[], readonly number[]];
   hits: readonly [number, number];
-  strikeouts: readonly [number, number];
+  outs: readonly [number, number];
+  /** Per side, knuckleballs left to throw. */
+  knuckleballs: readonly [number, number];
   /** Players who have had a hit this match. Named again, they're a foul. */
   used: readonly string[];
   /** Clubs thrown this match, so the deal avoids repeats. */
   pitched: readonly string[];
-  /** The kind of the last pitch in this at-bat, which cannot be thrown again next. */
-  lastKind: PitchKind | null;
   /** The pitcher's hand, once dealt. */
   hand: readonly Pitch[] | null;
   /** The pitch at the plate. */
   pitch: Pitch | null;
+  /** A name already used, swung at just now: swing again. */
+  foul: Named | null;
   /** The last ruling, shown until Next. */
   call: Call | null;
   winner: 0 | 1 | null;
@@ -107,8 +116,7 @@ export interface Match {
 export type SideIndex = 0 | 1;
 
 export const MAX_LINEUP = 4;
-export const STRIKES_PER_OUT = 3;
-export const OUTS_PER_HALF = 3;
+export const BATTERS_PER_HALF = 3;
 
 export const batting = (m: Match): SideIndex => (m.half === 'top' ? 0 : 1);
 export const fielding = (m: Match): SideIndex => (m.half === 'top' ? 1 : 0);
@@ -120,6 +128,10 @@ export function batter(m: Match): { side: SideIndex; name: string } {
 }
 
 export const total = (m: Match, side: SideIndex): number => m.runs[side].reduce((a, b) => a + b, 0);
+
+/** Whether the fielding side may throw this kind now. */
+export const canThrow = (m: Match, kind: PitchKind): boolean =>
+  kind !== 'knuckleball' || m.knuckleballs[fielding(m)] > 0;
 
 /** Which panel the page shows. */
 export type Phase = 'over' | 'call' | 'deal' | 'pitch' | 'swing';
@@ -146,32 +158,38 @@ export function newMatch(settings: Settings, sides: readonly [Side, Side]): Matc
     sides: [a.lineup.length ? a : { ...a, lineup: [a.name] }, b.lineup.length ? b : { ...b, lineup: [b.name] }],
     inning: 1,
     half: 'top',
-    strikes: 0,
-    outs: 0,
+    up: 0,
     bases: [null, null, null],
     due: [0, 0],
     runs: [Array(innings).fill(0), Array(innings).fill(0)],
     hits: [0, 0],
-    strikeouts: [0, 0],
+    outs: [0, 0],
+    knuckleballs: [KNUCKLEBALLS_PER_GAME, KNUCKLEBALLS_PER_GAME],
     used: [],
     pitched: [],
-    lastKind: null,
     hand: null,
     pitch: null,
+    foul: null,
     call: null,
     winner: null,
   };
 }
 
-/** The deal arrives from the server: three clubs, one per kind. */
+/** The deal arrives from the server: one club of each kind. */
 export function dealt(m: Match, hand: readonly Pitch[]): Match {
   return { ...m, hand };
 }
 
-/** The pitcher's choice. The kind just thrown in this at-bat is not allowed. */
+/** The pitcher's choice. A knuckleball is spent from the side's three. */
 export function pitched(m: Match, pitch: Pitch): Match {
-  if (m.lastKind === pitch.kind) return m;
-  return { ...m, hand: null, pitch, pitched: [...m.pitched, pitch.id] };
+  if (!canThrow(m, pitch.kind)) return m;
+  let knuckleballs = m.knuckleballs;
+  if (pitch.kind === 'knuckleball') {
+    const k: [number, number] = [...m.knuckleballs] as [number, number];
+    k[fielding(m)]--;
+    knuckleballs = k;
+  }
+  return { ...m, hand: null, pitch, foul: null, knuckleballs, pitched: [...m.pitched, pitch.id] };
 }
 
 const withRuns = (m: Match, side: SideIndex, n: number): Match => {
@@ -185,15 +203,18 @@ const withRuns = (m: Match, side: SideIndex, n: number): Match => {
 const walkOff = (m: Match): boolean =>
   m.half === 'bottom' && m.inning >= m.settings.innings && total(m, 1) > total(m, 0);
 
-/** Advance every runner and the batter by `bases`; count who crossed home. */
+/**
+ * Move the runners. Everyone advances by the hit; anyone on second or
+ * third comes home on any hit at all. The batter takes the base the hit
+ * is worth, or rounds them all.
+ */
 function advance(m: Match, hitter: Named, bases: Bases): { m: Match; runs: number } {
-  const slots: (Named | null)[] = [...m.bases];
   let runs = 0;
   const next: (Named | null)[] = [null, null, null];
   for (let i = 0; i < 3; i++) {
-    const r = slots[i];
+    const r = m.bases[i];
     if (!r) continue;
-    const to = i + bases;
+    const to = i >= 1 ? 3 : i + bases;
     if (to >= 3) runs++;
     else next[to] = r;
   }
@@ -202,15 +223,16 @@ function advance(m: Match, hitter: Named, bases: Bases): { m: Match; runs: numbe
   return { m: { ...m, bases: next as [Named | null, Named | null, Named | null] }, runs };
 }
 
+/** The batter is done, one way or the other. */
 const nextBatter = (m: Match): Match => {
   const side = batting(m);
   const due: [number, number] = [...m.due] as [number, number];
   due[side] = (due[side] + 1) % m.sides[side].lineup.length;
-  return { ...m, due, strikes: 0, lastKind: null, pitch: null, hand: null };
+  return { ...m, due, up: m.up + 1, pitch: null, hand: null, foul: null };
 };
 
 /**
- * Three outs: change sides. Runners are stranded, the count clears.
+ * Three batters: change sides. Runners are stranded.
  *
  * The end of the game lives here. After the bottom of the last inning (or
  * any later one) with a leader, it's over. After the top of the last inning
@@ -218,7 +240,7 @@ const nextBatter = (m: Match): Match => {
  * there is nothing to bat for.
  */
 function retireSide(m: Match): Match {
-  let out: Match = { ...m, bases: [null, null, null], outs: 0, strikes: 0, lastKind: null, pitch: null, hand: null };
+  let out: Match = { ...m, bases: [null, null, null], up: 0, pitch: null, hand: null, foul: null };
   const last = out.inning >= out.settings.innings;
   if (out.half === 'top') {
     if (last && total(out, 1) > total(out, 0)) return { ...out, status: 'over', winner: 1 };
@@ -234,65 +256,58 @@ function retireSide(m: Match): Match {
   return out;
 }
 
-/** A hit: runners move, runs count, the batter's done, the name is burnt. */
-function hit(m: Match, v: Extract<Verdict, { verdict: 'hit' }>): Match {
+/** After a batter: the third of the half retires the side. */
+function afterBatter(m: Match): { m: Match; sideRetired: boolean } {
+  const moved = nextBatter(m);
+  if (moved.up >= BATTERS_PER_HALF) return { m: retireSide(moved), sideRetired: true };
+  return { m: moved, sideRetired: false };
+}
+
+/** A hit: worth the pitch. Runners move, runs count, the name is burnt. */
+function hit(m: Match, v: Extract<Verdict, { verdict: 'hit' }>, kind: PitchKind): Match {
   const side = batting(m);
+  const bases = BASES_FOR[kind];
   const loaded = m.bases.every(Boolean);
-  const moved = advance(m, v.player, v.bases);
+  const moved = advance(m, v.player, bases);
   let out = withRuns(moved.m, side, moved.runs);
   const hits: [number, number] = [...out.hits] as [number, number];
   hits[side]++;
   out = { ...out, hits, used: [...out.used, v.player.id] };
   const ended = walkOff(out);
-  out = nextBatter(out);
+  const after = afterBatter(out);
+  out = after.m;
   if (ended) out = { ...out, status: 'over', winner: 1 };
   out.call = {
-    kind: 'hit', player: v.player, bases: v.bases, apps: v.apps, club: v.club,
-    runs: moved.runs, grandSlam: loaded && v.bases === 4, walkOff: ended,
+    kind: 'hit', player: v.player, bases, apps: v.apps, club: v.club,
+    runs: moved.runs, grandSlam: loaded && bases === 4, walkOff: ended, sideRetired: after.sideRetired && !ended,
   };
   return out;
 }
 
-/** A strike, from a miss, the clock, or nothing. Three is an out; the third out retires the side. */
-export function strike(m: Match, reason: 'miss' | 'clock' | 'nothing', player?: Named, clubs?: readonly ClubRef[]): Match {
+/** An out, from a miss, the clock, or nothing. The third batter retires the side. */
+export function out(m: Match, reason: 'miss' | 'clock' | 'nothing', player?: Named, clubs?: readonly ClubRef[]): Match {
   if (m.status !== 'live') return m;
   const side = batting(m);
-  const kind = m.pitch?.kind ?? null;
   const club: ClubRef | null = m.pitch ? { id: m.pitch.id, name: m.pitch.name, crest: m.pitch.crest } : null;
-  let out: Match = { ...m, strikes: m.strikes + 1, pitch: null, hand: null, lastKind: kind };
-  const isOut = out.strikes >= STRIKES_PER_OUT;
-  let sideRetired = false;
-  if (isOut) {
-    const strikeouts: [number, number] = [...out.strikeouts] as [number, number];
-    strikeouts[side]++;
-    out = nextBatter({ ...out, strikeouts, outs: out.outs + 1 });
-    if (out.outs >= OUTS_PER_HALF) {
-      sideRetired = true;
-      out = retireSide(out);
-    }
-  }
-  out.call = { kind: 'strike', reason, club, player, clubs, out: isOut, sideRetired };
-  return out;
+  const outs: [number, number] = [...m.outs] as [number, number];
+  outs[side]++;
+  const after = afterBatter({ ...m, outs });
+  const next = after.m;
+  next.call = { kind: 'out', reason, club, player, clubs, sideRetired: after.sideRetired };
+  return next;
 }
 
 /**
  * A swing at the pitch at the plate.
  *
  * A name already burnt is a foul before it is anything else: it never
- * reaches the umpire. A foul is a strike unless the count is already two,
- * in which case nothing changes and the batter swings again.
+ * reaches the umpire, and the batter swings again at the same pitch.
  */
 export function swung(m: Match, v: Verdict): Match {
   if (m.status !== 'live' || !m.pitch) return m;
-  if (m.used.includes(v.player.id)) {
-    const counted = m.strikes < STRIKES_PER_OUT - 1;
-    const call: Call = { kind: 'foul', player: v.player, counted };
-    if (counted) return { ...strike(m, 'miss'), call };
-    // The count stands, but the pitcher throws again.
-    return { ...m, pitch: null, hand: null, lastKind: m.pitch.kind, call };
-  }
-  if (v.verdict === 'miss') return strike(m, 'miss', v.player, v.clubs);
-  return hit(m, v);
+  if (m.used.includes(v.player.id)) return { ...m, foul: v.player };
+  if (v.verdict === 'miss') return out(m, 'miss', v.player, v.clubs);
+  return hit(m, v, m.pitch.kind);
 }
 
 /** Next: clear the call. The state under it already moved on. */
@@ -303,12 +318,4 @@ export function next(m: Match): Match {
 /** The same sides, the other way round, and a fresh board. */
 export function rematch(m: Match): Match {
   return newMatch(m.settings, [m.sides[1], m.sides[0]]);
-}
-
-/** A scoreline in words: "Home 4, Away 2" or "Tied". */
-export function scoreline(m: Match): string {
-  const a = total(m, 0);
-  const b = total(m, 1);
-  if (a === b) return `${a}–${b}`;
-  return a > b ? `${m.sides[0].name} ${a}–${b}` : `${m.sides[1].name} ${b}–${a}`;
 }

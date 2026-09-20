@@ -24,7 +24,7 @@ export default function FullTime({ match, onRematch, onQuit }: { match: Match; o
         <span>{h} {match.sides[1].name}</span>
       </p>
       <p className="slug-final__line">
-        {plural(match.hits[0] + match.hits[1], 'hit')}, {plural(match.strikeouts[0] + match.strikeouts[1], 'strikeout')}, {plural(match.used.length, 'name')}.
+        {plural(match.hits[0] + match.hits[1], 'hit')}, {plural(match.outs[0] + match.outs[1], 'out')}, {plural(match.used.length, 'name')}.
       </p>
       <div className="slug-final__actions">
         <button type="button" className="slug-btn slug-btn--primary display" onClick={onRematch}>Rematch — swap ends</button>

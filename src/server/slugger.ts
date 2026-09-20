@@ -1,7 +1,6 @@
 import type { Player } from '../lib/chemistry/types';
 import { clubView } from '../lib/clubs';
 import { DECK, PITCH_KINDS, type PitchKind } from '../lib/slugger/deck';
-import { basesFor, stintFame } from '../lib/slugger/grade';
 import type { ClubRef, Pitch, Verdict } from '../lib/slugger/match';
 import { loadData } from './board';
 
@@ -50,8 +49,7 @@ const pick = <T,>(xs: readonly T[], rng: () => number): T => xs[Math.floor(rng()
 
 /**
  * A hand: one club of each kind, none of them thrown yet this match. When a
- * pile is used up the match goes on with repeats from it — a nine-inning
- * game can outlast the knuckleballs — but never before.
+ * pile is used up the match goes on with repeats from it, but never before.
  */
 export async function deal(pitched: readonly string[], rng: () => number = Math.random): Promise<Pitch[]> {
   const { deck, club } = await loadIndex();
@@ -64,11 +62,10 @@ export async function deal(pitched: readonly string[], rng: () => number = Math.
 }
 
 /**
- * The ruling. Did they play there; if so, how deep a cut is it.
- *
- * A stint with no league appearances on record still counts — he was on the
- * books — and grades as the deep cut it is. On a miss the clubs they did
- * play for come back, busiest first, so the table gets its "ahh".
+ * The ruling: did they play there. The bases are the pitch's, not the
+ * umpire's (see grade.ts). A stint with no league appearances on record
+ * still counts — he was on the books. On a miss the clubs they did play for
+ * come back, busiest first, so the table gets its "ahh".
  */
 export async function judge(clubId: string, playerId: string): Promise<Verdict | null> {
   const { byId, club } = await loadIndex();
@@ -83,11 +80,5 @@ export async function judge(clubId: string, playerId: string): Promise<Verdict |
       .map(club);
     return { verdict: 'miss', player, clubs };
   }
-  return {
-    verdict: 'hit',
-    player,
-    bases: basesFor(stintFame(p, clubId)),
-    apps: apps(clubId),
-    club: club(clubId),
-  };
+  return { verdict: 'hit', player, apps: apps(clubId), club: club(clubId) };
 }

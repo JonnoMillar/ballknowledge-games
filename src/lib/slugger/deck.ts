@@ -1,14 +1,16 @@
 /**
  * The pitcher's deck, by hand.
  *
- * Three piles, one per kind of pitch, each a list of club ids from the pool.
+ * Four piles, one per kind of pitch, each a list of club ids from the pool.
  * The kind is how many well-known players the pool has for the club —
  * measured as players whose stint-fame there is 40 or more (see grade.ts),
  * counted at 2026-09-20 and noted beside each entry as `k`:
  *
- *   fastball    k ≥ 40   a giant. It will be hit; the question is how far.
- *   curveball   k 15–39  a club with a shelf of names, most of them doubles.
- *   knuckleball k 6–14   a small club. A strikeout, or a triple that hangs.
+ *   fastball    k ≥ 40   a giant. Hit it and it's a single.
+ *   curveball   k 20–39  a club with a shelf of names. A double.
+ *   slider      k 11–19  a club you have to think about. A triple.
+ *   knuckleball k 6–10   a small club. Miss it and you're out; hit it and
+ *                        it's a home run. Three a game, so spend them well.
  *
  * Hand-picked rather than queried because the pool is global: by depth it
  * ranks Tokyo Verdy, Cerezo Osaka and JEF United above Tottenham, and a
@@ -19,9 +21,12 @@
  * checked for a crest; tests/slugger/deck.test.ts holds the list to the
  * pool. Nothing here was guessed.
  */
-export type PitchKind = 'fastball' | 'curveball' | 'knuckleball';
+export type PitchKind = 'fastball' | 'curveball' | 'slider' | 'knuckleball';
 
-export const PITCH_KINDS: readonly PitchKind[] = ['fastball', 'curveball', 'knuckleball'];
+export const PITCH_KINDS: readonly PitchKind[] = ['fastball', 'curveball', 'slider', 'knuckleball'];
+
+/** Knuckleballs a side may throw in a game. */
+export const KNUCKLEBALLS_PER_GAME = 3;
 
 export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
   fastball: [
@@ -61,12 +66,12 @@ export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
     'Q128446', // Porto k49
     'Q11938', // PSV Eindhoven k48
     'Q4512', // VfB Stuttgart k40
-    'Q495299', // Galatasaray k39
-    'Q75729', // Sporting CP k38
-    'Q32494', // Schalke 04 k38
-    'Q15799', // River Plate k39
   ],
   curveball: [
+    'Q495299', // Galatasaray k39
+    'Q15799', // River Plate k39
+    'Q75729', // Sporting CP k38
+    'Q32494', // Schalke 04 k38
     'Q172567', // Beşiktaş k37
     'Q18732', // Southampton k35
     'Q19516', // Lille k34
@@ -113,6 +118,8 @@ export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
     'Q1900', // Cagliari k20
     'Q2674', // Palermo k20
     'Q80955', // Santos k20
+  ],
+  slider: [
     'Q2714', // Watford k19
     'Q8760', // Deportivo de A Coruña k19
     'Q187528', // Anderlecht k19
@@ -138,8 +145,6 @@ export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
     'Q19597', // Rangers k15
     'Q190916', // Club Brugge k15
     'Q201584', // AEK Athens k15
-  ],
-  knuckleball: [
     'Q19451', // Bolton Wanderers k14
     'Q8806', // Getafe k14
     'Q172969', // Shakhtar Donetsk k14
@@ -173,6 +178,8 @@ export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
     'Q211906', // Brøndby k11
     'Q206692', // FC Zürich k11
     'Q459090', // Club América k11
+  ],
+  knuckleball: [
     'Q19513', // Montpellier k10
     'Q18723', // Queens Park Rangers k10
     'Q16844931', // Inter Miami k10

@@ -1,9 +1,9 @@
 'use client';
-import { batter, type Match } from '../../src/lib/slugger/match';
+import { batter, fielding, type Match, BATTERS_PER_HALF } from '../../src/lib/slugger/match';
 import { plateName } from '../../src/lib/short-name';
 
 /**
- * The diamond, with the runners on it by name, and the count beside it.
+ * The diamond, with the runners on it by name, and the half beside it.
  *
  * Home plate at the bottom, first base on the right, as seen from the
  * stands behind the plate. A base with a runner on it is filled and
@@ -17,7 +17,7 @@ const BASE = [
   { x: 50, y: 70, label: 'third', dx: -14, anchor: 'end' },
 ] as const;
 
-function Dots({ n, of, tone }: { n: number; of: number; tone: 'strike' | 'out' }) {
+function Dots({ n, of, tone }: { n: number; of: number; tone: 'up' | 'knuckle' }) {
   return (
     <span className={`slug-count__dots slug-count__dots--${tone}`} aria-hidden="true">
       {Array.from({ length: of }, (_, i) => <i key={i} className={i < n ? 'is-on' : ''} />)}
@@ -63,12 +63,12 @@ export default function Diamond({ match }: { match: Match }) {
 
       <div className="slug-count">
         <div className="slug-count__row">
-          <span className="slug-count__label">Strikes</span>
-          <Dots n={match.strikes} of={2} tone="strike" />
+          <span className="slug-count__label">Batters</span>
+          <Dots n={match.up} of={BATTERS_PER_HALF} tone="up" />
         </div>
         <div className="slug-count__row">
-          <span className="slug-count__label">Outs</span>
-          <Dots n={match.outs} of={2} tone="out" />
+          <span className="slug-count__label">Knucklers</span>
+          <Dots n={match.knuckleballs[fielding(match)]} of={3} tone="knuckle" />
         </div>
         <div className="slug-count__who">
           {live ? (

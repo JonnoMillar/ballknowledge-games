@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import ClubBadge, { shortClubName } from '../ClubBadge';
 import { search, type SearchIndex } from '../../src/lib/search/index';
 import type { NameEntry } from '../../src/lib/chain/client';
-import type { Pitch } from '../../src/lib/slugger/match';
+import type { Named, Pitch } from '../../src/lib/slugger/match';
+import { BASES_FOR, BASES_NAME } from '../../src/lib/slugger/grade';
 import { KIND_LABEL } from './Hand';
 
 /**
@@ -11,24 +12,26 @@ import { KIND_LABEL } from './Hand';
  *
  * The batter says a name; whoever holds the phone types it and taps it.
  * Tapping is the swing — there is no confirm, because the clock is
- * running and a wrong name is a strike, not the match. The search shows
+ * running and this is a pub. A name already used is a foul: the line says
+ * so and the batter swings again at the same pitch. The search shows
  * nothing until a name is typed: the album is searched, never listed, so
  * nothing beside the pitch is a list of its players.
  *
  * Mounted fresh for every pitch (keyed by the parent), so the clock and
- * the query start clean.
+ * the query start clean. A foul does not remount it: the clock runs on.
  */
 export default function AtBat({
-  pitch, batter, side, clock, index, busy, onSwing, onStrike,
+  pitch, batter, side, foul, clock, index, busy, onSwing, onOut,
 }: {
   pitch: Pitch;
   batter: string;
   side: string;
+  foul: Named | null;
   clock: number;
   index: SearchIndex<NameEntry> | null;
   busy: boolean;
   onSwing: (e: NameEntry) => void;
-  onStrike: (reason: 'clock' | 'nothing') => void;
+  onOut: (reason: 'clock' | 'nothing') => void;
 }) {
   const [query, setQuery] = useState('');
   const [left, setLeft] = useState(clock);
@@ -53,11 +56,11 @@ export default function AtBat({
       if (remaining <= 0 && !fired.current) {
         fired.current = true;
         clearInterval(id);
-        onStrike('clock');
+        onOut('clock');
       }
     }, 100);
     return () => clearInterval(id);
-  }, [clock, onStrike]);
+  }, [clock, onOut]);
 
   const secs = Math.ceil(left);
   const urgent = clock > 0 && left <= 5;
@@ -71,6 +74,7 @@ export default function AtBat({
         <div className="slug-plate__text">
           <span className={`slug-plate__kind slug-plate__kind--${pitch.kind} display`}>{KIND_LABEL[pitch.kind]}</span>
           <span className="slug-plate__club display">{club}</span>
+          <span className={`slug-plate__worth slug-plate__worth--${pitch.kind} display`}>{BASES_NAME[BASES_FOR[pitch.kind]]} if hit</span>
           <span className="slug-plate__who"><b>{batter}</b>{side !== batter ? <> · {side}</> : null}</span>
         </div>
         {clock > 0 ? (
@@ -106,6 +110,12 @@ export default function AtBat({
         />
       </label>
 
+      {foul ? (
+        <p className="slug-foul" role="status">
+          <b>Foul ball.</b> {foul.name} has already had a hit this match. Swing again.
+        </p>
+      ) : null}
+
       <ul className="slug-results" aria-live="polite">
         {results.map((r) => (
           <li key={r.id}>
@@ -121,7 +131,7 @@ export default function AtBat({
       </ul>
 
       <div className="slug-atbat__foot">
-        <button type="button" className="slug-link slug-link--muted" disabled={busy} onClick={() => onStrike('nothing')}>
+        <button type="button" className="slug-link slug-link--muted" disabled={busy} onClick={() => onOut('nothing')}>
           I&rsquo;ve got nothing
         </button>
         {busy ? <span className="slug-atbat__busy">The umpire&rsquo;s looking…</span> : null}

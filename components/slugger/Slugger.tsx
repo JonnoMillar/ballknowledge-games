@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { buildIndex, type SearchIndex } from '../../src/lib/search/index';
 import { decodeNames, type NameEntry, type NameRow } from '../../src/lib/chain/client';
 import {
-  dealt, newMatch, next, phase, pitched, rematch, strike, swung,
+  dealt, newMatch, next, out, phase, pitched, rematch, swung,
   type Match, type Pitch, type Settings, type Side, type Verdict,
 } from '../../src/lib/slugger/match';
 import Setup, { type SetupValue } from './Setup';
@@ -17,7 +17,8 @@ import Ballpark from './Ballpark';
  * and every rule lives there; this component only moves it along: deal
  * when a deal is due, judge a swing when one is made, and put it away.
  */
-const MATCH_KEY = 'slugger.match.v1';
+// v2: the one-swing, three-up shape. A v1 game left on a phone is not read.
+const MATCH_KEY = 'slugger.match.v2';
 const SETUP_KEY = 'slugger.setup.v1';
 
 const DEFAULT_SETUP: SetupValue = {
@@ -98,7 +99,8 @@ export default function Slugger() {
 
   const onSwing = useCallback(async (entry: NameEntry) => {
     if (!match || phase(match) !== 'swing' || busy) return;
-    // A name already hit never reaches the umpire: it is a foul here.
+    // A name already hit never reaches the umpire: it is a foul here, and
+    // the batter swings again.
     if (match.used.includes(entry.id)) {
       const foul: Verdict = { verdict: 'miss', player: { id: entry.id, name: entry.name }, clubs: [] };
       setMatch((m) => (m ? swung(m, foul) : m));
@@ -121,8 +123,8 @@ export default function Slugger() {
     }
   }, [match, busy]);
 
-  const onStrike = useCallback((reason: 'clock' | 'nothing') => {
-    setMatch((m) => (m && phase(m) === 'swing' ? strike(m, reason) : m));
+  const onOut = useCallback((reason: 'clock' | 'nothing') => {
+    setMatch((m) => (m && phase(m) === 'swing' ? out(m, reason) : m));
   }, []);
 
   const onNext = useCallback(() => setMatch((m) => (m ? next(m) : m)), []);
@@ -147,7 +149,7 @@ export default function Slugger() {
       trouble={trouble}
       onPitch={onPitch}
       onSwing={onSwing}
-      onStrike={onStrike}
+      onOut={onOut}
       onNext={onNext}
       onRematch={onRematch}
       onQuit={onQuit}

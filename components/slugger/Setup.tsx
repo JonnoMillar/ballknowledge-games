@@ -54,8 +54,8 @@ export default function Setup({ value, onStart }: { value: SetupValue; onStart: 
           <p className="slug-hero__eyebrow">Football, played as baseball</p>
           <h1 className="slug-hero__head display">Fancy a game?</h1>
           <p className="slug-hero__lede">
-            The pitcher throws a club. The batter names someone who played for it. Everyone knows Kane was at
-            Spurs — that&rsquo;s a single. Ryan Mason is a double. Grzegorz Rasiak is a home run.
+            The pitcher throws a club. The batter names someone who played for it. Throw Barcelona and they&rsquo;ll
+            hit it, but it&rsquo;s only a single. Throw Bolton and it&rsquo;s a strikeout — or a home run.
           </p>
         </section>
 
@@ -112,7 +112,7 @@ export default function Setup({ value, onStart }: { value: SetupValue; onStart: 
                   >{n}</button>
                 ))}
               </div>
-              <span className="slug-opt__hint">{v.settings.innings === 3 ? 'About fifteen minutes.' : v.settings.innings === 5 ? 'Half an hour or so.' : 'The full nine. Bring a coat.'}</span>
+              <span className="slug-opt__hint">{v.settings.innings === 3 ? 'About ten minutes.' : v.settings.innings === 5 ? 'A quarter of an hour.' : 'The full nine. Half an hour.'}</span>
             </div>
             <div className="slug-opt">
               <span className="slug-opt__label">Shot clock</span>

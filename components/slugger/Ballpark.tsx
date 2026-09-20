@@ -1,7 +1,7 @@
 'use client';
 import type { SearchIndex } from '../../src/lib/search/index';
 import type { NameEntry } from '../../src/lib/chain/client';
-import { batter, phase, type Match, type Pitch, type Settings } from '../../src/lib/slugger/match';
+import { batter, fielding, phase, type Match, type Pitch, type Settings } from '../../src/lib/slugger/match';
 import Masthead from './Masthead';
 import LineScore from './LineScore';
 import Diamond from './Diamond';
@@ -22,7 +22,7 @@ export const inningName = (n: number) => ORDINAL[n - 1] ?? `${n}th`;
  */
 export default function Ballpark({
   match, settings, index, busy, trouble,
-  onPitch, onSwing, onStrike, onNext, onRematch, onQuit, onRetry,
+  onPitch, onSwing, onOut, onNext, onRematch, onQuit, onRetry,
 }: {
   match: Match;
   settings: Settings;
@@ -31,7 +31,7 @@ export default function Ballpark({
   trouble: string | null;
   onPitch: (p: Pitch) => void;
   onSwing: (e: NameEntry) => void;
-  onStrike: (reason: 'clock' | 'nothing') => void;
+  onOut: (reason: 'clock' | 'nothing') => void;
   onNext: () => void;
   onRematch: () => void;
   onQuit: () => void;
@@ -39,7 +39,7 @@ export default function Ballpark({
 }) {
   const ph = phase(match);
   const up = batter(match);
-  const fielder = match.sides[up.side === 0 ? 1 : 0];
+  const fielder = match.sides[fielding(match)];
 
   return (
     <div className="slug-shell">
@@ -68,20 +68,21 @@ export default function Ballpark({
             <FullTime match={match} onRematch={onRematch} onQuit={onQuit} />
           ) : ph === 'swing' && match.pitch ? (
             <AtBat
-              key={`${match.pitched.length}-${match.strikes}`}
+              key={match.pitched.length}
               pitch={match.pitch}
               batter={up.name}
               side={match.sides[up.side].name}
+              foul={match.foul}
               clock={settings.clock}
               index={index}
               busy={busy}
               onSwing={onSwing}
-              onStrike={onStrike}
+              onOut={onOut}
             />
           ) : (
             <Hand
+              match={match}
               hand={ph === 'pitch' ? match.hand : null}
-              lastKind={match.lastKind}
               pitcher={fielder.name}
               batter={up.name}
               onPitch={onPitch}

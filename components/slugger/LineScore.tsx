@@ -4,7 +4,7 @@ import { batting, total, type Match } from '../../src/lib/slugger/match';
 /**
  * The line score: the board at the ballpark.
  *
- * Runs per inning for each side, then R, H and K. A dash is a half not
+ * Runs per inning for each side, then R, H and O. A dash is a half not
  * played yet; the side batting now is marked. It is the one dark thing on
  * the page because that is what a scoreboard is — a green board with chalk
  * figures — not because the page is dark.
@@ -34,7 +34,7 @@ export default function LineScore({ match }: { match: Match }) {
               ))}
               <th scope="col" className="slug-board__gap">R</th>
               <th scope="col">H</th>
-              <th scope="col">K</th>
+              <th scope="col">O</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +49,7 @@ export default function LineScore({ match }: { match: Match }) {
                 ))}
                 <td className="slug-board__gap slug-board__runs">{total(match, side)}</td>
                 <td>{match.hits[side]}</td>
-                <td>{match.strikeouts[side]}</td>
+                <td>{match.outs[side]}</td>
               </tr>
             ))}
           </tbody>

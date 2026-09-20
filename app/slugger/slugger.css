@@ -138,7 +138,8 @@
 .slug-grade__tag { font-size: 16px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
 .slug-grade:nth-child(1) .slug-grade__tag { color: var(--grass); }
 .slug-grade:nth-child(2) .slug-grade__tag { color: #A8720F; }
-.slug-grade:nth-child(3) .slug-grade__tag { color: var(--stitch); }
+.slug-grade:nth-child(3) .slug-grade__tag { color: #7A4A9C; }
+.slug-grade:nth-child(4) .slug-grade__tag { color: var(--stitch); }
 .slug-rules__note { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
 
 /* ── THE SCOREBOARD ─────────────────────────────────────────────────────── */
@@ -194,8 +195,8 @@
   width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--rule-strong); background: var(--sticker);
   transition: background var(--t-fast), border-color var(--t-fast);
 }
-.slug-count__dots--strike i.is-on { background: var(--amber); border-color: #B08A1E; }
-.slug-count__dots--out i.is-on { background: var(--stitch); border-color: var(--stitch-deep); }
+.slug-count__dots--up i.is-on { background: var(--grass); border-color: var(--grass-ink); }
+.slug-count__dots--knuckle i.is-on { background: var(--stitch); border-color: var(--stitch-deep); }
 .slug-count__who { display: flex; flex-direction: column; gap: 1px; padding-top: 4px; border-top: 1px solid var(--rule); }
 .slug-count__batter { font-size: 24px; font-weight: 800; line-height: 1; text-transform: uppercase; letter-spacing: 0.02em; }
 .slug-count__side { font-size: 13px; color: var(--muted); }
@@ -220,7 +221,7 @@
 .slug-trouble .slug-btn { font-size: 15px; padding: 6px 12px; }
 
 /* ── THE HAND ───────────────────────────────────────────────────────────── */
-.slug-hand__cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.slug-hand__cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .slug-card {
   appearance: none;
   display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -237,15 +238,18 @@
 .slug-card:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(20, 18, 16, 0.14); }
 .slug-card:not(:disabled):active { transform: translateY(0); }
 .slug-card__kind {
-  align-self: stretch; padding: 5px 4px 6px; color: var(--chalk);
-  font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+  align-self: stretch; padding: 5px 2px 6px; color: var(--chalk);
+  font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
 }
 .slug-card--fastball .slug-card__kind { background: var(--grass); }
 .slug-card--curveball .slug-card__kind { background: #B8811A; }
-.slug-card--knuckleball .slug-card__kind { background: var(--ink); }
+.slug-card--slider .slug-card__kind { background: #7A4A9C; }
+.slug-card--knuckleball .slug-card__kind { background: var(--stitch); }
+.slug-card__worth { font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+.slug-card__worth small { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.02em; text-transform: none; }
+.slug-card--knuckleball .slug-card__worth { color: var(--stitch); }
 .slug-card__crest { height: 60px; display: flex; align-items: center; justify-content: center; margin-top: 4px; }
-.slug-card__club { font-size: 14px; font-weight: 600; line-height: 1.15; text-align: center; min-height: 2.3em; display: flex; align-items: center; }
-.slug-card__hint { font-size: 11px; color: var(--muted); text-align: center; }
+.slug-card__club { font-size: 13px; font-weight: 600; line-height: 1.15; text-align: center; min-height: 2.3em; display: flex; align-items: center; }
 .slug-card.is-barred { opacity: 0.45; border-style: dashed; cursor: default; }
 .slug-card.is-dealing { opacity: 0.7; }
 .slug-card__back {
@@ -263,7 +267,12 @@
 .slug-plate__kind { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
 .slug-plate__kind--fastball { color: var(--grass); }
 .slug-plate__kind--curveball { color: #A8720F; }
-.slug-plate__kind--knuckleball { color: var(--ink); }
+.slug-plate__kind--slider { color: #7A4A9C; }
+.slug-plate__kind--knuckleball { color: var(--stitch); }
+.slug-plate__worth { font-size: 14px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grass-deep); margin-top: 2px; }
+.slug-plate__worth--knuckleball { color: var(--stitch); }
+.slug-foul { margin: 0; padding: 8px 10px; border-radius: 4px; background: #FFF6DB; border: 1px solid #E2C46A; font-size: 14px; }
+.slug-foul b { color: #A8720F; font-weight: 700; }
 .slug-plate__club { font-size: clamp(20px, 6.4vw, 30px); font-weight: 800; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; }
 .slug-plate__who { font-size: 13px; color: var(--muted); margin-top: 2px; }
 .slug-plate__who b { font-weight: 600; color: var(--ink); }
@@ -292,7 +301,11 @@
 .slug-atbat.is-busy .slug-results { opacity: 0.5; }
 
 /* ── THE CALL ───────────────────────────────────────────────────────────── */
-.slug-call { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 6px 0 2px; }
+.slug-call {
+  appearance: none; border: 0; background: none; width: 100%; cursor: pointer; font: inherit; color: var(--ink);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 6px 0 2px;
+}
+.slug-call__hint { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-top: 4px; }
 .slug-call__stamp {
   font-size: 44px; line-height: 0.95; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em;
   padding: 6px 14px 8px; border: 4px solid currentColor; border-radius: 6px; transform: rotate(-2deg);
@@ -304,9 +317,7 @@
 }
 .slug-call--hit .slug-call__stamp { color: var(--grass); }
 .slug-call--homer .slug-call__stamp { color: var(--chalk); background: var(--stitch); border-color: var(--stitch-deep); font-size: 52px; }
-.slug-call--strike .slug-call__stamp { color: var(--stitch); }
 .slug-call--out .slug-call__stamp { color: var(--chalk); background: var(--ink); border-color: var(--ink); font-size: 36px; }
-.slug-call--foul .slug-call__stamp { color: #A8720F; }
 .slug-call__line { margin: 4px 0 0; font-size: 16px; line-height: 1.4; max-width: 32em; }
 .slug-call__line b { font-weight: 600; }
 .slug-call__runs { margin: 0; font-size: 15px; color: var(--grass-deep); font-weight: 600; }
@@ -315,7 +326,6 @@
 .slug-call__clubs-label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .slug-call__clubs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; }
 .slug-call__clubs li { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; padding: 4px 8px 4px 5px; border: 1px solid var(--rule); border-radius: 999px; background: var(--panel); }
-.slug-call .slug-btn { margin-top: 6px; min-width: 200px; }
 
 /* ── FULL TIME ──────────────────────────────────────────────────────────── */
 .slug-final { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 8px 0 4px; }
@@ -330,10 +340,11 @@
 .slug-card { min-width: 0; }
 .slug-card__club { overflow-wrap: anywhere; }
 @media (max-width: 420px) {
-  .slug-hand__cards { gap: 6px; }
-  .slug-card__kind { font-size: 11px; letter-spacing: 0.06em; padding: 5px 2px 6px; }
-  .slug-card__club { font-size: 13px; }
-  .slug-card__hint { display: none; }
+  .slug-hand__cards { gap: 4px; }
+  .slug-card__kind { font-size: 9.5px; letter-spacing: 0.04em; }
+  .slug-card__club { font-size: 12px; }
+  .slug-card__worth { font-size: 11px; }
+  .slug-card__crest { height: 48px; }
   .slug-board__table { font-size: 20px; }
   .slug-board__side { font-size: 14px; max-width: 96px; }
 }

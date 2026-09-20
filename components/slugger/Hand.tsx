@@ -1,69 +1,67 @@
 'use client';
 import ClubBadge, { shortClubName } from '../ClubBadge';
-import type { PitchKind } from '../../src/lib/slugger/deck';
-import type { Pitch } from '../../src/lib/slugger/match';
+import { PITCH_KINDS, type PitchKind } from '../../src/lib/slugger/deck';
+import { BASES_FOR, BASES_NAME } from '../../src/lib/slugger/grade';
+import { canThrow, fielding, type Match, type Pitch } from '../../src/lib/slugger/match';
 
 export const KIND_LABEL: Record<PitchKind, string> = {
   fastball: 'Fastball',
   curveball: 'Curveball',
+  slider: 'Slider',
   knuckleball: 'Knuckleball',
 };
 
-const KIND_HINT: Record<PitchKind, string> = {
-  fastball: 'A giant',
-  curveball: 'A shelf of names',
-  knuckleball: 'A small club',
-};
-
 /**
- * The pitcher's hand: three cards, one of each kind. Tap one to throw it.
+ * The pitcher's hand: four cards, one of each kind. Tap one to throw it.
  *
- * The kind just thrown in this at-bat is face down — no pitch twice in a
- * row — which is what stops a pitcher throwing knuckleballs at a casual
- * mate until the game is nothing but strikeouts.
+ * Each card says what a hit off it is worth, because that is the whole
+ * decision: the fastball will be hit, for a single; the knuckleball might
+ * not be, and if it is, it's gone. Knuckleballs are three a game, and the
+ * card shows how many are left.
  */
 export default function Hand({
-  hand, lastKind, pitcher, batter, onPitch,
+  match, hand, pitcher, batter, onPitch,
 }: {
+  match: Match;
   hand: readonly Pitch[] | null;
-  lastKind: PitchKind | null;
   pitcher: string;
   batter: string;
   onPitch: (p: Pitch) => void;
 }) {
+  const left = match.knuckleballs[fielding(match)];
   return (
     <div className="slug-hand">
       <p className="slug-panel__lead">
-        <b>{pitcher}</b> to pitch to <b>{batter}</b>.{lastKind ? <span className="slug-panel__note"> Not the {KIND_LABEL[lastKind].toLowerCase()} again.</span> : null}
+        <b>{pitcher}</b> to pitch to <b>{batter}</b>.
+        <span className="slug-panel__note"> Batter {match.up + 1} of 3.</span>
       </p>
       <div className="slug-hand__cards">
-        {(hand ?? []).map((p) => {
-          const barred = p.kind === lastKind;
+        {(hand ?? PITCH_KINDS.map((kind): Pitch => ({ id: '', name: '', crest: false, kind }))).map((p) => {
+          const dealing = !hand;
+          const barred = !canThrow(match, p.kind);
+          const worth = BASES_NAME[BASES_FOR[p.kind]];
           return (
             <button
               type="button"
               key={p.kind}
-              className={`slug-card slug-card--${p.kind}${barred ? ' is-barred' : ''}`}
-              disabled={barred}
-              aria-label={barred ? `${KIND_LABEL[p.kind]}, not again` : `${KIND_LABEL[p.kind]}: ${shortClubName(p.name)}`}
+              className={`slug-card slug-card--${p.kind}${barred ? ' is-barred' : ''}${dealing ? ' is-dealing' : ''}`}
+              disabled={barred || dealing}
+              aria-label={barred ? `${KIND_LABEL[p.kind]}, none left` : `${KIND_LABEL[p.kind]}: ${shortClubName(p.name)}, a ${worth.toLowerCase()} if hit`}
               onClick={() => onPitch(p)}
             >
               <span className="slug-card__kind display">{KIND_LABEL[p.kind]}</span>
               <span className="slug-card__crest">
-                {barred ? <span className="slug-card__back" aria-hidden="true" /> : <ClubBadge clubId={p.id} club={{ name: p.name, crest: p.crest }} size={56} />}
+                {barred || dealing
+                  ? <span className="slug-card__back" aria-hidden="true" />
+                  : <ClubBadge clubId={p.id} club={{ name: p.name, crest: p.crest }} size={52} />}
               </span>
-              <span className="slug-card__club">{barred ? '—' : shortClubName(p.name)}</span>
-              <span className="slug-card__hint">{KIND_HINT[p.kind]}</span>
+              <span className="slug-card__club">{dealing ? 'Dealing…' : barred ? 'None left' : shortClubName(p.name)}</span>
+              <span className="slug-card__worth display">
+                {worth}{p.kind === 'knuckleball' && !barred ? <small> · {left} left</small> : null}
+              </span>
             </button>
           );
         })}
-        {!hand ? ['fastball', 'curveball', 'knuckleball'].map((k) => (
-          <div key={k} className={`slug-card slug-card--${k} is-dealing`} aria-hidden="true">
-            <span className="slug-card__kind display">{KIND_LABEL[k as PitchKind]}</span>
-            <span className="slug-card__crest"><span className="slug-card__back" /></span>
-            <span className="slug-card__club">Dealing…</span>
-          </div>
-        )) : null}
       </div>
     </div>
   );

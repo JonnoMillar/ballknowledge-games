@@ -27,6 +27,7 @@ const SPOKEN_NAME: Record<string, string> = {
   'Borussia Dortmund': 'Dortmund',
   'Bayer 04 Leverkusen': 'Leverkusen',
   '1. FC Köln': 'Köln',
+  'RCD Espanyol de Barcelona': 'Espanyol',
 };
 
 /**
