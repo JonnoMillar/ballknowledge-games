@@ -112,11 +112,17 @@ export default function Chain({
   const [sealing, setSealing] = useState(false);
   const [sealError, setSealError] = useState<string | null>(null);
   const [sealed, setSealed] = useState<Sealed | null>(null);
-  // The clubs shown for a plate, once asked for. A hint is the one thing the
-  // board says about an answer before the seal, and taking one is recorded:
-  // the share line shows that plate in yellow.
+  // A given's clubs, once asked for. The givens are on the page already, so
+  // their careers give nothing away; but looking one up is recorded, and the
+  // plates either side of that given show yellow in the share line.
   const [hints, setHints] = useState<Record<number, HintResponse['clubs']>>({});
-  const hinted = useMemo(() => Object.keys(hints).map(Number).sort((a, b) => a - b), [hints]);
+  const hinted = useMemo(() => {
+    const plates = new Set<number>();
+    for (const g of Object.keys(hints).map(Number)) {
+      for (const { slot } of neighboursOf(g, puzzle.slots.length, closed)) if (puzzle.slots[slot] == null) plates.add(slot);
+    }
+    return [...plates].sort((a, b) => a - b);
+  }, [hints, puzzle.slots, closed]);
   const board = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -166,7 +172,7 @@ export default function Chain({
   }
 
   async function hint(i: number) {
-    if (hints[i] || state.submitted) return;
+    if (hints[i] || state.submitted || puzzle.slots[i] == null) return;
     try {
       const res = await fetch('/api/hint', {
         method: 'POST',
@@ -304,8 +310,8 @@ export default function Chain({
               )}
               <span className="brief__note">
                 {Object.keys(clues).length > 0
-                  ? 'Every link is a shared club, and a plate that asks for a German only holds with a German. Stuck? Show a plate’s clubs, and the share line says you did.'
-                  : 'Every link is a shared club. Anyone who links will do, and the chain holds or it doesn’t.'}
+                  ? 'Every link is a shared club, and a plate that asks for a German only holds with a German. Stuck? Show a given’s clubs, and the share line says you did.'
+                  : 'Every link is a shared club. Anyone who links will do. Stuck? Show a given’s clubs, and the share line says you did.'}
               </span>
             </p>
 
@@ -334,7 +340,7 @@ export default function Chain({
               below={revealed ? (i) => {
                 const o = outcome(i);
                 if (!o) return null;
-                return <PlateTag slot={o} hinted={hints[i] !== undefined} run={phase.wall} />;
+                return <PlateTag slot={o} hinted={hinted.includes(i)} run={phase.wall} />;
               } : undefined}
             />
 

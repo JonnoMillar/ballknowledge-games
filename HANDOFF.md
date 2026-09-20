@@ -28,10 +28,12 @@ Two kinds of board, same rules:
 
 A clue is a **restriction, not a hint**: a plate that asks for a German is
 not held by a Frenchman who links both sides. The hint is separate and
-optional — "Show clubs" under a plate fetches the badges of the clubs the
-intended answer played for (`/api/hint`), and the plate is marked yellow in
-the share line and the album (`PlateMark`: held / hinted / missed). The
-streak does not care; the share line does.
+optional — "Show clubs" under a GIVEN fetches the badges of the clubs that
+given played for (`/api/hint`; the reference solution is never read), and
+the plates either side of it are marked yellow in the share line and the
+album (`PlateMark`: held / hinted / missed). The streak does not care; the
+share line does. An earlier version showed the answer's clubs, which gave
+the answer away.
 
 **Recall XI** (`/recall-xi`), the original 4-3-3 board, is parked: still in
 the repo on its own dark theme, not developed.
@@ -61,7 +63,7 @@ to it. A board id is a file path and is validated against `/^\d{3}$/`.
 | `components/SearchSheet.tsx` | The search: a bottom sheet on a phone, a panel on a desk. |
 | `app/api/names/route.ts` | The searchable album: names, aliases and picture keys for the whole pool, ~880 KB, cached a day. |
 | `app/api/seal/route.ts` | Judges a fill server-side and returns the result plus the handful of full records the reveal draws. |
-| `app/api/hint/route.ts` | The clubs the intended answer to one plate played for, as badges. The only thing said about an answer before the seal. |
+| `app/api/hint/route.ts` | The clubs one given played for, as badges. |
 | `src/server/board.ts` | Reads the pool once and keeps it; `loadBoard` strips the reference solution; `listBoards` builds the home page's summaries. Warmed by `instrumentation.ts`. |
 | `src/lib/chain/` | The rules. `score.ts` (links, fields, neighbours on a line or a ring), `result.ts` (everything true at the seal), `client.ts` (what crosses the wire), `share.ts` (plate marks and the share line). |
 | `src/lib/daily.ts`, `src/lib/progress.ts` | Day numbers from the epoch, the fixed shuffle, plays and the streak in `localStorage` (`chain.progress.v1`). |

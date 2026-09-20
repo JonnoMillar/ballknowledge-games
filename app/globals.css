@@ -263,6 +263,20 @@ button { font-family: inherit; }
 .link--named .link__rule { border-style: solid; border-color: var(--ink); }
 .link--held .link__rule { border-style: solid; border-color: var(--green); }
 .link--broken .link__rule { border-style: solid; border-color: var(--red); }
+/* The rail under a ring's upper sticker: the same rule, continued from the
+   card down to the link row. */
+.rail {
+  display: block;
+  flex-grow: 1;
+  width: 0;
+  min-height: 6px;
+  margin-top: 6px;
+  border-left: 2px dotted var(--rule-strong);
+  transition: border-color var(--t-base) var(--ease-out);
+}
+.rail--named { border-style: solid; border-color: var(--ink); }
+.rail--held { border-style: solid; border-color: var(--green); }
+.rail--broken { border-style: solid; border-color: var(--red); }
 
 .die {
   position: relative;

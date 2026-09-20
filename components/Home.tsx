@@ -81,7 +81,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
               <div className="how__art" aria-hidden>
                 <MiniSticker ground="var(--silhouette)" empty hint="a German" />
               </div>
-              <p><b>Each empty sticker says who fits it.</b> A plate that asks for a German only holds with a German. Tap it, name the player. Stuck? Show the answer’s clubs, at the cost of a yellow square.</p>
+              <p><b>Each empty sticker says who fits it.</b> A plate that asks for a German only holds with a German. Tap it, name the player. Stuck? Show a given’s clubs, at the cost of a yellow square.</p>
             </li>
             <li className="how__step">
               <div className="how__art" aria-hidden>

@@ -26,6 +26,12 @@ import type { PortraitImage } from '../src/lib/portraits';
  * a link as it is satisfied has no bet on it. A named club is the exception,
  * shown from the first render, because it is the rule and not the answer.
  */
+/** What a link looks like: judged and held, judged and broken, named, or nothing yet. */
+function linkState(link: ChainLink, revealed: boolean, stamped: boolean | null): 'held' | 'broken' | 'named' | '' {
+  const shown = revealed && stamped !== false;
+  return shown ? (link.made ? 'held' : 'broken') : link.required ? 'named' : '';
+}
+
 function Link({ link, mode, clubs, revealed, stamped, vertical }: {
   link: ChainLink;
   mode: 'chemistry' | 'clubs';
@@ -62,7 +68,7 @@ function Link({ link, mode, clubs, revealed, stamped, vertical }: {
   );
 }
 
-/** The clubs an answer played for, as a row of badges under the plate. */
+/** The clubs a given played for, as a row of badges under the sticker. */
 function Hint({ clubs }: { clubs: HintResponse['clubs'] }) {
   return (
     <span className="hint" title={clubs.map((c) => shortClubName(c.club.name)).join(', ')}>
@@ -87,9 +93,9 @@ function Slot({
   clue?: SlotClue;
   /** The verdict on the clue once sealed; null while the board is open. */
   clueMet: boolean | null;
-  /** The clubs shown for this plate, once a hint has been taken. */
+  /** The given's clubs, once asked for. */
   hint?: HintResponse['clubs'] | null;
-  /** Asks for the hint. Absent where hints are not on offer. */
+  /** Asks for a given's clubs. Absent where hints are not on offer. */
   onHint?: (i: number) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: `slot:${index}`, disabled: given || !interactive });
@@ -122,9 +128,9 @@ function Slot({
           <span>{clueMet === false ? `not ${clue.label}` : clue.label}</span>
         </span>
       ) : null}
-      {!given && hint ? (
+      {given && hint ? (
         <Hint clubs={hint} />
-      ) : !given && interactive && onHint ? (
+      ) : given && interactive && onHint ? (
         <button type="button" className="hint-btn" onClick={() => onHint(index)}>Show clubs</button>
       ) : null}
     </div>
@@ -209,12 +215,29 @@ export default function ChainBoard({
     const layout = RINGS[fill.length]!;
     const rows = Math.max(...layout.map(([r]) => r)) + 1;
     const cells: ReactNode[] = [];
+    // A vertical link's row is a fixed height, but the sticker above it sits
+    // in a row as tall as the tallest thing in that row, so the dotted rule
+    // would start well below the card. The upper cell stretches to its row
+    // and carries a rail from under the sticker down to the link row.
+    const railUnder = new Map<number, number>();
     fill.forEach((_, i) => {
       const [r, c] = layout[i]!;
+      const [r2, c2] = layout[(i + 1) % layout.length]!;
+      if (c === c2) railUnder.set(r < r2 ? i : (i + 1) % layout.length, i);
+    });
+    fill.forEach((_, i) => {
+      const [r, c] = layout[i]!;
+      const rail = railUnder.get(i);
       cells.push(
-        <div key={`s${i}`} style={{ gridRow: 2 * r + 1, gridColumn: 2 * c + 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div
+          key={`s${i}`}
+          style={{ gridRow: 2 * r + 1, gridColumn: 2 * c + 1, display: 'flex', flexDirection: 'column', alignItems: 'center', alignSelf: rail !== undefined ? 'stretch' : undefined }}
+        >
           {slot(i)}
           {below?.(i)}
+          {rail !== undefined && links[rail] ? (
+            <span className={`rail rail--${linkState(links[rail]!, revealed, stampedThrough === undefined ? null : rail <= stampedThrough)}`} aria-hidden />
+          ) : null}
         </div>,
       );
       const [r2, c2] = layout[(i + 1) % layout.length]!;

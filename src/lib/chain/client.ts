@@ -76,13 +76,13 @@ export interface SealRequest {
   fill: readonly string[];
 }
 
-/** A hint asks about one empty plate. */
+/** A hint asks about one given. */
 export interface HintRequest {
   board: string;
   slot: number;
 }
 
-/** What a hint returns: the clubs the plate's answer played for, as badges. */
+/** What a hint returns: the clubs that given played for, as badges. */
 export interface HintResponse {
   clubs: { id: string; club: ClubView }[];
 }
