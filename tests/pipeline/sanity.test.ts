@@ -25,6 +25,13 @@ describe('suspiciousName', () => {
     }
   });
 
+  it('flags a Latin name with a Greek or Cyrillic lookalike letter in it', () => {
+    // Live in the pool until 2026-09-25: "Αrda Güler" with a Greek capital
+    // alpha, which reads correctly and makes "Arda" find nothing.
+    expect(suspiciousName('Αrda Güler')).toBe('mixed-script');
+    expect(suspiciousName('Mesut Оzil')).toBe('mixed-script');
+  });
+
   it('does not flag legitimate short uppercase particles', () => {
     // Roman numerals and initials appear in real names.
     expect(suspiciousName('Vitor Silva')).toBeNull();

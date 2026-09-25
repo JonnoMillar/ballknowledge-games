@@ -15,6 +15,25 @@ export const NAME_OVERRIDES: Readonly<Record<string, string>> = {
   Q22082660: 'Roberto Arboleda', // was "Robert0 Arboleda" (zero for the letter o)
   Q44977: 'Pierre-Emerick Aubameyang', // was "Pierre Cardin picha grande"
   Q186330: 'Rafael Márquez',    // was "Rafael Márquez El piojo"
+  // Found 2026-09-25 by comparing every name with the enwiki title and the mul
+  // label; each confirmed by the player's clubs.
+  Q168740: 'Juan Mata',         // was "Juan Mata Pata"
+  Q108159340: 'Arda Güler',     // was "Αrda Güler" with a Greek capital alpha, so "Arda" found nothing
+  Q22082505: 'Marc Cucurella',  // was "Marc Hagit Cucurella"
+  Q310625: 'Marc Bartra',       // was "Ronaldo": a second Ronaldo in search, judged on Bartra's clubs
+  Q294204: 'Joaquín',           // was "elpisha"
+  Q208436: 'Martín Palermo',    // was "Martín Palermo Dacquino Guillermo"
+  Q1392235: 'Anthony Lopes',    // was "Anthony Lopez maresca"
+  Q361694: 'Christian Bolaños', // was "Cristian Gamboa", a different player
+  Q2118086: 'Alfredo Talavera', // was "Alfredito Olivas"
+  Q17086753: 'Sergio Rochet',   // was "Zergio Roquet"
+  Q10557534: 'Kahraba',         // was "Kehriba nene"
+  Q742136: 'Ali Dia',           // was "mipi lin"
+  Q17490: 'Jean Marie Dongou',  // was "Miguel Gordillo", a different player
+  Q1845684: 'Lucas Pratto',     // was "Lucas El Oso Pratto"
+  Q16582459: 'Nicolás Orsini',  // was "Nicolás Orsigoat"
+  Q133760: 'Jordan Spence',     // was "Sebastián romero", a different player
+  Q110486192: 'Nestory Irankunda', // was "Nestor Irankunda"
 };
 
 export function applyNameOverride(id: string, name: string): string {

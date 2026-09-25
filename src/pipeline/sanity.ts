@@ -20,12 +20,16 @@ const SHOUTING = /\b[A-Z]{3,}\b/;
 const DIGITS = /\d/;
 const PUNCT_SPAM = /[!?]{1,}|[<>{}[\]@#$%^*=_|\~`]/;
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+// A Latin name with a Greek or Cyrillic lookalike in it reads correctly and
+// cannot be searched for: "Αrda Güler" began with a Greek alpha.
+const MIXED_SCRIPT = /^(?=.*\p{Script=Latin})(?=.*[\p{Script=Greek}\p{Script=Cyrillic}])/u;
 
-export type NameFlag = 'meme' | 'shouting' | 'digits' | 'punctuation' | 'emoji' | 'length';
+export type NameFlag = 'meme' | 'shouting' | 'digits' | 'punctuation' | 'emoji' | 'length' | 'mixed-script';
 
 /** Returns the reason a name looks defaced, or null if it looks fine. */
 export function suspiciousName(name: string): NameFlag | null {
   if (EMOJI.test(name)) return 'emoji';
+  if (MIXED_SCRIPT.test(name)) return 'mixed-script';
   if (MEME_WORDS.test(name)) return 'meme';
   if (DIGITS.test(name)) return 'digits';
   if (PUNCT_SPAM.test(name)) return 'punctuation';
