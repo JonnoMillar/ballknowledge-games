@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "recall-xi", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000, "autoPort": true }
+    { "name": "recall-xi", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000, "autoPort": true },
+    { "name": "prod", "runtimeExecutable": "npx", "runtimeArgs": ["next", "start", "-p", "3001"], "port": 3001 }
   ]
 }

@@ -28,6 +28,8 @@ export interface PortraitRecord {
   year?: number;
   career?: [number, number];
   reason?: string;
+  /** Cutouts only: the in-era Commons photo to show where the cutout may not be. */
+  alt?: { url: string; year: number } | null;
 }
 
 /**
@@ -51,11 +53,17 @@ export function commonsThumb(filename: string, width: number): string {
  *
  * Players the resolver has not reached yet keep their old photo, so the board
  * degrades to its previous behaviour rather than emptying out mid-migration.
+ *
+ * TheSportsDB cutouts carry no `strCreativeCommons` flag, and its terms say
+ * such artwork must not be used publicly, websites included. So they appear
+ * only with `allowUncleared` (local development); everywhere else a cutout
+ * gives way to its in-era Commons `alt`, or to an empty card.
  */
 export function portraitUrls(
   images: Record<string, string>,
   portraits: Record<string, PortraitRecord>,
   width = 200,
+  allowUncleared = false,
 ): Record<string, PortraitImage> {
   const out: Record<string, PortraitImage> = {};
   // An unresolved player keeps a press photo, which is cropped to the frame.
@@ -63,7 +71,10 @@ export function portraitUrls(
     out[id] = { url: commonsThumb(file, width), fit: 'cover' };
   }
   for (const [id, p] of Object.entries(portraits)) {
-    if (p.source !== 'none' && p.url) {
+    if (p.source === 'cutout' && !allowUncleared) {
+      if (p.alt) out[id] = { url: p.alt.url, fit: 'cover' };
+      else delete out[id];
+    } else if (p.source !== 'none' && p.url) {
       out[id] = { url: p.url, fit: p.source === 'cutout' ? 'contain' : 'cover' };
     } else {
       delete out[id];

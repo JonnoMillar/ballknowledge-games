@@ -1132,3 +1132,49 @@ button { font-family: inherit; }
 .also { display: flex; flex-direction: column; gap: 10px; }
 .also__card--slugger .also__band { background: #1F6F43; }
 .also__card--slugger .also__go { color: #1F6F43; }
+
+/* ── FOOTER AND CREDITS ────────────────────────────────────────────────
+   Every page links here: the Commons photos are licensed per file, and
+   the BY licences need the author and licence named somewhere a reader
+   can reach. */
+.site-foot { padding: 20px 16px 28px; text-align: center; font-size: 13px; }
+.site-foot a { color: var(--muted); text-underline-offset: 3px; }
+.site-foot a:hover { color: var(--ink); }
+
+.credits__page { padding: 28px 20px 24px; font-size: 15px; line-height: 1.5; }
+@media (min-width: 760px) { .credits__page { padding: 36px 32px 32px; } }
+.credits__page p { margin: 0 0 12px; max-width: 68ch; }
+.credits__page a { color: var(--ink); text-underline-offset: 3px; }
+.credits__head {
+  margin: 28px 0 8px;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.credits__letters { display: flex; flex-wrap: wrap; gap: 4px; margin: 16px 0 12px; }
+.credits__letters > * {
+  min-width: 32px;
+  padding: 6px 0;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  text-decoration: none;
+}
+.credits__letters span { color: var(--rule-strong); border-color: transparent; }
+.credits__letters a[aria-current='page'] { background: var(--red); border-color: var(--red); color: #fff; }
+.credits__table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.credits__table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 8px 6px 0;
+  border-bottom: 2px solid var(--ink);
+}
+.credits__table td { padding: 7px 8px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; overflow-wrap: anywhere; }
+.credits__table td:first-child { font-weight: 600; min-width: 9em; }

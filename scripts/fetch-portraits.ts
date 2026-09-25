@@ -32,9 +32,12 @@ import type { Player } from '../src/lib/chemistry/types';
  *    and hold an in-career photo 85% of the time, at 11.4 files each.
  *
  * Licensing, so it is on the record: cutouts carry no `strCreativeCommons`
- * flag, so they are NOT CC — usable under TheSportsDB's terms with attribution
- * rather than freely. Commons files are separately licensed per file. Nothing
- * here is fit to publish without an attribution surface.
+ * flag, and TheSportsDB's terms (checked 2026-09-25) say artwork with a
+ * missing flag "must not be used ... publicly, including ... websites".
+ * So a cutout is for local development only, and every cutout record also
+ * carries `alt`, an in-era Commons photo the public build shows instead
+ * (`npm run fetch:portraits -- --alts`). Commons files are licensed per file
+ * and credited on /credits (see scripts/fetch-credits.ts).
  *
  * Resumable. Results are written after every player, because a dropped socket
  * once cost this project 900 successful calls made before a single save.
@@ -43,6 +46,7 @@ const KEY = process.env.TSDB_KEY ?? '123';
 const AGENT = 'RecallXI/0.1 (https://github.com/; jonno@m1llar.com)';
 const OUT = 'data/portraits.json';
 const ALL = process.argv.includes('--all');
+const ALTS = process.argv.includes('--alts');
 
 /** Free tier is 30/min. Sit under it rather than on it. */
 const GAP = Number(process.env.GAP ?? 2200);
@@ -57,6 +61,8 @@ interface Portrait {
   career?: [number, number];
   /** Why a player has no portrait: which step failed. */
   reason?: string;
+  /** Cutouts only: the in-era Commons photo shown where the cutout may not be. */
+  alt?: { url: string; year: number } | null;
 }
 
 const pool = JSON.parse(await readFile('data/pool.json', 'utf8')) as Player[];
@@ -111,6 +117,14 @@ async function careers(): Promise<Map<string, [number, number]>> {
         out.set(id, cur ? [Math.min(cur[0], y), Math.max(cur[1], y)] : [y, y]);
       }
     }
+  }
+  // Wikidata's qualifiers stop mid-career for a third of the pool (Valverde
+  // "ends" in 2018). The merged pool knows when each spell ended, so it can
+  // only push the end later, never earlier.
+  for (const p of pool) {
+    const cur = out.get(p.id);
+    const last = Math.max(0, ...Object.values(p.spells ?? {}).map((s) => s[2] ?? 0));
+    if (cur && last > cur[1]) out.set(p.id, [cur[0], last]);
   }
   return out;
 }
@@ -181,6 +195,33 @@ async function categoryFiles(cat: string): Promise<string[]> {
 const thumb = (file: string, width = 400) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${width}`;
 
+/**
+ * An in-era Commons photo: the one we already hold if its capture date falls
+ * inside the career, else the first in the player's own category that does.
+ * Without a career span there is nothing to check the date against, so the
+ * photo is refused rather than guessed at.
+ */
+async function commonsPortrait(id: string, span: [number, number] | undefined): Promise<Portrait> {
+  const held = images[id];
+  if (!span) return { source: 'none', reason: 'no career span to date against' };
+  if (!held) return { source: 'none', reason: 'no cutout and no Commons photo', career: span };
+  const year = await shotIn(held);
+  if (year && year >= span[0] && year <= span[1] + 1) {
+    return { source: 'commons', url: thumb(held), year, career: span };
+  }
+  const cat = await category(id);
+  const files = cat ? await categoryFiles(cat) : [];
+  for (const f of files.slice(0, 12)) {
+    const y = await shotIn(f);
+    if (y && y >= span[0] && y <= span[1] + 1) return { source: 'commons', url: thumb(f), year: y, career: span };
+  }
+  return {
+    source: 'none',
+    career: span,
+    reason: year ? `only photo is from ${year}, career ${span[0]}-${span[1]}` : 'no dated photo',
+  };
+}
+
 // --------------------------------------------------------------------- main
 
 const want = ALL ? new Set(pool.map((p) => p.id)) : await required();
@@ -188,6 +229,32 @@ const spans = await careers();
 const done: Record<string, Portrait> = await readFile(OUT, 'utf8')
   .then((s) => JSON.parse(s) as Record<string, Portrait>)
   .catch(() => ({}));
+
+if (ALTS) {
+  // Commons and Wikidata only, so no TheSportsDB rate limit to sit under.
+  // `--retry` also takes another look at every refusal: cutouts left without
+  // an alternative, and players whose only photo failed the era check.
+  const RETRY = process.argv.includes('--retry');
+  const eraMiss = (p: Portrait) => p.source === 'none' && /^(only photo|no dated)/.test(p.reason ?? '');
+  const todoAlts = Object.keys(done).filter((id) => {
+    const p = done[id]!;
+    return (p.source === 'cutout' && (p.alt === undefined || (RETRY && p.alt === null))) || (RETRY && eraMiss(p));
+  });
+  console.log(`${todoAlts.length} to look at\n`);
+  let i = 0;
+  for (const id of todoAlts) {
+    const c = await commonsPortrait(id, spans.get(id));
+    const got = c.source === 'commons';
+    if (done[id]!.source === 'cutout') done[id]!.alt = got ? { url: c.url!, year: c.year! } : null;
+    else if (got) done[id] = c;
+    await writeFile(OUT, JSON.stringify(done, null, 0));
+    console.log(`  ${String(++i).padStart(3)}/${todoAlts.length}  ${(byId.get(id)?.name ?? id).padEnd(30)} ${got ? `commons ${c.year}` : `— ${c.reason}`}`);
+    await sleep(250);
+  }
+  const alts = Object.values(done).filter((p) => p.source === 'cutout');
+  console.log(`\n${alts.filter((p) => p.alt).length} of ${alts.length} cutouts have an in-era Commons alternative`);
+  process.exit(0);
+}
 
 const todo = [...want].filter((id) => !done[id]);
 console.log(`${want.size} players on shipped boards · ${todo.length} still to resolve\n`);
@@ -203,39 +270,10 @@ for (const id of todo) {
 
   const cut = await cutout(p.name);
   if (cut) {
-    out = { source: 'cutout', url: cut, career: span };
+    const c = await commonsPortrait(id, span);
+    out = { source: 'cutout', url: cut, career: span, alt: c.source === 'commons' ? { url: c.url!, year: c.year! } : null };
   } else {
-    // Commons, era-checked. Without a career span there is nothing to check
-    // the date against, so the photo is refused rather than guessed at.
-    const held = images[id];
-    if (!span) {
-      out = { source: 'none', reason: 'no career span to date against' };
-    } else if (!held) {
-      out = { source: 'none', reason: 'no cutout and no Commons photo', career: span };
-    } else {
-      const year = await shotIn(held);
-      if (year && year >= span[0] && year <= span[1] + 1) {
-        out = { source: 'commons', url: thumb(held), year, career: span };
-      } else {
-        // Out of era, or undated. Look through the player's own category for
-        // one that is not.
-        const cat = await category(id);
-        const files = cat ? await categoryFiles(cat) : [];
-        let found: Portrait | null = null;
-        for (const f of files.slice(0, 12)) {
-          const y = await shotIn(f);
-          if (y && y >= span[0] && y <= span[1] + 1) {
-            found = { source: 'commons', url: thumb(f), year: y, career: span };
-            break;
-          }
-        }
-        out = found ?? {
-          source: 'none',
-          career: span,
-          reason: year ? `only photo is from ${year}, career ${span[0]}-${span[1]}` : 'no dated photo',
-        };
-      }
-    }
+    out = await commonsPortrait(id, span);
   }
 
   done[id] = out;

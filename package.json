@@ -24,7 +24,8 @@
     "build:graded": "tsx scripts/build-graded-chains.ts",
     "build:completion": "tsx scripts/build-completion.ts",
     "fetch:careers": "tsx scripts/fetch-careers.ts",
-    "merge:careers": "tsx scripts/merge-careers.ts"
+    "merge:careers": "tsx scripts/merge-careers.ts",
+    "fetch:credits": "tsx scripts/fetch-credits.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

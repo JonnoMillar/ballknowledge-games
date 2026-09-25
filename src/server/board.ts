@@ -33,7 +33,8 @@ export function loadData(): Promise<Data> {
       .then((s) => JSON.parse(s) as Record<string, PortraitRecord>)
       .catch(() => ({}));
     const clubs = JSON.parse(await readFile('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
-    return { players, byId: new Map(players.map((p) => [p.id, p])), images: portraitUrls(files, resolved), clubs };
+    const images = portraitUrls(files, resolved, 200, process.env.NODE_ENV === 'development');
+    return { players, byId: new Map(players.map((p) => [p.id, p])), images, clubs };
   })();
   return data;
 }

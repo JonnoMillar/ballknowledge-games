@@ -42,7 +42,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 1040 tests, 34 files
+npm test             # 988 tests, 34 files
 npm run typecheck
 ```
 
@@ -223,13 +223,26 @@ transparent, in-kit; free key `123` at 30 req/min; no watermark — checked),
 then a Commons photo dated inside the career. A resolved "none" empties the
 card rather than falling back to a pundit in a suit.
 
+**Cutouts are development-only.** They carry no `strCreativeCommons` flag,
+and TheSportsDB's terms (checked 2026-09-25) say such artwork "must not be
+used ... publicly, including ... websites ... screenshots". `portraitUrls`
+shows them only under `next dev`; a production build shows each cutout's
+`alt`, an in-era Commons photo (304 of 318 have one, the rest show the
+silhouette). `npm run fetch:portraits -- --alts [--retry]` fills `alt`.
+Never take a README or social screenshot from `next dev`.
+
+**Credits.** Every page's footer links `/credits`: data sources, crests, and
+each public Commons photo with author and licence, from `data/credits.json`
+(`npm run fetch:credits`; rerun after any portrait change). Crests from
+English Wikipedia are non-free files and trademarks; they are shown as-is
+for identification, which is a risk the project has accepted, not cleared.
+
 `fit` travels with the URL: a cutout is shown whole (`contain`) on the
 ground, a press photo is cropped (`cover`) and gets the ground as a 7 px
 frame, so the reveal changes both kinds of card.
 
-**Licensing blocks public release.** Cutouts are usable under TheSportsDB's
-terms with attribution; Commons files are per-file CC. Nothing ships without
-an attribution surface. Premium ($9/mo) was declined — not needed.
+Premium ($9/mo) was declined. It would not help: a paid key does not clear
+third-party artwork either.
 
 ## Data pipeline
 
@@ -298,7 +311,6 @@ is not; club crests are in.
 - **Play the dailies.** Sixty boards, a fixed order. Cull the givens a
   British audience would not place and reseed. Does a plate with one
   answer feel like recall or like a lookup? Is a ring of four too long?
-- **Attribution page.** Blocks public release. See Portraits.
 - **Aliases.** Unblocks search and nameplates.
 - **Time-limited link rule** (played together, not merely both played for)
   as an option, measured first.
