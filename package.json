@@ -13,6 +13,7 @@
     "fetch:apps": "tsx scripts/fetch-apps.ts",
     "report:coverage": "tsx scripts/coverage-report.ts",
     "review:names": "tsx scripts/name-review.ts",
+    "review:labels": "tsx scripts/label-review.ts",
     "dev": "next dev",
     "build": "next build",
     "build:chain": "tsx scripts/build-chain.ts",
