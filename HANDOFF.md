@@ -42,7 +42,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 988 tests, 34 files
+npm test             # 989 tests, 34 files
 npm run typecheck
 ```
 
@@ -228,7 +228,7 @@ and TheSportsDB's terms (checked 2026-09-25) say such artwork "must not be
 used ... publicly, including ... websites ... screenshots". `portraitUrls`
 shows them only under `next dev`; a production build shows each cutout's
 `alt`, an in-era Commons photo (304 of 318 have one, the rest show the
-silhouette). `npm run fetch:portraits -- --alts [--retry]` fills `alt`.
+silhouette). `npm run fetch:portraits -- --alts [--recheck]` fills `alt`; `--recheck` redoes every Commons pick.
 Never take a README or social screenshot from `next dev`.
 
 **Credits.** Every page's footer links `/credits`: data sources, crests, and
@@ -252,7 +252,8 @@ occupation.
 ```bash
 npm run fetch:pool      # 2-phase: ids, then careers in batches of 250
 npm run build:pool      # -> data/pool.json
-npm run review:names    # vandalism check
+npm run review:names    # vandalism check, by heuristic
+npm run review:labels   # vandalism check, against live Wikipedia titles (~12 min)
 npm run fetch:badges    # crests -> public/badges (gitignored, ~95 MB)
 npm run fetch:careers   # en-wiki infobox careers -> data/careers.json (~15 min)
 npm run merge:careers   # dry run: what the merge adds, which dailies break
@@ -279,13 +280,33 @@ English Wikipedia's non-free local files, not Wikidata's `P154`.
 
 Vandalised labels are corrected in `src/pipeline/overrides.ts` **and** in
 the committed `data/pool.json` (the pool is not rebuilt for a label).
-Aubameyang was "Pierre Cardin picha grande" for a week.
+Aubameyang was "Pierre Cardin picha grande" for a week. `review:names` only
+sees names that look wrong; `npm run review:labels` compares every name with
+the live enwiki title and `mul` label and finds the plausible ones. Its first
+run (2026-09-25) found sixteen, among them Marc Bartra labelled "Ronaldo"
+and "Αrda Güler" with a Greek alpha. Run both after any pool rebuild.
 
 ## Known data problems
 
-- **Zero of 11,741 players have an alias.** Short names cannot match, so
-  Ronaldinho is unfindable by that name. `short-name.ts` is the stopgap.
-  **This is the highest-value pipeline fix.**
+- **Famous players are missing from the pool (found 2026-09-25).** Not an
+  alias problem: Ronaldinho is not in `pool.json` at all. Two causes, both
+  measured against `data/raw`:
+  1. The singer/musician exclusion in `clubRosterQuery` (there for Julio
+     Iglesias) drops footballers who also sing: Ronaldinho (musician),
+     Cantona, Dante, Balbo (singer), and more. 30 players found in phase 1
+     never reach the phase-2 batches; most for this reason. Alex Iwobi is
+     among the 30 with no music occupation, so something else drops him.
+  2. 102 players are dropped by `applyPoolFilters` for having no position
+     class: 59 use position items `POSITION_CLASS` does not map (Q904289
+     alone covers 25), 43 have no P413 at all. Mkhitaryan, Pedri
+     (position Q1109563), Oblak, Bentancur, Zinchenko, Adama Traoré, Nicolas Jackson.
+  Fixing either adds strong answers to existing fields, so rerun
+  `merge:careers` as a dry run and expect to retire or regenerate dailies,
+  as the careers merge did. Check each new position QID against the live
+  endpoint before mapping it. **This is the highest-value pipeline fix.**
+- **Zero of 11,741 players have an alias.** A player known by a name that is
+  not part of his label cannot be found by it. `short-name.ts` is the
+  stopgap for nameplates.
 - **Wikidata has an error tail.** Rodrigo Riep is filed at Everton F.C. and
   FC Barcelona when he played for Everton de Viña del Mar and Barcelona S.C.
   The reveal names nothing under fame 30; the field still accepts him.
