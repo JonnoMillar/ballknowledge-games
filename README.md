@@ -2,7 +2,7 @@
 
 A daily football puzzle drawn as a sticker album. Two or more famous players are on the page, with gaps between them. Name the missing players so that each neighbouring pair played for the same club, then seal the page and find out whether your chain holds.
 
-<!-- Live link goes here once deployed, e.g. **Play it:** https://... -->
+**Play it:** https://football-chain.vercel.app
 
 ![Today's board on the home page](docs/images/home.png)
 

@@ -1,0 +1,12 @@
+# The Vercel CLI uploads the working folder and does not read .gitignore.
+# Keep a CLI deploy the same as a deploy from the repository.
+node_modules
+.next
+.next-prod
+.playwright-mcp
+.env*
+*.log
+tsconfig.tsbuildinfo
+data/raw
+data/name-review.json
+public/badges

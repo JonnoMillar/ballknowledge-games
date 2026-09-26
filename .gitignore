@@ -24,3 +24,6 @@ public/badges/
 
 # Screenshot/trace scratch from the Playwright MCP server.
 .playwright-mcp/
+
+# Vercel project link, written by `vercel link`.
+.vercel
