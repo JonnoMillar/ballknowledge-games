@@ -182,15 +182,62 @@ async function category(id: string): Promise<string | null> {
   return j?.claims?.P373?.[0]?.mainsnak?.datavalue?.value ?? null;
 }
 
-/** Image files in a Commons category, newest listing first. */
+/** Subcategories of a Commons category. */
+async function subcategories(cat: string): Promise<string[]> {
+  const url = `${COMMONS}?action=query&format=json&list=categorymembers&cmtype=subcat&cmlimit=200`
+    + `&cmtitle=${encodeURIComponent(`Category:${cat}`)}`;
+  const j = await json<{ query?: { categorymembers?: { title: string }[] } }>(url);
+  return (j?.query?.categorymembers ?? []).map((m) => m.title.replace(/^Category:/, ''));
+}
+
+/**
+ * A famous player's photos are often filed by year, two levels down
+ * ("Andrés Iniesta by year" > "Andrés Iniesta in 2010"), not in his own
+ * category. The year subcategories inside the career, latest first.
+ */
+async function yearCategories(cat: string, span: [number, number]): Promise<string[]> {
+  const subs = await subcategories(cat);
+  for (const s of subs.filter((x) => /by year/i.test(x))) subs.push(...await subcategories(s));
+  return subs
+    .map((s) => ({ s, y: Number(s.match(/\b(19|20)\d\d\b/)?.[0]) }))
+    .filter(({ y }) => y >= span[0] && y <= span[1])
+    .sort((a, b) => b.y - a.y)
+    .map(({ s }) => s);
+}
+
+/** Image files in a Commons category, in the category's own sort order. */
 async function categoryFiles(cat: string): Promise<string[]> {
-  const url = `${COMMONS}?action=query&format=json&list=categorymembers&cmtype=file&cmlimit=40`
+  const url = `${COMMONS}?action=query&format=json&list=categorymembers&cmtype=file&cmlimit=200`
     + `&cmtitle=${encodeURIComponent(`Category:${cat}`)}`;
   const j = await json<{ query?: { categorymembers?: { title: string }[] } }>(url);
   return (j?.query?.categorymembers ?? [])
     .map((m) => m.title.replace(/^File:/, ''))
     .filter((f) => /\.(jpe?g|png)$/i.test(f));
 }
+
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+
+const PARTICLES = new Set(['van', 'der', 'den', 'von', 'dos', 'das', 'del', 'des', 'bin', 'ibn']);
+
+const nameParts = (name: string) => fold(name).split(' ').filter((t) => t.length >= 3 && !PARTICLES.has(t));
+
+/** Does the filename carry a real part of the player's name ("eto" for Eto'o, not "van")? */
+const namesPlayer = (file: string, name: string) => {
+  const f = fold(file);
+  return nameParts(name).some((t) => f.includes(t));
+};
+
+/**
+ * The player's files, the ones that start with his name first. Commons sorts
+ * a category alphabetically, so "Chelsea 1 Sunderland 2 Eto'o Mannone" (the
+ * keeper, in frame) came before "Samuel Eto'o 2009"; a file named for him is
+ * nearly always a picture of him, one that mentions him is often a match.
+ */
+const hisFiles = (files: string[], name: string) => {
+  const mine = files.filter((f) => namesPlayer(f, name));
+  const leads = (f: string) => nameParts(name).some((t) => fold(f).trimStart().startsWith(t));
+  return [...mine.filter(leads), ...mine.filter((f) => !leads(f))];
+};
 
 const thumb = (file: string, width = 400) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${width}`;
@@ -209,11 +256,20 @@ async function commonsPortrait(id: string, span: [number, number] | undefined): 
   if (year && year >= span[0] && year <= span[1] + 1) {
     return { source: 'commons', url: thumb(held), year, career: span };
   }
+  // A player's category holds more than the player: his boots in a shop, his
+  // stadium, his mural. A file that does not name him is not a portrait.
   const cat = await category(id);
-  const files = cat ? await categoryFiles(cat) : [];
-  for (const f of files.slice(0, 12)) {
+  const files = hisFiles(cat ? await categoryFiles(cat) : [], byId.get(id)?.name ?? '');
+  for (const f of files.slice(0, 30)) {
     const y = await shotIn(f);
     if (y && y >= span[0] && y <= span[1] + 1) return { source: 'commons', url: thumb(f), year: y, career: span };
+  }
+  for (const sub of cat ? (await yearCategories(cat, span)).slice(0, 6) : []) {
+    const inYear = hisFiles(await categoryFiles(sub), byId.get(id)?.name ?? '');
+    for (const f of inYear.slice(0, 5)) {
+      const y = await shotIn(f);
+      if (y && y >= span[0] && y <= span[1] + 1) return { source: 'commons', url: thumb(f), year: y, career: span };
+    }
   }
   return {
     source: 'none',
@@ -232,13 +288,13 @@ const done: Record<string, Portrait> = await readFile(OUT, 'utf8')
 
 if (ALTS) {
   // Commons and Wikidata only, so no TheSportsDB rate limit to sit under.
-  // `--retry` also takes another look at every refusal: cutouts left without
-  // an alternative, and players whose only photo failed the era check.
-  const RETRY = process.argv.includes('--retry');
+  // `--recheck` redoes every Commons choice, not just the missing ones: after
+  // a change to the era or naming rules, every earlier pick is suspect.
+  const RECHECK = process.argv.includes('--recheck');
   const eraMiss = (p: Portrait) => p.source === 'none' && /^(only photo|no dated)/.test(p.reason ?? '');
   const todoAlts = Object.keys(done).filter((id) => {
     const p = done[id]!;
-    return (p.source === 'cutout' && (p.alt === undefined || (RETRY && p.alt === null))) || (RETRY && eraMiss(p));
+    return (p.source === 'cutout' && (p.alt === undefined || RECHECK)) || (RECHECK && (p.source === 'commons' || eraMiss(p)));
   });
   console.log(`${todoAlts.length} to look at\n`);
   let i = 0;
@@ -246,7 +302,7 @@ if (ALTS) {
     const c = await commonsPortrait(id, spans.get(id));
     const got = c.source === 'commons';
     if (done[id]!.source === 'cutout') done[id]!.alt = got ? { url: c.url!, year: c.year! } : null;
-    else if (got) done[id] = c;
+    else done[id] = c;
     await writeFile(OUT, JSON.stringify(done, null, 0));
     console.log(`  ${String(++i).padStart(3)}/${todoAlts.length}  ${(byId.get(id)?.name ?? id).padEnd(30)} ${got ? `commons ${c.year}` : `— ${c.reason}`}`);
     await sleep(250);
