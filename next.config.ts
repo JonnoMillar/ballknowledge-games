@@ -12,6 +12,20 @@ const config: NextConfig = {
   // data/pool.json is ~3 MB and read by the page. Fine for a prototype;
   // revisit before shipping (trim fields, or serve it as a static asset).
   experimental: { largePageDataBytes: 8 * 1024 * 1024 },
+  // The server reads its data with readFile at runtime, which file tracing
+  // cannot see. Without this a serverless deploy builds cleanly and then
+  // fails every request with ENOENT.
+  outputFileTracingIncludes: {
+    '/**': [
+      './data/pool.json',
+      './data/clubs.json',
+      './data/images.json',
+      './data/portraits.json',
+      './data/credits.json',
+      './content/chains/*.json',
+      './content/puzzles/*.json',
+    ],
+  },
 };
 
 export default config;
