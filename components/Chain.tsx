@@ -4,7 +4,9 @@ import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type Dra
 import ChainBoard from './ChainBoard';
 import SearchSheet from './SearchSheet';
 import Sticker, { neutral, solid, type Ground } from './Sticker';
-import { PlateTag, ShareButton, useReveal, Verdict, Wall } from './Reveal';
+import { DeepCards, GradeTag, PlateTag, ShareButton, useReveal, Verdict, Wall } from './Reveal';
+import MastNav from './MastNav';
+import type { CardNews } from '../src/lib/collection';
 import { useSwing } from './swing';
 import { shortClubName } from './ClubBadge';
 import type { ClubView } from '../src/lib/clubs';
@@ -46,7 +48,7 @@ interface Sealed extends SealResponse {
 }
 
 export default function Chain({
-  puzzle, givens, images: givenImages, clubs: givenClubs, title, onSealed, streak, notice,
+  puzzle, givens, images: givenImages, clubs: givenClubs, title, onSealed, streak, notice, cardNews = {}, collects = true,
 }: {
   puzzle: ChainPuzzle;
   givens: Record<string, Given>;
@@ -56,8 +58,15 @@ export default function Chain({
   clubs: Record<string, ClubView>;
   /** What the masthead and the share line call this board. */
   title?: string;
-  /** Told once the server has judged the board, with the plates a hint was taken on. */
-  onSealed?: (sealed: SealResponse, hinted: number[]) => void;
+  /**
+   * Told once the server has judged the board, with the plates a hint was
+   * taken on and the pictures the board knows, for the cards it hands out.
+   */
+  onSealed?: (sealed: SealResponse, hinted: number[], images: Record<string, PortraitImage>) => void;
+  /** On a Deep Cuts board: which cards were new or better, by player id. */
+  cardNews?: Record<string, CardNews>;
+  /** On a Deep Cuts board: whether this seal keeps its cards. A replay does not. */
+  collects?: boolean;
   /** The daily streak to print on a held verdict, if this is the daily. */
   streak?: number | null;
   /** A line under the masthead, such as "you have played this one". */
@@ -68,6 +77,7 @@ export default function Chain({
   const clues = useMemo(() => puzzle.clues ?? {}, [puzzle.clues]);
   const prescribed = useMemo(() => puzzle.prescribedLinks ?? {}, [puzzle.prescribedLinks]);
   const boardTitle = title ?? `Chain ${puzzle.id}`;
+  const deep = puzzle.deep ?? false;
 
   // The album. Names only, fetched once the board is up. Until it lands the
   // pool is the givens, which is enough to draw the board.
@@ -201,7 +211,7 @@ export default function Chain({
       const data = (await res.json()) as SealResponse;
       setSealed({ ...data, pool: new Map(data.players.map((p) => [p.id, p])) });
       dispatch({ type: 'submit' });
-      onSealed?.(data, hinted);
+      onSealed?.(data, hinted, images);
       // The reveal happens on the board, so the board is what is on screen.
       board.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
@@ -292,8 +302,9 @@ export default function Chain({
             Chain
           </a>
           <div className="masthead__meta">
-            <span>{boardTitle}</span>
+            <span className="masthead__title">{boardTitle}</span>
             {grade ? <span className="pill">{grade}</span> : null}
+            <MastNav />
           </div>
         </header>
         {notice}
@@ -309,7 +320,9 @@ export default function Chain({
                 <>Find the {count} who take <b>{ends[0]}</b> to <b>{ends[1]}</b>.</>
               )}
               <span className="brief__note">
-                {Object.keys(clues).length > 0
+                {deep
+                  ? 'Every link is a shared club, and anyone who links holds. The deeper your pick, the rarer the card you keep.'
+                  : Object.keys(clues).length > 0
                   ? 'Every link is a shared club, and a plate that asks for a German only holds with a German. Stuck? Show a given’s clubs, and the share line says you did.'
                   : 'Every link is a shared club. Anyone who links will do. Stuck? Show a given’s clubs, and the share line says you did.'}
               </span>
@@ -340,17 +353,22 @@ export default function Chain({
               below={revealed ? (i) => {
                 const o = outcome(i);
                 if (!o) return null;
-                return <PlateTag slot={o} hinted={hinted.includes(i)} run={phase.wall} />;
+                return deep
+                  ? <GradeTag grade={o.grade} run={phase.wall} />
+                  : <PlateTag slot={o} hinted={hinted.includes(i)} run={phase.wall} />;
               } : undefined}
             />
 
             {result ? (
               <>
                 <Verdict result={result} streak={streak} show={phase.verdict} />
-                <Wall result={result} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} />
+                {deep ? (
+                  <DeepCards result={result} images={images} players={sealed!.pool} groundFor={groundFor} news={cardNews} show={phase.wall} collects={collects} />
+                ) : null}
+                <Wall result={result} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} deep={deep} />
                 <div className={`actions actions--after ${phase.wall ? 'is-shown' : ''}`}>
-                  <ShareButton text={shareText(result, boardTitle, hinted)} />
-                  <a className="actions__link" href="/">Another chain</a>
+                  <ShareButton text={shareText(result, boardTitle, hinted, deep)} />
+                  <a className="actions__link" href={deep ? '/deep' : '/'}>{deep ? 'Another Deep Cut' : 'Another chain'}</a>
                 </div>
               </>
             ) : (

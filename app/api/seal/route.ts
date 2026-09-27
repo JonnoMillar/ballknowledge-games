@@ -46,6 +46,8 @@ export async function POST(req: Request) {
   const clubIds = new Set<string>();
   for (const s of result.slots) {
     if (s.obvious) { ids.add(s.obvious.id); s.obvious.clubs.forEach((c) => clubIds.add(c)); }
+    // A Deep Cuts board's wall holds up the deepest answer instead.
+    if (puzzle.deep && s.best) { ids.add(s.best.id); s.best.clubs.forEach((c) => clubIds.add(c)); }
   }
   for (const l of links) { l.clubs.forEach((c) => clubIds.add(c)); if (l.required) clubIds.add(l.required); }
 

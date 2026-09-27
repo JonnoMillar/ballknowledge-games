@@ -844,11 +844,11 @@ button { font-family: inherit; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px 18px;
 }
-@media (min-width: 640px) { .ladder__list { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 960px) { .ladder__list { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 640px) { .ladder__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .ladder__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .page--card {
   display: flex;
   flex-direction: column;
@@ -1178,3 +1178,274 @@ button { font-family: inherit; }
 }
 .credits__table td { padding: 7px 8px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; overflow-wrap: anywhere; }
 .credits__table td:first-child { font-weight: 600; min-width: 9em; }
+
+/* ── DEEP CUTS: THE GRADED CASE ────────────────────────────────────────
+   A pick that held, sealed in a case whose material is its grade. Bronze,
+   silver and gold are drawn; sapphire, diamond and onyx are photographic
+   textures (public/grades, generated with Higgsfield). The glint lives in
+   the face, under the sticker, so it crosses the case and never the photo;
+   it passes once every nine seconds and is still the rest of the time. */
+.slab {
+  --slab-pad: 10px;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: var(--slab-pad);
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.1), 0 8px 18px rgba(20, 18, 16, 0.16);
+  isolation: isolate;
+}
+.slab--sm { --sticker-w: 124px; --slab-pad: 9px; }
+.slab--md { --sticker-w: 136px; }
+.slab--lg { --sticker-w: 208px; --slab-pad: 13px; }
+@media (min-width: 760px) { .slab--md { --sticker-w: 150px; } }
+.slab__face {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.slab__inlay { position: absolute; inset: 4px; border-radius: 9px; border: 1.5px solid transparent; }
+.slab__glint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, transparent 46%, rgba(255, 255, 255, 0.28) 50%, transparent 54%);
+  background-size: 400% 100%;
+  background-position: 130% 0;
+}
+.slab__label {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding-left: 0.32em;
+  border-radius: 5px;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.slab__well { position: relative; z-index: 1; padding: 5px; border-radius: 5px; }
+.slab__well .sticker { box-shadow: none; }
+.slab__news {
+  position: absolute;
+  z-index: 3;
+  top: -9px;
+  right: -8px;
+  padding: 4px 8px 5px;
+  border-radius: 3px;
+  background: var(--red);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  transform: rotate(4deg);
+  box-shadow: 0 2px 4px rgba(20, 18, 16, 0.25);
+}
+@keyframes slab-glint { 0%, 70% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
+.slab--uncommon .slab__glint, .slab--rare .slab__glint, .slab--niche .slab__glint,
+.slab--gem .slab__glint, .slab--grail .slab__glint { animation: slab-glint 9s ease-in-out infinite; }
+
+/* Common: bronze, matte and still. */
+.slab--common .slab__face { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
+.slab--common .slab__label { background: rgba(38, 21, 8, 0.5); color: #ecd2b6; }
+.slab--common .slab__well { background: rgba(38, 21, 8, 0.28); }
+/* Uncommon: polished silver. */
+.slab--uncommon .slab__face { background: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
+.slab--uncommon .slab__label { background: rgba(255, 255, 255, 0.55); color: #3a4048; box-shadow: inset 0 0 0 1px rgba(40, 46, 56, 0.2); }
+.slab--uncommon .slab__well { background: rgba(40, 46, 56, 0.14); }
+/* Rare: gold. */
+.slab--rare .slab__face { background: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
+.slab--rare .slab__label { background: rgba(60, 40, 2, 0.55); color: #fbe6a6; }
+.slab--rare .slab__well { background: rgba(60, 40, 2, 0.2); }
+/* Niche: sapphire, set in silver. */
+.slab--niche .slab__face { background-image: url('/grades/niche.jpg'); }
+.slab--niche .slab__inlay { border-color: rgba(255, 255, 255, 0.85); }
+.slab--niche .slab__label { background: linear-gradient(150deg, #c9cfd6, #f3f5f7 45%, #b7bec6); color: #0e2a73; }
+.slab--niche .slab__well { background: rgba(0, 0, 0, 0.25); }
+/* Gem: diamond, set in silver. */
+.slab--gem .slab__face { background-image: url('/grades/gem.jpg'); }
+.slab--gem .slab__inlay { border-color: rgba(255, 255, 255, 0.95); }
+.slab--gem .slab__label { background: rgba(255, 255, 255, 0.82); color: #27425c; box-shadow: inset 0 0 0 1px rgba(39, 66, 92, 0.22); }
+.slab--gem .slab__well { background: rgba(255, 255, 255, 0.35); }
+/* Grail: onyx veined with gold, gold setting, gold lettering on black. */
+.slab--grail .slab__face { background-image: url('/grades/grail.jpg'); }
+.slab--grail .slab__inlay { border-color: rgba(222, 188, 104, 0.95); }
+.slab--grail .slab__label { background: #060507; box-shadow: inset 0 0 0 1px rgba(222, 188, 104, 0.6); color: #ecca76; }
+.slab--grail .slab__well { background: rgba(0, 0, 0, 0.45); }
+
+/* The case with no card in it: a grade's name on its material. */
+.grade-chip { --slab-pad: 3px; gap: 0; border-radius: 8px; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.1), 0 3px 8px rgba(20, 18, 16, 0.14); }
+.grade-chip .slab__inlay { inset: 2px; border-radius: 6px; }
+.grade-chip .slab__label { height: 26px; padding: 0 12px 0 calc(12px + 0.28em); font-size: 13px; letter-spacing: 0.28em; white-space: nowrap; }
+
+/* ── THE MASTHEAD'S ALBUM LINKS ────────────────────────────────────────
+   Deep Cuts, the collection and the grades key, on every page. On a phone
+   they drop to a second row rather than crowding the name. */
+.masthead { flex-wrap: wrap; row-gap: 8px; }
+.masthead__meta { flex-wrap: wrap; justify-content: flex-end; }
+.masthead__nav { display: flex; align-items: center; gap: 6px; }
+.masthead__button {
+  appearance: none;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.55);
+  color: #fff;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.masthead__button:hover { background: rgba(255, 255, 255, 0.28); }
+.masthead__button[aria-current='page'] { background: #fff; color: var(--red); box-shadow: none; }
+.masthead__button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 639px) {
+  .masthead__meta { width: 100%; justify-content: space-between; }
+  .masthead__title { font-size: 13px; }
+}
+
+/* ── THE GRADES KEY, AND A CARD OPENED ─────────────────────────────── */
+.key {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(560px, calc(100vw - 32px));
+  width: 100%;
+}
+.key::backdrop { background: rgba(20, 18, 16, 0.55); }
+.key__sheet {
+  position: relative;
+  background: var(--page);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 24px 20px 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+@media (min-width: 760px) { .key__sheet { padding: 30px 30px 24px; } }
+.key__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1.5px var(--rule);
+}
+.key__head { margin: 0 44px 6px 0; font-weight: 900; font-size: 34px; line-height: 1; text-transform: uppercase; }
+.key__intro { margin: 0 0 12px; font-size: 15px; line-height: 1.5; color: var(--soft); }
+.key__list { list-style: none; margin: 0; padding: 0; }
+.key__row { display: grid; grid-template-columns: 136px 1fr; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 15px; line-height: 1.4; }
+.key__row .grade-chip { justify-self: start; }
+.key__links { display: flex; gap: 18px; margin: 16px 0 0; font-size: 15px; font-weight: 600; }
+.key__links a { color: var(--ink); }
+
+.card-detail { max-width: min(640px, calc(100vw - 32px)); }
+.card-detail__sheet { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+@media (min-width: 640px) { .card-detail__sheet { flex-direction: row; align-items: flex-start; } }
+.card-detail__copy { display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.5; color: var(--soft); min-width: 0; }
+.card-detail__copy p { margin: 0; }
+.card-detail__copy a { color: var(--ink); font-weight: 600; }
+.card-detail__grade { padding-top: 10px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
+
+/* ── THE REVEAL ON A DEEP CUTS BOARD ───────────────────────────────── */
+.cards {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
+}
+.cards.is-shown { opacity: 1; transform: none; }
+.cards__page { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; margin: 0; font-size: 15px; color: var(--muted); }
+.cards__row { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+.cards__item { opacity: 0; transform: translateY(10px) scale(0.97); transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out); transition-delay: calc(var(--i) * 220ms + 150ms); }
+.cards.is-shown .cards__item { opacity: 1; transform: none; }
+.cards__link { font-size: 15px; font-weight: 600; color: var(--ink); }
+
+/* ── DEEP CUTS INDEX AND HOME SECTION ──────────────────────────────── */
+.deep-intro { display: flex; flex-direction: column; gap: 10px; }
+.deep-intro .hero__head { margin: 0; }
+.deep-intro__brief { text-align: left; margin: 0; max-width: 40em; }
+.deep-intro__stats { margin: 0; font-size: 14px; color: var(--muted); }
+.deep-intro__stats a { color: var(--ink); font-weight: 600; }
+.page__tab--deep { background: #0e2a73; }
+.deep-card__grade { position: absolute; top: -12px; right: 14px; z-index: 2; }
+
+.deep-promo__card {
+  display: grid;
+  gap: 12px;
+  padding: 22px 20px 18px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.deep-promo__card:hover { transform: translateY(-1px); }
+.deep-promo__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.deep-promo__copy { font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 44em; }
+.deep-promo__copy b { color: var(--ink); font-weight: 600; }
+.deep-promo__go { color: var(--red); }
+
+/* ── THE COLLECTION ────────────────────────────────────────────────── */
+.collection__top { display: flex; flex-direction: column; gap: 10px; }
+@media (min-width: 760px) { .collection__top { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
+.collection__top .hero__head { margin: 4px 0 0; }
+.collection__blurb { margin: 0; max-width: 26em; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.collection__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: -16px; }
+.chip {
+  appearance: none;
+  border: 0;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--sticker);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--rule-strong);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.chip b { font-weight: 700; color: var(--muted); }
+.chip.is-on { background: var(--ink); color: #fff; box-shadow: none; }
+.chip.is-on b { color: var(--silhouette); }
+.chip:disabled { opacity: 0.4; cursor: default; }
+.chip:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+.collection__section { display: flex; flex-direction: column; gap: 18px; }
+.collection__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+.collection__count { font-size: 14px; font-weight: 600; }
+.collection__line { font-size: 14px; color: var(--muted); }
+@media (min-width: 760px) { .collection__line { margin-left: auto; } }
+.collection__grid { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; }
+@media (max-width: 480px) { .collection__grid { justify-content: center; } }
+.collection__card { appearance: none; border: 0; padding: 0; background: none; border-radius: 12px; cursor: pointer; transition: transform var(--t-fast) var(--ease-out); }
+.collection__card:hover { transform: translateY(-2px); }
+.collection__card:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+.collection__empty { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 28px 24px; }
+.collection__empty p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--muted); max-width: 36em; }
+.collection__empty b { color: var(--ink); }

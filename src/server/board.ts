@@ -62,7 +62,7 @@ export async function loadBoard(id: string): Promise<BoardProps | null> {
   const puzzle: ChainPuzzle = {
     id: file.id, mode: file.mode, difficulty: file.difficulty, slots: file.slots,
     prescribedLinks: file.prescribedLinks, caption: file.caption, closed: file.closed,
-    clues: file.clues,
+    clues: file.clues, deep: file.deep,
   };
 
   // The givens: a name and the ground they stand on. Their signature club is
@@ -91,7 +91,7 @@ let summaries: Promise<BoardSummary[]> | null = null;
 
 export function listBoards(): Promise<BoardSummary[]> {
   summaries ??= (async () => {
-    const { byId, images: allImages } = await loadData();
+    const { byId, images: allImages, clubs: stored } = await loadData();
     const files = (await readdir('content/chains')).filter((f) => /^\d{3}\.json$/.test(f)).sort();
     const out: BoardSummary[] = [];
     for (const f of files) {
@@ -106,7 +106,12 @@ export function listBoards(): Promise<BoardSummary[]> {
       });
       const clues: Record<number, string> = {};
       for (const [i, clue] of Object.entries(p.clues ?? {})) clues[Number(i)] = clue.label;
-      out.push({ id: p.id, daily: p.difficulty === undefined, difficulty: p.difficulty, closed: p.closed ?? false, slots, clues, images });
+      const named = Object.values(p.prescribedLinks ?? {})[0];
+      const via = named ? stored[named]?.name : undefined;
+      out.push({
+        id: p.id, daily: p.difficulty === undefined && !p.deep, deep: p.deep ?? false, difficulty: p.difficulty,
+        closed: p.closed ?? false, slots, clues, images, ...(via ? { via } : {}),
+      });
     }
     return out;
   })();

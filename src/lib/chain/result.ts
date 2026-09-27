@@ -1,7 +1,8 @@
 import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, sharedClubsByProminence, sidesOf } from './score';
 import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
-import { plateMarks, shareLine } from './share';
+import { deepShareLine, plateMarks, shareLine } from './share';
+import { GRAIL_MIN_FIELD, gradeOf, pageGrade, type Grade } from './grade';
 import type { SlotDepth } from './score';
 import type { ChainFill, ChainPuzzle } from './types';
 import type { Player } from '../chemistry/types';
@@ -56,6 +57,11 @@ export interface SlotOutcome {
    * the sealed sheet holds it up in place of the wall.
    */
   obvious: { id: string; name: string; clubs: string[] } | null;
+  /**
+   * How deep the pick went, as a Deep Cuts grade. Null when the plate did not
+   * hold. Computed on every board; only a Deep Cuts board shows it.
+   */
+  grade: Grade | null;
 }
 
 /** One print on the wall of answers the sealed sheet puts up. */
@@ -116,6 +122,8 @@ export interface ChainResult {
    * boards were graded on. Null when there is no legal pair at all.
    */
   entry: number | null;
+  /** The weakest plate's grade when every plate held, else null. */
+  pageGrade: Grade | null;
 }
 
 /**
@@ -244,8 +252,20 @@ export function chainResult(
       null,
     );
 
+    // The grade: how much of the field was better known than the pick. The
+    // Grail is the deepest checkable answer (`most`, above the fame floor)
+    // or anything deeper still, and only where the plate offered a choice.
+    let grade: Grade | null = null;
+    if (held && pick) {
+      const mine = fameOf(pick);
+      const above = field.filter((p) => p.id !== pick.id && fameOf(p) > mine).length;
+      const grail = most !== null && field.length >= GRAIL_MIN_FIELD && mine <= fameOf(most);
+      grade = gradeOf(above, field.length, grail);
+    }
+
     slots.push({
       index: i,
+      grade,
       playerId: fill[i] ?? null,
       held,
       clueMet: met,
@@ -346,6 +366,7 @@ export function chainResult(
     pairs,
     pinboard,
     entry,
+    pageGrade: pageGrade(slots.map((s) => s.grade)),
   };
 }
 
@@ -353,6 +374,7 @@ export function chainResult(
  * The result as a line of text worth pasting to a group chat. See
  * `shareLine` in share.ts for the shape; this fills it from a result.
  */
-export function shareText(result: ChainResult, title: string, hinted: readonly number[] = []): string {
+export function shareText(result: ChainResult, title: string, hinted: readonly number[] = [], deep = false): string {
+  if (deep) return deepShareLine({ title, grades: result.slots.map((s) => s.grade) });
   return shareLine({ title: /^\d{3}$/.test(title) ? `Chain ${title}` : title, plates: plateMarks(result.slots, hinted) });
 }

@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Mark } from './Chain';
 import BoardPreview from './BoardPreview';
+import MastNav from './MastNav';
+import { GradeChip } from './Slab';
 import { Figure } from './Sticker';
 import type { BoardSummary, Given } from '../src/lib/chain/client';
 import { boardForDay, dateOfDay, dayNumber, localDate, longDate } from '../src/lib/daily';
@@ -34,7 +36,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
   const todayPlay = todayId ? progress.plays[todayId] : undefined;
   const streak = today !== null ? streakOf(progress, today) : { current: 0, best: 0 };
 
-  const ladder = boards.filter((b) => !b.daily);
+  const ladder = boards.filter((b) => !b.daily && !b.deep);
   const archive = today !== null
     ? Array.from({ length: Math.min(today - 1, 30) }, (_, i) => today - 1 - i)
         .map((day) => ({ day, id: boardForDay(day, dailyIds)! }))
@@ -50,6 +52,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
         </a>
         <div className="masthead__meta">
           {streak.current > 0 ? <span className="pill">Streak {streak.current}</span> : null}
+          <MastNav />
         </div>
       </header>
 
@@ -117,6 +120,23 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             </ul>
           </section>
         ) : null}
+
+        <section className="deep-promo">
+          <h2 className="home__head display">Deep Cuts</h2>
+          <a className="page deep-promo__card" href="/deep">
+            <span className="deep-promo__chips" aria-hidden>
+              <GradeChip grade="rare" />
+              <GradeChip grade="niche" />
+              <GradeChip grade="gem" />
+              <GradeChip grade="grail" />
+            </span>
+            <span className="deep-promo__copy">
+              <b>Thirty open boards where going deep is the point.</b> Anyone who links holds; the players nobody else
+              remembers come back as rarer cards, from bronze up to the Grail. Keep them in your collection.
+            </span>
+            <span className="also__go deep-promo__go">Start digging →</span>
+          </a>
+        </section>
 
         {archive.length > 0 ? (
           <section className="archive">

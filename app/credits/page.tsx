@@ -33,6 +33,12 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             text is available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
           </p>
 
+          <h2 className="credits__head display">Card cases</h2>
+          <p>
+            The sapphire, diamond and onyx textures on Deep Cuts cards were generated for Chain with
+            {' '}<a href="https://higgsfield.ai/">Higgsfield</a>. They are not photographs of real stones.
+          </p>
+
           <h2 className="credits__head display">Club crests</h2>
           <p>
             Crests are trademarks of their clubs, shown as they are, only to identify the club. They are taken

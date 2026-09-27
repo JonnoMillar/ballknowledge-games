@@ -12,6 +12,7 @@ A daily football puzzle drawn as a sticker album. Two or more famous players are
 
 - **The daily.** A ring of three or four givens, with a clue on every empty plate ("an Argentine", "a Welshman"). Every board is built so that each plate has one answer a fan can reach. Everyone gets the same board on the same day, and your streak counts the days in a row you held it.
 - **The ladder.** Four graded boards, from easy to a closed ring. Anyone who links will do; harder means fewer people who fit.
+- **Deep Cuts.** Thirty wide-open boards where going deep is the point. Anyone who links holds, and every pick that holds comes back as a graded card: bronze, silver and gold for the names people reach for, then sapphire, diamond, and an onyx Grail for the deepest answer on the plate. Cards are kept in a collection at `/collection`, and the key to the grades is one tap away from every page.
 - **No suggestions.** The search never offers a name. You type a player you remember, and the board tells you nothing until you seal it. If you get stuck, "Show clubs" reveals a given's clubs, and your share line records that you used it.
 
 The same player database runs two party games for playing in a group with one phone:
@@ -44,7 +45,7 @@ flowchart LR
 
 ## Tech stack
 
-Next.js 15 (App Router) and React 19, TypeScript throughout, Vitest (989 tests), and `tsx` scripts for the data pipeline. There is no database: the pool is a committed JSON snapshot read once by the server. Drag and drop uses dnd-kit.
+Next.js 15 (App Router) and React 19, TypeScript throughout, Vitest (1,363 tests), and `tsx` scripts for the data pipeline. There is no database: the pool is a committed JSON snapshot read once by the server. Drag and drop uses dnd-kit.
 
 ## Run it locally
 

@@ -132,6 +132,8 @@ export interface BoardSummary {
   id: string;
   /** A board the daily draws from: generated, and ungraded. The ladder is the rest. */
   daily: boolean;
+  /** A Deep Cuts board: graded, and listed on /deep rather than the home page's ladder. */
+  deep: boolean;
   difficulty?: string;
   closed: boolean;
   /** Slot order: a given, or null for a plate to fill. */
@@ -140,4 +142,6 @@ export interface BoardSummary {
   clues: Record<number, string>;
   /** Pictures for the givens. */
   images: Record<string, PortraitImage>;
+  /** The club a named link demands, by name, where the board names one. */
+  via?: string;
 }

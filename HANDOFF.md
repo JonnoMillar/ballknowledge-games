@@ -10,10 +10,11 @@ A daily football recall puzzle, drawn as a sticker album. Famous players are
 on the page; the gaps between them are grey silhouettes; a link between two
 stickers is a club both played for. You name the missing players, seal the
 page once, and the chain holds or it doesn't. **One question, one answer.**
-There is no score. There used to be one (how obscure your answers were, on
-a 0–100 scale, later as Banker / Good shout / Deep cut tiers) and it made a
-correct chain feel like a loss; it is gone from the game, and only its
-engine remains, unused, in `src/lib/chain/result.ts`.
+The daily has no score. There used to be one (how obscure your answers were,
+on a 0–100 scale, later as Banker / Good shout / Deep cut tiers) and it made
+a correct chain feel like a loss. Obscurity lives on only in **Deep Cuts**
+(below), a separate mode where digging is the point and the reward is a card,
+not a number.
 
 Two kinds of board, same rules:
 
@@ -42,7 +43,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 989 tests, 34 files
+npm test             # 1,363 tests, 35 files
 npm run typecheck
 ```
 
@@ -135,6 +136,40 @@ fame ≥ 70, at least two known leagues, not a manager), pairs that admit a
 plate, rings of three and four that close, no given or answer used more
 than three times across the set, and every board re-checked with the test's
 own rule before it is kept. Seeded, so a rerun writes the same boards.
+
+## Deep Cuts (`/deep`, `/collection`)
+
+Added 2026-09-27. Thirty boards, ids 101–130, the shape of chain 006
+(G ? =named club= ? G) with `deep: true`: never a daily, never on the ladder.
+Built by `npx tsx scripts/build-deep-cuts.ts --write`: famous ends (fame 70+),
+a big club in a followed league, 25+ answers a side with 12+ checkable ones,
+and ENTRY 60+ so there is always a famous way in.
+
+Every pick that holds is graded at the seal (`src/lib/chain/grade.ts`), on
+the fact-fame ruler within the plate's own field: the share of the other
+answers better known than the pick. Common < 10% (bronze), Uncommon < 25%
+(silver), Rare < 45% (gold), Niche < 70% (sapphire), Gem (diamond). **Grail**
+(onyx and gold) is the plate's deepest checkable answer (`best` in
+`result.ts`, fame 30+) or anything deeper, on a field of 8+. The page takes
+its weakest plate's grade. The player is never shown "Nth of M"; that was
+the thing that made the old score feel like a loss.
+
+Cards go to `localStorage` (`chain.collection.v1`, `src/lib/collection.ts`),
+one per player at their best grade. **Only the first seal of a board
+collects**: a replay comes after the wall has shown the Grail. The grades
+key (`components/GradesKey.tsx`) is in every masthead via `MastNav`.
+
+The sapphire, diamond and onyx textures in `public/grades/` were generated
+with Higgsfield (credited on `/credits`); bronze, silver and gold are CSS.
+The design went through three rounds of mockups. Rejected along the way:
+outer glows, sparkles, a shine that crosses the player's photo, a shine
+that never rests, and drawn facet patterns (they looked cheap next to the
+photographic textures).
+
+A Deep Cuts pick's photo is whatever `data/images.json` has for that player,
+not an in-era portrait: `fetch:portraits` resolves only the players a shipped
+board names (givens and reference answers), and has not been rerun for
+101–130. Many cards will show a later photo, or the silhouette.
 
 ## Rondo (`/rondo`)
 

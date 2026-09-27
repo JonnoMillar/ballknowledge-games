@@ -1,3 +1,5 @@
+import { GRADE_GLYPH, GRADE_WORD, pageGrade, type Grade } from './grade';
+
 /**
  * What happened at one plate, as the share line and the album record it:
  * held, held with a hint, or not held.
@@ -24,4 +26,15 @@ export function shareLine({ title, plates }: { title: string; plates: readonly P
 /** One mark per plate, from the seal's verdict and the hints taken. */
 export function plateMarks(slots: readonly { index: number; held: boolean }[], hinted: readonly number[]): PlateMark[] {
   return slots.map((s) => (!s.held ? 'missed' : hinted.includes(s.index) ? 'hinted' : 'held'));
+}
+
+/**
+ * The Deep Cuts share line: one glyph per plate for the case it came out in,
+ * a red square where it broke, and the page's grade. Still no names.
+ */
+export function deepShareLine({ title, grades }: { title: string; grades: readonly (Grade | null)[] }): string {
+  const grid = grades.map((g) => (g ? GRADE_GLYPH[g] : MARK_GLYPH.missed)).join('');
+  const page = pageGrade(grades);
+  return `${title}
+${grid} ${page ? `${GRADE_WORD[page]} page` : 'broken'}`;
 }

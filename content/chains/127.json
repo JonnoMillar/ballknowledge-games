@@ -1,0 +1,20 @@
+{
+  "id": "127",
+  "mode": "clubs",
+  "deep": true,
+  "slots": [
+    "Q483145",
+    null,
+    null,
+    "Q83456"
+  ],
+  "prescribedLinks": {
+    "1": "Q9617"
+  },
+  "referenceSolution": [
+    "Q483145",
+    "Q316512",
+    "Q201837",
+    "Q83456"
+  ]
+}

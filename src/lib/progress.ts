@@ -1,4 +1,5 @@
 import type { PlateMark } from './chain/share';
+import type { Grade } from './chain/grade';
 
 /**
  * What the player has done, kept in the browser.
@@ -16,6 +17,8 @@ export interface Play {
   links: boolean[];
   /** Plate by plate, for the share line: held, held with a hint, missed. */
   plates: PlateMark[];
+  /** Plate by plate, the Deep Cuts grade; null where it broke. Absent on older plays. */
+  grades?: (Grade | null)[];
   /** The local date it was played, YYYY-MM-DD. */
   date: string;
 }

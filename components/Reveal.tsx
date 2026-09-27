@@ -7,6 +7,9 @@ import type { ClubView } from '../src/lib/clubs';
 import type { PortraitImage } from '../src/lib/portraits';
 import { clubColour } from '../src/lib/club-colours';
 import type { Named } from '../src/lib/chain/client';
+import Slab, { GradeChip } from './Slab';
+import { GRADE_WORD, gradeRank, type Grade } from '../src/lib/chain/grade';
+import type { CardNews } from '../src/lib/collection';
 
 /**
  * The reveal, as a clock.
@@ -102,25 +105,35 @@ const wallGround = (clubs: readonly string[]): Ground => {
   return { a: clubColour(a), b: clubColour(b ?? a), liveA: true, liveB: true };
 };
 
-/** The ones the board had in mind, one per plate. */
-export function Wall({ result, images, clubs, players, show }: {
+/**
+ * The ones the board had in mind, one per plate. On a Deep Cuts board, the
+ * other end of the field instead: the deepest checkable answer, the Grail.
+ */
+export function Wall({ result, images, clubs, players, show, deep = false }: {
   result: ChainResult;
   images: Record<string, PortraitImage>;
   clubs: Record<string, ClubView>;
   players: ReadonlyMap<string, Named>;
   show: boolean;
+  deep?: boolean;
 }) {
   const clubName = (id: string) => shortClubName(clubs[id]?.name ?? id);
-  const entries = result.slots.flatMap((slot) => slot.obvious ? [{
-    slot,
-    answer: slot.obvious,
-    tag: slot.playerId === slot.obvious.id ? 'You found it' : slot.held ? 'Yours held too' : null,
-  }] : []);
+  const entries = deep
+    ? result.slots.flatMap((slot) => slot.best ? [{
+      slot,
+      answer: slot.best,
+      tag: slot.grade === 'grail' ? (slot.playerId === slot.best.id ? 'You found it' : 'Yours went deeper') : null,
+    }] : [])
+    : result.slots.flatMap((slot) => slot.obvious ? [{
+      slot,
+      answer: slot.obvious,
+      tag: slot.playerId === slot.obvious.id ? 'You found it' : slot.held ? 'Yours held too' : null,
+    }] : []);
 
   if (entries.length === 0) return null;
   return (
     <section className={`wall ${show ? 'is-shown' : ''}`}>
-      <h3 className="wall__head display">The ones we had in mind</h3>
+      <h3 className="wall__head display">{deep ? 'The Grail on each plate' : 'The ones we had in mind'}</h3>
       <div className="wall__row">
         {entries.map(({ slot, answer, tag }, i) => (
           <div key={slot.index} className="wall__item" style={{ ['--i' as string]: i }}>
@@ -135,10 +148,68 @@ export function Wall({ result, images, clubs, players, show }: {
                 ? `${clubName(answer.clubs[0]!)} and ${clubName(answer.clubs[1]!)}`
                 : answer.clubs[0] ? clubName(answer.clubs[0]) : ''}
             </span>
-            {tag ? <span className={`wall__tag ${tag === 'You found it' ? 'wall__tag--found' : ''}`}>{tag}</span> : null}
+            {tag ? <span className={`wall__tag ${tag !== 'Yours held too' ? 'wall__tag--found' : ''}`}>{tag}</span> : null}
           </div>
         ))}
       </div>
+    </section>
+  );
+}
+
+/** The grade under a plate on a Deep Cuts board, once the wall is up. */
+export function GradeTag({ grade, run }: { grade: Grade | null; run: boolean }) {
+  if (!grade) return null;
+  return (
+    <div className={`plate-tag ${run ? 'is-run' : ''}`}>
+      <GradeChip grade={grade} />
+    </div>
+  );
+}
+
+/**
+ * The cards a Deep Cuts board gave you: every pick that held, in its case,
+ * with the page's grade and, where it is one plate short, what the next
+ * page up would have been.
+ */
+export function DeepCards({ result, images, players, groundFor, news, show, collects = true }: {
+  result: ChainResult;
+  images: Record<string, PortraitImage>;
+  players: ReadonlyMap<string, Named>;
+  groundFor: (index: number) => Ground;
+  news: Record<string, CardNews>;
+  show: boolean;
+  /** False on a replay: the cards are shown, but only the first go keeps them. */
+  collects?: boolean;
+}) {
+  const held = result.slots.filter((s): s is typeof s & { grade: Grade; playerId: string } => s.grade !== null && s.playerId !== null);
+  if (held.length === 0) return null;
+  const page = result.pageGrade;
+  const best = held.reduce<Grade>((top, s) => (gradeRank(s.grade) > gradeRank(top) ? s.grade : top), held[0]!.grade);
+  const short = page && held.filter((s) => s.grade === page).length === 1 && best !== page;
+  return (
+    <section className={`cards ${show ? 'is-shown' : ''}`}>
+      <h3 className="wall__head display">{collects ? 'Your cards' : 'This go’s cards'}</h3>
+      {collects ? null : <p className="cards__page">A replay is not collected. Your first go on this board is the one you keep.</p>}
+      {page ? (
+        <p className="cards__page">
+          <GradeChip grade={page} label={`${GRADE_WORD[page]} page`} />
+          <span>{short ? `One plate off ${best === 'uncommon' ? 'an' : 'a'} ${GRADE_WORD[best]} page.` : 'Every plate at its grade or better.'}</span>
+        </p>
+      ) : null}
+      <div className="cards__row">
+        {held.map((s, i) => (
+          <div key={s.index} className="cards__item" style={{ ['--i' as string]: i }}>
+            <Slab
+              grade={s.grade}
+              player={players.get(s.playerId) ?? { id: s.playerId, name: s.playerId }}
+              image={images[s.playerId]}
+              ground={groundFor(s.index)}
+              news={news[s.playerId] ?? null}
+            />
+          </div>
+        ))}
+      </div>
+      {collects ? <a className="cards__link" href="/collection">See your collection</a> : null}
     </section>
   );
 }

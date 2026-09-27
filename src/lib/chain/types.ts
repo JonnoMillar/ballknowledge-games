@@ -88,6 +88,11 @@ export interface ChainPuzzle {
    */
   closed?: boolean;
   /**
+   * A Deep Cuts board: wide open, and every pick that holds is graded by how
+   * deep it went (src/lib/chain/grade.ts). Never a daily, never on the ladder.
+   */
+  deep?: boolean;
+  /**
    * One clue per blank, keyed by slot index. See `SlotClue`.
    */
   clues?: Readonly<Record<number, SlotClue>>;

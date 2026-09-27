@@ -182,7 +182,7 @@ describe.skipIf(!hasPool || files.length === 0)('daily boards', () => {
   const OPEN = 5;
   const boards = files
     .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
-    .filter((c) => c.difficulty === undefined);
+    .filter((c) => c.difficulty === undefined && !c.deep);
 
   for (const chain of boards) {
     const mode = chain.mode ?? 'clubs';
@@ -277,4 +277,45 @@ describe.skipIf(!hasPool || files.length === 0)('what the sealed sheet states', 
     expect(result.pairs).toBe(254);
     expect(result.entry).toBe(90);
   });
+});
+
+/**
+ * A Deep Cuts board is the opposite promise to a daily: wide fields, so there
+ * is somewhere to dig, and a famous way in, so anyone can hold it. The
+ * reference solution is the deepest checkable pair, so sealing it has to earn
+ * a Grail on both plates, which holds the grading and the board to each other.
+ */
+describe.skipIf(!hasPool || files.length === 0)('Deep Cuts boards', () => {
+  const MIN_SIDE = 25;
+  const MIN_ENTRY = 60;
+  const boards = files
+    .map((f) => JSON.parse(readFileSync(`content/chains/${f}`, 'utf8')) as ChainPuzzle)
+    .filter((c) => c.deep);
+
+  it('there are Deep Cuts boards, and none is also a daily or on the ladder', () => {
+    expect(boards.length).toBeGreaterThanOrEqual(20);
+    for (const c of boards) {
+      expect(c.difficulty, `${c.id} has a difficulty`).toBeUndefined();
+      expect(c.clues, `${c.id} has clues`).toBeUndefined();
+    }
+  });
+
+  for (const chain of boards) {
+    it(`${chain.id}: both plates are wide open, and there is a famous way in`, () => {
+      const blanks = chain.slots.map((s, i) => (s === null ? i : -1)).filter((i) => i >= 0);
+      expect(blanks).toHaveLength(2);
+      for (const i of blanks) {
+        const field = chainFieldFor(i, chain.slots, players, pool, chain.mode ?? 'clubs', chain.prescribedLinks, chain.closed);
+        expect(field.length, `plate ${i} has ${field.length} answers`).toBeGreaterThanOrEqual(MIN_SIDE);
+      }
+      expect(entryOf(chain)).toBeGreaterThanOrEqual(MIN_ENTRY);
+    });
+
+    it(`${chain.id}: the deepest checkable pair is graded Grail on both plates`, () => {
+      const result = chainResult(chain.referenceSolution!, chain, players, pool);
+      expect(result.perfect).toBe(true);
+      expect(result.slots.map((s) => s.grade)).toEqual(['grail', 'grail']);
+      expect(result.pageGrade).toBe('grail');
+    });
+  }
 });
