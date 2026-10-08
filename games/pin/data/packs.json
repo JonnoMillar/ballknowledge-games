@@ -1,0 +1,5 @@
+[
+  { "id": "world-cup-2022", "title": "World Cup 2022", "goals": ["richarlison-serbia", "aldawsari-argentina", "enzo-mexico", "messi-mexico", "dimaria-final-2022", "mbappe-volley-final"] },
+  { "id": "invincibles", "title": "The Invincibles", "goals": ["henry-manutd-2004", "henry-liverpool-2004", "pires-anfield-2003", "edu-chelsea-2003", "vieira-spurs-2004", "vieira-leicester-2004"] },
+  { "id": "lionesses", "title": "Lionesses", "goals": ["russo-backheel", "toone-final", "kelly-final", "stanway-spain", "james-china", "agyemang-italy"] }
+]

@@ -1,0 +1,794 @@
+{
+  "maradona-hand": {
+    "scorer": "Diego Maradona",
+    "match": "Argentina v England",
+    "date": "1986-06-22",
+    "competition": "World Cup 1986, quarter-final",
+    "line": "The Hand of God: a leap with the keeper, and a fist nobody in charge seemed to see.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3750191,
+      "eventId": "04c702f7-3b5d-4d86-a00b-c428c398c620"
+    },
+    "at": {
+      "x": 34.1,
+      "y": 8.1
+    },
+    "xg": 0.38
+  },
+  "maradona-solo": {
+    "scorer": "Diego Maradona",
+    "match": "Argentina v England",
+    "date": "1986-06-22",
+    "competition": "World Cup 1986, quarter-final",
+    "line": "Four minutes after the Hand of God, a run from deep through half the England team. The Goal of the Century.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3750191,
+      "eventId": "f7c68c94-1db5-477f-aabe-f97733605571"
+    },
+    "at": {
+      "x": 42.1,
+      "y": 5.8
+    },
+    "xg": 0.61
+  },
+  "pele-1970": {
+    "scorer": "Pelé",
+    "match": "Brazil v Italy",
+    "date": "1970-06-21",
+    "competition": "World Cup 1970 final",
+    "line": "A towering header to open the scoring in the final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3888702,
+      "eventId": "150c598a-c46c-4209-b5b6-1967b415e816"
+    },
+    "at": {
+      "x": 38.3,
+      "y": 7.2
+    },
+    "xg": 0.06
+  },
+  "carlos-alberto-1970": {
+    "scorer": "Carlos Alberto",
+    "match": "Brazil v Italy",
+    "date": "1970-06-21",
+    "competition": "World Cup 1970 final",
+    "line": "The captain arrives at full pace to finish the team goal of all team goals, laid off by Pelé.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3888702,
+      "eventId": "a41ed2aa-cd75-4da9-98bf-0c0ea4a649d1"
+    },
+    "at": {
+      "x": 48.9,
+      "y": 10.9
+    },
+    "xg": 0.03
+  },
+  "bale-overhead-2018": {
+    "scorer": "Gareth Bale",
+    "match": "Real Madrid v Liverpool",
+    "date": "2018-05-26",
+    "competition": "Champions League final 2018",
+    "line": "Moments after coming off the bench, a bicycle kick to put Madrid ahead in the final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 18245,
+      "eventId": "36687201-f131-4418-9dd0-f632bc9c4257"
+    },
+    "at": {
+      "x": 32.4,
+      "y": 13.4
+    },
+    "xg": 0.05
+  },
+  "bale-strike-2018": {
+    "scorer": "Gareth Bale",
+    "match": "Real Madrid v Liverpool",
+    "date": "2018-05-26",
+    "competition": "Champions League final 2018",
+    "line": "A speculative strike that squirmed through Karius's hands to settle the final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 18245,
+      "eventId": "05688a6e-37f8-4aa6-a36e-d8151aa75997"
+    },
+    "at": {
+      "x": 49.8,
+      "y": 26.1
+    },
+    "xg": 0.01
+  },
+  "messi-header-2009": {
+    "scorer": "Lionel Messi",
+    "match": "Barcelona v Manchester United",
+    "date": "2009-05-27",
+    "competition": "Champions League final 2009",
+    "line": "A rare header, looping over Van der Sar, to seal the final in Rome.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3750201,
+      "eventId": "bc51838b-e9eb-422f-8e73-c8409f40b5b4"
+    },
+    "at": {
+      "x": 31.4,
+      "y": 5.4
+    },
+    "xg": 0.23
+  },
+  "gerrard-istanbul": {
+    "scorer": "Steven Gerrard",
+    "match": "AC Milan v Liverpool",
+    "date": "2005-05-25",
+    "competition": "Champions League final 2005",
+    "line": "The captain's header that started the comeback from 3–0 down at half-time.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 2302764,
+      "eventId": "ee135123-b822-4de1-acbe-f75eaf3be9ae"
+    },
+    "at": {
+      "x": 28.9,
+      "y": 8.9
+    },
+    "xg": 0.07
+  },
+  "smicer-istanbul": {
+    "scorer": "Vladimír Šmicer",
+    "match": "AC Milan v Liverpool",
+    "date": "2005-05-25",
+    "competition": "Champions League final 2005",
+    "line": "Two minutes after the first, a low drive past Dida: 3–2, and the comeback is on.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 2302764,
+      "eventId": "1e00f030-41ba-4e02-8f4e-5f0c96bd0ccb"
+    },
+    "at": {
+      "x": 43,
+      "y": 21.3
+    },
+    "xg": 0.03
+  },
+  "ramos-lisbon": {
+    "scorer": "Sergio Ramos",
+    "match": "Real Madrid v Atlético Madrid",
+    "date": "2014-05-24",
+    "competition": "Champions League final 2014",
+    "line": "A header from a corner in stoppage time, with Atlético a minute from the trophy.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 18241,
+      "eventId": "421efef6-f7c1-4616-b1f1-82ea9c3367fa"
+    },
+    "at": {
+      "x": 34.9,
+      "y": 10.5
+    },
+    "xg": 0.06
+  },
+  "messi-wembley-2011": {
+    "scorer": "Lionel Messi",
+    "match": "Barcelona v Manchester United",
+    "date": "2011-05-28",
+    "competition": "Champions League final 2011",
+    "line": "A drive past Van der Sar to retake the lead in the final at Wembley.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 18236,
+      "eventId": "2cb44ea0-08a7-462d-aa08-ba89c1f6ef17"
+    },
+    "at": {
+      "x": 36.6,
+      "y": 22.8
+    },
+    "xg": 0.04
+  },
+  "drogba-munich": {
+    "scorer": "Didier Drogba",
+    "match": "Bayern Munich v Chelsea",
+    "date": "2012-05-19",
+    "competition": "Champions League final 2012",
+    "line": "A header from a corner, two minutes from defeat, in Bayern's own stadium.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 18237,
+      "eventId": "2c4fae73-a8be-4e14-83a4-53fed157de97"
+    },
+    "at": {
+      "x": 41.7,
+      "y": 6.1
+    },
+    "xg": 0.07
+  },
+  "robben-wembley": {
+    "scorer": "Arjen Robben",
+    "match": "Borussia Dortmund v Bayern Munich",
+    "date": "2013-05-25",
+    "competition": "Champions League final 2013",
+    "line": "The late winner in an all-German final, after a backheel from Ribéry.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 18240,
+      "eventId": "0e4aa482-5c72-4020-805e-f9a96402df4f"
+    },
+    "at": {
+      "x": 34.9,
+      "y": 7
+    },
+    "xg": 0.41
+  },
+  "bellingham-slovakia": {
+    "scorer": "Jude Bellingham",
+    "match": "England v Slovakia",
+    "date": "2024-06-30",
+    "competition": "Euro 2024, round of 16",
+    "line": "An overhead kick in the fifth minute of stoppage time, with England a minute from going out.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3941017,
+      "eventId": "c71a4f0a-5d51-45d0-88ad-261e32e3f7c0"
+    },
+    "at": {
+      "x": 34.8,
+      "y": 8.7
+    },
+    "xg": 0.1
+  },
+  "yamal-france": {
+    "scorer": "Lamine Yamal",
+    "match": "Spain v France",
+    "date": "2024-07-09",
+    "competition": "Euro 2024, semi-final",
+    "line": "A curler from a 16-year-old to equalise in the semi-final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3942752,
+      "eventId": "fedfb68d-1107-4594-984e-6761d6ccb9b2"
+    },
+    "at": {
+      "x": 40,
+      "y": 23.4
+    },
+    "xg": 0.03
+  },
+  "watkins-netherlands": {
+    "scorer": "Ollie Watkins",
+    "match": "Netherlands v England",
+    "date": "2024-07-10",
+    "competition": "Euro 2024, semi-final",
+    "line": "Off the bench, a turn and a low finish in the last minute to reach the final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3942819,
+      "eventId": "dc16ea8a-eab7-403d-ad54-778ba19a16b5"
+    },
+    "at": {
+      "x": 45.5,
+      "y": 8.4
+    },
+    "xg": 0.04
+  },
+  "saka-switzerland": {
+    "scorer": "Bukayo Saka",
+    "match": "England v Switzerland",
+    "date": "2024-07-06",
+    "competition": "Euro 2024, quarter-final",
+    "line": "A shuffle onto the stronger foot and a curler to equalise in the quarter-final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3942227,
+      "eventId": "f49ffee0-1a8a-4d16-b892-78c20e740cf1"
+    },
+    "at": {
+      "x": 48.1,
+      "y": 17.2
+    },
+    "xg": 0.03
+  },
+  "schick-scotland": {
+    "scorer": "Patrik Schick",
+    "match": "Scotland v Czech Republic",
+    "date": "2021-06-14",
+    "competition": "Euro 2020, group stage",
+    "line": "A lob over a keeper caught off the line: the goal of the tournament.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3788748,
+      "eventId": "26ef739f-b65a-4993-936e-8717cf0cd7e7"
+    },
+    "at": {
+      "x": 21.5,
+      "y": 49.5
+    },
+    "xg": 0.01
+  },
+  "shaw-final": {
+    "scorer": "Luke Shaw",
+    "match": "Italy v England",
+    "date": "2021-07-11",
+    "competition": "Euro 2020 final",
+    "line": "A first international goal, in the second minute of the final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3795506,
+      "eventId": "6605af47-8d44-4f52-9b8d-65598a9c0ef1"
+    },
+    "at": {
+      "x": 26.2,
+      "y": 6
+    },
+    "xg": 0.15
+  },
+  "pavard-argentina": {
+    "scorer": "Benjamin Pavard",
+    "match": "France v Argentina",
+    "date": "2018-06-30",
+    "competition": "World Cup 2018, round of 16",
+    "line": "A half-volley that swerved and dipped: the goal of the tournament.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 7580,
+      "eventId": "7d0b37dd-2167-4ff9-81c4-708ea2f2abed"
+    },
+    "at": {
+      "x": 47.6,
+      "y": 17.5
+    },
+    "xg": 0.02
+  },
+  "trippier-croatia": {
+    "scorer": "Kieran Trippier",
+    "match": "Croatia v England",
+    "date": "2018-07-11",
+    "competition": "World Cup 2018, semi-final",
+    "line": "A free kick in the fifth minute of a World Cup semi-final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 8656,
+      "eventId": "301b839b-3293-495c-8701-db06f19c4ac2"
+    },
+    "at": {
+      "x": 36.6,
+      "y": 21
+    },
+    "xg": 0.09
+  },
+  "ronaldo-spain": {
+    "scorer": "Cristiano Ronaldo",
+    "match": "Portugal v Spain",
+    "date": "2018-06-15",
+    "competition": "World Cup 2018, group stage",
+    "line": "A free kick two minutes from time to complete a hat-trick against Spain.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 7576,
+      "eventId": "526c3ca4-4c66-4849-bd52-3b0e21b8823c"
+    },
+    "at": {
+      "x": 37.4,
+      "y": 21
+    },
+    "xg": 0.09
+  },
+  "vardy-manutd": {
+    "scorer": "Jamie Vardy",
+    "match": "Leicester City v Manchester United",
+    "date": "2015-11-28",
+    "competition": "Premier League 2015/16",
+    "line": "A goal in an 11th Premier League game in a row: a record.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3754186,
+      "eventId": "9347ef8f-b8d5-4ac1-a3fe-1eafe55b6eaa"
+    },
+    "at": {
+      "x": 45.1,
+      "y": 10.7
+    },
+    "xg": 0.14
+  },
+  "vardy-liverpool": {
+    "scorer": "Jamie Vardy",
+    "match": "Leicester City v Liverpool",
+    "date": "2016-02-02",
+    "competition": "Premier League 2015/16",
+    "line": "A volley on the run over Mignolet, in the season Leicester won the league.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3754275,
+      "eventId": "1018074f-7b8f-4558-93d7-3aefa07c384b"
+    },
+    "at": {
+      "x": 50.9,
+      "y": 20.2
+    },
+    "xg": 0.01
+  },
+  "ronaldinho-bernabeu": {
+    "scorer": "Ronaldinho",
+    "match": "Real Madrid v Barcelona",
+    "date": "2005-11-19",
+    "competition": "La Liga 2005/06",
+    "line": "A solo goal so good the Bernabéu stood to applaud.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 68319,
+      "eventId": "0043edf2-6295-4b5d-a014-3ac5772f3342"
+    },
+    "at": {
+      "x": 26,
+      "y": 5.9
+    },
+    "xg": 0.24
+  },
+  "messi-bernabeu-2017": {
+    "scorer": "Lionel Messi",
+    "match": "Real Madrid v Barcelona",
+    "date": "2017-04-23",
+    "competition": "La Liga 2016/17",
+    "line": "The stoppage-time winner, then the shirt held up to the Bernabéu.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 267569,
+      "eventId": "917b81cf-8797-4d87-a036-c22d71ba57f6"
+    },
+    "at": {
+      "x": 31.7,
+      "y": 13.4
+    },
+    "xg": 0.09
+  },
+  "richarlison-serbia": {
+    "scorer": "Richarlison",
+    "match": "Brazil v Serbia",
+    "date": "2022-11-24",
+    "competition": "World Cup 2022, group stage",
+    "line": "A flick up and a scissor kick: the goal of the tournament.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3857258,
+      "eventId": "f32f451c-8cf3-466b-ae81-a17f6111ab98"
+    },
+    "at": {
+      "x": 33.7,
+      "y": 11.3
+    },
+    "xg": 0.08
+  },
+  "aldawsari-argentina": {
+    "scorer": "Salem Al-Dawsari",
+    "match": "Argentina v Saudi Arabia",
+    "date": "2022-11-22",
+    "competition": "World Cup 2022, group stage",
+    "line": "A twist and a curler to complete the biggest upset of the tournament.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3857300,
+      "eventId": "07c658a2-5845-4b8b-b6e7-60206fdcac0d"
+    },
+    "at": {
+      "x": 21.5,
+      "y": 15.4
+    },
+    "xg": 0.03
+  },
+  "enzo-mexico": {
+    "scorer": "Enzo Fernández",
+    "match": "Argentina v Mexico",
+    "date": "2022-11-26",
+    "competition": "World Cup 2022, group stage",
+    "line": "A curler to make it 2–0 and settle Argentina's nerves.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3857289,
+      "eventId": "459d3411-945a-436f-b6eb-f7701b89cff7"
+    },
+    "at": {
+      "x": 19.4,
+      "y": 11.8
+    },
+    "xg": 0.04
+  },
+  "messi-mexico": {
+    "scorer": "Lionel Messi",
+    "match": "Argentina v Mexico",
+    "date": "2022-11-26",
+    "competition": "World Cup 2022, group stage",
+    "line": "A low drive to break the deadlock with Argentina's tournament on the line.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3857289,
+      "eventId": "70e7f361-0036-4d20-a401-2e4afbd31e5a"
+    },
+    "at": {
+      "x": 31.8,
+      "y": 22
+    },
+    "xg": 0.03
+  },
+  "dimaria-final-2022": {
+    "scorer": "Ángel Di María",
+    "match": "Argentina v France",
+    "date": "2022-12-18",
+    "competition": "World Cup 2022 final",
+    "line": "The finish to a sweeping counter-attack: 2–0 in the final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3869685,
+      "eventId": "ef86f4d9-7acd-4ed0-a5ec-9129079e8fbe"
+    },
+    "at": {
+      "x": 27.3,
+      "y": 7.2
+    },
+    "xg": 0.3
+  },
+  "mbappe-volley-final": {
+    "scorer": "Kylian Mbappé",
+    "match": "Argentina v France",
+    "date": "2022-12-18",
+    "competition": "World Cup 2022 final",
+    "line": "A volley 97 seconds after the first, to make it 2–2.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3869685,
+      "eventId": "03fb2918-e1e7-4ec8-89ff-7bc5531e853d"
+    },
+    "at": {
+      "x": 25.6,
+      "y": 13.3
+    },
+    "xg": 0.1
+  },
+  "henry-manutd-2004": {
+    "scorer": "Thierry Henry",
+    "match": "Arsenal v Manchester United",
+    "date": "2004-03-28",
+    "competition": "Premier League 2003/04",
+    "line": "A turn and a dipping strike past Howard.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3749246,
+      "eventId": "4c14e2ff-ecc6-4ba1-9981-a71be09979fe"
+    },
+    "at": {
+      "x": 40.3,
+      "y": 27.6
+    },
+    "xg": 0.02
+  },
+  "henry-liverpool-2004": {
+    "scorer": "Thierry Henry",
+    "match": "Arsenal v Liverpool",
+    "date": "2004-04-09",
+    "competition": "Premier League 2003/04",
+    "line": "A slalom through the Liverpool defence on the day the season was saved.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3749448,
+      "eventId": "bcdf8a07-d4a1-4b87-8736-fdf316e5bff5"
+    },
+    "at": {
+      "x": 25.5,
+      "y": 6.9
+    },
+    "xg": 0.3
+  },
+  "pires-anfield-2003": {
+    "scorer": "Robert Pirès",
+    "match": "Liverpool v Arsenal",
+    "date": "2003-10-04",
+    "competition": "Premier League 2003/04",
+    "line": "A curler at Anfield to win it.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3749253,
+      "eventId": "28dc9373-5044-4c22-82d2-bb02c5bdf47c"
+    },
+    "at": {
+      "x": 26.9,
+      "y": 21.4
+    },
+    "xg": 0.04
+  },
+  "edu-chelsea-2003": {
+    "scorer": "Edu",
+    "match": "Arsenal v Chelsea",
+    "date": "2003-10-18",
+    "competition": "Premier League 2003/04",
+    "line": "A deflected free kick, early on, against the new-money Chelsea.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3749079,
+      "eventId": "5f6f0387-6ccd-4aed-aba7-bfc581cdffd3"
+    },
+    "at": {
+      "x": 40.3,
+      "y": 23.4
+    },
+    "xg": 0.05
+  },
+  "vieira-spurs-2004": {
+    "scorer": "Patrick Vieira",
+    "match": "Tottenham Hotspur v Arsenal",
+    "date": "2004-04-25",
+    "competition": "Premier League 2003/04",
+    "line": "The opener at White Hart Lane, on the day the title was won.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3749068,
+      "eventId": "d5fa0f1f-ec1c-4e42-aa37-e7d4f826c25f"
+    },
+    "at": {
+      "x": 33.7,
+      "y": 7.6
+    },
+    "xg": 0.83
+  },
+  "vieira-leicester-2004": {
+    "scorer": "Patrick Vieira",
+    "match": "Arsenal v Leicester City",
+    "date": "2004-05-15",
+    "competition": "Premier League 2003/04",
+    "line": "The winner on the final day, completing a season unbeaten.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3749257,
+      "eventId": "d6d4ee81-d296-4c6a-a45e-5c3064379d17"
+    },
+    "at": {
+      "x": 34.1,
+      "y": 8.3
+    },
+    "xg": 0.63
+  },
+  "russo-backheel": {
+    "scorer": "Alessia Russo",
+    "match": "England v Sweden",
+    "date": "2022-07-26",
+    "competition": "Women's Euro 2022, semi-final",
+    "line": "A backheel through the keeper's legs in the semi-final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3845506,
+      "eventId": "4e5f9e17-3c06-40f5-a76c-aafb62a5751e"
+    },
+    "at": {
+      "x": 40.5,
+      "y": 4.7
+    },
+    "xg": 0.06
+  },
+  "toone-final": {
+    "scorer": "Ella Toone",
+    "match": "England v Germany",
+    "date": "2022-07-31",
+    "competition": "Women's Euro 2022 final",
+    "line": "Off the bench in the final, a lob over the keeper.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3847567,
+      "eventId": "a2d281b0-d9d6-4e19-9949-ec2e787efe79"
+    },
+    "at": {
+      "x": 39.9,
+      "y": 14.3
+    },
+    "xg": 0.2
+  },
+  "kelly-final": {
+    "scorer": "Chloe Kelly",
+    "match": "England v Germany",
+    "date": "2022-07-31",
+    "competition": "Women's Euro 2022 final",
+    "line": "A scramble from a corner in extra time, then a shirt swung overhead: the winner.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3847567,
+      "eventId": "4a3c572d-edd1-4a7b-b5aa-f56291d78383"
+    },
+    "at": {
+      "x": 33.3,
+      "y": 3.2
+    },
+    "xg": 0.57
+  },
+  "stanway-spain": {
+    "scorer": "Georgia Stanway",
+    "match": "England v Spain",
+    "date": "2022-07-20",
+    "competition": "Women's Euro 2022, quarter-final",
+    "line": "A drive in extra time to win the quarter-final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3844384,
+      "eventId": "dab0ec83-2180-44cb-8d21-62ecee04ab65"
+    },
+    "at": {
+      "x": 41.6,
+      "y": 19.6
+    },
+    "xg": 0.04
+  },
+  "james-china": {
+    "scorer": "Lauren James",
+    "match": "China v England",
+    "date": "2023-08-01",
+    "competition": "Women's World Cup 2023, group stage",
+    "line": "A curler, one of two goals in a 6–1 win.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 3893828,
+      "eventId": "866cfc54-fcc8-4a08-a1d9-5a49ca33613e"
+    },
+    "at": {
+      "x": 38.2,
+      "y": 17.4
+    },
+    "xg": 0.05
+  },
+  "agyemang-italy": {
+    "scorer": "Michelle Agyemang",
+    "match": "England v Italy",
+    "date": "2025-07-22",
+    "competition": "Women's Euro 2025, semi-final",
+    "line": "A teenager off the bench, equalising in stoppage time of the semi-final.",
+    "kind": "classic",
+    "source": {
+      "from": "statsbomb",
+      "matchId": 4020005,
+      "eventId": "45005fda-6e1f-45b4-801b-705bfa2ea7d1"
+    },
+    "at": {
+      "x": 40.3,
+      "y": 7.3
+    },
+    "xg": 0.1
+  }
+}
