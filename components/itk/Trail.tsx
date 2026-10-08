@@ -1,0 +1,156 @@
+'use client';
+import { useLayoutEffect, useRef, useState } from 'react';
+import { crestPath } from '../../src/lib/clubs';
+import ClubBadge, { shortClubName } from '../ClubBadge';
+import type { ItkStop } from '../../src/server/itk';
+import type { Pick } from './Itk';
+
+/**
+ * A career as a trail of crests, laid out like a board-game path.
+ *
+ * Rows run left to right, then right to left, so the route never jumps back
+ * across the page: each turn is one short step down. The number of columns
+ * comes from the width the trail has, balanced so the last row is not a
+ * lone straggler. The route is drawn from geometry, not measured from the
+ * DOM, so it cannot drift from the cards.
+ */
+const SMALL = { w: 92, h: 118, gx: 16, gy: 28 };
+const LARGE = { w: 116, h: 142, gx: 44, gy: 46 };
+
+type Pt = { x: number; y: number; row: number; col: number };
+
+export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick }: {
+  stops: ItkStop[];
+  picks: Pick[];
+  fakeIndex: number | null;
+  pending: number | null;
+  locked: boolean;
+  onPick: (i: number) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<number | null>(null);
+  /** Crests whose image would not load: drawn as the album's monogram instead. */
+  const [broken, setBroken] = useState<ReadonlySet<string>>(new Set());
+  useLayoutEffect(() => {
+    const el = ref.current!;
+    // Measured now as well as observed: an observer only reports on a frame,
+    // and a tab that is not painting never gets one.
+    setWidth(el.getBoundingClientRect().width);
+    const ro = new ResizeObserver(([e]) => setWidth(e!.contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const n = stops.length;
+  const g = width !== null && width < 600 ? SMALL : LARGE;
+  const maxCols = Math.max(2, Math.min(5, Math.floor(((width ?? 0) + g.gx) / (g.w + g.gx))));
+  const rows = Math.ceil(n / maxCols);
+  const cols = Math.ceil(n / rows);
+  const pts: Pt[] = stops.map((_, i) => {
+    const row = Math.floor(i / cols);
+    const c = i % cols;
+    const col = row % 2 === 0 ? c : cols - 1 - c;
+    return { row, col, x: col * (g.w + g.gx) + g.w / 2, y: row * (g.h + g.gy) + g.h / 2 };
+  });
+  const W = cols * g.w + (cols - 1) * g.gx;
+  const H = rows * g.h + (rows - 1) * g.gy;
+
+  const picked = new Map(picks.map((p) => [p.index, p.fake]));
+  const cut = (i: number) => fakeIndex !== null && (i === fakeIndex || i + 1 === fakeIndex);
+
+  return (
+    <div className="trail" ref={ref}>
+      {width === null ? null : (
+        <div className="trail__board" style={{ width: W, height: H, ['--cw' as string]: `${g.w}px`, ['--ch' as string]: `${g.h}px` }}>
+          <svg className="trail__route" width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden>
+            {pts.slice(0, -1).map((a, i) => {
+              const b = pts[i + 1]!;
+              const mx = (a.x + b.x) / 2;
+              const my = (a.y + b.y) / 2;
+              const angle = a.row !== b.row ? 90 : b.x > a.x ? 0 : 180;
+              return (
+                <g key={i} className={`trail__leg ${cut(i) ? 'is-cut' : ''}`} style={{ ['--i' as string]: i }}>
+                  <path className="trail__line" d={`M${a.x} ${a.y} L${b.x} ${b.y}`} pathLength={1} />
+                  <path className="trail__arrow" d="M-3.5 -5 L2.5 0 L-3.5 5" transform={`translate(${mx} ${my}) rotate(${angle})`} />
+                </g>
+              );
+            })}
+            {fakeIndex !== null && fakeIndex > 0 && fakeIndex < n - 1 ? (
+              <path className="trail__bypass" d={bypass(pts[fakeIndex - 1]!, pts[fakeIndex]!, pts[fakeIndex + 1]!, g)} pathLength={1} />
+            ) : null}
+          </svg>
+
+          {stops.map((s, i) => {
+            const p = pts[i]!;
+            const verdict = picked.get(i);
+            const isFake = fakeIndex === i;
+            const state = isFake ? 'is-fake' : verdict === false ? 'is-real' : '';
+            const circled = pending === i || verdict !== undefined;
+            const name = shortClubName(s.name);
+            return (
+              <button
+                key={i}
+                type="button"
+                className={`tcard ${state} ${circled ? 'is-circled' : ''} ${pending === i ? 'is-pending' : ''} ${locked || verdict !== undefined ? 'is-locked' : ''}`}
+                style={{ left: p.x - g.w / 2, top: p.y - g.h / 2, ['--i' as string]: i }}
+                onClick={() => onPick(i)}
+                disabled={locked || pending !== null || verdict !== undefined}
+                aria-label={`${s.name}, ${s.year}${s.loan ? ', on loan' : ''}${isFake ? ', fake' : verdict === false ? ', real' : ''}`}
+              >
+                <span className="tcard__top">
+                  <span className="tcard__year display">{s.year}</span>
+                  {s.loan ? <span className="tcard__loan">Loan</span> : null}
+                </span>
+                <span className="tcard__crest">
+                  {broken.has(s.clubId) ? (
+                    <ClubBadge clubId={s.clubId} club={{ name: s.name }} size={g === SMALL ? 54 : 64} />
+                  ) : (
+                    <img src={crestPath(s.clubId)} alt="" draggable={false} onError={() => setBroken((b) => new Set(b).add(s.clubId))} />
+                  )}
+                </span>
+                <span className={`tcard__name display ${name.length > 14 ? 'tcard__name--long' : ''}`}>{name}</span>
+                <Loop className="tcard__loop" />
+                {verdict === false ? <span className="tcard__tick" aria-hidden><Tick /></span> : null}
+                {isFake ? <span className="tcard__stamp display" aria-hidden>Fake</span> : null}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The real move, once the fake is out: from the club before it to the club
+ * after it. On one row it hops over the fake; across a turn it takes the
+ * corner the fake was standing on.
+ */
+function bypass(a: Pt, f: Pt, b: Pt, g: { h: number; gy: number }): string {
+  if (a.row === b.row) {
+    const top = a.y - g.h / 2 - g.gy * 0.42;
+    return `M${a.x} ${a.y - g.h / 2 + 6} C${a.x} ${top} ${b.x} ${top} ${b.x} ${b.y - g.h / 2 + 6}`;
+  }
+  const c = a.col === f.col ? { x: b.x, y: a.y } : { x: a.x, y: b.y };
+  return `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`;
+}
+
+/** A marker loop, the way you circle something in the paper. */
+export function Loop({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 120 140" preserveAspectRatio="none" aria-hidden>
+      <path
+        d="M22 22 C44 0 104 2 116 42 C128 84 110 134 58 138 C14 141 -2 104 4 66 C8 40 26 18 70 12"
+        pathLength={1}
+      />
+    </svg>
+  );
+}
+
+function Tick() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden>
+      <path d="M3.5 8.4 L6.6 11.3 L12.6 4.9" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

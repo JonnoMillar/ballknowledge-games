@@ -1,0 +1,422 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ITK — one move in each career never happened.
+   The album's page, stickers and red band; the one new mark is the red
+   marker loop you circle a suspect with in the paper.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.itk { --marker: #D62839; --tick: var(--green); }
+
+/* Prototype only: which picker made the examples. */
+.itk-proto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--muted);
+}
+.itk-proto__label { margin-right: 4px; }
+.itk-proto__set {
+  appearance: none;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 11px 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+.itk-proto__set:hover { border-color: var(--rule-strong); background: rgba(255, 255, 255, 0.6); }
+.itk-proto__set[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.itk__main {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 22px 16px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+@media (min-width: 760px) { .itk__main { padding: 34px 28px 72px; gap: 22px; } }
+
+/* ── THE BAR: careers done, picks left ─────────────────────────────────── */
+.itk__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.itk-pips { display: flex; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.itk-pip {
+  display: block;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1.5px solid var(--rule-strong);
+  background: transparent;
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+.itk-pip:disabled { cursor: default; border-color: var(--rule); }
+.itk-pip:not(:disabled):hover { transform: translateY(-1px); }
+.itk-pip.is-current { border: 2px solid var(--ink); }
+.itk-pip--held, .itk-pip--hinted, .itk-pip--missed { border-color: transparent; animation: die-press var(--t-base) var(--ease-out) backwards; }
+.itk-pip--held { background: var(--green); }
+.itk-pip--hinted { background: var(--gold); }
+.itk-pip--missed { background: var(--red); }
+.itk-pip.is-current.itk-pip--held, .itk-pip.is-current.itk-pip--hinted, .itk-pip.is-current.itk-pip--missed {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--ink);
+}
+
+.itk-picks { display: flex; gap: 6px; }
+.itk-picks__loop { width: 22px; height: 24px; overflow: visible; }
+.itk-picks__loop path { fill: none; stroke: var(--marker); stroke-width: 11px; stroke-linecap: round; transition: stroke var(--t-base) var(--ease-out), opacity var(--t-base) var(--ease-out); }
+.itk-picks__loop.is-used path { stroke: var(--silhouette-figure); opacity: 0.6; }
+
+/* ── THE STAGE: who, and where he went ─────────────────────────────────── */
+.itk-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 4px 22px;
+  background: var(--sticker);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.05), 0 8px 24px rgba(20, 18, 16, 0.08);
+}
+.itk-stage::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  pointer-events: none;
+}
+@media (min-width: 760px) {
+  .itk-stage { flex-direction: row; align-items: center; gap: 36px; padding: 44px 40px 40px; }
+}
+.itk-stage__tab {
+  position: absolute;
+  top: -12px;
+  left: 18px;
+  z-index: 3;
+  padding: 5px 12px 6px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transform: rotate(-2deg);
+  box-shadow: 0 2px 4px rgba(20, 18, 16, 0.2);
+}
+.itk-stage__tab--easy { background: var(--green); }
+.itk-stage__tab--medium { background: var(--gold); color: var(--ink); }
+.itk-stage__tab--hard { background: var(--ink); }
+
+.itk-stage__who { --sticker-w: 96px; flex-shrink: 0; animation: stick-down var(--t-slow) var(--ease-out) both; }
+@media (min-width: 760px) { .itk-stage__who { --sticker-w: 164px; } }
+.itk-stage__who .sticker { transition: transform var(--t-slow) var(--ease-out); }
+
+/* ── THE TRAIL ─────────────────────────────────────────────────────────── */
+.trail { flex: 1 1 auto; min-width: 0; width: 100%; display: flex; justify-content: center; }
+.trail__board { position: relative; }
+.trail__route { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+.trail__line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.28;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: route-draw 300ms var(--ease-in-out) forwards;
+  animation-delay: calc(var(--i) * 70ms + 220ms);
+  transition: stroke-opacity var(--t-slow) var(--ease-out);
+}
+.trail__arrow {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.55;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  animation: fade-in var(--t-base) var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 70ms + 420ms);
+  transition: stroke-opacity var(--t-slow) var(--ease-out);
+}
+/* The legs into and out of the fake: a move that never happened. */
+.trail__leg.is-cut .trail__line { stroke-opacity: 0.12; }
+.trail__leg.is-cut .trail__arrow { stroke-opacity: 0.15; }
+.trail__bypass {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: route-draw 520ms var(--ease-in-out) 380ms forwards;
+}
+@keyframes route-draw { to { stroke-dashoffset: 0; } }
+@keyframes fade-in { to { opacity: 1; } }
+
+/* A crest sticker. */
+.tcard {
+  position: absolute;
+  z-index: 1;
+  width: var(--cw);
+  height: var(--ch);
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 8px 8px 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--sticker);
+  color: var(--ink);
+  border-radius: 3px;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 1px 0 rgba(20, 18, 16, 0.06), 0 2px 6px rgba(20, 18, 16, 0.12);
+  animation: stick-down var(--t-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 55ms + 80ms);
+  transition:
+    transform var(--t-base) var(--ease-out),
+    box-shadow var(--t-base) var(--ease-out),
+    background var(--t-slow) var(--ease-out);
+}
+.tcard:disabled { cursor: default; }
+.tcard:focus-visible { outline: none; }
+
+.tcard__top { display: flex; align-items: center; justify-content: space-between; gap: 4px; height: 17px; }
+.tcard__year { font-weight: 700; font-size: 16px; line-height: 1; letter-spacing: 0.01em; transition: color var(--t-base) var(--ease-out); }
+.tcard__loan {
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 6px 3px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--page);
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+.tcard__crest { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.tcard__crest img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1.5px rgba(20, 18, 16, 0.18));
+  transition: transform var(--t-base) var(--ease-out), filter var(--t-slow) var(--ease-out), opacity var(--t-slow) var(--ease-out);
+}
+@media (min-width: 760px) { .tcard__crest img { width: 64px; height: 64px; } }
+.tcard__name {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  height: 29px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  align-content: end;
+  transition: color var(--t-base) var(--ease-out);
+}
+.tcard__name--long { font-size: 12.5px; }
+@media (max-width: 599px) {
+  .tcard { padding: 7px 6px 8px; }
+  .tcard__name { font-size: 13px; }
+  .tcard__name--long { font-size: 11.5px; }
+  .tcard__loan { font-size: 10px; padding: 2px 5px; }
+}
+
+/* The marker loop: drawn round a card you are pointing at, kept round one you picked. */
+.tcard__loop {
+  position: absolute;
+  inset: -15px -14px -14px -15px;
+  width: calc(100% + 29px);
+  height: calc(100% + 29px);
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+.tcard__loop path {
+  fill: none;
+  stroke: var(--marker);
+  stroke-width: 2.4px;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1.001;
+  opacity: 0;
+  transition: stroke-dashoffset 320ms var(--ease-in-out), opacity var(--t-fast) var(--ease-out), stroke var(--t-slow) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .tcard:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 6px 14px rgba(20, 18, 16, 0.14), 0 14px 30px rgba(20, 18, 16, 0.1);
+  }
+  .tcard:not(:disabled):hover .tcard__crest img { transform: scale(1.06); }
+  .tcard:not(:disabled):hover .tcard__loop path { stroke-dashoffset: 0; opacity: 0.92; }
+}
+.tcard:focus-visible .tcard__loop path,
+.tcard.is-circled .tcard__loop path { stroke-dashoffset: 0; opacity: 0.92; }
+/* The beat before the verdict: circled, pressed flat. */
+.tcard.is-pending { transform: translateY(0) scale(0.985); }
+
+/* A real move you picked: checked, crossed off the suspects. */
+.tcard.is-real { background: #F7FBF8; }
+.tcard.is-real .tcard__loop path { stroke: var(--silhouette-figure); opacity: 0.7; }
+.tcard__tick {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--tick);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--sticker), 0 2px 5px rgba(20, 18, 16, 0.2);
+  animation: die-press var(--t-base) var(--ease-out) both;
+}
+.tcard__tick svg { width: 15px; height: 15px; }
+
+/* The fake: peeled half off the page, and stamped. */
+.tcard.is-fake {
+  transform: rotate(-2.2deg) translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 8px 18px rgba(20, 18, 16, 0.16);
+}
+.tcard.is-fake .tcard__crest img { filter: grayscale(1); opacity: 0.3; }
+.tcard.is-fake .tcard__year,
+.tcard.is-fake .tcard__name { color: var(--silhouette-figure); }
+.tcard__stamp {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  z-index: 3;
+  padding: 3px 10px 4px;
+  border: 3px solid var(--red);
+  border-radius: 4px;
+  color: var(--red);
+  font-weight: 800;
+  font-size: 25px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.88);
+  transform: translate(-50%, -50%) rotate(-11deg);
+  /* Ink on paper: a few gaps where the stamp did not take. */
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3 2.7'/></filter><rect width='120' height='60' filter='url(%23n)'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3 2.7'/></filter><rect width='120' height='60' filter='url(%23n)'/></svg>");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  animation: stamp-in var(--t-base) var(--ease-out) both;
+}
+@media (min-width: 760px) { .tcard__stamp { font-size: 29px; } }
+@keyframes stamp-in {
+  0% { transform: translate(-50%, -50%) rotate(-11deg) scale(1.7); opacity: 0; }
+  60% { transform: translate(-50%, -50%) rotate(-11deg) scale(0.94); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(-11deg) scale(1); opacity: 1; }
+}
+
+/* ── STATUS ────────────────────────────────────────────────────────────── */
+.itk-status {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.itk-status__hint { color: var(--muted); font-size: 15px; }
+.itk-status__chip { width: 22px; height: 22px; border-radius: 4px; animation: die-press var(--t-base) var(--ease-out) both; }
+.itk-status__chip--held { background: var(--green); }
+.itk-status__chip--hinted { background: var(--gold); }
+.itk-status__chip--missed { background: var(--red); }
+.itk-status__verdict { font-weight: 800; font-size: 28px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; }
+.itk-status__note { color: var(--muted); font-size: 15px; }
+.itk-status__next { margin-left: 6px; animation: fade-in var(--t-base) var(--ease-out) 200ms both; opacity: 0; }
+
+/* ── THE END: the tier, the five, the share ─────────────────────────────── */
+.itk-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 0 8px;
+  text-align: center;
+}
+.itk-end__eyebrow { margin: 0; font-size: 14px; font-weight: 600; color: var(--muted); }
+.itk-end__tier {
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  padding: 8px 20px 10px;
+  border: 4px solid currentColor;
+  border-radius: 6px;
+  transform: rotate(-3deg);
+  animation: tier-in var(--t-slow) var(--ease-out) both;
+}
+.itk-end__tier.is-top { color: var(--red); }
+@media (min-width: 760px) { .itk-end__tier { font-size: 76px; } }
+@keyframes tier-in {
+  0% { transform: rotate(-3deg) scale(1.6); opacity: 0; }
+  60% { transform: rotate(-3deg) scale(0.96); opacity: 1; }
+  100% { transform: rotate(-3deg) scale(1); opacity: 1; }
+}
+.itk-end__row { --sticker-w: 62px; display: flex; justify-content: center; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
+@media (min-width: 760px) { .itk-end__row { --sticker-w: 104px; gap: 16px; } }
+.itk-end__row li { animation: stick-down var(--t-slow) var(--ease-out) both; }
+.itk-end__row li:nth-child(1) { animation-delay: 260ms; }
+.itk-end__row li:nth-child(2) { animation-delay: 320ms; }
+.itk-end__row li:nth-child(3) { animation-delay: 380ms; }
+.itk-end__row li:nth-child(4) { animation-delay: 440ms; }
+.itk-end__row li:nth-child(5) { animation-delay: 500ms; }
+.itk-end__card {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.itk-end__card .sticker { transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out); }
+.itk-end__card:hover .sticker { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(20, 18, 16, 0.16); }
+.itk-end__card .sticker__name { font-size: 11px; }
+@media (min-width: 760px) { .itk-end__card .sticker__name { font-size: 14px; } }
+.itk-end__mark { pointer-events: none; animation: none; }
+.itk-end__actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.itk-ghost {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 6px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--t-fast) var(--ease-out);
+}
+.itk-ghost:hover { text-decoration-color: var(--ink); }

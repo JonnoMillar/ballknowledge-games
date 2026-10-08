@@ -49,6 +49,7 @@ export function shortClubName(name: string): string {
     // caption, "Werder Bremen and Juventus" is a fact.
     .replace(/^(A\.?F\.?C\.?|F\.?C\.?|S\.?C\.?|C\.?F\.?|S\.?V\.?|A\.?S\.?|R\.?C\.?|V\.?f\.?B\.?|V\.?f\.?L\.?)\s+/i, '')
     .replace(/\s+Club de Fútbol$/i, '')
+    .replace(/^Club de Fútbol\s+/i, '')
     .replace(/\s+Football Club$/i, '')
     .replace(/\s+Balompié$/i, '')
     .trim();
