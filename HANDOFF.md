@@ -7,17 +7,30 @@ path back to full context. The design is in
 ## In flight: Pitch pin (branch `feat/pitch-pin`, updated 2026-10-09)
 
 A new mode: a famous goal is named, the player pins where it was struck
-from, scored in metres off (or points) against a lazy-pin par. Spec approved,
-plan approved-pending: **no code written yet.**
+from, scored in metres off (or points) against a lazy-pin par. Plan approved
+2026-10-09; **Tasks 1–12 done and committed, playable at `/pin`.**
 
 - Spec: `docs/superpowers/specs/2026-10-08-pitch-pin-design.md` (approved).
-- Plan: `docs/superpowers/plans/2026-10-08-pitch-pin.md`, 15 tasks with full
-  code. Jonno had not yet said "approved" on the plan when the session was
-  checkpointed; confirm before Task 1.
-- Mockups (pre-review, no par or magnifier): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
+- Plan: `docs/superpowers/plans/2026-10-08-pitch-pin.md`. Remaining: Task 13
+  (home card, credits; **ask Jonno before downloading the StatsBomb logo**),
+  Task 14 (full browser pass: touch drag and magnifier, keyboard, points
+  mode, desktop), Task 15 (docs).
+- Checked so far (phone width, 2026-10-09): `/pin` redirects to today, a
+  daily plays from first throw to full time (total, par, list, streak, share
+  text), the page HTML has no coordinates, `/api/pin/throw` returns 400 on
+  junk, bad pack and future dates 404. No console errors.
 - Worktree: `.claude/worktrees/sad-nightingale-82892f`, branch `feat/pitch-pin`
-  off `feat/prototype`. Last commit `d370b39`. Tests not run on this branch
-  since branching (no code changed).
+  off `feat/prototype`. Run `npm ci` first in a fresh worktree.
+- **The first week (`days.json`, 2026-10-08 to 10-14) has known problems,
+  committed anyway so Jonno could play a demo:** Vardy twice on 10-14, Messi
+  as a classic three days running (the classic shuffle ignores the scorer);
+  and the Premier-League-first, one-goal-a-match ranking runs dry after ~3
+  days (one PL round gives at most ~10 goals, a week needs 28), so 10-12 to
+  10-14 are La Liga squad players nobody in Britain knows. Proposed, not yet
+  approved: no scorer twice on a board or on consecutive days; rank recent
+  goals by scorer fame from `data/pool.json`, xG as tie-break, up to two
+  goals a match.
+- Mockups (pre-review, no par or magnifier): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
 
 **Decisions and why** (do not re-litigate):
 - Data: StatsBomb open data for classics, Understat for recent goals. Both
