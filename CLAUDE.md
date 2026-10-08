@@ -1,5 +1,8 @@
 # Project instructions (Football Chemistry Squad Game)
 
+Start here: read `HANDOFF.md` (repo root). At each stage gate: update
+HANDOFF.md, commit, check in, suggest /clear.
+
 ## Committing
 
 Auto-commit after any verified, working change, without asking first. A

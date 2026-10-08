@@ -4,6 +4,47 @@
 path back to full context. The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
+## In flight: Pitch pin (branch `feat/pitch-pin`, updated 2026-10-09)
+
+A new mode: a famous goal is named, the player pins where it was struck
+from, scored in metres off (or points) against a lazy-pin par. Spec approved,
+plan approved-pending: **no code written yet.**
+
+- Spec: `docs/superpowers/specs/2026-10-08-pitch-pin-design.md` (approved).
+- Plan: `docs/superpowers/plans/2026-10-08-pitch-pin.md`, 15 tasks with full
+  code. Jonno had not yet said "approved" on the plan when the session was
+  checkpointed; confirm before Task 1.
+- Mockups (pre-review, no par or magnifier): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
+- Worktree: `.claude/worktrees/sad-nightingale-82892f`, branch `feat/pitch-pin`
+  off `feat/prototype`. Last commit `d370b39`. Tests not run on this branch
+  since branching (no code changed).
+
+**Decisions and why** (do not re-litigate):
+- Data: StatsBomb open data for classics, Understat for recent goals. Both
+  licences are grey (StatsBomb bars redistribution and commercial use, needs
+  its logo; Understat publishes no terms). Gated: stays on the branch until
+  Jonno has emailed both and registered with StatsBomb. Hand-placed coords
+  and the Champions League (no free source) are out.
+- Daily = 4 recent goals (latest league round, low xG first) + 2 classics,
+  because ~150 famous free goals would run a 6-a-day daily dry in 25 days.
+  Themed packs on top. Fallback to six classics if the week script is not run.
+- Both scoring modes built (Jonno wants to compare): metres default,
+  `?score=points`. Bullseye 2 m, because the two sources disagree by up to
+  2.9 m on the same goal. Par = every goal pinned on the penalty spot; a
+  board needs par ≥ 42 m (the lazy pin averaged 10 m/goal on 26 real goals).
+- Ink pitch on white; rings shaded per colour, stronger toward the middle.
+- Execution inline, no per-task subagents (Jonno's standing rule).
+
+**Gotchas found while researching** (also in the plan's header):
+- Understat: `GET understat.com/getLeagueData/<EPL|La_liga|...>/<season start year>`
+  and `getMatchData/<id>`, header `X-Requested-With: XMLHttpRequest`. Slow,
+  one call took 20 s; time out and retry. Its Y axis is flipped against
+  StatsBomb. An `OwnGoal` shot is filed under the scorer's own side and
+  counts for the other (score rebuild matched all 50 PL matches).
+- No league fixtures 21 Sep to 9 Oct 2026; next round 10 Oct. Run the week
+  script with `--days 30` to reach the 12–20 Sep rounds.
+- StatsBomb `minute` counts from 0 (minute 94 is the 95th).
+
 ## What this is
 
 A daily football recall puzzle, drawn as a sticker album. Famous players are
