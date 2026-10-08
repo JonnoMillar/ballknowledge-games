@@ -6,6 +6,14 @@ import type { PlateMark } from '../src/lib/chain/share';
 const ids = ['010', '011', '012', '013', '014'];
 
 describe('the daily', () => {
+  it('counts from another epoch when given one, and Chain is unchanged', () => {
+    expect(dayNumber('2026-10-08', '2026-10-08')).toBe(1);
+    expect(dayNumber('2026-10-10', '2026-10-08')).toBe(3);
+    expect(dateOfDay(3, '2026-10-08')).toBe('2026-10-10');
+    expect(dayNumber('2026-09-19')).toBe(1);
+    expect(dateOfDay(1)).toBe('2026-09-19');
+  });
+
   it('starts at day 1 on the epoch and counts up', () => {
     expect(dayNumber(EPOCH)).toBe(1);
     expect(dayNumber('2026-09-20')).toBe(2);

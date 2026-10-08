@@ -22,13 +22,13 @@ const utcDay = (date: string): number => {
   return Math.floor(Date.UTC(y, m - 1, d) / 86400000);
 };
 
-/** Day 1 on the epoch, counting up. Before the epoch is day 0 or below. */
-export function dayNumber(date: string): number {
-  return utcDay(date) - utcDay(EPOCH) + 1;
+/** Day 1 on the epoch, counting up. Before the epoch is day 0 or below. Pitch pin passes its own epoch. */
+export function dayNumber(date: string, epoch = EPOCH): number {
+  return utcDay(date) - utcDay(epoch) + 1;
 }
 
-export function dateOfDay(day: number): string {
-  const ms = (utcDay(EPOCH) + day - 1) * 86400000;
+export function dateOfDay(day: number, epoch = EPOCH): string {
+  const ms = (utcDay(epoch) + day - 1) * 86400000;
   return new Date(ms).toISOString().slice(0, 10);
 }
 
