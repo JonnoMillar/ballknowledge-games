@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StickerFace, solid } from '../Sticker';
 import { shortClubName } from '../ClubBadge';
 import Trail, { Loop } from './Trail';
+import { CopyFeedback, FeedbackStrip, useFeedback } from './Feedback';
 import type { ItkSet } from '../../src/server/itk';
 import { PICKS, itkShareLine, roundMark, tierOf } from '../../src/lib/itk/score';
 import type { PlateMark } from '../../src/lib/chain/share';
@@ -33,6 +34,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
   const [fakes, setFakes] = useState<(number | null)[]>(() => set.rounds.map(() => null));
   const [pending, setPending] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
+  const fb = useFeedback();
 
   const marks = picks.map((p) => roundMark(p.map((x) => x.fake)));
   const r = set.rounds[view]!;
@@ -65,6 +67,15 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
     // A pick that was never judged is not spent: let go of the card and let them try again.
     if (!res) { setPending(null); return; }
     setPicks((all) => all.map((p, i) => (i === view ? [...p, { index, fake: res.fake }] : p)));
+    const after = [...viewPicks, { index, fake: res.fake }];
+    const result = roundMark(after.map((x) => x.fake));
+    if (result && res.fakeIndex !== null) {
+      fb.update(set.id, view, r.player.name, {
+        result,
+        picked: after.map((x) => r.stops[x.index]!.name),
+        fake: r.stops[res.fakeIndex]!.name,
+      });
+    }
     if (res.fakeIndex !== null) setFakes((all) => all.map((f, i) => (i === view ? res.fakeIndex : f)));
     setPending(null);
   }
@@ -98,6 +109,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
             <b>{s.id}</b> {s.picker}
           </button>
         ))}
+        <CopyFeedback store={fb.store} />
       </div>
 
       <main className="itk__main">
@@ -162,6 +174,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
                 </span>
               )}
             </div>
+            {mark ? <FeedbackStrip value={fb.get(set.id, view)} onChange={(patch) => fb.update(set.id, view, r.player.name, patch)} /> : null}
           </>
         )}
       </main>
