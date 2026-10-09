@@ -21,7 +21,24 @@ export interface Goal {
 }
 export type Goals = Record<string, Goal>;
 
-export interface Pack { id: string; title: string; goals: string[] }
+/** Where a pack comes from: our weekly pick, the official monthly shortlist, past winners by season or club, or hand-made. */
+export type PackKind = 'round' | 'month' | 'season' | 'club' | 'classic';
+export const PACK_KINDS: readonly PackKind[] = ['round', 'month', 'season', 'club', 'classic'];
+
+/**
+ * A pack file, games/pin/data/packs/<id>.json. `season` ("2026-27") is on
+ * round, month and season packs only. `published` is a UTC date.
+ * (kind, subtitle and published become required in Task 7.)
+ */
+export interface Pack {
+  id: string;
+  kind?: PackKind;
+  title: string;
+  subtitle?: string;
+  season?: string;
+  published?: string;
+  goals: string[];
+}
 
 /** What the page gets of a goal: everything but the answer. */
 export interface GoalCard {
