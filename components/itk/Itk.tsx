@@ -174,7 +174,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
                     </span>
                   ) : null}
                   <button type="button" className="seal itk-status__next" onClick={next}>
-                    {view < round ? 'Back' : round + 1 < n ? 'Next' : 'Your tier'}
+                    {view < round ? 'Back' : round + 1 < n ? 'Next' : 'Your result'}
                   </button>
                 </>
               ) : (
@@ -213,7 +213,7 @@ function Summary({ set, marks, onReview, onAgain }: {
   return (
     <section className="itk-end">
       <p className="itk-end__eyebrow">ITK #1</p>
-      <div className={`itk-end__tier display ${tier === 'Tier 1' ? 'is-top' : ''}`}>{tier}</div>
+      <div className={`itk-end__tier display ${tier === 'Fabrizio' ? 'is-top' : ''}`}>{tier}</div>
       <ol className="itk-end__row">
         {set.rounds.map((r, i) => (
           <li key={i}>

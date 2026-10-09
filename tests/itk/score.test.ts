@@ -18,19 +18,25 @@ describe('roundMark', () => {
 });
 
 describe('tierOf', () => {
-  it('gives Tier 1 only for five first-time finds', () => {
-    expect(tierOf(['held', 'held', 'held', 'held', 'held'])).toBe('Tier 1');
-    expect(tierOf(['held', 'held', 'held', 'held', 'hinted'])).toBe('Tier 2');
+  it('gives Fabrizio only for five first-time finds', () => {
+    expect(tierOf(['held', 'held', 'held', 'held', 'held'])).toBe('Fabrizio');
   });
-  it('steps down as the points go', () => {
-    expect(tierOf(['held', 'held', 'hinted', 'missed', 'held'])).toBe('Tier 3');
-    expect(tierOf(['hinted', 'hinted', 'missed', 'missed', 'held'])).toBe('Tier 4');
-    expect(tierOf(['missed', 'missed', 'missed', 'missed', 'hinted'])).toBe('Parody account');
+  it('puts a podium of Fabrizio, Agent and Scout on 10, 9 and 8', () => {
+    expect(tierOf(['held', 'held', 'held', 'held', 'hinted'])).toBe('Agent');
+    expect(tierOf(['held', 'held', 'held', 'held', 'missed'])).toBe('Scout');
+  });
+  it('bands the rest: Pundit 5-7, Casual 2-4, Mascot 0-1', () => {
+    expect(tierOf(['held', 'held', 'hinted', 'held', 'missed'])).toBe('Pundit');
+    expect(tierOf(['hinted', 'hinted', 'hinted', 'hinted', 'hinted'])).toBe('Pundit');
+    expect(tierOf(['held', 'hinted', 'hinted', 'missed', 'missed'])).toBe('Casual');
+    expect(tierOf(['held', 'missed', 'missed', 'missed', 'missed'])).toBe('Casual');
+    expect(tierOf(['missed', 'missed', 'missed', 'missed', 'hinted'])).toBe('Mascot');
+    expect(tierOf(['missed', 'missed', 'missed', 'missed', 'missed'])).toBe('Mascot');
   });
 });
 
 describe('itkShareLine', () => {
   it('carries the day, the grid and the tier, and no names', () => {
-    expect(itkShareLine(3, ['held', 'held', 'hinted', 'held', 'missed'])).toBe('ITK #3\n🟩🟩🟨🟩🟥\nTier 3');
+    expect(itkShareLine(3, ['held', 'held', 'hinted', 'held', 'missed'])).toBe('ITK #3\n🟩🟩🟨🟩🟥\nPundit');
   });
 });

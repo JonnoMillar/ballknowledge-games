@@ -19,16 +19,17 @@ export function roundMark(picks: readonly boolean[]): PlateMark | null {
 const POINTS: Record<PlateMark, number> = { held: 2, hinted: 1, missed: 0 };
 
 /**
- * The day's brag, in transfer-rumour source tiers. Tier 1 is five
- * first-time finds and nothing else.
+ * The day's brag. A podium of transfer insiders for 10, 9 and 8 points
+ * (Fabrizio is five first-time finds and nothing else), then plain bands.
  */
 export function tierOf(marks: readonly PlateMark[]): string {
   const points = marks.reduce((n, m) => n + POINTS[m], 0);
-  if (points >= 10) return 'Tier 1';
-  if (points >= 8) return 'Tier 2';
-  if (points >= 5) return 'Tier 3';
-  if (points >= 2) return 'Tier 4';
-  return 'Parody account';
+  if (points >= 10) return 'Fabrizio';
+  if (points === 9) return 'Agent';
+  if (points === 8) return 'Scout';
+  if (points >= 5) return 'Pundit';
+  if (points >= 2) return 'Casual';
+  return 'Mascot';
 }
 
 /** The share line: day, one glyph per career, the tier. No names, no clubs. */
