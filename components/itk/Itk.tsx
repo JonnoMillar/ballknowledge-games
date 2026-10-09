@@ -4,7 +4,7 @@ import { StickerFace, solid } from '../Sticker';
 import { shortClubName } from '../ClubBadge';
 import Trail, { Loop } from './Trail';
 import { CopyFeedback, FeedbackStrip, useFeedback } from './Feedback';
-import type { ItkSet } from '../../src/server/itk';
+import type { ItkSet, Verdict } from '../../src/server/itk';
 import { PICKS, itkShareLine, roundMark, tierOf } from '../../src/lib/itk/score';
 import type { PlateMark } from '../../src/lib/chain/share';
 
@@ -32,6 +32,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
   const [view, setView] = useState(0);
   const [picks, setPicks] = useState<Pick[][]>(blank);
   const [fakes, setFakes] = useState<(number | null)[]>(() => set.rounds.map(() => null));
+  const [reals, setReals] = useState<({ clubId: string; name: string } | null)[]>(() => set.rounds.map(() => null));
   const [pending, setPending] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
   const fb = useFeedback();
@@ -48,6 +49,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
     setView(0);
     setPicks(s.rounds.map(() => []));
     setFakes(s.rounds.map(() => null));
+    setReals(s.rounds.map(() => null));
     setPending(null);
     setFinished(false);
   }
@@ -61,7 +63,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ set: set.id, round: view, index, last }),
-      }).then((x) => (x.ok ? (x.json() as Promise<{ fake: boolean; fakeIndex: number | null }>) : null)),
+      }).then((x) => (x.ok ? (x.json() as Promise<Verdict>) : null)),
       sleep(BEAT),
     ]).then(([v]) => v, () => null);
     // A pick that was never judged is not spent: let go of the card and let them try again.
@@ -74,9 +76,13 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
         result,
         picked: after.map((x) => r.stops[x.index]!.name),
         fake: r.stops[res.fakeIndex]!.name,
+        real: res.real?.name,
       });
     }
-    if (res.fakeIndex !== null) setFakes((all) => all.map((f, i) => (i === view ? res.fakeIndex : f)));
+    if (res.fakeIndex !== null) {
+      setFakes((all) => all.map((f, i) => (i === view ? res.fakeIndex : f)));
+      setReals((all) => all.map((x, i) => (i === view ? res.real : x)));
+    }
     setPending(null);
   }
 
@@ -150,6 +156,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
                 stops={r.stops}
                 picks={viewPicks}
                 fakeIndex={fakes[view] ?? null}
+                real={reals[view] ?? null}
                 pending={pending}
                 locked={Boolean(mark)}
                 onPick={pick}

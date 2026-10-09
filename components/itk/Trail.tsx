@@ -19,10 +19,12 @@ const LARGE = { w: 116, h: 142, gx: 44, gy: 46 };
 
 type Pt = { x: number; y: number; row: number; col: number };
 
-export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick }: {
+export default function Trail({ stops, picks, fakeIndex, real, pending, locked, onPick }: {
   stops: ItkStop[];
   picks: Pick[];
   fakeIndex: number | null;
+  /** The club the fake was covering, once the round is over. */
+  real: { clubId: string; name: string } | null;
   pending: number | null;
   locked: boolean;
   onPick: (i: number) => void;
@@ -56,7 +58,29 @@ export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick
   const H = rows * g.h + (rows - 1) * g.gy;
 
   const picked = new Map(picks.map((p) => [p.index, p.fake]));
-  const cut = (i: number) => fakeIndex !== null && (i === fakeIndex || i + 1 === fakeIndex);
+  // The two legs into and out of the fake: once it is peeled off, they are the real route again.
+  const restored = (i: number) => fakeIndex !== null && real !== null && (i === fakeIndex || i + 1 === fakeIndex);
+
+  /** One side of a crest sticker: year and loan tag, crest, name. */
+  const face = (clubId: string, clubName: string, s: ItkStop, cls: string) => {
+    const name = shortClubName(clubName);
+    return (
+      <span className={`tcard__face ${cls}`}>
+        <span className="tcard__top">
+          <span className="tcard__year display">{s.year}</span>
+          {s.loan ? <span className="tcard__loan">Loan</span> : null}
+        </span>
+        <span className="tcard__crest">
+          {broken.has(clubId) ? (
+            <ClubBadge clubId={clubId} club={{ name: clubName }} size={g === SMALL ? 54 : 64} />
+          ) : (
+            <img src={crestPath(clubId)} alt="" draggable={false} onError={() => setBroken((b) => new Set(b).add(clubId))} />
+          )}
+        </span>
+        <span className={`tcard__name display ${name.length > 14 ? 'tcard__name--long' : ''}`}>{name}</span>
+      </span>
+    );
+  };
 
   return (
     <div className="trail" ref={ref}>
@@ -69,15 +93,12 @@ export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick
               const my = (a.y + b.y) / 2;
               const angle = a.row !== b.row ? 90 : b.x > a.x ? 0 : 180;
               return (
-                <g key={i} className={`trail__leg ${cut(i) ? 'is-cut' : ''}`} style={{ ['--i' as string]: i }}>
+                <g key={i} className={`trail__leg ${restored(i) ? 'is-restored' : ''}`} style={{ ['--i' as string]: i }}>
                   <path className="trail__line" d={`M${a.x} ${a.y} L${b.x} ${b.y}`} pathLength={1} />
                   <path className="trail__arrow" d="M-3.5 -5 L2.5 0 L-3.5 5" transform={`translate(${mx} ${my}) rotate(${angle})`} />
                 </g>
               );
             })}
-            {fakeIndex !== null && fakeIndex > 0 && fakeIndex < n - 1 ? (
-              <path className="trail__bypass" d={bypass(pts[fakeIndex - 1]!, pts[fakeIndex]!, pts[fakeIndex + 1]!, g)} pathLength={1} />
-            ) : null}
           </svg>
 
           {stops.map((s, i) => {
@@ -86,7 +107,7 @@ export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick
             const isFake = fakeIndex === i;
             const state = isFake ? 'is-fake' : verdict === false ? 'is-real' : '';
             const circled = pending === i || verdict !== undefined;
-            const name = shortClubName(s.name);
+            const peeled = isFake && real !== null;
             return (
               <button
                 key={i}
@@ -95,23 +116,24 @@ export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick
                 style={{ left: p.x - g.w / 2, top: p.y - g.h / 2, ['--i' as string]: i }}
                 onClick={() => onPick(i)}
                 disabled={locked || pending !== null || verdict !== undefined}
-                aria-label={`${s.name}, ${s.year}${s.loan ? ', on loan' : ''}${isFake ? ', fake' : verdict === false ? ', real' : ''}`}
+                aria-label={peeled
+                  ? `${s.name} was the fake; really ${real.name}, ${s.year}${s.loan ? ', on loan' : ''}`
+                  : `${s.name}, ${s.year}${s.loan ? ', on loan' : ''}${verdict === false ? ', real' : ''}`}
               >
-                <span className="tcard__top">
-                  <span className="tcard__year display">{s.year}</span>
-                  {s.loan ? <span className="tcard__loan">Loan</span> : null}
-                </span>
-                <span className="tcard__crest">
-                  {broken.has(s.clubId) ? (
-                    <ClubBadge clubId={s.clubId} club={{ name: s.name }} size={g === SMALL ? 54 : 64} />
-                  ) : (
-                    <img src={crestPath(s.clubId)} alt="" draggable={false} onError={() => setBroken((b) => new Set(b).add(s.clubId))} />
-                  )}
-                </span>
-                <span className={`tcard__name display ${name.length > 14 ? 'tcard__name--long' : ''}`}>{name}</span>
+                {peeled ? (
+                  <>
+                    {/* The real sticker was under the fake all along. */}
+                    {face(real.clubId, real.name, s, 'tcard__face--real')}
+                    <span className="tcard__peel" aria-hidden>
+                      {face(s.clubId, s.name, s, 'tcard__face--front')}
+                    </span>
+                    <span className="tcard__was" aria-hidden>
+                      <img src={crestPath(s.clubId)} alt="" draggable={false} />
+                    </span>
+                  </>
+                ) : face(s.clubId, s.name, s, '')}
                 <Loop className="tcard__loop" />
                 {verdict === false ? <span className="tcard__tick" aria-hidden><Tick /></span> : null}
-                {isFake ? <span className="tcard__stamp display" aria-hidden>Fake</span> : null}
               </button>
             );
           })}
@@ -119,20 +141,6 @@ export default function Trail({ stops, picks, fakeIndex, pending, locked, onPick
       )}
     </div>
   );
-}
-
-/**
- * The real move, once the fake is out: from the club before it to the club
- * after it. On one row it hops over the fake; across a turn it takes the
- * corner the fake was standing on.
- */
-function bypass(a: Pt, f: Pt, b: Pt, g: { h: number; gy: number }): string {
-  if (a.row === b.row) {
-    const top = a.y - g.h / 2 - g.gy * 0.42;
-    return `M${a.x} ${a.y - g.h / 2 + 6} C${a.x} ${top} ${b.x} ${top} ${b.x} ${b.y - g.h / 2 + 6}`;
-  }
-  const c = a.col === f.col ? { x: b.x, y: a.y } : { x: a.x, y: b.y };
-  return `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`;
 }
 
 /** A marker loop, the way you circle something in the paper. */

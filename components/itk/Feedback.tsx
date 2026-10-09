@@ -17,6 +17,8 @@ export interface Note {
   result?: PlateMark;
   picked?: string[];
   fake?: string;
+  /** The real club the fake stood in for. */
+  real?: string;
   knew?: 'yes' | 'vaguely' | 'no';
   /** How easy it looked before any pick: 1 very hard, 10 very easy. Locked at the reveal. */
   look?: number;

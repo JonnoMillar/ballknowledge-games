@@ -1,387 +1,342 @@
 {
- "note": "Prototype examples v3 (day template: warm-up, two mediums, journeyman, hard), for critique. Not generator output.",
+ "note": "Prototype examples v4 (fake replaces a real stop; peel reveals it), for critique. Not generator output.",
  "sets": [
   {
    "id": "A",
-   "picker": "v3",
+   "picker": "v4",
    "rounds": [
     {
      "band": "R1 warm-up",
-     "player": "Q161089",
+     "player": "Q165772",
+     "name": "Harry Maguire",
      "stops": [
       {
-       "club": "Q15786",
-       "year": 2009,
-       "loan": false
-      },
-      {
-       "club": "Q41420",
+       "club": "Q19607",
        "year": 2011,
        "loan": false
       },
       {
-       "club": "Q50602",
-       "year": 2016,
-       "loan": false
-      },
-      {
-       "club": "Q7156",
-       "year": 2023,
-       "loan": false
-      },
-      {
-       "club": "Q50602",
-       "year": 2024,
-       "loan": false
-      },
-      {
-       "club": "Q6601875",
-       "year": 2025,
-       "loan": true
-      },
-      {
-       "club": "Q495299",
-       "year": 2025,
-       "loan": false
-      }
-     ],
-     "fake": 5
-    },
-    {
-     "band": "R2 medium",
-     "player": "Q65925174",
-     "stops": [
-      {
-       "club": "Q483020",
-       "year": 2021,
-       "loan": false
-      },
-      {
-       "club": "Q11938",
-       "year": 2022,
-       "loan": false
-      },
-      {
-       "club": "Q702455",
-       "year": 2023,
-       "loan": false
-      },
-      {
-       "club": "Q19568",
-       "year": 2024,
-       "loan": true
-      },
-      {
-       "club": "Q18741",
-       "year": 2025,
-       "loan": false
-      }
-     ],
-     "fake": 3
-    },
-    {
-     "band": "R3 medium",
-     "player": "Q160472",
-     "stops": [
-      {
-       "club": "Q101959",
-       "year": 2010,
-       "loan": false
-      },
-      {
-       "club": "Q7156",
+       "club": "Q19477",
        "year": 2014,
        "loan": false
       },
       {
-       "club": "Q483020",
-       "year": 2020,
-       "loan": true
-      },
-      {
-       "club": "Q11945",
-       "year": 2026,
-       "loan": true
-      },
-      {
-       "club": "Q81888",
-       "year": 2026,
-       "loan": true
-      }
-     ],
-     "fake": 2
-    },
-    {
-     "band": "R4 journeyman",
-     "player": "Q44737408",
-     "stops": [
-      {
-       "club": "Q9616",
-       "year": 2019,
-       "loan": false
-      },
-      {
-       "club": "Q19462",
-       "year": 2019,
-       "loan": true
-      },
-      {
-       "club": "Q18659",
-       "year": 2020,
-       "loan": true
-      },
-      {
        "club": "Q18744",
-       "year": 2020,
+       "year": 2015,
        "loan": true
-      },
-      {
-       "club": "Q19467",
-       "year": 2021,
-       "loan": true
-      },
-      {
-       "club": "Q18729",
-       "year": 2022,
-       "loan": false
-      },
-      {
-       "club": "Q9616",
-       "year": 2022,
-       "loan": false
-      },
-      {
-       "club": "Q8701",
-       "year": 2024,
-       "loan": false
-      },
-      {
-       "club": "Q18741",
-       "year": 2026,
-       "loan": false
-      }
-     ],
-     "fake": 5
-    },
-    {
-     "band": "R5 hard",
-     "player": "Q66108160",
-     "stops": [
-      {
-       "club": "Q19490",
-       "year": 2019,
-       "loan": false
       },
       {
        "club": "Q19477",
-       "year": 2020,
-       "loan": true
-      },
-      {
-       "club": "Q18519",
-       "year": 2020,
-       "loan": true
-      },
-      {
-       "club": "Q19490",
-       "year": 2021,
+       "year": 2015,
        "loan": false
       },
       {
-       "club": "Q18741",
-       "year": 2023,
+       "club": "Q19481",
+       "year": 2017,
        "loan": false
       },
       {
-       "club": "Q19467",
-       "year": 2026,
-       "loan": false
-      },
-      {
-       "club": "Q5794",
-       "year": 2026,
+       "club": "Q18656",
+       "year": 2019,
        "loan": false
       }
      ],
-     "fake": 1
-    }
-   ]
-  },
-  {
-   "id": "B",
-   "picker": "v3",
-   "rounds": [
+     "fake": 2,
+     "real": "Q18750"
+    },
     {
-     "band": "R1 warm-up",
-     "player": "Q27049064",
+     "band": "R2 medium",
+     "player": "Q29516",
+     "name": "Theo Walcott",
      "stops": [
       {
-       "club": "Q131499",
+       "club": "Q18732",
+       "year": 2005,
+       "loan": false
+      },
+      {
+       "club": "Q9617",
+       "year": 2006,
+       "loan": false
+      },
+      {
+       "club": "Q19458",
        "year": 2018,
        "loan": false
       },
       {
-       "club": "Q12297",
+       "club": "Q18732",
+       "year": 2020,
+       "loan": false
+      }
+     ],
+     "fake": 2,
+     "real": "Q5794"
+    },
+    {
+     "band": "R3 medium",
+     "player": "Q10602",
+     "name": "Ashley Young",
+     "stops": [
+      {
+       "club": "Q2714",
+       "year": 2003,
+       "loan": false
+      },
+      {
+       "club": "Q18711",
+       "year": 2007,
+       "loan": false
+      },
+      {
+       "club": "Q18656",
+       "year": 2011,
+       "loan": false
+      },
+      {
+       "club": "Q631",
+       "year": 2020,
+       "loan": false
+      },
+      {
+       "club": "Q18711",
+       "year": 2021,
+       "loan": false
+      },
+      {
+       "club": "Q18708",
+       "year": 2023,
+       "loan": false
+      },
+      {
+       "club": "Q9653",
+       "year": 2025,
+       "loan": false
+      }
+     ],
+     "fake": 5,
+     "real": "Q5794"
+    },
+    {
+     "band": "R4 journeyman",
+     "player": "Q10577",
+     "name": "Tom Cleverley",
+     "stops": [
+      {
+       "club": "Q18656",
+       "year": 2008,
+       "loan": false
+      },
+      {
+       "club": "Q18723",
+       "year": 2009,
+       "loan": true
+      },
+      {
+       "club": "Q2714",
+       "year": 2009,
+       "loan": true
+      },
+      {
+       "club": "Q18750",
+       "year": 2010,
+       "loan": true
+      },
+      {
+       "club": "Q18656",
+       "year": 2011,
+       "loan": false
+      },
+      {
+       "club": "Q18711",
+       "year": 2014,
+       "loan": true
+      },
+      {
+       "club": "Q5794",
+       "year": 2015,
+       "loan": false
+      },
+      {
+       "club": "Q2714",
+       "year": 2017,
+       "loan": false
+      }
+     ],
+     "fake": 1,
+     "real": "Q19481"
+    },
+    {
+     "band": "R5 hard",
+     "player": "Q18962",
+     "name": "Adrien Rabiot",
+     "stops": [
+      {
+       "club": "Q483020",
+       "year": 2012,
+       "loan": false
+      },
+      {
+       "club": "Q191843",
+       "year": 2013,
+       "loan": true
+      },
+      {
+       "club": "Q483020",
+       "year": 2013,
+       "loan": false
+      },
+      {
+       "club": "Q1422",
        "year": 2019,
        "loan": false
       },
       {
-       "club": "Q8701",
-       "year": 2019,
-       "loan": false
-      },
-      {
-       "club": "Q9616",
-       "year": 2023,
-       "loan": true
-      },
-      {
-       "club": "Q7156",
-       "year": 2023,
-       "loan": true
-      },
-      {
-       "club": "Q9616",
+       "club": "Q132885",
        "year": 2024,
        "loan": false
       },
       {
        "club": "Q1543",
        "year": 2025,
-       "loan": true
-      },
-      {
-       "club": "Q482764",
-       "year": 2025,
        "loan": false
       }
      ],
-     "fake": 1
-    },
+     "fake": 1,
+     "real": "Q19518"
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "picker": "v4",
+   "rounds": [
     {
-     "band": "R2 medium",
-     "player": "Q136986",
+     "band": "R1 warm-up",
+     "player": "Q312157",
+     "name": "Raheem Sterling",
      "stops": [
       {
-       "club": "Q1457",
-       "year": 2011,
+       "club": "Q1130849",
+       "year": 2012,
        "loan": false
       },
-      {
-       "club": "Q631",
-       "year": 2013,
-       "loan": false
-      },
-      {
-       "club": "Q131499",
-       "year": 2016,
-       "loan": false
-      },
-      {
-       "club": "Q483020",
-       "year": 2019,
-       "loan": false
-      },
-      {
-       "club": "Q495299",
-       "year": 2022,
-       "loan": false
-      }
-     ],
-     "fake": 2
-    },
-    {
-     "band": "R3 medium",
-     "player": "Q118472572",
-     "stops": [
-      {
-       "club": "Q7156",
-       "year": 2023,
-       "loan": false
-      },
-      {
-       "club": "Q9616",
-       "year": 2024,
-       "loan": false
-      },
-      {
-       "club": "Q19444",
-       "year": 2025,
-       "loan": false
-      },
-      {
-       "club": "Q18739",
-       "year": 2025,
-       "loan": true
-      },
-      {
-       "club": "Q9616",
-       "year": 2025,
-       "loan": false
-      },
-      {
-       "club": "Q702455",
-       "year": 2026,
-       "loan": false
-      }
-     ],
-     "fake": 2
-    },
-    {
-     "band": "R4 journeyman",
-     "player": "Q202329",
-     "stops": [
       {
        "club": "Q50602",
-       "year": 2002,
-       "loan": false
-      },
-      {
-       "club": "Q19446",
-       "year": 2005,
-       "loan": true
-      },
-      {
-       "club": "Q18716",
-       "year": 2007,
-       "loan": false
-      },
-      {
-       "club": "Q18723",
-       "year": 2011,
-       "loan": false
-      },
-      {
-       "club": "Q132885",
-       "year": 2012,
-       "loan": true
-      },
-      {
-       "club": "Q18723",
-       "year": 2013,
-       "loan": false
-      },
-      {
-       "club": "Q19458",
        "year": 2015,
        "loan": false
       },
       {
-       "club": "Q19597",
-       "year": 2016,
+       "club": "Q9616",
+       "year": 2022,
        "loan": false
       },
       {
-       "club": "Q19458",
-       "year": 2017,
+       "club": "Q9617",
+       "year": 2024,
+       "loan": true
+      },
+      {
+       "club": "Q9616",
+       "year": 2025,
+       "loan": false
+      },
+      {
+       "club": "Q18732",
+       "year": 2026,
        "loan": false
       }
      ],
-     "fake": 1
+     "fake": 5,
+     "real": "Q134241"
     },
     {
-     "band": "R5 hard",
+     "band": "R2 medium",
+     "player": "Q16056053",
+     "name": "Jack Grealish",
+     "stops": [
+      {
+       "club": "Q18711",
+       "year": 2013,
+       "loan": false
+      },
+      {
+       "club": "Q18661",
+       "year": 2013,
+       "loan": true
+      },
+      {
+       "club": "Q18711",
+       "year": 2014,
+       "loan": false
+      },
+      {
+       "club": "Q50602",
+       "year": 2021,
+       "loan": false
+      },
+      {
+       "club": "Q5794",
+       "year": 2025,
+       "loan": true
+      }
+     ],
+     "fake": 1,
+     "real": "Q19598"
+    },
+    {
+     "band": "R3 medium",
+     "player": "Q273715",
+     "name": "Jordan Henderson",
+     "stops": [
+      {
+       "club": "Q18739",
+       "year": 2008,
+       "loan": false
+      },
+      {
+       "club": "Q18750",
+       "year": 2009,
+       "loan": true
+      },
+      {
+       "club": "Q18739",
+       "year": 2009,
+       "loan": false
+      },
+      {
+       "club": "Q1130849",
+       "year": 2011,
+       "loan": false
+      },
+      {
+       "club": "Q72844",
+       "year": 2023,
+       "loan": false
+      },
+      {
+       "club": "Q81888",
+       "year": 2024,
+       "loan": false
+      },
+      {
+       "club": "Q19571",
+       "year": 2025,
+       "loan": false
+      },
+      {
+       "club": "Q9616",
+       "year": 2026,
+       "loan": false
+      }
+     ],
+     "fake": 1,
+     "real": "Q19580"
+    },
+    {
+     "band": "R4 journeyman",
      "player": "Q184946",
+     "name": "Joe Cole",
      "stops": [
       {
        "club": "Q18747",
@@ -404,11 +359,6 @@
        "loan": true
       },
       {
-       "club": "Q18732",
-       "year": 2012,
-       "loan": true
-      },
-      {
        "club": "Q1130849",
        "year": 2012,
        "loan": false
@@ -419,7 +369,7 @@
        "loan": false
       },
       {
-       "club": "Q18711",
+       "club": "Q19444",
        "year": 2014,
        "loan": false
       },
@@ -434,223 +384,233 @@
        "loan": false
       }
      ],
-     "fake": 4
+     "fake": 6,
+     "real": "Q18711"
+    },
+    {
+     "band": "R5 hard",
+     "player": "Q6413296",
+     "name": "Kingsley Coman",
+     "stops": [
+      {
+       "club": "Q483020",
+       "year": 2013,
+       "loan": false
+      },
+      {
+       "club": "Q2739",
+       "year": 2014,
+       "loan": false
+      },
+      {
+       "club": "Q15789",
+       "year": 2015,
+       "loan": false
+      },
+      {
+       "club": "Q482764",
+       "year": 2025,
+       "loan": false
+      }
+     ],
+     "fake": 1,
+     "real": "Q1422"
     }
    ]
   },
   {
    "id": "C",
-   "picker": "v3",
+   "picker": "v4",
    "rounds": [
     {
      "band": "R1 warm-up",
-     "player": "Q266613",
+     "player": "Q28445512",
+     "name": "Eberechi Eze",
      "stops": [
       {
-       "club": "Q5794",
-       "year": 2002,
+       "club": "Q18723",
+       "year": 2016,
        "loan": false
       },
       {
-       "club": "Q18708",
-       "year": 2003,
-       "loan": false
-      },
-      {
-       "club": "Q18656",
-       "year": 2004,
-       "loan": false
-      },
-      {
-       "club": "Q5794",
+       "club": "Q48925",
        "year": 2017,
-       "loan": false
-      },
-      {
-       "club": "Q238593",
-       "year": 2018,
-       "loan": false
-      },
-      {
-       "club": "Q19470",
-       "year": 2020,
-       "loan": false
-      }
-     ],
-     "fake": 1
-    },
-    {
-     "band": "R2 medium",
-     "player": "Q21693199",
-     "stops": [
-      {
-       "club": "Q483020",
-       "year": 2015,
-       "loan": false
-      },
-      {
-       "club": "Q702455",
-       "year": 2019,
-       "loan": false
-      },
-      {
-       "club": "Q19451",
-       "year": 2021,
-       "loan": false
-      },
-      {
-       "club": "Q9616",
-       "year": 2023,
-       "loan": false
-      },
-      {
-       "club": "Q1543",
-       "year": 2025,
-       "loan": false
-      },
-      {
-       "club": "Q702455",
-       "year": 2026,
-       "loan": true
-      }
-     ],
-     "fake": 2
-    },
-    {
-     "band": "R3 medium",
-     "player": "Q27063854",
-     "stops": [
-      {
-       "club": "Q19462",
-       "year": 2016,
-       "loan": false
-      },
-      {
-       "club": "Q19571",
-       "year": 2018,
-       "loan": false
-      },
-      {
-       "club": "Q18661",
-       "year": 2019,
-       "loan": false
-      },
-      {
-       "club": "Q18711",
-       "year": 2019,
-       "loan": false
-      },
-      {
-       "club": "Q9617",
-       "year": 2026,
-       "loan": false
-      }
-     ],
-     "fake": 2
-    },
-    {
-     "band": "R4 journeyman",
-     "player": "Q28059260",
-     "stops": [
-      {
-       "club": "Q18656",
-       "year": 2015,
-       "loan": false
-      },
-      {
-       "club": "Q18526",
-       "year": 2016,
-       "loan": true
-      },
-      {
-       "club": "Q18515",
-       "year": 2016,
-       "loan": true
-      },
-      {
-       "club": "Q19626",
-       "year": 2017,
-       "loan": true
-      },
-      {
-       "club": "Q19607",
-       "year": 2018,
-       "loan": true
-      },
-      {
-       "club": "Q18656",
-       "year": 2020,
-       "loan": false
-      },
-      {
-       "club": "Q19490",
-       "year": 2022,
        "loan": true
       },
       {
        "club": "Q18723",
-       "year": 2023,
+       "year": 2018,
        "loan": false
       },
       {
        "club": "Q19467",
-       "year": 2023,
+       "year": 2020,
+       "loan": false
+      },
+      {
+       "club": "Q9617",
+       "year": 2025,
        "loan": false
       }
      ],
-     "fake": 7
+     "fake": 1,
+     "real": "Q48953"
     },
     {
-     "band": "R5 hard",
-     "player": "Q723606",
+     "band": "R2 medium",
+     "player": "Q30055335",
+     "name": "Rafael Leão",
      "stops": [
       {
-       "club": "Q1130849",
+       "club": "Q75729",
+       "year": 2017,
+       "loan": false
+      },
+      {
+       "club": "Q19516",
+       "year": 2018,
+       "loan": false
+      },
+      {
+       "club": "Q1543",
+       "year": 2019,
+       "loan": false
+      },
+      {
+       "club": "Q483020",
+       "year": 2026,
+       "loan": false
+      }
+     ],
+     "fake": 3,
+     "real": "Q495299"
+    },
+    {
+     "band": "R3 medium",
+     "player": "Q52990659",
+     "name": "Antoine Semenyo",
+     "stops": [
+      {
+       "club": "Q19456",
+       "year": 2018,
+       "loan": false
+      },
+      {
+       "club": "Q368500",
+       "year": 2018,
+       "loan": true
+      },
+      {
+       "club": "Q9408",
+       "year": 2018,
+       "loan": true
+      },
+      {
+       "club": "Q19456",
+       "year": 2019,
+       "loan": false
+      },
+      {
+       "club": "Q18739",
+       "year": 2020,
+       "loan": true
+      },
+      {
+       "club": "Q19456",
+       "year": 2020,
+       "loan": false
+      },
+      {
+       "club": "Q19568",
+       "year": 2023,
+       "loan": false
+      },
+      {
+       "club": "Q50602",
+       "year": 2026,
+       "loan": false
+      }
+     ],
+     "fake": 2,
+     "real": "Q18523"
+    },
+    {
+     "band": "R4 journeyman",
+     "player": "Q188457",
+     "name": "Danny Welbeck",
+     "stops": [
+      {
+       "club": "Q18656",
+       "year": 2008,
+       "loan": false
+      },
+      {
+       "club": "Q19612",
+       "year": 2010,
+       "loan": true
+      },
+      {
+       "club": "Q18739",
+       "year": 2010,
+       "loan": true
+      },
+      {
+       "club": "Q18656",
        "year": 2011,
        "loan": false
       },
       {
-       "club": "Q18736",
-       "year": 2012,
-       "loan": false
-      },
-      {
-       "club": "Q19607",
-       "year": 2013,
-       "loan": true
-      },
-      {
-       "club": "Q19473",
+       "club": "Q9617",
        "year": 2014,
        "loan": false
       },
       {
-       "club": "Q19500",
-       "year": 2015,
+       "club": "Q19571",
+       "year": 2019,
        "loan": false
       },
       {
-       "club": "Q5794",
-       "year": 2022,
-       "loan": true
-      },
-      {
-       "club": "Q19481",
-       "year": 2023,
+       "club": "Q19453",
+       "year": 2020,
        "loan": false
       },
       {
-       "club": "Q18529",
+       "club": "Q9616",
+       "year": 2026,
+       "loan": false
+      }
+     ],
+     "fake": 5,
+     "real": "Q2714"
+    },
+    {
+     "band": "R5 hard",
+     "player": "Q56085180",
+     "name": "Jonathan David",
+     "stops": [
+      {
+       "club": "Q18232",
+       "year": 2018,
+       "loan": false
+      },
+      {
+       "club": "Q19516",
+       "year": 2020,
+       "loan": false
+      },
+      {
+       "club": "Q1422",
        "year": 2025,
        "loan": false
       },
       {
-       "club": "Q19462",
+       "club": "Q6601875",
        "year": 2026,
        "loan": true
       }
      ],
-     "fake": 1
+     "fake": 3,
+     "real": "Q8701"
     }
    ]
   }
