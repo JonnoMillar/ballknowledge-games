@@ -10,38 +10,27 @@ A new mode: a famous goal is named, the player pins where it was struck
 from, scored in metres off (or points) against a lazy-pin par. Tasks 1–12 of
 the first plan are built and playable at `/pin` (daily boards + 3 packs).
 
-**NOW: redesigning as a pack library, mid-brainstorm (superpowers:brainstorming).**
-Jonno played the demo and pivoted on 2026-10-09. Decided so far, with why:
-- **No daily, no streak.** The page is a library of packs; new ones appear on
-  football's own schedule, marked "New" for 7 days, "Not played" per browser.
-  Why: a 6-a-day daily needed 28 recent goals a week and filled with nobodies.
-- **Goal of the Month pack, official.** Scraped from
-  `premierleague.com/en/awards/goal-of-the-month/<2026-27>/<september>` (plain
-  HTML, 8 nominees: player + match, no minute), each matched to its Understat
-  shot by player + match. Pages exist only from 2025/26 (older return 404).
-- **Weekly round pack, from our own ranking**, because no official weekly
-  list is machine-readable: the PL's "best goals of matchweek" page and the
-  YouTube "every goal" video name no goals; Instagram is JS-only, login-walled
-  and bans scraping. Jonno doubts the model and wants a better long-term
-  source. Built-in check: each month, score how many weekly picks made the
-  official GotM shortlist. Evidence so far: the old xG ranking picked 4 of
-  September's 8 nominees (Bruno G., Dunk, Buendía, Dasilva) unprompted.
-- **Archive packs, official picks only (option A):** GotM *winners* since
-  2016/17 from Wikipedia (~92 goals, winners only, no nominees; one-off
-  import) → ten season packs of nine, plus club packs only for clubs with ≥6
-  winners. Internationals and Champions League finals from StatsBomb.
-  Understat has no European data, so CL = finals only.
-- **Pack size varies** (6, 8, 9); the par floor scales at ~7 m a goal.
-- **No manual upkeep, ever** (Jonno's rule, saved to memory): scripts must run
-  unattended. **Automation built ready but switched on at launch (option A):**
-  GitHub Actions workflow written and tested locally; no remote yet. Jonno
-  wants the repo on GitHub soon: private repo, ask before every push.
-- **Pending answer:** storage. Recommended: packs as one JSON file each in the
-  repo, `goals.json` stays server-only, the Action commits new pack files and
-  the host redeploys (vs a hosted DB, or live fetching — both rejected).
-- **Then:** present the design in sections (library page, data pipeline,
-  scheduling, what happens to the built daily code), write the spec to
-  `docs/superpowers/specs/`, Jonno reviews, then superpowers:writing-plans.
+**NOW: execute the pack-library plan (2026-10-09).** Brainstorm done, spec
+and plan approved by Jonno and committed:
+- Spec: `docs/superpowers/specs/2026-10-09-pitch-pin-library-design.md`
+- Plan: `docs/superpowers/plans/2026-10-09-pitch-pin-library.md` (14 tasks,
+  code-complete, with real-data checks in Tasks 8–10)
+- **Execution: a fresh Sonnet session** runs `superpowers:executing-plans`
+  inline, no subagents (Jonno's call, saved to memory). Never push.
+
+What it builds: no daily, no streak; `/pin` is a library of packs (round /
+month / season / club / classic), New for 7 days, status per browser, Next
+pack. Weekly Premier League round packs from our xG ranking; the official
+Goal of the Month shortlist; an archive of 2016/17–2025/26 winners from
+Wikipedia (10 season packs, 7 club packs); the 44 classics in 7 hand-made
+packs. A daily GitHub Action keeps it fresh once on the default branch
+(`master`) with a remote.
+
+Proven while planning (prototype, then removed): the shortlist parser and
+the matcher hit 8/8 of September 2026's nominees and 89/89 archive winners
+on real Understat data (braces told apart by Wikipedia's score-after-goal
+column). Trimmed source copies are committed as test fixtures in
+`games/pin/tests/fixtures/`.
 
 Built so far (first plan, `docs/superpowers/plans/2026-10-08-pitch-pin.md`):
 - Spec `docs/superpowers/specs/2026-10-08-pitch-pin-design.md` (now partly
