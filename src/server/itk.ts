@@ -6,11 +6,12 @@ import type { PortraitImage } from '../lib/portraits';
 /**
  * ITK, prototype: the example sets in content/itk/examples.json.
  *
- * The fake stands in for one real stop, keeping its year and loan tag. Which
- * stop, and the club it hid, is the answer, so it never leaves the server
+ * The fake either stands in for one real stop (keeping its year and loan tag)
+ * or is a move inserted between two real ones; the player is not told which.
+ * Where it is, and what it hid, is the answer, so it never leaves the server
  * until the round is over: every pick is judged by /api/itk/pick.
  */
-interface StoredRound { band: string; player: string; name?: string; stops: { club: string; year: number; loan: boolean }[]; fake: number; real: string }
+interface StoredRound { band: string; player: string; name?: string; mode?: 'swap' | 'insert'; stops: { club: string; year: number; loan: boolean }[]; fake: number; real?: string }
 interface StoredSet { id: string; picker: string; rounds: StoredRound[] }
 
 export interface ItkStop { clubId: string; name: string; year: number; loan: boolean }
@@ -39,6 +40,7 @@ export async function loadItkSets(): Promise<ItkSet[]> {
   }));
 }
 
+/** `real` is the club the fake covered; null for an inserted fake, which covered nothing. */
 export interface Verdict { fake: boolean; fakeIndex: number | null; real: { clubId: string; name: string } | null }
 
 /**
@@ -51,5 +53,5 @@ export async function judgePick(setId: string, round: number, index: number, las
   const fake = index === r.fake;
   if (!fake && !last) return { fake, fakeIndex: null, real: null };
   const { clubs } = await loadData();
-  return { fake, fakeIndex: r.fake, real: { clubId: r.real, name: clubs[r.real]?.name ?? r.real } };
+  return { fake, fakeIndex: r.fake, real: r.real ? { clubId: r.real, name: clubs[r.real]?.name ?? r.real } : null };
 }

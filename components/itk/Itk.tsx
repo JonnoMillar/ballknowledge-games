@@ -169,7 +169,9 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
                   <span className={`itk-status__chip itk-status__chip--${mark}`} aria-hidden />
                   <span className="itk-status__verdict display">{VERDICT[mark]}</span>
                   {mark === 'missed' && fakes[view] !== null ? (
-                    <span className="itk-status__note">It was {shortClubName(r.stops[fakes[view]!]!.name)}</span>
+                    <span className="itk-status__note">
+                      It was {shortClubName(r.stops[fakes[view]!]!.name)}{reals[view] ? `, really ${shortClubName(reals[view]!.name)}` : ', a move that never happened'}
+                    </span>
                   ) : null}
                   <button type="button" className="seal itk-status__next" onClick={next}>
                     {view < round ? 'Back' : round + 1 < n ? 'Next' : 'Your tier'}

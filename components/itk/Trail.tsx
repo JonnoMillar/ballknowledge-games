@@ -58,8 +58,9 @@ export default function Trail({ stops, picks, fakeIndex, real, pending, locked, 
   const H = rows * g.h + (rows - 1) * g.gy;
 
   const picked = new Map(picks.map((p) => [p.index, p.fake]));
-  // The two legs into and out of the fake: once it is peeled off, they are the real route again.
-  const restored = (i: number) => fakeIndex !== null && real !== null && (i === fakeIndex || i + 1 === fakeIndex);
+  // The two legs into and out of the fake: once it is peeled off they are the real route again, or,
+  // where the fake was added, a move that never happened.
+  const touches = (i: number) => fakeIndex !== null && (i === fakeIndex || i + 1 === fakeIndex);
 
   /** One side of a crest sticker: year and loan tag, crest, name. */
   const face = (clubId: string, clubName: string, s: ItkStop, cls: string) => {
@@ -93,7 +94,7 @@ export default function Trail({ stops, picks, fakeIndex, real, pending, locked, 
               const my = (a.y + b.y) / 2;
               const angle = a.row !== b.row ? 90 : b.x > a.x ? 0 : 180;
               return (
-                <g key={i} className={`trail__leg ${restored(i) ? 'is-restored' : ''}`} style={{ ['--i' as string]: i }}>
+                <g key={i} className={`trail__leg ${touches(i) ? (real ? 'is-restored' : 'is-cut') : ''}`} style={{ ['--i' as string]: i }}>
                   <path className="trail__line" d={`M${a.x} ${a.y} L${b.x} ${b.y}`} pathLength={1} />
                   <path className="trail__arrow" d="M-3.5 -5 L2.5 0 L-3.5 5" transform={`translate(${mx} ${my}) rotate(${angle})`} />
                 </g>
@@ -107,7 +108,7 @@ export default function Trail({ stops, picks, fakeIndex, real, pending, locked, 
             const isFake = fakeIndex === i;
             const state = isFake ? 'is-fake' : verdict === false ? 'is-real' : '';
             const circled = pending === i || verdict !== undefined;
-            const peeled = isFake && real !== null;
+            const peeled = isFake;
             return (
               <button
                 key={i}
@@ -117,13 +118,15 @@ export default function Trail({ stops, picks, fakeIndex, real, pending, locked, 
                 onClick={() => onPick(i)}
                 disabled={locked || pending !== null || verdict !== undefined}
                 aria-label={peeled
-                  ? `${s.name} was the fake; really ${real.name}, ${s.year}${s.loan ? ', on loan' : ''}`
+                  ? real
+                    ? `${s.name} was the fake; really ${real.name}, ${s.year}${s.loan ? ', on loan' : ''}`
+                    : `${s.name} was the fake; that move never happened`
                   : `${s.name}, ${s.year}${s.loan ? ', on loan' : ''}${verdict === false ? ', real' : ''}`}
               >
                 {peeled ? (
                   <>
-                    {/* The real sticker was under the fake all along. */}
-                    {face(real.clubId, real.name, s, 'tcard__face--real')}
+                    {/* The real sticker was under the fake all along, or nothing was: an empty space in the album. */}
+                    {real ? face(real.clubId, real.name, s, 'tcard__face--real') : <span className="tcard__face tcard__face--empty" />}
                     <span className="tcard__peel" aria-hidden>
                       {face(s.clubId, s.name, s, 'tcard__face--front')}
                     </span>
