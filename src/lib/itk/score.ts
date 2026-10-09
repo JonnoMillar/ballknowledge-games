@@ -18,11 +18,15 @@ export function roundMark(picks: readonly boolean[]): PlateMark | null {
 
 const POINTS: Record<PlateMark, number> = { held: 2, hinted: 1, missed: 0 };
 
+/** Every result, worst to best. The last three are the podium. */
+export const RUNGS = ['Mascot', 'Casual', 'Pundit', 'Scout', 'Agent', 'Fabrizio'] as const;
+export type Rung = (typeof RUNGS)[number];
+
 /**
  * The day's brag. A podium of transfer insiders for 10, 9 and 8 points
  * (Fabrizio is five first-time finds and nothing else), then plain bands.
  */
-export function tierOf(marks: readonly PlateMark[]): string {
+export function tierOf(marks: readonly PlateMark[]): Rung {
   const points = marks.reduce((n, m) => n + POINTS[m], 0);
   if (points >= 10) return 'Fabrizio';
   if (points === 9) return 'Agent';

@@ -394,26 +394,186 @@
   text-align: center;
 }
 .itk-end__eyebrow { margin: 0; font-size: 14px; font-weight: 600; color: var(--muted); }
-.itk-end__tier {
-  font-weight: 800;
-  font-size: 56px;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--ink);
-  padding: 8px 20px 10px;
-  border: 4px solid currentColor;
+.itk-end__reveal { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
+.itk-end__reveal .itk-end__actions { opacity: 0; animation: fade-in var(--t-slow) var(--ease-out) 2300ms forwards; }
+.itk-proto--reveal { border: 1px dashed var(--rule-strong); border-radius: 4px; }
+
+/* ── THE RESULT STICKER ─────────────────────────────────────────────────
+   Paper for the bands; the podium sits in a Deep Cuts case (gold, silver,
+   bronze). Sizes in cqw so it reads the same in a slot and on its own. */
+.rs {
+  --rs-w: 196px;
+  width: var(--rs-w);
+  aspect-ratio: 3 / 4;
+  display: flex;
+  container-type: inline-size;
   border-radius: 6px;
-  transform: rotate(-3deg);
-  animation: tier-in var(--t-slow) var(--ease-out) both;
 }
-.itk-end__tier.is-top { color: var(--red); }
-@media (min-width: 760px) { .itk-end__tier { font-size: 76px; } }
-@keyframes tier-in {
-  0% { transform: rotate(-3deg) scale(1.6); opacity: 0; }
-  60% { transform: rotate(-3deg) scale(0.96); opacity: 1; }
-  100% { transform: rotate(-3deg) scale(1); opacity: 1; }
+.rs.slab { --slab-pad: 9px; padding: var(--slab-pad); border-radius: 10px; }
+.rs--plain { box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 1px 0 rgba(20, 18, 16, 0.06), 0 3px 10px rgba(20, 18, 16, 0.14); }
+.rs__paper {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11cqw 6cqw 10cqw;
+  border-radius: 5px;
+  background: var(--sticker);
+  color: var(--ink);
 }
+.rs__eyebrow { font-size: 7cqw; font-weight: 600; color: var(--muted); line-height: 1; }
+.rs__name { font-size: 21cqw; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
+.rs__grid { display: flex; gap: 2.4cqw; }
+.rs__pip { width: 8cqw; height: 8cqw; border-radius: 1.6cqw; animation: none; }
+.rs--mascot .rs__paper { background: #F7F4EE; }
+.rs--mascot .rs__name { color: var(--muted); }
+
+/* ── ALBUM: the route runs through the five and drops into your slot ──── */
+.rv-album { position: relative; display: flex; flex-direction: column; align-items: center; gap: 120px; width: 100%; visibility: hidden; }
+.rv-album.is-ready { visibility: visible; }
+.rv-album:not(.is-ready) * { animation: none !important; }
+.rv-album .itk-end__row, .rv-album__page { position: relative; z-index: 1; }
+.rv-album__route { position: absolute; inset: 0; z-index: 0; overflow: visible; pointer-events: none; }
+.rv-album__route path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.55;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: route-draw;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.rv-album .itk-end__mark { animation: die-press var(--t-base) var(--ease-out) backwards; position: relative; z-index: 2; }
+.rv-album__page {
+  display: grid;
+  grid-template-columns: repeat(6, 112px);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rv-slot { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.rv-slot__space {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+  background: var(--page);
+  box-shadow: inset 0 0 0 1.5px var(--silhouette);
+  background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgba(20, 18, 16, 0.035) 9px 10px);
+}
+.rv-slot.is-podium .rv-slot__space { box-shadow: inset 0 0 0 1.5px var(--silhouette-figure); }
+.rv-slot__name { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--silhouette-figure); }
+.rv-slot.is-yours .rv-slot__name { color: var(--ink); }
+.rv-album.is-ready .rv-slot.is-yours .rv-slot__name { animation: slot-name var(--t-slow) var(--ease-out) var(--landed) backwards; }
+.rv-slot .rs { --rs-w: 100%; position: absolute; inset: 0; }
+.rv-slot .rs.slab { --slab-pad: 6px; }
+.rv-album.is-ready .rv-slot .rs { animation: slot-in 520ms var(--ease-out) var(--landed) backwards; }
+@keyframes slot-in {
+  0%   { transform: translateY(-14px) scale(1.04); opacity: 0; box-shadow: 0 14px 24px rgba(20, 18, 16, 0.22); }
+  45%  { opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes slot-name { from { color: var(--silhouette-figure); } to { color: var(--ink); } }
+@media (max-width: 759px) {
+  .rv-album { gap: 96px; }
+  .rv-album__page { grid-template-columns: repeat(3, minmax(0, 96px)); gap: 22px 14px; }
+  /* On a phone the podium is the first row. */
+  .rv-slot.is-podium { order: -1; }
+  .rv-slot__name { font-size: 13px; }
+}
+
+/* ── PACK: the seal tears off and your result slides out ─────────────── */
+.rv-pack { display: grid; place-items: center; width: 240px; height: 330px; margin-top: 60px; }
+.rv-pack > * { grid-area: 1 / 1; }
+.rv-pack__out { z-index: 1; animation: pack-out 1400ms cubic-bezier(0.45, 0, 0.2, 1) 900ms both; }
+.rv-pack__bag {
+  z-index: 2;
+  position: relative;
+  width: 236px;
+  height: 318px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.12) 46%, rgba(255, 255, 255, 0) 60%),
+    var(--red);
+  box-shadow: 0 2px 0 rgba(20, 18, 16, 0.08), 0 10px 22px rgba(20, 18, 16, 0.2);
+  animation: stick-down var(--t-slow) var(--ease-out) both, pack-away 520ms var(--ease-in-out) 1560ms forwards;
+}
+.rv-pack__seal {
+  height: 22px;
+  flex-shrink: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 6px),
+    var(--red-deep);
+}
+.rv-pack__seal--top { border-radius: 4px 4px 0 0; transform-origin: 100% 100%; animation: pack-tear 520ms cubic-bezier(0.5, 0, 0.3, 1) 520ms forwards; }
+.rv-pack__seal--bottom { border-radius: 0 0 4px 4px; margin-top: auto; }
+.rv-pack__label { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; }
+.rv-pack__mark { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: 0.02em; }
+.rv-pack__day { font-size: 15px; font-weight: 600; opacity: 0.85; }
+@keyframes pack-tear {
+  0%   { transform: none; opacity: 1; }
+  30%  { transform: translate(2px, -3px) rotate(4deg); opacity: 1; }
+  100% { transform: translate(46px, -54px) rotate(16deg); opacity: 0; }
+}
+@keyframes pack-out {
+  0%   { transform: translateY(40px); z-index: 1; }
+  50%  { transform: translateY(-115px); z-index: 1; }
+  51%  { z-index: 3; }
+  100% { transform: none; z-index: 3; }
+}
+@keyframes pack-away { to { transform: translateY(70px); opacity: 0; } }
+
+/* ── PEEL: the backing paper comes off, the way the fakes do ─────────── */
+.rv-peel { display: grid; margin-top: 10px; }
+.rv-peel > * { grid-area: 1 / 1; }
+.rv-peel .rs { --rs-w: 210px; }
+.rv-peel__back {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 11px, rgba(20, 18, 16, 0.05) 11px 12px),
+    #EAE5DA;
+  box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.08), 0 3px 10px rgba(20, 18, 16, 0.14);
+  transform-origin: 0 0;
+  animation: stick-down var(--t-slow) var(--ease-out) both, back-peel 1200ms cubic-bezier(0.55, 0, 0.3, 1) 800ms forwards;
+}
+.rv-peel__back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(20, 18, 16, 0.2) 100%);
+  opacity: 0;
+  animation: peel-shade 1100ms ease-out 800ms forwards;
+}
+/* Opaque until it is well clear: the backing never turns to glass over the sticker. */
+@keyframes back-peel {
+  0%   { transform: perspective(800px) rotate3d(1, -1, 0, 0deg); opacity: 1; filter: drop-shadow(0 0 0 rgba(20, 18, 16, 0)); }
+  40%  { transform: perspective(800px) rotate3d(1, -1, 0, 42deg); opacity: 1; filter: drop-shadow(5px 8px 8px rgba(20, 18, 16, 0.25)); }
+  82%  { opacity: 1; }
+  100% { transform: perspective(800px) translate(-48%, -62%) rotate3d(1, -1, 0, 64deg) rotate(-9deg); opacity: 0; filter: drop-shadow(10px 14px 12px rgba(20, 18, 16, 0.16)); }
+}
+.rv-peel__print { font-size: 44px; font-weight: 800; color: rgba(20, 18, 16, 0.16); letter-spacing: 0.04em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-album__route path { stroke-dashoffset: 0; animation: none; }
+  .rv-pack__bag, .rv-peel__back { display: none; }
+  .rv-pack__out, .rv-slot .rs, .itk-end__reveal .itk-end__actions { animation: none; opacity: 1; transform: none; }
+}
+
 .itk-end__row { --sticker-w: 62px; display: flex; justify-content: center; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
 @media (min-width: 760px) { .itk-end__row { --sticker-w: 104px; gap: 16px; } }
 .itk-end__row li { animation: stick-down var(--t-slow) var(--ease-out) both; }

@@ -245,9 +245,12 @@ is fake. Two picks per career: found first time 🟩, second 🟨, missed 🟥
 (Chain's glyphs). Day result (flat 2/1/0 points, 0–10): podium Fabrizio 10,
 Agent 9, Scout 8, then bands Pundit 5–7, Casual 2–4, Mascot 0–1 (Jonno picked
 these 2026-10-09: names one or two words, no jokes; "Fabrizio" by name is his
-call, risk flagged). Open: the end reveal animation (proposed: climb a ladder
-mark by mark, then peel to the rung's sticker; podium in Deep Cuts metals) and
-pattern honours (Late show, Bottled it, Second call…), neither approved yet.
+call, risk flagged). The stamp is gone. Three reveal mockups, switchable on the
+end screen ("End screen" in the prototype bar jumps there with a sample grid):
+album (the ink route runs through the five and into your slot on a page of all
+six results), pack (seal tears, result slides out), peel (backing paper comes
+off). Podium stickers sit in the Deep Cuts metal cases. Jonno to pick one.
+Pattern honours (Late show, Bottled it, Second call...) not approved yet.
 Share line `ITK #n` + grid + tier, no names.
 Name "ITK" is Claude's pick; Jonno said revisit later.
 

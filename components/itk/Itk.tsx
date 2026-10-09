@@ -5,7 +5,8 @@ import { shortClubName } from '../ClubBadge';
 import Trail, { Loop } from './Trail';
 import { CopyFeedback, FeedbackStrip, useFeedback } from './Feedback';
 import type { ItkSet, Verdict } from '../../src/server/itk';
-import { PICKS, itkShareLine, roundMark, tierOf } from '../../src/lib/itk/score';
+import { PICKS, RUNGS, itkShareLine, roundMark, tierOf, type Rung } from '../../src/lib/itk/score';
+import { AlbumReveal, Careers, PackReveal, PeelReveal, type RevealStyle } from './Reveal';
 import type { PlateMark } from '../../src/lib/chain/share';
 
 /**
@@ -35,6 +36,8 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
   const [reals, setReals] = useState<({ clubId: string; name: string } | null)[]>(() => set.rounds.map(() => null));
   const [pending, setPending] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
+  /** Prototype: jump to the end screen without playing. */
+  const [peek, setPeek] = useState(false);
   const fb = useFeedback();
 
   const marks = picks.map((p) => roundMark(p.map((x) => x.fake)));
@@ -52,6 +55,7 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
     setReals(s.rounds.map(() => null));
     setPending(null);
     setFinished(false);
+    setPeek(false);
   }
 
   async function pick(index: number) {
@@ -116,11 +120,12 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
           </button>
         ))}
         <CopyFeedback store={fb.store} />
+        <button type="button" className="itk-proto__set itk-proto__copy" aria-pressed={peek} onClick={() => setPeek((v) => !v)}>End screen</button>
       </div>
 
       <main className="itk__main">
-        {finished && done ? (
-          <Summary set={set} marks={marks as PlateMark[]} onReview={(i) => { setFinished(false); setView(i); }} onAgain={() => reset(setIdx)} />
+        {(finished && done) || peek ? (
+          <Summary set={set} marks={marks} onReview={(i) => { setFinished(false); setPeek(false); setView(i); }} onAgain={() => reset(setIdx)} />
         ) : (
           <>
             <div className="itk__bar">
@@ -196,37 +201,66 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
   );
 }
 
-/** The day's result: the tier as a stamp, the five careers, the share line. */
+/** Prototype: a grid for each result, so every reveal can be seen without playing to it. */
+const SAMPLE: Record<Rung, PlateMark[]> = {
+  Fabrizio: ['held', 'held', 'held', 'held', 'held'],
+  Agent: ['held', 'held', 'held', 'held', 'hinted'],
+  Scout: ['held', 'held', 'held', 'held', 'missed'],
+  Pundit: ['held', 'held', 'hinted', 'held', 'missed'],
+  Casual: ['held', 'hinted', 'hinted', 'missed', 'missed'],
+  Mascot: ['missed', 'missed', 'missed', 'missed', 'hinted'],
+};
+const STYLES: RevealStyle[] = ['album', 'pack', 'peel'];
+
+/** The day's result revealed, the five careers, the share line. */
 function Summary({ set, marks, onReview, onAgain }: {
   set: ItkSet;
-  marks: PlateMark[];
+  marks: (PlateMark | null)[];
   onReview: (i: number) => void;
   onAgain: () => void;
 }) {
+  const played = marks.every(Boolean) ? (marks as PlateMark[]) : null;
   const [copied, setCopied] = useState(false);
-  const tier = tierOf(marks);
+  const [style, setStyle] = useState<RevealStyle>('album');
+  const [sample, setSample] = useState<Rung | null>(played ? null : 'Scout');
+  const [take, setTake] = useState(0);
+  const shown = sample ? SAMPLE[sample] : played!;
+  const rung = tierOf(shown);
   async function share() {
-    await navigator.clipboard?.writeText(itkShareLine(1, marks)).catch(() => {});
+    await navigator.clipboard?.writeText(itkShareLine(1, shown)).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   }
   return (
     <section className="itk-end">
-      <p className="itk-end__eyebrow">ITK #1</p>
-      <div className={`itk-end__tier display ${tier === 'Fabrizio' ? 'is-top' : ''}`}>{tier}</div>
-      <ol className="itk-end__row">
-        {set.rounds.map((r, i) => (
-          <li key={i}>
-            <button type="button" className="itk-end__card" onClick={() => onReview(i)} aria-label={`Review career ${i + 1}`}>
-              <StickerFace player={r.player} image={r.image ?? undefined} ground={solid(r.ground)} />
-              <span className={`itk-end__mark itk-pip itk-pip--${marks[i]}`} aria-hidden />
-            </button>
-          </li>
+      <div className="itk-proto itk-proto--reveal" role="group" aria-label="Reveal prototype">
+        <span className="itk-proto__label">Reveal</span>
+        {STYLES.map((x) => (
+          <button key={x} type="button" className="itk-proto__set" aria-pressed={x === style} onClick={() => { setStyle(x); setTake((t) => t + 1); }}>{x}</button>
         ))}
-      </ol>
-      <div className="itk-end__actions">
-        <button type="button" className="seal" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-        <button type="button" className="itk-ghost" onClick={onAgain}>Play again</button>
+        <span className="itk-proto__label">Result</span>
+        {played ? (
+          <button type="button" className="itk-proto__set" aria-pressed={!sample} onClick={() => { setSample(null); setTake((t) => t + 1); }}>yours</button>
+        ) : null}
+        {RUNGS.map((x) => (
+          <button key={x} type="button" className="itk-proto__set" aria-pressed={x === sample} onClick={() => { setSample(x); setTake((t) => t + 1); }}>{x}</button>
+        ))}
+        <button type="button" className="itk-proto__set itk-proto__copy" onClick={() => setTake((t) => t + 1)}>Replay</button>
+      </div>
+
+      <div key={`${style}-${rung}-${take}`} className={`itk-end__reveal itk-end__reveal--${style}`}>
+        {style === 'album' ? (
+          <AlbumReveal set={set} marks={shown} rung={rung} day={1} onReview={onReview} />
+        ) : (
+          <>
+            {style === 'pack' ? <PackReveal rung={rung} marks={shown} day={1} /> : <PeelReveal rung={rung} marks={shown} day={1} />}
+            <Careers set={set} marks={shown} onReview={onReview} />
+          </>
+        )}
+        <div className="itk-end__actions">
+          <button type="button" className="seal" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+          <button type="button" className="itk-ghost" onClick={onAgain}>Play again</button>
+        </div>
       </div>
     </section>
   );
