@@ -137,8 +137,9 @@ coordinates never reaching the page.
 
 ### Pack size and fairness
 
-- Every pack holds 6 to 10 goals. (A season can have 10 monthly winners;
-  official packs stay complete rather than drop a month.)
+- Every pack holds 6 to 9 goals. Season packs are never split: Wikipedia's
+  table (checked 2026-10-09) has 9 winners in every season from 2016/17 to
+  2025/26 except 2022/23, which has 8.
 - `round` packs, which we pick, must be **fair**: par of at least 7 m × the
   number of goals (`PAR_PER_GOAL = 7`), at least one goal inside the area and
   one outside it.
@@ -148,12 +149,14 @@ coordinates never reaching the page.
 
 ### Matching an official goal to Understat
 
-The GotM page and Wikipedia give a player and a match, not a minute or a
-fixture id, and club names are written differently from Understat's. To
-avoid a hand-kept table of club names (which would need upkeep every time a
-club is promoted):
+The GotM page gives a player and a match; Wikipedia gives a player, both
+clubs and the match date. Neither gives a minute or a fixture id, and club
+names are written differently from Understat's. To avoid a hand-kept table
+of club names (which would need upkeep every time a club is promoted):
 
-1. Take every EPL fixture Understat has in that calendar month of that season.
+1. Take the EPL fixtures Understat has on the match date when it is known
+   (Wikipedia), else every EPL fixture in that calendar month of that season
+   (the GotM page).
 2. Normalise names: NFD, strip accents, lower case, drop punctuation.
 3. Keep the non-penalty goals (`result === 'Goal'`, `situation !== 'Penalty'`)
    whose scorer matches the nominee: equal full names, or the nominee's last
@@ -214,8 +217,12 @@ moves from `scripts/build-pin-week.ts` into `scripts/understat.ts`.
      MediaWiki API (`action=parse`, the season tables).
    - Match each winner to Understat as above.
    - Write one `season` pack per season with 6 or more matched winners, and a
-     `club` pack for each club with 6 or more matched winners (the 10 most
+     `club` pack for each club with 6 or more matched winners (the 9 most
      recent if there are more).
+   - The table's rows give month, year, player, team, opponents and date
+     (`{{sortname|First|Last}}`, `[[Club F.C.|Club]]`, "21 August 2016"),
+     under a `[[2016–17 Premier League]]` row per season. The current season
+     is skipped: its winners reach the library as month packs.
    - Lines from `recentLine`. `published`: the run's date.
 4. **Classics.** `scripts/fetch-pin-classics.ts` is unchanged. Of the 44
    classics, 18 are in the three existing packs. The other 26, the daily's old
@@ -328,7 +335,7 @@ so at the top.
 
 - `content.test.ts`, rewritten: every pack file parses; its id equals its
   filename; its `kind` is valid; `season` is present exactly when the kind
-  needs it; it holds 6–10 distinct goals that all exist in `goals.json`;
+  needs it; it holds 6–9 distinct goals that all exist in `goals.json`;
   `round` and `classic` packs are fair; every goal in `goals.json` is in at
   least one pack.
 - `round.test.ts`: `rankRecent` as before; `pickRound` takes the top 6, swaps
