@@ -790,5 +790,545 @@
       "y": 7.3
     },
     "xg": 0.1
+  },
+  "u-689381": {
+    "scorer": "Cody Gakpo",
+    "match": "Newcastle United v Liverpool",
+    "date": "2026-08-23",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 54th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31188,
+      "shotId": "689381"
+    },
+    "at": {
+      "x": 43.8,
+      "y": 30.5
+    },
+    "xg": 0.01
+  },
+  "u-688653": {
+    "scorer": "Anton Stach",
+    "match": "Nottingham Forest v Leeds",
+    "date": "2026-08-22",
+    "competition": "Premier League 2026/27",
+    "line": "A direct free kick, in the 87th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31184,
+      "shotId": "688653"
+    },
+    "at": {
+      "x": 13.4,
+      "y": 21.7
+    },
+    "xg": 0.04
+  },
+  "u-689756": {
+    "scorer": "Joshua King",
+    "match": "Fulham v Chelsea",
+    "date": "2026-08-24",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 22nd minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31189,
+      "shotId": "689756"
+    },
+    "at": {
+      "x": 48.3,
+      "y": 11.7
+    },
+    "xg": 0.05
+  },
+  "u-688629": {
+    "scorer": "Jack Clarke",
+    "match": "Ipswich v Sunderland",
+    "date": "2026-08-22",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 89th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31183,
+      "shotId": "688629"
+    },
+    "at": {
+      "x": 25.5,
+      "y": 16.4
+    },
+    "xg": 0.06
+  },
+  "u-688594": {
+    "scorer": "Kiernan Dewsbury-Hall",
+    "match": "Everton v Crystal Palace",
+    "date": "2026-08-22",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 41st minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31182,
+      "shotId": "688594"
+    },
+    "at": {
+      "x": 22.3,
+      "y": 12.1
+    },
+    "xg": 0.07
+  },
+  "u-688498": {
+    "scorer": "Kai Havertz",
+    "match": "Arsenal v Coventry",
+    "date": "2026-08-21",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 14th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31180,
+      "shotId": "688498"
+    },
+    "at": {
+      "x": 35.1,
+      "y": 15.3
+    },
+    "xg": 0.1
+  },
+  "u-690097": {
+    "scorer": "Mathis Cherki",
+    "match": "Crystal Palace v Manchester City",
+    "date": "2026-08-28",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 58th minute, to make it 1–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31190,
+      "shotId": "690097"
+    },
+    "at": {
+      "x": 44.3,
+      "y": 23.8
+    },
+    "xg": 0.03
+  },
+  "u-691605": {
+    "scorer": "Cole Palmer",
+    "match": "Chelsea v Brighton",
+    "date": "2026-08-30",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 73rd minute, to make it 4–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31196,
+      "shotId": "691605"
+    },
+    "at": {
+      "x": 32.8,
+      "y": 21.6
+    },
+    "xg": 0.05
+  },
+  "u-690183": {
+    "scorer": "Víctor Muñoz",
+    "match": "Liverpool v Nottingham Forest",
+    "date": "2026-08-29",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 81st minute, to make it 2–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31191,
+      "shotId": "690183"
+    },
+    "at": {
+      "x": 45.2,
+      "y": 11.9
+    },
+    "xg": 0.06
+  },
+  "u-690428": {
+    "scorer": "James Tarkowski",
+    "match": "Bournemouth v Everton",
+    "date": "2026-08-29",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a corner, in the 90th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31193,
+      "shotId": "690428"
+    },
+    "at": {
+      "x": 43,
+      "y": 8.7
+    },
+    "xg": 0.07
+  },
+  "u-690586": {
+    "scorer": "Anthony Elanga",
+    "match": "Tottenham v Newcastle United",
+    "date": "2026-08-29",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a flick-on, in the 61st minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31194,
+      "shotId": "690586"
+    },
+    "at": {
+      "x": 38.7,
+      "y": 13.3
+    },
+    "xg": 0.08
+  },
+  "u-690397": {
+    "scorer": "Liam Millar",
+    "match": "Coventry v Hull",
+    "date": "2026-08-29",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 81st minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31192,
+      "shotId": "690397"
+    },
+    "at": {
+      "x": 33.3,
+      "y": 19
+    },
+    "xg": 0.26
+  },
+  "u-692064": {
+    "scorer": "Harvey Barnes",
+    "match": "Newcastle United v Bournemouth",
+    "date": "2026-09-05",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 36th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31201,
+      "shotId": "692064"
+    },
+    "at": {
+      "x": 18.7,
+      "y": 14.8
+    },
+    "xg": 0.02
+  },
+  "u-692882": {
+    "scorer": "Ainsley Maitland-Niles",
+    "match": "Everton v Manchester United",
+    "date": "2026-09-06",
+    "competition": "Premier League 2026/27",
+    "line": "A shot after a dribble, in the 95th minute, to make it 2–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31208,
+      "shotId": "692882"
+    },
+    "at": {
+      "x": 32.9,
+      "y": 27.3
+    },
+    "xg": 0.03
+  },
+  "u-693065": {
+    "scorer": "Kai Havertz",
+    "match": "Arsenal v Chelsea",
+    "date": "2026-09-06",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 24th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31209,
+      "shotId": "693065"
+    },
+    "at": {
+      "x": 45.3,
+      "y": 18.6
+    },
+    "xg": 0.04
+  },
+  "u-691973": {
+    "scorer": "Alexander Isak",
+    "match": "Ipswich v Liverpool",
+    "date": "2026-09-04",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a through ball, in the 5th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31200,
+      "shotId": "691973"
+    },
+    "at": {
+      "x": 45.2,
+      "y": 13.4
+    },
+    "xg": 0.12
+  },
+  "u-692366": {
+    "scorer": "Joshua King",
+    "match": "Fulham v Crystal Palace",
+    "date": "2026-09-05",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 10th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31204,
+      "shotId": "692366"
+    },
+    "at": {
+      "x": 31.1,
+      "y": 14.6
+    },
+    "xg": 0.12
+  },
+  "u-692413": {
+    "scorer": "Vitaly Janelt",
+    "match": "Brentford v Sunderland",
+    "date": "2026-09-05",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 56th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31205,
+      "shotId": "692413"
+    },
+    "at": {
+      "x": 32,
+      "y": 15.3
+    },
+    "xg": 0.36
+  },
+  "u-693975": {
+    "scorer": "Liam Delap",
+    "match": "Aston Villa v Nottingham Forest",
+    "date": "2026-09-12",
+    "competition": "Premier League 2026/27",
+    "line": "A shot after winning the ball back, in the 45th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31211,
+      "shotId": "693975"
+    },
+    "at": {
+      "x": 36.2,
+      "y": 30.5
+    },
+    "xg": 0.01
+  },
+  "u-694512": {
+    "scorer": "Lewis Dunk",
+    "match": "Coventry v Brighton",
+    "date": "2026-09-13",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 82nd minute, to make it 0–4.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31217,
+      "shotId": "694512"
+    },
+    "at": {
+      "x": 37.9,
+      "y": 28.1
+    },
+    "xg": 0.02
+  },
+  "u-694272": {
+    "scorer": "Bruno Guimarães",
+    "match": "Sunderland v Arsenal",
+    "date": "2026-09-12",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 57th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31216,
+      "shotId": "694272"
+    },
+    "at": {
+      "x": 32.5,
+      "y": 23.9
+    },
+    "xg": 0.03
+  },
+  "u-694001": {
+    "scorer": "Mohamed Belloumi",
+    "match": "Chelsea v Hull",
+    "date": "2026-09-12",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a corner, in the 33rd minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31212,
+      "shotId": "694001"
+    },
+    "at": {
+      "x": 37,
+      "y": 18.1
+    },
+    "xg": 0.04
+  },
+  "u-694022": {
+    "scorer": "Anan Khalaili",
+    "match": "Crystal Palace v Ipswich",
+    "date": "2026-09-12",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 13th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31213,
+      "shotId": "694022"
+    },
+    "at": {
+      "x": 47.7,
+      "y": 14
+    },
+    "xg": 0.04
+  },
+  "u-695031": {
+    "scorer": "Noah Okafor",
+    "match": "Leeds v Newcastle United",
+    "date": "2026-09-14",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 58th minute, to make it 4–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31219,
+      "shotId": "695031"
+    },
+    "at": {
+      "x": 23.1,
+      "y": 16.1
+    },
+    "xg": 0.05
+  },
+  "u-695688": {
+    "scorer": "Emiliano Buendía",
+    "match": "Tottenham v Aston Villa",
+    "date": "2026-09-19",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 78th minute, to make it 0–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31221,
+      "shotId": "695688"
+    },
+    "at": {
+      "x": 34.9,
+      "y": 27.5
+    },
+    "xg": 0.02
+  },
+  "u-696689": {
+    "scorer": "Matheus Cunha",
+    "match": "Fulham v Manchester United",
+    "date": "2026-09-20",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 88th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31229,
+      "shotId": "696689"
+    },
+    "at": {
+      "x": 19.9,
+      "y": 26
+    },
+    "xg": 0.02
+  },
+  "u-695943": {
+    "scorer": "Pascal Groß",
+    "match": "Brighton v Arsenal",
+    "date": "2026-09-19",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 30th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31224,
+      "shotId": "695943"
+    },
+    "at": {
+      "x": 47.1,
+      "y": 21.6
+    },
+    "xg": 0.03
+  },
+  "u-696466": {
+    "scorer": "Enzo Fernández",
+    "match": "Manchester City v Sunderland",
+    "date": "2026-09-20",
+    "competition": "Premier League 2026/27",
+    "line": "A direct free kick, in the 8th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31222,
+      "shotId": "696466"
+    },
+    "at": {
+      "x": 54.7,
+      "y": 13.2
+    },
+    "xg": 0.06
+  },
+  "u-695923": {
+    "scorer": "Mohamed Ali-Cho",
+    "match": "Newcastle United v Hull",
+    "date": "2026-09-19",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 66th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31223,
+      "shotId": "695923"
+    },
+    "at": {
+      "x": 42.6,
+      "y": 13.2
+    },
+    "xg": 0.09
+  },
+  "u-696156": {
+    "scorer": "Jay Dasilva",
+    "match": "Nottingham Forest v Coventry",
+    "date": "2026-09-19",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a chipped pass, in the 54th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31227,
+      "shotId": "696156"
+    },
+    "at": {
+      "x": 21.9,
+      "y": 10.5
+    },
+    "xg": 0.28
   }
 }
