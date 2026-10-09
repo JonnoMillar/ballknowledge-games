@@ -18,7 +18,8 @@ export interface ItkRound { player: { id: string; name: string }; image: Portrai
 export interface ItkSet { id: string; picker: string; rounds: ItkRound[] }
 
 let stored: Promise<StoredSet[]> | null = null;
-const readSets = () => (stored ??= readFile('content/itk/examples.json', 'utf8').then((s) => (JSON.parse(s) as { sets: StoredSet[] }).sets));
+// Read once in production; every request in development, so regenerated examples show without a restart.
+const readSets = () => (process.env.NODE_ENV === 'development' ? null : stored) ?? (stored = readFile('content/itk/examples.json', 'utf8').then((s) => (JSON.parse(s) as { sets: StoredSet[] }).sets));
 
 export async function loadItkSets(): Promise<ItkSet[]> {
   const [sets, { byId, images, clubs }] = await Promise.all([readSets(), loadData()]);
