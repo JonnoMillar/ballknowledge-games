@@ -1,5 +1,10 @@
 # Pitch pin — design
 
+> **Superseded in part (2026-10-09)** by
+> `docs/superpowers/specs/2026-10-09-pitch-pin-library-design.md`: no daily,
+> no streak; a library of packs. The game itself, scoring, par and licences
+> below still hold.
+
 **Date:** 2026-10-08 (revised the same day after a ten-player review)
 **Status:** Approved in session (Jonno), first draft, on branch `feat/pitch-pin`
 **Mockups:** https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3 (four phone

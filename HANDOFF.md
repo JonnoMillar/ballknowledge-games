@@ -1,76 +1,101 @@
 # Chain — state of play
 
-**Updated:** 2026-09-20. Read this first in a new session; it is the shortest
+**Updated:** 2026-10-09. Read this first in a new session; it is the shortest
 path back to full context. The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
 ## In flight: Pitch pin (branch `feat/pitch-pin`, updated 2026-10-09)
 
-A new mode: a famous goal is named, the player pins where it was struck
-from, scored in metres off (or points) against a lazy-pin par. Tasks 1–12 of
-the first plan are built and playable at `/pin` (daily boards + 3 packs).
+A famous goal is named; the player pins where it was struck from and is scored
+in metres off (or points) against a lazy-pin par. **Built and playable at
+`/pin`.** Spec: `docs/superpowers/specs/2026-10-09-pitch-pin-library-design.md`
+(the 2026-10-08 spec still holds for the game itself, scoring, par and
+licences). Plans: `docs/superpowers/plans/2026-10-09-pitch-pin-library.md`
+(done) and `…/2026-10-08-pitch-pin.md` (tasks 1–12 done, 13–15 folded into the
+library plan).
 
-**NOW: execute the pack-library plan (2026-10-09).** Brainstorm done, spec
-and plan approved by Jonno and committed:
-- Spec: `docs/superpowers/specs/2026-10-09-pitch-pin-library-design.md`
-- Plan: `docs/superpowers/plans/2026-10-09-pitch-pin-library.md` (14 tasks,
-  code-complete, with real-data checks in Tasks 8–10)
-- **Execution: a fresh Sonnet session** runs `superpowers:executing-plans`
-  inline, no subagents (Jonno's call, saved to memory). Never push.
+**What it is now.** No daily, no streak. `/pin` is a library of packs; `/pin/<id>`
+is one pack (6 to 9 goals, one throw each). Kinds: `round` (our weekly pick of
+Premier League goals), `month` (the official Goal of the Month shortlist),
+`season` and `club` (archive of past winners), `classic` (hand-made, StatsBomb).
+Shelves: This season, then Archive. A round or month pack is **New** for 7 days
+from its `published` date (worked out on the server). Each card shows this
+browser's status ("Not played", "2 of 6", "41.2 m, 12 under"); the finished
+pack offers **Next pack**. Both scoring modes are built: metres by default,
+`?score=points`. Bullseye is 2 m.
 
-What it builds: no daily, no streak; `/pin` is a library of packs (round /
-month / season / club / classic), New for 7 days, status per browser, Next
-pack. Weekly Premier League round packs from our xG ranking; the official
-Goal of the Month shortlist; an archive of 2016/17–2025/26 winners from
-Wikipedia (10 season packs, 7 club packs); the 44 classics in 7 hand-made
-packs. A daily GitHub Action keeps it fresh once on the default branch
-(`master`) with a remote.
+**Data.** `games/pin/data/goals.json` (server-only: it holds the answers),
+`games/pin/data/packs/*.json` (one file per pack), `games/pin/data/check.json`
+(the monthly model check: how many Goal of the Month nominees our round packs
+had already picked; September 2026: 6 of 8, August 2026: 2 of 7 matched).
+`tests/content.test.ts` holds every goal and pack to the rules (round and
+classic packs must be fair: par ≥ 7 m a goal, goals in and out of the area).
 
-Proven while planning (prototype, then removed): the shortlist parser and
-the matcher hit 8/8 of September 2026's nominees and 89/89 archive winners
-on real Understat data (braces told apart by Wikipedia's score-after-goal
-column). Trimmed source copies are committed as test fixtures in
-`games/pin/tests/fixtures/`.
+**Scripts.**
+- `npm run pin:update` runs round then Goal of the Month. Daily at 06:00 UTC
+  from `.github/workflows/pin-packs.yml`, **once it is on the default branch
+  (`master`) with a remote**. Until then run it by hand.
+- `npm run pin:round`: one pack per complete Tuesday-to-Monday week of results.
+- `scripts/build-pin-gotm.ts`: last month's shortlist (and the month before).
+  Exits 1 if the page loads but no nominee can be read.
+- `npm run pin:archive`: one-off, **done** (2016/17–2025/26 winners from
+  Wikipedia, 10 season packs and 7 club packs). Safe to rerun.
+- `npm run pin:classics`: after editing `classics.source.json`.
 
-Built so far (first plan, `docs/superpowers/plans/2026-10-08-pitch-pin.md`):
-- Spec `docs/superpowers/specs/2026-10-08-pitch-pin-design.md` (now partly
-  superseded by the pivot above). Tasks 13–15 of that plan are on hold.
-- Reusable as-is: `games/pin/lib/{pitch,score,line}.ts`, `server.ts` ref and
-  `/api/pin/throw`, the components, `fetch-pin-classics.ts`, the Understat
-  fetch code in `scripts/build-pin-week.ts`. `boards.ts`, `week.ts`,
-  `days.json` and the streak in `progress.ts` belong to the dropped daily.
-- Checked 2026-10-09 at phone width: a board plays first throw to full time,
-  page HTML has no coordinates, throw route 400/404s as designed, no console
-  errors. `npm test`: 1,498 passed, 43 files; typecheck clean.
-- Worktree: `.claude/worktrees/sad-nightingale-82892f`, branch `feat/pitch-pin`
-  off `feat/prototype`. Run `npm ci` first in a fresh worktree. Dev server:
-  preview config `recall-xi` (autoPort; was on 53477).
-- Mockups (pre-review): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
+**Real runs, 2026-10-09.** Round: 5 packs (weeks ending 24 Aug to 21 Sep).
+Goal of the Month: September 8 of 8 nominees matched, August 7 of 8 (Cherki's
+brace cannot be told apart). Archive: 88 of 89 winners matched, 17 packs
+(Rooney's 2017 halfway-line goal is skipped: the pitch is the attacking half).
+`npm test`: 1,653 passed, 47 files; typecheck clean. Checked at 375 px: the
+library lists the shelves in order, the two Goal of the Month packs are New,
+a pack plays to full time (total against par, pins, list, Share, Next pack),
+status and points mode show on the library, `/pin/nope`, `/pin/2026-10-08`
+and `/pin/pack/lionesses` all 404, and neither page's HTML holds `"at"` or
+`"xg"`. Not covered: a real phone, the Share sheet, a throw that fails, and
+anything on a live server (no remote yet).
+
+**Launch checklist (Jonno's, in order).**
+1. Email StatsBomb and Understat and register with StatsBomb. Both licences
+   are grey (StatsBomb bars redistribution and commercial use; Understat
+   publishes no terms). Pitch pin stays on the branch until this is done.
+2. Create the private GitHub remote (ask before every push), merge to `master`,
+   then run `workflow_dispatch` once and watch it. premierleague.com might
+   block GitHub's runners; a red run will say so.
+3. Choose one scoring mode (metres or points) and drop the other.
+4. The StatsBomb logo is in (`public/credits/statsbomb.png`, from the Hudl
+   StatsBomb media pack, asset marked External Use Approved). It is the Hudl
+   StatsBomb logo, a PNG: the pack no longer offers an SVG. Confirm that is the
+   mark their agreement means.
 
 **Decisions and why** (do not re-litigate):
-- Data: StatsBomb open data for classics, Understat for recent goals. Both
-  licences are grey (StatsBomb bars redistribution and commercial use, needs
-  its logo; Understat publishes no terms). Gated: stays on the branch until
-  Jonno has emailed both and registered with StatsBomb. Hand-placed coords
-  and the Champions League (no free source) are out.
-- ~~Daily = 4 recent + 2 classics~~: superseded 2026-10-09 by the pack
-  library above.
-- Both scoring modes built (Jonno wants to compare): metres default,
-  `?score=points`. Bullseye 2 m, because the two sources disagree by up to
-  2.9 m on the same goal. Par = every goal pinned on the penalty spot; a
-  board needs par ≥ 42 m (the lazy pin averaged 10 m/goal on 26 real goals).
+- Data: StatsBomb open data for classics, Understat for recent goals.
+  Hand-placed coordinates and the Champions League (no free source) are out.
+- Par = every goal pinned on the penalty spot; a pack needs par ≥ 7 m a goal
+  (the lazy pin averaged 10 m/goal on 26 real goals).
+- A goal struck outside the attacking half (y > 52.5 m) is never used: it cannot
+  be pinned. `officialGoal` and the round script both skip it.
 - Ink pitch on white; rings shaded per colour, stronger toward the middle.
 - Execution inline, no per-task subagents (Jonno's standing rule).
 
-**Gotchas found while researching** (also in the plan's header):
+**Gotchas.**
 - Understat: `GET understat.com/getLeagueData/<EPL|La_liga|...>/<season start year>`
   and `getMatchData/<id>`, header `X-Requested-With: XMLHttpRequest`. Slow,
-  one call took 20 s; time out and retry. Its Y axis is flipped against
-  StatsBomb. An `OwnGoal` shot is filed under the scorer's own side and
-  counts for the other (score rebuild matched all 50 PL matches).
-- No league fixtures 21 Sep to 9 Oct 2026; next round 10 Oct. Run the week
-  script with `--days 30` to reach the 12–20 Sep rounds.
+  one call took 20 s; the scripts time out and retry. Its Y axis is flipped
+  against StatsBomb. An `OwnGoal` shot is filed under the scorer's own side and
+  counts for the other.
 - StatsBomb `minute` counts from 0 (minute 94 is the 95th).
+- The official shortlist page is marked up differently month to month:
+  September 2026 and August 2025 link the players; August 2026 has bold names
+  and no player links. `parseShortlist` reads both; a new variant means the
+  script fails loudly and a fixture plus a case is needed in `lib/gotm.ts`.
+- Scripts write `goals.json` before the pack file, so a crash cannot leave a
+  pack whose goals are missing.
+- Stale `.next/types` after deleting a route makes `npm run typecheck` fail on
+  files that no longer exist; delete `.next/types`.
+- Worktree: `.claude/worktrees/sad-nightingale-82892f`, branch `feat/pitch-pin`
+  off `feat/prototype`. Run `npm ci` first in a fresh worktree. Dev server:
+  preview config `recall-xi` (autoPort).
+- Mockups (pre-review): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
 
 ## What this is
 
@@ -111,7 +136,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 1,363 tests, 35 files
+npm test             # 1,653 tests, 47 files
 npm run typecheck
 ```
 
