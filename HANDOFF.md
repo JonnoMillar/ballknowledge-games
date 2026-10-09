@@ -1,7 +1,8 @@
 # Chain — state of play
 
-**Updated:** 2026-09-20. Read this first in a new session; it is the shortest
-path back to full context. The design is in
+**Updated:** 2026-10-09 (ITK prototype, branch `feat/fake-transfer`). Read this
+first in a new session; it is the shortest path back to full context. **If you
+are here for ITK, jump to the ITK section.** The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
 ## What this is
@@ -228,6 +229,108 @@ numbers to move first after a real game.
 **Dev gotcha, 2026-09-20:** two `next dev` servers in this folder share
 `.next/` and clobber each other's route manifests — the symptom is
 intermittent HTML 404s from `/api/slugger/*`. One dev server at a time.
+
+## ITK (`/itk`) — spot the fake transfer, IN DESIGN (branch `feat/fake-transfer`)
+
+Started 2026-10-08 from `docs/game-design-playbook.md` §4. **Not yet specced.**
+Jonno changed the process: build a prototype page over hand-picked example
+sets, playtest, critique, repeat; only then spec → plan → generator. We are
+mid-loop (v5 examples are live, awaiting his v5 playtest). No spec or plan
+exists yet; do not write the generator until he signs off on the rules.
+
+**The game.** Five careers a day. Each is a player's sticker and their clubs as
+a trail of crest stickers (year, crest, short name, "Loan" tag) joined by an ink
+route with arrows, snake-laid (rows reverse) so 9 stops fit a phone. One stop
+is fake. Two picks per career: found first time 🟩, second 🟨, missed 🟥
+(Chain's glyphs). Day result is a transfer-rumour "source tier" (Tier 1 = five
+first-time finds … Parody account). Share line `ITK #n` + grid + tier, no names.
+Name "ITK" is Claude's pick; Jonno said revisit later.
+
+| Path | What |
+|---|---|
+| `app/itk/page.tsx`, `app/itk/itk.css` | The page and its stylesheet (album tokens; the one new mark is the red marker loop). |
+| `components/itk/Itk.tsx` | Rounds, picks, status, end screen; prototype set switcher. |
+| `components/itk/Trail.tsx` | Snake layout from geometry, route SVG, crest cards, the peel reveal. |
+| `components/itk/Feedback.tsx` | **Prototype tooling**: per-round strip (knew him; first look 1–10 locked at reveal; how easy 1–10; fun 1–10; note). localStorage `itk.feedback.v1`, "Copy feedback" button → JSON Jonno pastes back. |
+| `src/server/itk.ts`, `app/api/itk/pick/route.ts` | Loads `content/itk/examples.json`; the fake's index and the real club stay server-side until the round ends. Dev re-reads the file per request. |
+| `src/lib/itk/score.ts`, `tests/itk/score.test.ts` | Round mark, tier, share line (7 tests). |
+| `scripts/itk/pick-examples.mjs` | **The v5 picker** (scratch quality; the generator rewrite starts from its rules). |
+| `scripts/itk/fetch-views.mjs`, `data/itk/enwiki-views*.json` | 24 months of enwiki pageviews (Oct 2023–Sep 2025) for pool players + clubs, redirects resolved. |
+
+**Reveal.** A *swapped* fake peels off from the corner (lift, shade, pulled away
+up-left) to show the real club stuck underneath; green frame, green legs, the
+fake's crest small and struck through. An *inserted* fake peels off to an empty
+hatched space; legs go faint and dashed. A wrong pick: grey loop + green tick.
+Hover: red marker loop draws round the card. No stamps, no shakes — Jonno: "if I
+see a tacky animation for right or wrong I'll be angry."
+
+### Rules learned from playtests — and why (do not re-litigate)
+
+Four playtest rounds (v1–v4; v5 not yet played). His verdicts drove each rule:
+
+- **Fame is English Wikipedia views, not sitelinks.** Player floor 500k views/24mo.
+  Sitelinks let in Doyle (26k), Mucha (14k), McCarthy, Adam: "who even is he?"
+- **Every stop must be a club a British fan knows; at most one exception.**
+  Known = ≥300k views AND ≥30% of its pool players also played in the PL, OR
+  ≥2M views. Views alone fail: Pachuca, Vissel Kobe ≈ Blackpool.
+- **No old careers.** First stop ≥2004, median stop year ≥2008, still playing
+  ≥2015. Keane, Lineker, Hoddle, Speed: "history, not memory".
+- **No giant fakes, no fake bigger than the career's median club.** Mata→Arsenal,
+  Ramos→Milan, Pedro→PSG were instantly false: that move would have been news.
+- **Never put the fake between two marquee moves** (Ronaldo, Courtois, Kroos
+  rated "extremely easy").
+- **Never touch a spell fans remember:** signature club, any ≥8M-view club, any
+  spell of 50+ games (a draft swapped Isak's Newcastle, Bale's Spurs).
+- **Mix swap and insert, unannounced.** v4 swapped only: easier, deducible, and
+  short careers became guessing ("when there's so few clubs, add one sometimes").
+  Short careers (≤5) get an insert 60% of the time, never always (a fixed rule
+  is a tell — inserts kept landing in round 1).
+- **A different kind of fake each round** (loan, mid, late, one spell of a club he
+  had twice, insert). v4 repeated the early-loan swap: "predictable if you spam it".
+- **Photo guard:** never swap the spell the photo was taken in (Walcott's photo
+  was at Everton, the swapped-out club). Year from filename or Commons metadata.
+- **Fakes must fit the era:** ≥4 pool players started at the fake club within ±2
+  years (a draft gave Kroos an RB Leipzig loan in 2010).
+- **Show loan returns and loan parents.** Courtois read Chelsea → Atlético (loan)
+  → Real, hiding his Chelsea return; Harry Wilson showed loans with no Liverpool.
+- **Display names from the enwiki title** (Marc Guiu, not "Marc Guiu Paz").
+- **Fun ≠ difficulty.** Ease 9–10 scored fun 2–3; ease 3–5 scored fun 6–7. The best
+  moments are a *real* stop that shocks ("Brentford got me", Szczęsny at
+  Brentford) next to a believable fake. Journeymen/loan armies are a *flavour*,
+  not a difficulty slot (Jonno pushed back hard on slotting "journeyman" between
+  medium and hard). Day = a difficulty ramp + a mix of flavours.
+- **Exclude anyone he has already played** (list in `pick-examples.mjs`, `PLAYED`).
+
+### Verified (2026-10-09, commit 8f2ef2e)
+
+`npm test` 1,370 passed (36 files); `npm run typecheck` clean. v5 checked in a
+browser (Playwright, 1100px and 375px): swap peel (Maguire), insert peel
+(Mount), missed round, no horizontal scroll. `pick-examples.mjs` reproduces the
+committed `content/itk/examples.json` exactly. Pane-browser screenshots are
+unreliable here (they crop/zoom); use Playwright for visual checks, and freeze
+animations with `document.getAnimations()` + `currentTime` to inspect frames.
+
+### Hazards
+
+The desktop app stops idle dev servers and each restart gets a new port (3000 is
+taken); `npm run dev` prints it. The `prod` launch config fails: no build.
+
+### Next
+
+1. Get Jonno's v5 playtest JSON (Copy feedback). Read each round for *why*
+   (unknown player / unreadable career / good bluff / tell), not just the numbers.
+2. Iterate rules + examples until he says the rounds feel right. Open threads:
+   difficulty estimate vs his ratings; flavour mix per day; the eligible pool is
+   small (~166 players at the v2 bars; re-measure under v5 rules).
+3. Then spec (`docs/superpowers/specs/`) → STOP for approval → plan → STOP →
+   build the generator inline, TDD. **The daily must refresh itself** (scheduled
+   job, no manual step — Jonno's standing rule) and be seeded by date.
+4. Before shipping: remove prototype tooling (set switcher, feedback strip);
+   portraits for ITK players (`fetch:portraits` only covers Chain boards);
+   decide the name.
+
+Follow-up spotted: pool label "Andrcu Onana" is vandalised (André Onana); fix
+in `src/pipeline/overrides.ts` and `data/pool.json` per the Data pipeline section.
 
 ## Client and server
 
