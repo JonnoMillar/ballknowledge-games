@@ -10,7 +10,7 @@
 import { seasonLabel } from '../games/pin/lib/dates';
 import { recentLine } from '../games/pin/lib/line';
 import { fixturesFor, goalFor, scoreAfter, type Pick } from '../games/pin/lib/match';
-import { fromUnderstat, round1 } from '../games/pin/lib/pitch';
+import { fromUnderstat, inHalf, round1 } from '../games/pin/lib/pitch';
 import type { Goal } from '../games/pin/lib/types';
 
 const HEADERS = { 'X-Requested-With': 'XMLHttpRequest', 'User-Agent': 'Mozilla/5.0' };
@@ -91,5 +91,11 @@ export async function officialGoal(pick: Pick, fixtures: readonly Fixture[], sea
     console.log(`  ${pick.player}: no single goal of theirs in ${f.h.title} v ${f.a.title}`);
     return null;
   }
-  return [`u-${s.id}`, toGoal(f, shots, s, season)];
+  const goal = toGoal(f, shots, s, season);
+  // The pitch shows the attacking half only (Rooney's strike from his own half in 2017 cannot be pinned).
+  if (!inHalf(goal.at)) {
+    console.log(`  ${pick.player}: struck from ${goal.at.y} m out, outside the attacking half; skipped`);
+    return null;
+  }
+  return [`u-${s.id}`, goal];
 }

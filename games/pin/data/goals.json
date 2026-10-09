@@ -1456,5 +1456,1589 @@
       "y": 9.3
     },
     "xg": 0.11
+  },
+  "u-112715": {
+    "scorer": "Cristhian Stuani",
+    "match": "Sunderland v Middlesbrough",
+    "date": "2016-08-21",
+    "competition": "Premier League 2016/17",
+    "line": "A shot, in the 12th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 479,
+      "shotId": "112715"
+    },
+    "at": {
+      "x": 50,
+      "y": 24.4
+    },
+    "xg": 0.02
+  },
+  "u-113450": {
+    "scorer": "Jordan Henderson",
+    "match": "Chelsea v Liverpool",
+    "date": "2016-09-16",
+    "competition": "Premier League 2016/17",
+    "line": "A shot, in the 35th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 501,
+      "shotId": "113450"
+    },
+    "at": {
+      "x": 22.3,
+      "y": 25
+    },
+    "xg": 0.02
+  },
+  "u-114646": {
+    "scorer": "Dimitri Payet",
+    "match": "West Ham v Middlesbrough",
+    "date": "2016-10-01",
+    "competition": "Premier League 2016/17",
+    "line": "A shot after a dribble, in the 56th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 526,
+      "shotId": "114646"
+    },
+    "at": {
+      "x": 39.5,
+      "y": 7.9
+    },
+    "xg": 0.13
+  },
+  "u-116228": {
+    "scorer": "Pedro",
+    "match": "Chelsea v Tottenham",
+    "date": "2016-11-26",
+    "competition": "Premier League 2016/17",
+    "line": "A shot, in the 44th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 2712,
+      "shotId": "116228"
+    },
+    "at": {
+      "x": 26.7,
+      "y": 21.4
+    },
+    "xg": 0.03
+  },
+  "u-116602": {
+    "scorer": "Henrikh Mkhitaryan",
+    "match": "Manchester United v Sunderland",
+    "date": "2016-12-26",
+    "competition": "Premier League 2016/17",
+    "line": "A shot from a cross, in the 85th minute, to make it 3–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 3147,
+      "shotId": "116602"
+    },
+    "at": {
+      "x": 36.2,
+      "y": 7.7
+    },
+    "xg": 0.13
+  },
+  "u-118051": {
+    "scorer": "Andy Carroll",
+    "match": "West Ham v Crystal Palace",
+    "date": "2017-01-14",
+    "competition": "Premier League 2016/17",
+    "line": "A shot from a cross, in the 78th minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 3346,
+      "shotId": "118051"
+    },
+    "at": {
+      "x": 43.9,
+      "y": 9.8
+    },
+    "xg": 0.06
+  },
+  "u-116349": {
+    "scorer": "Eden Hazard",
+    "match": "Chelsea v Arsenal",
+    "date": "2017-02-04",
+    "competition": "Premier League 2016/17",
+    "line": "A shot after a dribble, in the 52nd minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 3370,
+      "shotId": "116349"
+    },
+    "at": {
+      "x": 41.6,
+      "y": 9
+    },
+    "xg": 0.28
+  },
+  "u-120198": {
+    "scorer": "Andros Townsend",
+    "match": "West Bromwich Albion v Crystal Palace",
+    "date": "2017-03-04",
+    "competition": "Premier League 2016/17",
+    "line": "A shot after a dribble, in the 83rd minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 3408,
+      "shotId": "120198"
+    },
+    "at": {
+      "x": 23.7,
+      "y": 8.6
+    },
+    "xg": 0.12
+  },
+  "u-120943": {
+    "scorer": "Pedro",
+    "match": "Everton v Chelsea",
+    "date": "2017-04-30",
+    "competition": "Premier League 2016/17",
+    "line": "A shot, in the 65th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 3481,
+      "shotId": "120943"
+    },
+    "at": {
+      "x": 32.1,
+      "y": 23.8
+    },
+    "xg": 0.03
+  },
+  "u-159184": {
+    "scorer": "Charlie Daniels",
+    "match": "Bournemouth v Manchester City",
+    "date": "2017-08-26",
+    "competition": "Premier League 2017/18",
+    "line": "A shot, in the 12th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7139,
+      "shotId": "159184"
+    },
+    "at": {
+      "x": 13.2,
+      "y": 12.8
+    },
+    "xg": 0.02
+  },
+  "u-158764": {
+    "scorer": "Antonio Valencia",
+    "match": "Manchester United v Everton",
+    "date": "2017-09-17",
+    "competition": "Premier League 2017/18",
+    "line": "A shot from a chipped pass, in the 3rd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7168,
+      "shotId": "158764"
+    },
+    "at": {
+      "x": 47.9,
+      "y": 20.2
+    },
+    "xg": 0.02
+  },
+  "u-159587": {
+    "scorer": "Sofiane Boufal",
+    "match": "Southampton v West Bromwich Albion",
+    "date": "2017-10-21",
+    "competition": "Premier League 2017/18",
+    "line": "A shot, in the 84th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7204,
+      "shotId": "159587"
+    },
+    "at": {
+      "x": 29.7,
+      "y": 16.8
+    },
+    "xg": 0.06
+  },
+  "u-179175": {
+    "scorer": "Jermain Defoe",
+    "match": "Crystal Palace v Bournemouth",
+    "date": "2017-12-09",
+    "competition": "Premier League 2017/18",
+    "line": "A shot from a through ball, in the 47th minute, to make it 2–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7273,
+      "shotId": "179175"
+    },
+    "at": {
+      "x": 51.4,
+      "y": 8.2
+    },
+    "xg": 0.09
+  },
+  "u-188509": {
+    "scorer": "Willian",
+    "match": "Brighton v Chelsea",
+    "date": "2018-01-20",
+    "competition": "Premier League 2017/18",
+    "line": "A shot, in the 5th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7350,
+      "shotId": "188509"
+    },
+    "at": {
+      "x": 37.5,
+      "y": 17.5
+    },
+    "xg": 0.09
+  },
+  "u-193745": {
+    "scorer": "Victor Wanyama",
+    "match": "Liverpool v Tottenham",
+    "date": "2018-02-04",
+    "competition": "Premier League 2017/18",
+    "line": "A shot, in the 79th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7375,
+      "shotId": "193745"
+    },
+    "at": {
+      "x": 30,
+      "y": 27.1
+    },
+    "xg": 0.02
+  },
+  "u-199975": {
+    "scorer": "Jamie Vardy",
+    "match": "West Bromwich Albion v Leicester",
+    "date": "2018-03-10",
+    "competition": "Premier League 2017/18",
+    "line": "A shot from a chipped pass, in the 20th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7417,
+      "shotId": "199975"
+    },
+    "at": {
+      "x": 28.4,
+      "y": 15.8
+    },
+    "xg": 0.06
+  },
+  "u-204100": {
+    "scorer": "Christian Eriksen",
+    "match": "Chelsea v Tottenham",
+    "date": "2018-04-01",
+    "competition": "Premier League 2017/18",
+    "line": "A shot, in the 45th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 7431,
+      "shotId": "204100"
+    },
+    "at": {
+      "x": 21.6,
+      "y": 27.2
+    },
+    "xg": 0.02
+  },
+  "u-233259": {
+    "scorer": "Jean Michael Seri",
+    "match": "Fulham v Burnley",
+    "date": "2018-08-26",
+    "competition": "Premier League 2018/19",
+    "line": "A shot, in the 3rd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9220,
+      "shotId": "233259"
+    },
+    "at": {
+      "x": 26.9,
+      "y": 26.9
+    },
+    "xg": 0.02
+  },
+  "u-234332": {
+    "scorer": "Daniel Sturridge",
+    "match": "Chelsea v Liverpool",
+    "date": "2018-09-29",
+    "competition": "Premier League 2018/19",
+    "line": "A shot, in the 88th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9264,
+      "shotId": "234332"
+    },
+    "at": {
+      "x": 23,
+      "y": 25.3
+    },
+    "xg": 0.02
+  },
+  "u-249161": {
+    "scorer": "Aaron Ramsey",
+    "match": "Fulham v Arsenal",
+    "date": "2018-10-07",
+    "competition": "Premier League 2018/19",
+    "line": "A shot, in the 66th minute, to make it 1–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9274,
+      "shotId": "249161"
+    },
+    "at": {
+      "x": 31.4,
+      "y": 7.8
+    },
+    "xg": 0.15
+  },
+  "u-250406": {
+    "scorer": "Son Heung-Min",
+    "match": "Tottenham v Chelsea",
+    "date": "2018-11-24",
+    "competition": "Premier League 2018/19",
+    "line": "A shot after a dribble, in the 53rd minute, to make it 3–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9323,
+      "shotId": "250406"
+    },
+    "at": {
+      "x": 39.8,
+      "y": 8.1
+    },
+    "xg": 0.46
+  },
+  "u-251576": {
+    "scorer": "Andros Townsend",
+    "match": "Manchester City v Crystal Palace",
+    "date": "2018-12-22",
+    "competition": "Premier League 2018/19",
+    "line": "A shot from a set piece, in the 34th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9370,
+      "shotId": "251576"
+    },
+    "at": {
+      "x": 38.1,
+      "y": 28.5
+    },
+    "xg": 0.01
+  },
+  "u-274437": {
+    "scorer": "André Schürrle",
+    "match": "Burnley v Fulham",
+    "date": "2019-01-12",
+    "competition": "Premier League 2018/19",
+    "line": "A shot from a chipped pass, in the 1st minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9415,
+      "shotId": "274437"
+    },
+    "at": {
+      "x": 48.3,
+      "y": 14.2
+    },
+    "xg": 0.04
+  },
+  "u-275940": {
+    "scorer": "Fabian Schär",
+    "match": "Newcastle United v Burnley",
+    "date": "2019-02-26",
+    "competition": "Premier League 2018/19",
+    "line": "A shot, in the 23rd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9473,
+      "shotId": "275940"
+    },
+    "at": {
+      "x": 48.6,
+      "y": 28.5
+    },
+    "xg": 0.01
+  },
+  "u-284336": {
+    "scorer": "Anthony Knockaert",
+    "match": "Crystal Palace v Brighton",
+    "date": "2019-03-09",
+    "competition": "Premier League 2018/19",
+    "line": "A shot from a chipped pass, in the 73rd minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9493,
+      "shotId": "284336"
+    },
+    "at": {
+      "x": 43.2,
+      "y": 21.2
+    },
+    "xg": 0.03
+  },
+  "u-293025": {
+    "scorer": "Eden Hazard",
+    "match": "Chelsea v West Ham",
+    "date": "2019-04-08",
+    "competition": "Premier League 2018/19",
+    "line": "A shot after a dribble, in the 23rd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 9525,
+      "shotId": "293025"
+    },
+    "at": {
+      "x": 30.4,
+      "y": 12.6
+    },
+    "xg": 0.15
+  },
+  "u-312509": {
+    "scorer": "Harvey Barnes",
+    "match": "Sheffield United v Leicester",
+    "date": "2019-08-24",
+    "competition": "Premier League 2019/20",
+    "line": "A shot from a corner, in the 69th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11665,
+      "shotId": "312509"
+    },
+    "at": {
+      "x": 39.9,
+      "y": 15.3
+    },
+    "xg": 0.03
+  },
+  "u-317344": {
+    "scorer": "Moussa Djenepo",
+    "match": "Sheffield United v Southampton",
+    "date": "2019-09-14",
+    "competition": "Premier League 2019/20",
+    "line": "A shot after a dribble, in the 65th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11686,
+      "shotId": "317344"
+    },
+    "at": {
+      "x": 38.3,
+      "y": 13.5
+    },
+    "xg": 0.25
+  },
+  "u-324971": {
+    "scorer": "Matthew Longstaff",
+    "match": "Newcastle United v Manchester United",
+    "date": "2019-10-06",
+    "competition": "Premier League 2019/20",
+    "line": "A shot, in the 71st minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11721,
+      "shotId": "324971"
+    },
+    "at": {
+      "x": 37.3,
+      "y": 23
+    },
+    "xg": 0.03
+  },
+  "u-333440": {
+    "scorer": "Kevin De Bruyne",
+    "match": "Newcastle United v Manchester City",
+    "date": "2019-11-30",
+    "competition": "Premier League 2019/20",
+    "line": "A shot, in the 81st minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11777,
+      "shotId": "333440"
+    },
+    "at": {
+      "x": 27.3,
+      "y": 22.6
+    },
+    "xg": 0.03
+  },
+  "u-335706": {
+    "scorer": "Son Heung-Min",
+    "match": "Tottenham v Burnley",
+    "date": "2019-12-07",
+    "competition": "Premier League 2019/20",
+    "line": "A shot after a dribble, in the 31st minute, to make it 3–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11800,
+      "shotId": "335706"
+    },
+    "at": {
+      "x": 30.3,
+      "y": 12.1
+    },
+    "xg": 0.55
+  },
+  "u-351417": {
+    "scorer": "Alireza Jahanbakhsh",
+    "match": "Brighton v Chelsea",
+    "date": "2020-01-01",
+    "competition": "Premier League 2019/20",
+    "line": "A shot from a corner, in the 83rd minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11845,
+      "shotId": "351417"
+    },
+    "at": {
+      "x": 40.7,
+      "y": 10.4
+    },
+    "xg": 0.07
+  },
+  "u-352750": {
+    "scorer": "Matej Vydra",
+    "match": "Southampton v Burnley",
+    "date": "2020-02-15",
+    "competition": "Premier League 2019/20",
+    "line": "A shot after a dribble, in the 59th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11901,
+      "shotId": "352750"
+    },
+    "at": {
+      "x": 27.8,
+      "y": 14.7
+    },
+    "xg": 0.09
+  },
+  "u-367773": {
+    "scorer": "Bruno Fernandes",
+    "match": "Brighton v Manchester United",
+    "date": "2020-06-30",
+    "competition": "Premier League 2019/20",
+    "line": "A shot from a chipped pass, in the 49th minute, to make it 0–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 11956,
+      "shotId": "367773"
+    },
+    "at": {
+      "x": 40.3,
+      "y": 8.2
+    },
+    "xg": 0.51
+  },
+  "u-373752": {
+    "scorer": "Kevin De Bruyne",
+    "match": "Manchester City v Norwich",
+    "date": "2020-07-26",
+    "competition": "Premier League 2019/20",
+    "line": "A shot, in the 45th minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 12017,
+      "shotId": "373752"
+    },
+    "at": {
+      "x": 21.8,
+      "y": 22.2
+    },
+    "xg": 0.03
+  },
+  "u-379618": {
+    "scorer": "James Maddison",
+    "match": "Manchester City v Leicester",
+    "date": "2020-09-27",
+    "competition": "Premier League 2020/21",
+    "line": "A shot, in the 76th minute, to make it 1–4.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14112,
+      "shotId": "379618"
+    },
+    "at": {
+      "x": 18.6,
+      "y": 25.2
+    },
+    "xg": 0.03
+  },
+  "u-382673": {
+    "scorer": "Manuel Lanzini",
+    "match": "Tottenham v West Ham",
+    "date": "2020-10-18",
+    "competition": "Premier League 2020/21",
+    "line": "A shot from a set piece, in the 93rd minute, to make it 3–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14483,
+      "shotId": "382673"
+    },
+    "at": {
+      "x": 30.4,
+      "y": 27.9
+    },
+    "xg": 0.01
+  },
+  "u-385497": {
+    "scorer": "Ola Aina",
+    "match": "Fulham v West Bromwich Albion",
+    "date": "2020-11-02",
+    "competition": "Premier League 2020/21",
+    "line": "A shot, in the 29th minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14497,
+      "shotId": "385497"
+    },
+    "at": {
+      "x": 44.7,
+      "y": 20.1
+    },
+    "xg": 0.04
+  },
+  "u-393486": {
+    "scorer": "Sébastien Haller",
+    "match": "West Ham v Crystal Palace",
+    "date": "2020-12-16",
+    "competition": "Premier League 2020/21",
+    "line": "A shot from a cross, in the 54th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14561,
+      "shotId": "393486"
+    },
+    "at": {
+      "x": 33.5,
+      "y": 9.2
+    },
+    "xg": 0.11
+  },
+  "u-402255": {
+    "scorer": "Mohamed Salah",
+    "match": "West Ham v Liverpool",
+    "date": "2021-01-31",
+    "competition": "Premier League 2020/21",
+    "line": "A shot from a cross, in the 67th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14639,
+      "shotId": "402255"
+    },
+    "at": {
+      "x": 37.5,
+      "y": 8.8
+    },
+    "xg": 0.48
+  },
+  "u-403462": {
+    "scorer": "Bruno Fernandes",
+    "match": "Manchester United v Everton",
+    "date": "2021-02-06",
+    "competition": "Premier League 2020/21",
+    "line": "A shot, in the 44th minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14660,
+      "shotId": "403462"
+    },
+    "at": {
+      "x": 48.4,
+      "y": 19.8
+    },
+    "xg": 0.03
+  },
+  "u-410597": {
+    "scorer": "Erik Lamela",
+    "match": "Arsenal v Tottenham",
+    "date": "2021-03-14",
+    "competition": "Premier League 2020/21",
+    "line": "A shot, in the 32nd minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14705,
+      "shotId": "410597"
+    },
+    "at": {
+      "x": 23.9,
+      "y": 11.4
+    },
+    "xg": 0.09
+  },
+  "u-413464": {
+    "scorer": "Jesse Lingard",
+    "match": "Wolverhampton Wanderers v West Ham",
+    "date": "2021-04-05",
+    "competition": "Premier League 2020/21",
+    "line": "A shot, in the 5th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14734,
+      "shotId": "413464"
+    },
+    "at": {
+      "x": 27.1,
+      "y": 10.3
+    },
+    "xg": 0.42
+  },
+  "u-423106": {
+    "scorer": "Edinson Cavani",
+    "match": "Manchester United v Fulham",
+    "date": "2021-05-18",
+    "competition": "Premier League 2020/21",
+    "line": "A shot, in the 14th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 14800,
+      "shotId": "423106"
+    },
+    "at": {
+      "x": 45.2,
+      "y": 34.4
+    },
+    "xg": 0.01
+  },
+  "u-427017": {
+    "scorer": "Danny Ings",
+    "match": "Aston Villa v Newcastle United",
+    "date": "2021-08-21",
+    "competition": "Premier League 2021/22",
+    "line": "A shot from a flick-on, in the 47th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16388,
+      "shotId": "427017"
+    },
+    "at": {
+      "x": 30.5,
+      "y": 11.8
+    },
+    "xg": 0.09
+  },
+  "u-430904": {
+    "scorer": "Andros Townsend",
+    "match": "Everton v Burnley",
+    "date": "2021-09-13",
+    "competition": "Premier League 2021/22",
+    "line": "A shot, in the 64th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16415,
+      "shotId": "430904"
+    },
+    "at": {
+      "x": 34.5,
+      "y": 28.4
+    },
+    "xg": 0.02
+  },
+  "u-435663": {
+    "scorer": "Mohamed Salah",
+    "match": "Liverpool v Manchester City",
+    "date": "2021-10-03",
+    "competition": "Premier League 2021/22",
+    "line": "A shot after a dribble, in the 75th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16441,
+      "shotId": "435663"
+    },
+    "at": {
+      "x": 43.5,
+      "y": 3.5
+    },
+    "xg": 0.16
+  },
+  "u-443155": {
+    "scorer": "Rodri",
+    "match": "Manchester City v Everton",
+    "date": "2021-11-21",
+    "competition": "Premier League 2021/22",
+    "line": "A shot, in the 54th minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16490,
+      "shotId": "443155"
+    },
+    "at": {
+      "x": 35.2,
+      "y": 25.4
+    },
+    "xg": 0.04
+  },
+  "u-447733": {
+    "scorer": "Alexandre Lacazette",
+    "match": "Arsenal v Southampton",
+    "date": "2021-12-11",
+    "competition": "Premier League 2021/22",
+    "line": "A shot, in the 20th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16526,
+      "shotId": "447733"
+    },
+    "at": {
+      "x": 34.2,
+      "y": 14.1
+    },
+    "xg": 0.36
+  },
+  "u-451183": {
+    "scorer": "Mateo Kovacic",
+    "match": "Chelsea v Liverpool",
+    "date": "2022-01-02",
+    "competition": "Premier League 2021/22",
+    "line": "A shot from a set piece, in the 41st minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16578,
+      "shotId": "451183"
+    },
+    "at": {
+      "x": 30.3,
+      "y": 23
+    },
+    "xg": 0.02
+  },
+  "u-456598": {
+    "scorer": "Wilfried Zaha",
+    "match": "Norwich v Crystal Palace",
+    "date": "2022-02-09",
+    "competition": "Premier League 2021/22",
+    "line": "A shot from a chipped pass, in the 59th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16609,
+      "shotId": "456598"
+    },
+    "at": {
+      "x": 17.5,
+      "y": 19.4
+    },
+    "xg": 0.01
+  },
+  "u-462652": {
+    "scorer": "Cristiano Ronaldo",
+    "match": "Manchester United v Tottenham",
+    "date": "2022-03-12",
+    "competition": "Premier League 2021/22",
+    "line": "A shot, in the 11th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16663,
+      "shotId": "462652"
+    },
+    "at": {
+      "x": 37.9,
+      "y": 28.7
+    },
+    "xg": 0.02
+  },
+  "u-469376": {
+    "scorer": "Miguel Almirón",
+    "match": "Newcastle United v Crystal Palace",
+    "date": "2022-04-20",
+    "competition": "Premier League 2021/22",
+    "line": "A shot after a dribble, in the 31st minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 16671,
+      "shotId": "469376"
+    },
+    "at": {
+      "x": 44.2,
+      "y": 9.3
+    },
+    "xg": 0.1
+  },
+  "u-484231": {
+    "scorer": "Allan Saint-Maximin",
+    "match": "Wolverhampton Wanderers v Newcastle United",
+    "date": "2022-08-28",
+    "competition": "Premier League 2022/23",
+    "line": "A shot after a dribble, in the 89th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18240,
+      "shotId": "484231"
+    },
+    "at": {
+      "x": 30.8,
+      "y": 19.7
+    },
+    "xg": 0.06
+  },
+  "u-485949": {
+    "scorer": "Ivan Toney",
+    "match": "Brentford v Leeds",
+    "date": "2022-09-03",
+    "competition": "Premier League 2022/23",
+    "line": "A shot after a dribble, in the 57th minute, to make it 3–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18257,
+      "shotId": "485949"
+    },
+    "at": {
+      "x": 32.3,
+      "y": 25.2
+    },
+    "xg": 0.02
+  },
+  "u-490169": {
+    "scorer": "Miguel Almirón",
+    "match": "Fulham v Newcastle United",
+    "date": "2022-10-01",
+    "competition": "Premier League 2022/23",
+    "line": "A shot from a chipped pass, in the 32nd minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18285,
+      "shotId": "490169"
+    },
+    "at": {
+      "x": 44.9,
+      "y": 10.4
+    },
+    "xg": 0.3
+  },
+  "u-501727": {
+    "scorer": "Demarai Gray",
+    "match": "Manchester City v Everton",
+    "date": "2022-12-31",
+    "competition": "Premier League 2022/23",
+    "line": "A shot, in the 63rd minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18376,
+      "shotId": "501727"
+    },
+    "at": {
+      "x": 20.5,
+      "y": 16
+    },
+    "xg": 0.06
+  },
+  "u-504344": {
+    "scorer": "Michael Olise",
+    "match": "Crystal Palace v Manchester United",
+    "date": "2023-01-18",
+    "competition": "Premier League 2022/23",
+    "line": "A direct free kick, in the 90th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18270,
+      "shotId": "504344"
+    },
+    "at": {
+      "x": 49.8,
+      "y": 24.9
+    },
+    "xg": 0.04
+  },
+  "u-508449": {
+    "scorer": "Willian",
+    "match": "Fulham v Nottingham Forest",
+    "date": "2023-02-11",
+    "competition": "Premier League 2022/23",
+    "line": "A shot from a set piece, in the 16th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18425,
+      "shotId": "508449"
+    },
+    "at": {
+      "x": 44.9,
+      "y": 10.4
+    },
+    "xg": 0.05
+  },
+  "u-515052": {
+    "scorer": "Jonny",
+    "match": "Wolverhampton Wanderers v Leeds",
+    "date": "2023-03-18",
+    "competition": "Premier League 2022/23",
+    "line": "A shot, in the 64th minute, to make it 1–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18481,
+      "shotId": "515052"
+    },
+    "at": {
+      "x": 19.2,
+      "y": 38.2
+    },
+    "xg": 0.01
+  },
+  "u-518003": {
+    "scorer": "Matheus Nunes",
+    "match": "Wolverhampton Wanderers v Chelsea",
+    "date": "2023-04-08",
+    "competition": "Premier League 2022/23",
+    "line": "A shot, in the 30th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 18501,
+      "shotId": "518003"
+    },
+    "at": {
+      "x": 50.1,
+      "y": 11.1
+    },
+    "xg": 0.04
+  },
+  "u-533141": {
+    "scorer": "Kaoru Mitoma",
+    "match": "Wolverhampton Wanderers v Brighton",
+    "date": "2023-08-19",
+    "competition": "Premier League 2023/24",
+    "line": "A shot after a dribble, in the 14th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22286,
+      "shotId": "533141"
+    },
+    "at": {
+      "x": 28.9,
+      "y": 9.8
+    },
+    "xg": 0.46
+  },
+  "u-539442": {
+    "scorer": "Bruno Fernandes",
+    "match": "Burnley v Manchester United",
+    "date": "2023-09-23",
+    "competition": "Premier League 2023/24",
+    "line": "A shot from a chipped pass, in the 44th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 21950,
+      "shotId": "539442"
+    },
+    "at": {
+      "x": 43.9,
+      "y": 8.8
+    },
+    "xg": 0.07
+  },
+  "u-544069": {
+    "scorer": "Saman Ghoddos",
+    "match": "Brentford v Burnley",
+    "date": "2023-10-21",
+    "competition": "Premier League 2023/24",
+    "line": "A shot, in the 86th minute, to make it 3–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 21977,
+      "shotId": "544069"
+    },
+    "at": {
+      "x": 35.1,
+      "y": 24.7
+    },
+    "xg": 0.03
+  },
+  "u-550483": {
+    "scorer": "Alejandro Garnacho",
+    "match": "Everton v Manchester United",
+    "date": "2023-11-26",
+    "competition": "Premier League 2023/24",
+    "line": "A shot from a cross, in the 2nd minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22017,
+      "shotId": "550483"
+    },
+    "at": {
+      "x": 26.2,
+      "y": 13.8
+    },
+    "xg": 0.05
+  },
+  "u-551729": {
+    "scorer": "Alexis Mac Allister",
+    "match": "Liverpool v Fulham",
+    "date": "2023-12-03",
+    "competition": "Premier League 2023/24",
+    "line": "A shot after a dribble, in the 38th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22030,
+      "shotId": "551729"
+    },
+    "at": {
+      "x": 26,
+      "y": 24.6
+    },
+    "xg": 0.03
+  },
+  "u-558239": {
+    "scorer": "Oscar Bobb",
+    "match": "Newcastle United v Manchester City",
+    "date": "2024-01-13",
+    "competition": "Premier League 2023/24",
+    "line": "A shot after a dribble, in the 90th minute, to make it 2–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22100,
+      "shotId": "558239"
+    },
+    "at": {
+      "x": 32.2,
+      "y": 5.3
+    },
+    "xg": 0.91
+  },
+  "u-560869": {
+    "scorer": "Kobbie Mainoo",
+    "match": "Wolverhampton Wanderers v Manchester United",
+    "date": "2024-02-01",
+    "competition": "Premier League 2023/24",
+    "line": "A shot after a dribble, in the 96th minute, to make it 3–4.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22111,
+      "shotId": "560869"
+    },
+    "at": {
+      "x": 23.9,
+      "y": 16.2
+    },
+    "xg": 0.03
+  },
+  "u-567264": {
+    "scorer": "Marcus Rashford",
+    "match": "Manchester City v Manchester United",
+    "date": "2024-03-03",
+    "competition": "Premier League 2023/24",
+    "line": "A shot, in the 7th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22160,
+      "shotId": "567264"
+    },
+    "at": {
+      "x": 29.4,
+      "y": 25.6
+    },
+    "xg": 0.02
+  },
+  "u-574582": {
+    "scorer": "Cole Palmer",
+    "match": "Chelsea v Everton",
+    "date": "2024-04-15",
+    "competition": "Premier League 2023/24",
+    "line": "A shot, in the 12th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 22219,
+      "shotId": "574582"
+    },
+    "at": {
+      "x": 37.1,
+      "y": 19.5
+    },
+    "xg": 0.06
+  },
+  "u-586673": {
+    "scorer": "Cole Palmer",
+    "match": "Wolverhampton Wanderers v Chelsea",
+    "date": "2024-08-25",
+    "competition": "Premier League 2024/25",
+    "line": "A shot from a chipped pass, in the 44th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26619,
+      "shotId": "586673"
+    },
+    "at": {
+      "x": 27.3,
+      "y": 25.7
+    },
+    "xg": 0.02
+  },
+  "u-590999": {
+    "scorer": "Jhon Durán",
+    "match": "Aston Villa v Everton",
+    "date": "2024-09-14",
+    "competition": "Premier League 2024/25",
+    "line": "A shot, in the 75th minute, to make it 3–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26638,
+      "shotId": "590999"
+    },
+    "at": {
+      "x": 24.8,
+      "y": 28.6
+    },
+    "xg": 0.02
+  },
+  "u-598895": {
+    "scorer": "Nicolas Jackson",
+    "match": "Chelsea v Newcastle United",
+    "date": "2024-10-27",
+    "competition": "Premier League 2024/25",
+    "line": "A shot, in the 17th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26688,
+      "shotId": "598895"
+    },
+    "at": {
+      "x": 35.8,
+      "y": 10.1
+    },
+    "xg": 0.59
+  },
+  "u-601033": {
+    "scorer": "Harry Wilson",
+    "match": "Fulham v Brentford",
+    "date": "2024-11-04",
+    "competition": "Premier League 2024/25",
+    "line": "A shot from a cross, in the 91st minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26693,
+      "shotId": "601033"
+    },
+    "at": {
+      "x": 38.6,
+      "y": 8.1
+    },
+    "xg": 0.1
+  },
+  "u-605246": {
+    "scorer": "Alexander Isak",
+    "match": "Newcastle United v Liverpool",
+    "date": "2024-12-04",
+    "competition": "Premier League 2024/25",
+    "line": "A shot, in the 34th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26740,
+      "shotId": "605246"
+    },
+    "at": {
+      "x": 40.5,
+      "y": 21.4
+    },
+    "xg": 0.04
+  },
+  "u-609896": {
+    "scorer": "David Brooks",
+    "match": "Bournemouth v Everton",
+    "date": "2025-01-04",
+    "competition": "Premier League 2024/25",
+    "line": "A shot from a cross, in the 76th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26792,
+      "shotId": "609896"
+    },
+    "at": {
+      "x": 39.9,
+      "y": 9.2
+    },
+    "xg": 0.09
+  },
+  "u-616952": {
+    "scorer": "Kaoru Mitoma",
+    "match": "Brighton v Chelsea",
+    "date": "2025-02-14",
+    "competition": "Premier League 2024/25",
+    "line": "A shot from a chipped pass, in the 26th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26843,
+      "shotId": "616952"
+    },
+    "at": {
+      "x": 31.1,
+      "y": 19.4
+    },
+    "xg": 0.05
+  },
+  "u-622647": {
+    "scorer": "Jens Cajuste",
+    "match": "Ipswich v Nottingham Forest",
+    "date": "2025-03-15",
+    "competition": "Premier League 2024/25",
+    "line": "A shot, in the 81st minute, to make it 1–3.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26887,
+      "shotId": "622647"
+    },
+    "at": {
+      "x": 36.9,
+      "y": 20.8
+    },
+    "xg": 0.05
+  },
+  "u-630384": {
+    "scorer": "Carlos Baleba",
+    "match": "Brighton v West Ham",
+    "date": "2025-04-26",
+    "competition": "Premier League 2024/25",
+    "line": "A shot from a corner, in the 91st minute, to make it 3–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 26934,
+      "shotId": "630384"
+    },
+    "at": {
+      "x": 38.3,
+      "y": 31.4
+    },
+    "xg": 0.02
+  },
+  "u-640955": {
+    "scorer": "Dominik Szoboszlai",
+    "match": "Liverpool v Arsenal",
+    "date": "2025-08-31",
+    "competition": "Premier League 2025/26",
+    "line": "A direct free kick, in the 82nd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 28806,
+      "shotId": "640955"
+    },
+    "at": {
+      "x": 33.3,
+      "y": 31.8
+    },
+    "xg": 0.04
+  },
+  "u-641379": {
+    "scorer": "Martín Zubimendi",
+    "match": "Arsenal v Nottingham Forest",
+    "date": "2025-09-13",
+    "competition": "Premier League 2025/26",
+    "line": "A shot from a corner, in the 31st minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 28808,
+      "shotId": "641379"
+    },
+    "at": {
+      "x": 34,
+      "y": 20.8
+    },
+    "xg": 0.03
+  },
+  "u-648091": {
+    "scorer": "Emiliano Buendía",
+    "match": "Tottenham v Aston Villa",
+    "date": "2025-10-19",
+    "competition": "Premier League 2025/26",
+    "line": "A shot, in the 76th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 28856,
+      "shotId": "648091"
+    },
+    "at": {
+      "x": 45.8,
+      "y": 18.8
+    },
+    "xg": 0.03
+  },
+  "u-655086": {
+    "scorer": "Tyler Adams",
+    "match": "Sunderland v Bournemouth",
+    "date": "2025-11-29",
+    "competition": "Premier League 2025/26",
+    "line": "A shot after winning the ball back, in the 14th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 28905,
+      "shotId": "655086"
+    },
+    "at": {
+      "x": 33.5,
+      "y": 43.3
+    },
+    "xg": 0.01
+  },
+  "u-657582": {
+    "scorer": "Harry Wilson",
+    "match": "Fulham v Crystal Palace",
+    "date": "2025-12-07",
+    "competition": "Premier League 2025/26",
+    "line": "A shot, in the 37th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 28922,
+      "shotId": "657582"
+    },
+    "at": {
+      "x": 38.7,
+      "y": 17.2
+    },
+    "xg": 0.07
+  },
+  "u-661461": {
+    "scorer": "Harrison Reed",
+    "match": "Fulham v Liverpool",
+    "date": "2026-01-04",
+    "competition": "Premier League 2025/26",
+    "line": "A shot, in the 96th minute, to make it 2–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 28975,
+      "shotId": "661461"
+    },
+    "at": {
+      "x": 22.9,
+      "y": 22.6
+    },
+    "xg": 0.02
+  },
+  "u-666699": {
+    "scorer": "Dominic Solanke",
+    "match": "Tottenham v Manchester City",
+    "date": "2026-02-01",
+    "competition": "Premier League 2025/26",
+    "line": "A shot from a cross, in the 69th minute, to make it 2–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 29016,
+      "shotId": "666699"
+    },
+    "at": {
+      "x": 37.5,
+      "y": 10.4
+    },
+    "xg": 0.09
+  },
+  "u-672328": {
+    "scorer": "William Osula",
+    "match": "Newcastle United v Manchester United",
+    "date": "2026-03-04",
+    "competition": "Premier League 2025/26",
+    "line": "A shot, in the 89th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 29065,
+      "shotId": "672328"
+    },
+    "at": {
+      "x": 47.7,
+      "y": 15.8
+    },
+    "xg": 0.05
+  },
+  "u-679347": {
+    "scorer": "Kaoru Mitoma",
+    "match": "Tottenham v Brighton",
+    "date": "2026-04-18",
+    "competition": "Premier League 2025/26",
+    "line": "A shot from a cross, in the 47th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 29107,
+      "shotId": "679347"
+    },
+    "at": {
+      "x": 22.4,
+      "y": 6.3
+    },
+    "xg": 0.04
   }
 }

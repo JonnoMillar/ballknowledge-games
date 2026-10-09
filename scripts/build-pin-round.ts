@@ -14,6 +14,7 @@
  * results gets no pack. June and July: nothing to do.
  */
 import { addDays, seasonLabel, seasonOf, seasonTag, spanTitle, utcToday, weekEnd } from '../games/pin/lib/dates';
+import { inHalf } from '../games/pin/lib/pitch';
 import { pickRound, rankRecent, type Candidate } from '../games/pin/lib/round';
 import type { Goal } from '../games/pin/lib/types';
 import { arg, packExists, readGoals, writeGoals, writePack } from './pin-files';
@@ -59,6 +60,7 @@ for (const [end, fs] of [...weeks].sort(([a], [b]) => a.localeCompare(b))) {
     for (const s of shots) {
       if (s.result !== 'Goal' || s.situation === 'Penalty') continue;
       const g = toGoal(f, shots, s, season);
+      if (!inHalf(g.at)) continue; // a goal from the own half cannot be pinned on the half-pitch
       found[`u-${s.id}`] = g;
       candidates.push({ slug: `u-${s.id}`, matchId: Number(f.id), xg: g.xg, at: g.at });
     }
