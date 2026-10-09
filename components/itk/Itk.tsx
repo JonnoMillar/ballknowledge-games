@@ -174,7 +174,12 @@ export default function Itk({ sets }: { sets: ItkSet[] }) {
                 </span>
               )}
             </div>
-            {mark ? <FeedbackStrip value={fb.get(set.id, view)} onChange={(patch) => fb.update(set.id, view, r.player.name, patch)} /> : null}
+            <FeedbackStrip
+              key={`fb-${set.id}-${view}`}
+              value={fb.get(set.id, view)}
+              revealed={Boolean(mark)}
+              onChange={(patch) => fb.update(set.id, view, r.player.name, patch)}
+            />
           </>
         )}
       </main>

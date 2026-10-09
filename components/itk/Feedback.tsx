@@ -18,6 +18,8 @@ export interface Note {
   picked?: string[];
   fake?: string;
   knew?: 'yes' | 'vaguely' | 'no';
+  /** How easy it looked before any pick: 1 very hard, 10 very easy. Locked at the reveal. */
+  look?: number;
   /** How easy it was: 1 very hard, 10 very easy. */
   ease?: number;
   /** How much fun it was: 1 dull, 10 great. */
@@ -47,7 +49,7 @@ export function useFeedback() {
 
 const KNEW = ['yes', 'vaguely', 'no'] as const;
 
-export function FeedbackStrip({ value, onChange }: { value: Note | undefined; onChange: (patch: Partial<Note>) => void }) {
+export function FeedbackStrip({ value, revealed, onChange }: { value: Note | undefined; revealed: boolean; onChange: (patch: Partial<Note>) => void }) {
   const group = <K extends 'knew'>(label: string, field: K, options: readonly NonNullable<Note[K]>[]) => (
     <div className="itk-fb__group" role="group" aria-label={label}>
       <span className="itk-fb__label">{label}</span>
@@ -64,8 +66,8 @@ export function FeedbackStrip({ value, onChange }: { value: Note | undefined; on
       ))}
     </div>
   );
-  const scale = (label: string, field: 'ease' | 'fun', low: string, high: string) => (
-    <div className="itk-fb__group" role="group" aria-label={`${label}, 1 ${low} to 10 ${high}`}>
+  const scale = (label: string, field: 'look' | 'ease' | 'fun', low: string, high: string, locked = false) => (
+    <div className={`itk-fb__group ${locked ? 'is-locked' : ''}`} role="group" aria-label={`${label}, 1 ${low} to 10 ${high}`}>
       <span className="itk-fb__label">{label}</span>
       <span className="itk-fb__end">{low}</span>
       {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
@@ -74,6 +76,7 @@ export function FeedbackStrip({ value, onChange }: { value: Note | undefined; on
           type="button"
           className="itk-fb__chip itk-fb__chip--n"
           aria-pressed={value?.[field] === n}
+          disabled={locked}
           onClick={() => onChange({ [field]: value?.[field] === n ? undefined : n })}
         >
           {n}
@@ -85,8 +88,9 @@ export function FeedbackStrip({ value, onChange }: { value: Note | undefined; on
   return (
     <aside className="itk-fb" aria-label="Prototype feedback">
       {group('Knew him', 'knew', KNEW)}
-      {scale('How easy', 'ease', 'hard', 'easy')}
-      {scale('Fun', 'fun', 'dull', 'great')}
+      {scale('First look', 'look', 'hard', 'easy', revealed)}
+      {revealed ? scale('How easy', 'ease', 'hard', 'easy') : null}
+      {revealed ? scale('Fun', 'fun', 'dull', 'great') : null}
       <input
         className="itk-fb__note"
         type="text"
