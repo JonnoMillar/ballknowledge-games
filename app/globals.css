@@ -1132,6 +1132,8 @@ button { font-family: inherit; }
 .also { display: flex; flex-direction: column; gap: 10px; }
 .also__card--slugger .also__band { background: #1F6F43; }
 .also__card--slugger .also__go { color: #1F6F43; }
+.also__card--pin .also__band { background: var(--red); }
+.also__card--pin .also__go { color: var(--red); }
 
 /* ── FOOTER AND CREDITS ────────────────────────────────────────────────
    Every page links here: the Commons photos are licensed per file, and

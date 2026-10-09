@@ -177,6 +177,13 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             </span>
             <span className="also__go">Play ball →</span>
           </a>
+          <a className="also__card also__card--pin" href="/pin">
+            <span className="also__band display">Pitch pin</span>
+            <span className="also__copy">
+              <b>Where was it struck from?</b> Famous goals in packs: each week’s best, the Goal of the Month shortlist, and the classics. A bullseye is within two metres.
+            </span>
+            <span className="also__go">Take aim →</span>
+          </a>
         </section>
       </main>
     </div>

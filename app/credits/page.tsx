@@ -21,7 +21,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
         <section className="page credits__page">
           <h1 className="home__head display">Credits</h1>
           <p>
-            Chain, Rondo and Slugger are an unofficial fan project. They are not affiliated with or
+            Chain, Rondo, Slugger and Pitch pin are an unofficial fan project. They are not affiliated with or
             endorsed by any club, league or player.
           </p>
 
@@ -31,6 +31,14 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             released under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>. Careers are
             completed from the infoboxes of the <a href="https://en.wikipedia.org/">English Wikipedia</a>, whose
             text is available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+          </p>
+          <p>
+            Shot locations and expected goals in Pitch pin come from{' '}
+            <a href="https://github.com/statsbomb/open-data">StatsBomb open data</a> for the classics and from{' '}
+            <a href="https://understat.com/">Understat</a> for Premier League goals. The Goal of the Month
+            shortlists are the <a href="https://www.premierleague.com/">Premier League</a>’s; past winners are
+            from the <a href="https://en.wikipedia.org/wiki/Premier_League_Goal_of_the_Month">English Wikipedia</a>{' '}
+            (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>). Only the goals in a pack are used.
           </p>
 
           <h2 className="credits__head display">Card cases</h2>
