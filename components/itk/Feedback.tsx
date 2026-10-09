@@ -20,7 +20,8 @@ export interface Note {
   knew?: 'yes' | 'vaguely' | 'no';
   /** How easy it was: 1 very hard, 10 very easy. */
   ease?: number;
-  fun?: 'meh' | 'good' | 'great';
+  /** How much fun it was: 1 dull, 10 great. */
+  fun?: number;
   note?: string;
 }
 type Store = Record<string, Note>;
@@ -45,10 +46,9 @@ export function useFeedback() {
 }
 
 const KNEW = ['yes', 'vaguely', 'no'] as const;
-const FUN = ['meh', 'good', 'great'] as const;
 
 export function FeedbackStrip({ value, onChange }: { value: Note | undefined; onChange: (patch: Partial<Note>) => void }) {
-  const group = <K extends 'knew' | 'fun'>(label: string, field: K, options: readonly NonNullable<Note[K]>[]) => (
+  const group = <K extends 'knew'>(label: string, field: K, options: readonly NonNullable<Note[K]>[]) => (
     <div className="itk-fb__group" role="group" aria-label={label}>
       <span className="itk-fb__label">{label}</span>
       {options.map((o) => (
@@ -64,26 +64,29 @@ export function FeedbackStrip({ value, onChange }: { value: Note | undefined; on
       ))}
     </div>
   );
+  const scale = (label: string, field: 'ease' | 'fun', low: string, high: string) => (
+    <div className="itk-fb__group" role="group" aria-label={`${label}, 1 ${low} to 10 ${high}`}>
+      <span className="itk-fb__label">{label}</span>
+      <span className="itk-fb__end">{low}</span>
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+        <button
+          key={n}
+          type="button"
+          className="itk-fb__chip itk-fb__chip--n"
+          aria-pressed={value?.[field] === n}
+          onClick={() => onChange({ [field]: value?.[field] === n ? undefined : n })}
+        >
+          {n}
+        </button>
+      ))}
+      <span className="itk-fb__end">{high}</span>
+    </div>
+  );
   return (
     <aside className="itk-fb" aria-label="Prototype feedback">
       {group('Knew him', 'knew', KNEW)}
-      <div className="itk-fb__group" role="group" aria-label="How easy, 1 very hard to 10 very easy">
-        <span className="itk-fb__label">How easy</span>
-        <span className="itk-fb__end">hard</span>
-        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-          <button
-            key={n}
-            type="button"
-            className="itk-fb__chip itk-fb__chip--n"
-            aria-pressed={value?.ease === n}
-            onClick={() => onChange({ ease: value?.ease === n ? undefined : n })}
-          >
-            {n}
-          </button>
-        ))}
-        <span className="itk-fb__end">easy</span>
-      </div>
-      {group('Fun', 'fun', FUN)}
+      {scale('How easy', 'ease', 'hard', 'easy')}
+      {scale('Fun', 'fun', 'dull', 'great')}
       <input
         className="itk-fb__note"
         type="text"
