@@ -1,0 +1,937 @@
+<!-- From the English Wikipedia article "Premier League Goal of the Month" (CC BY-SA 4.0), fetched 2026-10-09: the winners table only. -->
+{| class="wikitable sortable"
+|-
+!Month!!Year!!Nationality!!Player!!Team!!class="unsortable"|Score{{Cref2|A}}!!Opponents!!Date!!class="unsortable"|Ref.
+|-
+|colspan=9 align=center|[[2016–17 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2016.1</span><span class="anchor" id="2016–17"></span>2016
+|{{flag|Uruguay}}
+|{{sortname|Cristhian|Stuani}}
+|[[Middlesbrough F.C.|Middlesbrough]]
+|align=center|'''1'''–0
+|''[[Sunderland A.F.C.|Sunderland]]''
+|21 August 2016
+|<ref>{{cite news|url=https://www.premierleague.com/news/97650 |title=Cristhian Stuani wins Carling Goal of the Month for August |publisher=Premier League |date=9 September 2016 |access-date=10 February 2017}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2016.2</span>2016
+|{{flag|England}}
+|{{sortname|Jordan|Henderson}}
+|[[Liverpool F.C.|Liverpool]]
+|align=center|'''2'''–0
+|''[[Chelsea F.C.|Chelsea]]''
+|16 September 2016
+|<ref>{{cite news|url=https://www.premierleague.com/news/119404 |title=Henderson wins Carling Goal of the Month |publisher=Premier League |date=14 October 2016 |access-date=10 February 2017}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2016.3</span>2016
+|{{flag|France|1974}}
+|{{sortname|Dimitri|Payet}}
+|''[[West Ham United F.C.|West Ham United]]''
+|align=center|'''1'''–1
+|[[Middlesbrough F.C.|Middlesbrough]]
+|1 October 2016
+|<ref>{{cite news|url=https://www.premierleague.com/news/139364 |title=Payet wins Carling Goal of the Month |publisher=Premier League |date=18 November 2016 |access-date=10 February 2017}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2016.4</span>2016
+|{{flag|Spain}}
+|{{sortname||Pedro|Pedro (footballer, born 1987)}} {{small|(1)}}
+|''[[Chelsea F.C.|Chelsea]]''
+|align=center|'''1'''–1
+|[[Tottenham Hotspur F.C.|Tottenham Hotspur]]
+|26 November 2016
+|<ref>{{cite news|url=https://www.premierleague.com/news/154239 |title=Pedro wins Carling Goal of the Month |publisher=Premier League |date=9 December 2016 |access-date=10 February 2017}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2016.5</span>2016
+|{{flag|Armenia}}
+|{{sortname|Henrikh|Mkhitaryan}}
+|''[[Manchester United F.C.|Manchester United]]''
+|align=center|'''3'''–0
+|[[Sunderland A.F.C.|Sunderland]]
+|26 December 2016
+|<ref>{{cite news|url=https://www.premierleague.com/news/304811 |title=Mkhitaryan wins Carling Goal of the Month |publisher=Premier League |date=13 January 2017 |access-date=10 February 2017}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2017.1</span>2017
+|{{flag|England}}
+|{{sortname|Andy|Carroll}}
+|''[[West Ham United F.C.|West Ham United]]''
+|align=center|'''2'''–0
+|[[Crystal Palace F.C.|Crystal Palace]]
+|14 January 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/327751 |title=Carroll claims Carling Goal of the Month |publisher=Premier League |date=10 February 2017 |access-date=10 February 2017}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2017.2</span>2017
+|{{flag|Belgium}}
+|{{sortname|Eden|Hazard}} {{small|(1)}}
+|''[[Chelsea F.C.|Chelsea]]''
+|align=center|'''2'''–0
+|[[Arsenal F.C.|Arsenal]]
+|4 February 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/346245 |title=Hazard voted Carling Goal of the Month winner |publisher=Premier League |date=10 March 2017 |access-date=10 March 2017}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2017.3</span>2017
+|{{flag|England}}
+|{{sortname|Andros|Townsend}} {{small|(1)}}
+|[[Crystal Palace F.C.|Crystal Palace]]
+|align=center|'''2'''–0
+|''[[West Bromwich Albion F.C.|West Bromwich Albion]]''
+|4 March 2017
+|<ref>{{cite web|title=Townsend strike voted Carling Goal of the Month|url=https://www.premierleague.com/news/356465|publisher=Premier League|access-date=31 March 2017|date=31 March 2017}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2017.4</span>2017
+|{{flag|Spain}}
+|{{sortname||Pedro|Pedro (footballer, born 1987)}} {{small|(2)}}
+|[[Chelsea F.C.|Chelsea]]
+|align=center|'''1'''–0
+|''[[Everton F.C.|Everton]]''
+|30 April 2017
+|<ref>{{cite web|title=Pedro strike voted Carling Goal of the Month|url=https://www.premierleague.com/news/388991|publisher=Premier League|access-date=12 May 2017|date=12 May 2017}}</ref>
+|-
+|colspan=9 align=center|[[2017–18 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2017.5</span><span class="anchor" id="2017–18"></span>2017
+|{{flag|England}}
+|{{sortname|Charlie|Daniels|Charlie Daniels (footballer)}}
+|''[[AFC Bournemouth|Bournemouth]]''
+|align=center|'''1'''–0
+|[[Manchester City F.C.|Manchester City]]
+|26 August 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/466282 |title=Daniels strike voted Carling Goal of the Month |publisher=Premier League |date=8 September 2017 |access-date=8 September 2017}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2017.6</span>2017
+|{{flag|Ecuador}}
+|{{sortname|Antonio|Valencia}}
+|''[[Manchester United F.C.|Manchester United]]''
+|align=center|'''1'''–0
+|[[Everton F.C.|Everton]]
+|17 September 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/489586 |title=Valencia volley earns Carling Goal of the Month |publisher=Premier League |date=13 October 2017 |access-date=13 October 2017}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2017.7</span>2017
+|{{flag|Morocco}}
+|{{sortname|Sofiane|Boufal}}
+|''[[Southampton F.C.|Southampton]]''
+|align=center|'''1'''–0
+|[[West Bromwich Albion F.C.|West Bromwich Albion]]
+|21 October 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/512724 |title=Boufal claims October Carling Goal of the Month |publisher=Premier League |date=17 November 2017 |access-date=17 November 2017}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2017.8</span>2017
+|{{flag|England}}
+|{{sortname|Wayne|Rooney}}
+|''[[Everton F.C.|Everton]]''
+|align=center|'''3'''–0
+|[[West Ham United F.C.|West Ham United]]
+|29 November 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/548856 |title=Rooney wins November Carling Goal of the Month |publisher=Premier League |date=15 December 2017 |access-date=15 December 2017}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2017.9</span>2017
+|{{flag|England}}
+|{{sortname|Jermain|Defoe}}
+|[[AFC Bournemouth|Bournemouth]]
+|align=center|'''2'''–2
+|''[[Crystal Palace F.C.|Crystal Palace]]''
+|9 December 2017
+|<ref>{{cite news|url=https://www.premierleague.com/news/590788 |title=Defoe strike claims Carling Goal of the Month |publisher=Premier League |date=12 January 2018 |access-date=12 January 2018}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2018.1</span>2018
+|{{flag|Brazil}}
+|{{sortname||Willian|Willian (footballer, born 1988)}} {{small|(1)}}
+|[[Chelsea F.C.|Chelsea]]
+|align=center|'''2'''–0
+|''[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]''
+|20 January 2018
+|<ref>{{cite news|title=Willian claims January Carling Goal of the Month|url=https://www.premierleague.com/news/623853|publisher=Premier League|language=en|date=16 February 2018|access-date=16 February 2018}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2018.2</span>2018
+|{{flag|Kenya}}
+|{{sortname|Victor|Wanyama}}
+|[[Tottenham Hotspur F.C.|Tottenham Hotspur]]
+|align=center|'''1'''–1
+|''[[Liverpool F.C.|Liverpool]]''
+|4 February 2018
+|<ref>{{cite news |title=Wanyama wins February's Carling Goal of the Month|url=https://www.premierleague.com/news/637611|publisher=Premier League|language=en|date=9 March 2018|access-date=9 March 2018}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2018.3</span>2018
+|{{flag|England}}
+|{{sortname|Jamie|Vardy}}
+|[[Leicester City F.C.|Leicester City]]
+|align=center|'''1'''–1
+|''[[West Bromwich Albion F.C.|West Bromwich Albion]]''
+|10 March 2018
+|<ref>{{cite news |title=Vardy wins March Carling Goal of the Month award|url=https://www.premierleague.com/news/662052|publisher=Premier League|language=en|date=13 April 2018|access-date=13 April 2018}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2018.4</span>2018
+|{{flag|Denmark}}
+|{{sortname|Christian|Eriksen}}
+|[[Tottenham Hotspur F.C.|Tottenham Hotspur]]
+|align=center|'''1'''–1
+|''[[Chelsea F.C.|Chelsea]]''
+|1 April 2018
+|<ref>{{cite news|title=Eriksen strike wins Carling Goal of the Month|publisher=Premier League |url=https://www.premierleague.com/news/682718 |language=en|date=9 May 2018|access-date=9 May 2018}}</ref>
+|-
+|colspan=9 align=center|[[2018–19 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2018.5</span><span class="anchor" id="2018–19"></span>2018
+|{{flag|Ivory Coast}}
+|{{sortname|Jean Michaël|Seri}}
+|''[[Fulham F.C.|Fulham]]''
+|align=center|'''1'''–0
+|[[Burnley F.C.|Burnley]]
+|26 August 2018
+|<ref>{{cite news|title=Seri strike wins Carling Goal of the Month|publisher=Premier League|url=https://www.premierleague.com/news/845186|date=7 September 2018|access-date=7 September 2018}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2018.6</span>2018
+|{{flag|England}}
+|{{sortname|Daniel|Sturridge}}
+|[[Liverpool F.C.|Liverpool]]
+|align=center|'''1'''–1
+|''[[Chelsea F.C.|Chelsea]]''
+|29 September 2018
+|<ref>{{cite news|title=Sturridge wins September 2018 Carling Goal of the Month|publisher=Premier League|url=https://www.premierleague.com/news/877605|date=12 October 2018|access-date=12 October 2018}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2018.7</span>2018
+|{{flag|Wales}}
+|{{sortname|Aaron|Ramsey}}
+|[[Arsenal F.C.|Arsenal]]
+|align=center|'''3'''–1
+|''[[Fulham F.C.|Fulham]]''
+|7 October 2018
+|<ref>{{cite news|title=Ramsey wins award for 'one of my best goals'|publisher=Premier League|url=https://www.premierleague.com/news/903152|date=9 November 2018|access-date=9 November 2018}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2018.8</span>2018
+|{{flag|South Korea}}
+|{{sortname|Son|Heung-min||Son, Heung-min}} {{small|(1)}}
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|align=center|'''3'''–0
+|[[Chelsea F.C.|Chelsea]]
+|24 November 2018
+|<ref>{{cite news|title=Son wins Carling Goal of the Month for November|publisher=Premier League|url=https://www.premierleague.com/news/941926|date=14 December 2018|access-date=14 December 2018}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2018.9</span>2018
+|{{flag|England}}
+|{{nowrap|{{sortname|Andros|Townsend}} {{small|(2)}}}}
+|[[Crystal Palace F.C.|Crystal Palace]]
+|align=center|'''2'''–1
+|''[[Manchester City F.C.|Manchester City]]''
+|22 December 2018
+|<ref>{{cite news |title=Townsend volley wins Carling Goal of the Month |publisher=Premier League |url=https://www.premierleague.com/news/970780 |date=11 January 2019 |access-date=11 January 2019}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2019.1</span>2019
+|{{flag|Germany}}
+|{{sortname|André|Schürrle||Schurrle, Andre}}
+|[[Fulham F.C.|Fulham]]
+|align=center|'''1'''–0
+|''[[Burnley F.C.|Burnley]]''
+|12 January 2019
+|<ref>{{cite news |title=Award-winning goal one of my best, says Schurrle |publisher=Premier League |url=https://www.premierleague.com/news/1049373 |date=8 February 2019 |access-date=8 February 2019}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2019.2</span>2019
+|{{flag|Switzerland}}
+|{{sortname|Fabian|Schär||Schar, Fabian}}
+|''[[Newcastle United F.C.|Newcastle United]]''
+|align=center|'''1'''–0
+|[[Burnley F.C.|Burnley]]
+|26 February 2019
+|<ref>{{cite news |title=Schar delight at Carling Goal of the Month |publisher=Premier League |url=https://www.premierleague.com/news/1088126 |date=8 March 2019 |access-date=8 March 2019}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2019.3</span>2019
+|{{flag|France|1974}}
+|{{sortname|Anthony|Knockaert}}
+|[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]
+|align=center|'''2'''–1
+|''[[Crystal Palace F.C.|Crystal Palace]]''
+|9 March 2019
+|<ref>{{cite news |title=Knockaert wins March Carling Goal of the Month |publisher=Premier League |url=https://www.premierleague.com/news/1173541|date=12 April 2019 |access-date=12 April 2019}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2019.4</span>2019
+|{{flag|Belgium}}
+|{{sortname|Eden|Hazard}} {{small|(2)}}
+|''[[Chelsea F.C.|Chelsea]]''
+|align=center|'''1'''–0
+|[[West Ham United F.C.|West Ham United]]
+|8 April 2019
+|<ref>{{cite web |title=Hazard wins Carling Goal of the Month award |url=https://www.premierleague.com/news/1205989 |publisher=Premier League |access-date=7 May 2019 |date=7 May 2019}}</ref>
+|-
+|colspan=9 align=center|[[2019–20 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2019.5</span><span class="anchor" id="2019–20"></span>2019
+|{{flag|England}}
+|{{sortname|Harvey|Barnes}}
+|[[Leicester City F.C.|Leicester City]]
+|align=center|'''2'''–1
+|''[[Sheffield United F.C.|Sheffield United]]''
+|24 August 2019
+|<ref>{{cite news|url=https://www.premierleague.com/news/1340639 |title=Barnes wins Budweiser Goal of the Month |publisher=Premier League |date=13 September 2019 |access-date=13 September 2019}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2019.6</span>2019
+|{{flag|Mali}}
+|{{sortname|Moussa|Djenepo}}
+|[[Southampton F.C.|Southampton]]
+|align=center|'''1'''–0
+|''[[Sheffield United F.C.|Sheffield United]]''
+|14 September 2019
+|<ref>{{cite news|url=https://www.premierleague.com/news/1413924 |title=Djenepo wins Budweiser Goal of the Month award |publisher=Premier League |date=11 October 2019 |access-date=11 October 2019}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2019.7</span>2019
+|{{flag|England}}
+|{{sortname|Matty|Longstaff}}
+|''[[Newcastle United F.C.|Newcastle United]]''
+|align=center|'''1'''–0
+|[[Manchester United F.C.|Manchester United]]
+|6 October 2019
+|<ref>{{cite news|url=https://www.premierleague.com/news/1486154 |title=Longstaff claims Budweiser Goal of the Month |publisher=Premier League |date=8 November 2019 |access-date=8 November 2019}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2019.8</span>2019
+|{{flag|Belgium}}
+|{{sortname|Kevin|De Bruyne}} {{small|(1)}}
+|[[Manchester City F.C.|Manchester City]]
+|align=center|'''2'''–1
+|''[[Newcastle United F.C.|Newcastle United]]''
+|30 November 2019
+|<ref>{{cite news |title=De Bruyne claims Budweiser Goal of the Month |url=https://www.premierleague.com/news/1527738 |access-date=13 December 2019 |work=Premier League |date=13 December 2019}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2019.9</span>2019
+|{{flag|South Korea}}
+|{{sortname|Son|Heung-min||Son, Heung-min}} {{small|(2)}}
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|align=center|'''3'''–0
+|[[Burnley F.C.|Burnley]]
+|7 December 2019
+|<ref>{{cite news|title=Son's solo strike voted Budweiser Goal of the Month|publisher=Premier League|url=https://www.premierleague.com/news/1563911|date=10 January 2020|access-date=10 January 2020}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2020.1</span>2020
+|{{flag|Iran}}
+|{{sortname|Alireza|Jahanbakhsh}}
+|''[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]''
+|align=center|'''1'''–1
+|[[Chelsea F.C.|Chelsea]]
+|1 January 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1603305 |title=Jahanbakhsh strike voted Budweiser Goal of the Month |publisher=Premier League |date=7 February 2020 |access-date=7 February 2020}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2020.2</span>2020
+|{{flag|Czech Republic}}
+|{{sortname|Matěj|Vydra||Vydra, Matej}}
+|[[Burnley F.C.|Burnley]]
+|align=center|'''2'''–1
+|''[[Southampton F.C.|Southampton]]''
+|15 February 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1644272 |title=Vydra: I waited so long for that goal |publisher=Premier League |date=18 March 2020 |access-date=18 March 2020}}</ref>
+|-
+|{{sort|6|June}}
+|<span style="display:none;">2020.3</span>2020
+|{{flag|Portugal}}
+|{{sortname|Bruno|Fernandes}} {{small|(1)}}
+|[[Manchester United F.C.|Manchester United]]
+|align=center|'''3'''–0
+|''[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]''
+|30 June 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1715428 |title=Budweiser Goal of the Month completes Fernandes double|publisher=Premier League |date=10 July 2020 |access-date=10 July 2020}}</ref>
+|-
+|{{sort|7|July}}
+|<span style="display:none;">2020.4</span>2020
+|{{flag|Belgium}}
+|{{sortname|Kevin|De Bruyne}} {{small|(2)}}
+|''[[Manchester City F.C.|Manchester City]]''
+|align=center|'''2'''–0
+|[[Norwich City F.C.|Norwich City]]
+|26 July 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1747213|title=De Bruyne completes double with Budweiser Goal of the Month |publisher=Premier League |date=5 August 2020 |access-date=5 August 2020}}</ref>
+|-
+|colspan=9 align=center|[[2020–21 Premier League]]
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2020.5</span><span class="anchor" id="2020–21"></span>2020
+|{{flag|England}}
+|{{sortname|James|Maddison}}
+|[[Leicester City F.C.|Leicester City]]
+|align=center|'''4'''–1
+|''[[Manchester City F.C.|Manchester City]]''
+|27 September 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1857311|title=Maddison strike voted Budweiser Goal of the Month |publisher=Premier League |date=9 October 2020 |access-date=9 October 2020}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2020.6</span>2020
+|{{flag|Argentina}}
+|{{sortname|Manuel|Lanzini}}
+|[[West Ham United F.C.|West Ham United]]
+|align=center|'''3'''–3
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|18 October 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1894985|title=Lanzini claims Budweiser Goal of the Month award |publisher=Premier League |date=13 November 2020 |access-date=13 November 2020}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2020.7</span>2020
+|{{flag|Nigeria}}
+|{{sortname|Ola|Aina}}
+|''[[Fulham F.C.|Fulham]]''
+|align=center|'''2'''–0
+|[[West Bromwich Albion F.C.|West Bromwich Albion]]
+|2 November 2020
+|<ref>{{cite web |url=https://www.premierleague.com/news/1931701|title=Aina wins November Budweiser Goal of the Month award|publisher=Premier League |date=11 December 2020 |access-date=11 December 2020}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2020.8</span>2020
+|{{flag|Ivory Coast}}
+|{{sortname|Sébastien|Haller}}
+|''[[West Ham United F.C.|West Ham United]]''
+|align=center|'''1'''–1
+|[[Crystal Palace F.C.|Crystal Palace]]
+|16 December 2020
+|<ref>{{cite news |url=https://www.premierleague.com/news/1971281|title=Haller overhead kick voted Budweiser Goal of the Month|publisher=Premier League |date=15 January 2021 |access-date=15 January 2021}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2021.1</span>2021
+|{{flag|Egypt}}
+|{{sortname|Mohamed|Salah}} {{small|(1)}}
+|[[Liverpool F.C.|Liverpool]]
+|align=center|'''2'''–0
+|''[[West Ham United F.C.|West Ham United]]''
+|31 January 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2021392|title=Brilliant Salah strike wins Budweiser Goal of the Month |publisher=Premier League |date=12 February 2021 |access-date=12 February 2021}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2021.2</span>2021
+|{{flag|Portugal}}
+|{{sortname|Bruno|Fernandes}} {{small|(2)}}
+|''[[Manchester United F.C.|Manchester United]]''
+|align=center|'''2'''–0
+|[[Everton F.C.|Everton]]
+|6 February 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2061419 |title=Fernandes stunner wins Budweiser Goal of the Month |publisher=Premier League |date=12 March 2021 |access-date=12 March 2021}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2021.3</span>2021
+|{{flag|Argentina}}
+|{{sortname|Erik|Lamela}}
+|[[Tottenham Hotspur F.C.|Tottenham Hotspur]]
+|align=center|'''1'''–0
+|''[[Arsenal F.C.|Arsenal]]''
+|14 March 2021
+|<ref>{{cite web|url=https://www.premierleague.com/news/2080162|title=Lamela rabona voted Budweiser Goal of the Month|publisher=Premier League |date=2 April 2021 |access-date=2 April 2021}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2021.4</span>2021
+|{{flag|England}}
+|{{sortname|Jesse|Lingard}}
+|[[West Ham United F.C.|West Ham United]]
+|align=center|'''1'''–0
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|5 April 2021
+|<ref>{{cite web|url=https://www.premierleague.com/news/2139190 |title=Lingard completes double with April 2021 Budweiser Goal of the Month |publisher=Premier League |date=14 May 2021 |access-date=14 May 2021}}</ref>
+|-
+|{{sort|5|May}}
+|<span style="display:none;">2021.5</span>2021
+|{{flag|Uruguay}}
+|{{sortname|Edinson|Cavani}}
+|''[[Manchester United F.C.|Manchester United]]''
+|align=center|'''1'''–0
+|[[Fulham F.C.|Fulham]]
+|18 May 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2161355|title=Cavani wonder strike voted Budweiser Goal of the Month |publisher=Premier League |date=29 May 2021 |access-date=29 May 2021}}</ref>
+|-
+|colspan=9 align=center|[[2021–22 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2021.6</span><span class="anchor" id="2021–22"></span>2021
+|{{flag|England}}
+|{{sortname|Danny|Ings}}
+|''[[Aston Villa F.C.|Aston Villa]]''
+|align=center|'''1'''–0
+|[[Newcastle United F.C.|Newcastle United]]
+|21 August 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2245545|title=Ings wins August's Budweiser Goal of the Month award|publisher=Premier League |date=10 September 2021 |access-date=10 September 2021}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2021.7</span>2021
+|{{flag|England}}
+|{{sortname|Andros|Townsend}} {{small|(3)}}
+|''[[Everton F.C.|Everton]]''
+|align=center|'''2'''–1
+|[[Burnley F.C.|Burnley]]
+|13 September 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2282127|title=Townsend claims Budweiser Goal of the Month |publisher=Premier League |date=8 October 2021 |access-date=8 October 2021}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2021.8</span>2021
+|{{flag|Egypt}}
+|{{sortname|Mohamed|Salah}} {{small|(2)}}
+|''[[Liverpool F.C.|Liverpool]]''
+|align=center|'''2'''–1
+|[[Manchester City F.C.|Manchester City]]
+|3 October 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2346850|title=Salah completes double with Budweiser Goal of the Month |publisher=Premier League |date=12 November 2021 |access-date=12 November 2021}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2021.9</span>2021
+|{{flag|Spain}}
+|{{sortname||Rodri|Rodri (footballer, born 1996)}}
+|''[[Manchester City F.C.|Manchester City]]''
+|align=center|'''2'''–0
+|[[Everton F.C.|Everton]]
+|21 November 2021
+|<ref>{{cite web |url=https://www.premierleague.com/news/2407251|title=Stunning Rodri strike wins Budweiser Goal of the Month |publisher=Premier League |date=10 December 2021 |access-date=10 December 2021}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2021.10</span>2021
+|{{flag|France}}
+|{{sortname|Alexandre|Lacazette}}
+|''[[Arsenal F.C.|Arsenal]]''
+|align=center|'''1'''−0
+|[[Southampton F.C.|Southampton]]
+|11 December 2021
+|<ref>{{Cite web|url=https://www.premierleague.com/news/2444769 |title=Lacazette strike voted Budweiser Goal of the Month |publisher=Premier League |date=14 January 2022 |access-date=14 January 2022}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2022.1</span>2022
+|{{flag|Croatia}}
+|{{sortname|Mateo|Kovačić}}
+|''[[Chelsea F.C.|Chelsea]]''
+|align=center|'''1'''−2
+|[[Liverpool F.C.|Liverpool]]
+|2 January 2022
+|<ref>{{cite web |url=https://www.premierleague.com/news/2470108 |title=Kovacic volley voted Budweiser Goal of the Month|publisher=Premier League |date=4 February 2022 |accessdate=4 February 2022}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2022.2</span>2022
+|{{flag|Ivory Coast}}
+|{{sortname|Wilfried|Zaha}}
+|[[Crystal Palace F.C.|Crystal Palace]]
+|align=center|'''1'''−1
+|''[[Norwich City F.C.|Norwich City]]''
+|10 February 2022
+|<ref>{{cite web |url=https://www.premierleague.com/news/2522069|title=Zaha wonder strike voted Budweiser Goal of the Month |publisher=Premier League |date=11 March 2022 |accessdate=11 March 2022}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2022.3</span>2022
+|{{flag|Portugal}}
+|{{sortname|Cristiano|Ronaldo}}
+|''[[Manchester United F.C.|Manchester United]]''
+|align=center|'''1'''−0
+|[[Tottenham Hotspur F.C.|Tottenham Hotspur]]
+|12 March 2022
+|<ref>{{cite web |url=https://www.premierleague.com/news/2554012|title=Ronaldo wins March's Budweiser Goal of the Month |publisher=Premier League |date=1 April 2022 |accessdate=1 April 2022}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2022.4</span>2022{{anchor|April 2022}}
+|{{flag|Paraguay}}
+|{{sortname|Miguel|Almirón||Almiron, Miguel}} {{small|(1)}}
+|''[[Newcastle United F.C.|Newcastle United]]''
+|align=center|'''1'''−0
+|[[Crystal Palace F.C.|Crystal Palace]]
+|20 April 2022
+|<ref>{{cite web |url=https://www.premierleague.com/news/2612154|title=Almiron wonder strike voted Budweiser Goal of the Month |publisher=Premier League |date=12 May 2022 |accessdate=12 May 2022}}</ref>
+|-
+|colspan=9 align=center|[[2022–23 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2022.5</span><span class="anchor" id="2022–23"></span>2022{{anchor|August 2022}}
+|{{flag|France}}
+|{{sortname|Allan|Saint-Maximin}}
+|[[Newcastle United F.C.|Newcastle United]]
+|align=center|'''1'''–1
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|28 August 2022
+|<ref>{{cite web |title=Saint-Maximin volley wins Budweiser Goal of the Month |url=http://www.premierleague.com/news/2787452 |access-date=16 September 2022 |date=16 September 2022 |publisher=Premier League}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2022.6</span>2022
+|{{flag|England}}
+|{{sortname|Ivan|Toney}}
+|''[[Brentford F.C.|Brentford]]''
+|align=center|'''3'''–1
+|[[Leeds United F.C.|Leeds United]]
+|3 September 2022
+|<ref name=":0">{{cite web |title=Toney's chip chosen as Budweiser Goal of the Month |url=https://www.premierleague.com/news/2801440|access-date=30 September 2022 |date=30 September 2022 |publisher=Premier League}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2022.7</span>2022
+|{{flag|Paraguay}}
+|{{sortname|Miguel|Almirón||Almiron, Miguel}} {{small|(2)}}
+|[[Newcastle United F.C.|Newcastle United]]
+|align=center|'''2'''–0
+|''[[Fulham F.C.|Fulham]]''
+|1 October 2022
+|<ref>{{Cite web |date=11 November 2022 |title=Almiron wins Budweiser Goal of the Month |url=https://www.premierleague.com/news/2899252 |access-date=11 November 2022 |publisher=Premier League}}</ref>
+|-
+|{{sort|11|November/<br/>December}}
+|<span style="display:none;">2022.8</span>2022
+|{{flag|Jamaica}}
+|{{sortname|Demarai|Gray}}
+|[[Everton F.C.|Everton]]
+|align=center|'''1'''–1
+|''[[Manchester City F.C.|Manchester City]]''
+|31 December 2022
+|<ref>{{cite web |title=Gray wins Budweiser Goal of the Month award |url=https://www.premierleague.com/news/3016478|access-date=13 January 2023|date=13 January 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2023.1</span>2023
+|{{flag|France}}
+|{{sortname|Michael|Olise}}
+|''[[Crystal Palace F.C.|Crystal Palace]]''
+|align=center|'''1'''–1
+|[[Manchester United F.C.|Manchester United]]
+|18 January 2023
+|<ref>{{cite web |title=Olise free-kick wins Budweiser Goal of the Month |url=https://www.premierleague.com/news/3043142|access-date=3 February 2023 |date=3 February 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2023.2</span>2023
+|{{flag|Brazil}}
+|{{sortname||Willian|Willian (footballer, born 1988)}} {{small|(2)}}
+|''[[Fulham F.C.|Fulham]]''
+|align=center|'''1'''–0
+|[[Nottingham Forest F.C.|Nottingham Forest]]
+|11 February 2023
+|<ref>{{cite web |title=Willian wins February Budweiser Goal of the Month |url=https://www.premierleague.com/news/3100275|access-date=10 March 2023 |date=10 March 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2023.3</span>2023{{anchor|March 2023}}
+|{{flag|Spain}}
+|{{sortname||Jonny|Jonny Otto}}
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|align=center|'''1'''–3
+|[[Leeds United F.C.|Leeds United]]
+|18 March 2023
+|<ref>{{cite web |title=Jonny volley voted Budweiser Goal of the Month |url=https://www.premierleague.com/news/3124456|access-date=31 March 2023 |date=31 March 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2023.4</span>2023{{anchor|April 2023}}
+|{{flag|Portugal}}
+|{{sortname|Matheus|Nunes}}
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|align=center|'''1'''–0
+|[[Chelsea F.C.|Chelsea]]
+|8 April 2023
+|<ref>{{cite web |title=Nunes volley voted Budweiser Goal of the Month |url=https://www.premierleague.com/news/3331256|access-date=12 May 2023 |date=12 May 2023 |publisher=Premier League}}</ref>
+|-
+|colspan=9 align=center|[[2023–24 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2023.5</span><span class="anchor" id="2023–24"></span>2023
+|{{flag|Japan}}
+|{{sortname|Kaoru|Mitoma}} {{small|(1)}}
+|[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]
+|align=center|'''1'''–0
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|19 August 2023
+|<ref>{{cite web |title=Mitoma makes history with Budweiser Goal award |url=https://www.premierleague.com/news/3679839 |access-date=15 September 2023|date=15 September 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2023.6</span>2023
+|{{flag|Portugal}}
+|{{sortname|Bruno|Fernandes}} {{small|(3)}}
+|[[Manchester United F.C.|Manchester United]]
+|align=center|'''1'''–0
+|''[[Burnley F.C.|Burnley]]''
+|23 September 2023
+|<ref name="Fernandes">{{cite web |title=Fernandes equals record with Budweiser Goal of the Month award |url=https://www.premierleague.com/news/3735165|access-date=13 October 2023|date=13 October 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2023.7</span>2023
+|{{flag|Iran}}
+|{{sortname|Saman|Ghoddos}}
+|''[[Brentford F.C.|Brentford]]''
+|align=center|'''3'''–0
+|[[Burnley F.C.|Burnley]]
+|21 October 2023
+|<ref>{{cite web |title=Ghoddos strike awarded Budweiser Goal of the Month |url=https://www.premierleague.com/news/3774739|access-date=10 November 2023|date=10 November 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2023.8</span>2023
+|{{flag|Argentina}}
+|{{sortname|Alejandro|Garnacho}}
+|[[Manchester United F.C.|Manchester United]]
+|align=center|'''1'''–0
+|''[[Everton F.C.|Everton]]''
+|26 November 2023
+|<ref>{{cite web |title=Garnacho overhead kick wins Budweiser Goal of the Month |url=https://www.premierleague.com/news/3808623 |access-date=8 December 2023 |date=8 December 2023 |publisher=Premier League}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2023.9</span>2023
+|{{flag|Argentina}}
+|{{sortname|Alexis|Mac Allister}}
+|''[[Liverpool F.C.|Liverpool]]''
+|align=center|'''2'''–1
+|[[Fulham F.C.|Fulham]]
+|3 December 2023
+|<ref>{{cite web |title=Mac Allister worldie wins Budweiser Goal of the Month award |url=https://www.premierleague.com/news/3853203 |access-date=12 January 2024 |date=12 January 2024 |publisher=Premier League}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2024.1</span>2024
+|{{flag|Norway}}
+|{{sortname|Oscar|Bobb}}
+|[[Manchester City F.C.|Manchester City]]
+|align=center|'''3'''–2
+|''[[Newcastle United F.C.|Newcastle United]]''
+|13 January 2024
+|<ref>{{cite web |title=Bobb's brilliant strike wins Budweiser Goal of the Month award |url=https://www.premierleague.com/news/3894507 |access-date=16 February 2024 |date=16 February 2024 |publisher=Premier League}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2024.2</span>2024
+|{{flag|England}}
+|{{sortname|Kobbie|Mainoo}}
+|[[Manchester United F.C.|Manchester United]]
+|align=center|'''4'''–3
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|1 February 2024
+|<ref>{{cite web |title=Mainoo's late stunner wins Budweiser Goal of the Month award |url=https://www.premierleague.com/news/3922061 |access-date=8 March 2024 |date=8 March 2024 |publisher=Premier League}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2024.3</span>2024
+|{{flag|England}}
+|{{sortname|Marcus|Rashford}}
+|[[Manchester United F.C.|Manchester United]]
+|align=center|'''1'''–0
+|''[[Manchester City F.C.|Manchester City]]''
+|3 March 2024
+|<ref>{{cite web |title=Rashford screamer voted Budweiser Goal of the Month |url=https://www.premierleague.com/news/3960902 |access-date=12 April 2024 |date=12 April 2024 |publisher=Premier League}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2024.4</span>2024
+|{{flag|England}}
+|{{sortname|Cole|Palmer}} {{small|(1)}}
+|''[[Chelsea F.C.|Chelsea]]''
+|align=center|'''1'''–0
+|[[Everton F.C.|Everton]]
+|15 April 2024
+|<ref>{{cite web |title=Palmer wins awards DOUBLE with Budweiser Goal of the Month |url=https://www.premierleague.com/news/3999300 |access-date=10 May 2024 |date=10 May 2024 |publisher=Premier League }}</ref>
+|-
+|colspan=9 align=center|[[2024–25 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2024.5</span><span class="anchor" id="2024–25"></span>2024
+|{{flag|England}}
+|{{sortname|Cole|Palmer}} {{small|(2)}}
+|[[Chelsea F.C.|Chelsea]]
+|align=center|'''2'''–1
+|''[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]''
+|25 August 2024
+|<ref>{{cite web |title=Palmer lob voted Guinness Goal of the Month |url=https://www.premierleague.com/news/4110694 |access-date=13 September 2024 |date=13 September 2024 |publisher=Premier League }}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2024.6</span><span class="anchor" id="2024–25"></span>2024
+|{{flag|Colombia}}
+|{{sortname|Jhon|Durán||Duran, Jhon}}
+|''[[Aston Villa F.C.|Aston Villa]]''
+|align=center|'''3'''–2
+|[[Everton F.C.|Everton]]
+|14 September 2024
+|<ref>{{cite web |title=Duran's stunner voted Guinness Goal of the Month |url=https://www.premierleague.com/news/4145589 |access-date=11 October 2024 |date=11 October 2024 |publisher=Premier League}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2024.7</span><span class="anchor" id="2024–25"></span>2024
+|{{flag|Senegal}}
+|{{sortname|Nicolas|Jackson}}
+|''[[Chelsea F.C.|Chelsea]]''
+|align=center|'''1'''–0
+|[[Newcastle United F.C.|Newcastle United]]
+|27 October 2024
+|<ref>{{cite web |title=Jackson wins Guinness Goal of the Month award |url=https://www.premierleague.com/news/4164754 |access-date=8 November 2024 |date=8 November 2024 |publisher=Premier League }}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2024.8</span><span class="anchor" id="2024–25"></span>2024
+|{{flag|Wales}}
+|{{sortname|Harry|Wilson|dab=footballer, born 1997}} {{small|(1)}}
+|''[[Fulham F.C.|Fulham]]''
+|align=center|'''1'''–1
+|[[Brentford F.C.|Brentford]]
+|4 November 2024
+|<ref>{{cite web |title=Wilson's incredible flick voted Guinness Goal of the Month |url=https://www.premierleague.com/news/4193496 |access-date=13 December 2024 |date=13 December 2024 |publisher=Premier League }}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2024.9</span><span class="anchor" id="2024–25"></span>2024
+|{{flag|Sweden}}
+|{{sortname|Alexander|Isak}}
+|''[[Newcastle United F.C.|Newcastle United]]''
+|align=center|'''1'''–0
+|[[Liverpool F.C.|Liverpool]]
+|4 December 2024
+|<ref>{{cite web |title=Isak wins awards DOUBLE with Guinness Goal of the Month |url=https://www.premierleague.com/news/4220284 |publisher=Premier League |date=10 January 2025 |access-date=10 January 2025}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2025.1</span>2025
+|{{flag|Wales}}
+|{{sortname|David|Brooks|dab=footballer}}
+|''[[AFC Bournemouth|Bournemouth]]''
+|align=center|'''1'''–0
+|[[Everton F.C.|Everton]]
+|4 January 2025
+|<ref>{{cite web |title=Brooks gives Bournemouth awards TREBLE with Guinness Goal of the Month |url=https://www.premierleague.com/news/4243107 |publisher=Premier League |date=7 February 2025 |access-date=7 February 2025}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2025.2</span>2025
+|{{flag|Japan}}
+|{{sortname|Kaoru|Mitoma}} {{small|(2)}}
+|''[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]''
+|align=center|'''1'''–0
+|[[Chelsea F.C.|Chelsea]]
+|14 February 2025
+|<ref>{{cite web |title=Mitoma's stunner wins Guinness Goal of the Month award |url=https://www.premierleague.com/news/4266803 |access-date=14 March 2025|date=14 March 2025 |publisher=Premier League}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2025.3</span>2025
+|{{flag|Sweden}}
+|{{sortname|Jens|Cajuste}}
+|''[[Ipswich Town F.C.|Ipswich Town]]''
+|align=center|'''1'''–3
+|[[Nottingham Forest F.C.|Nottingham Forest]]
+|15 March 2025
+|<ref>{{cite web |title=Cajuste's stunner wins Guinness Goal of the Month award |url=https://www.premierleague.com/news/4273689 |access-date=4 April 2025|date=4 April 2025 |publisher=Premier League}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2025.4</span>2025
+|{{flag|Cameroon}}
+|{{sortname|Carlos|Baleba}}
+|''[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]''
+|align=center|'''3'''–2
+|[[West Ham United F.C.|West Ham United]]
+|26 April 2025
+|<ref>{{cite web |title=Baleba's stunner wins Guinness Goal of the Month award |url=https://www.premierleague.com/news/4303610 |access-date=9 May 2025|date=9 May 2025 |publisher=Premier League}}</ref>
+|-
+|colspan=9 align=center|[[2025–26 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2025.5</span><span class="anchor" id="2025–26"></span>2025
+|{{flag|Hungary}}
+|{{sortname|Dominik|Szoboszlai}}
+|''[[Liverpool F.C.|Liverpool]]''
+|align=center|'''1'''–0
+|[[Arsenal F.C.|Arsenal]]
+|31 August 2025
+|<ref>{{cite web |url=https://www.premierleague.com/en/news/4407226/szoboszlais-stunner-wins-guinness-goal-of-the-month-award-for-august |title=Szoboszlai makes history with Guinness Goal of the Month award |publisher=Premier League |date=12 September 2025 |access-date=12 September 2025}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2025.6</span>2025
+|{{flag|Spain}}
+|{{sortname|Martín|Zubimendi||Zubimendi, Martin}}
+|''[[Arsenal F.C.|Arsenal]]''
+|align=center|'''1'''–0
+|[[Nottingham Forest F.C.|Nottingham Forest]]
+|13 September 2025
+|<ref>{{Cite web |title=Zubimendi wins Guinness Goal of the Month |url=https://www.premierleague.com/en/news/4437285/zubimendi-wins-guinness-goal-of-the-month |access-date=10 October 2025|date=10 October 2025|publisher=Premier League}}</ref>
+|-
+|{{sort|10|October}}
+|<span style="display:none;">2025.7</span>2025
+|{{flag|Argentina}}
+|{{sortname|Emiliano|Buendía||Buendia, Emiliano}}
+|[[Aston Villa F.C.|Aston Villa]]
+|align=center|'''2'''–1
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|19 October 2025
+|<ref>{{Cite web |title=Buendia wins Guinness Goal of the Month |url=https://www.premierleague.com/en/news/4455467/buendia-wins-guinness-goal-of-the-month |access-date=7 November 2025|date=7 November 2025|publisher=Premier League}}</ref>
+|-
+|{{sort|11|November}}
+|<span style="display:none;">2025.8</span>2025
+|{{flag|United States}}
+|{{sortname|Tyler|Adams}}
+|[[AFC Bournemouth|Bournemouth]]
+|align=center|'''2'''–0
+|''[[Sunderland A.F.C.|Sunderland]]''
+|29 November 2025
+|align=center|<ref>{{Cite web |title=Adams becomes first American to win Guinness Goal of the Month |url=https://www.premierleague.com/en/news/4497488/adams-becomes-first-american-to-win-guinness-goal-of-the-month |access-date=12 December 2025|date=12 December 2025|publisher=Premier League}}</ref>
+|-
+|{{sort|12|December}}
+|<span style="display:none;">2025.9</span>2025
+|{{flag|Wales}}
+|{{sortname|Harry|Wilson|dab=footballer, born 1997}} {{small|(2)}}
+|''[[Fulham F.C.|Fulham]]''
+|align=center|'''1'''–1
+|[[Crystal Palace F.C.|Crystal Palace]]
+|7 December 2025
+|align=center|<ref>{{Cite web |title=Wilson wins Guinness Goal of the Month for the second time|url= https://www.premierleague.com/en/news/4549088/wilson-wins-guinness-goal-of-the-month-for-second-time |access-date=16 January 2026|date=16 January 2026|publisher=Premier League}}</ref>
+|-
+|{{sort|1|January}}
+|<span style="display:none;">2026.1</span>2026
+|{{flag|England}}
+|{{sortname|Harrison|Reed|dab=footballer}}
+|''[[Fulham F.C.|Fulham]]''
+|align=center|'''2'''–2
+|[[Liverpool F.C.|Liverpool]]
+| 4 January 2026
+| align="center" |<ref>{{Cite web |title=Reed wins Guinness Goal of the Month award |url=https://www.premierleague.com/en/news/4587385/reed-wins-guinness-goal-of-the-month-award |access-date=13 February 2026|date=13 February 2026|publisher=Premier League}}</ref>
+|-
+|{{sort|2|February}}
+|<span style="display:none;">2026.2</span>2026
+|{{flag|England}}
+|{{sortname|Dominic|Solanke}}
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|align=center|'''2'''–2
+|[[Manchester City F.C.|Manchester City]]
+| 1 February 2026
+| align="center" |<ref>{{Cite web |title=Solanke wins Guinness Goal of the Month award |url=https://www.premierleague.com/en/news/4611596/solanke-wins-guinness-goal-of-the-month |access-date=13 March 2026|date=13 March 2026|publisher=Premier League}}</ref>
+|-
+|{{sort|3|March}}
+|<span style="display:none;">2026.3</span>2026
+|{{flag|Denmark}}
+|{{sortname|William|Osula}}
+|''[[Newcastle United F.C.|Newcastle United]]''
+|align=center|'''2'''–1
+|[[Manchester United F.C.|Manchester United]]
+|4 March 2026
+|<ref>{{Cite web |title=Osula wins Guinness Goal of the Month award |url=https://www.premierleague.com/en/news/4623619/osula-wins-guinness-goal-of-the-month-award/ |access-date=3 April 2026|date=3 April 2026|publisher=Premier League}}</ref>
+|-
+|{{sort|4|April}}
+|<span style="display:none;">2026.4</span>2026
+|{{flag|Japan}}
+|{{sortname|Kaoru|Mitoma}} {{small|(3)}}
+|[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]
+|align=center|'''1'''–1
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|18 April 2026
+| align="center" |<ref>{{Cite web |title=Mitoma equals record for Guinness Goal of the Month award |url=https://www.premierleague.com/en/news/4650440/mitoma-equals-record-for-guinness-goal-of-the-month-award |access-date=8 May 2026|date=8 May 2026|publisher=Premier League}}</ref>
+|-
+|colspan=9 align=center|[[2026–27 Premier League]]
+|-
+|{{sort|8|August}}
+|<span style="display:none;">2026.5</span><span class="anchor" id="2026–27"></span>2026
+|{{flag|Sweden}}
+|{{sortname|Anthony|Elanga}}
+|[[Newcastle United F.C.|Newcastle United]]
+|align=center|'''1'''–0
+|''[[Tottenham Hotspur F.C.|Tottenham Hotspur]]''
+|29 August 2026
+|<ref>{{cite web |url=https://www.premierleague.com/en/news/4713136/elanga-wins-guinness-goal-of-the-month-award |title=Elanga wins Guinness Goal of the Month award |date=11 September 2026 |publisher=Premier League|access-date=11 September 2026}}</ref>
+|-
+|{{sort|9|September}}
+|<span style="display:none;">2026.6</span>2026
+|{{flag|England}}
+|{{sortname|Lewis|Dunk}}
+|[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]
+|align=center|'''5'''–0
+|[[Coventry City F.C.|''Coventry City'']]
+|13 September 2026
+|<ref>{{cite web |url=https://www.premierleague.com/en/news/4729010/lewis-dunk-wins-guinness-goal-of-the-month-award |title=Lewis Dunk wins Guinness Goal of the Month award |date=2 October 2026 |publisher=Premier League |access-date=2 October 2026}}</ref>
+|}

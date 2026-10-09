@@ -83,7 +83,7 @@ Id patterns:
 
 | Kind | Id | Example |
 |---|---|---|
-| `round` | `pl-<season>-<last match date>` | `pl-2026-27-2026-10-20` |
+| `round` | `pl-<season>-<the week's Monday>` | `pl-2026-27-2026-10-19` |
 | `month` | `gotm-<yyyy>-<mm>` | `gotm-2026-09` |
 | `season` | `gotm-winners-<season>` | `gotm-winners-2019-20` |
 | `club` | `club-<slug>` | `club-arsenal` |
@@ -96,7 +96,8 @@ prefix goes. Nobody holds saved progress yet, so the localStorage key
 ### Full time
 
 The streak goes. A **Next pack** link points at the next pack this browser
-has not finished, in library order (This season first). The share text's
+has not finished, in library order, starting after the pack just played and
+wrapping round; none when every other pack is finished. The share text's
 title is the pack title. The "More" block (earlier days, the packs) becomes a
 single link back to `/pin`.
 
@@ -130,8 +131,10 @@ coordinates never reaching the page.
   UTC date.
 - `check.json`: the monthly model check, an array of
   `{ "month": "2026-09", "nominees": 8, "matched": 8, "inOurPicks": 4 }`.
-  `inOurPicks` counts matched nominees that appear in any `round` pack whose
-  matches fall in that month.
+  `inOurPicks` counts matched nominees that appear in any `round` pack (a
+  goal's slug is its Understat shot id, so this is a set intersection). A
+  week that ends after the shortlist is published is not counted yet; a
+  known undercount, small.
 
 `packs.json` and `days.json` are deleted.
 
@@ -149,21 +152,27 @@ coordinates never reaching the page.
 
 ### Matching an official goal to Understat
 
-The GotM page gives a player and a match; Wikipedia gives a player, both
-clubs and the match date. Neither gives a minute or a fixture id, and club
-names are written differently from Understat's. To avoid a hand-kept table
-of club names (which would need upkeep every time a club is promoted):
+The GotM page gives a player and a match (its link reads
+`/match/<id>/<home>-vs-<away>`); Wikipedia gives a player, the scorer's
+club, the opponents, the date and the score just after the goal. Neither
+gives a minute or a fixture id, and club names are written differently from
+Understat's. To avoid a hand-kept table of club names (which would need
+upkeep every time a club is promoted), a club matches when every word of
+Understat's title for it (normalised: NFD, no accents, lower case, no
+punctuation) is among the words given for it elsewhere: "Tottenham" matches
+"tottenham hotspur", "Manchester City" never matches "manchester united".
 
-1. Take the EPL fixtures Understat has on the match date when it is known
-   (Wikipedia), else every EPL fixture in that calendar month of that season
-   (the GotM page).
-2. Normalise names: NFD, strip accents, lower case, drop punctuation.
-3. Keep the non-penalty goals (`result === 'Goal'`, `situation !== 'Penalty'`)
-   whose scorer matches the nominee: equal full names, or the nominee's last
-   word equals the scorer's last word.
-4. Exactly one such goal: matched. Several: keep those in fixtures where a
-   word of the nominee's match text (normalised, three letters or more)
-   appears in either team's normalised name. Still not exactly one: unmatched.
+1. The fixture: a played EPL fixture between the two clubs, in either order,
+   on the date give or take a day (Wikipedia) or in the month (GotM page).
+   Not exactly one: unmatched.
+2. The goal: that fixture's non-penalty goals. When the score after the goal
+   is known (Wikipedia), keep the goals at that score first; this tells a
+   brace apart. Then score names: 3 the same, 2 the same last word, 1 a
+   shared word of three letters or more. The best score wins only if no
+   other goal shares it; otherwise unmatched.
+
+Checked on real data on 2026-10-09: all 8 of September 2026's nominees, and
+all 89 winners from 2016/17 to 2025/26 (15 of those needed the score rule).
 
 An unmatched goal is logged and skipped. A pack with fewer than 6 matched
 goals is not written; the script logs it and exits 0, because a short month
@@ -190,11 +199,14 @@ moves from `scripts/build-pin-week.ts` into `scripts/understat.ts`.
      rather than lost.
    - For each such week: fetch its EPL results, build candidates as now, rank with
      `rankRecent`, and take 6 with `pickRound`. A week with no EPL results
-     (an international break) gets no pack and exits 0. A week with a fixture
+     (an international break) gets no pack and exits 0, and so does a week with
+     fewer than 5 results (a rearranged fixture or two), which would not make a
+     fair six. A week with a fixture
      whose kick-off has passed but which Understat has not marked `isResult`
      yet is left for the next day's run (exit 0), so a late update never
      leaves a match out of a pack for good. After 3 days the fixture is taken
      as postponed and the pack is made without it.
+   - In June and July (no Premier League football) the script exits 0 at once.
    - Title: the dates of the first and last match ("18–20 October",
      "30 September – 6 October"). Subtitle: "Premier League 2026/27 · 6 goals".
      `published`: the Tuesday after the week, not the run date, so the
@@ -218,7 +230,9 @@ moves from `scripts/build-pin-week.ts` into `scripts/understat.ts`.
    - Match each winner to Understat as above.
    - Write one `season` pack per season with 6 or more matched winners, and a
      `club` pack for each club with 6 or more matched winners (the 9 most
-     recent if there are more).
+     recent if there are more). On 2026-10-09 that is 10 season packs and 7
+     club packs: Manchester United, Chelsea, Fulham, Newcastle United,
+     Liverpool, Tottenham Hotspur, Brighton & Hove Albion.
    - The table's rows give month, year, player, team, opponents and date
      (`{{sortname|First|Last}}`, `[[Club F.C.|Club]]`, "21 August 2016"),
      under a `[[2016–17 Premier League]]` row per season. The current season
@@ -226,8 +240,9 @@ moves from `scripts/build-pin-week.ts` into `scripts/understat.ts`.
    - Lines from `recentLine`. `published`: the run's date.
 4. **Classics.** `scripts/fetch-pin-classics.ts` is unchanged. Of the 44
    classics, 18 are in the three existing packs. The other 26, the daily's old
-   pool, go into new hand-made `classic` packs (Champions League finals, World
-   Cups, Euros, as the goals allow), written once as pack files, each fair.
+   pool, go into four new hand-made `classic` packs, written once as pack
+   files, each fair: Champions League finals (7), World Cup classics (7), The
+   Euros (6), and Messi and more (6: Messi, Ronaldinho, Vardy).
    More classics can be added through `classics.source.json` and the same
    script.
 
@@ -257,7 +272,7 @@ Understat.
 - `permissions: contents: write`, nothing more.
 - Steps: checkout, Node 24, `npm ci`, `npm run pin:update`, `npm test`. If
   `git status --porcelain` shows changes and everything passed, commit as
-  `github-actions[bot]` ("chore(pin): new packs") and push to `main`. The host
+  `github-actions[bot]` ("chore(pin): new packs") and push to the default branch (`master` today). The host
   redeploys from that push.
 
 Why daily rather than on a calendar: both scripts work out which packs are
@@ -271,9 +286,9 @@ this uses well under 100.
 
 Switched on at launch: scheduled workflows run only from the default branch,
 so nothing fires while this lives on `feat/pitch-pin` or before a remote
-exists. Merging to `main` is the switch.
+exists. Merging to the default branch is the switch.
 
-The Action pushes to `main` on its own. Jonno's "ask before every push" rule
+The Action pushes to the default branch on its own. Jonno's "ask before every push" rule
 binds Claude, not the unattended robot; `npm test` guards every commit it
 makes. (A PR-per-update alternative was considered and would put a merge on
 Jonno every week, which is manual upkeep.)
@@ -300,10 +315,12 @@ should be a manual dispatch, watched.
 
 **Reworked**
 
-- `lib/week.ts` becomes `lib/round.ts`: `rankRecent` and `swapIn` stay;
-  `planWeek` becomes `pickRound(ranked, n = 6)`, the top n with a later goal
-  swapped in when the set is unfair, throwing when no fair set exists; `fair`
-  and `PAR_PER_GOAL` live here.
+- `lib/week.ts` becomes `lib/round.ts`. `rankRecent` drops the league order
+  (Premier League only now) and ranks every eligible goal by xG; one goal a
+  match moves into `pickRound(ranked, n = 6)`, which takes the first goal of
+  each match in rank order and, when the six are unfair, swaps in any later
+  goal (a second goal from a match included) while keeping one a match. It
+  throws when no fair set exists. `fair` and `PAR_PER_GOAL` live here.
 - `lib/types.ts`: `Pack` gains `kind`, `subtitle`, `season?`, `published`.
   `BoardView` loses `date` and `number`.
 - `server.ts` reads every `packs/*.json` once at module load (`readdirSync`,
