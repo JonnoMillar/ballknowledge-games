@@ -7,30 +7,56 @@ path back to full context. The design is in
 ## In flight: Pitch pin (branch `feat/pitch-pin`, updated 2026-10-09)
 
 A new mode: a famous goal is named, the player pins where it was struck
-from, scored in metres off (or points) against a lazy-pin par. Plan approved
-2026-10-09; **Tasks 1–12 done and committed, playable at `/pin`.**
+from, scored in metres off (or points) against a lazy-pin par. Tasks 1–12 of
+the first plan are built and playable at `/pin` (daily boards + 3 packs).
 
-- Spec: `docs/superpowers/specs/2026-10-08-pitch-pin-design.md` (approved).
-- Plan: `docs/superpowers/plans/2026-10-08-pitch-pin.md`. Remaining: Task 13
-  (home card, credits; **ask Jonno before downloading the StatsBomb logo**),
-  Task 14 (full browser pass: touch drag and magnifier, keyboard, points
-  mode, desktop), Task 15 (docs).
-- Checked so far (phone width, 2026-10-09): `/pin` redirects to today, a
-  daily plays from first throw to full time (total, par, list, streak, share
-  text), the page HTML has no coordinates, `/api/pin/throw` returns 400 on
-  junk, bad pack and future dates 404. No console errors.
+**NOW: redesigning as a pack library, mid-brainstorm (superpowers:brainstorming).**
+Jonno played the demo and pivoted on 2026-10-09. Decided so far, with why:
+- **No daily, no streak.** The page is a library of packs; new ones appear on
+  football's own schedule, marked "New" for 7 days, "Not played" per browser.
+  Why: a 6-a-day daily needed 28 recent goals a week and filled with nobodies.
+- **Goal of the Month pack, official.** Scraped from
+  `premierleague.com/en/awards/goal-of-the-month/<2026-27>/<september>` (plain
+  HTML, 8 nominees: player + match, no minute), each matched to its Understat
+  shot by player + match. Pages exist only from 2025/26 (older return 404).
+- **Weekly round pack, from our own ranking**, because no official weekly
+  list is machine-readable: the PL's "best goals of matchweek" page and the
+  YouTube "every goal" video name no goals; Instagram is JS-only, login-walled
+  and bans scraping. Jonno doubts the model and wants a better long-term
+  source. Built-in check: each month, score how many weekly picks made the
+  official GotM shortlist. Evidence so far: the old xG ranking picked 4 of
+  September's 8 nominees (Bruno G., Dunk, Buendía, Dasilva) unprompted.
+- **Archive packs, official picks only (option A):** GotM *winners* since
+  2016/17 from Wikipedia (~92 goals, winners only, no nominees; one-off
+  import) → ten season packs of nine, plus club packs only for clubs with ≥6
+  winners. Internationals and Champions League finals from StatsBomb.
+  Understat has no European data, so CL = finals only.
+- **Pack size varies** (6, 8, 9); the par floor scales at ~7 m a goal.
+- **No manual upkeep, ever** (Jonno's rule, saved to memory): scripts must run
+  unattended. **Automation built ready but switched on at launch (option A):**
+  GitHub Actions workflow written and tested locally; no remote yet. Jonno
+  wants the repo on GitHub soon: private repo, ask before every push.
+- **Pending answer:** storage. Recommended: packs as one JSON file each in the
+  repo, `goals.json` stays server-only, the Action commits new pack files and
+  the host redeploys (vs a hosted DB, or live fetching — both rejected).
+- **Then:** present the design in sections (library page, data pipeline,
+  scheduling, what happens to the built daily code), write the spec to
+  `docs/superpowers/specs/`, Jonno reviews, then superpowers:writing-plans.
+
+Built so far (first plan, `docs/superpowers/plans/2026-10-08-pitch-pin.md`):
+- Spec `docs/superpowers/specs/2026-10-08-pitch-pin-design.md` (now partly
+  superseded by the pivot above). Tasks 13–15 of that plan are on hold.
+- Reusable as-is: `games/pin/lib/{pitch,score,line}.ts`, `server.ts` ref and
+  `/api/pin/throw`, the components, `fetch-pin-classics.ts`, the Understat
+  fetch code in `scripts/build-pin-week.ts`. `boards.ts`, `week.ts`,
+  `days.json` and the streak in `progress.ts` belong to the dropped daily.
+- Checked 2026-10-09 at phone width: a board plays first throw to full time,
+  page HTML has no coordinates, throw route 400/404s as designed, no console
+  errors. `npm test`: 1,498 passed, 43 files; typecheck clean.
 - Worktree: `.claude/worktrees/sad-nightingale-82892f`, branch `feat/pitch-pin`
-  off `feat/prototype`. Run `npm ci` first in a fresh worktree.
-- **The first week (`days.json`, 2026-10-08 to 10-14) has known problems,
-  committed anyway so Jonno could play a demo:** Vardy twice on 10-14, Messi
-  as a classic three days running (the classic shuffle ignores the scorer);
-  and the Premier-League-first, one-goal-a-match ranking runs dry after ~3
-  days (one PL round gives at most ~10 goals, a week needs 28), so 10-12 to
-  10-14 are La Liga squad players nobody in Britain knows. Proposed, not yet
-  approved: no scorer twice on a board or on consecutive days; rank recent
-  goals by scorer fame from `data/pool.json`, xG as tie-break, up to two
-  goals a match.
-- Mockups (pre-review, no par or magnifier): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
+  off `feat/prototype`. Run `npm ci` first in a fresh worktree. Dev server:
+  preview config `recall-xi` (autoPort; was on 53477).
+- Mockups (pre-review): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
 
 **Decisions and why** (do not re-litigate):
 - Data: StatsBomb open data for classics, Understat for recent goals. Both
@@ -38,9 +64,8 @@ from, scored in metres off (or points) against a lazy-pin par. Plan approved
   its logo; Understat publishes no terms). Gated: stays on the branch until
   Jonno has emailed both and registered with StatsBomb. Hand-placed coords
   and the Champions League (no free source) are out.
-- Daily = 4 recent goals (latest league round, low xG first) + 2 classics,
-  because ~150 famous free goals would run a 6-a-day daily dry in 25 days.
-  Themed packs on top. Fallback to six classics if the week script is not run.
+- ~~Daily = 4 recent + 2 classics~~: superseded 2026-10-09 by the pack
+  library above.
 - Both scoring modes built (Jonno wants to compare): metres default,
   `?score=points`. Bullseye 2 m, because the two sources disagree by up to
   2.9 m on the same goal. Par = every goal pinned on the penalty spot; a
