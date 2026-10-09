@@ -44,6 +44,7 @@ export default function Library({ shelves, mode }: { shelves: Shelf[]; mode: Mod
           </section>
         ))}
         <p className="pin__credit">
+          <img src="/credits/statsbomb.png" alt="StatsBomb" height={16} />
           Shot data: Understat and StatsBomb open data. Shortlists: the Premier League. Past winners: Wikipedia.
         </p>
       </main>

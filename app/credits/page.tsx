@@ -33,6 +33,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             text is available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
           </p>
           <p>
+            <img src="/credits/statsbomb.png" alt="StatsBomb" height={16} />{' '}
             Shot locations and expected goals in Pitch pin come from{' '}
             <a href="https://github.com/statsbomb/open-data">StatsBomb open data</a> for the classics and from{' '}
             <a href="https://understat.com/">Understat</a> for Premier League goals. The Goal of the Month

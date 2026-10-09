@@ -110,7 +110,10 @@ export default function PitchPin({ board, mode, order }: {
           </>
         )}
         <a className="pin__back" href={`/pin${query}`}>All packs</a>
-        <p className="pin__credit">Shot data: {credits}. Metres on a standard pitch.</p>
+        <p className="pin__credit">
+          {board.goals.some((g) => g.credit === 'statsbomb') ? <img src="/credits/statsbomb.png" alt="StatsBomb" height={16} /> : null}
+          Shot data: {credits}. Metres on a standard pitch.
+        </p>
       </main>
     </div>
   );
