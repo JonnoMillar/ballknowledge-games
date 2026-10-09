@@ -20,6 +20,13 @@ describe('parseShortlist', () => {
     expect(picks[1]!.player).toBe('Richarlison');
     expect(picks[7]).toEqual({ player: 'Marc Guehi', clubs: ['aston villa', 'crystal palace'], when: '2025-08' });
   });
+  it('reads August 2026, which has no player links: bold names before the match link', () => {
+    const picks = parseShortlist(page('gotm-2026-08.html'), '2026-08');
+    expect(picks.map((p) => p.player)).toEqual([
+      'Emersonn', 'Nilson Angulo', 'Keane Lewis-Potter', 'Joe Willock', 'Rayan Cherki', 'Anthony Elanga', 'Kevin Schade', 'Cole Palmer',
+    ]);
+    expect(picks[4]).toEqual({ player: 'Rayan Cherki', clubs: ['crystal palace', 'manchester city'], when: '2026-08' });
+  });
   it('reads nothing from a page with no shortlist', () => {
     expect(parseShortlist('<p>Coming soon</p>', '2026-10')).toEqual([]);
   });

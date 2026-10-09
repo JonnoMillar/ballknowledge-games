@@ -1330,5 +1330,131 @@
       "y": 10.5
     },
     "xg": 0.28
+  },
+  "u-692863": {
+    "scorer": "Bryan Mbeumo",
+    "match": "Everton v Manchester United",
+    "date": "2026-09-06",
+    "competition": "Premier League 2026/27",
+    "line": "A shot after a dribble, in the 46th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31208,
+      "shotId": "692863"
+    },
+    "at": {
+      "x": 45.5,
+      "y": 19.1
+    },
+    "xg": 0.04
+  },
+  "u-695684": {
+    "scorer": "Nicolas Jackson",
+    "match": "Tottenham v Aston Villa",
+    "date": "2026-09-19",
+    "competition": "Premier League 2026/27",
+    "line": "A shot after a dribble, in the 66th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31221,
+      "shotId": "695684"
+    },
+    "at": {
+      "x": 40.1,
+      "y": 16.2
+    },
+    "xg": 0.12
+  },
+  "u-688615": {
+    "scorer": "Emersonn",
+    "match": "Ipswich v Sunderland",
+    "date": "2026-08-22",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 23rd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31183,
+      "shotId": "688615"
+    },
+    "at": {
+      "x": 32.8,
+      "y": 10.9
+    },
+    "xg": 0.57
+  },
+  "u-688622": {
+    "scorer": "Nilson Angulo",
+    "match": "Ipswich v Sunderland",
+    "date": "2026-08-22",
+    "competition": "Premier League 2026/27",
+    "line": "A direct free kick, in the 38th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31183,
+      "shotId": "688622"
+    },
+    "at": {
+      "x": 23.7,
+      "y": 21.6
+    },
+    "xg": 0.08
+  },
+  "u-688736": {
+    "scorer": "Keane Lewis-Potter",
+    "match": "Brentford v Tottenham",
+    "date": "2026-08-22",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 11th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31185,
+      "shotId": "688736"
+    },
+    "at": {
+      "x": 34.4,
+      "y": 7.9
+    },
+    "xg": 0.54
+  },
+  "u-689385": {
+    "scorer": "Joe Willock",
+    "match": "Newcastle United v Liverpool",
+    "date": "2026-08-23",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 56th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31188,
+      "shotId": "689385"
+    },
+    "at": {
+      "x": 25.2,
+      "y": 18.7
+    },
+    "xg": 0.07
+  },
+  "u-691103": {
+    "scorer": "Kevin Schade",
+    "match": "Leeds v Brentford",
+    "date": "2026-08-30",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a cross, in the 40th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31197,
+      "shotId": "691103"
+    },
+    "at": {
+      "x": 30.7,
+      "y": 9.3
+    },
+    "xg": 0.11
   }
 }

@@ -6,6 +6,9 @@ import type { Pick } from './match';
  * markup around each nominee varies month to month (bold in different
  * places), so only two things are relied on: a link to the player's page
  * and, after it, a link to the match whose path is "<home>-vs-<away>".
+ * August 2026 had no player links at all: "<strong>Name</strong> (<a href=
+ * ".../match/<id>/<home>-vs-<away>/overview">…</a>)". That form is the
+ * fallback when the first finds nothing.
  */
 
 export const gotmUrl = (ym: string): string =>
@@ -18,11 +21,17 @@ const text = (html: string): string =>
 /** The nominees in page order, as picks in the given month (YYYY-MM). Empty when the page lists none. */
 export function parseShortlist(html: string, ym: string): Pick[] {
   const out: Pick[] = [];
+  const clubs = (m: RegExpExecArray): [string, string] => [m[1]!.replace(/-/g, ' '), m[2]!.replace(/-/g, ' ')];
   const player = /<a href="[^"]*\/players\/\d+\/[^"/]+\/overview">([\s\S]*?)<\/a>/g;
   for (let m = player.exec(html); m; m = player.exec(html)) {
     const match = /\/match\/\d+\/([a-z0-9-]+?)-vs-([a-z0-9-]+?)(?:[/?"])/.exec(html.slice(player.lastIndex));
     if (!match) continue;
-    out.push({ player: text(m[1]!), clubs: [match[1]!.replace(/-/g, ' '), match[2]!.replace(/-/g, ' ')], when: ym });
+    out.push({ player: text(m[1]!), clubs: clubs(match), when: ym });
+  }
+  if (out.length) return out;
+  const bold = /<strong>([^<]+)<\/strong>\s*\(\s*<a href="[^"]*\/match\/\d+\/([a-z0-9-]+?)-vs-([a-z0-9-]+?)\/[^"]*">/g;
+  for (let m = bold.exec(html); m; m = bold.exec(html)) {
+    out.push({ player: text(m[1]!), clubs: [m[2]!.replace(/-/g, ' '), m[3]!.replace(/-/g, ' ')], when: ym });
   }
   return out;
 }
