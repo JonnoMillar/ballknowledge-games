@@ -1,54 +1,50 @@
+import { readdirSync, readFileSync } from 'node:fs';
 import goalsJson from './data/goals.json';
-import packsJson from './data/packs.json';
-import daysJson from './data/days.json';
-import { dayNumber } from '../../src/lib/daily';
-import { dailyPool, daySlugs, isDate, PIN_EPOCH } from './lib/boards';
+import { utcToday } from './lib/dates';
 import { distance, inHalf, mirrorNote, type Spot } from './lib/pitch';
 import { par } from './lib/score';
-import type { Answer, BoardView, Goals, Pack } from './lib/types';
+import { isNew, shelve } from './lib/shelves';
+import type { Answer, BoardView, Goals, Pack, PackCard, Shelf } from './lib/types';
 
 /**
  * Pitch pin's ref. The coordinates stay here: the page gets the goals
  * without them, and a throw gets back the one answer it was thrown at.
  */
 const goals = goalsJson as unknown as Goals;
-const packs = packsJson as unknown as Pack[];
-const days = daysJson as unknown as Record<string, string[]>;
-const pool = dailyPool(goals, packs);
 
-/** The latest playable day: tomorrow in UTC, so every time zone has its today. */
-const latest = (now: Date): string => new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
+/** Every pack file, read once. Relative to the project root, as in src/server/board.ts; next.config.ts traces them. */
+const DIR = 'games/pin/data/packs';
+const packs: Pack[] = readdirSync(DIR)
+  .filter((f) => f.endsWith('.json'))
+  .sort()
+  .map((f) => JSON.parse(readFileSync(`${DIR}/${f}`, 'utf8')) as Pack);
+const byId = new Map(packs.map((p) => [p.id, p]));
 
-interface Slugs { slugs: string[]; title: string; date: string | null; number: number | null }
+const parOf = (p: Pack) => par(p.goals.map((s) => goals[s]!.at));
 
-function slugsFor(id: string, now: Date): Slugs | null {
-  if (id.startsWith('pack:')) {
-    const p = packs.find((x) => x.id === id.slice(5));
-    return p ? { slugs: p.goals, title: p.title, date: null, number: null } : null;
-  }
-  if (!isDate(id) || id < PIN_EPOCH || id > latest(now)) return null;
-  const n = dayNumber(id, PIN_EPOCH);
-  return { slugs: daySlugs(id, days, pool), title: `No. ${n}`, date: id, number: n };
-}
-
-export function boardView(id: string, now = new Date()): BoardView | null {
-  const s = slugsFor(id, now);
-  if (!s || s.slugs.some((slug) => !goals[slug])) return null;
+export function boardView(id: string): BoardView | null {
+  const p = byId.get(id);
+  if (!p || p.goals.some((s) => !goals[s])) return null;
   return {
-    id,
-    title: s.title,
-    date: s.date,
-    number: s.number,
-    par: par(s.slugs.map((slug) => goals[slug]!.at)),
-    goals: s.slugs.map((slug) => {
+    id: p.id,
+    title: p.title,
+    par: parOf(p),
+    goals: p.goals.map((slug) => {
       const g = goals[slug]!;
       return { slug, scorer: g.scorer, match: g.match, date: g.date, competition: g.competition, line: g.line, credit: g.source.from };
     }),
   };
 }
 
-export function packList(): { id: string; title: string }[] {
-  return packs.map(({ id, title }) => ({ id, title }));
+/** The library: every pack on its shelf, with no answers. */
+export function library(now = new Date()): Shelf[] {
+  const today = utcToday(now);
+  return shelve(packs).map((s) => ({
+    title: s.title,
+    packs: s.packs.map((p): PackCard => ({
+      id: p.id, kind: p.kind, title: p.title, subtitle: p.subtitle, size: p.goals.length, par: parOf(p), isNew: isNew(p, today),
+    })),
+  }));
 }
 
 export interface ThrowRequest { board: string; goal: string; pin: Spot }
@@ -63,10 +59,10 @@ export function parseThrow(body: unknown): ThrowRequest | null {
   return inHalf(pin) ? { board: b.board, goal: b.goal, pin } : null;
 }
 
-/** The answer to one throw, or null when that goal is not on a playable board. */
-export function judge({ board, goal, pin }: ThrowRequest, now = new Date()): Answer | null {
-  const s = slugsFor(board, now);
+/** The answer to one throw, or null when that goal is not in that pack. */
+export function judge({ board, goal, pin }: ThrowRequest): Answer | null {
+  const p = byId.get(board);
   const g = goals[goal];
-  if (!s || !g || !s.slugs.includes(goal)) return null;
+  if (!p || !g || !p.goals.includes(goal)) return null;
   return { at: g.at, distance: distance(pin, g.at), mirrored: mirrorNote(pin, g.at), xg: g.xg, credit: g.source.from };
 }

@@ -1,51 +1,56 @@
 import { describe, expect, it } from 'vitest';
-import { boardView, judge, packList, parseThrow } from '../server';
+import { boardView, judge, library, parseThrow } from '../server';
 import { distance, SPOT } from '../lib/pitch';
 
-const NOW = new Date('2026-10-08T12:00:00Z');
+const NOW = new Date('2026-10-09T12:00:00Z');
 
 describe('board views', () => {
   it('ship a pack without its answers', () => {
-    const b = boardView('pack:lionesses', NOW)!;
+    const b = boardView('lionesses')!;
     expect(b.goals).toHaveLength(6);
     expect(b.title).toBe('Lionesses');
     expect(JSON.stringify(b)).not.toMatch(/"at"|"xg"|"source"|"eventId"/);
     expect(b.par.metres).toBeGreaterThanOrEqual(42);
   });
-  it('ship today and tomorrow, never later and never before launch', () => {
-    expect(boardView('2026-10-08', NOW)?.title).toBe('No. 1');
-    expect(boardView('2026-10-09', NOW)?.number).toBe(2);
-    expect(boardView('2026-10-10', NOW)).toBeNull();
-    expect(boardView('2026-10-07', NOW)).toBeNull();
-  });
   it('refuse nonsense ids', () => {
-    for (const id of ['', 'pack:nope', '2026-13-01', '../goals', 'pack:../x']) expect(boardView(id, NOW), id).toBeNull();
+    for (const id of ['', 'nope', 'pack:lionesses', '../goals', '__proto__', 'constructor', '2026-10-08']) {
+      expect(boardView(id), id).toBeNull();
+    }
   });
-  it('list the packs', () => {
-    expect(packList().map((p) => p.id)).toEqual(['world-cup-2022', 'invincibles', 'lionesses']);
+});
+
+describe('the library', () => {
+  it('shelves every pack once, with no answers', () => {
+    const shelves = library(NOW);
+    const ids = shelves.flatMap((s) => s.packs.map((p) => p.id));
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids).toContain('lionesses');
+    expect(ids).toContain('champions-league-finals');
+    expect(shelves.at(-1)!.title).toBe('Archive');
+    expect(JSON.stringify(shelves)).not.toMatch(/"at"|"xg"|"goals"|"source"/);
+  });
+  it('never marks an archive or classic pack new', () => {
+    for (const s of library(NOW)) for (const p of s.packs) if (p.kind !== 'round' && p.kind !== 'month') expect(p.isNew, p.id).toBe(false);
   });
 });
 
 describe('judging a throw', () => {
-  it('returns the answer for a goal on the board', () => {
-    const slug = boardView('pack:lionesses', NOW)!.goals[0]!.slug;
-    const a = judge({ board: 'pack:lionesses', goal: slug, pin: SPOT }, NOW)!;
+  it('returns the answer for a goal in the pack', () => {
+    const slug = boardView('lionesses')!.goals[0]!.slug;
+    const a = judge({ board: 'lionesses', goal: slug, pin: SPOT })!;
     expect(a.distance).toBeCloseTo(distance(SPOT, a.at));
     expect(a.credit).toBe('statsbomb');
     expect(a.xg).toBeGreaterThan(0);
   });
-  it('will not judge a goal that is not on the board', () => {
-    expect(judge({ board: 'pack:lionesses', goal: 'bale-overhead-2018', pin: SPOT }, NOW)).toBeNull();
-  });
-  it('will not judge a board from the future', () => {
-    const slug = boardView('2026-10-09', NOW)!.goals[0]!.slug;
-    expect(judge({ board: '2026-10-11', goal: slug, pin: SPOT }, NOW)).toBeNull();
+  it('will not judge a goal that is not in the pack, or a pack that does not exist', () => {
+    expect(judge({ board: 'lionesses', goal: 'bale-overhead-2018', pin: SPOT })).toBeNull();
+    expect(judge({ board: 'pack:lionesses', goal: 'russo-backheel', pin: SPOT })).toBeNull();
   });
 });
 
 describe('parsing a throw', () => {
   it('takes a clean throw', () => {
-    expect(parseThrow({ board: 'pack:x', goal: 'g', x: 1, y: 2 })).toEqual({ board: 'pack:x', goal: 'g', pin: { x: 1, y: 2 } });
+    expect(parseThrow({ board: 'x', goal: 'g', x: 1, y: 2 })).toEqual({ board: 'x', goal: 'g', pin: { x: 1, y: 2 } });
   });
   it('refuses anything else', () => {
     const bad = [null, 'x', [], { board: 1, goal: 'g', x: 1, y: 1 }, { board: 'b', goal: 'g', x: '1', y: 1 },

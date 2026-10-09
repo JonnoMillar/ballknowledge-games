@@ -1,13 +1,10 @@
-'use client';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { localDate } from '../../src/lib/daily';
+import Library from '../../games/pin/components/Library';
+import { library } from '../../games/pin/server';
 
-/** Today's board is the player's today, so the redirect happens in the browser. */
-export default function PinToday() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace(`/pin/${localDate()}${window.location.search}`);
-  }, [router]);
-  return <div className="app pin" />;
+/** The library. Rendered per request, so New is always current. */
+export const dynamic = 'force-dynamic';
+
+export default async function PinLibrary({ searchParams }: { searchParams: Promise<{ score?: string }> }) {
+  const { score } = await searchParams;
+  return <Library shelves={library()} mode={score === 'points' ? 'points' : 'metres'} />;
 }

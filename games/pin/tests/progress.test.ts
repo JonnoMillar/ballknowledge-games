@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { readStore, recordThrow, streakOf, type Throw } from '../lib/progress';
+import { nextPack, packStatus, readStore, recordThrow, type Throw } from '../lib/progress';
 
 const mem = new Map<string, string>();
 globalThis.localStorage = {
@@ -16,7 +16,6 @@ const t = (d: number): Throw => ({
   pin: { x: 34, y: 11 },
   answer: { at: { x: 34, y: 11 + d }, distance: d, mirrored: null, xg: 0.1, credit: 'statsbomb' },
 });
-const finish = (date: string, on: string) => { recordThrow(date, 1, 0, t(1), on); };
 
 describe('throws', () => {
   it('keeps the first throw at a goal', () => {
@@ -37,19 +36,33 @@ describe('throws', () => {
   });
 });
 
-describe('the streak', () => {
-  it('counts dailies finished on their own day, ending today or yesterday', () => {
-    finish('2026-10-08', '2026-10-08');
-    finish('2026-10-09', '2026-10-09');
-    finish('2026-10-10', '2026-10-10');
-    const s = readStore();
-    expect(streakOf(s, '2026-10-10')).toBe(3);
-    expect(streakOf(s, '2026-10-11')).toBe(3);
-    expect(streakOf(s, '2026-10-12')).toBe(0);
+describe('pack status', () => {
+  it('is unplayed with nothing saved, or with a save of another length', () => {
+    expect(packStatus(undefined, 6)).toEqual({ state: 'unplayed' });
+    recordThrow('p', 2, 0, t(1), '2026-10-09');
+    expect(packStatus(readStore().p, 3)).toEqual({ state: 'unplayed' });
   });
-  it('does not count a daily caught up on later, or a pack', () => {
-    finish('2026-10-08', '2026-10-09');
-    finish('pack:lionesses', '2026-10-09');
-    expect(streakOf(readStore(), '2026-10-09')).toBe(0);
+  it('counts a part-thrown pack', () => {
+    recordThrow('p', 3, 0, t(1), '2026-10-09');
+    recordThrow('p', 3, 2, t(2), '2026-10-09');
+    expect(packStatus(readStore().p, 3)).toEqual({ state: 'part', thrown: 2 });
+  });
+  it('gives the distances of a finished pack', () => {
+    recordThrow('p', 2, 0, t(1), '2026-10-09');
+    recordThrow('p', 2, 1, t(2), '2026-10-09');
+    expect(packStatus(readStore().p, 2)).toEqual({ state: 'done', distances: [1, 2] });
+  });
+});
+
+describe('the next pack', () => {
+  const order = [{ id: 'a', size: 1 }, { id: 'b', size: 1 }, { id: 'c', size: 1 }];
+  it('is the next unfinished pack after this one, wrapping round', () => {
+    recordThrow('b', 1, 0, t(1), '2026-10-09');
+    expect(nextPack(order, readStore(), 'a')).toBe('c');
+    expect(nextPack(order, readStore(), 'c')).toBe('a');
+  });
+  it('is null when every other pack is finished', () => {
+    for (const id of ['a', 'b', 'c']) recordThrow(id, 1, 0, t(1), '2026-10-09');
+    expect(nextPack(order, readStore(), 'a')).toBeNull();
   });
 });

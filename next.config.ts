@@ -24,6 +24,7 @@ const config: NextConfig = {
       './data/credits.json',
       './content/chains/*.json',
       './content/puzzles/*.json',
+      './games/pin/data/packs/*.json',
     ],
   },
 };

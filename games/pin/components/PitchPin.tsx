@@ -2,33 +2,35 @@
 import { useEffect, useState } from 'react';
 import Pitch from './Pitch';
 import FullTime from './FullTime';
-import { dateOfDay, dayNumber, localDate, longDate } from '../../../src/lib/daily';
-import { PIN_EPOCH } from '../lib/boards';
-import { readStore, recordThrow, streakOf, type Throw } from '../lib/progress';
+import { localDate, longDate } from '../../../src/lib/daily';
+import { nextPack, readStore, recordThrow, type Store, type Throw } from '../lib/progress';
 import { points, ring, RING_NAME, tally, type Mode } from '../lib/score';
 import type { Spot } from '../lib/pitch';
 import type { Answer, BoardView, GoalCard as Card } from '../lib/types';
 
 /**
- * A Pitch pin board: six goals, one throw each. The page holds no answers;
+ * A Pitch pin pack: its goals, one throw each. The page holds no answers;
  * each throw goes to /api/pin/throw and the answer comes back for that goal
- * alone. Progress is kept in the browser so a refresh resumes.
+ * alone. Progress is kept in the browser so a refresh resumes. `order` is
+ * the library's packs in shelf order, for the Next pack link.
  */
-export default function PitchPin({ board, mode, packs }: { board: BoardView; mode: Mode; packs: { id: string; title: string }[] }) {
+export default function PitchPin({ board, mode, order }: {
+  board: BoardView; mode: Mode; order: { id: string; size: number }[];
+}) {
   const n = board.goals.length;
   const [throws, setThrows] = useState<(Throw | null)[]>(() => Array<Throw | null>(n).fill(null));
+  const [store, setStore] = useState<Store>({});
   const [loaded, setLoaded] = useState(false);
   const [pin, setPin] = useState<Spot | null>(null);
   const [viewing, setViewing] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
-    const store = readStore();
-    const saved = store[board.id]?.throws;
+    const s = readStore();
+    const saved = s[board.id]?.throws;
     if (saved && saved.length === n) setThrows(saved);
-    setStreak(streakOf(store, localDate()));
+    setStore(s);
     setLoaded(true);
   }, [board.id, n]);
 
@@ -50,9 +52,9 @@ export default function PitchPin({ board, mode, packs }: { board: BoardView; mod
       });
       if (!res.ok) throw new Error(String(res.status));
       const answer = (await res.json()) as Answer;
-      const store = recordThrow(board.id, n, next, { pin, answer }, localDate());
-      setThrows(store[board.id]!.throws);
-      setStreak(streakOf(store, localDate()));
+      const s = recordThrow(board.id, n, next, { pin, answer }, localDate());
+      setThrows(s[board.id]!.throws);
+      setStore(s);
       setViewing(next);
       setPin(null);
     } catch {
@@ -80,7 +82,7 @@ export default function PitchPin({ board, mode, packs }: { board: BoardView; mod
 
       <main className="pin__main">
         {!loaded ? null : done ? (
-          <FullTime board={board} throws={throws as Throw[]} mode={mode} streak={board.date ? streak : null} />
+          <FullTime board={board} throws={throws as Throw[]} mode={mode} nextId={nextPack(order, store, board.id)} query={query} />
         ) : (
           <>
             <Ticks n={n} thrown={throws.filter(Boolean).length} current={current} />
@@ -107,14 +109,14 @@ export default function PitchPin({ board, mode, packs }: { board: BoardView; mod
             )}
           </>
         )}
-        <More board={board} packs={packs} query={query} />
+        <a className="pin__back" href={`/pin${query}`}>All packs</a>
         <p className="pin__credit">Shot data: {credits}. Metres on a standard pitch.</p>
       </main>
     </div>
   );
 }
 
-function PinLogo() {
+export function PinLogo() {
   return (
     <svg className="masthead__mark masthead__mark--pin" viewBox="0 0 22 30" aria-hidden>
       <circle cx="11" cy="10" r="8.5" fill="none" stroke="currentColor" strokeWidth="2.6" />
@@ -185,38 +187,5 @@ function Result({ t, goal, mode, pointsSoFar, last, onNext }: {
         <button type="button" className="pin__next display" onClick={onNext}>{last ? 'Full time' : 'Next goal'}</button>
       </div>
     </section>
-  );
-}
-
-/** Earlier days (up to a week) and the packs. Worked out from the player's own clock. */
-function More({ board, packs, query }: { board: BoardView; packs: { id: string; title: string }[]; query: string }) {
-  const [earlier, setEarlier] = useState<string[]>([]);
-  useEffect(() => {
-    const today = dayNumber(localDate(), PIN_EPOCH);
-    const out: string[] = [];
-    for (let d = today - 1; d >= 1 && out.length < 7; d--) out.push(dateOfDay(d, PIN_EPOCH));
-    setEarlier(out);
-  }, []);
-  return (
-    <nav className="pin__more" aria-label="More boards">
-      {earlier.length ? (
-        <div>
-          <h2 className="pin__morehead display">Earlier days</h2>
-          <ul>
-            {earlier.map((d) => (
-              <li key={d}><a href={`/pin/${d}${query}`} aria-current={d === board.id ? 'page' : undefined}>No. {dayNumber(d, PIN_EPOCH)}, {longDate(d)}</a></li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-      <div>
-        <h2 className="pin__morehead display">Packs</h2>
-        <ul>
-          {packs.map((p) => (
-            <li key={p.id}><a href={`/pin/pack/${p.id}${query}`} aria-current={`pack:${p.id}` === board.id ? 'page' : undefined}>{p.title}</a></li>
-          ))}
-        </ul>
-      </div>
-    </nav>
   );
 }

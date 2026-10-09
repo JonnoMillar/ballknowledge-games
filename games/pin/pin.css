@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════
    PITCH PIN — where was it struck from?
-   See docs/superpowers/specs/2026-10-08-pitch-pin-design.md.
+   See docs/superpowers/specs/2026-10-08-pitch-pin-design.md and 2026-10-09-pitch-pin-library-design.md.
 
    A sibling of the album: same page, same white card, same two faces, the
    album's own red band. The pitch is ink on a white card. Scoped under
@@ -91,7 +91,7 @@
 /* ── Aiming and the result ──────────────────────────────────────────── */
 .pin__hint { margin: 0; font-size: 14px; color: var(--muted); text-align: center; }
 .pin__error { margin: 0; font-size: 14px; color: var(--red-deep); text-align: center; }
-.pin__throw, .pin__next {
+.pin__throw, .pin__next, .pin__nextpack {
   appearance: none;
   border: 0;
   border-radius: 6px;
@@ -107,6 +107,7 @@
 }
 .pin__throw:disabled { background: var(--silhouette); color: var(--muted); cursor: default; }
 .pin__next { flex-grow: 1; background: var(--sticker); color: var(--ink); border: 2px solid var(--ink); }
+.pin__nextpack { display: flex; align-items: center; justify-content: center; background: var(--sticker); color: var(--ink); border: 2px solid var(--ink); text-decoration: none; }
 
 .pin__result { display: flex; flex-direction: column; gap: 6px; }
 .pin__score { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
@@ -146,7 +147,6 @@
 .pin__who { display: flex; flex-direction: column; min-width: 0; font-size: 12px; color: var(--muted); }
 .pin__who .display { font-size: 18px; font-weight: 800; line-height: 1.05; text-transform: uppercase; color: var(--ink); }
 .pin__val { font-size: 20px; font-weight: 800; }
-.pin__streak { margin: 0; font-weight: 600; }
 .pin__share {
   margin: 0;
   padding: 12px 14px;
@@ -159,10 +159,30 @@
   white-space: pre-line;
 }
 
-/* ── More boards and the credit ─────────────────────────────────────── */
-.pin__more { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 24px; margin-top: 16px; font-size: 14px; }
-.pin__more ul { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.pin__more a { color: var(--ink); }
-.pin__more a[aria-current='page'] { font-weight: 600; text-decoration: none; }
-.pin__morehead { margin: 0; font-size: 18px; font-weight: 800; text-transform: uppercase; }
+/* ── The library ────────────────────────────────────────────────────── */
+.pin__intro { margin: 0; font-size: 15px; color: var(--muted); }
+.pin__shelf { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.pin__shelfhead { margin: 0; font-size: 22px; font-weight: 800; text-transform: uppercase; }
+.pin__packs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.pin__pack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 12px 14px;
+  background: var(--sticker);
+  border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.12);
+  color: var(--ink);
+  text-decoration: none;
+}
+.pin__pack:hover, .pin__pack:focus-visible { box-shadow: 0 0 0 2px var(--ink); }
+.pin__packtitle { font-size: 20px; font-weight: 800; line-height: 1; text-transform: uppercase; }
+.pin__packsub { font-size: 13px; color: var(--muted); }
+.pin__packfoot { margin-top: auto; padding-top: 6px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.pin__new { background: var(--red); color: #fff; border-radius: 3px; padding: 1px 6px 2px; font-size: 13px; font-weight: 800; text-transform: uppercase; }
+.pin__status { color: var(--muted); }
+.pin__back { align-self: center; font-size: 14px; color: var(--ink); }
+
+/* ── The credit ─────────────────────────────────────────────────────── */
 .pin__credit { margin: 0; font-size: 12px; color: var(--muted); text-align: center; }

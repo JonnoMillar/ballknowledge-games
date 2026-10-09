@@ -5,9 +5,9 @@ import { againstPar, points, ring, RING_NAME, shareText, tally, type Mode } from
 import type { Throw } from '../lib/progress';
 import type { BoardView } from '../lib/types';
 
-/** The board finished: the total against par, all six pins, the list, the streak, the share. */
-export default function FullTime({ board, throws, mode, streak }: {
-  board: BoardView; throws: Throw[]; mode: Mode; streak: number | null;
+/** The pack finished: the total against par, every pin, the list, the share, the next pack. */
+export default function FullTime({ board, throws, mode, nextId, query }: {
+  board: BoardView; throws: Throw[]; mode: Mode; nextId: string | null; query: string;
 }) {
   const ds = throws.map((t) => t.answer.distance);
   const t = tally(ds);
@@ -27,7 +27,7 @@ export default function FullTime({ board, throws, mode, streak }: {
         </div>
         {bulls ? <span className="pin__stamp display">{bulls === 1 ? '1 bullseye' : `${bulls} bullseyes`}</span> : null}
       </div>
-      <Pitch label="All six pins against where each goal was struck" all={throws.map((x) => ({ pin: x.pin, at: x.answer.at }))} />
+      <Pitch label={`All ${throws.length} pins against where each goal was struck`} all={throws.map((x) => ({ pin: x.pin, at: x.answer.at }))} />
       <ol className="pin__list">
         {board.goals.map((g, i) => {
           const d = ds[i]!;
@@ -45,9 +45,9 @@ export default function FullTime({ board, throws, mode, streak }: {
           );
         })}
       </ol>
-      {streak ? <p className="pin__streak">Streak: {streak} {streak === 1 ? 'day' : 'days'}</p> : null}
       <pre className="pin__share">{text}</pre>
       <ShareButton text={text} />
+      {nextId ? <a className="pin__nextpack display" href={`/pin/${nextId}${query}`}>Next pack</a> : null}
     </section>
   );
 }

@@ -1,0 +1,16 @@
+{
+  "id": "champions-league-finals",
+  "kind": "classic",
+  "title": "Champions League finals",
+  "subtitle": "2005 to 2018 · 7 goals",
+  "published": "2026-10-09",
+  "goals": [
+    "gerrard-istanbul",
+    "smicer-istanbul",
+    "drogba-munich",
+    "robben-wembley",
+    "ramos-lisbon",
+    "bale-overhead-2018",
+    "bale-strike-2018"
+  ]
+}

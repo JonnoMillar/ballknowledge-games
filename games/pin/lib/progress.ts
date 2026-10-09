@@ -1,12 +1,10 @@
-import { dayNumber } from '../../../src/lib/daily';
-import { isDate, PIN_EPOCH } from './boards';
 import type { Spot } from './pitch';
 import type { Answer } from './types';
 
 /**
  * What the player has done, kept in the browser. No accounts: a throw is
  * written when the answer comes back, and the first throw at a goal is the
- * one that counts. A refresh resumes from here.
+ * one that counts. A refresh resumes from here. Keyed by pack id.
  */
 export interface Throw { pin: Spot; answer: Answer }
 /** `finished` is the local date the last pin landed, or null. */
@@ -36,13 +34,22 @@ export function recordThrow(board: string, n: number, i: number, t: Throw, today
   return store;
 }
 
-/** Consecutive dailies finished on their own day, ending today or yesterday. Packs do not count. */
-export function streakOf(store: Store, today: string): number {
-  const days = new Set<number>();
-  for (const [id, p] of Object.entries(store)) if (isDate(id) && p.finished === id) days.add(dayNumber(id, PIN_EPOCH));
-  const t = dayNumber(today, PIN_EPOCH);
-  let d = days.has(t) ? t : t - 1;
-  let n = 0;
-  while (days.has(d)) { n++; d--; }
-  return n;
+export type Status =
+  | { state: 'unplayed' }
+  | { state: 'part'; thrown: number }
+  | { state: 'done'; distances: number[] };
+
+/** Where this browser is with a pack of n goals. A save of another length (the pack changed) counts as unplayed. */
+export function packStatus(play: PinPlay | undefined, n: number): Status {
+  if (!play || play.throws.length !== n) return { state: 'unplayed' };
+  const thrown = play.throws.filter((t): t is Throw => !!t);
+  if (thrown.length === n) return { state: 'done', distances: thrown.map((t) => t.answer.distance) };
+  return thrown.length ? { state: 'part', thrown: thrown.length } : { state: 'unplayed' };
+}
+
+/** The next pack in library order this browser has not finished, starting after the current one and wrapping. Null when all are done. */
+export function nextPack(order: readonly { id: string; size: number }[], store: Store, current: string): string | null {
+  const i = order.findIndex((p) => p.id === current);
+  const rest = [...order.slice(i + 1), ...order.slice(0, Math.max(i, 0))];
+  return rest.find((p) => packStatus(store[p.id], p.size).state !== 'done')?.id ?? null;
 }

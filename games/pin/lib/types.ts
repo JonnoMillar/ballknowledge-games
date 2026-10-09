@@ -25,18 +25,14 @@ export type Goals = Record<string, Goal>;
 export type PackKind = 'round' | 'month' | 'season' | 'club' | 'classic';
 export const PACK_KINDS: readonly PackKind[] = ['round', 'month', 'season', 'club', 'classic'];
 
-/**
- * A pack file, games/pin/data/packs/<id>.json. `season` ("2026-27") is on
- * round, month and season packs only. `published` is a UTC date.
- * (kind, subtitle and published become required in Task 7.)
- */
+/** A pack file, games/pin/data/packs/<id>.json. `season` ("2026-27") is on round, month and season packs only. `published` is a UTC date. */
 export interface Pack {
   id: string;
-  kind?: PackKind;
+  kind: PackKind;
   title: string;
-  subtitle?: string;
+  subtitle: string;
   season?: string;
-  published?: string;
+  published: string;
   goals: string[];
 }
 
@@ -51,15 +47,25 @@ export interface GoalCard {
   credit: Credit;
 }
 
-/** A board as the page gets it. `id` is a date or `pack:<id>`. */
+/** A pack as the page gets it: everything but the answers. */
 export interface BoardView {
   id: string;
   title: string;
-  date: string | null;
-  number: number | null;
   goals: GoalCard[];
   par: Tally;
 }
+
+/** A pack on the library page. */
+export interface PackCard {
+  id: string;
+  kind: PackKind;
+  title: string;
+  subtitle: string;
+  size: number;
+  par: Tally;
+  isNew: boolean;
+}
+export interface Shelf { title: string; packs: PackCard[] }
 
 /** What a thrown pin gets back. `mirrored` is the wrong-side distance, or null. */
 export interface Answer { at: Spot; distance: number; mirrored: number | null; xg: number; credit: Credit }

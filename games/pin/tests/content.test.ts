@@ -1,16 +1,18 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import goalsJson from '../data/goals.json';
-import packsJson from '../data/packs.json';
-import daysJson from '../data/days.json';
-import { dailyPool, fair, isDate } from '../lib/boards';
+import { isDate } from '../lib/dates';
 import { leaks } from '../lib/line';
 import { inHalf } from '../lib/pitch';
-import type { Goals, Pack } from '../lib/types';
+import { fair } from '../lib/round';
+import { PACK_KINDS, type Goals, type Pack } from '../lib/types';
 
 const goals = goalsJson as unknown as Goals;
-const packs = packsJson as unknown as Pack[];
-const days = daysJson as unknown as Record<string, string[]>;
+const DIR = 'games/pin/data/packs';
+const packs = readdirSync(DIR)
+  .filter((f) => f.endsWith('.json'))
+  .map((f) => [f, JSON.parse(readFileSync(`${DIR}/${f}`, 'utf8')) as Pack] as const);
+const SEASONAL = new Set(['round', 'month', 'season']);
 
 describe('every goal', () => {
   for (const [slug, g] of Object.entries(goals)) {
@@ -24,34 +26,30 @@ describe('every goal', () => {
       expect(g.source.from).toBe(g.kind === 'classic' ? 'statsbomb' : 'understat');
     });
   }
-});
-
-describe('packs', () => {
-  it('are six distinct classics each, fair, and share no goal', () => {
-    const seen = new Set<string>();
-    for (const p of packs) {
-      expect(new Set(p.goals).size, p.id).toBe(6);
-      for (const s of p.goals) {
-        expect(goals[s]?.kind, `${p.id}: ${s}`).toBe('classic');
-        expect(seen.has(s), s).toBe(false);
-        seen.add(s);
-      }
-      expect(fair(p.goals.map((s) => goals[s]!.at)), p.id).toBe(true);
-    }
+  it('is in at least one pack', () => {
+    const used = new Set(packs.flatMap(([, p]) => p.goals));
+    expect(Object.keys(goals).filter((s) => !used.has(s))).toEqual([]);
   });
 });
 
-describe('daily boards', () => {
-  it('leaves enough classics for the daily', () => {
-    expect(dailyPool(goals, packs).length).toBeGreaterThanOrEqual(12);
+describe('every pack', () => {
+  it('there are at least the seven classic packs', () => {
+    expect(packs.length).toBeGreaterThanOrEqual(7);
   });
-  for (const [date, slugs] of Object.entries(days)) {
-    it(date, () => {
-      expect(isDate(date)).toBe(true);
-      expect(new Set(slugs).size).toBe(6);
-      for (const s of slugs) expect(goals[s], s).toBeDefined();
-      expect(slugs.filter((s) => goals[s]!.kind === 'recent')).toHaveLength(4);
-      expect(fair(slugs.map((s) => goals[s]!.at))).toBe(true);
+  for (const [file, p] of packs) {
+    it(file, () => {
+      expect(p.id).toBe(file.replace(/\.json$/, ''));
+      expect(p.id).toMatch(/^[a-z0-9-]{1,40}$/);
+      expect(PACK_KINDS).toContain(p.kind);
+      expect(p.title && p.subtitle).toBeTruthy();
+      expect(isDate(p.published)).toBe(true);
+      if (SEASONAL.has(p.kind)) expect(p.season).toMatch(/^\d{4}-\d{2}$/);
+      else expect(p.season).toBeUndefined();
+      expect(p.goals.length).toBeGreaterThanOrEqual(6);
+      expect(p.goals.length).toBeLessThanOrEqual(9);
+      expect(new Set(p.goals).size).toBe(p.goals.length);
+      for (const s of p.goals) expect(goals[s], s).toBeDefined();
+      if (p.kind === 'round' || p.kind === 'classic') expect(fair(p.goals.map((s) => goals[s]!.at))).toBe(true);
     });
   }
 });

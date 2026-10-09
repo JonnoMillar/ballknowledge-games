@@ -1,0 +1,16 @@
+{
+  "id": "world-cup-classics",
+  "kind": "classic",
+  "title": "World Cup classics",
+  "subtitle": "1970 to 2018 · 7 goals",
+  "published": "2026-10-09",
+  "goals": [
+    "pele-1970",
+    "carlos-alberto-1970",
+    "maradona-hand",
+    "maradona-solo",
+    "ronaldo-spain",
+    "pavard-argentina",
+    "trippier-croatia"
+  ]
+}

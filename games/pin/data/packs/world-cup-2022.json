@@ -1,0 +1,15 @@
+{
+  "id": "world-cup-2022",
+  "kind": "classic",
+  "title": "World Cup 2022",
+  "subtitle": "Qatar · 6 goals",
+  "published": "2026-10-08",
+  "goals": [
+    "richarlison-serbia",
+    "aldawsari-argentina",
+    "enzo-mexico",
+    "messi-mexico",
+    "dimaria-final-2022",
+    "mbappe-volley-final"
+  ]
+}

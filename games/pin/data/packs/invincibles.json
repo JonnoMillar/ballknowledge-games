@@ -1,0 +1,15 @@
+{
+  "id": "invincibles",
+  "kind": "classic",
+  "title": "The Invincibles",
+  "subtitle": "Arsenal 2003/04 · 6 goals",
+  "published": "2026-10-08",
+  "goals": [
+    "henry-manutd-2004",
+    "henry-liverpool-2004",
+    "pires-anfield-2003",
+    "edu-chelsea-2003",
+    "vieira-spurs-2004",
+    "vieira-leicester-2004"
+  ]
+}
