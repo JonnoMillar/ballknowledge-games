@@ -1,6 +1,6 @@
 # Chain — state of play
 
-**Updated:** 2026-10-10 (ITK end screen design, branch `feat/fake-transfer`). Read this
+**Updated:** 2026-10-10 (ITK end screen built, branch `feat/fake-transfer`). Read this
 first in a new session; it is the shortest path back to full context. **If you
 are here for ITK, jump to the ITK section.** The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
@@ -44,7 +44,7 @@ the repo on its own dark theme, not developed.
 
 ```bash
 npm run dev          # localhost:3000
-npm test             # 1,363 tests, 35 files
+npm test             # 1,373 tests, 36 files
 npm run typecheck
 ```
 
@@ -242,8 +242,9 @@ exists yet; do not write the generator until he signs off on the rules.
 a trail of crest stickers (year, crest, short name, "Loan" tag) joined by an ink
 route with arrows, snake-laid (rows reverse) so 9 stops fit a phone. One stop
 is fake. Two picks per career: found first time 🟩, second 🟨, missed 🟥
-(Chain's glyphs). The end screen is in active design: see "End screen" below.
-Share line `ITK #n` + grid + tier, no names.
+(Chain's glyphs), drawn on screen as solid ✓/✓/✕ marks. The end screen is built,
+awaiting Jonno's sign-off: see "End screen" below. Share line
+`ITK #n · Agent 9/10` + grid, no names.
 Name "ITK" is Claude's pick; Jonno said revisit later.
 
 | Path | What |
@@ -253,9 +254,9 @@ Name "ITK" is Claude's pick; Jonno said revisit later.
 | `components/itk/Trail.tsx` | Snake layout from geometry, route SVG, crest cards, the peel reveal. |
 | `components/itk/Feedback.tsx` | **Prototype tooling**: per-round strip (knew him; first look 1–10 locked at reveal; how easy 1–10; fun 1–10; note). localStorage `itk.feedback.v1`, "Copy feedback" button → JSON Jonno pastes back. |
 | `src/server/itk.ts`, `app/api/itk/pick/route.ts` | Loads `content/itk/examples.json`; the fake's index and the real club stay server-side until the round ends. Dev re-reads the file per request. |
-| `src/lib/itk/score.ts`, `tests/itk/score.test.ts` | Round mark, `RUNGS`, `tierOf`, share line (8 tests). |
-| `components/itk/Reveal.tsx` | **Prototype**: result sticker + the album/pack/peel reveal mockups; switcher lives in `Summary` in `Itk.tsx`. |
-| `public/itk/ranks/*.webp` | Rank art, one per result (Higgsfield GPT Image 2.5, transparent, 480px). Not wired in yet. |
+| `src/lib/itk/score.ts`, `tests/itk/score.test.ts` | Round mark, `POINTS`/`pointsOf`, `RUNGS` + floors, `tierOf`, `rangeOf` ("5–7"), share line (10 tests). |
+| `components/itk/Reveal.tsx` | The end screen: tally, the five careers with +2/+1/+0, the route, the album page of six slots, your result sticker. `Summary` in `Itk.tsx` wraps it with share/again and the prototype result picker. |
+| `public/itk/ranks/*.webp` | Rank art, one per result (Higgsfield GPT Image 2.5, transparent, 480px). Faded in every slot, full colour on your sticker. Credited on `/credits`. |
 | `scripts/itk/pick-examples.mjs` | **The v5 picker** (scratch quality; the generator rewrite starts from its rules). |
 | `scripts/itk/fetch-views.mjs`, `data/itk/enwiki-views*.json` | 24 months of enwiki pageviews (Oct 2023–Sep 2025) for pool players + clubs, redirects resolved. |
 
@@ -289,22 +290,20 @@ see a tacky animation for right or wrong I'll be angry."
   Lesson: **always pass a reference image** for colour/feel (Jonno called the
   unreferenced Recraft test "terrible planning"); Recraft V4.1 takes none. Cost
   4.25 credits total. Open: the Casual scarf is green/yellow ≈ Norwich; Jonno to
-  say whether to regenerate (0.5 cr). Credit Higgsfield on `/credits` when wired.
+  say whether to regenerate (0.5 cr) — still unanswered, kept for now.
 - **Not yet answered:** pattern honours (Late show, Bottled it, Second call…).
 
-### End screen — next build (awaiting Jonno's go)
+### End screen — built (2026-10-10), awaiting Jonno's sign-off
 
-1. Album page of six slots, each with its art faded and its point range under
-   the name (`5–7`, `8`…), so a result reads as a rank.
-2. Tally: the route runs through the five careers adding +2/+1/+0; a counter
-   climbs to the score.
-3. Your sticker lands in its slot with weight: full-colour art, name, `9/10`;
-   podium in its metal case.
-4. New ✓/✓/✕ marks everywhere; share line `ITK #n · Agent 9/10` + grid.
-5. Delete pack/peel code and the reveal switcher; keep "End screen" jump + result
-   picker until the end screen is signed off. Verify with Playwright frames
-   (scratch script pattern: freeze `getAnimations()` at set times, 1100px +
-   375px, check `scrollWidth`).
+What's on screen, in order of the animation (route 350ms → 2050ms, actions 2300ms):
+`ITK #n` and a counter over the five careers; the ink route runs through their
+✓/✕ marks, each mark's `+2/+1/+0` pops as the route passes and the counter steps
+to the running total; the route drops into your slot on an album page of six
+(each slot: art faded + greyed, name, point range `0–1`…`10`); your sticker lands
+with a press (full-colour art, name, `8/10`; podium in its metal case). Phone:
+the podium is the first row of three. Pack/peel mockups and the reveal switcher
+are deleted. Still prototype: the "End screen" jump and the result picker.
+White ✓ on `--gold` checked at 22px: readable, yellow left as is.
 
 ### Rules learned from playtests — and why (do not re-litigate)
 
@@ -343,7 +342,19 @@ Four playtest rounds (v1–v4; v5 not yet played). His verdicts drove each rule:
   medium and hard). Day = a difficulty ramp + a mix of flavours.
 - **Exclude anyone he has already played** (list in `pick-examples.mjs`, `PLAYED`).
 
-### Verified (2026-10-09, commit 8f2ef2e)
+### Verified
+
+2026-10-10, end screen: `npm test` 1,373 passed (36 files); typecheck clean.
+Playwright frames at 1100px and 375px for Fabrizio, Agent, Scout, Pundit, Mascot
+at 700/1400/2150/2400/5000ms: no console errors, `scrollWidth` = viewport. A
+real pick checked the ✕ on the top-bar pip and status chip. Fixed on the way:
+the metal case overflowed its slot by 14px (`.slab` is a column flexbox; the
+paper needed `min-height: 0`). Scratch script pattern: `npx` playwright from
+`npm-cache/_npx/9833c18b2d85bc59`, `executablePath` = `ms-playwright/chromium-1228`
+(its bundled revision isn't installed); first `/itk` compile takes ~20s, warm
+it with curl before running.
+
+2026-10-09 (commit 8f2ef2e):
 
 `npm test` 1,370 passed (36 files); `npm run typecheck` clean. v5 checked in a
 browser (Playwright, 1100px and 375px): swap peel (Maguire), insert peel
@@ -362,8 +373,8 @@ taken); `npm run dev` prints it. The `prod` launch config fails: no build.
 
 ### Next
 
-0. End screen: get Jonno's go on the build above (and the scarf), build, verify,
-   commit. Then back to rules:
+0. End screen: Jonno to look at it (End screen button, pick each result) and
+   sign off or redirect; answer the scarf and AGENTS.md. Then back to rules:
 1. Get Jonno's v5 playtest JSON (Copy feedback). Read each round for *why*
    (unknown player / unreadable career / good bluff / tell), not just the numbers.
 2. Iterate rules + examples until he says the rounds feel right. Open threads:

@@ -4,7 +4,13 @@
    marker loop you circle a suspect with in the paper.
    ═══════════════════════════════════════════════════════════════════════ */
 
-.itk { --marker: #D62839; --tick: var(--green); }
+.itk {
+  --marker: #D62839;
+  --tick: var(--green);
+  /* Result marks carry a symbol as well as a colour (green ✓, yellow ✓, red ✕), so they read without colour. */
+  --mark-yes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6.2 11.4l3.2 3.2 6.4-6.8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --mark-no: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M7.4 7.4l7.2 7.2M14.6 7.4l-7.2 7.2' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+}
 
 /* Prototype only: which picker made the examples. */
 .itk-proto {
@@ -62,9 +68,9 @@
 .itk-pip:not(:disabled):hover { transform: translateY(-1px); }
 .itk-pip.is-current { border: 2px solid var(--ink); }
 .itk-pip--held, .itk-pip--hinted, .itk-pip--missed { border-color: transparent; animation: die-press var(--t-base) var(--ease-out) backwards; }
-.itk-pip--held { background: var(--green); }
-.itk-pip--hinted { background: var(--gold); }
-.itk-pip--missed { background: var(--red); }
+.itk-pip--held, .itk-status__chip--held { background: var(--green) var(--mark-yes) center / 100% no-repeat; }
+.itk-pip--hinted, .itk-status__chip--hinted { background: var(--gold) var(--mark-yes) center / 100% no-repeat; }
+.itk-pip--missed, .itk-status__chip--missed { background: var(--red) var(--mark-no) center / 100% no-repeat; }
 .itk-pip.is-current.itk-pip--held, .itk-pip.is-current.itk-pip--hinted, .itk-pip.is-current.itk-pip--missed {
   box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--ink);
 }
@@ -377,9 +383,6 @@
 }
 .itk-status__hint { color: var(--muted); font-size: 15px; }
 .itk-status__chip { width: 22px; height: 22px; border-radius: 4px; animation: die-press var(--t-base) var(--ease-out) both; }
-.itk-status__chip--held { background: var(--green); }
-.itk-status__chip--hinted { background: var(--gold); }
-.itk-status__chip--missed { background: var(--red); }
 .itk-status__verdict { font-weight: 800; font-size: 28px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; }
 .itk-status__note { color: var(--muted); font-size: 15px; }
 .itk-status__next { margin-left: 6px; animation: fade-in var(--t-base) var(--ease-out) 200ms both; opacity: 0; }
@@ -393,10 +396,21 @@
   padding: 18px 0 8px;
   text-align: center;
 }
-.itk-end__eyebrow { margin: 0; font-size: 14px; font-weight: 600; color: var(--muted); }
 .itk-end__reveal { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
 .itk-end__reveal .itk-end__actions { opacity: 0; animation: fade-in var(--t-slow) var(--ease-out) 2300ms forwards; }
 .itk-proto--reveal { border: 1px dashed var(--rule-strong); border-radius: 4px; }
+
+/* ── THE TALLY: a figure for each career as the route passes it ──────── */
+.rv-tally { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0; }
+.rv-tally__day { font-size: 14px; font-weight: 600; color: var(--muted); }
+.rv-tally__count { display: grid; grid-template-columns: auto auto; align-items: baseline; font-size: 56px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+/* The figures share one cell: each shows from the moment the route reaches its career until the next. */
+.rv-tally__n { grid-area: 1 / 1; justify-self: end; }
+.rv-tally__count small { grid-area: 1 / 2; font-size: 24px; color: var(--muted); margin-left: 2px; }
+.rv-album.is-ready .rv-tally__n { animation: tally-in 260ms var(--ease-out) var(--in) backwards, tally-out 120ms linear var(--out) forwards; }
+@keyframes tally-in { from { opacity: 0; transform: translateY(30%); } }
+@keyframes tally-out { to { opacity: 0; } }
+
 
 /* ── THE RESULT STICKER ─────────────────────────────────────────────────
    Paper for the bands; the podium sits in a Deep Cuts case (gold, silver,
@@ -415,24 +429,23 @@
   position: relative;
   z-index: 1;
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 11cqw 6cqw 10cqw;
+  justify-content: flex-end;
+  padding: 8cqw 7cqw 8cqw;
   border-radius: 5px;
   background: var(--sticker);
   color: var(--ink);
 }
-.rs__eyebrow { font-size: 7cqw; font-weight: 600; color: var(--muted); line-height: 1; }
-.rs__name { font-size: 21cqw; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
-.rs__grid { display: flex; gap: 2.4cqw; }
-.rs__pip { width: 8cqw; height: 8cqw; border-radius: 1.6cqw; animation: none; }
-.rs--mascot .rs__paper { background: #F7F4EE; }
-.rs--mascot .rs__name { color: var(--muted); }
+.rs__art { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
+.rs__name { margin-top: 5cqw; font-size: 15cqw; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
+.rs__score { margin-top: 2cqw; font-size: 15cqw; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.rs__score small { font-size: 0.7em; font-weight: 600; color: var(--muted); }
 
 /* ── ALBUM: the route runs through the five and drops into your slot ──── */
-.rv-album { position: relative; display: flex; flex-direction: column; align-items: center; gap: 120px; width: 100%; visibility: hidden; }
+.rv-album { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; visibility: hidden; }
 .rv-album.is-ready { visibility: visible; }
 .rv-album:not(.is-ready) * { animation: none !important; }
 .rv-album .itk-end__row, .rv-album__page { position: relative; z-index: 1; }
@@ -454,7 +467,7 @@
   display: grid;
   grid-template-columns: repeat(6, 112px);
   gap: 14px;
-  margin: 0;
+  margin: 102px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -469,109 +482,45 @@
   background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgba(20, 18, 16, 0.035) 9px 10px);
 }
 .rv-slot.is-podium .rv-slot__space { box-shadow: inset 0 0 0 1.5px var(--silhouette-figure); }
+/* Every result's art waits faded in its slot, so you can see what the next one up would have been. */
+.rv-slot__art {
+  position: absolute;
+  inset: 14% 12%;
+  width: 76%;
+  height: 72%;
+  object-fit: contain;
+  opacity: 0.22;
+  filter: grayscale(1);
+}
+.rv-slot__range { margin-top: -6px; font-size: 13px; font-weight: 600; color: var(--silhouette-figure); font-variant-numeric: tabular-nums; }
+.rv-slot.is-yours .rv-slot__range { color: var(--muted); }
 .rv-slot__name { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--silhouette-figure); }
 .rv-slot.is-yours .rv-slot__name { color: var(--ink); }
 .rv-album.is-ready .rv-slot.is-yours .rv-slot__name { animation: slot-name var(--t-slow) var(--ease-out) var(--landed) backwards; }
-.rv-slot .rs { --rs-w: 100%; position: absolute; inset: 0; }
+.rv-slot .rs { --rs-w: 100%; position: absolute; inset: 0; aspect-ratio: auto; }
 .rv-slot .rs.slab { --slab-pad: 6px; }
-.rv-album.is-ready .rv-slot .rs { animation: slot-in 520ms var(--ease-out) var(--landed) backwards; }
+.rv-album.is-ready .rv-slot .rs { animation: slot-in 620ms var(--ease-out) var(--landed) backwards; }
+/* Lands with weight: held above the slot, pressed down, settles. */
 @keyframes slot-in {
-  0%   { transform: translateY(-14px) scale(1.04); opacity: 0; box-shadow: 0 14px 24px rgba(20, 18, 16, 0.22); }
-  45%  { opacity: 1; }
+  0%   { transform: translateY(-26px) scale(1.1); opacity: 0; box-shadow: 0 22px 30px rgba(20, 18, 16, 0.26); }
+  35%  { opacity: 1; }
+  70%  { transform: translateY(0) scale(0.97); box-shadow: 0 1px 2px rgba(20, 18, 16, 0.2); }
   100% { transform: none; opacity: 1; }
 }
 @keyframes slot-name { from { color: var(--silhouette-figure); } to { color: var(--ink); } }
 @media (max-width: 759px) {
-  .rv-album { gap: 96px; }
+  .rv-album__page { margin-top: 78px; }
   .rv-album__page { grid-template-columns: repeat(3, minmax(0, 96px)); gap: 22px 14px; }
   /* On a phone the podium is the first row. */
   .rv-slot.is-podium { order: -1; }
   .rv-slot__name { font-size: 13px; }
 }
 
-/* ── PACK: the seal tears off and your result slides out ─────────────── */
-.rv-pack { display: grid; place-items: center; width: 240px; height: 330px; margin-top: 60px; }
-.rv-pack > * { grid-area: 1 / 1; }
-.rv-pack__out { z-index: 1; animation: pack-out 1400ms cubic-bezier(0.45, 0, 0.2, 1) 900ms both; }
-.rv-pack__bag {
-  z-index: 2;
-  position: relative;
-  width: 236px;
-  height: 318px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.12) 46%, rgba(255, 255, 255, 0) 60%),
-    var(--red);
-  box-shadow: 0 2px 0 rgba(20, 18, 16, 0.08), 0 10px 22px rgba(20, 18, 16, 0.2);
-  animation: stick-down var(--t-slow) var(--ease-out) both, pack-away 520ms var(--ease-in-out) 1560ms forwards;
-}
-.rv-pack__seal {
-  height: 22px;
-  flex-shrink: 0;
-  background:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 6px),
-    var(--red-deep);
-}
-.rv-pack__seal--top { border-radius: 4px 4px 0 0; transform-origin: 100% 100%; animation: pack-tear 520ms cubic-bezier(0.5, 0, 0.3, 1) 520ms forwards; }
-.rv-pack__seal--bottom { border-radius: 0 0 4px 4px; margin-top: auto; }
-.rv-pack__label { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; }
-.rv-pack__mark { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: 0.02em; }
-.rv-pack__day { font-size: 15px; font-weight: 600; opacity: 0.85; }
-@keyframes pack-tear {
-  0%   { transform: none; opacity: 1; }
-  30%  { transform: translate(2px, -3px) rotate(4deg); opacity: 1; }
-  100% { transform: translate(46px, -54px) rotate(16deg); opacity: 0; }
-}
-@keyframes pack-out {
-  0%   { transform: translateY(40px); z-index: 1; }
-  50%  { transform: translateY(-115px); z-index: 1; }
-  51%  { z-index: 3; }
-  100% { transform: none; z-index: 3; }
-}
-@keyframes pack-away { to { transform: translateY(70px); opacity: 0; } }
-
-/* ── PEEL: the backing paper comes off, the way the fakes do ─────────── */
-.rv-peel { display: grid; margin-top: 10px; }
-.rv-peel > * { grid-area: 1 / 1; }
-.rv-peel .rs { --rs-w: 210px; }
-.rv-peel__back {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  overflow: hidden;
-  background:
-    repeating-linear-gradient(135deg, transparent 0 11px, rgba(20, 18, 16, 0.05) 11px 12px),
-    #EAE5DA;
-  box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.08), 0 3px 10px rgba(20, 18, 16, 0.14);
-  transform-origin: 0 0;
-  animation: stick-down var(--t-slow) var(--ease-out) both, back-peel 1200ms cubic-bezier(0.55, 0, 0.3, 1) 800ms forwards;
-}
-.rv-peel__back::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 40%, rgba(20, 18, 16, 0.2) 100%);
-  opacity: 0;
-  animation: peel-shade 1100ms ease-out 800ms forwards;
-}
-/* Opaque until it is well clear: the backing never turns to glass over the sticker. */
-@keyframes back-peel {
-  0%   { transform: perspective(800px) rotate3d(1, -1, 0, 0deg); opacity: 1; filter: drop-shadow(0 0 0 rgba(20, 18, 16, 0)); }
-  40%  { transform: perspective(800px) rotate3d(1, -1, 0, 42deg); opacity: 1; filter: drop-shadow(5px 8px 8px rgba(20, 18, 16, 0.25)); }
-  82%  { opacity: 1; }
-  100% { transform: perspective(800px) translate(-48%, -62%) rotate3d(1, -1, 0, 64deg) rotate(-9deg); opacity: 0; filter: drop-shadow(10px 14px 12px rgba(20, 18, 16, 0.16)); }
-}
-.rv-peel__print { font-size: 44px; font-weight: 800; color: rgba(20, 18, 16, 0.16); letter-spacing: 0.04em; }
-
 @media (prefers-reduced-motion: reduce) {
   .rv-album__route path { stroke-dashoffset: 0; animation: none; }
-  .rv-pack__bag, .rv-peel__back { display: none; }
-  .rv-pack__out, .rv-slot .rs, .itk-end__reveal .itk-end__actions { animation: none; opacity: 1; transform: none; }
+  .rv-album.is-ready .rv-tally__n { animation: none; opacity: 0; }
+  .rv-album.is-ready .rv-tally__n:last-of-type { opacity: 1; }
+  .rv-slot .rs, .itk-end__pts, .itk-end__reveal .itk-end__actions { animation: none !important; opacity: 1; transform: none; }
 }
 
 .itk-end__row { --sticker-w: 62px; display: flex; justify-content: center; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
@@ -598,6 +547,8 @@
 .itk-end__card .sticker__name { font-size: 11px; }
 @media (min-width: 760px) { .itk-end__card .sticker__name { font-size: 14px; } }
 .itk-end__mark { pointer-events: none; animation: none; }
+.itk-end__pts { margin-top: -6px; font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.rv-album.is-ready .itk-end__pts { animation: tally-in var(--t-base) var(--ease-out) backwards; }
 .itk-end__actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
 .itk-ghost {
   appearance: none;

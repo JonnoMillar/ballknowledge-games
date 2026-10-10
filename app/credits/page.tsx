@@ -37,6 +37,8 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
           <p>
             The sapphire, diamond and onyx textures on Deep Cuts cards were generated for Chain with
             {' '}<a href="https://higgsfield.ai/">Higgsfield</a>. They are not photographs of real stones.
+            The result art in ITK (the mascot, scarf, microphone, seat, briefcase and contract) was made
+            with Higgsfield too.
           </p>
 
           <h2 className="credits__head display">Club crests</h2>

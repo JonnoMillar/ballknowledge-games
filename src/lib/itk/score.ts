@@ -16,27 +16,39 @@ export function roundMark(picks: readonly boolean[]): PlateMark | null {
   return picks.length >= PICKS ? 'missed' : null;
 }
 
-const POINTS: Record<PlateMark, number> = { held: 2, hinted: 1, missed: 0 };
+/** Flat points: 2 for a first-time find, 1 for a second, 0 for a miss. Five careers, 0–10. */
+export const POINTS: Record<PlateMark, number> = { held: 2, hinted: 1, missed: 0 };
+export const MAX_POINTS = 10;
+
+export function pointsOf(marks: readonly PlateMark[]): number {
+  return marks.reduce((n, m) => n + POINTS[m], 0);
+}
 
 /** Every result, worst to best. The last three are the podium. */
 export const RUNGS = ['Mascot', 'Casual', 'Pundit', 'Scout', 'Agent', 'Fabrizio'] as const;
 export type Rung = (typeof RUNGS)[number];
 
 /**
- * The day's brag. A podium of transfer insiders for 10, 9 and 8 points
- * (Fabrizio is five first-time finds and nothing else), then plain bands.
+ * The fewest points each result needs. A podium of transfer insiders for 10,
+ * 9 and 8 (Fabrizio is five first-time finds and nothing else), then plain bands.
  */
+const FLOOR: Record<Rung, number> = { Mascot: 0, Casual: 2, Pundit: 5, Scout: 8, Agent: 9, Fabrizio: 10 };
+
+/** The day's brag. */
 export function tierOf(marks: readonly PlateMark[]): Rung {
-  const points = marks.reduce((n, m) => n + POINTS[m], 0);
-  if (points >= 10) return 'Fabrizio';
-  if (points === 9) return 'Agent';
-  if (points === 8) return 'Scout';
-  if (points >= 5) return 'Pundit';
-  if (points >= 2) return 'Casual';
-  return 'Mascot';
+  const points = pointsOf(marks);
+  return [...RUNGS].reverse().find((r) => points >= FLOOR[r])!;
 }
 
-/** The share line: day, one glyph per career, the tier. No names, no clubs. */
+/** The points a result covers, as printed under its slot: "5–7", "8". */
+export function rangeOf(rung: Rung): string {
+  const i = RUNGS.indexOf(rung);
+  const top = i + 1 < RUNGS.length ? FLOOR[RUNGS[i + 1]!] - 1 : MAX_POINTS;
+  return top === FLOOR[rung] ? `${top}` : `${FLOOR[rung]}–${top}`;
+}
+
+/** The share line: day, tier and score, then one glyph per career. No names, no clubs. */
 export function itkShareLine(day: number, marks: readonly PlateMark[]): string {
-  return `ITK #${day}\n${marks.map((m) => MARK_GLYPH[m]).join('')}\n${tierOf(marks)}`;
+  return `ITK #${day} · ${tierOf(marks)} ${pointsOf(marks)}/${MAX_POINTS}
+${marks.map((m) => MARK_GLYPH[m]).join('')}`;
 }

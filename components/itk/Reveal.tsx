@@ -1,34 +1,29 @@
 'use client';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { StickerFace, solid } from '../Sticker';
-import { RUNGS, type Rung } from '../../src/lib/itk/score';
+import { MAX_POINTS, POINTS, RUNGS, pointsOf, rangeOf, type Rung } from '../../src/lib/itk/score';
 import type { PlateMark } from '../../src/lib/chain/share';
 import type { ItkSet } from '../../src/server/itk';
 
 /**
- * The day's result, revealed. Prototype: three ways in, switchable on the
- * end screen, so Jonno can pick one in motion.
- *
- * - album: the ink route runs through the five careers and on into your slot
- *   on an album page of every result, the ones you missed left empty.
- * - pack: a sticker packet; the seal tears off and your result slides out.
- * - peel: your result lies under its backing paper, which peels off the way
- *   the fakes do.
+ * The day's result. The ink route runs through the five careers, adding up
+ * each one's points as it passes, then on into your slot on an album page of
+ * every result. The others stay empty, their art faded, so you can see what
+ * the next one up would have taken.
  */
-export type RevealStyle = 'album' | 'pack' | 'peel';
+
+const art = (rung: Rung) => `/itk/ranks/${rung.toLowerCase()}.webp`;
 
 /** The podium is cased in the Deep Cuts metals: gold, silver, bronze. */
 const METAL: Partial<Record<Rung, string>> = { Fabrizio: 'rare', Agent: 'uncommon', Scout: 'common' };
 
-export function ResultSticker({ rung, marks, day }: { rung: Rung; marks: readonly PlateMark[]; day: number }) {
+function ResultSticker({ rung, points }: { rung: Rung; points: number }) {
   const metal = METAL[rung];
   const paper = (
     <span className="rs__paper">
-      <span className="rs__eyebrow">ITK #{day}</span>
+      <img className="rs__art" src={art(rung)} alt="" />
       <span className="rs__name display">{rung}</span>
-      <span className="rs__grid" aria-hidden>
-        {marks.map((m, i) => <span key={i} className={`rs__pip itk-pip--${m}`} />)}
-      </span>
+      <span className="rs__score">{points}<small>/{MAX_POINTS}</small></span>
     </span>
   );
   return metal ? (
@@ -41,29 +36,28 @@ export function ResultSticker({ rung, marks, day }: { rung: Rung; marks: readonl
   );
 }
 
-/** The five careers, each with its mark. Click one to look at it again. */
-export function Careers({ set, marks, onReview, pipRef, pipDelay }: {
+/** The five careers, each with its mark and what it scored. Click one to look at it again. */
+function Careers({ set, marks, onReview, pipRef, pipDelay }: {
   set: ItkSet;
   marks: readonly PlateMark[];
   onReview: (i: number) => void;
-  pipRef?: (i: number, el: HTMLElement | null) => void;
-  pipDelay?: (i: number) => number | undefined;
+  pipRef: (i: number, el: HTMLElement | null) => void;
+  pipDelay: (i: number) => number | undefined;
 }) {
   return (
     <ol className="itk-end__row">
-      {set.rounds.map((r, i) => (
-        <li key={i}>
-          <button type="button" className="itk-end__card" onClick={() => onReview(i)} aria-label={`Review career ${i + 1}`}>
-            <StickerFace player={r.player} image={r.image ?? undefined} ground={solid(r.ground)} />
-            <span
-              ref={pipRef ? (el) => pipRef(i, el) : undefined}
-              className={`itk-end__mark itk-pip itk-pip--${marks[i]}`}
-              style={pipDelay?.(i) !== undefined ? { animationDelay: `${pipDelay(i)}ms` } : undefined}
-              aria-hidden
-            />
-          </button>
-        </li>
-      ))}
+      {set.rounds.map((r, i) => {
+        const at = pipDelay(i) === undefined ? undefined : { animationDelay: `${pipDelay(i)}ms` };
+        return (
+          <li key={i}>
+            <button type="button" className="itk-end__card" onClick={() => onReview(i)} aria-label={`Review career ${i + 1}`}>
+              <StickerFace player={r.player} image={r.image ?? undefined} ground={solid(r.ground)} />
+              <span ref={(el) => pipRef(i, el)} className={`itk-end__mark itk-pip itk-pip--${marks[i]}`} style={at} aria-hidden />
+              <span className="itk-end__pts" style={at} aria-hidden>+{POINTS[marks[i]!]}</span>
+            </button>
+          </li>
+        );
+      })}
     </ol>
   );
 }
@@ -136,16 +130,27 @@ export function AlbumReveal({ set, marks, rung, day, onReview }: {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
+  const passed = (i: number) => (route ? ROUTE_AT + ROUTE_MS * route.at[i]! : undefined);
+  // The running total after each career; each figure lands on the one before as the route passes.
+  const totals = marks.map((_, i) => pointsOf(marks.slice(0, i + 1)));
   const landed = ROUTE_AT + ROUTE_MS;
+  // Figure i shows from career i-1 (the 0 from the start) until the next career takes over.
+  const tick = (i: number) => (route ? {
+    ['--in' as string]: `${i ? passed(i - 1) : 0}ms`,
+    ['--out' as string]: i < totals.length ? `${passed(i)}ms` : '1e6ms',
+  } : undefined);
   return (
     <div ref={box} className={`rv-album ${route ? 'is-ready' : ''}`} style={{ ['--landed' as string]: `${landed}ms` }}>
-      <Careers
-        set={set}
-        marks={marks}
-        onReview={onReview}
-        pipRef={(i, el) => { pips.current[i] = el; }}
-        pipDelay={(i) => (route ? ROUTE_AT + ROUTE_MS * route.at[i]! : undefined)}
-      />
+      <p className="rv-tally">
+        <span className="rv-tally__day">ITK #{day}</span>
+        <span className="rv-tally__count display" role="img" aria-label={`${totals[totals.length - 1]} out of ${MAX_POINTS}`}>
+          {[0, ...totals].map((t, i) => (
+            <span key={i} className="rv-tally__n" style={tick(i)}>{t}</span>
+          ))}
+          <small>/{MAX_POINTS}</small>
+        </span>
+      </p>
+      <Careers set={set} marks={marks} onReview={onReview} pipRef={(i, el) => { pips.current[i] = el; }} pipDelay={passed} />
       {route ? (
         <svg className="rv-album__route" width={route.w} height={route.h} viewBox={`0 0 ${route.w} ${route.h}`} aria-hidden>
           <path d={route.d} pathLength={1} style={{ animationDelay: `${ROUTE_AT}ms`, animationDuration: `${ROUTE_MS}ms` }} />
@@ -155,39 +160,14 @@ export function AlbumReveal({ set, marks, rung, day, onReview }: {
         {RUNGS.map((x) => (
           <li key={x} className={`rv-slot ${METAL[x] ? 'is-podium' : ''} ${x === rung ? 'is-yours' : ''}`}>
             <span ref={x === rung ? slot : undefined} className="rv-slot__space">
-              {x === rung ? <ResultSticker rung={rung} marks={marks} day={day} /> : null}
+              <img className="rv-slot__art" src={art(x)} alt="" />
+              {x === rung ? <ResultSticker rung={rung} points={totals[totals.length - 1]!} /> : null}
             </span>
             <span className="rv-slot__name display">{x}</span>
+            <span className="rv-slot__range">{rangeOf(x)}</span>
           </li>
         ))}
       </ol>
-    </div>
-  );
-}
-
-export function PackReveal({ rung, marks, day }: { rung: Rung; marks: readonly PlateMark[]; day: number }) {
-  return (
-    <div className="rv-pack">
-      <div className="rv-pack__out"><ResultSticker rung={rung} marks={marks} day={day} /></div>
-      <div className="rv-pack__bag" aria-hidden>
-        <span className="rv-pack__seal rv-pack__seal--top" />
-        <span className="rv-pack__label">
-          <span className="rv-pack__mark display">ITK</span>
-          <span className="rv-pack__day">#{day}</span>
-        </span>
-        <span className="rv-pack__seal rv-pack__seal--bottom" />
-      </div>
-    </div>
-  );
-}
-
-export function PeelReveal({ rung, marks, day }: { rung: Rung; marks: readonly PlateMark[]; day: number }) {
-  return (
-    <div className="rv-peel">
-      <ResultSticker rung={rung} marks={marks} day={day} />
-      <span className="rv-peel__back" aria-hidden>
-        <span className="rv-peel__print display">ITK</span>
-      </span>
     </div>
   );
 }
