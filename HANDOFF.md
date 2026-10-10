@@ -1,6 +1,6 @@
 # Chain — state of play
 
-**Updated:** 2026-10-09 (ITK prototype, branch `feat/fake-transfer`). Read this
+**Updated:** 2026-10-10 (ITK end screen design, branch `feat/fake-transfer`). Read this
 first in a new session; it is the shortest path back to full context. **If you
 are here for ITK, jump to the ITK section.** The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
@@ -242,15 +242,7 @@ exists yet; do not write the generator until he signs off on the rules.
 a trail of crest stickers (year, crest, short name, "Loan" tag) joined by an ink
 route with arrows, snake-laid (rows reverse) so 9 stops fit a phone. One stop
 is fake. Two picks per career: found first time 🟩, second 🟨, missed 🟥
-(Chain's glyphs). Day result (flat 2/1/0 points, 0–10): podium Fabrizio 10,
-Agent 9, Scout 8, then bands Pundit 5–7, Casual 2–4, Mascot 0–1 (Jonno picked
-these 2026-10-09: names one or two words, no jokes; "Fabrizio" by name is his
-call, risk flagged). The stamp is gone. Three reveal mockups, switchable on the
-end screen ("End screen" in the prototype bar jumps there with a sample grid):
-album (the ink route runs through the five and into your slot on a page of all
-six results), pack (seal tears, result slides out), peel (backing paper comes
-off). Podium stickers sit in the Deep Cuts metal cases. Jonno to pick one.
-Pattern honours (Late show, Bottled it, Second call...) not approved yet.
+(Chain's glyphs). The end screen is in active design: see "End screen" below.
 Share line `ITK #n` + grid + tier, no names.
 Name "ITK" is Claude's pick; Jonno said revisit later.
 
@@ -261,7 +253,9 @@ Name "ITK" is Claude's pick; Jonno said revisit later.
 | `components/itk/Trail.tsx` | Snake layout from geometry, route SVG, crest cards, the peel reveal. |
 | `components/itk/Feedback.tsx` | **Prototype tooling**: per-round strip (knew him; first look 1–10 locked at reveal; how easy 1–10; fun 1–10; note). localStorage `itk.feedback.v1`, "Copy feedback" button → JSON Jonno pastes back. |
 | `src/server/itk.ts`, `app/api/itk/pick/route.ts` | Loads `content/itk/examples.json`; the fake's index and the real club stay server-side until the round ends. Dev re-reads the file per request. |
-| `src/lib/itk/score.ts`, `tests/itk/score.test.ts` | Round mark, tier, share line (7 tests). |
+| `src/lib/itk/score.ts`, `tests/itk/score.test.ts` | Round mark, `RUNGS`, `tierOf`, share line (8 tests). |
+| `components/itk/Reveal.tsx` | **Prototype**: result sticker + the album/pack/peel reveal mockups; switcher lives in `Summary` in `Itk.tsx`. |
+| `public/itk/ranks/*.webp` | Rank art, one per result (Higgsfield GPT Image 2.5, transparent, 480px). Not wired in yet. |
 | `scripts/itk/pick-examples.mjs` | **The v5 picker** (scratch quality; the generator rewrite starts from its rules). |
 | `scripts/itk/fetch-views.mjs`, `data/itk/enwiki-views*.json` | 24 months of enwiki pageviews (Oct 2023–Sep 2025) for pool players + clubs, redirects resolved. |
 
@@ -271,6 +265,46 @@ fake's crest small and struck through. An *inserted* fake peels off to an empty
 hatched space; legs go faint and dashed. A wrong pick: grey loop + green tick.
 Hover: red marker loop draws round the card. No stamps, no shakes — Jonno: "if I
 see a tacky animation for right or wrong I'll be angry."
+
+### End screen — decisions (2026-10-09/10) and why
+
+- **Ranks (flat 2/1/0 points, 0–10):** podium **Fabrizio 10 · Agent 9 · Scout 8**
+  (gold/silver/bronze, Deep Cuts metal cases), then plain bands **Pundit 5–7 ·
+  Casual 2–4 · Mascot 0–1**. Jonno picked every name. He chose flat scoring over
+  ramp-weighted (which gave 39 outcomes) and rejected 15 named rungs: low scores
+  are all poor, so they get grouped bands. "Fabrizio" by name is his call (I
+  flagged likeness/trademark risk; he accepted). Rejected: Season ticket (too
+  rewarding), Flawless as top (I argued generic; 10/10 says it), Pundit-below-
+  Season-ticket ordering ("misleading and subjective").
+- **Titles 1–2 words, no jokes or quote lines** (they get annoying on repeat).
+- **Stamp is gone** ("cheap and crappy"). **Pack and peel are out**: they unwrap a
+  mystery, but you already know how you did. Direction = **album + tally**.
+- **Marks (Jonno is colour-blind):** keep green/yellow/red for recognition, add a
+  symbol: **solid green + white ✓, solid yellow + white ✓, solid red + white ✕**.
+  He rejected numbers ("2" misreads as "got it on the second go") and double
+  ticks. If the white ✓ is faint on yellow at 22px, deepen the yellow slightly;
+  don't change the mark. Applies to top-bar pips, status chip, end screen.
+- **Art per rank** ("white feels empty, not a reward"): six images in
+  `public/itk/ranks/`, made with a game screenshot as the style reference.
+  Lesson: **always pass a reference image** for colour/feel (Jonno called the
+  unreferenced Recraft test "terrible planning"); Recraft V4.1 takes none. Cost
+  4.25 credits total. Open: the Casual scarf is green/yellow ≈ Norwich; Jonno to
+  say whether to regenerate (0.5 cr). Credit Higgsfield on `/credits` when wired.
+- **Not yet answered:** pattern honours (Late show, Bottled it, Second call…).
+
+### End screen — next build (awaiting Jonno's go)
+
+1. Album page of six slots, each with its art faded and its point range under
+   the name (`5–7`, `8`…), so a result reads as a rank.
+2. Tally: the route runs through the five careers adding +2/+1/+0; a counter
+   climbs to the score.
+3. Your sticker lands in its slot with weight: full-colour art, name, `9/10`;
+   podium in its metal case.
+4. New ✓/✓/✕ marks everywhere; share line `ITK #n · Agent 9/10` + grid.
+5. Delete pack/peel code and the reveal switcher; keep "End screen" jump + result
+   picker until the end screen is signed off. Verify with Playwright frames
+   (scratch script pattern: freeze `getAnimations()` at set times, 1100px +
+   375px, check `scrollWidth`).
 
 ### Rules learned from playtests — and why (do not re-litigate)
 
@@ -320,11 +354,16 @@ animations with `document.getAnimations()` + `currentTime` to inspect frames.
 
 ### Hazards
 
-The desktop app stops idle dev servers and each restart gets a new port (3000 is
+`.next` corruption: `/itk` 404s with ENOENT on `.next/server/app/itk/page.js`
+when another dev server shares the folder; stop the other, restart. An untracked
+`AGENTS.md` (copy of CLAUDE.md) appeared from elsewhere: Jonno to say keep or
+delete; not committed. The desktop app stops idle dev servers and each restart gets a new port (3000 is
 taken); `npm run dev` prints it. The `prod` launch config fails: no build.
 
 ### Next
 
+0. End screen: get Jonno's go on the build above (and the scarf), build, verify,
+   commit. Then back to rules:
 1. Get Jonno's v5 playtest JSON (Copy feedback). Read each round for *why*
    (unknown player / unreadable career / good bluff / tell), not just the numbers.
 2. Iterate rules + examples until he says the rounds feel right. Open threads:
