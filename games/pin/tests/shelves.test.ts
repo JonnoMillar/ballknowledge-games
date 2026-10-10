@@ -6,7 +6,7 @@ const p = (id: string, kind: PackKind, published: string, season?: string): Pack
   ({ id, kind, title: id, subtitle: '', published, goals: [], ...(season ? { season } : {}) });
 
 describe('shelve', () => {
-  it('puts this season first, then the archive in its order', () => {
+  it('puts this season first, then a shelf a kind', () => {
     const packs = [
       p('classic-b', 'classic', '2026-10-09'),
       p('classic-a', 'classic', '2026-10-08'),
@@ -21,11 +21,14 @@ describe('shelve', () => {
     ];
     expect(shelve(packs).map((s) => [s.title, s.packs.map((x) => x.id)])).toEqual([
       ['This season', ['pl-b', 'pl-a', 'gotm-2026-08']],
-      ['Archive', ['gotm-winners-2024-25', 'gotm-winners-2019-20', 'club-a', 'club-z', 'classic-a', 'classic-b', 'pl-old']],
+      ['Classics', ['classic-a', 'classic-b']],
+      ['By season', ['gotm-winners-2024-25', 'gotm-winners-2019-20']],
+      ['By club', ['club-a', 'club-z']],
+      ['Earlier', ['pl-old']],
     ]);
   });
   it('leaves an empty shelf out', () => {
-    expect(shelve([p('classic-a', 'classic', '2026-10-08')]).map((s) => s.title)).toEqual(['Archive']);
+    expect(shelve([p('classic-a', 'classic', '2026-10-08')]).map((s) => s.title)).toEqual(['Classics']);
   });
 });
 

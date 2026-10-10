@@ -1,5 +1,4 @@
 import type { Spot } from './pitch';
-import type { Tally } from './score';
 
 export type Credit = 'statsbomb' | 'understat';
 
@@ -50,9 +49,9 @@ export interface GoalCard {
 /** A pack as the page gets it: everything but the answers. */
 export interface BoardView {
   id: string;
+  kind: PackKind;
   title: string;
   goals: GoalCard[];
-  par: Tally;
 }
 
 /** A pack on the library page. */
@@ -62,7 +61,6 @@ export interface PackCard {
   title: string;
   subtitle: string;
   size: number;
-  par: Tally;
   isNew: boolean;
 }
 export interface Shelf { title: string; packs: PackCard[] }

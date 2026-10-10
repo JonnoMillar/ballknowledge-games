@@ -2,7 +2,6 @@ import { readdirSync, readFileSync } from 'node:fs';
 import goalsJson from './data/goals.json';
 import { utcToday } from './lib/dates';
 import { distance, inHalf, mirrorNote, type Spot } from './lib/pitch';
-import { par } from './lib/score';
 import { isNew, shelve } from './lib/shelves';
 import type { Answer, BoardView, Goals, Pack, PackCard, Shelf } from './lib/types';
 
@@ -20,15 +19,13 @@ const packs: Pack[] = readdirSync(DIR)
   .map((f) => JSON.parse(readFileSync(`${DIR}/${f}`, 'utf8')) as Pack);
 const byId = new Map(packs.map((p) => [p.id, p]));
 
-const parOf = (p: Pack) => par(p.goals.map((s) => goals[s]!.at));
-
 export function boardView(id: string): BoardView | null {
   const p = byId.get(id);
   if (!p || p.goals.some((s) => !goals[s])) return null;
   return {
     id: p.id,
+    kind: p.kind,
     title: p.title,
-    par: parOf(p),
     goals: p.goals.map((slug) => {
       const g = goals[slug]!;
       return { slug, scorer: g.scorer, match: g.match, date: g.date, competition: g.competition, line: g.line, credit: g.source.from };
@@ -42,7 +39,7 @@ export function library(now = new Date()): Shelf[] {
   return shelve(packs).map((s) => ({
     title: s.title,
     packs: s.packs.map((p): PackCard => ({
-      id: p.id, kind: p.kind, title: p.title, subtitle: p.subtitle, size: p.goals.length, par: parOf(p), isNew: isNew(p, today),
+      id: p.id, kind: p.kind, title: p.title, subtitle: p.subtitle, size: p.goals.length, isNew: isNew(p, today),
     })),
   }));
 }

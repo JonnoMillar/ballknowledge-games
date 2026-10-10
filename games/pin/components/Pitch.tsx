@@ -160,7 +160,7 @@ export default function Pitch({ label, pin = null, onPin, onEnter, reveal = null
 }
 
 /** The markings of the attacking half, to scale. */
-function Lines() {
+export function Lines() {
   return (
     <g className="pitch__lines">
       <rect x={0} y={0} width={68} height={52.5} />
@@ -178,7 +178,7 @@ function Lines() {
 }
 
 /** The pin: a flat red disc centred exactly on its spot. */
-function PinMark({ at, n }: { at: Spot; n?: number }) {
+export function PinMark({ at, n }: { at: Spot; n?: number }) {
   return (
     <g className="pitch__pin">
       <circle cx={at.x} cy={at.y} r={1.25} />
@@ -187,7 +187,7 @@ function PinMark({ at, n }: { at: Spot; n?: number }) {
   );
 }
 
-function Ball({ at, still }: { at: Spot; still?: boolean }) {
+export function Ball({ at, still }: { at: Spot; still?: boolean }) {
   return (
     <g className={`pitch__ball${still ? ' pitch__ball--still' : ''}`}>
       <circle cx={at.x} cy={at.y} r={1} />
@@ -197,9 +197,9 @@ function Ball({ at, still }: { at: Spot; still?: boolean }) {
 }
 
 /** Outer, inner and bullseye, shaded stronger toward the middle. */
-function Rings({ at, clip }: { at: Spot; clip: string }) {
+export function Rings({ at, clip, className = '' }: { at: Spot; clip?: string; className?: string }) {
   return (
-    <g className="pitch__rings" clipPath={`url(#${clip})`}>
+    <g className={`pitch__rings ${className}`} clipPath={clip ? `url(#${clip})` : undefined}>
       <circle className="pitch__ring pitch__ring--outer" cx={at.x} cy={at.y} r={10} />
       <circle className="pitch__ring pitch__ring--inner" cx={at.x} cy={at.y} r={5} />
       <circle className="pitch__ring pitch__ring--bull" cx={at.x} cy={at.y} r={2} />

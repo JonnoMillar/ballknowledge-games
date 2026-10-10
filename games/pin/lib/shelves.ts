@@ -14,23 +14,20 @@ export function isNew(p: Pack, today: string): boolean {
 const newestFirst = (a: Pack, b: Pack) => b.published.localeCompare(a.published) || b.id.localeCompare(a.id);
 
 /**
- * The library in order. This season: round and month packs of the latest
- * season, newest first. Archive: season packs (newest season first), club
- * packs (A to Z), classic packs (oldest first), then round and month packs
- * of earlier seasons (newest first). An empty shelf is left out.
+ * The library in order, one shelf a kind. This season: round and month
+ * packs of the latest season, newest first. Classics oldest first, seasons
+ * newest first, clubs A to Z, then round and month packs of earlier
+ * seasons, newest first. An empty shelf is left out.
  */
 export function shelve(packs: readonly Pack[]): { title: string; packs: Pack[] }[] {
   const fresh = packs.filter((p) => FRESH.has(p.kind));
   const latest = fresh.reduce<string | null>((m, p) => (p.season && (!m || p.season > m) ? p.season : m), null);
   const of = (kind: string) => packs.filter((p) => p.kind === kind);
-  const archive = [
-    ...of('season').sort((a, b) => (b.season ?? '').localeCompare(a.season ?? '')),
-    ...of('club').sort((a, b) => a.title.localeCompare(b.title)),
-    ...of('classic').sort((a, b) => a.published.localeCompare(b.published) || a.id.localeCompare(b.id)),
-    ...fresh.filter((p) => p.season !== latest).sort(newestFirst),
-  ];
   return [
     { title: 'This season', packs: fresh.filter((p) => p.season === latest).sort(newestFirst) },
-    { title: 'Archive', packs: archive },
+    { title: 'Classics', packs: of('classic').sort((a, b) => a.published.localeCompare(b.published) || a.id.localeCompare(b.id)) },
+    { title: 'By season', packs: of('season').sort((a, b) => (b.season ?? '').localeCompare(a.season ?? '')) },
+    { title: 'By club', packs: of('club').sort((a, b) => a.title.localeCompare(b.title)) },
+    { title: 'Earlier', packs: fresh.filter((p) => p.season !== latest).sort(newestFirst) },
   ].filter((s) => s.packs.length);
 }

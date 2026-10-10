@@ -14,12 +14,13 @@ describe('fair', () => {
     expect(fair(Array.from({ length: 6 }, () => ({ x: 34, y: 30 })))).toBe(false);
     expect(fair([{ x: 34, y: 30 }, { x: 34, y: 30 }, { x: 34, y: 30 }, { x: 10, y: 5 }, { x: 34, y: 5 }, { x: 34, y: 5 }])).toBe(true);
   });
-  it('scales the par floor with the size of the pack: 7 m a goal', () => {
-    // 7.5 m from the spot each: three outside the area, three inside. 45 m ≥ 42.
+  it('keeps the lazy pin under 60', () => {
+    // Four on the edge of the bullseye (100 each) and two out at 19 m (12 each): 70.
+    const coasts: Spot[] = [...Array.from({ length: 4 }, () => ({ x: 34, y: 13 })), { x: 34, y: 30 }, { x: 34, y: 30 }];
+    expect(fair(coasts)).toBe(false);
+    // 7.5 m from the spot each, three in the area and three out: 50.
     const six: Spot[] = [{ x: 34, y: 18.5 }, { x: 34, y: 18.5 }, { x: 34, y: 18.5 }, { x: 34, y: 3.5 }, { x: 34, y: 3.5 }, { x: 34, y: 3.5 }];
     expect(fair(six)).toBe(true);
-    // A seventh goal 1 m from the spot: 46 m < 49.
-    expect(fair([...six, { x: 34, y: 12 }])).toBe(false);
   });
 });
 

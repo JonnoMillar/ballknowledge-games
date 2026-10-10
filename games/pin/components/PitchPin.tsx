@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import Pitch from './Pitch';
 import FullTime from './FullTime';
 import { localDate, longDate } from '../../../src/lib/daily';
-import { nextPack, readStore, recordThrow, type Store, type Throw } from '../lib/progress';
-import { points, ring, RING_NAME, tally, type Mode } from '../lib/score';
+import { nextPack, readStore, record, recordThrow, type Store, type Throw } from '../lib/progress';
+import { points, ring, RING_NAME } from '../lib/score';
 import type { Spot } from '../lib/pitch';
 import type { Answer, BoardView, GoalCard as Card } from '../lib/types';
 
@@ -12,10 +12,12 @@ import type { Answer, BoardView, GoalCard as Card } from '../lib/types';
  * A Pitch pin pack: its goals, one throw each. The page holds no answers;
  * each throw goes to /api/pin/throw and the answer comes back for that goal
  * alone. Progress is kept in the browser so a refresh resumes. `order` is
- * the library's packs in shelf order, for the Next pack link.
+ * the library's packs in shelf order, for the Next pack link and the record.
+ * On a laptop it is two columns that fit the window: the goal and the
+ * button on the left, the pitch on the right.
  */
-export default function PitchPin({ board, mode, order }: {
-  board: BoardView; mode: Mode; order: { id: string; size: number }[];
+export default function PitchPin({ board, order }: {
+  board: BoardView; order: { id: string; size: number; title: string }[];
 }) {
   const n = board.goals.length;
   const [throws, setThrows] = useState<(Throw | null)[]>(() => Array<Throw | null>(n).fill(null));
@@ -38,7 +40,6 @@ export default function PitchPin({ board, mode, order }: {
   const done = next === -1 && viewing === null;
   const current = viewing ?? Math.max(next, 0);
   const goal = board.goals[current]!;
-  const query = mode === 'points' ? '?score=points' : '';
 
   async function throwPin() {
     if (!pin || busy || next === -1) return;
@@ -68,48 +69,53 @@ export default function PitchPin({ board, mode, order }: {
   const credits = [...new Set(board.goals.map((g) => g.credit))]
     .map((c) => (c === 'statsbomb' ? 'StatsBomb open data' : 'Understat'))
     .join(' and ');
-  const pointsSoFar = tally(throws.filter((t): t is Throw => !!t).map((t) => t.answer.distance)).points;
+  const pointsSoFar = throws.reduce((a, t) => a + (t ? points(t.answer.distance) : 0), 0);
+  const nextId = done ? nextPack(order, store, board.id) : null;
 
   return (
-    <div className="app pin">
+    <div className={`app pin${loaded && !done ? ' pin--play' : ''}`}>
       <header className="masthead">
-        <a className="masthead__brand display" href={`/pin${query}`}>
+        <a className="masthead__brand display" href="/pin">
           <PinLogo />
           Pitch pin
         </a>
         <div className="masthead__meta"><span>{board.title}</span></div>
       </header>
 
-      <main className="pin__main">
+      <main className={`pin__main${done ? '' : ' pin__main--play'}`}>
         {!loaded ? null : done ? (
-          <FullTime board={board} throws={throws as Throw[]} mode={mode} nextId={nextPack(order, store, board.id)} query={query} />
+          <FullTime
+            board={board}
+            throws={throws as Throw[]}
+            next={order.find((p) => p.id === nextId) ?? null}
+            rec={record(store, order)}
+          />
         ) : (
           <>
             <Ticks n={n} thrown={throws.filter(Boolean).length} current={current} />
             <GoalCard goal={goal} small={shown !== null} />
-            {shown ? (
-              <>
+            <div className="pin__stage">
+              {shown ? (
                 <Pitch label={`Your pin, ${shown.answer.distance.toFixed(1)} metres from where it was struck`} reveal={{ pin: shown.pin, at: shown.answer.at }} />
-                <Result
-                  t={shown}
-                  goal={goal}
-                  mode={mode}
-                  pointsSoFar={pointsSoFar}
-                  last={next === -1}
-                  onNext={() => setViewing(null)}
-                />
-              </>
-            ) : (
-              <>
+              ) : (
                 <Pitch label="The attacking half of a pitch, goal at the top. Place your pin." pin={pin} onPin={setPin} onEnter={throwPin} />
-                <p className="pin__hint">Where was it struck from? Tap the pitch, drag to adjust.</p>
-                {failed ? <p className="pin__error" role="alert">Could not reach the ref. Try again.</p> : null}
-                <button type="button" className="pin__throw display" disabled={!pin || busy} onClick={throwPin}>Throw</button>
-              </>
-            )}
+              )}
+            </div>
+            <div className="pin__controls">
+              {shown ? (
+                <Result t={shown} goal={goal} pointsSoFar={pointsSoFar} last={next === -1} onNext={() => setViewing(null)} />
+              ) : (
+                <>
+                  <p className="pin__hint">Where was it struck from? Tap the pitch, drag to adjust.</p>
+                  {failed ? <p className="pin__error" role="alert">Could not reach the ref. Try again.</p> : null}
+                  {pointsSoFar ? <p className="pin__hint">So far: <b>{pointsSoFar}</b> points</p> : null}
+                  <button type="button" className="pin__throw display" disabled={!pin || busy} onClick={throwPin}>Throw</button>
+                </>
+              )}
+            </div>
           </>
         )}
-        <a className="pin__back" href={`/pin${query}`}>All packs</a>
+        <a className="pin__back" href="/pin">All packs</a>
         <p className="pin__credit">
           {board.goals.some((g) => g.credit === 'statsbomb') ? <img src="/credits/statsbomb.png" alt="StatsBomb" height={16} /> : null}
           Shot data: {credits}. Metres on a standard pitch.
@@ -159,28 +165,22 @@ const xgText = (a: Answer) =>
 const watchUrl = (g: Card) =>
   `https://www.youtube.com/results?search_query=${encodeURIComponent(`${g.scorer} goal ${g.match} ${g.date.slice(0, 4)}`)}`;
 
-function Result({ t, goal, mode, pointsSoFar, last, onNext }: {
-  t: Throw; goal: Card; mode: Mode; pointsSoFar: number; last: boolean; onNext: () => void;
+function Result({ t, goal, pointsSoFar, last, onNext }: {
+  t: Throw; goal: Card; pointsSoFar: number; last: boolean; onNext: () => void;
 }) {
   const d = t.answer.distance;
   const r = ring(d);
   return (
     <section className="pin__result" aria-live="polite">
       <div className="pin__score">
-        {mode === 'points' ? (
-          <>
-            <span className="pin__big display">+{points(d)}</span>
-            <span className="pin__sofar"><span>So far</span><b className="display">{pointsSoFar}</b></span>
-          </>
-        ) : (
-          <>
-            <span className="pin__big display">{d.toFixed(1)} m</span>
-            <span className={`pin__ring pin__ring--${r} display`}>{RING_NAME[r]}</span>
-          </>
-        )}
+        <span className="pin__gain">
+          <span className="pin__big display">+{points(d)}</span>
+          <span className={`pin__ring pin__ring--${r} display`}>{RING_NAME[r]}</span>
+        </span>
+        <span className="pin__sofar"><span>So far</span><b className="display">{pointsSoFar}</b></span>
       </div>
       <p className="pin__fact">
-        {mode === 'points' ? `${d.toFixed(1)} m off. ` : ''}Struck {t.answer.at.y.toFixed(1)} m out. {xgText(t.answer)}
+        <b>{d.toFixed(1)} m off.</b> Struck {t.answer.at.y.toFixed(1)} m out. {xgText(t.answer)}
       </p>
       {t.answer.mirrored !== null ? (
         <p className="pin__mirror">Wrong side? Mirrored, you were {t.answer.mirrored.toFixed(1)} m off.</p>

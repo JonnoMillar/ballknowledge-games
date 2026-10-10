@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { againstPar, par, points, ring, shareText, tally } from '../lib/score';
+import { lazyScore, nextTier, packScore, points, ring, shareText, tier } from '../lib/score';
 
 describe('rings', () => {
   it('has a 2 m bullseye, then 5 and 10', () => {
@@ -23,29 +23,35 @@ describe('points', () => {
   });
 });
 
-describe('tally and par', () => {
-  it('adds metres to a decimal and points to a whole', () => {
-    expect(tally([1, 3, 4, 12, 6, 5.4])).toEqual({ metres: 31.4, points: 421 });
+describe('the pack score', () => {
+  it('is the mean of the points, rounded down', () => {
+    // 100 + 88 + 69 = 257, a mean of 85.67.
+    expect(packScore([1, 3, 5])).toBe(85);
+    expect(packScore([0, 0])).toBe(100);
   });
-  it('makes par the lazy pin: every goal pinned on the penalty spot', () => {
-    const t = par([{ x: 34, y: 11 }, { x: 34, y: 14 }, { x: 38, y: 14 }]);
-    expect(t.metres).toBe(8);
-    expect(t.points).toBe(100 + 88 + 69);
+  it('makes the lazy pin the pack score of every goal pinned on the penalty spot', () => {
+    expect(lazyScore([{ x: 34, y: 11 }, { x: 34, y: 14 }, { x: 34, y: 16 }])).toBe(packScore([0, 3, 5]));
   });
-  it('words a score against par', () => {
-    expect(againstPar(31.4, 57.4)).toBe('26 under');
-    expect(againstPar(12, 10)).toBe('2 over');
-    expect(againstPar(10, 10.4)).toBe('level');
+});
+
+describe('tiers', () => {
+  it('has five, on fixed floors', () => {
+    expect([0, 39, 40, 59, 60, 74, 75, 89, 90, 100].map(tier)).toEqual([
+      'wide', 'wide', 'close', 'close', 'sharp', 'sharp', 'deadly', 'deadly', 'pinpoint', 'pinpoint',
+    ]);
+  });
+  it('says how far off the next tier is, and nothing at the top', () => {
+    expect(nextTier(79)).toEqual({ tier: 'pinpoint', gap: 11 });
+    expect(nextTier(0)).toEqual({ tier: 'close', gap: 40 });
+    expect(nextTier(74)).toEqual({ tier: 'deadly', gap: 1 });
+    expect(nextTier(90)).toBeNull();
   });
 });
 
 describe('the share text', () => {
-  const ds = [1, 3, 4, 12, 6, 5.4];
-  const p = { metres: 57.4, points: 263 };
-  it('names nothing, in metres', () => {
-    expect(shareText('No. 3', ds, p, 'metres')).toBe('Pitch pin No. 3\n31.4 m, par 57 (26 under)\n🎯🟩🟩⬜🟨🟨');
-  });
-  it('names nothing, in points', () => {
-    expect(shareText('No. 3', ds, p, 'points')).toBe('Pitch pin No. 3\n421 / 600, par 263\n🎯🟩🟩⬜🟨🟨');
+  it('names nothing: the pack, the score and tier, one mark a goal', () => {
+    expect(shareText("September's Goal of the Month", [1, 3, 4, 12, 6, 5.4])).toBe(
+      "Pitch pin · September's Goal of the Month\n70 Sharp\n🎯🟩🟩⬜🟨🟨",
+    );
   });
 });

@@ -1,4 +1,5 @@
 import type { Spot } from './pitch';
+import { packScore } from './score';
 import type { Answer } from './types';
 
 /**
@@ -52,4 +53,36 @@ export function nextPack(order: readonly { id: string; size: number }[], store: 
   const i = order.findIndex((p) => p.id === current);
   const rest = [...order.slice(i + 1), ...order.slice(0, Math.max(i, 0))];
   return rest.find((p) => packStatus(store[p.id], p.size).state !== 'done')?.id ?? null;
+}
+
+export interface PlayRecord { packs: number; average: number | null; best: number | null; scores: Map<string, number> }
+
+/** This browser's finished packs: how many, the mean pack score (rounded), the best, and each score. */
+export function record(store: Store, cards: readonly { id: string; size: number }[]): PlayRecord {
+  const scores = new Map<string, number>();
+  for (const c of cards) {
+    const s = packStatus(store[c.id], c.size);
+    if (s.state === 'done') scores.set(c.id, packScore(s.distances));
+  }
+  const all = [...scores.values()];
+  return {
+    packs: all.length,
+    average: all.length ? Math.round(all.reduce((a, b) => a + b, 0) / all.length) : null,
+    best: all.length ? Math.max(...all) : null,
+    scores,
+  };
+}
+
+/** Where a score sits among this browser's finished packs: 1 is the best (a tie shares the place). */
+export function standing(scores: Iterable<number>, mine: number): number {
+  return [...scores].filter((s) => s > mine).length + 1;
+}
+
+/** The pack to put at the top of the hub: the first started and unfinished in library order, else the first unstarted. */
+export function suggest(order: readonly { id: string; size: number }[], store: Store): { id: string; state: 'part' | 'fresh' } | null {
+  const st = order.map((p) => ({ id: p.id, s: packStatus(store[p.id], p.size).state }));
+  const part = st.find((p) => p.s === 'part');
+  if (part) return { id: part.id, state: 'part' };
+  const fresh = st.find((p) => p.s === 'unplayed');
+  return fresh ? { id: fresh.id, state: 'fresh' } : null;
 }

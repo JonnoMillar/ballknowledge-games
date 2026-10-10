@@ -1,12 +1,12 @@
 import { distance, inArea, SPOT, type Spot } from './pitch';
-import { par } from './score';
+import { lazyScore } from './score';
 
-/** A pack's par must be at least this much a goal: the lazy pin (the penalty spot) cannot coast it. */
-export const PAR_PER_GOAL = 7;
+/** The lazy pin (every goal on the penalty spot) must score under this: it never reaches Sharp. */
+export const LAZY_CEILING = 60;
 
 /** A fair pack: the lazy pin cannot coast it, and it has goals from in and out of the area. */
 export function fair(ats: readonly Spot[]): boolean {
-  return par(ats).metres >= PAR_PER_GOAL * ats.length && ats.some(inArea) && ats.some((a) => !inArea(a));
+  return lazyScore(ats) < LAZY_CEILING && ats.some(inArea) && ats.some((a) => !inArea(a));
 }
 
 /** A Premier League goal a round pack could use. */

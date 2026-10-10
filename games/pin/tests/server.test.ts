@@ -10,7 +10,7 @@ describe('board views', () => {
     expect(b.goals).toHaveLength(6);
     expect(b.title).toBe('Lionesses');
     expect(JSON.stringify(b)).not.toMatch(/"at"|"xg"|"source"|"eventId"/);
-    expect(b.par.metres).toBeGreaterThanOrEqual(42);
+    expect(b.kind).toBe('classic');
   });
   it('refuse nonsense ids', () => {
     for (const id of ['', 'nope', 'pack:lionesses', '../goals', '__proto__', 'constructor', '2026-10-08']) {
@@ -26,7 +26,7 @@ describe('the library', () => {
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toContain('lionesses');
     expect(ids).toContain('champions-league-finals');
-    expect(shelves.at(-1)!.title).toBe('Archive');
+    expect(shelves.map((s) => s.title)).toEqual(['This season', 'Classics', 'By season', 'By club']);
     expect(JSON.stringify(shelves)).not.toMatch(/"at"|"xg"|"goals"|"source"/);
   });
   it('never marks an archive or classic pack new', () => {

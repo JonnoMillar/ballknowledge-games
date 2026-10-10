@@ -4,32 +4,42 @@
 path back to full context. The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
-## In flight: Pitch pin (branch `feat/pitch-pin`, updated 2026-10-09)
+## In flight: Pitch pin (branch `feat/pitch-pin`, updated 2026-10-10)
 
-A famous goal is named; the player pins where it was struck from and is scored
-in metres off (or points) against a lazy-pin par. **Built and playable at
-`/pin`.** Spec: `docs/superpowers/specs/2026-10-09-pitch-pin-library-design.md`
-(the 2026-10-08 spec still holds for the game itself, scoring, par and
-licences). Plans: `docs/superpowers/plans/2026-10-09-pitch-pin-library.md`
+A famous goal is named; the player pins where it was struck from. Each goal
+scores 0 to 100; a pack scores the mean (rounded down) and lands on one fixed
+scale: Wide, Close, Sharp, Deadly, Pinpoint. **Built and playable at `/pin`.**
+Specs: `docs/superpowers/specs/2026-10-10-pitch-pin-hub-design.md` (the hub,
+the scale, the laptop layout; wins where it disagrees),
+`…/2026-10-09-pitch-pin-library-design.md` (packs, data) and
+`…/2026-10-08-pitch-pin-design.md` (the throw, the reveal, licences). Plans: `docs/superpowers/plans/2026-10-09-pitch-pin-library.md`
 (done) and `…/2026-10-08-pitch-pin.md` (tasks 1–12 done, 13–15 folded into the
 library plan).
 
-**What it is now.** No daily, no streak. `/pin` is a library of packs; `/pin/<id>`
-is one pack (6 to 9 goals, one throw each). Kinds: `round` (our weekly pick of
-Premier League goals), `month` (the official Goal of the Month shortlist),
-`season` and `club` (archive of past winners), `classic` (hand-made, StatsBomb).
-Shelves: This season, then Archive. A round or month pack is **New** for 7 days
-from its `published` date (worked out on the server). Each card shows this
-browser's status ("Not played", "2 of 6", "41.2 m, 12 under"); the finished
-pack offers **Next pack**. Both scoring modes are built: metres by default,
-`?score=points`. Bullseye is 2 m.
+**What it is now.** No daily, no streak. `/pin` is a hub: a top card (first
+visit: headline, looping CSS demo, "Start here" pack and Play; a pack in
+progress: Carry on with your pins so far; otherwise Up next), Your record
+(packs, average, best, all derived from the existing localStorage store), How
+it works with the tier scale, then shelves: This season, Classics, By season,
+By club, Earlier. Each kind has its colour; a played card shows your pins as
+its art and its score and tier. `/pin/<id>` is one pack (6 to 9 goals, one
+throw each); on a laptop (≥900 px) it is two columns that fit the window, so
+Throw is never below the fold. Full time: the list slides in, the score
+lands on the scale with its tier (a slam from Sharp up), "N off <next tier>",
+bullseyes, and with two or more packs finished "Your average is A; this is
+your best". Points only: metres and par are gone from screen and code.
+Bullseye is 2 m. Kinds: `round` (our weekly pick), `month` (the official Goal
+of the Month shortlist), `season` and `club` (past winners), `classic`
+(hand-made, StatsBomb). A round or month pack is **New** for 7 days.
 
 **Data.** `games/pin/data/goals.json` (server-only: it holds the answers),
 `games/pin/data/packs/*.json` (one file per pack), `games/pin/data/check.json`
 (the monthly model check: how many Goal of the Month nominees our round packs
 had already picked; September 2026: 6 of 8, August 2026: 2 of 7 matched).
 `tests/content.test.ts` holds every goal and pack to the rules (round and
-classic packs must be fair: par ≥ 7 m a goal, goals in and out of the area).
+classic packs must be fair: the lazy pin, every goal on the penalty spot,
+scores under 60, and there are goals in and out of the area). Month, season
+and club packs are official lists and are not held to it.
 
 **Scripts.**
 - `npm run pin:update` runs round then Goal of the Month. Daily at 06:00 UTC
@@ -54,6 +64,15 @@ and `/pin/pack/lionesses` all 404, and neither page's HTML holds `"at"` or
 `"xg"`. Not covered: a real phone, the Share sheet, a throw that fails, and
 anything on a live server (no remote yet).
 
+**Checked 2026-10-10 (hub rework).** `npm test` 1,659 passed, 47 files;
+typecheck clean. Browser, real dev server: hub first visit, Up next, Carry on
+and record at 375 px and 1024 px; Throw and the whole pitch on screen at
+1366×657 (Throw bottom 573), 1440×760 (675) and 375×812 (695), before and
+after a throw; Full time at 375 and 1024 (79 Deadly, 11 off Pinpoint; a 92
+Pinpoint with "Your average is 86; this is your best"); no `"at"` or `"xg"`
+in either page's HTML; no console errors. Not covered: reduced motion (CSS
+only, not emulated), a real phone, the Share sheet.
+
 **Launch checklist (Jonno's, in order).**
 1. Email StatsBomb and Understat and register with StatsBomb. Both licences
    are grey (StatsBomb bars redistribution and commercial use; Understat
@@ -61,7 +80,7 @@ anything on a live server (no remote yet).
 2. Create the private GitHub remote (ask before every push), merge to `master`,
    then run `workflow_dispatch` once and watch it. premierleague.com might
    block GitHub's runners; a red run will say so.
-3. Choose one scoring mode (metres or points) and drop the other.
+3. ~~Choose one scoring mode~~: done 2026-10-10, points on the five-tier scale.
 4. The StatsBomb logo is in (`public/credits/statsbomb.png`, from the Hudl
    StatsBomb media pack, asset marked External Use Approved). It is the Hudl
    StatsBomb logo, a PNG: the pack no longer offers an SVG. Confirm that is the
@@ -70,12 +89,19 @@ anything on a live server (no remote yet).
 **Decisions and why** (do not re-litigate):
 - Data: StatsBomb open data for classics, Understat for recent goals.
   Hand-placed coordinates and the Champions League (no free source) are out.
-- Par = every goal pinned on the penalty spot; a pack needs par ≥ 7 m a goal
-  (the lazy pin averaged 10 m/goal on 26 real goals).
+- Scale (2026-10-10, replaces par): tiers at 0/40/60/75/90, set on 31 packs ×
+  200 simulated runs: lazy pin median 37 (max 59.86, floored to 59), decent
+  fan (~5 m) 65, expert (~2.5 m) 84 with Pinpoint on 26% of packs. The pack
+  score rounds **down** so the lazy pin never reaches Sharp.
+- No "vs everyone" yet: it needs a server store. When hosting is chosen, log
+  results behind `/api/pin/throw` (no client change) and show the spread once
+  a pack has enough plays.
 - A goal struck outside the attacking half (y > 52.5 m) is never used: it cannot
   be pinned. `officialGoal` and the round script both skip it.
 - Ink pitch on white; rings shaded per colour, stronger toward the middle.
-- Execution inline, no per-task subagents (Jonno's standing rule).
+- Execution inline, no per-task subagents (Jonno's standing rule). UI work is
+  built by Opus straight from the spec; plan-then-Sonnet only for big
+  mechanical builds.
 
 **Gotchas.**
 - Understat: `GET understat.com/getLeagueData/<EPL|La_liga|...>/<season start year>`
@@ -95,7 +121,13 @@ anything on a live server (no remote yet).
 - Worktree: `.claude/worktrees/sad-nightingale-82892f`, branch `feat/pitch-pin`
   off `feat/prototype`. Run `npm ci` first in a fresh worktree. Dev server:
   preview config `recall-xi` (autoPort).
-- Mockups (pre-review): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3
+- Mockups (pre-review): https://claude.ai/artifact/Fr5aSwkm6ANdRXT9xw8JS3;
+  hub rework (approved): https://claude.ai/artifact/GFjr6JVcsh7r3BXoFXyUPq
+- Class names in `pin.css` are flat (`pin__next` is the Next goal button,
+  `pin__sofar` the per-throw running total). The hub hit both clashes; check
+  before naming a new class.
+- Screenshots at an emulated 1440 px width come back garbled in the preview
+  pane; measure with JS or use the pane's own width.
 
 ## What this is
 
