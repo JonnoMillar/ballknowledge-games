@@ -211,7 +211,7 @@ const SAMPLE: Record<Rung, PlateMark[]> = {
   Mascot: ['missed', 'missed', 'missed', 'missed', 'hinted'],
 };
 
-/** The day's result: the tally, your slot on the album page, the share line. */
+/** The day's result: the tally, your card, the share line, then every result. */
 function Summary({ set, marks, onReview, onAgain }: {
   set: ItkSet;
   marks: (PlateMark | null)[];
@@ -243,11 +243,19 @@ function Summary({ set, marks, onReview, onAgain }: {
       </div>
 
       <div key={`${sample ?? 'yours'}-${take}`} className="itk-end__reveal">
-        <AlbumReveal set={set} marks={shown} rung={rung} day={1} onReview={onReview} />
-        <div className="itk-end__actions">
-          <button type="button" className="seal" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-          <button type="button" className="itk-ghost" onClick={onAgain}>Play again</button>
-        </div>
+        <AlbumReveal
+          set={set}
+          marks={shown}
+          rung={rung}
+          day={1}
+          onReview={onReview}
+          actions={(
+            <>
+              <button type="button" className="seal" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+              <button type="button" className="itk-ghost" onClick={onAgain}>Play again</button>
+            </>
+          )}
+        />
       </div>
     </section>
   );

@@ -295,14 +295,20 @@ see a tacky animation for right or wrong I'll be angry."
 
 ### End screen — built (2026-10-10), awaiting Jonno's sign-off
 
-What's on screen, in order of the animation (route 350ms → 2050ms, actions 2300ms):
-`ITK #n` and a counter over the five careers; the ink route runs through their
-✓/✕ marks, each mark's `+2/+1/+0` pops as the route passes and the counter steps
-to the running total; the route drops into your slot on an album page of six
-(each slot: art faded + greyed, name, point range `0–1`…`10`); your sticker lands
-with a press (full-colour art, name, `8/10`; podium in its metal case). Phone:
-the podium is the first row of three. Pack/peel mockups and the reveal switcher
-are deleted. Still prototype: the "End screen" jump and the result picker.
+Known: on a 375×812 phone the card's lower half starts below the fold, because
+the prototype bars (set switcher, result picker) push it down; recheck once
+they're removed before ship.
+
+What's on screen, in order of the animation (route 350ms → card 2050ms, actions
+2550ms, album 3050ms): `ITK #n` and a counter over the five careers; the ink
+route runs through their ✓/✕ marks, each mark's `+2/+1/+0` pops as the route
+passes and the counter steps to the running total; the route drops into **your
+card alone, large and centred** (220px, 184px on a phone: full-colour art, name,
+`8/10`; podium in its metal case), landing with a press; Share / Play again
+under it; only then the album page of all six fades in below (yours stuck in
+its slot; the rest faded + greyed art, name, point range `0–1`…`10`). Jonno
+(2026-10-10): "you got this, then you see the others". Phone: the podium is the
+first row of three. Pack/peel mockups and the reveal switcher are deleted. Still prototype: the "End screen" jump and the result picker.
 White ✓ on `--gold` checked at 22px: readable, yellow left as is.
 
 ### Rules learned from playtests — and why (do not re-litigate)

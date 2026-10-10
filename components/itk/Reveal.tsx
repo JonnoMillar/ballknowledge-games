@@ -1,5 +1,5 @@
 'use client';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { StickerFace, solid } from '../Sticker';
 import { MAX_POINTS, POINTS, RUNGS, pointsOf, rangeOf, type Rung } from '../../src/lib/itk/score';
 import type { PlateMark } from '../../src/lib/chain/share';
@@ -7,9 +7,10 @@ import type { ItkSet } from '../../src/server/itk';
 
 /**
  * The day's result. The ink route runs through the five careers, adding up
- * each one's points as it passes, then on into your slot on an album page of
- * every result. The others stay empty, their art faded, so you can see what
- * the next one up would have taken.
+ * each one's points as it passes, then down to your card, alone and large:
+ * this is what you got. Only then does the album page of every result come
+ * in below, yours stuck in its slot, the others empty with their art faded,
+ * so you can see what the next one up would have taken.
  */
 
 const art = (rung: Rung) => `/itk/ranks/${rung.toLowerCase()}.webp`;
@@ -78,40 +79,43 @@ function rounded(pts: { x: number; y: number }[], r: number): string {
   return `${d} L ${end.x} ${end.y}`;
 }
 
-/** When the route starts drawing, and how long it takes to reach your slot. */
+/** When the route starts drawing, and how long it takes to reach your card. */
 const ROUTE_AT = 350;
 const ROUTE_MS = 1700;
 
-export function AlbumReveal({ set, marks, rung, day, onReview }: {
+/** After your card lands: the actions, then the rest of the album. */
+const ACTIONS_AFTER = 500;
+const OTHERS_AFTER = 1000;
+
+export function AlbumReveal({ set, marks, rung, day, onReview, actions }: {
   set: ItkSet;
   marks: readonly PlateMark[];
   rung: Rung;
   day: number;
   onReview: (i: number) => void;
+  actions: ReactNode;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const pips = useRef<(HTMLElement | null)[]>([]);
-  const slot = useRef<HTMLSpanElement>(null);
-  const page = useRef<HTMLOListElement>(null);
+  const hero = useRef<HTMLDivElement>(null);
   const [route, setRoute] = useState<{ d: string; w: number; h: number; at: number[] } | null>(null);
 
   useLayoutEffect(() => {
     function measure() {
-      if (!box.current || !slot.current || pips.current.some((p) => !p)) return;
+      if (!box.current || !hero.current || pips.current.some((p) => !p)) return;
       const b = box.current.getBoundingClientRect();
       const centre = (el: Element) => {
         const r = el.getBoundingClientRect();
         return { x: r.left - b.left + r.width / 2, y: r.top - b.top + r.height / 2, top: r.top - b.top };
       };
       const pts = pips.current.map((p) => centre(p!));
-      const s = centre(slot.current);
+      const s = centre(hero.current);
       const last = pts[pts.length - 1]!;
-      const pg = page.current!.getBoundingClientRect();
-      const gutter = pg.right - b.left + 8;
-      // Past the fifth career the route runs like a map line: out to the margin, down, along
-      // the gap above your row, and into your slot from the top. It never crosses a slot.
-      const firstRow = s.top - (pg.top - b.top) < 4;
-      const lane = firstRow ? (last.y + s.top) / 2 : s.top - 11;
+      const row = box.current.querySelector('.itk-end__row')!.getBoundingClientRect();
+      const gutter = Math.min(row.right - b.left + 8, b.width - 2);
+      // Past the fifth career the route runs like a map line: out to the margin, down, back
+      // along the gap above your card, and into it from the top. It never crosses a career.
+      const lane = (last.y + s.top) / 2 + 10;
       const tail = [{ x: gutter, y: last.y }, { x: gutter, y: lane }, { x: s.x, y: lane }, { x: s.x, y: s.top - 3 }];
       const line = [...pts, ...tail];
       const dist = (a: { x: number; y: number }, z: { x: number; y: number }) => Math.hypot(z.x - a.x, z.y - a.y);
@@ -140,7 +144,15 @@ export function AlbumReveal({ set, marks, rung, day, onReview }: {
     ['--out' as string]: i < totals.length ? `${passed(i)}ms` : '1e6ms',
   } : undefined);
   return (
-    <div ref={box} className={`rv-album ${route ? 'is-ready' : ''}`} style={{ ['--landed' as string]: `${landed}ms` }}>
+    <div
+      ref={box}
+      className={`rv-album ${route ? 'is-ready' : ''}`}
+      style={{
+        ['--landed' as string]: `${landed}ms`,
+        ['--actions' as string]: `${landed + ACTIONS_AFTER}ms`,
+        ['--others' as string]: `${landed + OTHERS_AFTER}ms`,
+      }}
+    >
       <p className="rv-tally">
         <span className="rv-tally__day">ITK #{day}</span>
         <span className="rv-tally__count display" role="img" aria-label={`${totals[totals.length - 1]} out of ${MAX_POINTS}`}>
@@ -156,10 +168,14 @@ export function AlbumReveal({ set, marks, rung, day, onReview }: {
           <path d={route.d} pathLength={1} style={{ animationDelay: `${ROUTE_AT}ms`, animationDuration: `${ROUTE_MS}ms` }} />
         </svg>
       ) : null}
-      <ol ref={page} className="rv-album__page" aria-label="Results">
+      <div ref={hero} className="rv-hero">
+        <ResultSticker rung={rung} points={totals[totals.length - 1]!} />
+      </div>
+      <div className="itk-end__actions">{actions}</div>
+      <ol className="rv-album__page" aria-label="Every result">
         {RUNGS.map((x) => (
           <li key={x} className={`rv-slot ${METAL[x] ? 'is-podium' : ''} ${x === rung ? 'is-yours' : ''}`}>
-            <span ref={x === rung ? slot : undefined} className="rv-slot__space">
+            <span className="rv-slot__space">
               <img className="rv-slot__art" src={art(x)} alt="" />
               {x === rung ? <ResultSticker rung={rung} points={totals[totals.length - 1]!} /> : null}
             </span>

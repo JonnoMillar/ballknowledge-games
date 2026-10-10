@@ -397,7 +397,7 @@
   text-align: center;
 }
 .itk-end__reveal { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
-.itk-end__reveal .itk-end__actions { opacity: 0; animation: fade-in var(--t-slow) var(--ease-out) 2300ms forwards; }
+.rv-album.is-ready .itk-end__actions { opacity: 0; animation: fade-in var(--t-slow) var(--ease-out) var(--actions) forwards; }
 .itk-proto--reveal { border: 1px dashed var(--rule-strong); border-radius: 4px; }
 
 /* ── THE TALLY: a figure for each career as the route passes it ──────── */
@@ -467,10 +467,13 @@
   display: grid;
   grid-template-columns: repeat(6, 112px);
   gap: 14px;
-  margin: 102px 0 0;
+  margin: 34px 0 0;
   padding: 0;
   list-style: none;
 }
+/* The rest of the album only comes in once your card has had its moment. */
+.rv-album.is-ready .rv-album__page { animation: others-in 600ms var(--ease-out) var(--others) backwards; }
+@keyframes others-in { from { opacity: 0; transform: translateY(12px); } }
 .rv-slot { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .rv-slot__space {
   position: relative;
@@ -496,10 +499,12 @@
 .rv-slot.is-yours .rv-slot__range { color: var(--muted); }
 .rv-slot__name { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--silhouette-figure); }
 .rv-slot.is-yours .rv-slot__name { color: var(--ink); }
-.rv-album.is-ready .rv-slot.is-yours .rv-slot__name { animation: slot-name var(--t-slow) var(--ease-out) var(--landed) backwards; }
 .rv-slot .rs { --rs-w: 100%; position: absolute; inset: 0; aspect-ratio: auto; }
 .rv-slot .rs.slab { --slab-pad: 6px; }
-.rv-album.is-ready .rv-slot .rs { animation: slot-in 620ms var(--ease-out) var(--landed) backwards; }
+/* Your card, alone and large: what you got, before anything else. */
+.rv-hero { display: flex; justify-content: center; margin-top: 70px; }
+.rv-hero .rs { --rs-w: 220px; }
+.rv-album.is-ready .rv-hero .rs { animation: slot-in 620ms var(--ease-out) var(--landed) backwards; }
 /* Lands with weight: held above the slot, pressed down, settles. */
 @keyframes slot-in {
   0%   { transform: translateY(-26px) scale(1.1); opacity: 0; box-shadow: 0 22px 30px rgba(20, 18, 16, 0.26); }
@@ -507,9 +512,9 @@
   70%  { transform: translateY(0) scale(0.97); box-shadow: 0 1px 2px rgba(20, 18, 16, 0.2); }
   100% { transform: none; opacity: 1; }
 }
-@keyframes slot-name { from { color: var(--silhouette-figure); } to { color: var(--ink); } }
 @media (max-width: 759px) {
-  .rv-album__page { margin-top: 78px; }
+  .rv-hero { margin-top: 56px; }
+  .rv-hero .rs { --rs-w: 184px; }
   .rv-album__page { grid-template-columns: repeat(3, minmax(0, 96px)); gap: 22px 14px; }
   /* On a phone the podium is the first row. */
   .rv-slot.is-podium { order: -1; }
@@ -520,7 +525,7 @@
   .rv-album__route path { stroke-dashoffset: 0; animation: none; }
   .rv-album.is-ready .rv-tally__n { animation: none; opacity: 0; }
   .rv-album.is-ready .rv-tally__n:last-of-type { opacity: 1; }
-  .rv-slot .rs, .itk-end__pts, .itk-end__reveal .itk-end__actions { animation: none !important; opacity: 1; transform: none; }
+  .rv-hero .rs, .rv-album__page, .itk-end__pts, .rv-album .itk-end__actions { animation: none !important; opacity: 1; transform: none; }
 }
 
 .itk-end__row { --sticker-w: 62px; display: flex; justify-content: center; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
