@@ -289,8 +289,8 @@ see a tacky animation for right or wrong I'll be angry."
   `public/itk/ranks/`, made with a game screenshot as the style reference.
   Lesson: **always pass a reference image** for colour/feel (Jonno called the
   unreferenced Recraft test "terrible planning"); Recraft V4.1 takes none. Cost
-  4.25 credits total. Open: the Casual scarf is green/yellow ≈ Norwich; Jonno to
-  say whether to regenerate (0.5 cr) — still unanswered, kept for now.
+  4.25 credits total. The Casual scarf is green/yellow (≈ Norwich); Jonno
+  kept it as is (2026-10-10), don't regenerate.
 - **Not yet answered:** pattern honours (Late show, Bottled it, Second call…).
 
 ### End screen — built (2026-10-10), awaiting Jonno's sign-off
@@ -380,7 +380,7 @@ taken); `npm run dev` prints it. The `prod` launch config fails: no build.
 ### Next
 
 0. End screen: Jonno to look at it (End screen button, pick each result) and
-   sign off or redirect; answer the scarf and AGENTS.md. Then back to rules:
+   sign off or redirect; answer AGENTS.md. Then back to rules:
 1. Get Jonno's v5 playtest JSON (Copy feedback). Read each round for *why*
    (unknown player / unreadable career / good bluff / tell), not just the numbers.
 2. Iterate rules + examples until he says the rounds feel right. Open threads:
