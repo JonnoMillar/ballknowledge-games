@@ -120,6 +120,25 @@ Four playtest rounds (v1–v4; v5 not yet played). His verdicts drove each rule:
   medium and hard). Day = a difficulty ramp + a mix of flavours.
 - **Exclude anyone he has already played** (list in `pick-examples.mjs`, `PLAYED`).
 
+### Why only ~125 players pass (measured 2026-10-12, `scripts/itk/pool-funnel.mjs`)
+
+Funnel at the v5 rules: 688 players with 500k+ views, 497 with 4–9 stops and
+crests, 356 after the era rule, **125 after the known-club rule**. The
+known-club rule is the one that bites (225 players lost): "≥300k views AND ≥30%
+of the club's pool players also played in the PL, or ≥2M views" calls Sevilla,
+Lyon, Porto, Valencia, Monaco, Werder, Fiorentina, PSV, River Plate unknown,
+because they are Spanish/French/Portuguese clubs with a low PL-link share. Views
+alone cannot replace it (Vissel Kobe 651k, Al-Nassr 580k ≈ Blackpool 681k,
+Werder 694k). Sweep (players that pass): 125 baseline; share 0.15 + "huge" at
+1M views instead of 2M → **249**; + first stop ≥2000 → 260; + player floor 350k →
+306; + up to 10 stops → 319; allowing 2 unknown clubs → ~440 (probably too loose).
+Jonno's calls still needed: the club rule, the 500k floor (Adam 335k was
+rejected as unknown, Pellistri 578k and Coady 588k were fine), the 2004 start.
+**Reuse:** same player with a different fake is fine after a gap; no repeat if
+the gap is shorter than players/5 days (250 players → 50 days; 320 → 64). A
+player who recalls the real career spots a new fake faster, so keep the gap long
+and never reuse the same fake club for the same player.
+
 ### Verified
 
 2026-10-10, end screen: `npm test` 1,373 passed (36 files); typecheck clean.
