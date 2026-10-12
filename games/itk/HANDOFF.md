@@ -1,6 +1,15 @@
 # ITK — state of play
 
-Branch `feat/fake-transfer`. Site-wide notes: root `HANDOFF.md`. The code is still in
+**2026-10-12: shipping.** Branch `feat/itk-ship` (cut from `main`, merged
+`feat/fake-transfer`). Spec: `docs/superpowers/specs/2026-10-12-itk-daily-design.md`
+(awaiting approval). Jonno's calls today: known-club rule by **country** (≥300k
+views in UK/ESP/ITA/GER/FRA/MON/NED/POR, or the old PL-share rule, or ≥2M; 233
+players), first stop **≥2000**, 500k floor and 9 stops kept; build on v5 without
+a v5 playtest; **no pattern honours** at launch; name still open (rejected Paper
+Talk, Medical, and keeping ITK as final). The 0.15-share/1M alternative was
+dropped: it calls Mohun Bagan, Club América, Pachuca, Santos known.
+
+Branch `feat/fake-transfer` (prototype history below). Site-wide notes: root `HANDOFF.md`. The code is still in
 `app/itk`, `components/itk`, `src/lib/itk`, `src/server/itk.ts`, `tests/itk`; move it into
 `games/itk/` (the `games/pin` pattern) before it merges to `main`.
 
