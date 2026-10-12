@@ -1,5 +1,33 @@
 # Project instructions (Football Chemistry Squad Game)
 
+One Next.js site, many games. Start here: read `HANDOFF.md` (the site and the
+games index), then the `HANDOFF.md` of the game you are working on.
+
+## Layout
+
+- A new game lives in `games/<name>/`: `lib/`, `components/`, `tests/`,
+  `server.ts`, `data/`, its CSS and its own `HANDOFF.md`. Its route,
+  `app/<name>/page.tsx` (and `app/api/<name>/`), is a thin shell that imports
+  from there. `games/rondo` and `games/pin` are the pattern.
+- Shared code stays where it is: `src/lib` (daily, progress, club colours),
+  `components/` (ClubBadge, Sticker), `data/` (the player pool). A game may
+  import shared code; shared code never imports a game; games never import
+  each other. Something two games need moves to `src/` first.
+- Chain (`/`, `/play`, `/deep`) predates this and lives in the root
+  `src/lib/chain`, `components/`. Leave it unless a task moves it.
+
+## Branches and drafts
+
+- `main` is the trunk. Each game in progress is its own branch in its own git
+  worktree (`.claude/worktrees/`), cut from `main`.
+- On a game branch, write notes only in `games/<name>/HANDOFF.md`. Do not edit
+  the root `HANDOFF.md` or this file there; the root gets one line in its
+  games index when the game merges. This is what stops two drafts colliding.
+- To pick up shared changes, merge `main` into the game branch. When the game
+  is verified, merge it into `main`.
+- At each stage gate: update the game's HANDOFF.md, commit, check in with
+  Jonno, suggest /clear.
+
 ## Committing
 
 Auto-commit after any verified, working change, without asking first. A

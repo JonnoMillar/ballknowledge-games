@@ -4,6 +4,22 @@
 path back to full context. The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
+## Games
+
+One site; each game is a route. A game's own state of play is in its
+`HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
+are in `CLAUDE.md`.
+
+| Game | Route | Code | State |
+|---|---|---|---|
+| Chain | `/`, `/play/NNN` | `src/lib/chain`, `components/` | Live. This file. |
+| Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Live. This file. |
+| Rondo | `/rondo` | `games/rondo` | This file, `games/rondo/DESIGN.md`. |
+| Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | This file. |
+| Recall XI | `/recall-xi` | root | Parked. |
+| Pitch pin | `/pin` | `games/pin` | Branch `feat/pitch-pin`. |
+| ITK | `/itk` | `components/itk`, `src/lib/itk` | Branch `feat/fake-transfer`, in design. |
+
 ## What this is
 
 A daily football recall puzzle, drawn as a sticker album. Famous players are
