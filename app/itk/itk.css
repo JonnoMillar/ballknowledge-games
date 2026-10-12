@@ -1,0 +1,621 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ITK — one move in each career never happened.
+   The album's page, stickers and red band; the one new mark is the red
+   marker loop you circle a suspect with in the paper.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.itk {
+  --marker: #D62839;
+  --tick: var(--green);
+  /* Result marks carry a symbol as well as a colour (green ✓, yellow ✓, red ✕), so they read without colour. */
+  --mark-yes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6.2 11.4l3.2 3.2 6.4-6.8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --mark-no: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M7.4 7.4l7.2 7.2M14.6 7.4l-7.2 7.2' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Prototype only: which picker made the examples. */
+.itk-proto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--muted);
+}
+.itk-proto__label { margin-right: 4px; }
+.itk-proto__set {
+  appearance: none;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 11px 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+.itk-proto__set:hover { border-color: var(--rule-strong); background: rgba(255, 255, 255, 0.6); }
+.itk-proto__set[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.itk__main {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 22px 16px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+@media (min-width: 760px) { .itk__main { padding: 34px 28px 72px; gap: 22px; } }
+
+/* ── THE BAR: careers done, picks left ─────────────────────────────────── */
+.itk__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.itk-pips { display: flex; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.itk-pip {
+  display: block;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1.5px solid var(--rule-strong);
+  background: transparent;
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+.itk-pip:disabled { cursor: default; border-color: var(--rule); }
+.itk-pip:not(:disabled):hover { transform: translateY(-1px); }
+.itk-pip.is-current { border: 2px solid var(--ink); }
+.itk-pip--held, .itk-pip--hinted, .itk-pip--missed { border-color: transparent; animation: die-press var(--t-base) var(--ease-out) backwards; }
+.itk-pip--held, .itk-status__chip--held { background: var(--green) var(--mark-yes) center / 100% no-repeat; }
+.itk-pip--hinted, .itk-status__chip--hinted { background: var(--gold) var(--mark-yes) center / 100% no-repeat; }
+.itk-pip--missed, .itk-status__chip--missed { background: var(--red) var(--mark-no) center / 100% no-repeat; }
+.itk-pip.is-current.itk-pip--held, .itk-pip.is-current.itk-pip--hinted, .itk-pip.is-current.itk-pip--missed {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--ink);
+}
+
+.itk-picks { display: flex; gap: 6px; }
+.itk-picks__loop { width: 22px; height: 24px; overflow: visible; }
+.itk-picks__loop path { fill: none; stroke: var(--marker); stroke-width: 11px; stroke-linecap: round; transition: stroke var(--t-base) var(--ease-out), opacity var(--t-base) var(--ease-out); }
+.itk-picks__loop.is-used path { stroke: var(--silhouette-figure); opacity: 0.6; }
+
+/* ── THE STAGE: who, and where he went ─────────────────────────────────── */
+.itk-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 4px 22px;
+  background: var(--sticker);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.05), 0 8px 24px rgba(20, 18, 16, 0.08);
+}
+.itk-stage::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  pointer-events: none;
+}
+@media (min-width: 760px) {
+  .itk-stage { flex-direction: row; align-items: center; gap: 36px; padding: 44px 40px 40px; }
+}
+.itk-stage__tab {
+  position: absolute;
+  top: -12px;
+  left: 18px;
+  z-index: 3;
+  padding: 5px 12px 6px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transform: rotate(-2deg);
+  box-shadow: 0 2px 4px rgba(20, 18, 16, 0.2);
+}
+.itk-stage__tab--easy { background: var(--green); }
+.itk-stage__tab--medium { background: var(--gold); color: var(--ink); }
+.itk-stage__tab--hard { background: var(--ink); }
+
+.itk-stage__who { --sticker-w: 96px; flex-shrink: 0; animation: stick-down var(--t-slow) var(--ease-out) both; }
+@media (min-width: 760px) { .itk-stage__who { --sticker-w: 164px; } }
+.itk-stage__who .sticker { transition: transform var(--t-slow) var(--ease-out); }
+
+/* ── THE TRAIL ─────────────────────────────────────────────────────────── */
+.trail { flex: 1 1 auto; min-width: 0; width: 100%; display: flex; justify-content: center; }
+.trail__board { position: relative; }
+.trail__route { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+.trail__line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.28;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: route-draw 300ms var(--ease-in-out) forwards;
+  animation-delay: calc(var(--i) * 70ms + 220ms);
+  transition: stroke-opacity var(--t-slow) var(--ease-out);
+}
+.trail__arrow {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.55;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  animation: fade-in var(--t-base) var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 70ms + 420ms);
+  transition: stroke-opacity var(--t-slow) var(--ease-out);
+}
+/* Once the fake is peeled off, the legs either side of it are the real route again. */
+.trail__leg.is-restored .trail__line { stroke: var(--green); stroke-opacity: 0.85; stroke-width: 2.5px; transition: stroke 420ms var(--ease-out) 900ms, stroke-opacity 420ms var(--ease-out) 900ms; }
+.trail__leg.is-restored .trail__arrow { stroke: var(--green); stroke-opacity: 0.9; transition: stroke 420ms var(--ease-out) 900ms; }
+@keyframes route-draw { to { stroke-dashoffset: 0; } }
+@keyframes fade-in { to { opacity: 1; } }
+
+/* A crest sticker. */
+.tcard {
+  position: absolute;
+  z-index: 1;
+  width: var(--cw);
+  height: var(--ch);
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  background: var(--sticker);
+  color: var(--ink);
+  border-radius: 3px;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 1px 0 rgba(20, 18, 16, 0.06), 0 2px 6px rgba(20, 18, 16, 0.12);
+  animation: stick-down var(--t-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 55ms + 80ms);
+  transition:
+    transform var(--t-base) var(--ease-out),
+    box-shadow var(--t-base) var(--ease-out),
+    background var(--t-slow) var(--ease-out);
+}
+.tcard:disabled { cursor: default; }
+.tcard:focus-visible { outline: none; }
+
+/* One side of the sticker. The fake is two layers: the real face underneath, the fake on top. */
+.tcard__face {
+  position: absolute;
+  inset: 0;
+  padding: 8px 8px 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 3px;
+  background: var(--sticker);
+}
+
+.tcard__top { display: flex; align-items: center; justify-content: space-between; gap: 4px; height: 17px; }
+.tcard__year { font-weight: 700; font-size: 16px; line-height: 1; letter-spacing: 0.01em; transition: color var(--t-base) var(--ease-out); }
+.tcard__loan {
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 6px 3px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--page);
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+.tcard__crest { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.tcard__crest img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1.5px rgba(20, 18, 16, 0.18));
+  transition: transform var(--t-base) var(--ease-out), filter var(--t-slow) var(--ease-out), opacity var(--t-slow) var(--ease-out);
+}
+@media (min-width: 760px) { .tcard__crest img { width: 64px; height: 64px; } }
+.tcard__name {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  height: 29px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  align-content: end;
+  transition: color var(--t-base) var(--ease-out);
+}
+.tcard__name--long { font-size: 12.5px; }
+@media (max-width: 599px) {
+  .tcard__face { padding: 7px 6px 8px; }
+  .tcard__name { font-size: 13px; }
+  .tcard__name--long { font-size: 11.5px; }
+  .tcard__loan { font-size: 10px; padding: 2px 5px; }
+}
+
+/* The marker loop: drawn round a card you are pointing at, kept round one you picked. */
+.tcard__loop {
+  position: absolute;
+  inset: -15px -14px -14px -15px;
+  width: calc(100% + 29px);
+  height: calc(100% + 29px);
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+.tcard__loop path {
+  fill: none;
+  stroke: var(--marker);
+  stroke-width: 2.4px;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1.001;
+  opacity: 0;
+  transition: stroke-dashoffset 320ms var(--ease-in-out), opacity var(--t-fast) var(--ease-out), stroke var(--t-slow) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .tcard:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 6px 14px rgba(20, 18, 16, 0.14), 0 14px 30px rgba(20, 18, 16, 0.1);
+  }
+  .tcard:not(:disabled):hover .tcard__crest img { transform: scale(1.06); }
+  .tcard:not(:disabled):hover .tcard__loop path { stroke-dashoffset: 0; opacity: 0.92; }
+}
+.tcard:focus-visible .tcard__loop path,
+.tcard.is-circled .tcard__loop path { stroke-dashoffset: 0; opacity: 0.92; }
+/* The beat before the verdict: circled, pressed flat. */
+.tcard.is-pending { transform: translateY(0) scale(0.985); }
+
+/* A real move you picked: checked, crossed off the suspects. */
+.tcard.is-real { background: #F7FBF8; }
+.tcard.is-real .tcard__loop path { stroke: var(--silhouette-figure); opacity: 0.7; }
+.tcard__tick {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--tick);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--sticker), 0 2px 5px rgba(20, 18, 16, 0.2);
+  animation: die-press var(--t-base) var(--ease-out) both;
+}
+.tcard__tick svg { width: 15px; height: 15px; }
+
+/* The fake: peeled off from the corner to show the real sticker it was stuck over.
+   The bottom-right corner lifts first, as under a thumbnail, catching the light;
+   then the sticker is drawn up and away and gone. */
+.tcard__peel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-origin: 0 0;
+  pointer-events: none;
+  animation: peel 1000ms cubic-bezier(0.55, 0, 0.3, 1) 120ms forwards;
+}
+.tcard__face--front { overflow: hidden; box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07); }
+.tcard__face--front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(20, 18, 16, 0.2) 100%);
+  opacity: 0;
+  animation: peel-shade 1000ms ease-out 120ms forwards;
+}
+@keyframes peel {
+  0%   { transform: perspective(700px) rotate3d(1, -1, 0, 0deg); opacity: 1; filter: drop-shadow(0 0 0 rgba(20, 18, 16, 0)); }
+  38%  { transform: perspective(700px) rotate3d(1, -1, 0, 40deg); opacity: 1; filter: drop-shadow(4px 6px 6px rgba(20, 18, 16, 0.25)); }
+  72%  { opacity: 0.35; }
+  100% { transform: perspective(700px) translate(-34%, -46%) rotate3d(1, -1, 0, 58deg) rotate(-7deg); opacity: 0; filter: drop-shadow(8px 12px 10px rgba(20, 18, 16, 0.18)); }
+}
+@keyframes peel-shade {
+  0% { opacity: 0; }
+  38% { opacity: 1; }
+  100% { opacity: 1; }
+}
+/* An inserted fake covered nothing: under it is the album's empty, grey space. */
+.tcard__face--empty {
+  background: var(--page);
+  box-shadow: inset 0 0 0 1.5px var(--silhouette);
+  background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgba(20, 18, 16, 0.04) 9px 10px);
+}
+.tcard.is-fake:has(.tcard__face--empty) { background: transparent; box-shadow: none; }
+.trail__leg.is-cut .trail__line { stroke-dasharray: 0.02 0.03; stroke-opacity: 0.2; transition: stroke-opacity 420ms var(--ease-out) 900ms; }
+.trail__leg.is-cut .trail__arrow { stroke-opacity: 0.15; transition: stroke-opacity 420ms var(--ease-out) 900ms; }
+
+/* The real one, stuck down where the fake was. */
+.tcard.is-fake { z-index: 2; box-shadow: 0 0 0 2px var(--green), 0 2px 8px rgba(20, 18, 16, 0.14); transition: box-shadow var(--t-slow) var(--ease-out) 900ms; }
+/* What it was hiding under: the fake's crest, small and struck through. */
+.tcard__was {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 3;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sticker);
+  box-shadow: 0 0 0 1.5px var(--red), 0 2px 5px rgba(20, 18, 16, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: die-press var(--t-base) var(--ease-out) 1050ms backwards;
+}
+.tcard__was img { width: 19px; height: 19px; object-fit: contain; filter: grayscale(1); opacity: 0.7; }
+.tcard__was::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--red);
+  transform: rotate(45deg);
+}
+
+/* ── STATUS ────────────────────────────────────────────────────────────── */
+.itk-status {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.itk-status__hint { color: var(--muted); font-size: 15px; }
+.itk-status__chip { width: 22px; height: 22px; border-radius: 4px; animation: die-press var(--t-base) var(--ease-out) both; }
+.itk-status__verdict { font-weight: 800; font-size: 28px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; }
+.itk-status__note { color: var(--muted); font-size: 15px; }
+.itk-status__next { margin-left: 6px; animation: fade-in var(--t-base) var(--ease-out) 200ms both; opacity: 0; }
+
+/* ── THE END: the tier, the five, the share ─────────────────────────────── */
+.itk-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 0 8px;
+  text-align: center;
+}
+.itk-end__reveal { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
+.rv-album.is-ready .itk-end__actions { opacity: 0; animation: fade-in var(--t-slow) var(--ease-out) var(--actions) forwards; }
+.itk-proto--reveal { border: 1px dashed var(--rule-strong); border-radius: 4px; }
+
+/* ── THE TALLY: a figure for each career as the route passes it ──────── */
+.rv-tally { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0; }
+.rv-tally__day { font-size: 14px; font-weight: 600; color: var(--muted); }
+.rv-tally__count { display: grid; grid-template-columns: auto auto; align-items: baseline; font-size: 56px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+/* The figures share one cell: each shows from the moment the route reaches its career until the next. */
+.rv-tally__n { grid-area: 1 / 1; justify-self: end; }
+.rv-tally__count small { grid-area: 1 / 2; font-size: 24px; color: var(--muted); margin-left: 2px; }
+.rv-album.is-ready .rv-tally__n { animation: tally-in 260ms var(--ease-out) var(--in) backwards, tally-out 120ms linear var(--out) forwards; }
+@keyframes tally-in { from { opacity: 0; transform: translateY(30%); } }
+@keyframes tally-out { to { opacity: 0; } }
+
+
+/* ── THE RESULT STICKER ─────────────────────────────────────────────────
+   Paper for the bands; the podium sits in a Deep Cuts case (gold, silver,
+   bronze). Sizes in cqw so it reads the same in a slot and on its own. */
+.rs {
+  --rs-w: 196px;
+  width: var(--rs-w);
+  aspect-ratio: 3 / 4;
+  display: flex;
+  container-type: inline-size;
+  border-radius: 6px;
+}
+.rs.slab { --slab-pad: 9px; padding: var(--slab-pad); border-radius: 10px; }
+.rs--plain { box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 1px 0 rgba(20, 18, 16, 0.06), 0 3px 10px rgba(20, 18, 16, 0.14); }
+.rs__paper {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8cqw 7cqw 8cqw;
+  border-radius: 5px;
+  background: var(--sticker);
+  color: var(--ink);
+}
+.rs__art { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
+.rs__name { margin-top: 5cqw; font-size: 15cqw; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
+.rs__score { margin-top: 2cqw; font-size: 15cqw; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.rs__score small { font-size: 0.7em; font-weight: 600; color: var(--muted); }
+
+/* ── ALBUM: the route runs through the five and drops into your slot ──── */
+.rv-album { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; visibility: hidden; }
+.rv-album.is-ready { visibility: visible; }
+.rv-album:not(.is-ready) * { animation: none !important; }
+.rv-album .itk-end__row, .rv-album__page { position: relative; z-index: 1; }
+.rv-album__route { position: absolute; inset: 0; z-index: 0; overflow: visible; pointer-events: none; }
+.rv-album__route path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.55;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: route-draw;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.rv-album .itk-end__mark { animation: die-press var(--t-base) var(--ease-out) backwards; position: relative; z-index: 2; }
+.rv-album__page {
+  display: grid;
+  grid-template-columns: repeat(6, 112px);
+  gap: 14px;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+/* The rest of the album only comes in once your card has had its moment. */
+.rv-album.is-ready .rv-album__page { animation: others-in 600ms var(--ease-out) var(--others) backwards; }
+@keyframes others-in { from { opacity: 0; transform: translateY(12px); } }
+.rv-slot { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.rv-slot__space {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+  background: var(--page);
+  box-shadow: inset 0 0 0 1.5px var(--silhouette);
+  background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgba(20, 18, 16, 0.035) 9px 10px);
+}
+.rv-slot.is-podium .rv-slot__space { box-shadow: inset 0 0 0 1.5px var(--silhouette-figure); }
+/* Every result's art waits faded in its slot, so you can see what the next one up would have been. */
+.rv-slot__art {
+  position: absolute;
+  inset: 14% 12%;
+  width: 76%;
+  height: 72%;
+  object-fit: contain;
+  opacity: 0.22;
+  filter: grayscale(1);
+}
+.rv-slot__range { margin-top: -6px; font-size: 13px; font-weight: 600; color: var(--silhouette-figure); font-variant-numeric: tabular-nums; }
+.rv-slot.is-yours .rv-slot__range { color: var(--muted); }
+.rv-slot__name { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--silhouette-figure); }
+.rv-slot.is-yours .rv-slot__name { color: var(--ink); }
+.rv-slot .rs { --rs-w: 100%; position: absolute; inset: 0; aspect-ratio: auto; }
+.rv-slot .rs.slab { --slab-pad: 6px; }
+/* Your card, alone and large: what you got, before anything else. */
+.rv-hero { display: flex; justify-content: center; margin-top: 70px; }
+.rv-hero .rs { --rs-w: 220px; }
+.rv-album.is-ready .rv-hero .rs { animation: slot-in 620ms var(--ease-out) var(--landed) backwards; }
+/* Lands with weight: held above the slot, pressed down, settles. */
+@keyframes slot-in {
+  0%   { transform: translateY(-26px) scale(1.1); opacity: 0; box-shadow: 0 22px 30px rgba(20, 18, 16, 0.26); }
+  35%  { opacity: 1; }
+  70%  { transform: translateY(0) scale(0.97); box-shadow: 0 1px 2px rgba(20, 18, 16, 0.2); }
+  100% { transform: none; opacity: 1; }
+}
+@media (max-width: 759px) {
+  .rv-hero { margin-top: 56px; }
+  .rv-hero .rs { --rs-w: 184px; }
+  .rv-album__page { grid-template-columns: repeat(3, minmax(0, 96px)); gap: 22px 14px; }
+  /* On a phone the podium is the first row. */
+  .rv-slot.is-podium { order: -1; }
+  .rv-slot__name { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-album__route path { stroke-dashoffset: 0; animation: none; }
+  .rv-album.is-ready .rv-tally__n { animation: none; opacity: 0; }
+  .rv-album.is-ready .rv-tally__n:last-of-type { opacity: 1; }
+  .rv-hero .rs, .rv-album__page, .itk-end__pts, .rv-album .itk-end__actions { animation: none !important; opacity: 1; transform: none; }
+}
+
+.itk-end__row { --sticker-w: 62px; display: flex; justify-content: center; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
+@media (min-width: 760px) { .itk-end__row { --sticker-w: 104px; gap: 16px; } }
+.itk-end__row li { animation: stick-down var(--t-slow) var(--ease-out) both; }
+.itk-end__row li:nth-child(1) { animation-delay: 260ms; }
+.itk-end__row li:nth-child(2) { animation-delay: 320ms; }
+.itk-end__row li:nth-child(3) { animation-delay: 380ms; }
+.itk-end__row li:nth-child(4) { animation-delay: 440ms; }
+.itk-end__row li:nth-child(5) { animation-delay: 500ms; }
+.itk-end__card {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.itk-end__card .sticker { transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out); }
+.itk-end__card:hover .sticker { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(20, 18, 16, 0.16); }
+.itk-end__card .sticker__name { font-size: 11px; }
+@media (min-width: 760px) { .itk-end__card .sticker__name { font-size: 14px; } }
+.itk-end__mark { pointer-events: none; animation: none; }
+.itk-end__pts { margin-top: -6px; font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.rv-album.is-ready .itk-end__pts { animation: tally-in var(--t-base) var(--ease-out) backwards; }
+.itk-end__actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.itk-ghost {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 6px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--t-fast) var(--ease-out);
+}
+.itk-ghost:hover { text-decoration-color: var(--ink); }
+
+/* ── PROTOTYPE FEEDBACK: tooling, not the game ─────────────────────────── */
+.itk-proto__copy { margin-left: 6px; border-style: dashed; }
+.itk-proto__copy:disabled { opacity: 0.45; cursor: default; }
+.itk-fb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 18px;
+  padding: 14px 12px;
+  border: 1px dashed var(--rule-strong);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--muted);
+  animation: fade-in var(--t-base) var(--ease-out) 260ms both;
+  opacity: 0;
+}
+.itk-fb__group { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px; }
+.itk-fb__label { margin-right: 3px; }
+.itk-fb__chip {
+  appearance: none;
+  border: 1px solid var(--rule);
+  background: var(--sticker);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 10px 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+.itk-fb__chip:hover { border-color: var(--rule-strong); }
+.itk-fb__group.is-locked .itk-fb__chip { cursor: default; }
+.itk-fb__group.is-locked .itk-fb__chip:not([aria-pressed='true']) { opacity: 0.4; }
+.itk-fb__chip--n { width: 30px; padding: 4px 0 5px; text-align: center; font-variant-numeric: tabular-nums; }
+.itk-fb__end { font-size: 12px; }
+.itk-fb__chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.itk-fb__note {
+  flex: 1 1 260px;
+  max-width: 420px;
+  font: inherit;
+  font-size: 14px;
+  padding: 7px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--sticker);
+  color: var(--ink);
+}
+.itk-fb__note:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
