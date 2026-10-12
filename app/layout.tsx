@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        <footer className="site-foot"><a href="/credits">Photo and data credits</a></footer>
+        <footer className="site-foot"><a href="/">All games</a> · <a href="/credits">Photo and data credits</a></footer>
       </body>
     </html>
   );

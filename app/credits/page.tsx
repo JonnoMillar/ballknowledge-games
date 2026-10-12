@@ -13,7 +13,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
   return (
     <div className="app">
       <header className="masthead">
-        <a className="masthead__brand display" href="/">Chain</a>
+        <a className="masthead__brand display" href="/chain">Chain</a>
         <div className="masthead__meta">Credits</div>
       </header>
 

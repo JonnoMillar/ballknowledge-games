@@ -46,7 +46,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
   return (
     <div className="app">
       <header className="masthead">
-        <a className="masthead__brand display" href="/">
+        <a className="masthead__brand display" href="/chain">
           <Mark className="masthead__mark" />
           Chain
         </a>
@@ -161,30 +161,6 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             </ul>
           </section>
         ) : null}
-
-        <section className="also">
-          <a className="also__card" href="/rondo">
-            <span className="also__band display">Rondo</span>
-            <span className="also__copy">
-              <b>A passing game for the pub.</b> Two to four mates, one phone. Pass to anyone who shared a club; every club you go through is burnt. Three bibs and you’re in the middle.
-            </span>
-            <span className="also__go">Fancy a game? →</span>
-          </a>
-          <a className="also__card also__card--slugger" href="/slugger">
-            <span className="also__band display">Slugger</span>
-            <span className="also__copy">
-              <b>Football, played as baseball.</b> The pitcher throws a club; the batter names someone who played for it. Barcelona is a single. Bolton is a home run — if they can hit it.
-            </span>
-            <span className="also__go">Play ball →</span>
-          </a>
-          <a className="also__card also__card--pin" href="/pin">
-            <span className="also__band display">Pitch pin</span>
-            <span className="also__copy">
-              <b>Where was it struck from?</b> Famous goals in packs: each week’s best, the Goal of the Month shortlist, and the classics. A bullseye is within two metres.
-            </span>
-            <span className="also__go">Take aim →</span>
-          </a>
-        </section>
       </main>
     </div>
   );

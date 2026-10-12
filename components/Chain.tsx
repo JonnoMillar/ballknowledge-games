@@ -297,7 +297,7 @@ export default function Chain({
     <DndContext id="chain" sensors={sensors} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
       <div className="app">
         <header className="masthead">
-          <a className="masthead__brand display" href="/">
+          <a className="masthead__brand display" href="/chain">
             <Mark className="masthead__mark" />
             Chain
           </a>
@@ -368,7 +368,7 @@ export default function Chain({
                 <Wall result={result} images={images} clubs={clubs} players={sealed!.pool} show={phase.wall} deep={deep} />
                 <div className={`actions actions--after ${phase.wall ? 'is-shown' : ''}`}>
                   <ShareButton text={shareText(result, boardTitle, hinted, deep)} />
-                  <a className="actions__link" href={deep ? '/deep' : '/'}>{deep ? 'Another Deep Cut' : 'Another chain'}</a>
+                  <a className="actions__link" href={deep ? '/deep' : '/chain'}>{deep ? 'Another Deep Cut' : 'Another chain'}</a>
                 </div>
               </>
             ) : (

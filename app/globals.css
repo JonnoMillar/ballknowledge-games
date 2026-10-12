@@ -1096,7 +1096,7 @@ button { font-family: inherit; }
 }
 
 /* ── ALSO IN THE ALBUM ─────────────────────────────────────────────────
-   The other game. One card, the bib's orange as its band. */
+   One card per game on the hub, `--accent` as its band. */
 .also { width: 100%; max-width: 880px; margin: 0 auto; padding: 0 16px 8px; }
 .also__card {
   display: grid;
@@ -1121,19 +1121,15 @@ button { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   padding: 10px 12px;
   margin: -14px 0;
-  background: #F26B1D;
+  background: var(--accent, #F26B1D);
   color: #fff;
   font-weight: 800; font-size: 24px; letter-spacing: 0.03em; text-transform: uppercase;
   writing-mode: vertical-rl; transform: rotate(180deg);
 }
 .also__copy { font-size: 14.5px; line-height: 1.45; color: var(--muted); }
 .also__copy b { color: var(--ink); font-weight: 600; }
-.also__go { font-size: 14px; font-weight: 600; color: #F26B1D; }
+.also__go { font-size: 14px; font-weight: 600; color: var(--accent, #F26B1D); }
 .also { display: flex; flex-direction: column; gap: 10px; }
-.also__card--slugger .also__band { background: #1F6F43; }
-.also__card--slugger .also__go { color: #1F6F43; }
-.also__card--pin .also__band { background: var(--red); }
-.also__card--pin .also__go { color: var(--red); }
 
 /* ── FOOTER AND CREDITS ────────────────────────────────────────────────
    Every page links here: the Commons photos are licensed per file, and

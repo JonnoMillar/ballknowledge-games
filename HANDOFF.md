@@ -6,19 +6,20 @@ path back to full context. The design is in
 
 ## Games
 
-One site; each game is a route. A game's own state of play is in its
+One site; `/` is the hub (`components/Hub.tsx`), a card per game read from
+`src/games.ts`: add a game there and it appears. Each game is a route. A game's own state of play is in its
 `HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
 are in `CLAUDE.md`.
 
 | Game | Route | Code | State |
 |---|---|---|---|
-| Chain | `/`, `/play/NNN` | `src/lib/chain`, `components/` | Live. This file. |
+| Chain | `/chain`, `/play/NNN` | `src/lib/chain`, `components/` | Live. This file. |
 | Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Live. This file. |
 | Rondo | `/rondo` | `games/rondo` | This file, `games/rondo/DESIGN.md`. |
 | Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | This file. |
 | Recall XI | `/recall-xi` | root | Parked. |
-| Pitch pin | `/pin` | `games/pin` | Branch `feat/pitch-pin`. |
-| ITK | `/itk` | `components/itk`, `src/lib/itk` | Branch `feat/fake-transfer`, in design. |
+| Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
+| ITK | `/itk` | `components/itk`, `src/lib/itk` | Branch `feat/fake-transfer`, in design. Not on `main` and not in the hub until Jonno signs off the rules. |
 
 ## What this is
 
@@ -63,14 +64,14 @@ npm test             # 1,363 tests, 35 files
 npm run typecheck
 ```
 
-`/` is the album's front page. `/play/NNN` is a board; `/?c=NNN` redirects
-to it. A board id is a file path and is validated against `/^\d{3}$/`.
+`/` is the hub. `/chain` is the album's front page. `/play/NNN` is a board;
+`/?c=NNN` still redirects to it (old links). A board id is a file path and is validated against `/^\d{3}$/`.
 
 ## Where things are
 
 | Path | What |
 |---|---|
-| `app/page.tsx`, `components/Home.tsx` | The front door: today's board drawn as a preview, the streak, how it works, the ladder, past dailies. |
+| `app/chain/page.tsx`, `components/Home.tsx` | The front door: today's board drawn as a preview, the streak, how it works, the ladder, past dailies. |
 | `app/play/[id]/page.tsx`, `components/PlayClient.tsx` | A board, with a memory: works out from the player's clock whether this is the daily, writes the play on seal. |
 | `components/Chain.tsx` | The board itself. Fetches the album, runs the reducer, seals via `/api/seal`, drives the reveal. |
 | `components/ChainBoard.tsx` | Draws the live and the sealed board — one component, so they cannot drift. `RINGS` places the slots of a closed board. |
