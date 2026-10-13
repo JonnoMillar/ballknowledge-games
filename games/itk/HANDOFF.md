@@ -94,12 +94,24 @@ enwiki title André Onana).
   errors, reload of a finished day shows the end screen, hub card present,
   rank art and credits OK, `/itk` is 404.
 
-**Not done:**
-1. Merge `feat/itk-ship` into `main` and push (a push deploys): ask Jonno first.
-2. Known limits: careers snapshot 2026-09-20 (January window stales some
+**Not done:** nothing blocking. Shipped to `main`/Vercel 2026-10-13; live check
+passed (hub → `/spoofed` → day #25, five careers, archive, pick API). Next is
+Jonno's hub polish (`components/Hub.tsx`, `src/games.ts`) in a new session.
+Known limits: careers snapshot 2026-09-20 (January window stales some
    careers; refresh in the cron before Feb 2027); views snapshot Oct 2023–Sep 2025.
 
 **Gotchas found this session:**
+- **Vercel only bundles files it can trace.** A file read with `readFile` at
+  runtime must be listed in `outputFileTracingIncludes` (`next.config.ts`) or
+  production 500s with ENOENT while local and `next start` work. Hit with
+  `days.json` (live, broken ~2 h, 2026-10-13); a test now guards it. After any
+  push that adds a runtime-read file, check the **deployed** API
+  (`https://football-chain.vercel.app/api/spoofed/day?date=<today>` → 200).
+- `git mv` of a whole directory fails on Windows ("Permission denied") when a
+  watcher holds it: move the files individually.
+- `next build` rewrites `tsconfig.json` (`.next-prod/types`): `git checkout
+  tsconfig.json` before committing. Playwright `page.screenshot` paths land in
+  the main checkout's root, not the worktree.
 - `data/raw/` is gitignored and absent in worktrees; `fetch-portraits` needs it.
   Here it is a junction to the main checkout's `data/raw`.
 - `TaskStop` on Windows kills the shell, not the `tsx` child: check
