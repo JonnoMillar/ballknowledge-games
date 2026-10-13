@@ -25,6 +25,7 @@ const config: NextConfig = {
       './content/chains/*.json',
       './content/puzzles/*.json',
       './games/pin/data/packs/*.json',
+      './games/itk/data/days.json',
     ],
   },
 };

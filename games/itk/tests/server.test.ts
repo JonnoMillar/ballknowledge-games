@@ -5,6 +5,7 @@ import { EPOCH, addDays, daysBetween, type StoredDay } from '../lib/day';
 import { problems } from '../lib/check';
 import { buildWorld } from '../lib/world';
 import { readInputs } from '../../../scripts/itk/inputs';
+import config from '../../../next.config';
 
 const days = JSON.parse(readFileSync('games/itk/data/days.json', 'utf8')) as StoredDay[];
 
@@ -48,5 +49,16 @@ describe('the wire', () => {
     expect(await judgePick(date, 0, wrong, false)).toEqual({ fake: false, fakeIndex: null, real: null });
     expect(await judgePick(date, 0, r.fake, false)).toMatchObject({ fake: true, fakeIndex: r.fake });
     expect(await judgePick(date, 0, 99, false)).toBeNull();
+  });
+});
+
+describe('a game is ready to play', () => {
+  it('the schedule covers today and tomorrow (UTC), so the hub link never lands on an empty day', () => {
+    const today = new Date().toISOString().slice(0, 10);
+    for (const d of [today, addDays(today, 1)]) expect(days.some((x) => x.date === d), d).toBe(true);
+  });
+
+  it('the schedule file is traced into the serverless build, or every request is an ENOENT', () => {
+    expect(config.outputFileTracingIncludes?.['/**']).toContain('./games/itk/data/days.json');
   });
 });
