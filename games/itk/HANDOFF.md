@@ -18,9 +18,9 @@ inline from the spec; stop for Jonno only at (1) a review of generated days,
   as unknown). Max 9 stops kept (phone). Players ≥5M views excluded (4; too easy).
 - Built on v5 rules **without** the v5 playtest; every threshold is a named
   constant in `RULES` (`games/itk/lib/world.ts`).
-- **No pattern honours** at launch. **Name still open:** Jonno rejected Paper
-  Talk, Medical, and ITK-as-final; also offered Done Deal, Deadline Day,
-  Rumour Mill, Here We Go (no answer yet). "ITK" is the working name.
+- **No pattern honours** at launch. **Name: Spoofed** (picked 2026-10-13; rejected
+  Paper Talk, Medical, ITK, and passed on Done Deal, Deadline Day, Rumour Mill,
+  Here We Go).
 - Daily = **committed schedule + cron**, not a pure function of the date:
   past days frozen when rules change, reuse needs history, upcoming days
   readable, 14-day buffer if the cron breaks.
@@ -70,20 +70,28 @@ shows the end screen. 1100px: round and hub card render; ITK card on `/`.
 Onana label fixed (`overrides.ts` + `pool.json`; live label still "Andrcu Onana",
 enwiki title André Onana).
 
+**Shipped state 2026-10-13 (name: Spoofed; Jonno's pick):**
+- Public surface is `/spoofed`, `/api/spoofed/*`, `public/spoofed/ranks`, share
+  line `Spoofed #n · Agent 9/10`, localStorage `spoofed.progress.v1`, hub card
+  "Spoofed". Internal id stays `itk` (`games/itk`, `scripts/itk`, `itk-*` CSS,
+  `Itk*` types): invisible to players, renaming the dir is churn for no gain.
+- `EPOCH` = `2026-10-14` (Day #1). Never change it once anyone has played: it
+  renumbers everyone's history. `days.json` regenerated from it (29 days to
+  2026-11-11); the cron keeps it 14+ days ahead.
+- All 229 candidates have a portrait (218 cutout, 10 Commons, 1 none: Zaniolo
+  shows the silhouette). `fetch:credits` refreshed.
+- Verified: `npm test` 1,686 passed, typecheck clean, `next build` (prod)
+  clean; Playwright on the prod server with the clock set to 2026-10-14: full day
+  played at 1100 and 375, end screen "Spoofed #1", Share above the fold at 375
+  (not at 1100×800: scroll), `scrollWidth` = viewport (scrollbar), no console
+  errors, reload of a finished day shows the end screen, hub card present,
+  rank art and credits OK, `/itk` is 404.
+- Before 2026-10-14 (UTC) the game shows "No careers today" by design.
+
 **Not done:**
-1. **Portraits: 57 of 229 candidates still unresolved** (172 eligible). The
-   `--itk` run died at 114/171 on `UNKNOWN: open data/portraits.json` (Windows
-   file lock, likely the dev server or tests reading it). Resumable: stop the
-   dev server, run `npx tsx scripts/fetch-portraits.ts --itk` (~30–40 s a
-   player, ~35 min), then `npm run fetch:credits`.
-2. Then `rm games/itk/data/days.json && npm run itk:days -- --print` on the full
-   pool, and **stop for Jonno to review ~2 weeks of days**.
-3. Set `EPOCH` (`games/itk/lib/day.ts`, now a placeholder `2026-10-12`) to the
-   launch date and regenerate `days.json` from it.
-4. `NEXT_DIST_DIR=.next-prod npx next build`; Playwright at 1100/375 against it.
-5. Root `HANDOFF.md` games-index row (ITK: `/itk`, `games/itk`, live); then
-   ask Jonno, merge `feat/itk-ship` into `main`, ask before push.
-6. Rename once Jonno picks a name.
+1. Merge `feat/itk-ship` into `main` and push (a push deploys): ask Jonno first.
+2. Known limits: careers snapshot 2026-09-20 (January window stales some
+   careers; refresh in the cron before Feb 2027); views snapshot Oct 2023–Sep 2025.
 
 **Gotchas found this session:**
 - `data/raw/` is gitignored and absent in worktrees; `fetch-portraits` needs it.

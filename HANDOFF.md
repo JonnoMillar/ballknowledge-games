@@ -19,7 +19,7 @@ are in `CLAUDE.md`.
 | Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | This file. |
 | Recall XI | `/recall-xi` | root | Parked. |
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
-| ITK | `/itk` | `components/itk`, `src/lib/itk` | Branch `feat/fake-transfer`, in design. Not on `main` and not in the hub until Jonno signs off the rules. |
+| Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
 
 ## What this is
 
