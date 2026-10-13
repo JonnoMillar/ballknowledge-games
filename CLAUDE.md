@@ -35,9 +35,16 @@ completed fix, feature, or doc update goes straight to a commit once it's
 been checked (tests, typecheck, or a browser check as appropriate) — no need
 to ask "should I commit this?" first.
 
+Merging a verified branch into `main` and pushing `main` to `origin` (a push
+deploys the site) also need no asking, once typecheck, `npm test` and, for
+anything that changes pages, the prod build are clean. If `origin/main` has
+moved, merge it in, re-run the checks, then push. Report what shipped
+afterwards. (Jonno, 2026-10-13: the old ask-before-every-push rule was pure
+friction; it was a precaution from when no remote existed.)
+
 This does not extend to:
-- **Pushing** — no remote is configured; if one is added later, still ask
-  before every push.
+- **Force-pushes** (`--force`, `--force-with-lease`), and deleting remote
+  branches — always ask.
 - **Force-anything, resets, or history rewrites** — always ask.
 - **Anything flagged as broken, unverified, or partial** — commit only work
   that actually works. If something is left incomplete or a concern is
