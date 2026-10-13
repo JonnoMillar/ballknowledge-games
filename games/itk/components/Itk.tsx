@@ -24,8 +24,14 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function Itk() {
   const [day, setDay] = useState<ItkDay | null | undefined>(undefined);
+  // `?date=` opens a past day from the archive; anything else, or a future date, is today.
+  const [archived, setArchived] = useState(false);
   useEffect(() => {
-    fetch(`/api/spoofed/day?date=${localDate()}`)
+    const today = localDate();
+    const q = new URLSearchParams(location.search).get('date');
+    const date = q && /^\d{4}-\d{2}-\d{2}$/.test(q) && q < today ? q : today;
+    setArchived(date !== today);
+    fetch(`/api/spoofed/day?date=${date}`)
       .then((r) => (r.ok ? (r.json() as Promise<ItkDay>) : null))
       .then(setDay, () => setDay(null));
   }, []);
@@ -40,13 +46,14 @@ export default function Itk() {
         <div className="masthead__meta">
           {day ? <span>#{day.day}</span> : null}
           <nav className="masthead__nav" aria-label="Site">
+            <a className="masthead__button" href="/spoofed/archive">Archive</a>
             <a className="masthead__button" href="/">All games</a>
           </nav>
         </div>
       </header>
       <main className="itk__main">
         {day === undefined ? null : day === null ? (
-          <p className="itk-status__hint itk__none">No careers today. Back tomorrow.</p>
+          <p className="itk-status__hint itk__none">{archived ? 'No careers that day.' : 'No careers today. Back tomorrow.'}</p>
         ) : (
           <Game key={day.date} day={day} />
         )}
@@ -196,7 +203,7 @@ function Summary({ day, marks, onReview }: { day: ItkDay; marks: PlateMark[]; on
 }
 
 /** The mark: a marker loop round a sticker. */
-function ItkMark() {
+export function ItkMark() {
   return (
     <svg className="masthead__mark" viewBox="0 0 26 32" aria-hidden>
       <rect x="6.5" y="8.5" width="13" height="16" rx="1" fill="currentColor" />

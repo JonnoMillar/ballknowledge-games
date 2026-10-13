@@ -75,9 +75,16 @@ enwiki title André Onana).
   line `Spoofed #n · Agent 9/10`, localStorage `spoofed.progress.v1`, hub card
   "Spoofed". Internal id stays `itk` (`games/itk`, `scripts/itk`, `itk-*` CSS,
   `Itk*` types): invisible to players, renaming the dir is churn for no gain.
-- `EPOCH` = `2026-10-14` (Day #1). Never change it once anyone has played: it
-  renumbers everyone's history. `days.json` regenerated from it (29 days to
-  2026-11-11); the cron keeps it 14+ days ahead.
+- `EPOCH` = `2026-09-19` (Day #1), the day Chain's daily launched, so the two
+  count days alike and the archive starts with 25 days (backfilled 2026-10-13,
+  before anyone had played). Never change it once anyone has played: it
+  renumbers everyone's history. `days.json` regenerated from it (to 2026-11-10);
+  the cron keeps it 14+ days ahead.
+- **Archive:** `/spoofed/archive` (`components/Archive.tsx`) lists day 1..today,
+  newest first, with this browser's result per day (local only). A past day
+  opens at `/spoofed?date=YYYY-MM-DD` (future or malformed dates fall back to
+  today); the API already served any date from EPOCH. Archive plays share
+  `Spoofed #n` lines like any other.
 - All 229 candidates have a portrait (218 cutout, 10 Commons, 1 none: Zaniolo
   shows the silhouette). `fetch:credits` refreshed.
 - Verified: `npm test` 1,686 passed, typecheck clean, `next build` (prod)
@@ -86,7 +93,6 @@ enwiki title André Onana).
   (not at 1100×800: scroll), `scrollWidth` = viewport (scrollbar), no console
   errors, reload of a finished day shows the end screen, hub card present,
   rank art and credits OK, `/itk` is 404.
-- Before 2026-10-14 (UTC) the game shows "No careers today" by design.
 
 **Not done:**
 1. Merge `feat/itk-ship` into `main` and push (a push deploys): ask Jonno first.

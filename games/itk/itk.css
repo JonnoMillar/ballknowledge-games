@@ -529,3 +529,29 @@
 .itk-end__actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
 
 .itk__none { margin: 48px 16px; }
+
+/* ── THE ARCHIVE: one tile a day, newest first ──────────────────────────── */
+.itk-arch { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 640px) { .itk-arch { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+@media (min-width: 960px) { .itk-arch { grid-template-columns: repeat(5, 1fr); } }
+.itk-arch__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 10px;
+  background: var(--card-a);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+.itk-arch__tile:hover { transform: translateY(-2px); border-color: var(--ink); }
+.itk-arch__tile:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.itk-arch__tile.is-done { background: var(--card-b); }
+.itk-arch__n { font-size: 26px; line-height: 1; }
+.itk-arch__date { font-size: 13px; font-weight: 600; color: var(--muted); }
+.itk-arch__marks { display: flex; gap: 4px; }
+.itk-arch__marks .itk-pip { width: 14px; height: 14px; border-radius: 3px; animation: none; cursor: inherit; }
+.itk-arch__note { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }

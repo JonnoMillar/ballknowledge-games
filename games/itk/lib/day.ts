@@ -22,8 +22,8 @@ export interface StoredRound {
 /** `floor`: the reuse gap this day was built to, so a later change in the pool does not rewrite the rule for it. */
 export interface StoredDay { date: string; floor: number; rounds: StoredRound[] }
 
-/** Day 1, Spoofed #1. Set at launch. */
-export const EPOCH = '2026-10-14';
+/** Day 1, Spoofed #1: the day Chain's daily launched, so the two count days alike and the archive starts full. */
+export const EPOCH = '2026-09-19';
 /** The cron tops the schedule up to TOP_UP days ahead whenever fewer than MIN_AHEAD remain. */
 export const MIN_AHEAD = 14;
 export const TOP_UP = 28;

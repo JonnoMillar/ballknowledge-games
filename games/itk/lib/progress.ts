@@ -12,16 +12,16 @@ export interface Played {
 
 const KEY = 'spoofed.progress.v1';
 
-const all = (): Record<string, Played> => {
+export const allPlayed = (): Record<string, Played> => {
   try { return JSON.parse(localStorage.getItem(KEY) ?? '{}') as Record<string, Played>; } catch { return {}; }
 };
 
 export function loadPlayed(date: string, rounds: number): Played {
-  const p = all()[date];
+  const p = allPlayed()[date];
   if (p && p.picks.length === rounds) return p;
   return { picks: Array.from({ length: rounds }, () => []), fakes: Array(rounds).fill(null), reals: Array(rounds).fill(null) };
 }
 
 export function savePlayed(date: string, played: Played): void {
-  try { localStorage.setItem(KEY, JSON.stringify({ ...all(), [date]: played })); } catch { /* private mode, or full */ }
+  try { localStorage.setItem(KEY, JSON.stringify({ ...allPlayed(), [date]: played })); } catch { /* private mode, or full */ }
 }
