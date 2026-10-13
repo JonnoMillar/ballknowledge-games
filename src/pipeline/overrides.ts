@@ -34,6 +34,7 @@ export const NAME_OVERRIDES: Readonly<Record<string, string>> = {
   Q16582459: 'Nicolás Orsini',  // was "Nicolás Orsigoat"
   Q133760: 'Jordan Spence',     // was "Sebastián romero", a different player
   Q110486192: 'Nestory Irankunda', // was "Nestor Irankunda"
+  Q19116103: 'André Onana',     // was "Andrcu Onana" (found 2026-10-12, enwiki title checked)
 };
 
 export function applyNameOverride(id: string, name: string): string {

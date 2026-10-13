@@ -55,4 +55,12 @@ export const GAMES: readonly GameCard[] = [
     cta: 'Take aim →',
     accent: '#2B4C9B',
   },
+  {
+    href: '/itk',
+    name: 'ITK',
+    lead: 'One move never happened.',
+    blurb: 'Five careers a day, club by club. In each, one transfer is made up. Two picks to circle it, and your rank goes from Mascot to Fabrizio.',
+    cta: 'Read today’s careers →',
+    accent: '#5B2A86',
+  },
 ];

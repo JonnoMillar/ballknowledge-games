@@ -1,45 +1,107 @@
 # ITK — state of play
 
-**2026-10-12: shipping.** Branch `feat/itk-ship` (cut from `main`, merged
-`feat/fake-transfer`). Spec: `docs/superpowers/specs/2026-10-12-itk-daily-design.md`
-(awaiting approval). Jonno's calls today: known-club rule by **country** (≥300k
-views in UK/ESP/ITA/GER/FRA/MON/NED/POR, or the old PL-share rule, or ≥2M; 233
-players), first stop **≥2000**, 500k floor and 9 stops kept; build on v5 without
-a v5 playtest; **no pattern honours** at launch; name still open (rejected Paper
-Talk, Medical, and keeping ITK as final). The 0.15-share/1M alternative was
-dropped: it calls Mohun Bagan, Club América, Pachuca, Santos known.
+**Updated 2026-10-13.** Branch `feat/itk-ship` (cut from `main`, merged
+`feat/fake-transfer`), worktree `.claude/worktrees/charming-tesla-f178be`.
+Site-wide notes: root `HANDOFF.md`. Spec (the decision record):
+`docs/superpowers/specs/2026-10-12-itk-daily-design.md`.
 
-Branch `feat/fake-transfer` (prototype history below). Site-wide notes: root `HANDOFF.md`. The code is still in
-`app/itk`, `components/itk`, `src/lib/itk`, `src/server/itk.ts`, `tests/itk`; move it into
-`games/itk/` (the `games/pin` pattern) before it merges to `main`.
+**Process (Jonno, 2026-10-12):** no Superpowers, no plan document. Build
+inline from the spec; stop for Jonno only at (1) a review of generated days,
+(2) before merging to `main` and pushing (a push deploys).
 
-Started 2026-10-08 from `docs/game-design-playbook.md` §4. **Not yet specced.**
-Jonno changed the process: build a prototype page over hand-picked example
-sets, playtest, critique, repeat; only then spec → plan → generator. We are
-mid-loop (v5 examples are live, awaiting his v5 playtest). No spec or plan
-exists yet; do not write the generator until he signs off on the rules.
+**Decisions 2026-10-12, and why:**
+- Known club by **country**: ≥300k views in UK/ESP/ITA/GER/FRA/MON/NED/POR
+  (Wikidata P17), or the old PL-share ≥0.3 rule, or ≥2M views. The handoff's
+  0.15-share/1M alternative was measured and dropped: it calls Mohun Bagan
+  (0% PL share), Club América, Pachuca, Santos, Mumbai City known.
+- First stop **≥2000** (+10 players). 500k player floor kept (Adam 335k failed
+  as unknown). Max 9 stops kept (phone). Players ≥5M views excluded (4; too easy).
+- Built on v5 rules **without** the v5 playtest; every threshold is a named
+  constant in `RULES` (`games/itk/lib/world.ts`).
+- **No pattern honours** at launch. **Name still open:** Jonno rejected Paper
+  Talk, Medical, and ITK-as-final; also offered Done Deal, Deadline Day,
+  Rumour Mill, Here We Go (no answer yet). "ITK" is the working name.
+- Daily = **committed schedule + cron**, not a pure function of the date:
+  past days frozen when rules change, reuse needs history, upcoming days
+  readable, 14-day buffer if the cron breaks.
 
 **The game.** Five careers a day. Each is a player's sticker and their clubs as
-a trail of crest stickers (year, crest, short name, "Loan" tag) joined by an ink
-route with arrows, snake-laid (rows reverse) so 9 stops fit a phone. One stop
-is fake. Two picks per career: found first time 🟩, second 🟨, missed 🟥
-(Chain's glyphs), drawn on screen as solid ✓/✓/✕ marks. The end screen is built,
-awaiting Jonno's sign-off: see "End screen" below. Share line
-`ITK #n · Agent 9/10` + grid, no names.
-Name "ITK" is Claude's pick; Jonno said revisit later.
+a trail of crest stickers joined by an ink route, snake-laid. One stop is fake.
+Two picks per career: found first time 🟩, second 🟨, missed 🟥, drawn as solid
+✓/✓/✕ marks. Share line `ITK #n · Agent 9/10` + grid, no names. One play a day;
+progress in `localStorage` `itk.progress.v1`; a reload resumes at the first
+open career; a finished day reopens on the end screen.
 
 | Path | What |
 |---|---|
-| `app/itk/page.tsx`, `app/itk/itk.css` | The page and its stylesheet (album tokens; the one new mark is the red marker loop). |
-| `components/itk/Itk.tsx` | Rounds, picks, status, end screen; prototype set switcher. |
-| `components/itk/Trail.tsx` | Snake layout from geometry, route SVG, crest cards, the peel reveal. |
-| `components/itk/Feedback.tsx` | **Prototype tooling**: per-round strip (knew him; first look 1–10 locked at reveal; how easy 1–10; fun 1–10; note). localStorage `itk.feedback.v1`, "Copy feedback" button → JSON Jonno pastes back. |
-| `src/server/itk.ts`, `app/api/itk/pick/route.ts` | Loads `content/itk/examples.json`; the fake's index and the real club stay server-side until the round ends. Dev re-reads the file per request. |
-| `src/lib/itk/score.ts`, `tests/itk/score.test.ts` | Round mark, `POINTS`/`pointsOf`, `RUNGS` + floors, `tierOf`, `rangeOf` ("5–7"), share line (10 tests). |
-| `components/itk/Reveal.tsx` | The end screen: tally, the five careers with +2/+1/+0, the route, the album page of six slots, your result sticker. `Summary` in `Itk.tsx` wraps it with share/again and the prototype result picker. |
-| `public/itk/ranks/*.webp` | Rank art, one per result (Higgsfield GPT Image 2.5, transparent, 480px). Faded in every slot, full colour on your sticker. Credited on `/credits`. |
-| `scripts/itk/pick-examples.mjs` | **The v5 picker** (scratch quality; the generator rewrite starts from its rules). |
-| `scripts/itk/fetch-views.mjs`, `data/itk/enwiki-views*.json` | 24 months of enwiki pageviews (Oct 2023–Sep 2025) for pool players + clubs, redirects resolved. |
+| `games/itk/lib/world.ts` | `RULES`, `buildTrail` (loan parents, returns, merges), `buildWorld`: club views, known-club rule, transfer flows, era strength, `candidates` (every rule but portrait) and `eligible` (with a resolved portrait). |
+| `games/itk/lib/fakes.ts` | `fakeOptions`: v5 swap/insert candidates and guards, best per kind (loan/mid/late/return/insert). Adds the swap-between-two-marquee guard. |
+| `games/itk/lib/day.ts` | `EPOCH`, `composeDay` (bands 20/40/40 taking 1/2/2, LRU within band, gap floor, distinct kinds with fallback, journeyman, insert), `extend`, seeded RNG from the date. `StoredDay.floor` records the reuse gap the day was built to. |
+| `games/itk/lib/check.ts` | `problems()`: the promises a day makes; used by the build script and tests. |
+| `games/itk/lib/{score,progress,types}.ts` | Marks/ranks/share line; per-date localStorage; wire types. |
+| `games/itk/server.ts` | Reads `games/itk/data/days.json`; `playable` (≥ EPOCH, ≤ UTC tomorrow), `loadDay`, `judgePick`. |
+| `games/itk/components/` | `Itk.tsx` (fetches the player's local date, the game, Summary), `Trail.tsx`, `Reveal.tsx` (end screen). |
+| `games/itk/itk.css` | Stylesheet, prototype rules removed. |
+| `app/itk/page.tsx`, `app/api/itk/{day,pick}/route.ts` | Thin shells. |
+| `games/itk/data/days.json` | The schedule, one day per line. Server-only. |
+| `games/itk/data/club-countries.json` | P17 for the 446 clubs with ≥300k views (`npm run itk:countries`). |
+| `games/itk/data/enwiki-views*.json` | 24 months of views (Oct 2023–Sep 2025), moved from `data/itk/`. |
+| `scripts/itk/build-days.ts` | `npm run itk:days [-- --print]`: if <14 days ahead, generate to 28 ahead, self-check, write. `--print` shows upcoming days with answers. |
+| `scripts/itk/inputs.ts` | Reads the committed inputs (no network). |
+| `.github/workflows/itk-days.yml` | Daily 05:00 UTC: `itk:days`, `npm test`, commit `days.json` to `main`. |
+| `scripts/fetch-portraits.ts --itk` | Resolves portraits for every ITK candidate (new flag; default run still targets Chain boards only). |
+| `public/itk/ranks/*.webp` | Rank art. Credited on `/credits`. |
+
+Removed: set switcher, feedback strip (`Feedback.tsx`), result picker, End
+screen jump, Prototype pill, Play again, `content/itk/examples.json`,
+`pick-examples.mjs`, `pool-funnel.mjs` (git history has them).
+
+### Status 2026-10-13
+
+Done and verified 2026-10-13: `npm test` 1,686 passed (51 files);
+`npm run typecheck` clean. ITK tests (27): trail rules, seeded RNG, bands, every
+fake option on the real pool keeps the guards, 90 days from scratch with zero
+`problems()`, deterministic rerun, `playable`, no answer on the wire, wrong pick
+reveals nothing, committed schedule starts at EPOCH and is consecutive.
+Playwright (dev, 375×812): a full day played with mixed results, reload mid-day
+resumed at the next open career, end screen card (y 305–550) and Share above the
+fold, `scrollWidth` 360 (scrollbar), no console errors, reload of a finished day
+shows the end screen. 1100px: round and hub card render; ITK card on `/`.
+Onana label fixed (`overrides.ts` + `pool.json`; live label still "Andrcu Onana",
+enwiki title André Onana).
+
+**Not done:**
+1. **Portraits: 57 of 229 candidates still unresolved** (172 eligible). The
+   `--itk` run died at 114/171 on `UNKNOWN: open data/portraits.json` (Windows
+   file lock, likely the dev server or tests reading it). Resumable: stop the
+   dev server, run `npx tsx scripts/fetch-portraits.ts --itk` (~30–40 s a
+   player, ~35 min), then `npm run fetch:credits`.
+2. Then `rm games/itk/data/days.json && npm run itk:days -- --print` on the full
+   pool, and **stop for Jonno to review ~2 weeks of days**.
+3. Set `EPOCH` (`games/itk/lib/day.ts`, now a placeholder `2026-10-12`) to the
+   launch date and regenerate `days.json` from it.
+4. `NEXT_DIST_DIR=.next-prod npx next build`; Playwright at 1100/375 against it.
+5. Root `HANDOFF.md` games-index row (ITK: `/itk`, `games/itk`, live); then
+   ask Jonno, merge `feat/itk-ship` into `main`, ask before push.
+6. Rename once Jonno picks a name.
+
+**Gotchas found this session:**
+- `data/raw/` is gitignored and absent in worktrees; `fetch-portraits` needs it.
+  Here it is a junction to the main checkout's `data/raw`.
+- `TaskStop` on Windows kills the shell, not the `tsx` child: check
+  `Get-CimInstance Win32_Process` for strays (two fetches once wrote one file).
+- An unscoped `fetch-portraits` run targets 3,639 players (every Chain and Deep
+  Cuts field is unresolved). ~25 non-ITK players were resolved by a stray run;
+  harmless, and `fetch:credits` picks them up.
+- Pool drift changes the reuse floor; that is why each day stores its `floor`
+  and the schedule test checks only days not yet played.
+- Playwright `run_code` screenshot paths don't land in the worktree; use the
+  `browser_take_screenshot` tool. `.playwright-mcp/` is gitignored.
+- Known limits (follow-ups): careers snapshot 2026-09-20 (January window will
+  stale some careers; refresh in the cron recommended before Feb 2027); views
+  snapshot Oct 2023–Sep 2025.
+
+### Prototype history (rules and why; still current)
 
 **Reveal.** A *swapped* fake peels off from the corner (lift, shade, pulled away
 up-left) to show the real club stuck underneath; green frame, green legs, the
@@ -129,7 +191,7 @@ Four playtest rounds (v1–v4; v5 not yet played). His verdicts drove each rule:
   medium and hard). Day = a difficulty ramp + a mix of flavours.
 - **Exclude anyone he has already played** (list in `pick-examples.mjs`, `PLAYED`).
 
-### Why only ~125 players pass (measured 2026-10-12, `scripts/itk/pool-funnel.mjs`)
+### Why only ~125 players passed v5 (measured 2026-10-12; superseded by the country rule above)
 
 Funnel at the v5 rules: 688 players with 500k+ views, 497 with 4–9 stops and
 crests, 356 after the era rule, **125 after the known-club rule**. The
@@ -148,7 +210,7 @@ the gap is shorter than players/5 days (250 players → 50 days; 320 → 64). A
 player who recalls the real career spots a new fake faster, so keep the gap long
 and never reuse the same fake club for the same player.
 
-### Verified
+### Verified (prototype, 2026-10-09/10)
 
 2026-10-10, end screen: `npm test` 1,373 passed (36 files); typecheck clean.
 Playwright frames at 1100px and 375px for Fabrizio, Agent, Scout, Pundit, Mascot
@@ -169,30 +231,10 @@ committed `content/itk/examples.json` exactly. Pane-browser screenshots are
 unreliable here (they crop/zoom); use Playwright for visual checks, and freeze
 animations with `document.getAnimations()` + `currentTime` to inspect frames.
 
-### Hazards
+### Hazards (still apply)
 
 `.next` corruption: `/itk` 404s with ENOENT on `.next/server/app/itk/page.js`
 when another dev server shares the folder; stop the other, restart. An untracked
 `AGENTS.md` (copy of CLAUDE.md) appeared from elsewhere: Jonno to say keep or
 delete; not committed. The desktop app stops idle dev servers and each restart gets a new port (3000 is
 taken); `npm run dev` prints it. The `prod` launch config fails: no build.
-
-### Next
-
-0. End screen: Jonno to look at it (End screen button, pick each result) and
-   sign off or redirect; answer AGENTS.md. Then back to rules:
-1. Get Jonno's v5 playtest JSON (Copy feedback). Read each round for *why*
-   (unknown player / unreadable career / good bluff / tell), not just the numbers.
-2. Iterate rules + examples until he says the rounds feel right. Open threads:
-   difficulty estimate vs his ratings; flavour mix per day; the eligible pool is
-   small (~166 players at the v2 bars; re-measure under v5 rules).
-3. Then spec (`docs/superpowers/specs/`) → STOP for approval → plan → STOP →
-   build the generator inline, TDD. **The daily must refresh itself** (scheduled
-   job, no manual step — Jonno's standing rule) and be seeded by date.
-4. Before shipping: remove prototype tooling (set switcher, feedback strip);
-   portraits for ITK players (`fetch:portraits` only covers Chain boards);
-   decide the name.
-
-Follow-up spotted: pool label "Andrcu Onana" is vandalised (André Onana); fix
-in `src/pipeline/overrides.ts` and `data/pool.json` per the Data pipeline section.
-

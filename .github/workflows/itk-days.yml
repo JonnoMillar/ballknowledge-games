@@ -1,0 +1,42 @@
+# ITK's daily schedule, kept ahead of the calendar with no one in the loop.
+# Daily at 05:00 UTC: if fewer than 14 days are left, generate up to 28 ahead,
+# test, and commit the schedule to the default branch; the push deploys.
+# See docs/superpowers/specs/2026-10-12-itk-daily-design.md.
+name: ITK days
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: itk-days
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run itk:days
+      - run: npm test
+      - name: Commit new days
+        run: |
+          if [ -z "$(git status --porcelain games/itk/data/days.json)" ]; then
+            echo "No new days."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/itk/data/days.json
+          git commit -m "chore(itk): new days"
+          git push

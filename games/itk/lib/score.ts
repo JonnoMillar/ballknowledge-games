@@ -1,4 +1,4 @@
-import { MARK_GLYPH, type PlateMark } from '../chain/share';
+import { MARK_GLYPH, type PlateMark } from '../../../src/lib/chain/share';
 
 /**
  * ITK: one move in each career never happened. Two picks a round.

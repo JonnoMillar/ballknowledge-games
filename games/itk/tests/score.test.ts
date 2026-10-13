@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { roundMark, itkShareLine, pointsOf, rangeOf, tierOf } from '../../src/lib/itk/score';
+import { roundMark, itkShareLine, pointsOf, rangeOf, tierOf } from '../lib/score';
 
 describe('roundMark', () => {
   it('is held when the first pick is the fake', () => {

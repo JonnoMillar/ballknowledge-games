@@ -22,6 +22,8 @@
     "pin:round": "tsx scripts/build-pin-round.ts",
     "pin:archive": "tsx scripts/import-pin-archive.ts",
     "pin:classics": "tsx scripts/fetch-pin-classics.ts",
+    "itk:days": "tsx scripts/itk/build-days.ts",
+    "itk:countries": "tsx scripts/itk/fetch-club-countries.ts",
     "fetch:clubs": "tsx scripts/fetch-clubs.ts",
     "fetch:badges": "tsx scripts/fetch-club-badges.ts --download",
     "measure:layouts": "tsx scripts/measure-layouts.ts",

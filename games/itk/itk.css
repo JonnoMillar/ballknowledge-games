@@ -12,33 +12,6 @@
   --mark-no: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M7.4 7.4l7.2 7.2M14.6 7.4l-7.2 7.2' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
-/* Prototype only: which picker made the examples. */
-.itk-proto {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--rule);
-  font-size: 13px;
-  color: var(--muted);
-}
-.itk-proto__label { margin-right: 4px; }
-.itk-proto__set {
-  appearance: none;
-  border: 1px solid var(--rule);
-  background: transparent;
-  color: var(--ink);
-  border-radius: 999px;
-  padding: 4px 11px 5px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
-}
-.itk-proto__set:hover { border-color: var(--rule-strong); background: rgba(255, 255, 255, 0.6); }
-.itk-proto__set[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
-
 .itk__main {
   width: 100%;
   max-width: 1040px;
@@ -398,7 +371,6 @@
 }
 .itk-end__reveal { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
 .rv-album.is-ready .itk-end__actions { opacity: 0; animation: fade-in var(--t-slow) var(--ease-out) var(--actions) forwards; }
-.itk-proto--reveal { border: 1px dashed var(--rule-strong); border-radius: 4px; }
 
 /* ── THE TALLY: a figure for each career as the route passes it ──────── */
 .rv-tally { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0; }
@@ -555,67 +527,5 @@
 .itk-end__pts { margin-top: -6px; font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
 .rv-album.is-ready .itk-end__pts { animation: tally-in var(--t-base) var(--ease-out) backwards; }
 .itk-end__actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
-.itk-ghost {
-  appearance: none;
-  border: 0;
-  background: none;
-  color: var(--ink);
-  font-weight: 600;
-  font-size: 15px;
-  padding: 10px 6px;
-  cursor: pointer;
-  text-decoration: underline;
-  text-decoration-color: var(--rule-strong);
-  text-underline-offset: 4px;
-  transition: text-decoration-color var(--t-fast) var(--ease-out);
-}
-.itk-ghost:hover { text-decoration-color: var(--ink); }
 
-/* ── PROTOTYPE FEEDBACK: tooling, not the game ─────────────────────────── */
-.itk-proto__copy { margin-left: 6px; border-style: dashed; }
-.itk-proto__copy:disabled { opacity: 0.45; cursor: default; }
-.itk-fb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px 18px;
-  padding: 14px 12px;
-  border: 1px dashed var(--rule-strong);
-  border-radius: 4px;
-  font-size: 13px;
-  color: var(--muted);
-  animation: fade-in var(--t-base) var(--ease-out) 260ms both;
-  opacity: 0;
-}
-.itk-fb__group { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px; }
-.itk-fb__label { margin-right: 3px; }
-.itk-fb__chip {
-  appearance: none;
-  border: 1px solid var(--rule);
-  background: var(--sticker);
-  color: var(--ink);
-  border-radius: 999px;
-  padding: 4px 10px 5px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
-}
-.itk-fb__chip:hover { border-color: var(--rule-strong); }
-.itk-fb__group.is-locked .itk-fb__chip { cursor: default; }
-.itk-fb__group.is-locked .itk-fb__chip:not([aria-pressed='true']) { opacity: 0.4; }
-.itk-fb__chip--n { width: 30px; padding: 4px 0 5px; text-align: center; font-variant-numeric: tabular-nums; }
-.itk-fb__end { font-size: 12px; }
-.itk-fb__chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
-.itk-fb__note {
-  flex: 1 1 260px;
-  max-width: 420px;
-  font: inherit;
-  font-size: 14px;
-  padding: 7px 11px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: var(--sticker);
-  color: var(--ink);
-}
-.itk-fb__note:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.itk__none { margin: 48px 16px; }

@@ -1,9 +1,9 @@
 'use client';
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { StickerFace, solid } from '../Sticker';
-import { MAX_POINTS, POINTS, RUNGS, pointsOf, rangeOf, type Rung } from '../../src/lib/itk/score';
-import type { PlateMark } from '../../src/lib/chain/share';
-import type { ItkSet } from '../../src/server/itk';
+import { StickerFace, solid } from '../../../components/Sticker';
+import { MAX_POINTS, POINTS, RUNGS, pointsOf, rangeOf, type Rung } from '../lib/score';
+import type { PlateMark } from '../../../src/lib/chain/share';
+import type { ItkRound } from '../lib/types';
 
 /**
  * The day's result. The ink route runs through the five careers, adding up
@@ -38,8 +38,8 @@ function ResultSticker({ rung, points }: { rung: Rung; points: number }) {
 }
 
 /** The five careers, each with its mark and what it scored. Click one to look at it again. */
-function Careers({ set, marks, onReview, pipRef, pipDelay }: {
-  set: ItkSet;
+function Careers({ rounds, marks, onReview, pipRef, pipDelay }: {
+  rounds: readonly ItkRound[];
   marks: readonly PlateMark[];
   onReview: (i: number) => void;
   pipRef: (i: number, el: HTMLElement | null) => void;
@@ -47,7 +47,7 @@ function Careers({ set, marks, onReview, pipRef, pipDelay }: {
 }) {
   return (
     <ol className="itk-end__row">
-      {set.rounds.map((r, i) => {
+      {rounds.map((r, i) => {
         const at = pipDelay(i) === undefined ? undefined : { animationDelay: `${pipDelay(i)}ms` };
         return (
           <li key={i}>
@@ -87,8 +87,8 @@ const ROUTE_MS = 1700;
 const ACTIONS_AFTER = 500;
 const OTHERS_AFTER = 1000;
 
-export function AlbumReveal({ set, marks, rung, day, onReview, actions }: {
-  set: ItkSet;
+export function AlbumReveal({ rounds, marks, rung, day, onReview, actions }: {
+  rounds: readonly ItkRound[];
   marks: readonly PlateMark[];
   rung: Rung;
   day: number;
@@ -162,7 +162,7 @@ export function AlbumReveal({ set, marks, rung, day, onReview, actions }: {
           <small>/{MAX_POINTS}</small>
         </span>
       </p>
-      <Careers set={set} marks={marks} onReview={onReview} pipRef={(i, el) => { pips.current[i] = el; }} pipDelay={passed} />
+      <Careers rounds={rounds} marks={marks} onReview={onReview} pipRef={(i, el) => { pips.current[i] = el; }} pipDelay={passed} />
       {route ? (
         <svg className="rv-album__route" width={route.w} height={route.h} viewBox={`0 0 ${route.w} ${route.h}`} aria-hidden>
           <path d={route.d} pathLength={1} style={{ animationDelay: `${ROUTE_AT}ms`, animationDuration: `${ROUTE_MS}ms` }} />

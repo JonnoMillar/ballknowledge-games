@@ -2,11 +2,13 @@ import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { chainFieldFor } from '../src/lib/chain/score';
 import type { ChainPuzzle } from '../src/lib/chain/types';
 import type { Player } from '../src/lib/chemistry/types';
+import { buildWorld } from '../games/itk/lib/world';
+import { readInputs } from './itk/inputs';
 
 /**
  * Resolve a PORTRAIT for every player a shipped board can put on screen.
  *
- * Usage: tsx scripts/fetch-portraits.ts [--all]
+ * Usage: tsx scripts/fetch-portraits.ts [--all | --itk]
  *
  * The problem this exists to solve: 31% of the Commons photos in
  * data/images.json were taken AFTER the player retired, so the frame shows a
@@ -280,7 +282,9 @@ async function commonsPortrait(id: string, span: [number, number] | undefined): 
 
 // --------------------------------------------------------------------- main
 
-const want = ALL ? new Set(pool.map((p) => p.id)) : await required();
+// --itk: every career ITK could deal (its generator only deals players resolved here).
+const itk = () => new Set(buildWorld(readInputs()).candidates.map((c) => c.id));
+const want = ALL ? new Set(pool.map((p) => p.id)) : process.argv.includes('--itk') ? itk() : await required();
 const spans = await careers();
 const done: Record<string, Portrait> = await readFile(OUT, 'utf8')
   .then((s) => JSON.parse(s) as Record<string, Portrait>)

@@ -1,9 +1,9 @@
 'use client';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { crestPath } from '../../src/lib/clubs';
-import ClubBadge, { shortClubName } from '../ClubBadge';
-import type { ItkStop } from '../../src/server/itk';
-import type { Pick } from './Itk';
+import { crestPath } from '../../../src/lib/clubs';
+import ClubBadge, { shortClubName } from '../../../components/ClubBadge';
+import type { ItkStop } from '../lib/types';
+import type { Pick } from '../lib/progress';
 
 /**
  * A career as a trail of crests, laid out like a board-game path.

@@ -1,5 +1,5 @@
 // Fetch 24 months of enwiki pageviews for pool players and their clubs, resolving redirects first.
-// Usage: node scripts/itk/fetch-views.mjs data/itk/enwiki-views.json   (resumable; ~30 min cold, Wikimedia throttles)
+// Usage: node scripts/itk/fetch-views.mjs games/itk/data/enwiki-views.json   (resumable; ~30 min cold, Wikimedia throttles)
 import fs from 'node:fs';
 const OUT = process.argv[2];
 const pool = JSON.parse(fs.readFileSync('data/pool.json','utf8'));
