@@ -8,6 +8,7 @@ import Scale from './Scale';
 import { readStore, record, suggest, type Store } from '../lib/progress';
 import { points } from '../lib/score';
 import type { PackCard as Card, Shelf } from '../lib/types';
+import Back from '../../../components/Back';
 
 /**
  * The hub. The shelves come from the server; the top card, the record and
@@ -30,6 +31,7 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
   return (
     <div className="app pin">
       <header className="masthead">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/pin">
           <PinLogo />
           Pitch pin

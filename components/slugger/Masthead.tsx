@@ -1,4 +1,5 @@
 'use client';
+import Back from '../Back';
 
 /** A bat and a ball, in one stroke, for the band. */
 function Mark({ className }: { className?: string }) {
@@ -13,6 +14,7 @@ function Mark({ className }: { className?: string }) {
 export default function Masthead({ children }: { children?: React.ReactNode }) {
   return (
     <header className="masthead slug-masthead">
+      <Back href="/" label="All games" />
       <a className="masthead__brand display" href="/slugger">
         <Mark className="masthead__mark" />
         Slugger

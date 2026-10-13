@@ -5,6 +5,7 @@ import type { PlateMark } from '../../../src/lib/chain/share';
 import { ItkMark } from './Itk';
 import { MAX_POINTS, pointsOf, roundMark, tierOf } from '../lib/score';
 import { allPlayed, type Played } from '../lib/progress';
+import Back from '../../../components/Back';
 
 /**
  * Every day from day 1 to today, newest first, with what this browser has
@@ -30,16 +31,13 @@ export default function Archive({ epoch }: { epoch: string }) {
   return (
     <div className="app itk">
       <header className="masthead">
+        <Back href="/spoofed" label="Spoofed" />
         <a className="masthead__brand display" href="/spoofed">
           <ItkMark />
           Spoofed
         </a>
         <div className="masthead__meta">
           <span>Archive</span>
-          <nav className="masthead__nav" aria-label="Site">
-            <a className="masthead__button" href="/spoofed">Today</a>
-            <a className="masthead__button" href="/">All games</a>
-          </nav>
         </div>
       </header>
       <main className="itk__main">

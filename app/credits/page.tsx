@@ -1,4 +1,5 @@
 import { creditsFor } from '../../src/server/credits';
+import Back from '../../components/Back';
 
 export const metadata = { title: 'Credits · Chain' };
 
@@ -13,6 +14,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
   return (
     <div className="app">
       <header className="masthead">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/chain">Chain</a>
         <div className="masthead__meta">Credits</div>
       </header>

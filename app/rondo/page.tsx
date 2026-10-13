@@ -1,5 +1,6 @@
 import Rondo from '../../games/rondo/components/Rondo';
 import '../../games/rondo/rondo.css';
+import Back from '../../components/Back';
 
 export const metadata = {
   title: 'Rondo',
@@ -14,6 +15,7 @@ export default function RondoPage() {
   return (
     <div className="app rondo">
       <header className="masthead masthead--rondo">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/rondo">
           <RondoMark />
           Rondo

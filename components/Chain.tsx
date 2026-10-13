@@ -20,6 +20,7 @@ import { clubColour } from '../src/lib/club-colours';
 import type { Player } from '../src/lib/chemistry/types';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
+import Back from './Back';
 
 /** The silhouette, as the mark. */
 export function Mark({ className }: { className?: string }) {
@@ -297,6 +298,7 @@ export default function Chain({
     <DndContext id="chain" sensors={sensors} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
       <div className="app">
         <header className="masthead">
+          <Back href={deep ? '/deep' : '/chain'} label={deep ? 'Deep Cuts' : 'Chain'} />
           <a className="masthead__brand display" href="/chain">
             <Mark className="masthead__mark" />
             Chain

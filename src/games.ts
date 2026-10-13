@@ -40,14 +40,6 @@ export const GAMES: readonly GameCard[] = [
     accent: '#F26B1D',
   },
   {
-    href: '/slugger',
-    name: 'Slugger',
-    lead: 'Football, played as baseball.',
-    blurb: 'The pitcher throws a club; the batter names someone who played for it. Barcelona is a single. Bolton is a home run, if they can hit it.',
-    cta: 'Play ball →',
-    accent: '#1F6F43',
-  },
-  {
     href: '/pin',
     name: 'Pitch pin',
     lead: 'Where was it struck from?',

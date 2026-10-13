@@ -9,6 +9,7 @@ import { AlbumReveal } from './Reveal';
 import type { ItkDay, Verdict } from '../lib/types';
 import { PICKS, itkShareLine, roundMark, tierOf } from '../lib/score';
 import { loadPlayed, savePlayed, type Played } from '../lib/progress';
+import Back from '../../../components/Back';
 
 /**
  * Spoofed: five careers, one move in each that never happened. Circle it.
@@ -39,6 +40,7 @@ export default function Itk() {
   return (
     <div className="app itk">
       <header className="masthead">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/spoofed">
           <ItkMark />
           Spoofed
@@ -47,7 +49,6 @@ export default function Itk() {
           {day ? <span>#{day.day}</span> : null}
           <nav className="masthead__nav" aria-label="Site">
             <a className="masthead__button" href="/spoofed/archive">Archive</a>
-            <a className="masthead__button" href="/">All games</a>
           </nav>
         </div>
       </header>

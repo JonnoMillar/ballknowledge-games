@@ -16,7 +16,7 @@ are in `CLAUDE.md`.
 | Chain | `/chain`, `/play/NNN` | `src/lib/chain`, `components/` | Live. This file. |
 | Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Live. This file. |
 | Rondo | `/rondo` | `games/rondo` | This file, `games/rondo/DESIGN.md`. |
-| Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | This file. |
+| Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | Off the hub 2026-10-13 (Jonno: not good enough). Route still works. |
 | Recall XI | `/recall-xi` | root | Parked. |
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
