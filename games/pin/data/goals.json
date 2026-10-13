@@ -3040,5 +3040,113 @@
       "y": 6.3
     },
     "xg": 0.04
+  },
+  "u-697379": {
+    "scorer": "Guemissongui Ouattara",
+    "match": "Ipswich v Fulham",
+    "date": "2026-10-10",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 87th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31233,
+      "shotId": "697379"
+    },
+    "at": {
+      "x": 47.5,
+      "y": 26.4
+    },
+    "xg": 0.01
+  },
+  "u-698544": {
+    "scorer": "Sven Botman",
+    "match": "Coventry v Newcastle United",
+    "date": "2026-10-12",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 69th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31239,
+      "shotId": "698544"
+    },
+    "at": {
+      "x": 18.8,
+      "y": 19.3
+    },
+    "xg": 0.02
+  },
+  "u-697340": {
+    "scorer": "Jordan Henderson",
+    "match": "Chelsea v Bournemouth",
+    "date": "2026-10-10",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 1st minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31232,
+      "shotId": "697340"
+    },
+    "at": {
+      "x": 41,
+      "y": 21
+    },
+    "xg": 0.04
+  },
+  "u-697331": {
+    "scorer": "John McGinn",
+    "match": "Aston Villa v Brentford",
+    "date": "2026-10-10",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 76th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31231,
+      "shotId": "697331"
+    },
+    "at": {
+      "x": 22.4,
+      "y": 15.6
+    },
+    "xg": 0.05
+  },
+  "u-697122": {
+    "scorer": "Bruno Guimarães",
+    "match": "Arsenal v Leeds",
+    "date": "2026-10-10",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 69th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31230,
+      "shotId": "697122"
+    },
+    "at": {
+      "x": 32.4,
+      "y": 18.7
+    },
+    "xg": 0.06
+  },
+  "u-698260": {
+    "scorer": "Jéremy Doku",
+    "match": "Liverpool v Manchester City",
+    "date": "2026-10-11",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a chipped pass, in the 67th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31238,
+      "shotId": "698260"
+    },
+    "at": {
+      "x": 23.7,
+      "y": 17
+    },
+    "xg": 0.06
   }
 }
