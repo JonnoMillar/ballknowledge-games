@@ -54,7 +54,7 @@
 .itk-picks__loop.is-used path { stroke: var(--silhouette-figure); opacity: 0.6; }
 
 /* ── THE STAGE: who, and where he went ─────────────────────────────────── */
-.itk-stage {
+.itk-stage, .itk-lobby {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@
   border-radius: 4px;
   box-shadow: 0 1px 0 rgba(20, 18, 16, 0.05), 0 8px 24px rgba(20, 18, 16, 0.08);
 }
-.itk-stage::before {
+.itk-stage::before, .itk-lobby::before {
   content: '';
   position: absolute;
   inset: 8px;
@@ -555,3 +555,133 @@
 .itk-arch__marks { display: flex; gap: 4px; }
 .itk-arch__marks .itk-pip { width: 14px; height: 14px; border-radius: 3px; animation: none; cursor: inherit; }
 .itk-arch__note { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ── THE LOBBY: one album page, one red button ──────────────────────────
+   Shares the stage's paper and taped tab. The only red is the button, and
+   the marker in the demo, which is the same thing: what you do. */
+.itk-lobby { flex-direction: column; align-items: center; gap: 22px; padding: 34px 16px 20px; }
+.itk-lobby--wait { min-height: 300px; background: transparent; border-color: transparent; box-shadow: none; }
+.itk-lobby--wait::before { display: none; }
+.itk-lobby__headline { position: relative; z-index: 1; margin: 0; align-self: stretch; font-size: 44px; font-weight: 900; line-height: 0.88; text-transform: uppercase; }
+.itk-lobby__play {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  border-radius: 6px;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+.itk-lobby__play:hover { background: var(--red-deep); }
+.itk-lobby__play:active { transform: translateY(1px); }
+.itk-lobby__play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* Today's five, stuck in as you finish them. */
+.itk-lobby__slots { --sticker-w: 52px; position: relative; z-index: 1; display: flex; justify-content: center; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.itk-lobby__slots li { display: flex; flex-direction: column; align-items: center; gap: 8px; animation: stick-down var(--t-slow) var(--ease-out) backwards; }
+.itk-lobby__slots li:nth-child(2) { animation-delay: 60ms; }
+.itk-lobby__slots li:nth-child(3) { animation-delay: 120ms; }
+.itk-lobby__slots li:nth-child(4) { animation-delay: 180ms; }
+.itk-lobby__slots li:nth-child(5) { animation-delay: 240ms; }
+.itk-lobby__slots .sticker { cursor: default; }
+.itk-lobby__slots .sticker--empty:hover .sticker__photo { background: var(--silhouette); }
+.itk-lobby__slots .sticker__name { font-size: 10px; }
+.itk-lobby__slots .itk-pip { width: 16px; height: 16px; border-radius: 3px; cursor: default; }
+.itk-pip--open { border-style: dashed; }
+
+.itk-lobby__result { position: relative; z-index: 1; display: block; color: inherit; text-decoration: none; border-radius: 10px; transition: transform var(--t-base) var(--ease-out); }
+.itk-lobby__result .rs { --rs-w: 168px; }
+.itk-lobby__result:hover { transform: translateY(-3px); }
+.itk-lobby__result:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.itk-lobby__side { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 16px; align-self: stretch; }
+.itk-lobby__next { margin: 0; font-size: 14px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.itk-lobby__archive { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+.itk-lobby__head { margin: 0; font-size: 22px; font-weight: 800; text-transform: uppercase; }
+
+@media (min-width: 760px) {
+  .itk-lobby { padding: 52px 40px 36px; gap: 28px; }
+  .itk-lobby__slots { --sticker-w: 104px; gap: 16px; }
+  .itk-lobby__slots .sticker__name { font-size: 13px; }
+  .itk-lobby__slots .itk-pip { width: 20px; height: 20px; }
+  .itk-lobby__play { align-self: center; min-width: 320px; }
+  .itk-lobby--hero { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); grid-template-rows: 1fr auto; column-gap: 48px; row-gap: 26px; align-items: center; }
+  .itk-lobby--hero .itk-lobby__headline { grid-column: 1; grid-row: 1; align-self: end; font-size: clamp(56px, 6vw, 80px); }
+  .itk-lobby--hero .itk-demo { grid-column: 2; grid-row: 1 / 3; }
+  .itk-lobby--hero .itk-lobby__play { grid-column: 1; grid-row: 2; align-self: start; justify-self: stretch; min-width: 0; }
+  .itk-lobby--done { flex-direction: row; justify-content: center; gap: 56px; }
+  .itk-lobby--done .itk-lobby__side { align-self: center; }
+  .itk-lobby__result .rs { --rs-w: 200px; }
+  .itk-lobby__head { font-size: 28px; }
+}
+
+/* ── THE DEMO: circle it, peel it, the real one is underneath. 7 s, looped. */
+.itk-demo { --dw: 60px; position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; align-self: stretch; padding: 18px 4px; }
+@media (min-width: 760px) { .itk-demo { --dw: 96px; padding: 28px 0; } }
+.itk-demo__card { position: relative; flex: 0 0 var(--dw); height: calc(var(--dw) * 1.28); border-radius: 3px; background: var(--sticker); box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 1px 0 rgba(20, 18, 16, 0.06), 0 2px 6px rgba(20, 18, 16, 0.12); }
+.itk-demo__leg { position: relative; flex: 1 1 0; min-width: 8px; max-width: 44px; height: 2px; background: rgba(20, 18, 16, 0.28); }
+.itk-demo__face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; gap: 8%; padding: 9% 9% 11%; border-radius: 3px; background: var(--sticker); }
+.itk-demo__year { align-self: flex-start; font-size: calc(var(--dw) * 0.19); font-weight: 700; line-height: 1; }
+.itk-demo__crest { flex: 1 1 auto; width: 62%; filter: drop-shadow(0 1px 1.5px rgba(20, 18, 16, 0.2)); }
+.itk-demo__crest::before { content: ''; display: block; height: 100%; clip-path: polygon(0 0, 100% 0, 100% 56%, 50% 100%, 0 56%); }
+.itk-demo__crest--halves::before { background: linear-gradient(90deg, var(--a) 50%, var(--b) 50%); }
+.itk-demo__crest--stripes::before { background: repeating-linear-gradient(90deg, var(--a) 0 18%, var(--b) 18% 33%); }
+.itk-demo__crest--sash::before { background: linear-gradient(135deg, var(--a) 38%, var(--b) 38% 62%, var(--a) 62%); }
+.itk-demo__crest--hoop::before { background: linear-gradient(180deg, var(--a) 36%, var(--b) 36% 60%, var(--a) 60%); }
+.itk-demo__name { width: 82%; height: calc(var(--dw) * 0.1); border-radius: 99px; background: var(--silhouette); }
+
+.itk-demo__peel { position: absolute; inset: 0; z-index: 1; transform-origin: 0 0; animation: demo-peel 7s cubic-bezier(0.55, 0, 0.3, 1) infinite; }
+.itk-demo__peel .itk-demo__face { box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07); }
+.itk-demo__card.is-fake { z-index: 2; animation: demo-found 7s var(--ease-out) infinite; }
+.itk-demo__loop { position: absolute; inset: -12px; width: calc(100% + 24px); height: calc(100% + 24px); overflow: visible; z-index: 2; pointer-events: none; }
+.itk-demo__loop path { fill: none; stroke: var(--marker); stroke-width: 2.4px; stroke-linecap: round; stroke-dasharray: 1 1; animation: demo-loop 7s var(--ease-in-out) infinite; }
+.itk-demo__leg.is-mended { animation: demo-mend 7s var(--ease-out) infinite; }
+
+@keyframes demo-loop {
+  0%, 14% { stroke-dashoffset: 1.001; opacity: 0.92; }
+  26%, 88% { stroke-dashoffset: 0; opacity: 0.92; }
+  96%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes demo-peel {
+  0%, 32% { transform: perspective(700px) rotate3d(1, -1, 0, 0deg); opacity: 1; }
+  41% { transform: perspective(700px) rotate3d(1, -1, 0, 40deg); opacity: 1; filter: drop-shadow(4px 6px 6px rgba(20, 18, 16, 0.25)); }
+  50% { opacity: 0.35; }
+  56%, 92% { transform: perspective(700px) translate(-34%, -46%) rotate3d(1, -1, 0, 58deg) rotate(-7deg); opacity: 0; }
+  93% { transform: none; opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes demo-found {
+  0%, 26% { transform: none; box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 2px 6px rgba(20, 18, 16, 0.12); }
+  29% { transform: scale(0.97); }
+  32% { transform: none; }
+  56%, 90% { box-shadow: 0 0 0 2px var(--green), 0 2px 8px rgba(20, 18, 16, 0.14); }
+  97%, 100% { box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 2px 6px rgba(20, 18, 16, 0.12); }
+}
+@keyframes demo-mend {
+  0%, 54% { background: rgba(20, 18, 16, 0.28); }
+  62%, 90% { background: var(--green); }
+  97%, 100% { background: rgba(20, 18, 16, 0.28); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .itk-lobby__slots li { animation: none; }
+  .itk-demo__peel { animation: none; opacity: 0; }
+  .itk-demo__loop path { animation: none; stroke-dashoffset: 0; opacity: 0.92; }
+  .itk-demo__card.is-fake { animation: none; box-shadow: 0 0 0 2px var(--green), 0 2px 8px rgba(20, 18, 16, 0.14); }
+  .itk-demo__leg.is-mended { animation: none; background: var(--green); }
+}
+
+/* The archive is a shelf on a phone, run to the page edge so a tile peeks; a grid on a desk. */
+@media (max-width: 639px) {
+  .itk-lobby__archive .itk-arch { display: flex; margin: 0 -16px; padding: 2px 16px 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; scroll-padding-inline: 16px; }
+  .itk-lobby__archive .itk-arch::-webkit-scrollbar { display: none; }
+  .itk-lobby__archive .itk-arch > li { flex: 0 0 132px; scroll-snap-align: start; }
+}

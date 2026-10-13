@@ -100,6 +100,21 @@ Jonno's hub polish (`components/Hub.tsx`, `src/games.ts`) in a new session.
 Known limits: careers snapshot 2026-09-20 (January window stales some
    careers; refresh in the cron before Feb 2027); views snapshot Oct 2023–Sep 2025.
 
+**Lobby (2026-10-13, on `feat/itk-ship`, awaiting Jonno's look; not merged):**
+`/spoofed` is now a lobby (`components/Lobby.tsx`); the game moved to
+`/spoofed/play` (`?date=` for past days); `/spoofed/archive` redirects to the
+lobby, whose lower half is the archive (a sideways shelf on a phone, a grid on
+a desk). One album page, one red button, four states: never played (headline
+"One move never happened", a 7 s CSS demo with invented crests: the marker
+circles one, it peels, the real one is underneath; Play); today not started
+(five empty slots, Play); part played (finished careers stuck in their slots
+with their marks, Continue); done (your rank card, the five, "Next in Xh Ym",
+and `Play #n` for the newest unfinished past day, or no red at all). The game
+masthead lost Archive and All games: the brand goes back to the lobby.
+Verified: typecheck, `npm test` 1,695, Playwright 375 and 1100 for all states
+(fixtures set in localStorage), Play → game, `?date` → #24, archive redirect,
+no console warnings. Not done: prod build, real play-through from the lobby.
+
 **Gotchas found this session:**
 - **Vercel only bundles files it can trace.** A file read with `readFile` at
   runtime must be listed in `outputFileTracingIncludes` (`next.config.ts`) or

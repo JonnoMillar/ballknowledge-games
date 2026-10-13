@@ -1,12 +1,6 @@
-import Archive from '../../../games/itk/components/Archive';
-import { EPOCH } from '../../../games/itk/lib/day';
-import '../../../games/itk/itk.css';
+import { redirect } from 'next/navigation';
 
-export const metadata = {
-  title: 'Spoofed archive',
-  description: 'Every Spoofed day so far. Play the ones you missed.',
-};
-
+/** The archive lives on the lobby now. */
 export default function ArchivePage() {
-  return <Archive epoch={EPOCH} />;
+  redirect('/spoofed');
 }

@@ -45,10 +45,6 @@ export default function Itk() {
         </a>
         <div className="masthead__meta">
           {day ? <span>#{day.day}</span> : null}
-          <nav className="masthead__nav" aria-label="Site">
-            <a className="masthead__button" href="/spoofed/archive">Archive</a>
-            <a className="masthead__button" href="/">All games</a>
-          </nav>
         </div>
       </header>
       <main className="itk__main">
