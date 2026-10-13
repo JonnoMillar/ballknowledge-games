@@ -1,7 +1,7 @@
 import { MARK_GLYPH, type PlateMark } from '../../../src/lib/chain/share';
 
 /**
- * ITK: one move in each career never happened. Two picks a round.
+ * Spoofed: one move in each career never happened. Two picks a round.
  *
  * A round is marked with Chain's own glyphs, so the two share lines read
  * the same: found first time is held, found on the second pick is hinted,
@@ -49,6 +49,6 @@ export function rangeOf(rung: Rung): string {
 
 /** The share line: day, tier and score, then one glyph per career. No names, no clubs. */
 export function itkShareLine(day: number, marks: readonly PlateMark[]): string {
-  return `ITK #${day} · ${tierOf(marks)} ${pointsOf(marks)}/${MAX_POINTS}
+  return `Spoofed #${day} · ${tierOf(marks)} ${pointsOf(marks)}/${MAX_POINTS}
 ${marks.map((m) => MARK_GLYPH[m]).join('')}`;
 }

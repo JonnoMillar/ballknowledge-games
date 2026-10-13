@@ -10,7 +10,7 @@ export interface Played {
   reals: ({ clubId: string; name: string } | null)[];
 }
 
-const KEY = 'itk.progress.v1';
+const KEY = 'spoofed.progress.v1';
 
 const all = (): Record<string, Played> => {
   try { return JSON.parse(localStorage.getItem(KEY) ?? '{}') as Record<string, Played>; } catch { return {}; }

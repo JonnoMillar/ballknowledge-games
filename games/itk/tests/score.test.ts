@@ -55,6 +55,6 @@ describe('rangeOf', () => {
 
 describe('itkShareLine', () => {
   it('carries the day, the tier, the score and the grid, and no names', () => {
-    expect(itkShareLine(3, ['held', 'held', 'hinted', 'held', 'missed'])).toBe('ITK #3 · Pundit 7/10\n🟩🟩🟨🟩🟥');
+    expect(itkShareLine(3, ['held', 'held', 'hinted', 'held', 'missed'])).toBe('Spoofed #3 · Pundit 7/10\n🟩🟩🟨🟩🟥');
   });
 });

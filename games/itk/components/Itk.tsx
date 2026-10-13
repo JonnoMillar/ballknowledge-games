@@ -11,9 +11,9 @@ import { PICKS, itkShareLine, roundMark, tierOf } from '../lib/score';
 import { loadPlayed, savePlayed, type Played } from '../lib/progress';
 
 /**
- * ITK: five careers, one move in each that never happened. Circle it.
+ * Spoofed: five careers, one move in each that never happened. Circle it.
  *
- * Today is the player's own date. Picks are judged by /api/itk/pick; the page
+ * Today is the player's own date. Picks are judged by /api/spoofed/pick; the page
  * never knows where the fake is until the round is over. Progress is kept in
  * this browser, so a reload resumes and a finished day stays finished.
  */
@@ -25,7 +25,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export default function Itk() {
   const [day, setDay] = useState<ItkDay | null | undefined>(undefined);
   useEffect(() => {
-    fetch(`/api/itk/day?date=${localDate()}`)
+    fetch(`/api/spoofed/day?date=${localDate()}`)
       .then((r) => (r.ok ? (r.json() as Promise<ItkDay>) : null))
       .then(setDay, () => setDay(null));
   }, []);
@@ -33,9 +33,9 @@ export default function Itk() {
   return (
     <div className="app itk">
       <header className="masthead">
-        <a className="masthead__brand display" href="/itk">
+        <a className="masthead__brand display" href="/spoofed">
           <ItkMark />
-          ITK
+          Spoofed
         </a>
         <div className="masthead__meta">
           {day ? <span>#{day.day}</span> : null}
@@ -76,7 +76,7 @@ function Game({ day }: { day: ItkDay }) {
     setPending(index);
     const last = viewPicks.length + 1 >= PICKS;
     const res = await Promise.all([
-      fetch('/api/itk/pick', {
+      fetch('/api/spoofed/pick', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ date: day.date, round: view, index, last }),

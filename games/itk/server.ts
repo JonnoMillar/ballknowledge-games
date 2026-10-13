@@ -10,7 +10,7 @@ import type { ItkDay, Verdict } from './lib/types';
  * kept ahead by the itk-days cron).
  *
  * The fake's index and the real club stay here until the round is over:
- * every pick is judged by /api/itk/pick.
+ * every pick is judged by /api/spoofed/pick.
  */
 let stored: Promise<Map<string, StoredDay>> | null = null;
 // Read once in production; every request in development, so a regenerated schedule shows without a restart.

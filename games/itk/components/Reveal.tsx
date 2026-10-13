@@ -13,7 +13,7 @@ import type { ItkRound } from '../lib/types';
  * so you can see what the next one up would have taken.
  */
 
-const art = (rung: Rung) => `/itk/ranks/${rung.toLowerCase()}.webp`;
+const art = (rung: Rung) => `/spoofed/ranks/${rung.toLowerCase()}.webp`;
 
 /** The podium is cased in the Deep Cuts metals: gold, silver, bronze. */
 const METAL: Partial<Record<Rung, string>> = { Fabrizio: 'rare', Agent: 'uncommon', Scout: 'common' };
@@ -154,7 +154,7 @@ export function AlbumReveal({ rounds, marks, rung, day, onReview, actions }: {
       }}
     >
       <p className="rv-tally">
-        <span className="rv-tally__day">ITK #{day}</span>
+        <span className="rv-tally__day">Spoofed #{day}</span>
         <span className="rv-tally__count display" role="img" aria-label={`${totals[totals.length - 1]} out of ${MAX_POINTS}`}>
           {[0, ...totals].map((t, i) => (
             <span key={i} className="rv-tally__n" style={tick(i)}>{t}</span>
