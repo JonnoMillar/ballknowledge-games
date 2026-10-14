@@ -100,7 +100,7 @@ Jonno's hub polish (`components/Hub.tsx`, `src/games.ts`) in a new session.
 Known limits: careers snapshot 2026-09-20 (January window stales some
    careers; refresh in the cron before Feb 2027); views snapshot Oct 2023–Sep 2025.
 
-**Lobby (2026-10-13, on `feat/itk-ship`, awaiting Jonno's look; not merged):**
+**Lobby (2026-10-13; approved by Jonno and merged to `main` 2026-10-14, round 3 is the shipped design):**
 `/spoofed` is now a lobby (`components/Lobby.tsx`); the game moved to
 `/spoofed/play` (`?date=` for past days); `/spoofed/archive` redirects to the
 lobby, whose lower half is the archive (a sideways shelf on a phone, a grid on
@@ -137,6 +137,15 @@ Bottom left, smaller: `Example`, Ronaldo plus three clubs only (Real Madrid
 2009, PSG 2018 fake over Juventus, Man Utd 2021). Bottom right, bigger: the
 Archive card (stacked-pages icon, `N past dailies still to play →`), linking
 to `/spoofed/archive`, which is a page again (`ArchivePage` in `Archive.tsx`).
+
+**Merge 2026-10-14:** `origin/main` had added `components/Back.tsx` (a back
+arrow first in every masthead: a board goes back to its game, a game to the
+hub). Resolved as: lobby → `/` (the lobby's "All games" pill is gone),
+`/spoofed/play` and `/spoofed/archive` → `/spoofed`. The game's masthead no
+longer has an Archive button; the lobby's Archive card is the way in.
+The app's `sync_with_base_branch` refused: the repo's `origin` changed
+since the app pinned it (re-pin in Help → Troubleshooting → Review Pinned
+Git Origins); merged by hand instead.
 
 **Gotchas found this session:**
 - **Vercel only bundles files it can trace.** A file read with `readFile` at
