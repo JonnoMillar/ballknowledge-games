@@ -20,6 +20,7 @@ are in `CLAUDE.md`.
 | Recall XI | `/recall-xi` | root | Parked. |
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
+| Step | `/step` | `games/step` | Merged to `main` 2026-10-14; daily, not on the hub yet (needs a `public/hub/step.webp` icon). `games/step/HANDOFF.md`. |
 
 ## What this is
 
