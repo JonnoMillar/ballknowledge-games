@@ -13,7 +13,7 @@ const BREAK = 620;
 
 /**
  * The verdict as a pack opening. Empty cases slam down one on another,
- * Plastic first and climbing a grade a time, stopping at the grade the pick
+ * Basic first and climbing a grade a time, stopping at the grade the pick
  * earned; the top one cracks down the middle and its halves fall away to
  * show the card. The deeper the pick, the more cases land, so an Elite takes
  * longest. A miss is one blank case that cracks and drops to nothing.

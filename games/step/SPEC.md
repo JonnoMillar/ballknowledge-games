@@ -64,7 +64,7 @@ run is four Elites: the per-card Elite is the trophy, the Elite run a feat.
 
 ## Changed after Jonno played it (2026-10-14)
 
-Grade words Plastic, Armchair, Diehard, Anorak, Elite. Pack-opening reveal.
+Pack-opening reveal.
 The linking club and the obvious answer shown after each step. Givens either
 side of a club share no club; a step's shown answers fit no other step that
 day. Givens British-placeable (Premier League spell, British, or fame 90+);

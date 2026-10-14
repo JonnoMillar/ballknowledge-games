@@ -94,7 +94,7 @@ describe('runGrade', () => {
 
 describe('shareLine', () => {
   it('a glyph per step and the run, never a name', () => {
-    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Armchair\n🟦🟥🟫🏆');
+    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Decent\n🟦🟥🟫🏆');
     expect(shareLine(3, [null, null, null, null])).toBe('Step #3 · Ball knowledge: none\n🟥🟥🟥🟥');
   });
 });

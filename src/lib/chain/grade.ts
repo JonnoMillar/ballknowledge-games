@@ -14,19 +14,14 @@
  * answers that would also have held were better known than yours.
  *
  * Until 2026-10-14 there were six (Common, Uncommon, Rare, Niche, Gem,
- * Grail); Niche and Gem became Sharp (the id; the word is Anorak). `toGrade` reads the old ids, so cards
+ * Grail); Niche and Gem became Sharp. `toGrade` reads the old ids, so cards
  * already in someone's browser keep working.
  */
 export const GRADES = ['basic', 'decent', 'solid', 'sharp', 'elite'] as const;
 export type Grade = (typeof GRADES)[number];
 
-/**
- * The words, a British fan's ladder (2026-10-14): the plastic fan, the one
- * who watches every game from the sofa, the diehard, the anorak, and "elite
- * ball knowledge". The ids stay basic … elite so stored cards keep working.
- */
 export const GRADE_WORD: Record<Grade, string> = {
-  basic: 'Plastic', decent: 'Armchair', solid: 'Diehard', sharp: 'Anorak', elite: 'Elite',
+  basic: 'Basic', decent: 'Decent', solid: 'Solid', sharp: 'Sharp', elite: 'Elite',
 };
 
 /** What each grade means, for the key. */

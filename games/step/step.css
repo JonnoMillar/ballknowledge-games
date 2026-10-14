@@ -102,7 +102,7 @@
 .step-arch__note { font-size: 13px; font-weight: 700; }
 
 /* ── THE REVEAL: A PACK OPENING ───────────────────────────────────────────
-   Empty cases slam down one on another, Plastic up to the grade earned, the
+   Empty cases slam down one on another, Basic up to the grade earned, the
    stack a little untidy; the top one cracks down the middle and its halves
    fall away from the card, with a burst of the grade's colour behind it. */
 .step-slam { position: relative; display: grid; justify-items: center; align-items: start; cursor: pointer; }

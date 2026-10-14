@@ -6,15 +6,15 @@ worktree `.claude/worktrees/kind-tharp-12c680`. Site-wide notes: root
 "Step" (`NAME` in `lib/rules.ts`, route `/step`) until Jonno names it.
 
 **Status:** built and playable at `/step`. Jonno played it on 2026-10-14 and
-gave a first round of feedback (below, applied the same day); waiting on his
-second look. **Do not merge to `main` until he says he has played it.** He
-took every recommendation in the spec: 4 steps, five grades site-wide, one
+gave a first round of feedback (below, applied the same day). He then
+reverted the British grade words (keep Basic … Elite) and asked for the merge
+to `main`, same day. He took every recommendation in the spec: 4 steps, five grades site-wide, one
 shot, run = average rounded down, automatic daily.
 
 ### Feedback round 1 (2026-10-14), applied
 
 - **Reveal:** `components/Slam.tsx`. Empty cases slam down one on another,
-  Plastic up to the grade earned (more cases the deeper the pick), then the top
+  Basic up to the grade earned (more cases the deeper the pick), then the top
   one cracks down a jagged line and its halves fall away from the card, with a
   burst of the grade's colour. A miss is one grey case that cracks to ✕. Tap
   skips; reduced motion lands on the end; a verdict already there on load shows
@@ -29,8 +29,7 @@ shot, run = average rounded down, automatic daily.
   candidate pairs), so other overlaps can remain.
 - **Prompt:** "Played for Roma and one of Verón's clubs" (no "with": time is
   ignored).
-- **British:** grade words are now Plastic, Armchair, Diehard, Anorak, Elite
-  (ids unchanged, so stored cards are fine). Givens need a Premier League spell,
+- **British:** givens need a Premier League spell,
   a British nationality, or fame 90+; every day has a Premier League club.
   Givens fell to 73, so `givenGap` 21 to 14 days, and a step may come back
   after 120 days (`stepGap`; never-repeat dead-ended at day 156). Tested to two
@@ -79,10 +78,10 @@ the page holds back until the end.
 ## Verified 2026-10-14 (feedback round 1)
 
 `npm test` 1,728 passed; typecheck clean. Browser, dev server, 375×812, day #26
-(Pogba · Ajax · Courtois · Man City · Ferdinand): Blind (Armchair, one case,
-linked by Man Utd, obvious Ibrahimović), Bogarde (Anorak, four cases), Gerrard
-(miss, grey case, obvious Agüero), Wright-Phillips (Anorak, linked by QPR);
-run Armchair; reload resumes with no replay; four different deepest answers;
+(Pogba · Ajax · Courtois · Man City · Ferdinand): Blind (Decent, one case,
+linked by Man Utd, obvious Ibrahimović), Bogarde (Sharp, four cases), Gerrard
+(miss, grey case, obvious Agüero), Wright-Phillips (Sharp, linked by QPR);
+run Decent; reload resumes with no replay; four different deepest answers;
 no console errors, no horizontal scroll. Test run and its three cards removed
 from the browser afterwards. Prod build not re-run yet (run it before merge).
 
@@ -98,8 +97,7 @@ the Share sheet, the cron on GitHub (runs once merged).
 
 ## Known / next
 
-- **Grade calibration is global fame** (sitelinks). The words are British now,
-  but a player only Britain knows still grades deep. If Jonno meant the
+- **Grade calibration is global fame** (sitelinks): a player only Britain knows still grades deep. If Jonno meant the
   calibration too, the fix is enwiki pageviews in the fact ruler (needs a full
   pool fetch: `games/itk/data/enwiki-views.json` covers 7,761 titles and misses
   Gerrard, Terry, Puyol).
