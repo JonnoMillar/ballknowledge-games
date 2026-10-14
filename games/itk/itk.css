@@ -54,7 +54,7 @@
 .itk-picks__loop.is-used path { stroke: var(--silhouette-figure); opacity: 0.6; }
 
 /* ── THE STAGE: who, and where he went ─────────────────────────────────── */
-.itk-stage {
+.itk-stage, .itk-lobby {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@
   border-radius: 4px;
   box-shadow: 0 1px 0 rgba(20, 18, 16, 0.05), 0 8px 24px rgba(20, 18, 16, 0.08);
 }
-.itk-stage::before {
+.itk-stage::before, .itk-lobby::before {
   content: '';
   position: absolute;
   inset: 8px;
@@ -555,3 +555,141 @@
 .itk-arch__marks { display: flex; gap: 4px; }
 .itk-arch__marks .itk-pip { width: 14px; height: 14px; border-radius: 3px; animation: none; cursor: inherit; }
 .itk-arch__note { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ── THE LOBBY: three cards on the album page ──────────────────────────────
+   Today's daily across the top, an example and the archive beneath. They
+   share the stage's paper. The only red is today's button, and the marker
+   in the example, which is the same thing: what you do. */
+.itk-lobbies { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+@media (min-width: 760px) {
+  .itk-lobbies { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px 24px; }
+  .itk-lobby--today { grid-column: 1 / -1; }
+}
+.itk-lobby { padding: 34px 18px 22px; }
+.itk-lobby > :not(.itk-stage__tab) { position: relative; z-index: 1; }
+
+/* Today. */
+.itk-lobby__ask { align-self: stretch; display: flex; flex-direction: column; gap: 8px; }
+.itk-lobby__headline { margin: 0; font-size: 42px; font-weight: 900; line-height: 0.9; text-transform: uppercase; }
+.itk-lobby__sub { margin: 0; font-size: 16px; color: var(--muted); }
+.itk-lobby__go { align-self: stretch; min-height: 236px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.itk-lobby__who { --sticker-w: 92px; animation: stick-down var(--t-slow) var(--ease-out) backwards; }
+.itk-lobby__who .sticker { cursor: default; }
+.itk-lobby__marks { display: flex; gap: 6px; }
+.itk-lobby__marks .itk-pip { width: 16px; height: 16px; border-radius: 3px; cursor: default; }
+.itk-pip--open { border-style: dashed; }
+.itk-lobby__play {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 14px;
+  border-radius: 6px;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: background var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+.itk-lobby__play:hover { background: var(--red-deep); }
+.itk-lobby__play:active { transform: translateY(1px); }
+.itk-lobby__play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.itk-lobby__result { display: block; color: inherit; text-decoration: none; border-radius: 10px; transition: transform var(--t-base) var(--ease-out); }
+.itk-lobby__result .rs { --rs-w: 132px; }
+.itk-lobby__result:hover { transform: translateY(-3px); }
+.itk-lobby__result:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.itk-lobby__next { margin: 0; font-size: 14px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (min-width: 760px) {
+  .itk-lobby--today { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); align-items: center; column-gap: 48px; padding: 48px 48px 40px; }
+  .itk-lobby__headline { font-size: clamp(54px, 6vw, 80px); }
+  .itk-lobby__sub { font-size: 19px; }
+  .itk-lobby__ask { gap: 14px; }
+  .itk-lobby__ask { grid-column: 1; }
+  .itk-lobby__go { grid-column: 2; min-height: 300px; gap: 16px; }
+  .itk-lobby__who { --sticker-w: 132px; }
+  .itk-lobby__marks .itk-pip { width: 18px; height: 18px; }
+  .itk-lobby__play { font-size: 26px; }
+  .itk-lobby__result .rs { --rs-w: 168px; }
+}
+
+/* The example. */
+.itk-lobby--demo { container-type: inline-size; align-items: stretch; gap: 14px; padding: 22px 18px 26px; }
+.itk-lobby__eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* The archive: a big quiet card, the way back to days gone by. */
+.itk-lobby--archive { flex-direction: row; justify-content: flex-start; gap: 18px; padding: 26px 22px; color: var(--ink); text-decoration: none; transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out); }
+.itk-lobby--archive:hover { transform: translateY(-3px); box-shadow: 0 1px 0 rgba(20, 18, 16, 0.05), 0 14px 30px rgba(20, 18, 16, 0.14); }
+.itk-lobby--archive:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.itk-lobby__icon { flex: 0 0 auto; width: 64px; height: 64px; overflow: visible; }
+.itk-lobby__icon rect { fill: var(--page); stroke: var(--silhouette-figure); stroke-width: 2.2px; }
+.itk-lobby__icon rect.itk-lobby__icontop { fill: var(--sticker); stroke: var(--ink); }
+.itk-lobby__iconrules { fill: none; stroke: var(--silhouette-figure); stroke-width: 2.4px; stroke-linecap: round; }
+.itk-lobby__archtext { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.itk-lobby__archtitle { font-size: 32px; font-weight: 900; line-height: 0.9; text-transform: uppercase; }
+.itk-lobby__archline { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--muted); }
+.itk-lobby__arrow { flex: 0 0 auto; width: 20px; height: 12px; fill: none; stroke: var(--ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--t-base) var(--ease-out); }
+.itk-lobby--archive:hover .itk-lobby__arrow { transform: translateX(4px); }
+@media (min-width: 760px) {
+  .itk-lobby--archive { gap: 26px; padding: 32px 40px; }
+  .itk-lobby__icon { width: 88px; height: 88px; }
+  .itk-lobby__archtitle { font-size: 44px; }
+  .itk-lobby__archline { font-size: 17px; }
+}
+
+/* ── THE EXAMPLE: him, three clubs; the marker circles the fake, it peels,
+   the real club is underneath. 7 s, looped. Sized to its card. */
+.itk-demo { --dw: clamp(52px, 19cqw, 92px); display: flex; align-items: center; justify-content: center; gap: 4cqw; padding: 8px 0 4px; }
+.itk-demo__who { --sticker-w: clamp(52px, 18cqw, 88px); flex: 0 0 auto; }
+.itk-demo__who .sticker__name { font-size: clamp(9px, 3.2cqw, 13px); }
+.itk-demo__trail { display: flex; align-items: center; }
+.itk-demo__leg { flex: 0 0 auto; width: clamp(10px, 5cqw, 26px); height: 2px; background: rgba(20, 18, 16, 0.28); }
+.itk-demo__leg.is-mended { animation: demo-mend 7s var(--ease-out) infinite; }
+.itk-demo__card { position: relative; flex: 0 0 var(--dw); height: calc(var(--dw) * 1.28); border-radius: 3px; background: var(--sticker); box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 1px 0 rgba(20, 18, 16, 0.06), 0 2px 6px rgba(20, 18, 16, 0.12); }
+.itk-demo__face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 8% 7% 9%; border-radius: 3px; background: var(--sticker); }
+.itk-demo__year { align-self: flex-start; font-size: calc(var(--dw) * 0.17); font-weight: 700; line-height: 1; }
+.itk-demo__crest { width: 50%; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 1px 1.5px rgba(20, 18, 16, 0.18)); }
+.itk-demo__name { max-width: 100%; height: 2em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; align-content: end; font-size: calc(var(--dw) * 0.13); font-weight: 700; line-height: 1; text-align: center; text-transform: uppercase; }
+
+.itk-demo__peel { position: absolute; inset: 0; z-index: 1; transform-origin: 0 0; animation: demo-peel 7s cubic-bezier(0.55, 0, 0.3, 1) infinite; }
+.itk-demo__peel .itk-demo__face { box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07); }
+.itk-demo__card.is-fake { z-index: 2; animation: demo-found 7s var(--ease-out) infinite; }
+.itk-demo__loop { position: absolute; inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); overflow: visible; z-index: 2; pointer-events: none; }
+.itk-demo__loop path { fill: none; stroke: var(--marker); stroke-width: 2.4px; stroke-linecap: round; stroke-dasharray: 1 1; animation: demo-loop 7s var(--ease-in-out) infinite; }
+
+@keyframes demo-loop {
+  0%, 14% { stroke-dashoffset: 1.001; opacity: 0.92; }
+  26%, 88% { stroke-dashoffset: 0; opacity: 0.92; }
+  96%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes demo-peel {
+  0%, 32% { transform: perspective(700px) rotate3d(1, -1, 0, 0deg); opacity: 1; }
+  41% { transform: perspective(700px) rotate3d(1, -1, 0, 40deg); opacity: 1; filter: drop-shadow(4px 6px 6px rgba(20, 18, 16, 0.25)); }
+  50% { opacity: 0.35; }
+  56%, 92% { transform: perspective(700px) translate(-34%, -46%) rotate3d(1, -1, 0, 58deg) rotate(-7deg); opacity: 0; }
+  93% { transform: none; opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes demo-found {
+  0%, 26% { transform: none; box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 2px 6px rgba(20, 18, 16, 0.12); }
+  29% { transform: scale(0.97); }
+  32% { transform: none; }
+  56%, 90% { box-shadow: 0 0 0 2px var(--green), 0 2px 8px rgba(20, 18, 16, 0.14); }
+  97%, 100% { box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.07), 0 2px 6px rgba(20, 18, 16, 0.12); }
+}
+@keyframes demo-mend {
+  0%, 54% { background: rgba(20, 18, 16, 0.28); }
+  62%, 90% { background: var(--green); }
+  97%, 100% { background: rgba(20, 18, 16, 0.28); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .itk-lobby__who { animation: none; }
+  .itk-demo__peel { animation: none; opacity: 0; }
+  .itk-demo__loop path { animation: none; stroke-dashoffset: 0; opacity: 0.92; }
+  .itk-demo__card.is-fake { animation: none; box-shadow: 0 0 0 2px var(--green), 0 2px 8px rgba(20, 18, 16, 0.14); }
+  .itk-demo__leg.is-mended { animation: none; background: var(--green); }
+}
+

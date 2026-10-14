@@ -1,4 +1,6 @@
-import Itk from '../../games/itk/components/Itk';
+import Lobby from '../../games/itk/components/Lobby';
+import { EPOCH } from '../../games/itk/lib/day';
+import { demoCareer } from '../../games/itk/server';
 import '../../games/itk/itk.css';
 
 export const metadata = {
@@ -6,7 +8,6 @@ export const metadata = {
   description: 'Five careers. One move in each never happened. Find it.',
 };
 
-/** The day is the player's own date, so the client fetches it. */
-export default function ItkPage() {
-  return <Itk />;
+export default async function SpoofedLobby() {
+  return <Lobby epoch={EPOCH} demo={await demoCareer()} />;
 }

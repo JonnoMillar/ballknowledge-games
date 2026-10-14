@@ -6,7 +6,7 @@ path back to full context. The design is in
 
 ## Games
 
-One site; `/` is the hub (`components/Hub.tsx`), a card per game read from
+One site; `/` is the hub (`components/Hub.tsx`): an "up next" card (first daily not done today, per `src/lib/today.ts` and Chain's progress) and an icon per game (`public/hub/`, Higgsfield, tabletop-miniature style Jonno chose 2026-10-14), read from
 `src/games.ts`: add a game there and it appears. Each game is a route. A game's own state of play is in its
 `HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
 are in `CLAUDE.md`.
