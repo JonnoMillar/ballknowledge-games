@@ -55,8 +55,9 @@ export async function loadDay(date: string): Promise<ItkDay | null> {
  */
 const DEMO = {
   player: 'Q11571',
-  stops: [['Q75729', 2002], ['Q18656', 2003], ['Q8682', 2009], ['Q483020', 2018], ['Q18656', 2021], ['Q482764', 2023]] as const,
-  fake: 3,
+  // A slice of the career, not all of it: it is an example, and three cards fit beside him.
+  stops: [['Q8682', 2009], ['Q483020', 2018], ['Q18656', 2021]] as const,
+  fake: 1,
   real: 'Q1422',
 };
 

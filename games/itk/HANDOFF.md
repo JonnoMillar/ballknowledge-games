@@ -130,6 +130,14 @@ behind an `Archive` button (`<details>`). Sporting CP's `crestUrl` in
 `Sporting_Clube_de_Portugal_2026.png`); fixed by hand. Other crest URLs may
 have rotted the same way: not audited.
 
+**Lobby round 3 (2026-10-14):** three cards. Today's daily across the top
+(question left; right: the next player's sticker, five marks, `Play/Continue
+today's daily`; once done, your rank card, marks, countdown, and no red).
+Bottom left, smaller: `Example`, Ronaldo plus three clubs only (Real Madrid
+2009, PSG 2018 fake over Juventus, Man Utd 2021). Bottom right, bigger: the
+Archive card (stacked-pages icon, `N past dailies still to play →`), linking
+to `/spoofed/archive`, which is a page again (`ArchivePage` in `Archive.tsx`).
+
 **Gotchas found this session:**
 - **Vercel only bundles files it can trace.** A file read with `readFile` at
   runtime must be listed in `outputFileTracingIncludes` (`next.config.ts`) or

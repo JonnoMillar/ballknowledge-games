@@ -1,8 +1,10 @@
 'use client';
-import { dateOfDay, dayNumber } from '../../../src/lib/daily';
+import { useEffect, useState } from 'react';
+import { dateOfDay, dayNumber, localDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import { MAX_POINTS, pointsOf, roundMark, tierOf } from '../lib/score';
-import type { Played } from '../lib/progress';
+import { allPlayed, type Played } from '../lib/progress';
+import { ItkMark } from './Itk';
 
 /**
  * Every day before today, newest first, with what this browser has played
@@ -50,5 +52,26 @@ export default function Archive({ days, today, epoch, played }: {
         );
       })}
     </ol>
+  );
+}
+
+/** The archive page: every past daily, newest first. Reached from the lobby's Archive card. */
+export function ArchivePage({ epoch }: { epoch: string }) {
+  // Read after mount: localStorage is the player's, and the server render knows nothing of it.
+  const [me, setMe] = useState<{ today: string; played: Record<string, Played> } | null>(null);
+  useEffect(() => setMe({ today: localDate(), played: allPlayed() }), []);
+  return (
+    <div className="app itk">
+      <header className="masthead">
+        <a className="masthead__brand display" href="/spoofed">
+          <ItkMark />
+          Spoofed
+        </a>
+        <div className="masthead__meta"><span>Archive</span></div>
+      </header>
+      <main className="itk__main">
+        {me ? <Archive days={pastDays(me.today, epoch)} today={me.today} epoch={epoch} played={me.played} /> : null}
+      </main>
+    </div>
   );
 }
