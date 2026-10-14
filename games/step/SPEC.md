@@ -1,6 +1,6 @@
 # Step chain — spec (decisions only)
 
-2026-10-14. Working id `step`, route `/step` until it has a name. Self-contained
+2026-10-14. **Signed off by Jonno 2026-10-14: every recommendation taken.** Working id `step`, route `/step` until it has a name. Self-contained
 in `games/step/` so it can move into the merged Chain hub later.
 
 **The game.** One gap at a time. Step 1: PLAYER — ? — CLUB. The answer is
