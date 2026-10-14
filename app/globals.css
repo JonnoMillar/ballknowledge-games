@@ -1193,9 +1193,9 @@ button { font-family: inherit; }
 .credits__table td { padding: 7px 8px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; overflow-wrap: anywhere; }
 .credits__table td:first-child { font-weight: 600; min-width: 9em; }
 
-/* ── DEEP CUTS: THE GRADED CASE ────────────────────────────────────────
+/* ── THE GRADED CASE ────────────────────────────────────────
    A pick that held, sealed in a case whose material is its grade. Bronze,
-   silver and gold are drawn; sapphire, diamond and onyx are photographic
+   silver and gold are drawn; sapphire and onyx are photographic
    textures (public/grades, generated with Higgsfield). The glint lives in
    the face, under the sticker, so it crosses the case and never the photo;
    it passes once every nine seconds and is still the rest of the time. */
@@ -1263,36 +1263,31 @@ button { font-family: inherit; }
   box-shadow: 0 2px 4px rgba(20, 18, 16, 0.25);
 }
 @keyframes slab-glint { 0%, 70% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
-.slab--uncommon .slab__glint, .slab--rare .slab__glint, .slab--niche .slab__glint,
-.slab--gem .slab__glint, .slab--grail .slab__glint { animation: slab-glint 9s ease-in-out infinite; }
+.slab--decent .slab__glint, .slab--solid .slab__glint, .slab--sharp .slab__glint,
+.slab--elite .slab__glint { animation: slab-glint 9s ease-in-out infinite; }
 
-/* Common: bronze, matte and still. */
-.slab--common .slab__face { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
-.slab--common .slab__label { background: rgba(38, 21, 8, 0.5); color: #ecd2b6; }
-.slab--common .slab__well { background: rgba(38, 21, 8, 0.28); }
-/* Uncommon: polished silver. */
-.slab--uncommon .slab__face { background: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
-.slab--uncommon .slab__label { background: rgba(255, 255, 255, 0.55); color: #3a4048; box-shadow: inset 0 0 0 1px rgba(40, 46, 56, 0.2); }
-.slab--uncommon .slab__well { background: rgba(40, 46, 56, 0.14); }
-/* Rare: gold. */
-.slab--rare .slab__face { background: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
-.slab--rare .slab__label { background: rgba(60, 40, 2, 0.55); color: #fbe6a6; }
-.slab--rare .slab__well { background: rgba(60, 40, 2, 0.2); }
-/* Niche: sapphire, set in silver. */
-.slab--niche .slab__face { background-image: url('/grades/niche.jpg'); }
-.slab--niche .slab__inlay { border-color: rgba(255, 255, 255, 0.85); }
-.slab--niche .slab__label { background: linear-gradient(150deg, #c9cfd6, #f3f5f7 45%, #b7bec6); color: #0e2a73; }
-.slab--niche .slab__well { background: rgba(0, 0, 0, 0.25); }
-/* Gem: diamond, set in silver. */
-.slab--gem .slab__face { background-image: url('/grades/gem.jpg'); }
-.slab--gem .slab__inlay { border-color: rgba(255, 255, 255, 0.95); }
-.slab--gem .slab__label { background: rgba(255, 255, 255, 0.82); color: #27425c; box-shadow: inset 0 0 0 1px rgba(39, 66, 92, 0.22); }
-.slab--gem .slab__well { background: rgba(255, 255, 255, 0.35); }
-/* Grail: onyx veined with gold, gold setting, gold lettering on black. */
-.slab--grail .slab__face { background-image: url('/grades/grail.jpg'); }
-.slab--grail .slab__inlay { border-color: rgba(222, 188, 104, 0.95); }
-.slab--grail .slab__label { background: #060507; box-shadow: inset 0 0 0 1px rgba(222, 188, 104, 0.6); color: #ecca76; }
-.slab--grail .slab__well { background: rgba(0, 0, 0, 0.45); }
+/* Basic: bronze, matte and still. */
+.slab--basic .slab__face { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
+.slab--basic .slab__label { background: rgba(38, 21, 8, 0.5); color: #ecd2b6; }
+.slab--basic .slab__well { background: rgba(38, 21, 8, 0.28); }
+/* Decent: polished silver. */
+.slab--decent .slab__face { background: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
+.slab--decent .slab__label { background: rgba(255, 255, 255, 0.55); color: #3a4048; box-shadow: inset 0 0 0 1px rgba(40, 46, 56, 0.2); }
+.slab--decent .slab__well { background: rgba(40, 46, 56, 0.14); }
+/* Solid: gold. */
+.slab--solid .slab__face { background: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
+.slab--solid .slab__label { background: rgba(60, 40, 2, 0.55); color: #fbe6a6; }
+.slab--solid .slab__well { background: rgba(60, 40, 2, 0.2); }
+/* Sharp: sapphire, set in silver. */
+.slab--sharp .slab__face { background-image: url('/grades/sharp.jpg'); }
+.slab--sharp .slab__inlay { border-color: rgba(255, 255, 255, 0.85); }
+.slab--sharp .slab__label { background: linear-gradient(150deg, #c9cfd6, #f3f5f7 45%, #b7bec6); color: #0e2a73; }
+.slab--sharp .slab__well { background: rgba(0, 0, 0, 0.25); }
+/* Elite: onyx veined with gold, gold setting, gold lettering on black. */
+.slab--elite .slab__face { background-image: url('/grades/elite.jpg'); }
+.slab--elite .slab__inlay { border-color: rgba(222, 188, 104, 0.95); }
+.slab--elite .slab__label { background: #060507; box-shadow: inset 0 0 0 1px rgba(222, 188, 104, 0.6); color: #ecca76; }
+.slab--elite .slab__well { background: rgba(0, 0, 0, 0.45); }
 
 /* The case with no card in it: a grade's name on its material. */
 .grade-chip { --slab-pad: 3px; gap: 0; border-radius: 8px; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.1), 0 3px 8px rgba(20, 18, 16, 0.14); }

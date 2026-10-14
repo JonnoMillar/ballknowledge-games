@@ -39,7 +39,7 @@ export default function PlayClient({ board, dailyIds }: { board: BoardProps; dai
   function onSealed(sealed: SealResponse, hinted: number[], images: Record<string, PortraitImage>) {
     const r = sealed.result;
     // Only the first seal collects. A replay comes after the wall has shown
-    // the Grail on each plate, so a card from it would be a card for reading.
+    // the Elite answer on each plate, so a card from it would be a card for reading.
     const first = !readProgress().plays[board.puzzle.id];
     if (deep && first) {
       // Every pick that held is a card: its grade, and the clubs it linked through.

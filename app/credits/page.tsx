@@ -46,7 +46,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
 
           <h2 className="credits__head display">Card cases</h2>
           <p>
-            The sapphire, diamond and onyx textures on Deep Cuts cards were generated for Chain with
+            The sapphire and onyx textures on graded cards were generated for Chain with
             {' '}<a href="https://higgsfield.ai/">Higgsfield</a>. They are not photographs of real stones.
             The result art in Spoofed (the mascot, scarf, microphone, seat, briefcase and contract) was made
             with Higgsfield too.

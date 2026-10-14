@@ -283,7 +283,7 @@ describe.skipIf(!hasPool || files.length === 0)('what the sealed sheet states', 
  * A Deep Cuts board is the opposite promise to a daily: wide fields, so there
  * is somewhere to dig, and a famous way in, so anyone can hold it. The
  * reference solution is the deepest checkable pair, so sealing it has to earn
- * a Grail on both plates, which holds the grading and the board to each other.
+ * an Elite on both plates, which holds the grading and the board to each other.
  */
 describe.skipIf(!hasPool || files.length === 0)('Deep Cuts boards', () => {
   const MIN_SIDE = 25;
@@ -311,11 +311,11 @@ describe.skipIf(!hasPool || files.length === 0)('Deep Cuts boards', () => {
       expect(entryOf(chain)).toBeGreaterThanOrEqual(MIN_ENTRY);
     });
 
-    it(`${chain.id}: the deepest checkable pair is graded Grail on both plates`, () => {
+    it(`${chain.id}: the deepest checkable pair is graded Elite on both plates`, () => {
       const result = chainResult(chain.referenceSolution!, chain, players, pool);
       expect(result.perfect).toBe(true);
-      expect(result.slots.map((s) => s.grade)).toEqual(['grail', 'grail']);
-      expect(result.pageGrade).toBe('grail');
+      expect(result.slots.map((s) => s.grade)).toEqual(['elite', 'elite']);
+      expect(result.pageGrade).toBe('elite');
     });
   }
 });

@@ -107,7 +107,7 @@ const wallGround = (clubs: readonly string[]): Ground => {
 
 /**
  * The ones the board had in mind, one per plate. On a Deep Cuts board, the
- * other end of the field instead: the deepest checkable answer, the Grail.
+ * other end of the field instead: the deepest checkable answer, the Elite one.
  */
 export function Wall({ result, images, clubs, players, show, deep = false }: {
   result: ChainResult;
@@ -122,7 +122,7 @@ export function Wall({ result, images, clubs, players, show, deep = false }: {
     ? result.slots.flatMap((slot) => slot.best ? [{
       slot,
       answer: slot.best,
-      tag: slot.grade === 'grail' ? (slot.playerId === slot.best.id ? 'You found it' : 'Yours went deeper') : null,
+      tag: slot.grade === 'elite' ? (slot.playerId === slot.best.id ? 'You found it' : 'Yours went deeper') : null,
     }] : [])
     : result.slots.flatMap((slot) => slot.obvious ? [{
       slot,
@@ -133,7 +133,7 @@ export function Wall({ result, images, clubs, players, show, deep = false }: {
   if (entries.length === 0) return null;
   return (
     <section className={`wall ${show ? 'is-shown' : ''}`}>
-      <h3 className="wall__head display">{deep ? 'The Grail on each plate' : 'The ones we had in mind'}</h3>
+      <h3 className="wall__head display">{deep ? 'The Elite answer on each plate' : 'The ones we had in mind'}</h3>
       <div className="wall__row">
         {entries.map(({ slot, answer, tag }, i) => (
           <div key={slot.index} className="wall__item" style={{ ['--i' as string]: i }}>
@@ -193,7 +193,7 @@ export function DeepCards({ result, images, players, groundFor, news, show, coll
       {page ? (
         <p className="cards__page">
           <GradeChip grade={page} label={`${GRADE_WORD[page]} page`} />
-          <span>{short ? `One plate off ${best === 'uncommon' ? 'an' : 'a'} ${GRADE_WORD[best]} page.` : 'Every plate at its grade or better.'}</span>
+          <span>{short ? `One plate off ${/^[AEIOU]/.test(GRADE_WORD[best]) ? 'an' : 'a'} ${GRADE_WORD[best]} page.` : 'Every plate at its grade or better.'}</span>
         </p>
       ) : null}
       <div className="cards__row">

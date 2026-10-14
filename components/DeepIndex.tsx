@@ -47,7 +47,7 @@ export default function DeepIndex({ boards }: { boards: BoardSummary[] }) {
           <h1 className="hero__head display">Deep Cuts</h1>
           <p className="brief deep-intro__brief">
             Wide-open boards with dozens of ways across. Anyone who links will hold, but the famous names only earn
-            bronze. Dig for the players nobody else remembers and they come back in rarer cases, up to the Grail:
+            bronze. Dig for the players nobody else remembers and they come back in rarer cases, up to Elite:
             the deepest answer on the plate.
           </p>
           <p className="deep-intro__stats">

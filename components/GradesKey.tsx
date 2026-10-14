@@ -5,7 +5,7 @@ import { GRADES, GRADE_LINE } from '../src/lib/chain/grade';
 
 /**
  * The key to the grades, reachable from every masthead: a button that opens
- * the six cases, rarest first, and what earns each.
+ * the five cases, rarest first, and what earns each.
  */
 export default function GradesKey({ className = '' }: { className?: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -28,8 +28,8 @@ export default function GradesKey({ className = '' }: { className?: string }) {
           </button>
           <h2 id="grades-key-head" className="key__head display">The grades</h2>
           <p className="key__intro">
-            On a Deep Cuts board, every pick that holds is graded when you seal: the deeper the answer, the rarer
-            the case you keep it in. The page takes the grade of its weakest plate.
+            Every pick that holds is graded on your ball knowledge: the deeper the answer, the rarer the case you
+            keep it in.
           </p>
           <ul className="key__list">
             {[...GRADES].reverse().map((g) => (

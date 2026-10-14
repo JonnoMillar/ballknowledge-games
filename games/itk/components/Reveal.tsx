@@ -16,7 +16,7 @@ import type { ItkRound } from '../lib/types';
 const art = (rung: Rung) => `/spoofed/ranks/${rung.toLowerCase()}.webp`;
 
 /** The podium is cased in the Deep Cuts metals: gold, silver, bronze. */
-const METAL: Partial<Record<Rung, string>> = { Fabrizio: 'rare', Agent: 'uncommon', Scout: 'common' };
+const METAL: Partial<Record<Rung, string>> = { Fabrizio: 'solid', Agent: 'decent', Scout: 'basic' };
 
 function ResultSticker({ rung, points }: { rung: Rung; points: number }) {
   const metal = METAL[rung];

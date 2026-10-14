@@ -127,14 +127,14 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
           <h2 className="home__head display">Deep Cuts</h2>
           <a className="page deep-promo__card" href="/deep">
             <span className="deep-promo__chips" aria-hidden>
-              <GradeChip grade="rare" />
-              <GradeChip grade="niche" />
-              <GradeChip grade="gem" />
-              <GradeChip grade="grail" />
+              <GradeChip grade="decent" />
+              <GradeChip grade="solid" />
+              <GradeChip grade="sharp" />
+              <GradeChip grade="elite" />
             </span>
             <span className="deep-promo__copy">
               <b>Thirty open boards where going deep is the point.</b> Anyone who links holds; the players nobody else
-              remembers come back as rarer cards, from bronze up to the Grail. Keep them in your collection.
+              remembers come back as rarer cards, from Basic up to Elite. Keep them in your collection.
             </span>
             <span className="also__go deep-promo__go">Start digging →</span>
           </a>

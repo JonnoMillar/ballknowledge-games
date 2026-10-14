@@ -1,5 +1,5 @@
 import type { PlateMark } from './chain/share';
-import type { Grade } from './chain/grade';
+import { toGrade, type Grade } from './chain/grade';
 
 /**
  * What the player has done, kept in the browser.
@@ -34,7 +34,10 @@ export function readProgress(): Progress {
     const raw = localStorage.getItem(KEY);
     if (!raw) return { plays: {} };
     const parsed = JSON.parse(raw) as Progress;
-    return parsed && typeof parsed.plays === 'object' ? parsed : { plays: {} };
+    if (!parsed || typeof parsed.plays !== 'object') return { plays: {} };
+    // Plays saved under the old six grades are read as the five.
+    for (const p of Object.values(parsed.plays)) if (p.grades) p.grades = p.grades.map(toGrade);
+    return parsed;
   } catch {
     return { plays: {} };
   }

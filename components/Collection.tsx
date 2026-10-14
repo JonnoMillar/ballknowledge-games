@@ -56,13 +56,13 @@ export default function Collection() {
             </h1>
           </div>
           <p className="collection__blurb">
-            Every Deep Cuts pick that held, at the best grade you have found it at. Tap a card to see where it came from.
+            Every graded pick that held, at the best grade you have found it at. Tap a card to see where it came from.
           </p>
         </section>
 
         {cards !== null && cards.length === 0 ? (
           <section className="page collection__empty">
-            <GradeChip grade="grail" />
+            <GradeChip grade="elite" />
             <p><b>No cards yet.</b> Seal a Deep Cuts board and every pick that holds comes back in a case. The deeper the pick, the rarer the case.</p>
             <a className="seal seal--link" href="/deep">Play Deep Cuts</a>
           </section>

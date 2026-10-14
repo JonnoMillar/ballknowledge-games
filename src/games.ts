@@ -27,7 +27,7 @@ export const GAMES: readonly GameCard[] = [
     href: '/deep',
     name: 'Deep Cuts',
     lead: 'Going deep is the point.',
-    blurb: 'Open boards where the players nobody else remembers come back as rarer cards, from bronze up to the Grail. Keep them in your collection.',
+    blurb: 'Open boards where the players nobody else remembers come back as rarer cards, from Basic up to Elite. Keep them in your collection.',
     cta: 'Start digging →',
     accent: '#7A4E12',
   },

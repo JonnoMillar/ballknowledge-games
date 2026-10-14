@@ -2,7 +2,7 @@ import { chainLinks, chainFieldFor, chainSlotDepths, clueMet, neighboursOf, shar
 import { factFame } from '../fame/spell';
 import { slotObscurityScore } from '../fame/obscurity';
 import { deepShareLine, plateMarks, shareLine } from './share';
-import { GRAIL_MIN_FIELD, gradeOf, pageGrade, type Grade } from './grade';
+import { ELITE_MIN_FIELD, gradeOf, pageGrade, type Grade } from './grade';
 import type { SlotDepth } from './score';
 import type { ChainFill, ChainPuzzle } from './types';
 import type { Player } from '../chemistry/types';
@@ -253,14 +253,14 @@ export function chainResult(
     );
 
     // The grade: how much of the field was better known than the pick. The
-    // Grail is the deepest checkable answer (`most`, above the fame floor)
+    // Elite is the deepest checkable answer (`most`, above the fame floor)
     // or anything deeper still, and only where the plate offered a choice.
     let grade: Grade | null = null;
     if (held && pick) {
       const mine = fameOf(pick);
       const above = field.filter((p) => p.id !== pick.id && fameOf(p) > mine).length;
-      const grail = most !== null && field.length >= GRAIL_MIN_FIELD && mine <= fameOf(most);
-      grade = gradeOf(above, field.length, grail);
+      const elite = most !== null && field.length >= ELITE_MIN_FIELD && mine <= fameOf(most);
+      grade = gradeOf(above, field.length, elite);
     }
 
     slots.push({

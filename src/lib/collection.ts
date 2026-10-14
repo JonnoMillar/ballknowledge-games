@@ -1,8 +1,8 @@
-import { gradeRank, type Grade } from './chain/grade';
+import { gradeRank, toGrade, type Grade } from './chain/grade';
 import type { PortraitImage } from './portraits';
 
 /**
- * The cards a player has collected on Deep Cuts boards, kept in the browser.
+ * The cards a player has collected (Deep Cuts boards, step runs), kept in the browser.
  *
  * One card per player: the best grade they have been found at, and where.
  * Like the streak, there is no account and no server; clearing site data
@@ -12,7 +12,7 @@ export interface Card {
   id: string;
   name: string;
   grade: Grade;
-  /** The board it was found on, e.g. "104". */
+  /** Where it was found: a board id ("104") or a step run ("Step #26"). */
   board: string;
   /** The clubs the pick linked through, by name, in slot order. */
   via: string[];
@@ -34,7 +34,14 @@ export function readCollection(): Collection {
   try {
     const raw = localStorage.getItem(KEY);
     const parsed = raw ? (JSON.parse(raw) as Collection) : {};
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    if (!parsed || typeof parsed !== 'object') return {};
+    // Cards saved under the old six grades are read as the five.
+    const out: Collection = {};
+    for (const [id, card] of Object.entries(parsed)) {
+      const grade = toGrade(card?.grade);
+      if (grade) out[id] = { ...card, grade };
+    }
+    return out;
   } catch {
     return {};
   }
