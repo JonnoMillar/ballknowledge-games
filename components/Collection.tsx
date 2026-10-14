@@ -127,7 +127,7 @@ export default function Collection() {
             <Slab grade={open.grade} player={open} image={open.image} ground={groundOf(open)} size="lg" />
             <div className="card-detail__copy">
               <h2 className="key__head display">{open.name}</h2>
-              <p>Found on <a href={`/play/${open.board}`}>Deep Cuts {open.board}</a>, {longDate(open.date)}.</p>
+              <p>Found on <a href={open.source?.href ?? `/play/${open.board}`}>{open.source?.label ?? `Deep Cuts ${open.board}`}</a>, {longDate(open.date)}.</p>
               {open.via.length > 0 ? <p>Linked through {joinAnd(open.via)}.</p> : null}
               <p className="card-detail__grade">{GRADE_LINE[open.grade]}</p>
             </div>

@@ -19,7 +19,7 @@ import type { NameEntry } from '../src/lib/chain/client';
  * this component adds nothing of its own.
  */
 export default function SearchSheet({
-  slot, between, current, index, taken, onPick, onRemove, onClose,
+  slot, between, current, index, taken, onPick, onRemove, onClose, title,
 }: {
   /** The slot being filled. Null closes the sheet. */
   slot: number | null;
@@ -34,6 +34,8 @@ export default function SearchSheet({
   onPick: (id: string) => void;
   onRemove: () => void;
   onClose: () => void;
+  /** The sheet's heading; a board names the slot. */
+  title?: string;
 }) {
   const open = slot !== null;
   const [query, setQuery] = useState('');
@@ -67,7 +69,7 @@ export default function SearchSheet({
       <section className="finder" role="dialog" aria-modal="true" aria-label={`Choose a player for slot ${slot + 1}`}>
         <header className="finder__head">
           <div>
-            <div className="finder__title display">Slot {slot + 1}</div>
+            <div className="finder__title display">{title ?? `Slot ${slot + 1}`}</div>
             <div className="finder__sub">
               {between.length === 2
                 ? <>Between <b>{between[0]}</b> and <b>{between[1]}</b></>

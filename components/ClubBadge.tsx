@@ -28,6 +28,12 @@ const SPOKEN_NAME: Record<string, string> = {
   'Bayer 04 Leverkusen': 'Leverkusen',
   '1. FC Köln': 'Köln',
   'RCD Espanyol de Barcelona': 'Espanyol',
+  'ACF Fiorentina': 'Fiorentina',
+  'SS Lazio': 'Lazio',
+  'SSC Napoli': 'Napoli',
+  'Genoa CFC': 'Genoa',
+  'S.L. Benfica': 'Benfica',
+  'Olympique de Marseille': 'Marseille',
 };
 
 /**

@@ -32,6 +32,14 @@ export const GAMES: readonly GameCard[] = [
     accent: '#7A4E12',
   },
   {
+    href: '/step',
+    name: 'Step',
+    lead: 'One gap at a time.',
+    blurb: 'A player, a gap, a club: name anyone who played with him and for them. Four steps a day, every pick graded on your ball knowledge.',
+    cta: 'Take the first step →',
+    accent: '#1F6F5C',
+  },
+  {
     href: '/rondo',
     name: 'Rondo',
     lead: 'A passing game for the pub.',

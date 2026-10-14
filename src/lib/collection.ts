@@ -12,7 +12,7 @@ export interface Card {
   id: string;
   name: string;
   grade: Grade;
-  /** Where it was found: a board id ("104") or a step run ("Step #26"). */
+  /** The Deep Cuts board it was found on, e.g. "104"; a step run's date. */
   board: string;
   /** The clubs the pick linked through, by name, in slot order. */
   via: string[];
@@ -21,6 +21,8 @@ export interface Card {
   /** Local date, YYYY-MM-DD. */
   date: string;
   image?: PortraitImage;
+  /** Where it was found, when that is not a Deep Cuts board: a label and a link. */
+  source?: { label: string; href: string };
 }
 
 export type Collection = Record<string, Card>;
