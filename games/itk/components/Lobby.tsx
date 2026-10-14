@@ -6,6 +6,7 @@ import { crestPath } from '../../../src/lib/clubs';
 import { dayNumber, localDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import { marksOf, pastDays } from './Archive';
+import Back from '../../../components/Back';
 import { ItkMark } from './Itk';
 import { Loop } from './Trail';
 import { ResultSticker } from './Reveal';
@@ -48,13 +49,11 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
   return (
     <div className="app itk">
       <header className="masthead">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/spoofed">
           <ItkMark />
           Spoofed
         </a>
-        <nav className="masthead__nav" aria-label="Site">
-          <a className="masthead__button" href="/">All games</a>
-        </nav>
       </header>
       <main className="itk__main itk-lobbies">
         <section className="itk-lobby itk-lobby--today">

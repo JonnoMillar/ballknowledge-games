@@ -10,6 +10,7 @@ import { boardForDay, dateOfDay, dayNumber, localDate, longDate } from '../src/l
 import { readProgress, streakOf, type Play, type Progress } from '../src/lib/progress';
 import { MARK_GLYPH, shareLine } from '../src/lib/chain/share';
 import { plateName } from '../src/lib/short-name';
+import Back from './Back';
 
 /**
  * The home page: an album page with today's stickers on it.
@@ -46,6 +47,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
   return (
     <div className="app">
       <header className="masthead">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/chain">
           <Mark className="masthead__mark" />
           Chain

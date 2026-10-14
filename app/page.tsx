@@ -4,7 +4,7 @@ import { isBoardId } from '../src/server/board';
 
 export const metadata = {
   title: 'Football games',
-  description: 'Football puzzles and pub games. Chain, Deep Cuts, Rondo, Slugger and Pitch pin.',
+  description: 'Football puzzles and pub games. Chain, Spoofed, Pitch pin and Rondo.',
 };
 
 /**

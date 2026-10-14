@@ -9,6 +9,8 @@ import { AlbumReveal } from './Reveal';
 import type { ItkDay, Verdict } from '../lib/types';
 import { PICKS, itkShareLine, roundMark, tierOf } from '../lib/score';
 import { loadPlayed, savePlayed, type Played } from '../lib/progress';
+import Back from '../../../components/Back';
+import { markDone } from '../../../src/lib/today';
 
 /**
  * Spoofed: five careers, one move in each that never happened. Circle it.
@@ -39,6 +41,7 @@ export default function Itk() {
   return (
     <div className="app itk">
       <header className="masthead">
+        <Back href="/spoofed" label="Spoofed" />
         <a className="masthead__brand display" href="/spoofed">
           <ItkMark />
           Spoofed
@@ -69,6 +72,8 @@ function Game({ day }: { day: ItkDay }) {
   // Coming back to a finished day goes straight to the result.
   const [finished, setFinished] = useState(done);
   const [pending, setPending] = useState<number | null>(null);
+  // Tells the hub. Keyed by the day's own date, so an archive day never counts as today.
+  useEffect(() => { if (done) markDone('spoofed', day.date); }, [done, day.date]);
 
   const r = day.rounds[view]!;
   const mark = marks[view];

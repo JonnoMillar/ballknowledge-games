@@ -1,66 +1,26 @@
 /**
- * Every game on the site, in the order the hub shows them. Adding a game is
- * one entry here plus its own route; the hub reads nothing else.
- * Recall XI is parked and left out on purpose.
+ * Every game on the hub, in the order it suggests them. Adding a game is one
+ * entry here plus its own route and icon; the hub reads nothing else.
+ * Recall XI is parked, Slugger was dropped, and Deep Cuts is reached from
+ * inside Chain (the two are due to merge), so none of them are here.
  */
 export type GameCard = {
+  id: string;
   href: string;
   name: string;
-  /** Bold lead-in, then the rest. */
-  lead: string;
-  blurb: string;
-  cta: string;
-  /** Band and link colour. */
-  accent: string;
+  /** What the hub's "up next" card says under the name. Three words at most. */
+  line: string;
+  /** `public/hub/<icon>.webp`. */
+  icon: string;
+  /** A daily is suggested until it is done today; the rest are suggested once every daily is. */
+  daily: boolean;
+  /** Pub games are never the suggestion: you need mates in the room. */
+  pub?: boolean;
 };
 
 export const GAMES: readonly GameCard[] = [
-  {
-    href: '/chain',
-    name: 'Chain',
-    lead: 'A football chain a day.',
-    blurb: 'Name the players who link the givens. Every link is a club two players both played for. Seal it once; your streak counts the days it held.',
-    cta: 'Play today’s chain →',
-    accent: '#C8102E',
-  },
-  {
-    href: '/deep',
-    name: 'Deep Cuts',
-    lead: 'Going deep is the point.',
-    blurb: 'Open boards where the players nobody else remembers come back as rarer cards, from bronze up to the Grail. Keep them in your collection.',
-    cta: 'Start digging →',
-    accent: '#7A4E12',
-  },
-  {
-    href: '/rondo',
-    name: 'Rondo',
-    lead: 'A passing game for the pub.',
-    blurb: 'Two to four mates, one phone. Pass to anyone who shared a club; every club you go through is burnt. Three bibs and you’re in the middle.',
-    cta: 'Fancy a game? →',
-    accent: '#F26B1D',
-  },
-  {
-    href: '/slugger',
-    name: 'Slugger',
-    lead: 'Football, played as baseball.',
-    blurb: 'The pitcher throws a club; the batter names someone who played for it. Barcelona is a single. Bolton is a home run, if they can hit it.',
-    cta: 'Play ball →',
-    accent: '#1F6F43',
-  },
-  {
-    href: '/pin',
-    name: 'Pitch pin',
-    lead: 'Where was it struck from?',
-    blurb: 'Famous goals in packs: each week’s best, the Goal of the Month shortlist, and the classics. A bullseye is within two metres.',
-    cta: 'Take aim →',
-    accent: '#2B4C9B',
-  },
-  {
-    href: '/spoofed',
-    name: 'Spoofed',
-    lead: 'One move never happened.',
-    blurb: 'Five careers a day, club by club. In each, one transfer is made up. Two picks to circle it, and your rank goes from Mascot to Fabrizio.',
-    cta: 'Read today’s careers →',
-    accent: '#5B2A86',
-  },
+  { id: 'chain', href: '/chain', name: 'Chain', line: 'Link the players', icon: 'chain', daily: true },
+  { id: 'spoofed', href: '/spoofed', name: 'Spoofed', line: 'Spot the fake move', icon: 'spoofed', daily: true },
+  { id: 'pin', href: '/pin', name: 'Pitch pin', line: 'Pin the goal', icon: 'pin', daily: false },
+  { id: 'rondo', href: '/rondo', name: 'Rondo', line: 'Pass it round', icon: 'rondo', daily: false, pub: true },
 ];

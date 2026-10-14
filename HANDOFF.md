@@ -6,7 +6,7 @@ path back to full context. The design is in
 
 ## Games
 
-One site; `/` is the hub (`components/Hub.tsx`), a card per game read from
+One site; `/` is the hub (`components/Hub.tsx`): an "up next" card (first daily not done today, per `src/lib/today.ts` and Chain's progress) and an icon per game (`public/hub/`, Higgsfield, tabletop-miniature style Jonno chose 2026-10-14), read from
 `src/games.ts`: add a game there and it appears. Each game is a route. A game's own state of play is in its
 `HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
 are in `CLAUDE.md`.
@@ -16,7 +16,7 @@ are in `CLAUDE.md`.
 | Chain | `/chain`, `/play/NNN` | `src/lib/chain`, `components/` | Live. This file. |
 | Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Live. This file. |
 | Rondo | `/rondo` | `games/rondo` | This file, `games/rondo/DESIGN.md`. |
-| Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | This file. |
+| Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | Off the hub 2026-10-13 (Jonno: not good enough). Route still works. |
 | Recall XI | `/recall-xi` | root | Parked. |
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |

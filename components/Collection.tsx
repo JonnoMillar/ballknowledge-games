@@ -8,6 +8,7 @@ import { clubColour } from '../src/lib/club-colours';
 import { GRADES, GRADE_LINE, GRADE_WORD, type Grade } from '../src/lib/chain/grade';
 import { readCollection, sortedCards, type Card } from '../src/lib/collection';
 import { longDate } from '../src/lib/daily';
+import Back from './Back';
 
 /**
  * The collection: every card won on a Deep Cuts board, grouped by grade,
@@ -36,6 +37,7 @@ export default function Collection() {
   return (
     <div className="app">
       <header className="masthead">
+        <Back href="/deep" label="Deep Cuts" />
         <a className="masthead__brand display" href="/chain">
           <Mark className="masthead__mark" />
           Chain

@@ -11,6 +11,7 @@ import { readCollection } from '../src/lib/collection';
 import { GRADE_GLYPH, pageGrade } from '../src/lib/chain/grade';
 import { MARK_GLYPH } from '../src/lib/chain/share';
 import { plateName } from '../src/lib/short-name';
+import Back from './Back';
 
 /**
  * Deep Cuts: the open boards, where going deep is the point.
@@ -31,6 +32,7 @@ export default function DeepIndex({ boards }: { boards: BoardSummary[] }) {
   return (
     <div className="app">
       <header className="masthead">
+        <Back href="/" label="All games" />
         <a className="masthead__brand display" href="/chain">
           <Mark className="masthead__mark" />
           Chain

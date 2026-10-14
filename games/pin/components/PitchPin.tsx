@@ -7,6 +7,7 @@ import { nextPack, readStore, record, recordThrow, type Store, type Throw } from
 import { points, ring, RING_NAME } from '../lib/score';
 import type { Spot } from '../lib/pitch';
 import type { Answer, BoardView, GoalCard as Card } from '../lib/types';
+import Back from '../../../components/Back';
 
 /**
  * A Pitch pin pack: its goals, one throw each. The page holds no answers;
@@ -75,6 +76,7 @@ export default function PitchPin({ board, order }: {
   return (
     <div className={`app pin${loaded && !done ? ' pin--play' : ''}`}>
       <header className="masthead">
+        <Back href="/pin" label="Pitch pin" />
         <a className="masthead__brand display" href="/pin">
           <PinLogo />
           Pitch pin

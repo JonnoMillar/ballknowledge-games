@@ -4,6 +4,7 @@ import { dateOfDay, dayNumber, localDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import { MAX_POINTS, pointsOf, roundMark, tierOf } from '../lib/score';
 import { allPlayed, type Played } from '../lib/progress';
+import Back from '../../../components/Back';
 import { ItkMark } from './Itk';
 
 /**
@@ -63,6 +64,7 @@ export function ArchivePage({ epoch }: { epoch: string }) {
   return (
     <div className="app itk">
       <header className="masthead">
+        <Back href="/spoofed" label="Spoofed" />
         <a className="masthead__brand display" href="/spoofed">
           <ItkMark />
           Spoofed
