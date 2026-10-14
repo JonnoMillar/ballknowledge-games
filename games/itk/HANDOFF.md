@@ -115,6 +115,21 @@ Verified: typecheck, `npm test` 1,695, Playwright 375 and 1100 for all states
 (fixtures set in localStorage), Play → game, `?date` → #24, archive redirect,
 no console warnings. Not done: prod build, real play-through from the lobby.
 
+**Lobby round 2 (2026-10-14, Jonno's feedback):** the page now says it is the
+daily: tab `Daily #n`, button `Play today's daily` / `Continue today's daily`.
+Headline `Can you spot the spoof?`, sub-line `One of these moves never
+happened.` The demo is a real career laid out like the game (three a row,
+snaking): Ronaldo, Sporting 2002 → Man Utd 2003 → Real Madrid 2009 → **PSG
+2018** (fake; peels to Juventus) → Man Utd 2021 → Al-Nassr 2023
+(`demoCareer()` in `server.ts`). Ronaldo is over `RULES.playerMax`, so he is
+never in a day and the demo spoils nothing; his sticker wears Man Utd red.
+Jonno rejected invented crests ("use real examples", clubs the viewer is
+comfortable with, a player that gives confidence). The archive is folded
+behind an `Archive` button (`<details>`). Sporting CP's `crestUrl` in
+`data/clubs.json` was dead (Commons renamed the .svg to
+`Sporting_Clube_de_Portugal_2026.png`); fixed by hand. Other crest URLs may
+have rotted the same way: not audited.
+
 **Gotchas found this session:**
 - **Vercel only bundles files it can trace.** A file read with `readFile` at
   runtime must be listed in `outputFileTracingIncludes` (`next.config.ts`) or

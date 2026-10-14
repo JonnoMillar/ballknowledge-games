@@ -3,7 +3,7 @@ import { loadData } from '../../src/server/board';
 import { clubColour, signatureClub } from '../../src/lib/club-colours';
 import { dayNumber } from '../../src/lib/daily';
 import { addDays, EPOCH, type StoredDay } from './lib/day';
-import type { ItkDay, Verdict } from './lib/types';
+import type { ItkDay, ItkRound, Verdict } from './lib/types';
 
 /**
  * ITK's daily, read from the committed schedule (games/itk/data/days.json,
@@ -45,6 +45,37 @@ export async function loadDay(date: string): Promise<ItkDay | null> {
         stops: r.stops.map((s) => ({ clubId: s.club, name: clubs[s.club]?.name ?? s.club, year: s.year, loan: s.loan })),
       };
     }),
+  };
+}
+
+/**
+ * The lobby's demo: a career every fan knows, with one fake a fan rules out
+ * at a glance. Ronaldo is over `RULES.playerMax`, so he never comes up in a
+ * day and the demo spoils nothing. Juventus in 2018 becomes PSG.
+ */
+const DEMO = {
+  player: 'Q11571',
+  stops: [['Q75729', 2002], ['Q18656', 2003], ['Q8682', 2009], ['Q483020', 2018], ['Q18656', 2021], ['Q482764', 2023]] as const,
+  fake: 3,
+  real: 'Q1422',
+};
+
+export interface DemoCareer { round: ItkRound; fake: number; real: { clubId: string; name: string } }
+
+export async function demoCareer(): Promise<DemoCareer> {
+  const { byId, images, clubs } = await loadData();
+  const p = byId.get(DEMO.player)!;
+  const club = (id: string) => ({ clubId: id, name: clubs[id]?.name ?? id });
+  return {
+    round: {
+      player: { id: p.id, name: p.name },
+      image: images[p.id] ?? null,
+      // The club everyone pictures him in, not his most-appearances club.
+      ground: clubColour('Q18656'),
+      stops: DEMO.stops.map(([id, year]) => ({ ...club(id), year, loan: false })),
+    },
+    fake: DEMO.fake,
+    real: club(DEMO.real),
   };
 }
 

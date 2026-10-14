@@ -1,6 +1,8 @@
 'use client';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Figure, StickerFace, solid } from '../../../components/Sticker';
+import { shortClubName } from '../../../components/ClubBadge';
+import { crestPath } from '../../../src/lib/clubs';
 import { dayNumber, localDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import Archive, { marksOf, pastDays, playUrl } from './Archive';
@@ -9,18 +11,19 @@ import { Loop } from './Trail';
 import { ResultSticker } from './Reveal';
 import { pointsOf, tierOf } from '../lib/score';
 import { allPlayed, type Played } from '../lib/progress';
-import type { ItkDay } from '../lib/types';
+import type { ItkDay, ItkStop } from '../lib/types';
+import type { DemoCareer } from '../server';
 
 /**
- * The way in. One page of the album with one red button on it.
+ * The way in: today's daily, on one album page with one red button.
  *
- * Never played: what the game is, shown rather than told (a looping demo),
+ * Never played: the question, a looping demo on a career everyone knows,
  * and Play. Today not started: five empty slots and Play. Part played: the
- * careers you have done stuck in their slots, and Continue. Done: your
- * card, the five, the time to the next day, and the newest day you have not
- * finished as the one thing left to do. The archive sits below.
+ * careers you have done stuck in their slots, and Continue. Done: your card,
+ * the five, the time to the next day, and the newest day you have not
+ * finished. Past days wait behind the Archive button.
  */
-export default function Lobby({ epoch }: { epoch: string }) {
+export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer }) {
   // Read after mount: localStorage is the player's, and the server render knows nothing of it.
   const [me, setMe] = useState<{ today: string; played: Record<string, Played> } | null>(null);
   useEffect(() => setMe({ today: localDate(), played: allPlayed() }), []);
@@ -43,6 +46,7 @@ export default function Lobby({ epoch }: { epoch: string }) {
   const past = me ? pastDays(me.today, epoch) : [];
   const n = today ? dayNumber(today, epoch) : 0;
   const unfinished = me ? past.find((d) => !marksOf(me.played[d]).every(Boolean)) : undefined;
+  const tab = <div className="itk-stage__tab itk-stage__tab--hard display">Daily #{n}</div>;
 
   return (
     <div className="app itk">
@@ -60,14 +64,17 @@ export default function Lobby({ epoch }: { epoch: string }) {
           <section className="itk-lobby itk-lobby--wait" aria-hidden />
         ) : fresh ? (
           <section className="itk-lobby itk-lobby--hero">
-            <div className="itk-stage__tab itk-stage__tab--hard display">#{n}</div>
-            <h1 className="itk-lobby__headline display">One move never happened</h1>
-            <Demo />
-            <a className="itk-lobby__play display" href="/spoofed/play">Play</a>
+            {tab}
+            <div className="itk-lobby__ask">
+              <h1 className="itk-lobby__headline display">Can you spot the spoof?</h1>
+              <p className="itk-lobby__sub">One of these moves never happened.</p>
+            </div>
+            <Demo demo={demo} />
+            <a className="itk-lobby__play display" href="/spoofed/play">Play today&apos;s daily</a>
           </section>
         ) : done ? (
           <section className="itk-lobby itk-lobby--done">
-            <div className="itk-stage__tab itk-stage__tab--hard display">#{n}</div>
+            {tab}
             <a className="itk-lobby__result" href="/spoofed/play" aria-label="Today's result">
               <ResultSticker rung={tierOf(marks as PlateMark[])} points={pointsOf(marks as PlateMark[])} />
             </a>
@@ -81,17 +88,19 @@ export default function Lobby({ epoch }: { epoch: string }) {
           </section>
         ) : (
           <section className="itk-lobby">
-            <div className="itk-stage__tab itk-stage__tab--hard display">#{n}</div>
+            {tab}
             <Slots day={day} marks={marks} />
-            <a className="itk-lobby__play display" href="/spoofed/play">{started ? 'Continue' : 'Play'}</a>
+            <a className="itk-lobby__play display" href="/spoofed/play">
+              {started ? 'Continue today’s daily' : 'Play today’s daily'}
+            </a>
           </section>
         )}
 
         {past.length ? (
-          <section className="itk-lobby__archive">
-            <h2 className="itk-lobby__head display">Archive</h2>
+          <details className="itk-lobby__archive">
+            <summary className="itk-lobby__more display">Archive</summary>
             <Archive days={past} today={me!.today} epoch={epoch} played={me!.played} />
-          </section>
+          </details>
         ) : null}
       </main>
     </div>
@@ -135,45 +144,61 @@ function Countdown() {
 }
 
 /**
- * What you do, with no words: a career of made-up crests, the marker circles
- * one, it peels off and the real one is underneath. Invented clubs, so it
- * spoils no day. CSS only, a 7 s loop; reduced motion shows the last frame.
+ * What you do, with no instructions: a career everyone knows, laid out as
+ * the game lays it out (three a row, snaking back). The marker circles the
+ * fake, it peels off, the real club is underneath. CSS only, a 7 s loop;
+ * reduced motion shows the last frame.
  */
-const CRESTS = [
-  { year: 2012, crest: 'halves', a: '#1F4E9C', b: '#F2F0EA' },
-  { year: 2015, crest: 'stripes', a: '#C8202F', b: '#F2F0EA' },
-  { year: 2017, crest: 'sash', a: '#F2C318', b: '#1B1B1B' },
-  { year: 2020, crest: 'hoop', a: '#6CABDD', b: '#F2F0EA' },
+const SPOTS = [
+  { col: 1, row: 1 }, { col: 2, row: 1 }, { col: 3, row: 1 },
+  { col: 3, row: 2 }, { col: 2, row: 2 }, { col: 1, row: 2 },
 ];
-const REAL = { crest: 'halves', a: '#7A263A', b: '#9BC3E6' };
+// Card centres as a share of the board, for the route behind the cards.
+const X = [12.67, 50, 87.33];
+const Y = [25, 75];
 
-function Face({ year, crest, a, b }: { year: number; crest: string; a: string; b: string }) {
+function Face({ stop, clubId, name }: { stop: ItkStop; clubId: string; name: string }) {
   return (
     <span className="itk-demo__face">
-      <span className="itk-demo__year display">{year}</span>
-      <span className={`itk-demo__crest itk-demo__crest--${crest}`} style={{ ['--a' as string]: a, ['--b' as string]: b }} />
-      <span className="itk-demo__name" />
+      <span className="itk-demo__year display">{stop.year}</span>
+      <img className="itk-demo__crest" src={crestPath(clubId)} alt="" draggable={false} />
+      <span className="itk-demo__name display">{shortClubName(name)}</span>
     </span>
   );
 }
 
-function Demo() {
+function Demo({ demo }: { demo: DemoCareer }) {
+  const { round, fake, real } = demo;
   return (
     <div className="itk-demo" aria-hidden>
-      {CRESTS.map((c, i) => (
-        <Fragment key={i}>
-          {i ? <span className={`itk-demo__leg ${i === 2 || i === 3 ? 'is-mended' : ''}`} /> : null}
-          {i === 2 ? (
-            <span className="itk-demo__card is-fake">
-              <Face {...REAL} year={c.year} />
-              <span className="itk-demo__peel"><Face {...c} /></span>
-              <Loop className="itk-demo__loop" />
-            </span>
-          ) : (
-            <span className="itk-demo__card"><Face {...c} /></span>
-          )}
-        </Fragment>
-      ))}
+      <div className="itk-demo__who">
+        <StickerFace player={round.player} image={round.image ?? undefined} ground={solid(round.ground)} className="sticker--still" />
+      </div>
+      <div className="itk-demo__board">
+        <svg className="itk-demo__route">
+          {SPOTS.slice(0, -1).map((a, i) => {
+            const b = SPOTS[i + 1]!;
+            return (
+              <line
+                key={i}
+                className={i === fake - 1 || i === fake ? 'is-mended' : ''}
+                x1={`${X[a.col - 1]}%`} y1={`${Y[a.row - 1]}%`} x2={`${X[b.col - 1]}%`} y2={`${Y[b.row - 1]}%`}
+              />
+            );
+          })}
+        </svg>
+        {round.stops.map((s, i) => (
+          <span key={i} className={`itk-demo__card ${i === fake ? 'is-fake' : ''}`} style={{ gridColumn: SPOTS[i]!.col, gridRow: SPOTS[i]!.row }}>
+            {i === fake ? (
+              <>
+                <Face stop={s} clubId={real.clubId} name={real.name} />
+                <span className="itk-demo__peel"><Face stop={s} clubId={s.clubId} name={s.name} /></span>
+                <Loop className="itk-demo__loop" />
+              </>
+            ) : <Face stop={s} clubId={s.clubId} name={s.name} />}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
