@@ -48,11 +48,25 @@ export function factOf(x: Player, given: Player, club: string): number {
   return Math.min(factFame(x, [{ player: given }], 'clubs'), x.fame.value * spellWeight(x.spells?.[club]));
 }
 
+/**
+ * The two answers a step shows once it is played: the obvious one (the best
+ * known fact) and the deepest checkable one. Null on an empty field.
+ */
+export function endsOf(given: Player, club: string, field: readonly Player[]): { obvious: Player | null; elite: Player | null } {
+  const fact = (p: Player) => factOf(p, given, club);
+  const checkable = field.filter((p) => p.fame.value >= CHECKABLE);
+  const pick = (xs: readonly Player[], better: (a: number, b: number) => boolean) =>
+    xs.reduce<Player | null>((best, p) => (best === null || better(fact(p), fact(best)) ? p : best), null);
+  return { obvious: pick(field, (a, b) => a > b), elite: pick(checkable.length > 0 ? checkable : field, (a, b) => a < b) };
+}
+
 export interface Judged {
   held: boolean;
   grade: Grade | null;
   /** The club the pick shared with the given, the most prominent one. Null when it did not hold. */
   via: string | null;
+  /** The best known answer on the step, whatever was picked. */
+  obvious: Player | null;
   /** The deepest checkable answer on the step, whatever was picked. */
   elite: Player | null;
 }
@@ -60,12 +74,10 @@ export interface Judged {
 export function judge(pick: Player, given: Player, club: string, members: readonly Player[]): Judged {
   const field = fieldOf(given, members);
   const fact = (p: Player) => factOf(p, given, club);
-  const checkable = field.filter((p) => p.fame.value >= CHECKABLE);
-  const elite = (checkable.length > 0 ? checkable : field)
-    .reduce<Player | null>((best, p) => (best === null || fact(p) < fact(best) ? p : best), null);
+  const { obvious, elite } = endsOf(given, club, field);
 
   const held = field.some((p) => p.id === pick.id);
-  if (!held) return { held, grade: null, via: null, elite };
+  if (!held) return { held, grade: null, via: null, obvious, elite };
   const mine = fact(pick);
   const above = field.filter((p) => p.id !== pick.id && fact(p) > mine).length;
   const isElite = elite !== null && field.length >= ELITE_MIN_FIELD && mine <= fact(elite);
@@ -73,6 +85,7 @@ export function judge(pick: Player, given: Player, club: string, members: readon
     held,
     grade: gradeOf(above, field.length, isElite),
     via: sharedClubsByProminence(pick, given)[0] ?? null,
+    obvious,
     elite,
   };
 }

@@ -1,4 +1,4 @@
-import { STEPS, fieldOf, stepsOf, CHECKABLE, type Givens } from './rules';
+import { STEPS, endsOf, fieldOf, stepsOf, CHECKABLE, type Givens } from './rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 /**
@@ -22,8 +22,10 @@ export const TOP_UP = 28;
  * field 37. Same given and club rules as Deep Cuts (scripts/build-deep-cuts.ts).
  */
 export const RULES = {
-  /** Givens a British fan places at once (sitelink fame). */
+  /** Givens a British fan places at once (sitelink fame)... */
   givenFame: 70,
+  /** ...who played in the Premier League, are British, or are this famous everywhere. */
+  givenIcon: 90,
   givenMinClubs: 2,
   givenMaxClubs: 6,
   /** The club: one of the biggest this many in the pool, in a followed league. */
@@ -34,9 +36,10 @@ export const RULES = {
   minCheckable: 12,
   /** ...and an obvious way in: the most famous answer is a name people hold. */
   minEntry: 60,
-  /** A given player is not back within this many days; a club not within clubGap. A step never repeats. */
-  givenGap: 21,
+  /** A given player is not back within this many days, a club within clubGap, a step (given and club) within stepGap. */
+  givenGap: 14,
   clubGap: 7,
+  stepGap: 120,
 } as const;
 
 /** Top-flight leagues the audience follows, as in scripts/build-deep-cuts.ts. */
@@ -44,6 +47,10 @@ const FOLLOWED_LEAGUES = new Set([
   'Q9448', 'Q19510', 'Q19565', 'Q15804', 'Q324867', 'Q82595', 'Q13394',
   'Q167541', 'Q182994', 'Q14377162', 'Q485568',
 ]);
+/** The Premier League: every day has a club from it, and a given needs a spell in it unless British or an icon. */
+const PREMIER_LEAGUE = 'Q9448';
+/** England, Scotland, Wales, Northern Ireland, the United Kingdom. */
+const BRITISH = new Set(['Q21', 'Q22', 'Q25', 'Q26', 'Q145']);
 /** Managers whose playing careers are not what anyone knows them for. */
 const NOT_A_GIVEN = new Set(['Q4462', 'Q207431']); // Joachim Löw, Louis van Gaal
 
@@ -54,7 +61,15 @@ export interface World {
   good: Map<string, Set<string>>;
   /** Per club, the givens it makes a good step with. */
   givensAt: Map<string, string[]>;
+  /** Each good step's answers, by stepKey. */
+  fields: Map<string, Set<string>>;
+  /** Each good step's obvious and deepest answers, the two shown once it is played, by stepKey. */
+  shown: Map<string, string[]>;
+  /** The clubs in the pool whose league is the Premier League. */
+  english: Set<string>;
 }
+
+const stepKey = (player: string, club: string) => `${player}|${club}`;
 
 export function buildWorld(pool: readonly Player[]): World {
   const byId = new Map(pool.map((p) => [p.id, p]));
@@ -75,11 +90,19 @@ export function buildWorld(pool: readonly Player[]): World {
     .map(([id]) => id)
     .filter((id) => FOLLOWED_LEAGUES.has(league(id) ?? ''));
   const givens = pool.filter((p) => p.fame.value >= RULES.givenFame && !NOT_A_GIVEN.has(p.id)
-    && p.clubIds.length >= RULES.givenMinClubs && p.clubIds.length <= RULES.givenMaxClubs);
+    && p.clubIds.length >= RULES.givenMinClubs && p.clubIds.length <= RULES.givenMaxClubs
+    && (p.leagueIds.includes(PREMIER_LEAGUE) || BRITISH.has(p.nation) || p.fame.value >= RULES.givenIcon));
 
-  const world: World = { byId, byClub, good: new Map(), givensAt: new Map() };
+  const world: World = {
+    byId, byClub, good: new Map(), givensAt: new Map(), fields: new Map(), shown: new Map(),
+    english: new Set(clubs.filter((c) => league(c) === PREMIER_LEAGUE)),
+  };
   for (const g of givens) for (const c of clubs) {
     if (!isGood(world, g, c)) continue;
+    const field = fieldOf(g, byClub.get(c)!);
+    const { obvious, elite } = endsOf(g, c, field);
+    world.fields.set(stepKey(g.id, c), new Set(field.map((p) => p.id)));
+    world.shown.set(stepKey(g.id, c), [obvious!.id, elite!.id]);
     if (!world.good.has(g.id)) world.good.set(g.id, new Set());
     world.good.get(g.id)!.add(c);
     if (!world.givensAt.has(c)) world.givensAt.set(c, []);
@@ -117,9 +140,7 @@ const shuffle = <T>(xs: readonly T[], rand: () => number): T[] => {
   return a;
 };
 
-const stepKey = (player: string, club: string) => `${player}|${club}`;
-
-/** What the history rules out on `date`: givens and clubs still cooling, and every step already used. */
+/** What the history rules out on `date`: givens, clubs and steps still cooling. */
 function cooling(history: readonly StoredDay[], date: string) {
   const players = new Set<string>();
   const clubs = new Set<string>();
@@ -128,15 +149,42 @@ function cooling(history: readonly StoredDay[], date: string) {
     const ago = daysBetween(d.date, date);
     if (ago < RULES.givenGap) d.players.forEach((p) => players.add(p));
     if (ago < RULES.clubGap) d.clubs.forEach((c) => clubs.add(c));
-    for (const s of stepsOf(d)) steps.add(stepKey(s.player, s.club));
+    if (ago < RULES.stepGap) for (const s of stepsOf(d)) steps.add(stepKey(s.player, s.club));
   }
   return { players, clubs, steps };
 }
 
 /**
+ * What keeps a day's steps apart, for a sequence P1 C1 P2 … built so far;
+ * null when nothing clashes. Two givens either side of a club played for
+ * none of the same clubs, so each step makes you think of different teams;
+ * the answers a step shows once played (the obvious and the deepest) answer
+ * no other step that day, so showing them gives nothing away; and a full day
+ * has a Premier League club.
+ *
+ * Steps may still share an answer otherwise: no two answer pools apart is
+ * almost never possible (82 of 23,709 club-sharing pairs, 2026-10-14).
+ */
+export function clash(world: Pick<World, 'byId' | 'fields' | 'shown' | 'english'>, seq: readonly string[]): string | null {
+  for (let i = 2; i < seq.length; i += 2) {
+    const a = world.byId.get(seq[i - 2]!)!;
+    const b = world.byId.get(seq[i]!)!;
+    if (a.clubIds.some((c) => b.clubIds.includes(c))) return `${a.id} and ${b.id} share a club`;
+  }
+  const keys = seq.slice(1).map((_, k) => (k % 2 === 0 ? stepKey(seq[k]!, seq[k + 1]!) : stepKey(seq[k + 1]!, seq[k]!)));
+  for (const [k, key] of keys.entries()) for (const [j, other] of keys.entries()) {
+    if (j === k) continue;
+    const id = (world.shown.get(key) ?? []).find((x) => world.fields.get(other)?.has(x));
+    if (id) return `${id}, shown after step ${k + 1}, answers step ${j + 1}`;
+  }
+  if (seq.length === STEPS + 1 && !seq.some((x, i) => i % 2 === 1 && world.english.has(x))) return 'no Premier League club';
+  return null;
+}
+
+/**
  * One day: P1 C1 P2 C2 P3, every adjacent pair a good, unused step, nobody
- * and no club twice, nothing still cooling. A seeded depth-first search, so
- * the same history and date always give the same day.
+ * and no club twice, nothing still cooling, nothing clashing. A seeded
+ * depth-first search, so the same history and date always give the same day.
  */
 export function composeDay(world: World, history: readonly StoredDay[], date: string): StoredDay {
   const rand = seeded(`step:${date}`);
@@ -155,7 +203,7 @@ export function composeDay(world: World, history: readonly StoredDay[], date: st
       if (used.has(next) || (wantPlayer ? cool.players : cool.clubs).has(next)) continue;
       if (last !== undefined && cool.steps.has(wantPlayer ? stepKey(next, last) : stepKey(last, next))) continue;
       seq.push(next); used.add(next);
-      if (grow()) return true;
+      if (clash(world, seq) === null && grow()) return true;
       seq.pop(); used.delete(next);
     }
     return false;
@@ -191,5 +239,8 @@ export function problems(world: World, day: StoredDay, history: readonly StoredD
     if (!given || !isGood(world, given, s.club)) out.push(`${day.date}: ${s.player} with ${s.club} is not a good step`);
     if (cool.steps.has(stepKey(s.player, s.club))) out.push(`${day.date}: ${s.player} with ${s.club} used before`);
   }
+  const seq = day.players.flatMap((p, i) => (day.clubs[i] ? [p, day.clubs[i]!] : [p]));
+  const c = out.length ? null : clash(world, seq);
+  if (c) out.push(`${day.date}: ${c}`);
   return out;
 }

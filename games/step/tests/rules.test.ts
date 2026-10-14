@@ -62,8 +62,10 @@ describe('judge', () => {
     expect(judge(deep, given, 'C', members).grade).toBe('sharp');
   });
 
-  it('names the deepest checkable answer, whatever was picked', () => {
-    expect(judge(stranger, given, 'C', members).elite?.id).toBe('deep');
+  it('names the obvious and the deepest checkable answers, whatever was picked', () => {
+    const j = judge(stranger, given, 'C', members);
+    expect(j.obvious?.id).toBe('famous');
+    expect(j.elite?.id).toBe('deep');
   });
 
   it('Elite needs a field of eight or more', () => {
@@ -92,7 +94,7 @@ describe('runGrade', () => {
 
 describe('shareLine', () => {
   it('a glyph per step and the run, never a name', () => {
-    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Decent\n🟦🟥🟫🏆');
+    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Armchair\n🟦🟥🟫🏆');
     expect(shareLine(3, [null, null, null, null])).toBe('Step #3 · Ball knowledge: none\n🟥🟥🟥🟥');
   });
 });

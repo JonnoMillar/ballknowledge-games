@@ -85,6 +85,7 @@ export async function judgePick(date: string, step: number, pickId: string, earl
     held: j.held,
     grade: j.grade,
     pick: await card(pick, j.via),
+    obvious: j.obvious ? await card(j.obvious, sharedClubsByProminence(j.obvious, given)[0] ?? null) : null,
     elite: j.elite ? await card(j.elite, sharedClubsByProminence(j.elite, given)[0] ?? null) : null,
   };
 }

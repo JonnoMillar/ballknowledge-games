@@ -61,6 +61,7 @@ describe('the wire', () => {
     expect(v?.grade).not.toBeNull();
     expect(v?.pick.clubs?.[1].id).toBe(step.club);
     expect(v?.elite).not.toBeNull();
+    expect(v?.obvious).not.toBeNull();
   });
 
   it('a pick that does not fit holds nothing', async () => {

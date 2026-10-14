@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { buildWorld, composeDay, extend, isGood, problems, addDays, EPOCH } from '../lib/day';
+import { buildWorld, clash, composeDay, extend, isGood, problems, addDays, EPOCH } from '../lib/day';
 import { stepsOf } from '../lib/rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
@@ -8,7 +8,7 @@ const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
 const world = buildWorld(pool);
 
 describe('the world', () => {
-  it('has enough good steps for a daily (1,643 measured 2026-10-14)', () => {
+  it('has enough good steps for a daily (1,254 measured 2026-10-14)', () => {
     const steps = [...world.good.values()].reduce((n, s) => n + s.size, 0);
     expect(steps).toBeGreaterThan(1000);
   });
@@ -38,6 +38,26 @@ describe('the schedule', () => {
   it('problems() catches a repeat', () => {
     const tomorrow = { ...days[0]!, date: addDays(days[0]!.date, 1) };
     expect(problems(world, tomorrow, days.slice(0, 1)).length).toBeGreaterThan(0);
+  });
+
+  it('keeps steps apart: no shared club either side of a club, no shown answer fits another step, a Premier League club', () => {
+    for (const d of days) {
+      const seq = d.players.flatMap((p, i) => (d.clubs[i] ? [p, d.clubs[i]!] : [p]));
+      expect(clash(world, seq)).toBeNull();
+      expect(d.clubs.some((c) => world.english.has(c))).toBe(true);
+    }
+  });
+
+  it('problems() catches two givens who shared a club either side of one', () => {
+    const d = days[0]!;
+    const twin = [...world.good.keys()].find((p) => p !== d.players[0]
+      && world.byId.get(p)!.clubIds.some((c) => world.byId.get(d.players[0]!)!.clubIds.includes(c)))!;
+    const seq = [d.players[0]!, d.clubs[0]!, twin];
+    expect(clash(world, seq)).toMatch(/share a club/);
+  });
+
+  it('runs two years without a dead end (steps come back after RULES.stepGap days)', () => {
+    expect(extend(world, days, EPOCH, addDays(EPOCH, 729))).toHaveLength(730);
   });
 
   it('a day only depends on what came before it', () => {

@@ -8,7 +8,8 @@ import type { Verdict } from './types';
  */
 export type Run = (Verdict | null)[];
 
-const KEY = 'step.progress.v1';
+// v2: the schedule was rebuilt on 2026-10-14 before launch, so v1 runs belong to other givens.
+const KEY = 'step.progress.v2';
 
 export const allRuns = (): Record<string, Run> => {
   try {

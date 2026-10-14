@@ -62,6 +62,15 @@ run is four Elites: the per-card Elite is the trophy, the Elite run a feat.
 **6. Name** — can wait until before merge. Rejected words to avoid: Casual
 (Spoofed rank), Deep Cut (Krillion's tier).
 
+## Changed after Jonno played it (2026-10-14)
+
+Grade words Plastic, Armchair, Diehard, Anorak, Elite. Pack-opening reveal.
+The linking club and the obvious answer shown after each step. Givens either
+side of a club share no club; a step's shown answers fit no other step that
+day. Givens British-placeable (Premier League spell, British, or fame 90+);
+a Premier League club every day; given gap 14 days; a step may return after
+120 days. Details in HANDOFF.md.
+
 ## Defaults I'll take unless you object
 
 - No player twice in a run. Searched, never listed.

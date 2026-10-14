@@ -11,6 +11,7 @@ import { recordCards, type CardNews } from '../../../src/lib/collection';
 import { localDate } from '../../../src/lib/daily';
 import { plateName } from '../../../src/lib/short-name';
 import { NAME, STEPS, runGrade, shareLine } from '../lib/rules';
+import Slam from './Slam';
 import { loadRun, saveRun, type Run } from '../lib/progress';
 import type { StepCard, StepClub, StepDay, StepGiven, Verdict } from '../lib/types';
 
@@ -19,9 +20,10 @@ import type { StepCard, StepClub, StepDay, StepGiven, Verdict } from '../lib/typ
  * graded, the board slides on to CLUB — ? — NEW PLAYER, four times.
  *
  * Today is the player's own date; `?date=` opens a past day from the
- * archive. Every pick is judged by /api/step/pick, and the deepest answer of
- * each step, which comes back with its verdict, stays hidden until the run
- * is over: step one's answers all played for the club step two shares.
+ * archive. Every pick is judged by /api/step/pick. The verdict opens like a
+ * pack (Slam), then says which club linked the pick and the obvious answer;
+ * the schedule keeps that answer out of the day's other steps. The deepest
+ * answers wait for the end.
  */
 export default function Step() {
   const [day, setDay] = useState<StepDay | null | undefined>(undefined);
@@ -87,6 +89,8 @@ function Game({ day }: { day: StepDay }) {
   const [searching, setSearching] = useState(false);
   const [pending, setPending] = useState(false);
   const [news, setNews] = useState<CardNews>(null);
+  // A verdict just judged plays its reveal; until it ends the strip and pips keep the result back.
+  const [revealing, setRevealing] = useState(false);
   const index = useAlbum();
 
   const step = day.steps[view]!;
@@ -111,6 +115,7 @@ function Game({ day }: { day: StepDay }) {
     setRun(next);
     saveRun(day.date, next);
     setChosen(null);
+    setRevealing(true);
     if (res.held && res.grade && res.pick.clubs) {
       const clubs = res.pick.clubs;
       const n = recordCards([{
@@ -139,29 +144,30 @@ function Game({ day }: { day: StepDay }) {
     <>
       <ol className="step-pips" aria-label="Steps">
         {run.map((v, i) => (
-          <li key={i} className={`step-pip ${i === view ? 'is-current' : ''} ${v ? (v.held ? 'is-held' : 'is-missed') : ''}`}>
-            {v ? (v.held ? '✓' : '✕') : i + 1}
+          <li key={i} className={`step-pip ${i === view ? 'is-current' : ''} ${v && !(revealing && i === view) ? (v.held ? 'is-held' : 'is-missed') : ''}`}>
+            {v && !(revealing && i === view) ? (v.held ? '✓' : '✕') : i + 1}
           </li>
         ))}
       </ol>
 
-      <Track day={day} run={run} view={view} chosen={chosen} onOpen={() => !verdict && setSearching(true)} />
+      <Track day={day} run={run} view={view} chosen={chosen} hidden={revealing ? view : -1} onOpen={() => !verdict && setSearching(true)} />
 
       <section className="step-act" aria-live="polite">
         {verdict ? (
           <>
-            {verdict.held && verdict.grade ? (
-              <div className="step-verdict">
-                <span className="step-verdict__kicker">Ball knowledge</span>
-                <Slab grade={verdict.grade} player={verdict.pick} image={verdict.pick.image ?? undefined} ground={cardGround(verdict.pick, step.playerFirst)} news={news ?? undefined} />
-              </div>
-            ) : (
-              <div className="step-verdict step-verdict--missed">
-                <span className="step-miss" aria-hidden>✕</span>
-                <span className="step-verdict__head display">Doesn’t fit</span>
-              </div>
-            )}
-            <button type="button" className="seal" onClick={next}>{view === STEPS - 1 ? 'Your run' : 'Next'}</button>
+            <div className="step-verdict">
+              {revealing || verdict.held ? <span className="step-verdict__kicker">Ball knowledge</span> : null}
+              <Slam
+                key={view}
+                verdict={verdict}
+                ground={cardGround(verdict.pick, step.playerFirst)}
+                news={news ?? undefined}
+                play={revealing}
+                onDone={() => setRevealing(false)}
+              />
+              {revealing ? null : <After verdict={verdict} playerFirst={step.playerFirst} />}
+            </div>
+            {revealing ? null : <button type="button" className="seal" onClick={next}>{view === STEPS - 1 ? 'Your run' : 'Next'}</button>}
           </>
         ) : chosen ? (
           <>
@@ -172,8 +178,8 @@ function Game({ day }: { day: StepDay }) {
           <>
             <p className="step-act__rule">
               {step.playerFirst
-                ? <>Played with <b>{playerName}</b> and for <b>{clubName}</b></>
-                : <>Played for <b>{clubName}</b> and with <b>{playerName}</b></>}
+                ? <>Played for one of <b>{playerName}’s</b> clubs and for <b>{clubName}</b></>
+                : <>Played for <b>{clubName}</b> and one of <b>{playerName}’s</b> clubs</>}
             </p>
             <button type="button" className="seal" onClick={() => setSearching(true)}>Name a player</button>
           </>
@@ -199,8 +205,8 @@ function Game({ day }: { day: StepDay }) {
  * The whole run as one strip, P1 ? C1 ? P2 ? C2 ? P3, slid so the step on
  * screen is in the middle. Moving on is the strip sliding one club along.
  */
-function Track({ day, run, view, chosen, onOpen }: {
-  day: StepDay; run: Run; view: number; chosen: NameEntry | null; onOpen: () => void;
+function Track({ day, run, view, chosen, hidden, onOpen }: {
+  day: StepDay; run: Run; view: number; chosen: NameEntry | null; hidden: number; onOpen: () => void;
 }) {
   const items: ({ kind: 'player'; p: StepGiven } | { kind: 'club'; c: StepClub } | { kind: 'gap'; i: number })[] = [];
   day.steps.forEach((s, i) => {
@@ -211,7 +217,7 @@ function Track({ day, run, view, chosen, onOpen }: {
   const near = (k: number) => k >= view * 2 && k <= view * 2 + 2;
 
   const linkState = (gap: number) => {
-    const v = run[gap];
+    const v = gap === hidden ? null : run[gap];
     return v ? (v.held ? 'link--held' : 'link--broken') : '';
   };
 
@@ -223,7 +229,7 @@ function Track({ day, run, view, chosen, onOpen }: {
             ? <StickerFace player={it.p} image={it.p.image ?? undefined} ground={solid(it.p.ground)} className="sticker--still" />
             : it.kind === 'club'
               ? <ClubSticker c={it.c} />
-              : <Gap index={it.i} verdict={run[it.i] ?? null} live={it.i === view} chosen={it.i === view ? chosen : null} playerFirst={day.steps[it.i]!.playerFirst} onOpen={onOpen} />;
+              : <Gap index={it.i} verdict={run[it.i] ?? null} hidden={it.i === hidden} live={it.i === view} chosen={it.i === view ? chosen : null} playerFirst={day.steps[it.i]!.playerFirst} onOpen={onOpen} />;
           const out = [<div key={`c${k}`} className={`step-track__cell ${near(k) ? 'is-near' : ''}`}>{cell}</div>];
           // The link after cell k joins it to cell k + 1; both touch gap floor(k / 2).
           if (k < items.length - 1) {
@@ -241,9 +247,16 @@ function Track({ day, run, view, chosen, onOpen }: {
 }
 
 /** The gap: a silhouette to tap, the name you chose, or the pick once judged. */
-function Gap({ index, verdict, live, chosen, playerFirst, onOpen }: {
-  index: number; verdict: Verdict | null; live: boolean; chosen: NameEntry | null; playerFirst: boolean; onOpen: () => void;
+function Gap({ index, verdict, hidden, live, chosen, playerFirst, onOpen }: {
+  index: number; verdict: Verdict | null; hidden: boolean; live: boolean; chosen: NameEntry | null; playerFirst: boolean; onOpen: () => void;
 }) {
+  if (verdict && hidden) {
+    return (
+      <div className="step-gap">
+        <StickerFace player={verdict.pick} image={verdict.pick.image ?? undefined} ground={neutral()} className="sticker--still" />
+      </div>
+    );
+  }
   if (verdict) {
     return (
       <div className="step-gap">
@@ -269,6 +282,36 @@ function Gap({ index, verdict, live, chosen, playerFirst, onOpen }: {
     <div className="sticker sticker--empty sticker--still step-gap--later" aria-hidden>
       <span className="sticker__photo"><Figure tone="var(--silhouette-figure)" /></span>
       <span className="sticker__plate"><span className="sticker__hint">?</span></span>
+    </div>
+  );
+}
+
+/**
+ * After the reveal: the club that linked the pick to the given (or that it
+ * does not fit), then the obvious answer unless that was the pick.
+ */
+function After({ verdict, playerFirst }: { verdict: Verdict; playerFirst: boolean }) {
+  const via = verdict.held ? verdict.pick.clubs?.[0] : undefined;
+  const o = verdict.obvious;
+  return (
+    <div className="step-after">
+      {via ? (
+        <p className="step-via">
+          <span className="step-via__kicker">Linked by</span>
+          <ClubBadge clubId={via.id} club={via.club} size={22} />
+          <b>{shortClubName(via.club.name)}</b>
+        </p>
+      ) : <p className="step-verdict__head display">Doesn’t fit</p>}
+      {o && o.id !== verdict.pick.id ? (
+        <div className="step-obvious">
+          <StickerFace player={o} image={o.image ?? undefined} ground={cardGround(o, playerFirst)} className="sticker--still" />
+          <div className="step-obvious__text">
+            <span className="step-via__kicker">The obvious one</span>
+            <b>{o.name}</b>
+            {o.clubs ? <span className="step-obvious__via">via {shortClubName(o.clubs[0].club.name)}</span> : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

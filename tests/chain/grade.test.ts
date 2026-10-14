@@ -62,7 +62,7 @@ describe('pageGrade', () => {
 
 describe('deepShareLine', () => {
   it('shows each plate\'s case and the page, never a name', () => {
-    expect(deepShareLine({ title: 'Deep Cuts 104', grades: ['sharp', 'solid'] })).toBe('Deep Cuts 104\n🟦🟨 Solid page');
+    expect(deepShareLine({ title: 'Deep Cuts 104', grades: ['sharp', 'solid'] })).toBe('Deep Cuts 104\n🟦🟨 Diehard page');
   });
 
   it('marks a broken plate red and the page broken', () => {

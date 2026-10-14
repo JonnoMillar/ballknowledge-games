@@ -134,7 +134,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             </span>
             <span className="deep-promo__copy">
               <b>Thirty open boards where going deep is the point.</b> Anyone who links holds; the players nobody else
-              remembers come back as rarer cards, from Basic up to Elite. Keep them in your collection.
+              remembers come back as rarer cards, from Plastic up to Elite. Keep them in your collection.
             </span>
             <span className="also__go deep-promo__go">Start digging →</span>
           </a>
