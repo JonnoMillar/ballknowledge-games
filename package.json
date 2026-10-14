@@ -23,6 +23,7 @@
     "pin:archive": "tsx scripts/import-pin-archive.ts",
     "pin:classics": "tsx scripts/fetch-pin-classics.ts",
     "itk:days": "tsx scripts/itk/build-days.ts",
+    "step:days": "tsx scripts/step/build-days.ts",
     "itk:countries": "tsx scripts/itk/fetch-club-countries.ts",
     "fetch:clubs": "tsx scripts/fetch-clubs.ts",
     "fetch:badges": "tsx scripts/fetch-club-badges.ts --download",
