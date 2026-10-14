@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import Back from '../../../components/Back';
+import { markDone } from '../../../src/lib/today';
 import Sticker, { EmptySticker, Figure, StickerFace, neutral, solid, type Ground } from '../../../components/Sticker';
 import SearchSheet from '../../../components/SearchSheet';
 import Slab, { GradeChip } from '../../../components/Slab';
@@ -41,7 +42,7 @@ export default function Step() {
   return (
     <div className="app step">
       <header className="masthead">
-        <Back href="/" label="All games" />
+        <Back href="/chain" label="Chain" />
         <a className="masthead__brand display" href="/step">
           <StepMark />
           {NAME}
@@ -92,6 +93,8 @@ function Game({ day }: { day: StepDay }) {
   // A verdict just judged plays its reveal; until it ends the strip and pips keep the result back.
   const [revealing, setRevealing] = useState(false);
   const index = useAlbum();
+  // Tells the hubs. Keyed by the run's own date, so an archive run never counts as today.
+  useEffect(() => { if (done) markDone('step', day.date); }, [done, day.date]);
 
   const step = day.steps[view]!;
   const verdict = run[view] ?? null;

@@ -28,7 +28,7 @@ export default function Archive({ epoch }: { epoch: string }) {
   return (
     <div className="app step">
       <header className="masthead">
-        <Back href="/step" label={NAME} />
+        <Back href="/chain" label="Chain" />
         <a className="masthead__brand display" href="/step">
           <StepMark />
           {NAME}

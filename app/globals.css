@@ -1112,99 +1112,85 @@ button { font-family: inherit; }
 }
 
 /* ── THE HUB ───────────────────────────────────────────────────────────
-   One suggestion, carrying the page's only red button, then every game as
-   an icon on a white sticker. No blurbs: each game's front page explains it. */
-.hub__main {
-  width: 100%;
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 20px 16px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.hub__next {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  grid-template-areas: 'icon text' 'play play';
-  gap: 14px 16px;
-  align-items: center;
-  padding: 14px;
-  background: var(--sticker);
-  border-radius: 20px;
-  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 12px 32px rgba(20, 18, 16, 0.10);
-  color: var(--ink);
-  text-decoration: none;
-  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
-  animation: hub-in var(--t-slow) var(--ease-out) both;
-}
-.hub__next--wait { min-height: 186px; box-shadow: none; background: transparent; animation: none; }
-.hub__next:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 18px 40px rgba(20, 18, 16, 0.14); }
-.hub__next:active { transform: scale(0.985); }
-.hub__icon {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  border-radius: 22%;
-  background: #EFE9DE;
-}
-.hub__icon--next { grid-area: icon; }
-.hub__nexttext { grid-area: text; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.hub__nextname { font-size: 38px; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
-.hub__nextline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 15px; color: var(--muted); }
-.hub__streak { background: var(--ink); color: #fff; }
-.hub__play {
-  grid-area: play;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  border-radius: 14px;
-  background: var(--red);
-  color: #fff;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: background var(--t-fast) var(--ease-out);
-}
-.hub__next:hover .hub__play { background: var(--red-deep); }
-
-.hub__grid {
+   A table of games. Each miniature stands on its own coloured ground, lit
+   from above, so the art and the page share one light. The suggestion is
+   the big tile and carries the page's only red button; the pub game runs
+   along the bottom. No blurbs: each game's front page explains itself. */
+.hub__main { width: 100%; max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
+.hub__board {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-auto-flow: dense;
+  gap: 14px;
 }
+.hub__board--wait { min-height: 640px; }
+.hub__cell { display: flex; animation: hub-in var(--t-slow) var(--ease-out) both; }
+.hub__cell:nth-child(2) { animation-delay: 60ms; }
+.hub__cell:nth-child(3) { animation-delay: 120ms; }
+.hub__cell:nth-child(4) { animation-delay: 180ms; }
+.hub__cell--feature, .hub__cell--wide { grid-column: span 2; }
+
 .hub__tile {
+  --lit: color-mix(in srgb, var(--ground) 62%, #fff);
+  --deep: color-mix(in srgb, var(--ground) 72%, #000);
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 10px 12px;
-  background: var(--sticker);
-  border-radius: 18px;
-  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 6px 18px rgba(20, 18, 16, 0.08);
-  color: var(--ink);
+  flex: 1;
+  display: grid;
+  border-radius: 24px;
+  padding: 14px;
+  color: #fff;
   text-decoration: none;
-  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
-  animation: hub-in var(--t-slow) var(--ease-out) both;
+  background: radial-gradient(110% 85% at 50% 28%, var(--lit) 0%, var(--ground) 52%, var(--deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 16px 30px rgba(20, 18, 16, 0.2);
+  transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
 }
-.hub__grid li:nth-child(2) .hub__tile { animation-delay: 40ms; }
-.hub__grid li:nth-child(3) .hub__tile { animation-delay: 80ms; }
-.hub__grid li:nth-child(4) .hub__tile { animation-delay: 120ms; }
-.hub__tile:hover { transform: translateY(-3px) rotate(-0.6deg); box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 14px 28px rgba(20, 18, 16, 0.14); }
-.hub__tile:active { transform: scale(0.97); }
-.hub__name { font-size: 22px; font-weight: 800; line-height: 1; text-transform: uppercase; letter-spacing: 0.02em; }
+.hub__tile:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 24px 40px rgba(20, 18, 16, 0.26); }
+.hub__tile:active { transform: translateY(1px) scale(0.985); }
+.hub__tile:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.hub__mini {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.38));
+  transition: transform var(--t-slow) var(--ease-out), filter var(--t-slow) var(--ease-out);
+  pointer-events: none;
+}
+.hub__tile:hover .hub__mini { transform: translateY(-7px) rotate(-1.5deg); filter: drop-shadow(0 22px 16px rgba(0, 0, 0, 0.32)); }
+
+.hub__tag {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.hub__people { width: 18px; height: 13px; fill: currentColor; }
+.hub__streak { margin-left: 2px; padding-left: 8px; border-left: 1px solid rgba(255, 255, 255, 0.4); font-weight: 700; }
+.hub__pips { display: flex; gap: 4px; margin-left: 2px; padding-left: 8px; border-left: 1px solid rgba(255, 255, 255, 0.4); }
+.hub__pips i { width: 9px; height: 9px; border-radius: 999px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6); }
+.hub__pips i.is-on { background: #fff; box-shadow: none; }
 /* Done today: a green stamp with a tick, so it reads without the colour. */
 .hub__done {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
   display: grid;
   place-items: center;
   width: 30px;
@@ -1214,23 +1200,75 @@ button { font-family: inherit; }
   color: #fff;
   font-size: 17px;
   font-weight: 700;
-  box-shadow: 0 0 0 3px var(--sticker);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9);
   animation: hub-stamp var(--t-base) var(--ease-out) both;
 }
-@keyframes hub-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.hub__words { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.hub__name { font-size: 24px; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.02em; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25); }
+.hub__line { font-size: 14.5px; opacity: 0.88; }
+.hub__play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  border-radius: 16px;
+  background: var(--red);
+  color: #fff;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -3px 0 var(--red-deep), 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: background var(--t-fast) var(--ease-out);
+}
+.hub__tile:hover .hub__play { background: var(--red-deep); }
+
+/* Square: the miniature fills the tile, the name sits under it. */
+.hub__tile--square { grid-template-rows: 1fr auto; padding-top: 30px; }
+.hub__tile--square .hub__mini { width: 92%; margin: 0 auto -6px; }
+
+/* Wide: the miniature on the left, the words beside it. */
+.hub__tile--wide { grid-template-columns: 38% 1fr; align-items: center; gap: 4px 14px; padding: 12px 18px 12px 8px; }
+.hub__tile--wide .hub__tag { left: auto; right: 12px; }
+.hub__tile--wide .hub__mini { margin: 6px 0 -4px; }
+
+/* Feature: on a phone the miniature stands up out of the tile's top edge. */
+.hub__tile--feature {
+  grid-template-columns: 1fr 52%;
+  grid-template-areas: 'words mini' 'play play';
+  align-items: end;
+  gap: 14px 6px;
+  padding: 52px 16px 16px;
+  margin-top: 26px;
+}
+.hub__tile--feature .hub__mini { grid-area: mini; margin: -64px -10px -6px 0; width: calc(100% + 10px); }
+.hub__tile--feature .hub__words { grid-area: words; padding-bottom: 8px; }
+.hub__tile--feature .hub__name { font-size: 42px; }
+.hub__tile--feature .hub__play { grid-area: play; }
+.hub__tile--feature .hub__tag { top: 16px; left: 16px; }
+
+@keyframes hub-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes hub-stamp { from { opacity: 0; transform: scale(1.6) rotate(-12deg); } to { opacity: 1; transform: none; } }
 
-@media (min-width: 640px) {
-  .hub__main { padding-top: 32px; gap: 28px; }
-  .hub__next { grid-template-columns: 148px 1fr auto; grid-template-areas: 'icon text play'; padding: 18px 24px 18px 18px; gap: 24px; }
-  .hub__next--wait { min-height: 184px; }
-  .hub__nextname { font-size: 52px; }
-  .hub__nextline { font-size: 17px; }
-  .hub__play { min-width: 168px; min-height: 60px; font-size: 28px; }
-  .hub__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (min-width: 760px) {
+  .hub__main { padding-top: 36px; }
+  .hub__board { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+  .hub__cell--feature { grid-column: span 2; grid-row: span 2; }
+  .hub__tile--feature {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'mini' 'words' 'play';
+    align-items: stretch;
+    margin-top: 0;
+    padding: 22px 22px 22px;
+    gap: 10px;
+  }
+  .hub__tile--feature .hub__mini { margin: 4px auto -10px; width: 86%; }
+  .hub__tile--feature .hub__name { font-size: 56px; }
+  .hub__tile--feature .hub__line { font-size: 17px; }
+  .hub__tile--feature .hub__play { min-height: 60px; font-size: 28px; }
+  .hub__name { font-size: 26px; }
 }
 
-.also__go { font-size: 14px; font-weight: 600; color: var(--accent, #F26B1D); }
 
 /* ── FOOTER AND CREDITS ────────────────────────────────────────────────
    Every page links here: the Commons photos are licensed per file, and
@@ -1488,20 +1526,6 @@ button { font-family: inherit; }
 .page__tab--deep { background: #0e2a73; }
 .deep-card__grade { position: absolute; top: -12px; right: 14px; z-index: 2; }
 
-.deep-promo__card {
-  display: grid;
-  gap: 12px;
-  padding: 22px 20px 18px;
-  color: var(--ink);
-  text-decoration: none;
-  transition: transform var(--t-fast) var(--ease-out);
-}
-.deep-promo__card:hover { transform: translateY(-1px); }
-.deep-promo__chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.deep-promo__copy { font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 44em; }
-.deep-promo__copy b { color: var(--ink); font-weight: 600; }
-.deep-promo__go { color: var(--red); }
-
 /* ── THE COLLECTION ────────────────────────────────────────────────── */
 .collection__top { display: flex; flex-direction: column; gap: 10px; }
 @media (min-width: 760px) { .collection__top { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
@@ -1543,3 +1567,133 @@ button { font-family: inherit; }
 .collection__empty { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 28px 24px; }
 .collection__empty p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--muted); max-width: 36em; }
 .collection__empty b { color: var(--ink); }
+
+/* ── CHAIN'S HUB ───────────────────────────────────────────────────────
+   Two dailies that must not look alike. Steps is the cards' world: a dark
+   ground lit from above, the miniature of rising cards, white type. The
+   puzzle is the album: a cream page with its board. One red button, on
+   whichever daily is next. */
+.chub { gap: 20px; }
+.chub__steps {
+  --ground: #2A2622;
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  margin: 26px auto 0;
+  padding: 26px 18px 20px;
+  border-radius: 24px;
+  color: #fff;
+  background: radial-gradient(110% 80% at 70% 18%, #5A5148 0%, var(--ground) 55%, #171411 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 0 #171411, 0 18px 36px rgba(20, 18, 16, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chub__tab {
+  align-self: flex-start;
+  padding: 5px 12px 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #F3D27A, #C9952E);
+  color: #2A2014;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.chub__mini {
+  position: absolute;
+  top: -40px;
+  right: -6px;
+  width: 150px;
+  height: auto;
+  filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+.chub__head { margin: 6px 0 0; max-width: 62%; font-size: 36px; font-weight: 800; line-height: 0.95; text-transform: uppercase; }
+.chub__sub { margin: 0; max-width: 70%; font-size: 15px; line-height: 1.4; opacity: 0.85; }
+.chub__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px 0 6px;
+  padding: 14px 10px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --sticker-w: 86px;
+}
+.chub__preview--wait { min-height: 150px; }
+.chub__preview .sticker { width: var(--sticker-w); flex: none; }
+.chub__club { display: flex; flex-direction: column; align-items: center; gap: 6px; width: var(--sticker-w); }
+.chub__clubname { font-size: 15px; font-weight: 700; text-transform: uppercase; text-align: center; line-height: 1; }
+.chub__play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border-radius: 16px;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -3px 0 var(--red-deep), 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+.chub__play:hover { background: var(--red-deep); }
+.chub__after { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+.chub__donemark { font-weight: 700; font-size: 16px; }
+.chub__link { color: #fff; font-weight: 600; text-underline-offset: 3px; }
+/* A daily that is not next: still a button, never red. */
+.chub__quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.chub__quiet:hover { background: var(--ink); color: var(--page); }
+.chub__puzzle { width: 100%; max-width: 880px; margin: 0 auto; }
+.chub__archives { width: 100%; max-width: 880px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.chub__arch {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--sticker);
+  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 6px 18px rgba(20, 18, 16, 0.08);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.chub__arch:first-child { background: #2A2622; color: #fff; }
+.chub__arch:hover { transform: translateY(-2px); }
+.chub__archname { font-size: 22px; font-weight: 800; line-height: 1; text-transform: uppercase; }
+.chub__archline { font-size: 13.5px; opacity: 0.75; }
+.chub__how { width: 100%; max-width: 880px; margin: 0 auto 8px; padding: 0 4px; color: var(--muted); }
+.chub__how summary { cursor: pointer; font-size: 20px; font-weight: 800; text-transform: uppercase; color: var(--ink); }
+.chub__how ol { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.45; }
+.chub__how b { color: var(--ink); font-weight: 600; }
+@media (min-width: 760px) {
+  .chub__steps { padding: 34px 40px 30px; }
+  .chub__mini { top: -36px; right: 24px; width: 230px; }
+  .chub__head { font-size: 52px; }
+  .chub__sub { font-size: 17px; }
+  .chub__preview { --sticker-w: 116px; gap: 24px; justify-content: flex-start; padding: 18px 24px; }
+  .chub__play { align-self: flex-start; min-width: 300px; padding: 0 32px; }
+}

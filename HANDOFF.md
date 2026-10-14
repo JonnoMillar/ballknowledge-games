@@ -6,21 +6,21 @@ path back to full context. The design is in
 
 ## Games
 
-One site; `/` is the hub (`components/Hub.tsx`): an "up next" card (first daily not done today, per `src/lib/today.ts` and Chain's progress) and an icon per game (`public/hub/`, Higgsfield, tabletop-miniature style Jonno chose 2026-10-14), read from
+One site; `/` is the hub (`components/Hub.tsx`): a bento of coloured tiles, each with a cut-out tabletop miniature (`public/hub/`, Higgsfield, style Jonno chose 2026-10-14, backgrounds removed so the art stands on the tile's own lit ground). The big tile is the suggestion (first game with a daily not done today, per `src/lib/today.ts`) and has the page's only red button; the pub game (Rondo, tagged Multiplayer) runs wide along the bottom. Read from
 `src/games.ts`: add a game there and it appears. Each game is a route. A game's own state of play is in its
 `HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
 are in `CLAUDE.md`.
 
 | Game | Route | Code | State |
 |---|---|---|---|
-| Chain | `/chain`, `/play/NNN` | `src/lib/chain`, `components/` | Live. This file. |
-| Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Live. This file. |
+| Chain | `/chain` (hub), `/play/NNN`, `/chain/archive` | `src/lib/chain`, `components/` (`Home.tsx` is the hub, `PuzzleArchive.tsx`) | Live. `/chain` hosts two dailies: Steps (`/step`, top, dark card) and the puzzle (the old Chain daily, cream album page), each with an archive. One red button, on whichever is next. This file. |
+| Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Archived 2026-10-14 (off every nav; routes still work). `/collection` stays: Steps fills it. |
 | Rondo | `/rondo` | `games/rondo` | This file, `games/rondo/DESIGN.md`. |
 | Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | Off the hub 2026-10-13 (Jonno: not good enough). Route still works. |
 | Recall XI | `/recall-xi` | root | Parked. |
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
-| Step | `/step` | `games/step` | Merged to `main` 2026-10-14; daily, not on the hub yet (needs a `public/hub/step.webp` icon). `games/step/HANDOFF.md`. |
+| Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
 
 ## What this is
 

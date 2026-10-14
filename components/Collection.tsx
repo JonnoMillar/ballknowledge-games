@@ -37,7 +37,7 @@ export default function Collection() {
   return (
     <div className="app">
       <header className="masthead">
-        <Back href="/deep" label="Deep Cuts" />
+        <Back href="/chain" label="Chain" />
         <a className="masthead__brand display" href="/chain">
           <Mark className="masthead__mark" />
           Chain
