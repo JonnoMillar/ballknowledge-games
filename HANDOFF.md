@@ -22,6 +22,51 @@ are in `CLAUDE.md`.
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
 
+## The site hub and Chain's hub (2026-10-14)
+
+Shipped to `main` at a04b817 (typecheck clean, `npm test` 1,728 passed, prod
+build clean, checked in the browser at 375 and 1200 wide). Waiting on Jonno's
+verdict on both hubs.
+
+**Decisions, and why**
+- **One red button per screen.** Red is the brand and the "do this" colour,
+  so a screen never has two. `/`: the big tile's Play. `/chain`: Steps' Play,
+  then the puzzle's once Steps is done (its button and Share stay outlined
+  until then), none once both are done.
+- **Icons are cut-out tabletop miniatures on lit, coloured tiles** (Jonno
+  picked style C of three on 2026-10-13). Flat icons on a flat page looked
+  cheap next to realistic art; cutting the art out and lighting the tiles
+  gives the page and the art one light source.
+- **Bento, not a list:** the suggestion is the big tile; Rondo always runs wide
+  with a Multiplayer tag (Jonno asked for that tag and for more variety).
+- **Done state:** a game calls `markDone(id, day.date)` from `src/lib/today.ts`
+  (keyed by the day's own date, so an archive day never counts as today);
+  the puzzle is read from Chain's own progress. Shared code must not import a
+  game, so `/chain` fetches `/api/step/day` for the preview instead of
+  importing Step.
+- **Deep Cuts archived**, not deleted: off every nav, routes work, the
+  collection stays because Steps fills it.
+
+**Open:** "Steps" (hub, Jonno's word) vs "Step" (the game's own masthead):
+ask before renaming. Spoofed's icon came out with a centre circle instead of
+the pundit's ink loop; redo only if Jonno minds.
+
+**Gotchas**
+- The built-in browser pane's screenshots catch CSS entry animations
+  mid-frame or time out; use the Playwright MCP (`browser_wait_for`, then
+  `browser_take_screenshot`) for proof shots. Computed styles say the truth.
+- An import inserted above `'use client'` breaks the build: put it after.
+- Higgsfield: `remove_background` allows 4 concurrent jobs on the pro plan; a
+  generation's job id works as `media_id`. Icons stay consistent only when the
+  Chain sample (`docs/hub-icon-reference.png`, the full tile before cut-out) is passed as the
+  reference. About 0.5–1 credit an image.
+- Icons are cropped from the cut-outs with one fixed box (150,150,854,854 of
+  1024) so every disc is the same size on screen; keep that box for new ones.
+
+**Resume prompt:** "Read HANDOFF.md. Jonno is reviewing the new hub (`/`) and
+Chain's hub (`/chain`). Apply his feedback; keep one red button per screen;
+ask before renaming Step/Steps."
+
 ## What this is
 
 A daily football recall puzzle, drawn as a sticker album. Famous players are
