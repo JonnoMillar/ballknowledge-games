@@ -42,10 +42,7 @@ export default function Itk() {
     <div className="app itk">
       <header className="masthead">
         <Back href="/spoofed" label="Spoofed" />
-        <a className="masthead__brand display" href="/spoofed">
-          <ItkMark />
-          Spoofed
-        </a>
+        <a className="masthead__brand display" href="/spoofed">Spoofed</a>
         <div className="masthead__meta">
           {day ? <span>#{day.day}</span> : null}
         </div>
@@ -200,18 +197,5 @@ function Summary({ day, marks, onReview }: { day: ItkDay; marks: PlateMark[]; on
         />
       </div>
     </section>
-  );
-}
-
-/** The mark: a marker loop round a sticker. */
-export function ItkMark() {
-  return (
-    <svg className="masthead__mark" viewBox="0 0 26 32" aria-hidden>
-      <rect x="6.5" y="8.5" width="13" height="16" rx="1" fill="currentColor" />
-      <path
-        d="M5 9.5 C9 3.5 21 3 23.6 10.5 C26 17.5 23 28.5 13.4 29.2 C4.5 29.8 1.2 22 2.2 15.4 C2.8 11.4 6.5 7.2 14.5 6.6"
-        fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
-      />
-    </svg>
   );
 }

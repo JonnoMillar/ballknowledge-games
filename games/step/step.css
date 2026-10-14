@@ -86,20 +86,8 @@
 .step-end__links { display: flex; gap: 20px; font-size: 14px; }
 .step-end__links a { color: var(--ink); }
 
-.step-arch { list-style: none; margin: 0; padding: 0 16px; width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-@media (min-width: 640px) { .step-arch { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
-.step-arch__tile {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
-  padding: 12px 14px; border: 1.5px solid var(--rule-strong); border-radius: 10px;
-  background: var(--card-a); color: var(--ink); text-decoration: none;
-  transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
-}
-.step-arch__tile:hover { transform: translateY(-2px); border-color: var(--ink); }
-.step-arch__tile.is-done { background: var(--card-b); }
-.step-arch__n { font-size: 26px; line-height: 1; }
-.step-arch__date { font-size: 13px; font-weight: 600; color: var(--muted); }
+.step-arch { padding: 0 16px; width: 100%; }
 .step-arch__grid { font-size: 14px; letter-spacing: 1px; }
-.step-arch__note { font-size: 13px; font-weight: 700; }
 
 /* ── THE REVEAL: A PACK OPENING ───────────────────────────────────────────
    Empty cases slam down one on another, Basic up to the grade earned, the

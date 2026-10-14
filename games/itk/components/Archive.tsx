@@ -1,18 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { dateOfDay, dayNumber, localDate } from '../../../src/lib/daily';
+import { dateOfDay, dayNumber, localDate, shortDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import { MAX_POINTS, pointsOf, roundMark, tierOf } from '../lib/score';
 import { allPlayed, type Played } from '../lib/progress';
 import Back from '../../../components/Back';
-import { ItkMark } from './Itk';
-
-/**
- * Every day before today, newest first, with what this browser has played
- * of each. Progress is local, so an unplayed tile only means "not here".
- */
-const short = (date: string) =>
-  new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 export function marksOf(p: Played | undefined): (PlateMark | null)[] {
   return (p?.picks ?? Array.from({ length: 5 }, () => [])).map((x) => roundMark(x.map((y) => y.fake)));
@@ -25,6 +17,10 @@ export function pastDays(today: string, epoch: string): string[] {
   return Array.from({ length: Math.max(0, dayNumber(today, epoch) - 1) }, (_, i) => dateOfDay(i + 1, epoch)).reverse();
 }
 
+/**
+ * Every day before today, newest first, with what this browser has played
+ * of each. Progress is local, so an unplayed tile only means "not here".
+ */
 export default function Archive({ days, today, epoch, played }: {
   days: string[];
   today: string;
@@ -32,20 +28,20 @@ export default function Archive({ days, today, epoch, played }: {
   played: Record<string, Played>;
 }) {
   return (
-    <ol className="itk-arch">
+    <ol className="daytiles">
       {days.map((date) => {
         const marks = marksOf(played[date]);
         const done = marks.every(Boolean);
         const started = marks.some(Boolean);
         return (
           <li key={date}>
-            <a className={`itk-arch__tile ${done ? 'is-done' : ''}`} href={playUrl(date, today)}>
-              <span className="itk-arch__n display">#{dayNumber(date, epoch)}</span>
-              <span className="itk-arch__date">{short(date)}</span>
+            <a className={`daytile ${done ? 'is-done' : ''}`} href={playUrl(date, today)}>
+              <span className="daytile__n display">#{dayNumber(date, epoch)}</span>
+              <span className="daytile__date">{shortDate(date)}</span>
               <span className="itk-arch__marks" aria-hidden>
                 {marks.map((m, i) => <span key={i} className={`itk-pip itk-pip--${m ?? 'open'}`} />)}
               </span>
-              <span className="itk-arch__note">
+              <span className="daytile__note">
                 {done ? `${pointsOf(marks as PlateMark[])}/${MAX_POINTS} · ${tierOf(marks as PlateMark[])}` : started ? 'Resume' : 'Play'}
               </span>
             </a>
@@ -65,10 +61,7 @@ export function ArchivePage({ epoch }: { epoch: string }) {
     <div className="app itk">
       <header className="masthead">
         <Back href="/spoofed" label="Spoofed" />
-        <a className="masthead__brand display" href="/spoofed">
-          <ItkMark />
-          Spoofed
-        </a>
+        <a className="masthead__brand display" href="/spoofed">Spoofed</a>
         <div className="masthead__meta"><span>Archive</span></div>
       </header>
       <main className="itk__main">

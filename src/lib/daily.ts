@@ -32,6 +32,11 @@ export function dateOfDay(day: number, epoch = EPOCH): string {
   return new Date(ms).toISOString().slice(0, 10);
 }
 
+/** A date as an archive tile prints it: "19 Sept". */
+export function shortDate(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+}
+
 /** A date as the page prints it: "19 September 2026". */
 export function longDate(date: string): string {
   return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });

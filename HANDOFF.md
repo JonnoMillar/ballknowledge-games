@@ -47,6 +47,22 @@ verdict on both hubs.
 - **Deep Cuts archived**, not deleted: off every nav, routes work, the
   collection stays because Steps fills it.
 
+**Jonno's review, 2026-10-14: "doesn't feel like one world".** He liked
+Spoofed's front page (today across the top, cards beneath, the big archive
+card) and the hub's lit tiles. Applied to Chain and Spoofed:
+- **Front-page kit** in `app/globals.css` ("GAME FRONT PAGES"): `.lobby`
+  grid; `.lobby-hero`, today's daily on the game's hub ground (`--ground`,
+  read from `src/games.ts`) with the hub miniature out of the top corner;
+  `.lobby-card` paper cards with the hub's corners and ledge; `.lobby-tag`
+  pills instead of rotated tabs; `.lobby-play`, the one red button;
+  `components/ArchiveCard.tsx`, the big archive card; `.daytiles`, an
+  archive page's grid. Chain (`Home.tsx`), Spoofed (`Lobby.tsx`) and all
+  three archive pages (Chain's puzzle archive went from rows to tiles; it
+  shows the givens' colours, names in the tooltip) use it.
+- Spoofed's masthead mark is gone (Jonno disliked it), on all its pages.
+- **Next:** Pitch pin's front page onto the kit (he likes it as is, so keep
+  its content), then Rondo's, which has none yet.
+
 **Open:** "Steps" (hub, Jonno's word) vs "Step" (the game's own masthead):
 ask before renaming. Spoofed's icon came out with a centre circle instead of
 the pundit's ink loop; redo only if Jonno minds.
@@ -63,8 +79,9 @@ the pundit's ink loop; redo only if Jonno minds.
 - Icons are cropped from the cut-outs with one fixed box (150,150,854,854 of
   1024) so every disc is the same size on screen; keep that box for new ones.
 
-**Resume prompt:** "Read HANDOFF.md. Jonno is reviewing the new hub (`/`) and
-Chain's hub (`/chain`). Apply his feedback; keep one red button per screen;
+**Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub'.
+Chain and Spoofed are on the front-page kit; Jonno is reviewing. Next: Pitch
+pin, then a Rondo front page, on the same kit. One red button per screen;
 ask before renaming Step/Steps."
 
 ## What this is

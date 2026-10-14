@@ -1,11 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Mark } from './Chain';
 import BoardPreview from './BoardPreview';
 import MastNav from './MastNav';
 import ClubBadge, { shortClubName } from './ClubBadge';
 import { Figure, StickerFace, solid } from './Sticker';
 import Back from './Back';
+import ArchiveCard from './ArchiveCard';
+import { GAMES } from '../src/games';
 import { givensLine, pastPuzzles } from './PuzzleArchive';
 import type { BoardSummary } from '../src/lib/chain/client';
 import type { ClubView } from '../src/lib/clubs';
@@ -14,6 +16,9 @@ import { boardForDay, dayNumber, localDate } from '../src/lib/daily';
 import { readProgress, streakOf, type Play, type Progress } from '../src/lib/progress';
 import { shareLine } from '../src/lib/chain/share';
 import { doneToday } from '../src/lib/today';
+
+/** Steps stands on Chain's ground, the same as its tile on the hub. */
+const GROUND = GAMES.find((g) => g.id === 'chain')!.ground;
 
 /** The first step of today's Steps run, as `/api/step/day` sends it. Only what the preview draws. */
 type FirstStep = {
@@ -26,11 +31,14 @@ type FirstStep = {
 /**
  * Chain's hub: two dailies and their archives.
  *
+ * Laid out like every game's front page (Spoofed's is the pattern): the
+ * lead daily on its own lit ground with the hub's miniature, paper cards
+ * beneath, big archive cards side by side.
+ *
  * - Steps, on top: one gap at a time, any answer that fits, the deeper the
- *   rarer the card. A dark card, the cards' world.
- * - The puzzle: one board, one answer per plate, seal it once. A cream
- *   album page with the board on it.
- * - The two archives side by side.
+ *   rarer the card. Dark ground, the cards' world.
+ * - The puzzle: one board, one answer per plate, seal it once. Paper.
+ * - The two archives.
  *
  * The one red button goes to whichever daily is next: Steps, then the
  * puzzle. Once both are done there is none.
@@ -75,25 +83,29 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
         </div>
       </header>
 
-      <main className="home chub">
-        <section className="chub__steps">
-          <span className="chub__tab display">Steps{today ? ` #${today}` : ''}</span>
-          <img className="chub__mini" src="/hub/steps.webp" alt="" width={480} height={480} />
-          <h1 className="chub__head display">How deep can you go?</h1>
-          <p className="chub__sub">Any answer holds. The rarer it is, the better the card.</p>
-          <StepPreview first={first} />
-          {today === null ? null : stepsDone ? (
-            <div className="chub__after">
-              <span className="chub__donemark">✓ Done today</span>
-              <a className="chub__link" href="/step">See your cards</a>
-            </div>
-          ) : (
-            <a className="chub__play display" href="/step">Play today’s steps</a>
-          )}
+      <main className="lobby chub">
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
+          <img className="lobby-hero__mini" src="/hub/steps.webp" alt="" width={480} height={480} />
+          <div className="lobby-hero__ask">
+            <span className="lobby-tag">Steps{today ? ` #${today}` : ''}</span>
+            <h1 className="lobby-hero__head display">How deep can you go?</h1>
+            <p className="lobby-hero__sub">Any answer holds. The rarer it is, the better the card.</p>
+          </div>
+          <div className="lobby-hero__go">
+            <StepPreview first={first} />
+            {today === null ? null : stepsDone ? (
+              <div className="chub__after">
+                <span className="chub__donemark">✓ Done today</span>
+                <a className="chub__link" href="/step">See your cards</a>
+              </div>
+            ) : (
+              <a className="lobby-play display" href="/step">Play today’s steps</a>
+            )}
+          </div>
         </section>
 
-        <section className="page page--hero chub__puzzle">
-          <span className="page__tab display">Puzzle{today ? ` #${today}` : ''}</span>
+        <section className="lobby-card lobby__wide chub__puzzle">
+          <span className="lobby-tag lobby-tag--paper">Puzzle{today ? ` #${today}` : ''}</span>
           {today === null || !board ? (
             <div className="hero hero--loading" aria-busy="true" />
           ) : (
@@ -101,18 +113,14 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
           )}
         </section>
 
-        <div className="chub__archives">
-          <a className="chub__arch" href="/step/archive">
-            <span className="chub__archname display">Steps archive</span>
-            <span className="chub__archline">Every run so far</span>
-          </a>
-          <a className="chub__arch" href="/chain/archive">
-            <span className="chub__archname display">Puzzle archive</span>
-            <span className="chub__archline">{toPlay === null ? ' ' : toPlay ? `${toPlay} still to play` : 'Every one played'}</span>
-          </a>
-        </div>
+        <ArchiveCard href="/step/archive" title="Steps archive" line="Every run so far" />
+        <ArchiveCard
+          href="/chain/archive"
+          title="Puzzle archive"
+          line={toPlay === null ? ' ' : toPlay ? `${toPlay} still to play` : 'Every one played'}
+        />
 
-        <details className="chub__how">
+        <details className="chub__how lobby__wide">
           <summary className="display">How the puzzle works</summary>
           <ol>
             <li><b>Every link is a club two players both played for.</b> The givens are on the page; the gaps are yours.</li>
@@ -174,7 +182,7 @@ function Puzzle({ board, day, play, streak, next }: {
             <h2 className="hero__head display">{board.closed ? 'Close the ring' : 'Link the ends'}</h2>
             <p className="brief"><b>{givensLine(board.slots)}</b>. {count[0]!.toUpperCase() + count.slice(1)} to find, one answer each.</p>
             <div className="hero__actions">
-              <a className={next ? 'seal seal--link' : 'chub__quiet display'} href={`/play/${board.id}`}>Play today’s puzzle</a>
+              <a className={next ? 'lobby-play display' : 'chub__quiet display'} href={`/play/${board.id}`}>Play today’s puzzle</a>
             </div>
           </>
         )}

@@ -1,5 +1,5 @@
 'use client';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, type CSSProperties } from 'react';
 import { Figure, StickerFace, solid } from '../../../components/Sticker';
 import { shortClubName } from '../../../components/ClubBadge';
 import { crestPath } from '../../../src/lib/clubs';
@@ -7,7 +7,8 @@ import { dayNumber, localDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import { marksOf, pastDays } from './Archive';
 import Back from '../../../components/Back';
-import { ItkMark } from './Itk';
+import ArchiveCard from '../../../components/ArchiveCard';
+import { GAMES } from '../../../src/games';
 import { Loop } from './Trail';
 import { ResultSticker } from './Reveal';
 import { pointsOf, tierOf } from '../lib/score';
@@ -15,8 +16,12 @@ import { allPlayed, type Played } from '../lib/progress';
 import type { ItkDay, ItkStop } from '../lib/types';
 import type { DemoCareer } from '../server';
 
+/** Spoofed's ground: the same purple as its tile on the hub. */
+const GROUND = GAMES.find((g) => g.id === 'spoofed')!.ground;
+
 /**
- * The way in. Three cards on the album page:
+ * The way in, laid out like every game's front page: today's daily on its
+ * own lit ground with the hub's miniature, paper cards beneath.
  *
  * - Today's daily, across the top: the question on the left; on the right
  *   the player you play next, five marks for the day, and the one red button.
@@ -50,19 +55,17 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
     <div className="app itk">
       <header className="masthead">
         <Back href="/" label="All games" />
-        <a className="masthead__brand display" href="/spoofed">
-          <ItkMark />
-          Spoofed
-        </a>
+        <a className="masthead__brand display" href="/spoofed">Spoofed</a>
       </header>
-      <main className="itk__main itk-lobbies">
-        <section className="itk-lobby itk-lobby--today">
-          <div className="itk-stage__tab itk-stage__tab--hard display">Daily{n ? ` #${n}` : ''}</div>
-          <div className="itk-lobby__ask">
-            <h1 className="itk-lobby__headline display">Can you spot the spoof?</h1>
-            <p className="itk-lobby__sub">One of these moves never happened.</p>
+      <main className="lobby">
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
+          <img className="lobby-hero__mini" src="/hub/spoofed.webp" alt="" width={480} height={480} />
+          <div className="lobby-hero__ask">
+            <span className="lobby-tag">Daily{n ? ` #${n}` : ''}</span>
+            <h1 className="lobby-hero__head display">Can you spot the spoof?</h1>
+            <p className="lobby-hero__sub">One of these moves never happened.</p>
           </div>
-          <div className="itk-lobby__go">
+          <div className="lobby-hero__go itk-lobby__go">
             {me === null ? null : done ? (
               <>
                 <a className="itk-lobby__result" href="/spoofed/play" aria-label="Today's result">
@@ -84,7 +87,7 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
                   )}
                 </div>
                 <Marks marks={marks} />
-                <a className="itk-lobby__play display" href="/spoofed/play">
+                <a className="lobby-play display" href="/spoofed/play">
                   {started ? 'Continue today’s daily' : 'Play today’s daily'}
                 </a>
               </>
@@ -92,21 +95,16 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
           </div>
         </section>
 
-        <section className="itk-lobby itk-lobby--demo" aria-label="An example">
-          <span className="itk-lobby__eyebrow">Example</span>
+        <section className="lobby-card itk-lobby--demo" aria-label="An example">
+          <span className="lobby-tag lobby-tag--paper">Example</span>
           <Demo demo={demo} />
         </section>
 
-        <a className="itk-lobby itk-lobby--archive" href="/spoofed/archive">
-          <ArchiveIcon />
-          <span className="itk-lobby__archtext">
-            <span className="itk-lobby__archtitle display">Archive</span>
-            <span className="itk-lobby__archline">
-              {waiting === null ? ' ' : waiting ? `${waiting} past ${waiting === 1 ? 'daily' : 'dailies'} still to play` : 'Every past daily played'}
-              <svg className="itk-lobby__arrow" viewBox="0 0 20 12" aria-hidden><path d="M1 6h17M13 1.5 18 6l-5 4.5" /></svg>
-            </span>
-          </span>
-        </a>
+        <ArchiveCard
+          href="/spoofed/archive"
+          title="Archive"
+          line={waiting === null ? ' ' : waiting ? `${waiting} past ${waiting === 1 ? 'daily' : 'dailies'} still to play` : 'Every past daily played'}
+        />
       </main>
     </div>
   );
@@ -131,18 +129,6 @@ function Countdown() {
   const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
   const mins = Math.ceil((midnight.getTime() - now.getTime()) / 60_000);
   return <p className="itk-lobby__next">Next in {Math.floor(mins / 60)}h {mins % 60}m</p>;
-}
-
-/** Album pages, stacked: the days gone by. */
-function ArchiveIcon() {
-  return (
-    <svg className="itk-lobby__icon" viewBox="0 0 64 64" aria-hidden>
-      <rect x="18" y="6" width="34" height="42" rx="3" transform="rotate(8 35 27)" />
-      <rect x="12" y="10" width="34" height="42" rx="3" transform="rotate(-4 29 31)" />
-      <rect x="15" y="14" width="34" height="42" rx="3" className="itk-lobby__icontop" />
-      <path d="M21 22h22M21 28h22M21 34h22M21 40h14" className="itk-lobby__iconrules" />
-    </svg>
-  );
 }
 
 /**

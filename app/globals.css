@@ -884,27 +884,6 @@ button { font-family: inherit; }
 .page__meta { flex-shrink: 0; color: var(--muted); white-space: nowrap; }
 .grid { letter-spacing: 0.06em; }
 
-/* The archive: a row per day, with the givens' colours as a strip. */
-.board-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-.board-row {
-  display: grid;
-  grid-template-columns: 40px auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 6px;
-  border-top: 1px solid var(--rule);
-  color: var(--ink);
-  text-decoration: none;
-  transition: background var(--t-fast) var(--ease-out);
-}
-.board-list li:last-child .board-row { border-bottom: 1px solid var(--rule); }
-.board-row:hover { background: rgba(255, 255, 255, 0.5); }
-.board-row__id { font-weight: 800; font-size: 18px; color: var(--muted); }
-.board-row__strip { display: flex; gap: 2px; }
-.board-row__strip i { display: block; width: 10px; height: 16px; border-radius: 1px; }
-.board-row__name { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.board-row__meta { font-size: 13px; white-space: nowrap; }
-.board-row__todo { color: var(--muted); }
 .replay {
   margin: 0;
   padding: 10px 16px;
@@ -1568,55 +1547,189 @@ button { font-family: inherit; }
 .collection__empty p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--muted); max-width: 36em; }
 .collection__empty b { color: var(--ink); }
 
-/* ── CHAIN'S HUB ───────────────────────────────────────────────────────
-   Two dailies that must not look alike. Steps is the cards' world: a dark
-   ground lit from above, the miniature of rising cards, white type. The
-   puzzle is the album: a cream page with its board. One red button, on
-   whichever daily is next. */
-.chub { gap: 20px; }
-.chub__steps {
-  --ground: #2A2622;
-  position: relative;
+/* ── GAME FRONT PAGES ──────────────────────────────────────────────────
+   Every game's front page is laid out the same way, so they read as one
+   world with the hub (Spoofed's page set the pattern, 2026-10-14):
+
+   - .lobby-hero: today's daily on the game's own lit ground (`--ground`,
+     the colour of its tile on the hub), with the hub's miniature standing
+     out of the top corner. Question on the left, the go on the right, the
+     page's one red button (.lobby-play).
+   - .lobby-card: paper cards beneath, the same corners and ledge as the
+     hub's tiles. A pill tag (.lobby-tag) names each, never a rotated tab.
+   - ArchiveCard: the big way back, one per archive.
+   - .daytiles: an archive page's grid of days.
+   Two columns from 760px; .lobby__wide spans both. */
+.lobby {
+  flex-grow: 1;
   width: 100%;
-  max-width: 880px;
-  margin: 26px auto 0;
-  padding: 26px 18px 20px;
-  border-radius: 24px;
-  color: #fff;
-  background: radial-gradient(110% 80% at 70% 18%, #5A5148 0%, var(--ground) 55%, #171411 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 0 #171411, 0 18px 36px rgba(20, 18, 16, 0.22);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 16px 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 18px;
 }
-.chub__tab {
+@media (min-width: 760px) {
+  .lobby { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; padding: 56px 28px 72px; }
+  .lobby__wide { grid-column: 1 / -1; }
+}
+
+.lobby-tag {
   align-self: flex-start;
-  padding: 5px 12px 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #F3D27A, #C9952E);
-  color: #2A2014;
-  font-size: 15px;
-  font-weight: 800;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  font-size: 12.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  line-height: 1;
 }
-.chub__mini {
+.lobby-tag--paper { background: rgba(20, 18, 16, 0.06); box-shadow: inset 0 0 0 1px var(--rule); color: var(--ink); }
+
+/* Today. The ground's light comes from the same place as the hub's. */
+.lobby-hero {
+  --lit: color-mix(in srgb, var(--ground) 76%, #fff);
+  --deep: color-mix(in srgb, var(--ground) 62%, #000);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 18px 20px;
+  border-radius: 24px;
+  color: #fff;
+  background: radial-gradient(110% 85% at 72% 16%, var(--lit) 0%, var(--ground) 55%, var(--deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 0 var(--deep), 0 18px 36px rgba(20, 18, 16, 0.22);
+}
+.lobby-hero__mini {
   position: absolute;
   top: -40px;
-  right: -6px;
-  width: 150px;
+  right: -4px;
+  width: 140px;
   height: auto;
-  filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.42));
   pointer-events: none;
 }
-.chub__head { margin: 6px 0 0; max-width: 62%; font-size: 36px; font-weight: 800; line-height: 0.95; text-transform: uppercase; }
-.chub__sub { margin: 0; max-width: 70%; font-size: 15px; line-height: 1.4; opacity: 0.85; }
+.lobby-hero__ask { display: flex; flex-direction: column; gap: 10px; }
+.lobby-hero__head { margin: 4px 0 0; max-width: 64%; font-size: 40px; font-weight: 800; line-height: 0.92; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
+.lobby-hero__sub { margin: 0; max-width: 34ch; font-size: 15.5px; line-height: 1.4; opacity: 0.86; }
+.lobby-hero__go { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+
+/* The one red button on a front page: the same press as the hub's Play. */
+.lobby-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 28px;
+  border-radius: 16px;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -3px 0 var(--red-deep), 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: background var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+.lobby-play:hover { background: var(--red-deep); }
+.lobby-play:active { transform: translateY(1px); }
+.lobby-play:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.lobby-hero .lobby-play:focus-visible { outline-color: #fff; }
+
+@media (min-width: 760px) {
+  .lobby-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+    align-items: end;
+    column-gap: 48px;
+    padding: 40px 44px 36px;
+  }
+  .lobby-hero__mini { top: -44px; right: 12px; width: 150px; }
+  .lobby-hero__ask { gap: 14px; align-self: center; }
+  .lobby-hero__head { max-width: none; font-size: clamp(52px, 6vw, 76px); }
+  .lobby-hero__sub { font-size: 18px; }
+  /* Clear of the miniature in the corner. */
+  .lobby-hero__go { padding-top: 72px; }
+}
+
+/* Paper. The hub's corners and ledge, without the ground. */
+.lobby-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px 22px;
+  border-radius: 24px;
+  background: var(--sticker);
+  color: var(--ink);
+  box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 14px 30px rgba(20, 18, 16, 0.1);
+}
+@media (min-width: 760px) { .lobby-card { padding: 22px 28px 28px; } }
+
+/* The archive card: pages stacked, a big name, how many wait. */
+.archcard { flex-direction: row; align-items: center; gap: 18px; padding: 24px 22px; text-decoration: none; transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out); }
+.archcard:hover { transform: translateY(-3px); box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 22px 40px rgba(20, 18, 16, 0.16); }
+.archcard:active { transform: translateY(1px) scale(0.99); }
+.archcard:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.archcard__icon { flex: 0 0 auto; width: 60px; height: 60px; overflow: visible; }
+.archcard__icon rect { fill: var(--page); stroke: var(--silhouette-figure); stroke-width: 2.2px; }
+.archcard__icon .archcard__top { fill: var(--sticker); stroke: var(--ink); }
+.archcard__rules { fill: none; stroke: var(--silhouette-figure); stroke-width: 2.4px; stroke-linecap: round; }
+.archcard__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.archcard__title { font-size: 30px; font-weight: 900; line-height: 0.9; text-transform: uppercase; }
+.archcard__line { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--muted); }
+.archcard__arrow { flex: 0 0 auto; width: 20px; height: 12px; fill: none; stroke: var(--ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--t-base) var(--ease-out); }
+.archcard:hover .archcard__arrow { transform: translateX(4px); }
+@media (min-width: 760px) {
+  .archcard { gap: 24px; padding: 30px 32px; }
+  .archcard__icon { width: 80px; height: 80px; }
+  .archcard__title { font-size: clamp(32px, 3.6vw, 42px); }
+  .archcard__line { font-size: 16.5px; }
+}
+
+/* An archive page: one tile a day, newest first. */
+.daytiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 640px) { .daytiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; } }
+@media (min-width: 960px) { .daytiles { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.daytile {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  background: var(--sticker);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 2px 0 rgba(20, 18, 16, 0.07), 0 8px 20px rgba(20, 18, 16, 0.08);
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+}
+.daytile:hover { transform: translateY(-2px); box-shadow: 0 2px 0 rgba(20, 18, 16, 0.07), 0 14px 28px rgba(20, 18, 16, 0.13); }
+.daytile:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.daytile.is-done { background: var(--card-b); box-shadow: inset 0 0 0 1px var(--rule); }
+.daytile__n { font-size: 30px; line-height: 1; }
+.daytile__date { font-size: 13px; font-weight: 600; color: var(--muted); }
+.daytile__note { margin-top: auto; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.daytile__strip { display: flex; gap: 3px; }
+.daytile__strip i { display: block; width: 12px; height: 16px; border-radius: 2px; }
+
+/* ── CHAIN'S HUB ───────────────────────────────────────────────────────
+   Two dailies on the front-page kit above: Steps on the dark ground, the
+   puzzle on paper. One red button, on whichever daily is next. */
 .chub__preview {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin: 10px 0 6px;
   padding: 14px 10px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.06);
@@ -1627,22 +1740,6 @@ button { font-family: inherit; }
 .chub__preview .sticker { width: var(--sticker-w); flex: none; }
 .chub__club { display: flex; flex-direction: column; align-items: center; gap: 6px; width: var(--sticker-w); }
 .chub__clubname { font-size: 15px; font-weight: 700; text-transform: uppercase; text-align: center; line-height: 1; }
-.chub__play {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  border-radius: 16px;
-  background: var(--red);
-  color: #fff;
-  text-decoration: none;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  box-shadow: inset 0 -3px 0 var(--red-deep), 0 6px 16px rgba(0, 0, 0, 0.3);
-}
-.chub__play:hover { background: var(--red-deep); }
 .chub__after { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
 .chub__donemark { font-weight: 700; font-size: 16px; }
 .chub__link { color: #fff; font-weight: 600; text-underline-offset: 3px; }
@@ -1667,33 +1764,12 @@ button { font-family: inherit; }
   cursor: pointer;
 }
 .chub__quiet:hover { background: var(--ink); color: var(--page); }
-.chub__puzzle { width: 100%; max-width: 880px; margin: 0 auto; }
-.chub__archives { width: 100%; max-width: 880px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.chub__arch {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px;
-  border-radius: 18px;
-  background: var(--sticker);
-  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.06), 0 6px 18px rgba(20, 18, 16, 0.08);
-  color: var(--ink);
-  text-decoration: none;
-  transition: transform var(--t-fast) var(--ease-out);
-}
-.chub__arch:first-child { background: #2A2622; color: #fff; }
-.chub__arch:hover { transform: translateY(-2px); }
-.chub__archname { font-size: 22px; font-weight: 800; line-height: 1; text-transform: uppercase; }
-.chub__archline { font-size: 13.5px; opacity: 0.75; }
-.chub__how { width: 100%; max-width: 880px; margin: 0 auto 8px; padding: 0 4px; color: var(--muted); }
+.chub__puzzle .hero { padding-top: 6px; }
+.chub__puzzle .lobby-play { min-height: 52px; font-size: 21px; }
+.chub__how { padding: 0 4px; color: var(--muted); }
 .chub__how summary { cursor: pointer; font-size: 20px; font-weight: 800; text-transform: uppercase; color: var(--ink); }
 .chub__how ol { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.45; }
 .chub__how b { color: var(--ink); font-weight: 600; }
 @media (min-width: 760px) {
-  .chub__steps { padding: 34px 40px 30px; }
-  .chub__mini { top: -36px; right: 24px; width: 230px; }
-  .chub__head { font-size: 52px; }
-  .chub__sub { font-size: 17px; }
-  .chub__preview { --sticker-w: 116px; gap: 24px; justify-content: flex-start; padding: 18px 24px; }
-  .chub__play { align-self: flex-start; min-width: 300px; padding: 0 32px; }
+  .chub__preview { --sticker-w: 96px; gap: 18px; padding: 16px 18px; }
 }

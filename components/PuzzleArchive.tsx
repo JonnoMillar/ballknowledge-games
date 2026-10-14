@@ -5,7 +5,7 @@ import BoardPreview from './BoardPreview';
 import MastNav from './MastNav';
 import Back from './Back';
 import type { BoardSummary, Given } from '../src/lib/chain/client';
-import { boardForDay, dayNumber, localDate } from '../src/lib/daily';
+import { boardForDay, dateOfDay, dayNumber, localDate, shortDate } from '../src/lib/daily';
 import { readProgress, type Play, type Progress } from '../src/lib/progress';
 import { MARK_GLYPH } from '../src/lib/chain/share';
 import { plateName } from '../src/lib/short-name';
@@ -45,19 +45,19 @@ export default function PuzzleArchive({ boards }: { boards: BoardSummary[] }) {
         {past.length > 0 ? (
           <section className="archive">
             <h1 className="home__head display">Past puzzles</h1>
-            <ul className="board-list">
+            <ul className="daytiles">
               {past.map(({ day, id }) => {
                 const b = byId.get(id)!;
                 const play = progress.plays[id];
                 return (
                   <li key={day}>
-                    <a className="board-row" href={`/play/${id}`}>
-                      <span className="board-row__id display">#{day}</span>
-                      <span className="board-row__strip" aria-hidden>
+                    <a className={`daytile ${play ? 'is-done' : ''}`} href={`/play/${id}`} title={givensLine(b.slots)}>
+                      <span className="daytile__n display">#{day}</span>
+                      <span className="daytile__date">{shortDate(dateOfDay(day))}</span>
+                      <span className="daytile__strip" aria-hidden>
                         {b.slots.flatMap((s) => (s ? [<i key={s.id} style={{ background: s.ground }} />] : []))}
                       </span>
-                      <span className="board-row__name">{givensLine(b.slots)}</span>
-                      <span className="board-row__meta">{play ? <Grid play={play} /> : <span className="board-row__todo">Not played</span>}</span>
+                      <span className="daytile__note">{play ? <Grid play={play} /> : 'Play'}</span>
                     </a>
                   </li>
                 );
