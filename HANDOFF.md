@@ -72,6 +72,19 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   unfinished match) and "How it goes". The match moved to `/rondo/play`, so
   a refresh mid-match stays in it; with no saved match it goes back to
   `/rondo`. Kick off over a saved match asks first. Waiting on Jonno.
+- **No teleports** (Jonno, 2026-10-14): a click that changes the screen
+  moves it from before to after. Native view transitions, CSS "MOTION" at
+  the end of `app/globals.css`, no library. Page to page: a hub tile and its
+  game's hero share `view-transition-name: game-<id>` (and `game-<id>-mini`
+  for the miniature), so the tile grows into the hero and back. In a page:
+  `smooth(update)` from `src/lib/motion.ts` wraps a state change; elements
+  marked `.vt` glide, arrive and leave. Rondo's setup rows use it. The hub
+  board is now server-rendered (as if nothing is done), so a page coming
+  back has its tile to shrink into. A page that arrives by a morph gets
+  `.vt-arrived` on `<html>` (inline script in `app/layout.tsx`) to switch
+  off its own entrance animation. Not yet swept: content that loads after
+  arrival (Spoofed's next player, Chain's puzzle card) still pops in, and
+  in-game screens don't use `smooth` yet. Firefox gets the plain cut.
 - **Next (Jonno's order):** Pitch pin's front page onto the kit (he likes it
   as is, so keep its content). Rondo is not a daily: its hero has no day
   tag and its red button starts a match; it is the pub game (orange
@@ -90,6 +103,10 @@ the pundit's ink loop; redo only if Jonno minds.
   generation's job id works as `media_id`. Icons stay consistent only when the
   Chain sample (`docs/hub-icon-reference.png`, the full tile before cut-out) is passed as the
   reference. About 0.5–1 credit an image.
+- To see a view transition mid-frame: wait for `document.activeViewTransition`,
+  `await .ready`, then pause every `::view-transition` animation from
+  `document.getAnimations()` at a `currentTime` and screenshot. CDP
+  playback-rate tricks don't hold across navigations.
 - Icons are cropped from the cut-outs with one fixed box (150,150,854,854 of
   1024) so every disc is the same size on screen; keep that box for new ones.
 

@@ -1105,7 +1105,6 @@ button { font-family: inherit; }
   grid-auto-flow: dense;
   gap: 14px;
 }
-.hub__board--wait { min-height: 640px; }
 .hub__cell { display: flex; animation: hub-in var(--t-slow) var(--ease-out) both; }
 .hub__cell:nth-child(2) { animation-delay: 60ms; }
 .hub__cell:nth-child(3) { animation-delay: 120ms; }
@@ -1776,3 +1775,37 @@ button { font-family: inherit; }
 @media (min-width: 760px) {
   .chub__preview { --sticker-w: 96px; gap: 18px; padding: 16px 18px; }
 }
+
+/* ── MOTION ────────────────────────────────────────────────────────────
+   No teleports (Jonno, 2026-10-14): a click that changes the screen moves
+   it from before to after. Native view transitions, no library; browsers
+   without them, and reduced motion, get the plain cut.
+
+   - Page to page: a hub tile and its game's front-page hero share a name
+     (`game-<id>`, set inline), so the tile grows into the hero and the
+     miniature (`game-<id>-mini`) glides to its corner. Back does the reverse.
+     The masthead stays put; everything else cross-fades.
+   - In a page: `smooth()` (src/lib/motion.ts) wraps a state update and puts
+     .is-smoothing on <html> while it runs; elements marked .vt glide to their
+     new place, arrive with a fade, and leave with one. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+.masthead { view-transition-name: masthead; }
+.hub__tile, .lobby-hero { view-transition-class: game; }
+.is-smoothing .vt { view-transition-name: match-element; }
+/* Arrived by a morph: the page's own entrance would fight it. */
+.vt-arrived .hub__cell { animation: none; }
+
+::view-transition-group(*) { animation-duration: var(--t-slow); animation-timing-function: var(--ease-out); }
+::view-transition-old(*), ::view-transition-new(*) { animation-duration: var(--t-base); }
+::view-transition-old(root) { animation-duration: var(--t-fast); }
+/* A tile and a hero are different shapes: fill the morphing box rather
+   than keep either snapshot's aspect, and let the old face go quickly. */
+::view-transition-old(.game), ::view-transition-new(.game) { height: 100%; overflow: clip; }
+::view-transition-old(.game) { animation-duration: var(--t-fast); }
+/* In a page the hero only changes size: show its new face, cropped to the
+   growing box (its .vt contents glide on their own), never a cross-fade. */
+html.is-smoothing::view-transition-group(.game) { overflow: clip; border-radius: 24px; }
+html.is-smoothing::view-transition-old(.game) { display: none; }
+html.is-smoothing::view-transition-new(.game) { animation: none; height: auto; object-fit: none; object-position: top; }

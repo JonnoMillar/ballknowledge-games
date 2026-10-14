@@ -87,8 +87,8 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
       </header>
 
       <main className="lobby chub">
-        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
-          <img className="lobby-hero__mini" src="/hub/steps.webp" alt="" width={480} height={480} />
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND, viewTransitionName: 'game-chain' } as CSSProperties}>
+          <img className="lobby-hero__mini" src="/hub/steps.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-chain-mini' }} />
           <div className="lobby-hero__ask">
             <span className="lobby-tag">Steps{today ? ` #${today}` : ''}</span>
             <h1 className="lobby-hero__head display">How niche can you go?</h1>

@@ -4,6 +4,7 @@ import { GAMES, type GameCard } from '../src/games';
 import { dayNumber, localDate } from '../src/lib/daily';
 import { readProgress, streakOf } from '../src/lib/progress';
 import { doneToday } from '../src/lib/today';
+import { smooth } from '../src/lib/motion';
 
 type Status = { done: Set<string>; streak: number };
 
@@ -23,8 +24,14 @@ function featured(done: Set<string>): GameCard {
  * coloured ground; no blurbs, each game's front page explains itself.
  */
 export default function Hub() {
-  const [status, setStatus] = useState<Status | null>(null);
-  useEffect(() => setStatus({ done: doneToday(), streak: streakOf(readProgress(), dayNumber(localDate())).current }), []);
+  // The server lays the board out as if nothing is done yet, so a page coming
+  // back from a game has its tile there to shrink into; the real day then
+  // rearranges it smoothly.
+  const [status, setStatus] = useState<Status>({ done: new Set(), streak: 0 });
+  useEffect(() => {
+    const real = { done: doneToday(), streak: streakOf(readProgress(), dayNumber(localDate())).current };
+    if (real.done.size || real.streak) void smooth(() => setStatus(real));
+  }, []);
 
   return (
     <div className="app hub">
@@ -32,7 +39,7 @@ export default function Hub() {
         <span className="masthead__brand display">Football games</span>
       </header>
       <main className="hub__main">
-        {status ? <Board status={status} /> : <div className="hub__board hub__board--wait" aria-hidden />}
+        <Board status={status} />
       </main>
     </div>
   );
@@ -60,7 +67,7 @@ function Tile({ game: g, status, size }: { game: GameCard; status: Status; size:
     <a
       className={`hub__tile hub__tile--${size}${done ? ' is-done' : ''}`}
       href={g.href}
-      style={{ '--ground': g.ground } as CSSProperties}
+      style={{ '--ground': g.ground, viewTransitionName: `game-${g.id}` } as CSSProperties}
       aria-label={`${g.name}${done ? ', done today' : ''}`}
     >
       <span className="hub__tag">
@@ -74,7 +81,7 @@ function Tile({ game: g, status, size }: { game: GameCard; status: Status; size:
         ) : null}
       </span>
       {done ? <span className="hub__done" aria-hidden>✓</span> : null}
-      <img className="hub__mini" src={`/hub/${g.icon}.webp`} alt="" width={480} height={480} />
+      <img className="hub__mini" src={`/hub/${g.icon}.webp`} alt="" width={480} height={480} style={{ viewTransitionName: `game-${g.id}-mini` }} />
       <span className="hub__words">
         <span className="hub__name display">{g.name}</span>
         {size !== 'square' ? <span className="hub__line">{g.pub ? '2 to 4 players, one phone' : g.line}</span> : null}

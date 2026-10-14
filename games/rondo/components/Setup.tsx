@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { CLOCKS, type Clock } from '../lib/match';
+import { smooth } from '../../../src/lib/motion';
 
 const MAX_PLAYERS = 4;
 
@@ -16,12 +17,15 @@ export default function Setup({
   initialClock: Clock;
   onStart: (names: string[], clock: Clock) => void;
 }) {
-  const [names, setNames] = useState<string[]>(initialNames.length >= 2 ? initialNames : ['', '']);
+  // Each row keeps its own key, so removing one lets the others slide up
+  // rather than every name shifting a box.
+  const [rows, setRows] = useState(() => (initialNames.length >= 2 ? initialNames : ['', '']).map((name, i) => ({ id: i, name })));
   const [clock, setClock] = useState<Clock>(initialClock);
+  const names = rows.map((r) => r.name);
 
-  const set = (i: number, v: string) => setNames((ns) => ns.map((n, k) => (k === i ? v : n)));
-  const remove = (i: number) => setNames((ns) => ns.filter((_, k) => k !== i));
-  const add = () => setNames((ns) => (ns.length < MAX_PLAYERS ? [...ns, ''] : ns));
+  const set = (i: number, v: string) => setRows((rs) => rs.map((r, k) => (k === i ? { ...r, name: v } : r)));
+  const remove = (i: number) => void smooth(() => setRows((rs) => rs.filter((_, k) => k !== i)));
+  const add = () => void smooth(() => setRows((rs) => (rs.length < MAX_PLAYERS ? [...rs, { id: Math.max(...rs.map((r) => r.id)) + 1, name: '' }] : rs)));
 
   return (
     <form
@@ -31,10 +35,10 @@ export default function Setup({
         onStart(names.map((n, i) => n.trim() || `Player ${i + 1}`), clock);
       }}
     >
-      <h2 className="setup__title">Who’s playing?</h2>
+      <h2 className="setup__title vt">Who’s playing?</h2>
       <ol className="setup__names">
         {names.map((n, i) => (
-          <li key={i} className="setup__row">
+          <li key={rows[i]!.id} className="setup__row vt">
             <span className="setup__no display">{i + 1}</span>
             <input
               className="setup__input"
@@ -56,10 +60,10 @@ export default function Setup({
         ))}
       </ol>
       {names.length < MAX_PLAYERS ? (
-        <button type="button" className="setup__add" onClick={add}>+ One more</button>
+        <button type="button" className="setup__add vt" onClick={add}>+ One more</button>
       ) : null}
 
-      <div className="setup__clock" role="radiogroup" aria-label="Shot clock">
+      <div className="setup__clock vt" role="radiogroup" aria-label="Shot clock">
         <span className="setup__label">Clock</span>
         <div className="seg">
           {CLOCKS.map((c) => (
@@ -77,7 +81,7 @@ export default function Setup({
         </div>
       </div>
 
-      <button type="submit" className="lobby-play display">Kick off</button>
+      <button type="submit" className="lobby-play display vt">Kick off</button>
     </form>
   );
 }

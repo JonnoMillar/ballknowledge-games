@@ -58,8 +58,8 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
         <a className="masthead__brand display" href="/spoofed">Spoofed</a>
       </header>
       <main className="lobby">
-        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
-          <img className="lobby-hero__mini" src="/hub/spoofed.webp" alt="" width={480} height={480} />
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND, viewTransitionName: 'game-spoofed' } as CSSProperties}>
+          <img className="lobby-hero__mini" src="/hub/spoofed.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-spoofed-mini' }} />
           <div className="lobby-hero__ask">
             <span className="lobby-tag">Daily{n ? ` #${n}` : ''}</span>
             <h1 className="lobby-hero__head display">Can you spot the spoof?</h1>

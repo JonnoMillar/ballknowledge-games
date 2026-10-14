@@ -31,8 +31,12 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${text.variable}`}>
+    // suppressHydrationWarning: the script below may add a class before React hydrates.
+    <html lang="en" className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
       <head>
+        {/* A page that arrives by a view transition (MOTION in globals.css)
+            is already moving; .vt-arrived switches off its own entrance. */}
+        <script dangerouslySetInnerHTML={{ __html: "addEventListener('pagereveal',function(e){if(e.viewTransition)document.documentElement.classList.add('vt-arrived')})" }} />
         {/* The parked XI board's face. Nothing else loads from here. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" />

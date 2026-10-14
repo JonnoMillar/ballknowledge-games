@@ -6,6 +6,7 @@ import Bib from './Bib';
 import Setup from './Setup';
 import { BIBS_OUT, newMatch, type Clock, type Match } from '../lib/match';
 import { readMatch, readSaved, writeMatch, writeSaved, type Saved } from '../lib/store';
+import { smooth } from '../../../src/lib/motion';
 
 /** Rondo's ground: the same orange as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
@@ -24,9 +25,13 @@ const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
 export default function Lobby() {
   // Read after mount: localStorage is the phone's, and the server render knows nothing of it.
   const [me, setMe] = useState<{ match: Match | null; saved: Saved } | null>(null);
+  // The form is there from the first frame (blank), so the hero it sits in
+  // can grow out of the hub's tile; the phone's memory then fills in smoothly.
   useEffect(() => {
     const m = readMatch();
-    setMe({ match: m && !m.over ? m : null, saved: readSaved() });
+    const next = { match: m && !m.over ? m : null, saved: readSaved() };
+    if (next.match || next.saved.names.length || next.saved.clock !== 30) void smooth(() => setMe(next));
+    else setMe(next);
   }, []);
 
   const start = (names: string[], clock: Clock) => {
@@ -43,21 +48,21 @@ export default function Lobby() {
         <a className="masthead__brand display" href="/rondo">Rondo</a>
       </header>
       <main className="lobby">
-        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
-          <img className="lobby-hero__mini" src="/hub/rondo.webp" alt="" width={480} height={480} />
-          <div className="lobby-hero__ask">
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND, viewTransitionName: 'game-rondo' } as CSSProperties}>
+          <img className="lobby-hero__mini" src="/hub/rondo.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-rondo-mini' }} />
+          <div className="lobby-hero__ask vt">
             <span className="lobby-tag">Multiplayer</span>
             <h1 className="lobby-hero__head display">Fancy a rondo?</h1>
             <p className="lobby-hero__sub">Two to four of you and one phone. Pass it round; don’t lose the ball.</p>
           </div>
           <div className="lobby-hero__go">
-            {me ? <Setup initialNames={me.saved.names} initialClock={me.saved.clock} onStart={start} /> : null}
+            <Setup key={me ? 'saved' : 'blank'} initialNames={me?.saved.names ?? []} initialClock={me?.saved.clock ?? 30} onStart={start} />
           </div>
         </section>
 
         {me?.match ? <Resume match={me.match} /> : null}
 
-        <section className={`lobby-card rondo-how ${me?.match ? '' : 'lobby__wide'}`}>
+        <section className={`lobby-card rondo-how vt ${me?.match ? '' : 'lobby__wide'}`}>
           <span className="lobby-tag lobby-tag--paper">How it goes</span>
           <ol className="how__rules">
             <li><b>Someone’s on the ball.</b> Pass to a player who shared a club with them. Say it, then type it — the phone’s the ref.</li>
@@ -77,7 +82,7 @@ export default function Lobby() {
 /** The match on this phone: who's in it, their bibs, and the way back. Never red. */
 function Resume({ match }: { match: Match }) {
   return (
-    <a className="lobby-card lobby-link rondo-resume" href="/rondo/play">
+    <a className="lobby-card lobby-link rondo-resume vt" href="/rondo/play">
       <span className="lobby-tag lobby-tag--paper">Match in progress</span>
       <ol className="rondo-resume__sides">
         {match.players.map((p, i) => (
