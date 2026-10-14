@@ -38,7 +38,7 @@ export default function DeepIndex({ boards }: { boards: BoardSummary[] }) {
           Chain
         </a>
         <div className="masthead__meta">
-          <MastNav current="deep" />
+          <MastNav />
         </div>
       </header>
 

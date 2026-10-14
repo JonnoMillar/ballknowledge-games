@@ -55,13 +55,21 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   read from `src/games.ts`) with the hub miniature out of the top corner;
   `.lobby-card` paper cards with the hub's corners and ledge; `.lobby-tag`
   pills instead of rotated tabs; `.lobby-play`, the one red button;
-  `components/ArchiveCard.tsx`, the big archive card; `.daytiles`, an
+  the big archive card (now `components/LobbyLink.tsx`); `.daytiles`, an
   archive page's grid. Chain (`Home.tsx`), Spoofed (`Lobby.tsx`) and all
   three archive pages (Chain's puzzle archive went from rows to tiles; it
   shows the givens' colours, names in the tooltip) use it.
 - Spoofed's masthead mark is gone (Jonno disliked it), on all its pages.
-- **Next:** Pitch pin's front page onto the kit (he likes it as is, so keep
-  its content), then Rondo's, which has none yet.
+- Second pass (same day): Steps asks "How niche can you go?"; the puzzle card
+  says "Puzzle mode" with no givens line; Collection is a wide card on
+  Chain's hub (`components/LobbyLink.tsx`, the big card, now with an
+  `icon` of `archive` or `cards`), and no longer a masthead button
+  (`MastNav` is only the grades key now).
+- **Next (Jonno's order):** Rondo's front page, which has none yet (`/rondo`
+  drops straight into `Setup`), then Pitch pin's onto the kit (he likes it
+  as is, so keep its content). Rondo is not a daily: its hero has no day
+  tag and its red button starts a match; it is the pub game (orange
+  `#C9541A`, tagged Multiplayer on the hub).
 
 **Open:** "Steps" (hub, Jonno's word) vs "Step" (the game's own masthead):
 ask before renaming. Spoofed's icon came out with a centre circle instead of
@@ -79,10 +87,14 @@ the pundit's ink loop; redo only if Jonno minds.
 - Icons are cropped from the cut-outs with one fixed box (150,150,854,854 of
   1024) so every disc is the same size on screen; keep that box for new ones.
 
-**Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub'.
-Chain and Spoofed are on the front-page kit; Jonno is reviewing. Next: Pitch
-pin, then a Rondo front page, on the same kit. One red button per screen;
-ask before renaming Step/Steps."
+**Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub',
+then games/rondo/DESIGN.md. Build Rondo's front page (menu) on the
+front-page kit that Chain and Spoofed use, so it feels like the same world:
+lit orange hero with the hub's rondo miniature and one red button that
+starts a match, paper cards beneath for whatever Rondo needs (how it works,
+resume a match in progress). Propose the cards in one line before
+building; one red button per screen; no Higgsfield credits without asking."
+
 
 ## What this is
 

@@ -1557,7 +1557,7 @@ button { font-family: inherit; }
      page's one red button (.lobby-play).
    - .lobby-card: paper cards beneath, the same corners and ledge as the
      hub's tiles. A pill tag (.lobby-tag) names each, never a rotated tab.
-   - ArchiveCard: the big way back, one per archive.
+   - LobbyLink: a big card to an archive or the collection.
    - .daytiles: an archive page's grid of days.
    Two columns from 760px; .lobby__wide spans both. */
 .lobby {
@@ -1674,25 +1674,28 @@ button { font-family: inherit; }
 }
 @media (min-width: 760px) { .lobby-card { padding: 22px 28px 28px; } }
 
-/* The archive card: pages stacked, a big name, how many wait. */
-.archcard { flex-direction: row; align-items: center; gap: 18px; padding: 24px 22px; text-decoration: none; transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out); }
-.archcard:hover { transform: translateY(-3px); box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 22px 40px rgba(20, 18, 16, 0.16); }
-.archcard:active { transform: translateY(1px) scale(0.99); }
-.archcard:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-.archcard__icon { flex: 0 0 auto; width: 60px; height: 60px; overflow: visible; }
-.archcard__icon rect { fill: var(--page); stroke: var(--silhouette-figure); stroke-width: 2.2px; }
-.archcard__icon .archcard__top { fill: var(--sticker); stroke: var(--ink); }
-.archcard__rules { fill: none; stroke: var(--silhouette-figure); stroke-width: 2.4px; stroke-linecap: round; }
-.archcard__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.archcard__title { font-size: 30px; font-weight: 900; line-height: 0.9; text-transform: uppercase; }
-.archcard__line { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--muted); }
-.archcard__arrow { flex: 0 0 auto; width: 20px; height: 12px; fill: none; stroke: var(--ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--t-base) var(--ease-out); }
-.archcard:hover .archcard__arrow { transform: translateX(4px); }
+/* A big link card: an icon, a big name, a line and an arrow. */
+.lobby-link { flex-direction: row; align-items: center; gap: 18px; padding: 24px 22px; text-decoration: none; transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out); }
+.lobby-link:hover { transform: translateY(-3px); box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 22px 40px rgba(20, 18, 16, 0.16); }
+.lobby-link:active { transform: translateY(1px) scale(0.99); }
+.lobby-link:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.lobby-link__icon { flex: 0 0 auto; width: 60px; height: 60px; overflow: visible; }
+.lobby-link__icon rect { fill: var(--page); stroke: var(--silhouette-figure); stroke-width: 2.2px; }
+.lobby-link__icon .lobby-link__top { fill: var(--sticker); stroke: var(--ink); }
+.lobby-link__icon .lobby-link__card { fill: var(--silhouette); stroke: var(--ink); stroke-width: 2px; }
+.lobby-link__icon .lobby-link__card--gold { fill: var(--gold); }
+.lobby-link__icon .lobby-link__card--black { fill: var(--ink); stroke: var(--ink); }
+.lobby-link__rules { fill: none; stroke: var(--silhouette-figure); stroke-width: 2.4px; stroke-linecap: round; }
+.lobby-link__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.lobby-link__title { font-size: 30px; font-weight: 900; line-height: 0.9; text-transform: uppercase; }
+.lobby-link__line { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--muted); }
+.lobby-link__arrow { flex: 0 0 auto; width: 20px; height: 12px; fill: none; stroke: var(--ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--t-base) var(--ease-out); }
+.lobby-link:hover .lobby-link__arrow { transform: translateX(4px); }
 @media (min-width: 760px) {
-  .archcard { gap: 24px; padding: 30px 32px; }
-  .archcard__icon { width: 80px; height: 80px; }
-  .archcard__title { font-size: clamp(32px, 3.6vw, 42px); }
-  .archcard__line { font-size: 16.5px; }
+  .lobby-link { gap: 24px; padding: 30px 32px; }
+  .lobby-link__icon { width: 80px; height: 80px; }
+  .lobby-link__title { font-size: clamp(32px, 3.6vw, 42px); }
+  .lobby-link__line { font-size: 16.5px; }
 }
 
 /* An archive page: one tile a day, newest first. */

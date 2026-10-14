@@ -6,9 +6,9 @@ import MastNav from './MastNav';
 import ClubBadge, { shortClubName } from './ClubBadge';
 import { Figure, StickerFace, solid } from './Sticker';
 import Back from './Back';
-import ArchiveCard from './ArchiveCard';
+import LobbyLink from './LobbyLink';
 import { GAMES } from '../src/games';
-import { givensLine, pastPuzzles } from './PuzzleArchive';
+import { pastPuzzles } from './PuzzleArchive';
 import type { BoardSummary } from '../src/lib/chain/client';
 import type { ClubView } from '../src/lib/clubs';
 import type { PortraitImage } from '../src/lib/portraits';
@@ -16,6 +16,7 @@ import { boardForDay, dayNumber, localDate } from '../src/lib/daily';
 import { readProgress, streakOf, type Play, type Progress } from '../src/lib/progress';
 import { shareLine } from '../src/lib/chain/share';
 import { doneToday } from '../src/lib/today';
+import { readCollection } from '../src/lib/collection';
 
 /** Steps stands on Chain's ground, the same as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'chain')!.ground;
@@ -38,7 +39,7 @@ type FirstStep = {
  * - Steps, on top: one gap at a time, any answer that fits, the deeper the
  *   rarer the card. Dark ground, the cards' world.
  * - The puzzle: one board, one answer per plate, seal it once. Paper.
- * - The two archives.
+ * - The two archives, then the collection the Steps cards go into.
  *
  * The one red button goes to whichever daily is next: Steps, then the
  * puzzle. Once both are done there is none.
@@ -50,11 +51,13 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
   const [progress, setProgress] = useState<Progress>({ plays: {} });
   const [done, setDone] = useState<Set<string>>(new Set());
   const [first, setFirst] = useState<FirstStep | null>(null);
+  const [cards, setCards] = useState<number | null>(null);
 
   useEffect(() => {
     setToday(dayNumber(localDate()));
     setProgress(readProgress());
     setDone(doneToday());
+    setCards(Object.keys(readCollection()).length);
     fetch(`/api/step/day?date=${localDate()}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d: { day: number; steps: Omit<FirstStep, 'day'>[] } | null) => {
@@ -88,7 +91,7 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
           <img className="lobby-hero__mini" src="/hub/steps.webp" alt="" width={480} height={480} />
           <div className="lobby-hero__ask">
             <span className="lobby-tag">Steps{today ? ` #${today}` : ''}</span>
-            <h1 className="lobby-hero__head display">How deep can you go?</h1>
+            <h1 className="lobby-hero__head display">How niche can you go?</h1>
             <p className="lobby-hero__sub">Any answer holds. The rarer it is, the better the card.</p>
           </div>
           <div className="lobby-hero__go">
@@ -113,12 +116,20 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
           )}
         </section>
 
-        <ArchiveCard href="/step/archive" title="Steps archive" line="Every run so far" />
-        <ArchiveCard
+        <LobbyLink href="/step/archive" title="Steps archive" line="Every run so far" />
+        <LobbyLink
           href="/chain/archive"
           title="Puzzle archive"
           line={toPlay === null ? ' ' : toPlay ? `${toPlay} still to play` : 'Every one played'}
         />
+        <div className="lobby__wide">
+          <LobbyLink
+            href="/collection"
+            title="Collection"
+            icon="cards"
+            line={cards === null ? ' ' : cards ? `${cards} ${cards === 1 ? 'card' : 'cards'}, rarest first` : 'Every card you win in Steps'}
+          />
+        </div>
 
         <details className="chub__how lobby__wide">
           <summary className="display">How the puzzle works</summary>
@@ -163,8 +174,6 @@ function Puzzle({ board, day, play, streak, next }: {
   streak: { current: number; best: number };
   next: boolean;
 }) {
-  const blanks = board.slots.filter((s) => !s).length;
-  const count = ['no', 'one', 'two', 'three', 'four', 'five'][blanks] ?? String(blanks);
   return (
     <div className={`hero ${play ? (play.held ? 'hero--held' : 'hero--broke') : ''}`}>
       <div className="hero__copy">
@@ -179,8 +188,7 @@ function Puzzle({ board, day, play, streak, next }: {
           </>
         ) : (
           <>
-            <h2 className="hero__head display">{board.closed ? 'Close the ring' : 'Link the ends'}</h2>
-            <p className="brief"><b>{givensLine(board.slots)}</b>. {count[0]!.toUpperCase() + count.slice(1)} to find, one answer each.</p>
+            <h2 className="hero__head display">Puzzle mode</h2>
             <div className="hero__actions">
               <a className={next ? 'lobby-play display' : 'chub__quiet display'} href={`/play/${board.id}`}>Play today’s puzzle</a>
             </div>

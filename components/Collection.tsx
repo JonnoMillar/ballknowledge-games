@@ -43,7 +43,7 @@ export default function Collection() {
           Chain
         </a>
         <div className="masthead__meta">
-          <MastNav current="collection" />
+          <MastNav />
         </div>
       </header>
 

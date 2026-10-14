@@ -7,7 +7,7 @@ import { dayNumber, localDate } from '../../../src/lib/daily';
 import type { PlateMark } from '../../../src/lib/chain/share';
 import { marksOf, pastDays } from './Archive';
 import Back from '../../../components/Back';
-import ArchiveCard from '../../../components/ArchiveCard';
+import LobbyLink from '../../../components/LobbyLink';
 import { GAMES } from '../../../src/games';
 import { Loop } from './Trail';
 import { ResultSticker } from './Reveal';
@@ -100,7 +100,7 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
           <Demo demo={demo} />
         </section>
 
-        <ArchiveCard
+        <LobbyLink
           href="/spoofed/archive"
           title="Archive"
           line={waiting === null ? ' ' : waiting ? `${waiting} past ${waiting === 1 ? 'daily' : 'dailies'} still to play` : 'Every past daily played'}
