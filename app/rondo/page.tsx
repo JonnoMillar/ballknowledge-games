@@ -1,42 +1,12 @@
-import Rondo from '../../games/rondo/components/Rondo';
+import Lobby from '../../games/rondo/components/Lobby';
 import '../../games/rondo/rondo.css';
-import Back from '../../components/Back';
 
 export const metadata = {
   title: 'Rondo',
   description: 'Keep the ball. A football passing game for two to four mates and one phone.',
 };
 
-/**
- * Rondo. One phone on the table; the album is the ref.
- * See games/rondo/DESIGN.md.
- */
-export default function RondoPage() {
-  return (
-    <div className="app rondo">
-      <header className="masthead masthead--rondo">
-        <Back href="/" label="All games" />
-        <a className="masthead__brand display" href="/rondo">
-          <RondoMark />
-          Rondo
-        </a>
-        <div className="masthead__meta">
-          <span className="masthead__tag">Keep the ball</span>
-        </div>
-      </header>
-      <main className="rondo__main">
-        <Rondo />
-      </main>
-    </div>
-  );
-}
-
-/** The mark: a ball, ringed. */
-function RondoMark() {
-  return (
-    <svg className="masthead__mark masthead__mark--rondo" viewBox="0 0 32 32" aria-hidden>
-      <circle cx="16" cy="16" r="13.5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeDasharray="7 4.5" />
-      <circle cx="16" cy="16" r="5" fill="currentColor" />
-    </svg>
-  );
+/** Rondo's front page; the match is at /rondo/play. See games/rondo/DESIGN.md. */
+export default function RondoLobby() {
+  return <Lobby />;
 }

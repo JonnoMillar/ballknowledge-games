@@ -108,8 +108,9 @@ Full time is the same card with the result and "Rematch".
 | `games/rondo/server.ts` | The club index over the pool, the deal, the judged pass with club views. |
 | `app/api/rondo/deal/route.ts` | A starter. |
 | `app/api/rondo/pass/route.ts` | A pass, or a forfeit, judged. |
-| `games/rondo/components/` | The page. |
-| `app/rondo/page.tsx`, `app/api/rondo/` | The Next.js routes, thin. `games/rondo/rondo.css` is the stylesheet. |
+| `games/rondo/components/` | The front page (`Lobby.tsx`, on the site's front-page kit) and the match (`Rondo.tsx`). |
+| `games/rondo/lib/store.ts` | The match and last names in `localStorage`. |
+| `app/rondo/page.tsx`, `app/rondo/play/page.tsx`, `app/api/rondo/` | The Next.js routes, thin (front page, match). `games/rondo/rondo.css` is the stylesheet. |
 
 ## Known limits in this draft
 

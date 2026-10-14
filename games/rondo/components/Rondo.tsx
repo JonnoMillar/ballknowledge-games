@@ -4,49 +4,26 @@ import BallView from './BallView';
 import LossCard from './LossCard';
 import PassBox from './PassBox';
 import Scoreboard from './Scoreboard';
-import Setup from './Setup';
 import { buildIndex, type SearchIndex } from '../../../src/lib/search/index';
 import { decodeNames, type NameEntry, type NameRow } from '../../../src/lib/chain/client';
 import {
-  dealt, lost, newMatch, nextBall, passed, rematch, winner,
-  type Carrier, type Clock, type Match,
+  dealt, lost, nextBall, passed, rematch, winner,
+  type Carrier, type Match,
 } from '../lib/match';
 import type { PassResponse } from '../lib/wire';
+import { readMatch, writeMatch } from '../lib/store';
 
 /**
  * Rondo: the phone on the table.
  *
- * The match lives here and in localStorage, so a knocked phone or a
- * refresh does not lose the score. The server deals the starter and
- * judges every pass; this component runs the clock, the turn, and the
- * cards. See games/rondo/DESIGN.md.
+ * The front page starts the match; it lives here and in localStorage
+ * (`lib/store`), so a knocked phone or a refresh does not lose the score.
+ * The server deals the starter and judges every pass; this component runs
+ * the clock, the turn, and the cards. See games/rondo/DESIGN.md.
  */
-
-const MATCH_KEY = 'rondo.match.v1';
-const NAMES_KEY = 'rondo.names.v1';
-
-interface Saved { names: string[]; clock: Clock }
-
-function readMatch(): Match | null {
-  try {
-    const raw = localStorage.getItem(MATCH_KEY);
-    if (!raw) return null;
-    const m = JSON.parse(raw) as Match;
-    return Array.isArray(m.players) && m.players.length >= 2 ? m : null;
-  } catch { return null; }
-}
-function readSaved(): Saved {
-  try {
-    const raw = localStorage.getItem(NAMES_KEY);
-    if (raw) return JSON.parse(raw) as Saved;
-  } catch { /* fresh */ }
-  return { names: [], clock: 30 };
-}
 
 export default function Rondo() {
   const [match, setMatch] = useState<Match | null>(null);
-  const [saved, setSaved] = useState<Saved>({ names: [], clock: 30 });
-  const [ready, setReady] = useState(false);
   const [index, setIndex] = useState<SearchIndex<NameEntry> | null>(null);
   const [busy, setBusy] = useState(false);
   const [shake, setShake] = useState(false);
@@ -54,19 +31,16 @@ export default function Rondo() {
   const [now, setNow] = useState(() => Date.now());
   const dealing = useRef(false);
 
-  // Memory: the match in progress, and the last names used.
+  // Memory: the match in progress. None means the front page starts one.
   useEffect(() => {
-    setMatch(readMatch());
-    setSaved(readSaved());
-    setReady(true);
+    const m = readMatch();
+    if (!m) { location.replace('/rondo'); return; }
+    setMatch(m);
   }, []);
   useEffect(() => {
-    if (!ready) return;
-    try {
-      if (match) localStorage.setItem(MATCH_KEY, JSON.stringify(match));
-      else localStorage.removeItem(MATCH_KEY);
-    } catch { /* a full or private store; the game still plays */ }
-  }, [match, ready]);
+    if (match) writeMatch(match);
+  }, [match]);
+  const leave = () => { writeMatch(null); location.assign('/rondo'); };
 
   // The album index, once. Names only.
   useEffect(() => {
@@ -139,23 +113,7 @@ export default function Rondo() {
     if (secondsLeft === 0 && live && !busy) void judge(null, 'time');
   }, [secondsLeft, live, busy, judge]);
 
-  const start = (names: string[], clock: Clock) => {
-    const s = { names, clock };
-    setSaved(s);
-    try { localStorage.setItem(NAMES_KEY, JSON.stringify(s)); } catch { /* fine */ }
-    setMatch(newMatch(names, clock));
-  };
-
-  if (!ready) return <div className="rondo__loading" aria-busy>…</div>;
-
-  if (!match) {
-    return (
-      <>
-        <Setup initialNames={saved.names} initialClock={saved.clock} onStart={start} />
-        <HowToPlay />
-      </>
-    );
-  }
+  if (!match) return <div className="rondo__loading" aria-busy>…</div>;
 
   const current = match.players[match.turn]!;
   const taken = new Set(match.named);
@@ -202,33 +160,15 @@ export default function Rondo() {
           winnerIndex={winner(match)}
           onNext={() => setMatch((m) => (m ? nextBall(m) : m))}
           onRematch={() => setMatch((m) => (m ? rematch(m) : m))}
-          onNewGame={() => setMatch(null)}
+          onNewGame={leave}
         />
       ) : null}
 
       <footer className="rondo__foot">
-        <button type="button" className="rondo__abandon" onClick={() => { if (confirm('Abandon this match?')) setMatch(null); }}>
+        <button type="button" className="rondo__abandon" onClick={() => { if (confirm('Abandon this match?')) leave(); }}>
           Abandon match
         </button>
       </footer>
     </>
-  );
-}
-
-function HowToPlay() {
-  return (
-    <section className="how">
-      <h2 className="how__title display">How it goes</h2>
-      <ol className="how__rules">
-        <li><b>Someone's on the ball.</b> Pass to a player who shared a club with them. Say it, then type it — the phone's the ref.</li>
-        <li><b>Every club a pass goes through is burnt</b> for the rest of the ball. No club twice, no player twice. The big clubs go first, and it gets harder every touch.</li>
-        <li><b>Can't find one? You've lost it.</b> Take a bib. A pass nobody could take on is a dead end — that's your bib too.</li>
-        <li><b>Three bibs and you're in the middle.</b> Last one standing keeps the ball.</li>
-      </ol>
-      <p className="how__note">
-        The album is the ref: 11,741 players and every club Wikidata says they played for, from 1992 on.
-        If the ref doesn't know them, they don't count — and the ref never shows the open clubs while the ball's live.
-      </p>
-    </section>
   );
 }

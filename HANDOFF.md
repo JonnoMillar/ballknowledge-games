@@ -15,7 +15,7 @@ are in `CLAUDE.md`.
 |---|---|---|---|
 | Chain | `/chain` (hub), `/play/NNN`, `/chain/archive` | `src/lib/chain`, `components/` (`Home.tsx` is the hub, `PuzzleArchive.tsx`) | Live. `/chain` hosts two dailies: Steps (`/step`, top, dark card) and the puzzle (the old Chain daily, cream album page), each with an archive. One red button, on whichever is next. This file. |
 | Deep Cuts | `/deep`, `/collection` | `src/lib/chain`, `components/` | Archived 2026-10-14 (off every nav; routes still work). `/collection` stays: Steps fills it. |
-| Rondo | `/rondo` | `games/rondo` | This file, `games/rondo/DESIGN.md`. |
+| Rondo | `/rondo` (front page), `/rondo/play` | `games/rondo` | Front page on the kit 2026-10-14. This file, `games/rondo/DESIGN.md`. |
 | Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | Off the hub 2026-10-13 (Jonno: not good enough). Route still works. |
 | Recall XI | `/recall-xi` | root | Parked. |
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
@@ -65,8 +65,14 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   Chain's hub (`components/LobbyLink.tsx`, the big card, now with an
   `icon` of `archive` or `cards`), and no longer a masthead button
   (`MastNav` is only the grades key now).
-- **Next (Jonno's order):** Rondo's front page, which has none yet (`/rondo`
-  drops straight into `Setup`), then Pitch pin's onto the kit (he likes it
+- **Rondo's front page** (2026-10-14, `games/rondo/components/Lobby.tsx`):
+  hero on the orange ground with the rondo miniature; "Fancy a rondo?" on
+  the left, who's playing + clock + Kick off (the red button) on the right.
+  Cards: "Match in progress" (names, bibs, ball; only when the phone has an
+  unfinished match) and "How it goes". The match moved to `/rondo/play`, so
+  a refresh mid-match stays in it; with no saved match it goes back to
+  `/rondo`. Kick off over a saved match asks first. Waiting on Jonno.
+- **Next (Jonno's order):** Pitch pin's front page onto the kit (he likes it
   as is, so keep its content). Rondo is not a daily: its hero has no day
   tag and its red button starts a match; it is the pub game (orange
   `#C9541A`, tagged Multiplayer on the hub).
@@ -279,8 +285,9 @@ sit under `app/`. Two to four players, pass the phone. Design and rules:
 | `games/rondo/lib/rules.ts` | `judgePass`: the rule, pure. The dead-end check is the bust. |
 | `games/rondo/lib/match.ts` | The match reducer: bibs, turn order, the loser kicks off. |
 | `games/rondo/server.ts` | Club index over the pool, the deal (288 starters at fame ≥ 60), the judged pass. |
-| `app/rondo/page.tsx`, `app/api/rondo/{deal,pass}/route.ts` | The routes: thin, they import from `games/rondo/`. |
-| `games/rondo/components/` | Setup, Scoreboard, BallView, PassBox, LossCard, and `Rondo.tsx` holding the match (`localStorage` key `rondo.match.v1`). |
+| `app/rondo/page.tsx`, `app/rondo/play/page.tsx`, `app/api/rondo/{deal,pass}/route.ts` | The routes: thin, they import from `games/rondo/`. |
+| `games/rondo/components/` | `Lobby.tsx` (the front page, holds Setup), Scoreboard, BallView, PassBox, LossCard, and `Rondo.tsx` holding the match. |
+| `games/rondo/lib/store.ts` | The phone's memory, shared by both pages: `rondo.match.v1`, `rondo.names.v1`. |
 | `games/rondo/rondo.css` | Its stylesheet. The bib orange is its one loud colour. |
 
 The same rules as Chain apply: the pool is searched, never listed; the

@@ -7,6 +7,7 @@ const MAX_PLAYERS = 4;
 /**
  * Who's playing, and how long they get. Two names by default, up to four.
  * The last names used come back next time, because it is the same mates.
+ * It sits on the front page's lit ground; Kick off is the page's red button.
  */
 export default function Setup({
   initialNames, initialClock, onStart,
@@ -30,7 +31,7 @@ export default function Setup({
         onStart(names.map((n, i) => n.trim() || `Player ${i + 1}`), clock);
       }}
     >
-      <h2 className="setup__title display">Who's playing?</h2>
+      <h2 className="setup__title">Who’s playing?</h2>
       <ol className="setup__names">
         {names.map((n, i) => (
           <li key={i} className="setup__row">
@@ -76,7 +77,7 @@ export default function Setup({
         </div>
       </div>
 
-      <button type="submit" className="kick display">Kick off</button>
+      <button type="submit" className="lobby-play display">Kick off</button>
     </form>
   );
 }
