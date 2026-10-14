@@ -40,7 +40,6 @@ export default function GradesKey({ className = '' }: { className?: string }) {
             ))}
           </ul>
           <p className="key__links">
-            <a href="/deep">Play Deep Cuts</a>
             <a href="/collection">Your collection</a>
           </p>
         </div>
