@@ -71,3 +71,25 @@ the Share sheet, the cron on GitHub (runs once merged).
   both (Viviano on #26). Shown twice; fine unless Jonno minds.
 - Measured feasibility: 1,643 good steps over 102 givens and 35 clubs; 90 days
   generate with no rule broken (test).
+
+## Gotchas (this session)
+
+- Bash heredocs with many quotes/apostrophes failed to parse in this harness
+  ("unexpected EOF"); write files with the Write tool instead.
+- Dev server: preview config `recall-xi` (autoPort; 3000 was taken, got 3002).
+  Prod build beside it: `NEXT_DIST_DIR=.next-prod npx next build`, then
+  `git checkout tsconfig.json`.
+- Pane screenshots at emulated sizes come back scaled/cropped; read text with
+  JS (`innerText`, `scrollWidth`) to verify.
+
+## Resume prompt
+
+> Step chain game, branch `feat/step-chain`, worktree
+> `.claude/worktrees/kind-tharp-12c680`. Read CLAUDE.md, then
+> `games/step/HANDOFF.md` and `games/step/SPEC.md`. Jonno is playing `/step`
+> (run `npm run dev`, preview config `recall-xi`). Apply his feedback; next
+> concrete task if none: add a `--step` target to `scripts/fetch-portraits.ts`
+> (like `--itk`) so every given in `games/step/data/days.json` has an in-era
+> portrait, then `npm run fetch:credits`. Done when every given resolves, `npm
+> test` and typecheck pass. Do not merge to `main` until Jonno says he has
+> played it; then merge, run checks + prod build, push (auto-allowed).
