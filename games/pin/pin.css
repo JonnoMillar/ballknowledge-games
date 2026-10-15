@@ -154,8 +154,6 @@
 .pin__art .pitch__pin circle { stroke-width: 1.6; }
 .pin__art .pitch__ball circle { stroke-width: 1.4; }
 .pin__artkind { position: absolute; z-index: 1; left: 10px; top: 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--art-fg); }
-.pin__art--tall { height: 150px; }
-.pin__art--tall .pin__artkind { left: 14px; top: 12px; font-size: 13px; }
 
 /* ── The scale ──────────────────────────────────────────────────────── */
 .pin__scale { display: flex; flex-direction: column; gap: 6px; }
@@ -184,62 +182,36 @@
 /* Pinpoint's band is the narrowest: its name hangs from the right end. */
 .pin__scalenames > :last-child { justify-self: end; }
 
-/* ── The hub ────────────────────────────────────────────────────────── */
-.pin__main--hub { gap: 22px; }
-.pin__howlink { color: #fff; font-size: 14px; font-weight: 600; }
+/* ── The front page (the kit is in app/globals.css) ─────────────────── */
 .pin__eyebrow { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.pin__top {
-  background: var(--sticker);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 0 rgba(20, 18, 16, 0.12), 0 10px 24px -14px rgba(20, 18, 16, 0.45);
-}
-.pin__top--wait { min-height: 320px; background: transparent; box-shadow: none; }
-.pin__hero { display: flex; flex-direction: column; gap: 14px; padding: 16px 16px 18px; }
-.pin__herotext { display: contents; }
-.pin__herotext > .pin__eyebrow { order: 0; }
-.pin__headline { order: 0; margin: 0; font-size: 46px; font-weight: 900; line-height: 0.88; text-transform: uppercase; }
-.pin__start { order: 2; display: flex; flex-direction: column; gap: 10px; }
-.pin__startpack { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
-.pin__swatch.pin__art { flex: 0 0 52px; height: 52px; border-radius: 6px; }
-.pin__swatch svg { inset: 6px 4px; width: calc(100% - 8px); height: calc(100% - 12px); }
-.pin__starttext { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.pin__starttitle { font-size: 22px; font-weight: 800; line-height: 0.95; text-transform: uppercase; }
-.pin__play {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 54px;
-  border-radius: 6px;
-  background: var(--red);
-  color: #fff;
-  text-decoration: none;
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.pin__play:hover { background: var(--red-deep); }
-.pin__upnext { display: flex; flex-direction: column; }
-.pin__nextbody { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 16px; }
-.pin__nexttitle { margin: 0; font-size: 30px; font-weight: 800; line-height: 0.92; text-transform: uppercase; }
-.pin__carryhead { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
-.pin__carrypts { font-size: 30px; font-weight: 800; line-height: 0.92; white-space: nowrap; }
-.pin__carrypts small { font-size: 14px; color: var(--muted); }
-.pin__done { padding: 18px 16px; display: flex; flex-direction: column; gap: 6px; }
-.pin__done p { margin: 0; }
 
-.pin__section { display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 16px; }
-.pin__shelfhead { margin: 0; font-size: 22px; font-weight: 800; text-transform: uppercase; }
-.pin__record { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 12px 14px; background: var(--sticker); border-radius: 6px; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.12); }
+/* The hero's pack: white on the blue ground. */
+.pin-lobby__go { justify-content: flex-end; }
+.pin-lobby__pack { display: flex; align-items: center; gap: 14px; color: #fff; text-decoration: none; }
+.pin-lobby__pack .pin__eyebrow { color: rgba(255, 255, 255, 0.75); }
+/* Red is the button's alone in the hero. */
+.pin-lobby__pack .pin__new { background: #fff; color: var(--ground); }
+.pin__swatch.pin__art { flex: 0 0 60px; height: 60px; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25); }
+.pin__swatch svg { inset: 6px 4px; width: calc(100% - 8px); height: calc(100% - 12px); }
+.pin-lobby__packtext { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.pin-lobby__packtitle { font-size: 26px; font-weight: 800; line-height: 0.95; text-transform: uppercase; }
+.pin-lobby__packsub { font-size: 14px; opacity: 0.86; }
+.pin-lobby__ticks { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.pin-lobby__ticks li { flex: 1 1 0; max-width: 34px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.28); }
+.pin-lobby__ticks li.is-done { background: #fff; }
+
+.pin__record { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .pin__record > span { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--muted); }
-.pin__record b { display: flex; align-items: center; gap: 6px; font-size: 30px; font-weight: 800; line-height: 0.9; color: var(--ink); }
+.pin__record b { display: flex; align-items: center; gap: 6px; font-size: 34px; font-weight: 800; line-height: 0.9; color: var(--ink); }
+.pin-lobby__how { scroll-margin-top: 16px; }
+.pin-lobby__howbody { display: flex; flex-direction: column; gap: 14px; }
 .pin__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.pin__steps li { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--sticker); border-radius: 6px; font-size: 13px; line-height: 1.3; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.12); }
+.pin__steps li { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: rgba(20, 18, 16, 0.04); border-radius: 12px; font-size: 13px; line-height: 1.3; }
 .pin__steps .display { font-size: 28px; font-weight: 800; line-height: 0.8; color: var(--red); }
 
 /* A shelf scrolls sideways on a phone; it runs to the page edge so a card peeks. */
-.pin__shelf { list-style: none; margin: 0 -16px; padding: 2px 16px 8px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; scroll-padding-inline: 16px; }
+/* In its card, a shelf runs to the card's edge so a pack peeks. */
+.pin__shelf { list-style: none; margin: 0 -18px; padding: 2px 18px 8px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; scroll-padding-inline: 18px; }
 .pin__shelf::-webkit-scrollbar { display: none; }
 .pin__shelf > li { flex: 0 0 150px; scroll-snap-align: start; }
 .pin__pack {
@@ -247,7 +219,7 @@
   flex-direction: column;
   height: 100%;
   background: var(--sticker);
-  border-radius: 6px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 0 rgba(20, 18, 16, 0.12), 0 6px 16px -10px rgba(20, 18, 16, 0.35);
   color: var(--ink);
@@ -265,7 +237,7 @@
 .pin__back { align-self: center; font-size: 14px; color: var(--ink); }
 
 /* ── The demo: 8 s, looped ──────────────────────────────────────────── */
-.pin-demo { order: 1; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--page); border-radius: 6px; }
+.pin-demo { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--page); border-radius: 6px; }
 .pin-demo__card { display: flex; flex-direction: column; gap: 6px; padding: 9px 11px; background: var(--sticker); border-radius: 5px; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.1); }
 .pin-demo__bar { display: block; height: 8px; border-radius: 4px; background: var(--silhouette); }
 .pin-demo__bar--name { height: 16px; background: var(--silhouette-figure); }
@@ -349,26 +321,21 @@
 .pin__controls { display: flex; flex-direction: column; gap: 10px; }
 .pin__gain { display: flex; align-items: center; gap: 10px; }
 
+/* The first visit's How it works: the demo beside the steps. */
+@media (min-width: 760px) {
+  .pin-lobby__how--demo { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 32px; row-gap: 14px; align-items: start; }
+  .pin-lobby__how--demo > .lobby-tag { grid-column: 1 / -1; justify-self: start; }
+  .pin__shelf { margin: 0 -28px; padding-inline: 28px; scroll-padding-inline: 28px; }
+}
+
 /* ── Laptops ────────────────────────────────────────────────────────── */
 @media (min-width: 900px) {
   .pin__main { max-width: 1180px; padding: 24px 28px 40px; }
-  .pin__main--hub { gap: 36px; }
-  .pin__hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: 48px; align-items: center; padding: 36px 40px; }
-  .pin__herotext { display: flex; flex-direction: column; gap: 22px; }
-  .pin__start { padding-top: 18px; border-top: 1px solid var(--rule); }
-  .pin__headline { font-size: clamp(56px, 6vw, 84px); }
   .pin-demo { padding: 14px; }
-  .pin__upnext { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .pin__upnext .pin__art--tall { height: auto; min-height: 240px; }
-  .pin__nextbody { padding: 28px 32px; justify-content: center; }
-  .pin__nexttitle { font-size: 44px; }
-  .pin__record { max-width: 560px; }
-  .pin__steps, .pin__scale { max-width: 760px; }
-  .pin__shelf { margin: 0; padding: 2px 0 8px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; overflow: visible; }
+  .pin__shelf { margin: 0; padding: 2px 0 4px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; overflow: visible; }
   .pin__shelf > li { flex: none; }
   .pin__art { height: 96px; }
   .pin__packtitle { font-size: 21px; }
-  .pin__shelfhead { font-size: 28px; }
 
   /* Throwing fits the window: the pitch takes the height left over, so the button never drops out of view. */
   .pin--play { height: 100dvh; min-height: 0; }
@@ -397,11 +364,6 @@
   .pin__fullpitch { grid-area: pitch; position: sticky; top: 24px; }
   .pin__list { grid-area: list; }
   .pin__fullshare { grid-area: share; }
-}
-@media (min-width: 1200px) {
-  .pin__start { flex-direction: row; align-items: center; gap: 16px; }
-  .pin__startpack { flex-grow: 1; min-width: 0; }
-  .pin__start .pin__play { padding: 0 42px; }
 }
 
 /* ── The credit ─────────────────────────────────────────────────────── */

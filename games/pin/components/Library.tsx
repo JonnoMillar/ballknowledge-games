@@ -1,20 +1,36 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import Demo from './Demo';
-import PackCard, { KindArt, pairsOf, Stamp } from './PackCard';
-import { Lines } from './Pitch';
+import PackCard, { pairsOf, Stamp } from './PackCard';
+import { Ball, Lines, PinMark } from './Pitch';
 import { PinLogo } from './PitchPin';
 import Scale from './Scale';
 import { readStore, record, suggest, type Store } from '../lib/progress';
 import { points } from '../lib/score';
 import type { PackCard as Card, Shelf } from '../lib/types';
 import Back from '../../../components/Back';
+import Words from '../../../components/Words';
+import { GAMES } from '../../../src/games';
+
+/** Pitch pin's ground: the same blue as its tile on the hub. */
+const GROUND = GAMES.find((g) => g.id === 'pin')!.ground;
 
 /**
- * The hub. The shelves come from the server; the top card, the record and
- * every card's status come from this browser's saves, read after mount
- * since localStorage is not on the server. A browser that has thrown at no
- * pack gets the demo and How it works up top.
+ * The way in, laid out like every game's front page: the hero on Pitch
+ * pin's lit ground with the hub's miniature, paper cards beneath.
+ *
+ * - The hero: the question on the left; on the right the pack to play
+ *   (Start here on a first visit, Carry on with a pack in progress,
+ *   otherwise Up next) and the page's one red button.
+ * - Your record, once a pack is finished.
+ * - How it works: the demo (first visit only), the steps, the scale. Up top
+ *   on a first visit, beside the record after.
+ * - The shelves, one wide card each, then the credit.
+ *
+ * The shelves come from the server; the pack, the record and every card's
+ * status come from this browser's saves, read after mount since
+ * localStorage is not on the server. The hero is there from the first
+ * frame, so it can grow out of the hub's tile.
  */
 export default function Library({ shelves }: { shelves: Shelf[] }) {
   const [store, setStore] = useState<Store | null>(null);
@@ -36,44 +52,40 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
           <PinLogo />
           Pitch pin
         </a>
-        {store && !fresh ? <a className="pin__howlink" href="#how">How it works</a> : null}
       </header>
-      <main className="pin__main pin__main--hub">
-        {store === null ? (
-          <section className="pin__top pin__top--wait" aria-hidden />
-        ) : fresh ? (
-          <section className="pin__top pin__hero">
-            <div className="pin__herotext">
-              <span className="pin__eyebrow">Famous goals, one pin each</span>
-              <h1 className="pin__headline display">Where was it struck from?</h1>
-              {picked ? <StartHere card={picked} /> : null}
-            </div>
-            <Demo />
-          </section>
-        ) : pick?.state === 'part' && picked ? (
-          <Carry card={picked} store={saves} />
-        ) : picked ? (
-          <section className="pin__top pin__upnext">
-            <KindArt kind={picked.kind} tall />
-            <div className="pin__nextbody">
-              <span className="pin__eyebrow">Up next</span>
-              <h1 className="pin__nexttitle display">{picked.title}</h1>
-              <span className="pin__packsub">
-                {picked.isNew ? <span className="pin__new display">New</span> : null} {picked.subtitle}
-              </span>
-              <a className="pin__play display" href={`/pin/${picked.id}`}>Play</a>
-            </div>
-          </section>
-        ) : (
-          <section className="pin__top pin__done">
-            <h1 className="pin__nexttitle display">Every pack played</h1>
-            <p className="pin__packsub">New ones land each week.</p>
-          </section>
-        )}
+      <main className="lobby">
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
+          <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-pin' }} aria-hidden />
+          <img className="lobby-hero__mini" src="/hub/pin.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-pin-mini' }} />
+          <div className="lobby-hero__ask">
+            <span className="lobby-tag">Packs</span>
+            <h1 className="lobby-hero__head display"><Words text="Where was it struck from?" /></h1>
+            <p className="lobby-hero__sub">Famous goals, one pin each.</p>
+          </div>
+          <div className="lobby-hero__go pin-lobby__go">
+            {store === null ? null : pick?.state === 'part' && picked ? (
+              <Carry card={picked} store={saves} />
+            ) : picked ? (
+              <>
+                <PackLine card={picked} eyebrow={fresh ? 'Start here' : 'Up next'} sub={fresh ? `${picked.size} goals` : picked.subtitle} />
+                <a className="lobby-play display" href={`/pin/${picked.id}`}>Play</a>
+              </>
+            ) : (
+              <div className="pin-lobby__pack">
+                <span className="pin-lobby__packtext">
+                  <span className="pin-lobby__packtitle display">Every pack played</span>
+                  <span className="pin-lobby__packsub">New ones land each week.</span>
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {fresh ? <How demo /> : null}
 
         {rec.packs ? (
-          <section className="pin__section">
-            <h2 className="pin__shelfhead display">Your record</h2>
+          <section className="lobby-card pin-lobby__record">
+            <span className="lobby-tag lobby-tag--paper">Your record</span>
             <div className="pin__record">
               <span><span>Packs</span><b className="display">{rec.packs}</b></span>
               <span><span>Average</span><b className="display">{rec.average}</b></span>
@@ -82,11 +94,11 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
           </section>
         ) : null}
 
-        {fresh ? <How /> : null}
+        {store && !fresh ? <How /> : null}
 
         {shelves.map((s) => (
-          <section key={s.title} className="pin__section">
-            <h2 className="pin__shelfhead display">{s.title}</h2>
+          <section key={s.title} className="lobby-card lobby__wide">
+            <span className="lobby-tag lobby-tag--paper">{s.title}</span>
             <ul className="pin__shelf">
               {s.packs.map((p) => (
                 <li key={p.id}><PackCard card={p} play={saves[p.id]} loaded={store !== null} /></li>
@@ -95,9 +107,7 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
           </section>
         ))}
 
-        {store && !fresh ? <How /> : null}
-
-        <p className="pin__credit">
+        <p className="pin__credit lobby__wide">
           <img src="/credits/statsbomb.png" alt="StatsBomb" height={16} />
           Shot data: Understat and StatsBomb open data. Shortlists: the Premier League. Past winners: Wikipedia.
         </p>
@@ -106,44 +116,45 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
   );
 }
 
-function Steps() {
+/** How it works. With the demo on a first visit, across the page; without, beside the record. */
+function How({ demo }: { demo?: boolean }) {
   return (
-    <ol className="pin__steps">
-      <li><span className="display">1</span>A famous goal is named.</li>
-      <li><span className="display">2</span>Pin where it was struck from.</li>
-      <li><span className="display">3</span>Up to 100 a goal. Inside 2 m is a bullseye.</li>
-    </ol>
-  );
-}
-
-function How() {
-  return (
-    <section className="pin__section" id="how">
-      <h2 className="pin__shelfhead display">How it works</h2>
-      <Steps />
-      <Scale />
-      <p className="pin__packsub">Each pack lands on the scale, out of 100. Pinpoint is 90 and up.</p>
+    <section className={`lobby-card pin-lobby__how${demo ? ' lobby__wide pin-lobby__how--demo' : ''}`} id="how">
+      <span className="lobby-tag lobby-tag--paper">How it works</span>
+      {demo ? <Demo /> : null}
+      <div className="pin-lobby__howbody">
+        <ol className="pin__steps">
+          <li><span className="display">1</span>A famous goal is named.</li>
+          <li><span className="display">2</span>Pin where it was struck from.</li>
+          <li><span className="display">3</span>Up to 100 a goal. Inside 2 m is a bullseye.</li>
+        </ol>
+        <Scale />
+        <p className="pin__packsub">Each pack lands on the scale, out of 100. Pinpoint is 90 and up.</p>
+      </div>
     </section>
   );
 }
 
-function StartHere({ card }: { card: Card }) {
+/** A pack in the hero: its colour and the top of the pitch, with this browser's pins on it. */
+function PackLine({ card, eyebrow, sub, store }: { card: Card; eyebrow: string; sub: string; store?: Store }) {
   return (
-    <div className="pin__start">
-      <a className="pin__startpack" href={`/pin/${card.id}`}>
-        <span className={`pin__swatch pin__art pin__art--${card.kind}`} aria-hidden>
-          <svg viewBox="8 -3 52 26"><Lines /></svg>
+    <a className="pin-lobby__pack" href={`/pin/${card.id}`}>
+      <span className={`pin__swatch pin__art pin__art--${card.kind}`} aria-hidden>
+        <svg viewBox="8 -3 52 26">
+          <Lines />
+          {pairsOf(store?.[card.id]).map((p, i) => (
+            <g key={i}><Ball at={p.at} still /><PinMark at={p.pin} /></g>
+          ))}
+        </svg>
+      </span>
+      <span className="pin-lobby__packtext">
+        <span className="pin__eyebrow">{eyebrow}</span>
+        <span className="pin-lobby__packtitle display">{card.title}</span>
+        <span className="pin-lobby__packsub">
+          {card.isNew ? <span className="pin__new display">New</span> : null} {sub}
         </span>
-        <span className="pin__starttext">
-          <span className="pin__eyebrow">Start here</span>
-          <span className="pin__starttitle display">{card.title}</span>
-          <span className="pin__packsub">
-            {card.isNew ? <span className="pin__new display">New</span> : null} {card.size} goals
-          </span>
-        </span>
-      </a>
-      <a className="pin__play display" href={`/pin/${card.id}`}>Play</a>
-    </div>
+      </span>
+    </a>
   );
 }
 
@@ -152,22 +163,12 @@ function Carry({ card, store }: { card: Card; store: Store }) {
   const thrown = pairsOf(play).length;
   const sofar = (play?.throws ?? []).reduce((a, t) => a + (t ? points(t.answer.distance) : 0), 0);
   return (
-    <section className="pin__top pin__upnext">
-      <KindArt kind={card.kind} play={play} tall />
-      <div className="pin__nextbody">
-        <span className="pin__eyebrow">Carry on</span>
-        <div className="pin__carryhead">
-          <h1 className="pin__nexttitle display">{card.title}</h1>
-          <span className="pin__carrypts display">{sofar}<small> pts</small></span>
-        </div>
-        <div className="pin__ticks">
-          <span>{thrown} of {card.size} thrown</span>
-          <ol aria-hidden>
-            {(play?.throws ?? []).map((t, i) => <li key={i} className={`pin__tick${t ? ' pin__tick--done' : ''}`} />)}
-          </ol>
-        </div>
-        <a className="pin__play display" href={`/pin/${card.id}`}>Continue</a>
-      </div>
-    </section>
+    <>
+      <PackLine card={card} eyebrow="Carry on" sub={`${thrown} of ${card.size} thrown · ${sofar} pts`} store={store} />
+      <ol className="pin-lobby__ticks" aria-hidden>
+        {(play?.throws ?? []).map((t, i) => <li key={i} className={t ? 'is-done' : ''} />)}
+      </ol>
+      <a className="lobby-play display" href={`/pin/${card.id}`}>Continue</a>
+    </>
   );
 }

@@ -13,14 +13,13 @@ export const pairsOf = (play: PinPlay | undefined) =>
 
 /**
  * A pack's art: its kind's colour and the top of the pitch, with this
- * browser's pins and true spots once it has thrown any. `tall` shows more
- * of the half, for the hub's top card.
+ * browser's pins and true spots once it has thrown any.
  */
-export function KindArt({ kind, play, tall }: { kind: PackKind; play?: PinPlay; tall?: boolean }) {
+export function KindArt({ kind, play }: { kind: PackKind; play?: PinPlay }) {
   return (
-    <span className={`pin__art pin__art--${kind}${tall ? ' pin__art--tall' : ''}`}>
+    <span className={`pin__art pin__art--${kind}`}>
       <span className="pin__artkind display">{KIND_NAME[kind]}</span>
-      <svg viewBox={tall ? '2 -3 64 34' : '4 -14 60 36'} preserveAspectRatio="xMidYMin slice" aria-hidden>
+      <svg viewBox="4 -14 60 36" preserveAspectRatio="xMidYMin slice" aria-hidden>
         <Lines />
         {pairsOf(play).map((p, i) => (
           <g key={i}>

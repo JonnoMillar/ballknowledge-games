@@ -1,6 +1,8 @@
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Hub from '../components/Hub';
 import { isBoardId } from '../src/server/board';
+import { HUB_COOKIE, readHubCookie } from '../src/lib/today';
 
 export const metadata = {
   title: 'Football games',
@@ -16,5 +18,5 @@ export default async function HubPage(
 ) {
   const { c } = await searchParams;
   if (isBoardId(c)) redirect(`/play/${c}`);
-  return <Hub />;
+  return <Hub initial={readHubCookie((await cookies()).get(HUB_COOKIE)?.value)} />;
 }

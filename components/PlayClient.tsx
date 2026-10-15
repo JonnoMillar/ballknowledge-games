@@ -7,6 +7,7 @@ import { dayNumber, dayOfBoard, localDate } from '../src/lib/daily';
 import { readProgress, recordPlay, streakOf, type Play } from '../src/lib/progress';
 import { MARK_GLYPH, plateMarks } from '../src/lib/chain/share';
 import { neighboursOf } from '../src/lib/chain/score';
+import { syncHub } from '../src/lib/today';
 import { recordCards, type Card, type CardNews } from '../src/lib/collection';
 import type { PortraitImage } from '../src/lib/portraits';
 
@@ -31,6 +32,7 @@ export default function PlayClient({ board, dailyIds }: { board: BoardProps; dai
     const progress = readProgress();
     setPlayed(progress.plays[board.puzzle.id] ?? null);
     setStreak(streakOf(progress, today).current);
+    syncHub();
   }, [board.puzzle.id, dailyIds]);
 
   const isToday = day !== null && day === dayNumber(localDate());

@@ -12,11 +12,13 @@ the scale, the laptop layout; wins where it disagrees),
 (done) and `…/2026-10-08-pitch-pin.md` (tasks 1–12 done, 13–15 folded into the
 library plan).
 
-**What it is now.** No daily, no streak. `/pin` is a hub: a top card (first
-visit: headline, looping CSS demo, "Start here" pack and Play; a pack in
-progress: Carry on with your pins so far; otherwise Up next), Your record
-(packs, average, best, all derived from the existing localStorage store), How
-it works with the tier scale, then shelves: This season, Classics, By season,
+**What it is now.** No daily, no streak. `/pin` is a front page on the
+site's kit (2026-10-15, root HANDOFF): a blue hero, "Where was it struck
+from?" with the pack to play (first visit: "Start here"; a pack in
+progress: Carry on with your pins so far; otherwise Up next) and Play; then
+Your record (packs, average, best, all derived from the existing
+localStorage store), How it works with the tier scale (and the looping CSS
+demo on a first visit), then one card per shelf: This season, Classics, By season,
 By club, Earlier. Each kind has its colour; a played card shows your pins as
 its art and its score and tier. `/pin/<id>` is one pack (6 to 9 goals, one
 throw each); on a laptop (≥900 px) it is two columns that fit the window, so

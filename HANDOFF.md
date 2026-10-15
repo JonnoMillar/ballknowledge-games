@@ -18,7 +18,7 @@ are in `CLAUDE.md`.
 | Rondo | `/rondo` (front page), `/rondo/play` | `games/rondo` | Front page on the kit 2026-10-14. This file, `games/rondo/DESIGN.md`. |
 | Slugger | `/slugger` | `src/lib/slugger`, `components/slugger` | Off the hub 2026-10-13 (Jonno: not good enough). Route still works. |
 | Recall XI | `/recall-xi` | root | Parked. |
-| Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12. `games/pin/HANDOFF.md`. |
+| Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12; front page on the kit 2026-10-15. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
 
@@ -100,17 +100,34 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   moves (type `morph`); every other page change is a quick cross-fade.
   `smooth()` waits for the fill-in to finish, so late content (saved
   names, a match in progress) arrives last. In-page moves stay at 320ms.
-- **Waiting on Jonno (2026-10-15):** his verdict on the staged motion
-  (0fca839) and on Rondo's front page; he said he'd verify himself. If he
-  wants different pacing, the knobs are `--vt-out`, `--t-page`,
-  `--vt-land` in `:root` and the stage-3 delays at the end of MOTION.
-- **Next (Jonno's order):** Pitch pin's front page onto the kit (he likes it
-  as is, so keep its content; `app/pin/page.tsx`, `games/pin/components/
-  Library.tsx`). It needs what the other front pages have for the motion:
-  a `.lobby` grid, a `.lobby-hero` with a `.lobby-hero__ground` named
-  `game-pin`, the hub miniature named `game-pin-mini`, the headline in
-  `<Words>`. Then the no-teleport sweep (a proposed session card exists;
-  if it expired, the brief is: every click-driven change on every game
+- **Jonno's verdict, 2026-10-15:** coming back to the hub "does a flash
+  and the cards do another shuffle". Cause: the hub was server-rendered as
+  if nothing was done, then re-laid itself with `smooth()` once it read
+  the real day (a second view transition, root cross-fade). Fix: the hub's
+  state (today's done dailies, Chain's streak) is mirrored into a `hub`
+  cookie (`syncHub()` in `src/lib/today.ts`, called by `markDone`, Chain's
+  seal in `PlayClient`, and the hub on mount); `app/page.tsx` reads it
+  (`readHubCookie`, valid only on the browser's own date via its time
+  zone) and renders the true board. Only a stale or missing cookie still
+  rearranges on load. Verified: back from Rondo with dailies done, no
+  second transition, the board right from frame 0.
+- Red buttons (`.lobby-play`): pointer cursor (Kick off is a `<button>`)
+  and a 2px lift on hover, hover-capable devices only. The hub's Play gets
+  no lift of its own: its whole tile already lifts.
+- Rondo's front page: Jonno fine with it, but "How it goes" was "cringe
+  text, nothing visual". Now four pictures in the match's own visuals, one
+  real ball (Rooney, United crest, Ronaldo; United and Madrid crests
+  burnt; Benzema ? and a bib; three bibs), a few words each.
+- **Pitch pin's front page on the kit** (2026-10-15,
+  `games/pin/components/Library.tsx`): blue hero with the pin miniature,
+  "Where was it struck from?" in `<Words>`, the pack to play on the right
+  (Start here / Carry on with ticks and points / Up next / Every pack
+  played) and the one red button; cards: Your record and How it works side
+  by side (How it works, with the demo, goes first and wide on a first
+  visit), one wide card per shelf, the credit. The masthead's "How it
+  works" link is gone (the card is on the page). Hub -> /pin and back run
+  the three stages (checked with `.scratch/strip.js`).
+- **Next:** the no-teleport sweep (every click-driven change on every game
   screen through `smooth()`/`.vt`, by the rules at the top of MOTION).
 
 **Open:** "Steps" (hub, Jonno's word) vs "Step" (the game's own masthead):
@@ -136,16 +153,9 @@ the pundit's ink loop; redo only if Jonno minds.
   1024) so every disc is the same size on screen; keep that box for new ones.
 
 **Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub'
-(especially 'No teleports' and the Gotchas), then games/pin/HANDOFF.md.
-First ask me for my verdict on the staged hub-to-game motion and Rondo's
-front page. Then move Pitch pin's front page (/pin) onto the front-page
-kit, keeping its content: lit blue hero (#2B4C9B) with the hub's pin
-miniature and one red button, paper cards beneath; give it the motion
-hooks (.lobby-hero__ground named game-pin, mini named game-pin-mini,
-headline in <Words>) so the hub tile grows into it like the others.
-Propose the cards in one line before building. Done = hub -> /pin and
-back run the three stages (check mid-transition frames with
-.scratch/strip.js), typecheck, npm test and the prod build clean, pushed."
+(especially 'No teleports' and the Gotchas). First ask me for my verdict
+on Pitch pin's new front page, Rondo's How it goes pictures and the hub
+coming back without the flash. Then do the no-teleport sweep."
 
 ## What this is
 

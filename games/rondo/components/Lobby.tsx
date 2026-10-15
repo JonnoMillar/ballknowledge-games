@@ -3,6 +3,7 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import Back from '../../../components/Back';
 import { GAMES } from '../../../src/games';
 import Bib from './Bib';
+import ClubBadge from '../../../components/ClubBadge';
 import Setup from './Setup';
 import { BIBS_OUT, newMatch, type Clock, type Match } from '../lib/match';
 import { readMatch, readSaved, writeMatch, writeSaved, type Saved } from '../lib/store';
@@ -21,7 +22,8 @@ const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
  *   day tag.
  * - A match in progress, if the phone has one: the names and bibs, and the
  *   way back to it.
- * - How it goes: the four rules.
+ * - How it goes: the rules as one real ball, four pictures with a few
+ *   words each.
  */
 export default function Lobby() {
   // Read after mount: localStorage is the phone's, and the server render knows nothing of it.
@@ -64,20 +66,54 @@ export default function Lobby() {
 
         {me?.match ? <Resume match={me.match} /> : null}
 
-        <section className={`lobby-card rondo-how vt ${me?.match ? '' : 'lobby__wide'}`}>
-          <span className="lobby-tag lobby-tag--paper">How it goes</span>
-          <ol className="how__rules">
-            <li><b>Someone’s on the ball.</b> Pass to a player who shared a club with them. Say it, then type it — the phone’s the ref.</li>
-            <li><b>Every club a pass goes through is burnt</b> for the rest of the ball. No club twice, no player twice.</li>
-            <li><b>Can’t find one? You’ve lost it.</b> Take a bib. A pass nobody could take on is a dead end — your bib too.</li>
-            <li><b>Three bibs and you’re in the middle.</b> Last one standing keeps the ball.</li>
-          </ol>
-          <p className="how__note">
-            The ref knows 11,741 players and every club they played for, from 1992 on. If the ref doesn’t know them, they don’t count.
-          </p>
-        </section>
+        <How wide={!me?.match} />
       </main>
     </div>
+  );
+}
+
+const UNITED = { id: 'Q18656', club: { name: 'Manchester United F.C.', crest: true } };
+const MADRID = { id: 'Q8682', club: { name: 'Real Madrid Club de Fútbol', crest: true } };
+
+/**
+ * How it goes, drawn the way the match draws it: one ball, Rooney to
+ * Ronaldo through United, on to Benzema through Madrid; both crests burn;
+ * Benzema has nowhere to go, so a bib; three bibs and you're out.
+ */
+function How({ wide }: { wide: boolean }) {
+  return (
+    <section className={`lobby-card rondo-how vt ${wide ? 'lobby__wide' : ''}`}>
+      <span className="lobby-tag lobby-tag--paper">How it goes</span>
+      <ol className="rondo-how__steps">
+        <li>
+          <div className="rondo-how__art">
+            <span className="rondo-how__pass display">Rooney <ClubBadge clubId={UNITED.id} club={UNITED.club} size={22} /> Ronaldo</span>
+          </div>
+          <b>Pass to a teammate</b>
+        </li>
+        <li>
+          <div className="rondo-how__art">
+            <span className="burnt__club"><ClubBadge clubId={UNITED.id} club={UNITED.club} size={30} /></span>
+            <span className="burnt__club"><ClubBadge clubId={MADRID.id} club={MADRID.club} size={30} /></span>
+          </div>
+          <b>Each club once a ball</b>
+        </li>
+        <li>
+          <div className="rondo-how__art">
+            <span className="rondo-how__pass display">Benzema <span className="rondo-how__stuck">?</span></span>
+            <Bib earned size={24} />
+          </div>
+          <b>Stuck? Take a bib</b>
+        </li>
+        <li>
+          <div className="rondo-how__art">
+            <Bib earned size={24} /><Bib earned size={24} /><Bib earned size={24} />
+          </div>
+          <b>Three and you’re out</b>
+        </li>
+      </ol>
+      <p className="how__note">The ref knows 11,741 players since 1992.</p>
+    </section>
   );
 }
 

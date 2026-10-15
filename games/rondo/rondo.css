@@ -103,8 +103,20 @@
 .seg__opt:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ── THE FRONT PAGE'S CARDS ─────────────────────────────────────────── */
-.how__rules { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.45; }
-.how__rules b { font-weight: 600; }
+/* How it goes: four pictures, a few words under each. */
+.rondo-how__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.rondo-how__steps li { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 8px 12px; border-radius: 12px; background: rgba(20, 18, 16, 0.04); text-align: center; }
+.rondo-how__steps b { font-size: 14.5px; font-weight: 600; line-height: 1.2; }
+.rondo-how__art { display: flex; align-items: center; justify-content: center; gap: 6px; height: 44px; }
+.rondo-how__pass { display: inline-flex; align-items: center; gap: 5px; font-size: 16px; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
+.rondo-how__stuck { color: var(--muted); }
+/* Grey the crest, not the red line through it. */
+.rondo-how__art .burnt__club { padding: 2px; filter: none; opacity: 1; }
+.rondo-how__art .burnt__club img { filter: grayscale(1); opacity: 0.5; }
+@media (min-width: 760px) {
+  .rondo-how__steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .rondo-how__pass { gap: 6px; font-size: 19px; }
+}
 .how__note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
 
 .rondo-resume { flex-direction: column; align-items: stretch; gap: 14px; }

@@ -1,9 +1,7 @@
 'use client';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { GAMES, type GameCard } from '../src/games';
-import { dayNumber, localDate } from '../src/lib/daily';
-import { readProgress, streakOf } from '../src/lib/progress';
-import { doneToday } from '../src/lib/today';
+import { hubStatus, syncHub, type HubStatus } from '../src/lib/today';
 import { smooth } from '../src/lib/motion';
 
 type Status = { done: Set<string>; streak: number };
@@ -23,15 +21,19 @@ function featured(done: Set<string>): GameCard {
  * pub game runs along the bottom. Each game's miniature stands on its own
  * coloured ground; no blurbs, each game's front page explains itself.
  */
-export default function Hub() {
-  // The server lays the board out as if nothing is done yet, so a page coming
-  // back from a game has its tile there to shrink into; the real day then
-  // rearranges it smoothly.
-  const [status, setStatus] = useState<Status>({ done: new Set(), streak: 0 });
+export default function Hub({ initial }: { initial: HubStatus }) {
+  // The server lays the board out from the hub cookie (src/lib/today), so a
+  // page coming back from a game lands on the real board and nothing moves
+  // after. Only a stale or missing cookie (a first visit, a new day)
+  // rearranges it here, smoothly, and the cookie is then brought up to date.
+  const [status, setStatus] = useState<Status>({ done: new Set(initial.done), streak: initial.streak });
   useEffect(() => {
-    const real = { done: doneToday(), streak: streakOf(readProgress(), dayNumber(localDate())).current };
-    if (real.done.size || real.streak) void smooth(() => setStatus(real));
-  }, []);
+    const real = hubStatus();
+    syncHub();
+    if (real.streak !== initial.streak || real.done.join() !== initial.done.join()) {
+      void smooth(() => setStatus({ done: new Set(real.done), streak: real.streak }));
+    }
+  }, [initial]);
 
   return (
     <div className="app hub">
