@@ -177,6 +177,20 @@ every stint's years, league apps and goals; `data/pool.json` has fame.
   with a store, or a free tier such as Supabase Realtime; check limits and
   flag any cost first.
 
+**Jonno's verdicts (2026-10-15):**
+- Flight path: binned. Boring, and too close to Spoofed (both are "a
+  career path"). Lesson: a new verb on the same content still feels the same.
+- Over: binned. It is Football 501 with a different stat. Lesson: swapping
+  the data under a known game's rules is a clone, not a new game.
+- Season line: maybe, as a reveal. The line starts at one fifth; each wrong
+  guess adds a fifth plus a hint; the end shows the final position, the
+  season and that year's champion.
+- Tunnel: liked, reshaped. Same five players re-ranked across five
+  categories, easy to hard (age and height first).
+- Bluff: liked, reshaped. Turn-based on one phone: one player plants a lie,
+  the other picks it while being stared at. The open question is what to
+  lie about; Jonno's first idea is a real lineup with one player swapped.
+
 Reserve: **What year?** A club's XI (names only); slide to the season,
 scored in years off. Rosters come from `careers.json` stints, so they are
 approximate.
