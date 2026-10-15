@@ -1,6 +1,6 @@
 # Chain — state of play
 
-**Updated:** 2026-09-20. Read this first in a new session; it is the shortest
+**Updated:** 2026-10-15. Read this first in a new session; it is the shortest
 path back to full context. The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
@@ -100,10 +100,18 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   moves (type `morph`); every other page change is a quick cross-fade.
   `smooth()` waits for the fill-in to finish, so late content (saved
   names, a match in progress) arrives last. In-page moves stay at 320ms.
+- **Waiting on Jonno (2026-10-15):** his verdict on the staged motion
+  (0fca839) and on Rondo's front page; he said he'd verify himself. If he
+  wants different pacing, the knobs are `--vt-out`, `--t-page`,
+  `--vt-land` in `:root` and the stage-3 delays at the end of MOTION.
 - **Next (Jonno's order):** Pitch pin's front page onto the kit (he likes it
-  as is, so keep its content). Rondo is not a daily: its hero has no day
-  tag and its red button starts a match; it is the pub game (orange
-  `#C9541A`, tagged Multiplayer on the hub).
+  as is, so keep its content; `app/pin/page.tsx`, `games/pin/components/
+  Library.tsx`). It needs what the other front pages have for the motion:
+  a `.lobby` grid, a `.lobby-hero` with a `.lobby-hero__ground` named
+  `game-pin`, the hub miniature named `game-pin-mini`, the headline in
+  `<Words>`. Then the no-teleport sweep (a proposed session card exists;
+  if it expired, the brief is: every click-driven change on every game
+  screen through `smooth()`/`.vt`, by the rules at the top of MOTION).
 
 **Open:** "Steps" (hub, Jonno's word) vs "Step" (the game's own masthead):
 ask before renaming. Spoofed's icon came out with a centre circle instead of
@@ -127,14 +135,17 @@ the pundit's ink loop; redo only if Jonno minds.
 - Icons are cropped from the cut-outs with one fixed box (150,150,854,854 of
   1024) so every disc is the same size on screen; keep that box for new ones.
 
-**Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub',
-then games/rondo/DESIGN.md. Build Rondo's front page (menu) on the
-front-page kit that Chain and Spoofed use, so it feels like the same world:
-lit orange hero with the hub's rondo miniature and one red button that
-starts a match, paper cards beneath for whatever Rondo needs (how it works,
-resume a match in progress). Propose the cards in one line before
-building; one red button per screen; no Higgsfield credits without asking."
-
+**Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub'
+(especially 'No teleports' and the Gotchas), then games/pin/HANDOFF.md.
+First ask me for my verdict on the staged hub-to-game motion and Rondo's
+front page. Then move Pitch pin's front page (/pin) onto the front-page
+kit, keeping its content: lit blue hero (#2B4C9B) with the hub's pin
+miniature and one red button, paper cards beneath; give it the motion
+hooks (.lobby-hero__ground named game-pin, mini named game-pin-mini,
+headline in <Words>) so the hub tile grows into it like the others.
+Propose the cards in one line before building. Done = hub -> /pin and
+back run the three stages (check mid-transition frames with
+.scratch/strip.js), typecheck, npm test and the prod build clean, pushed."
 
 ## What this is
 
