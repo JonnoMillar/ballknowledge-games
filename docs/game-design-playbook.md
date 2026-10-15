@@ -125,16 +125,61 @@ Borrow patterns and verbs, not whole games.
 - **Blackjack 21.** Names add their stat toward 21; over busts.
 - **Spot the fake transfer.** A real career path with one invented club;
   find it. Uses Chain's club-history data. Fakes must be plausible (same
-  era, same league tier). Being drafted.
+  era, same league tier). Shipped as **Spoofed** (`games/itk`).
 - **Pitch pin.** A famous goal is named; pin where it was struck. Shot
   coordinates from Understat or StatsBomb open data; score is metres off.
-  Being drafted.
+  Shipped as **Pitch pin** (`games/pin`).
 - **Match from data (side mode).** Progressive reveal to identify a match:
   heatmap, pass map, a shot with xG, then the xG race or date and stadium.
   Score is clues used. Deduction, not recall, so not a flagship. Heatmaps
   within a position look alike. StatsBomb open data has the full 2015/16 PL
   season (the Leicester season, a launch theme); current-season heatmaps
   only come from FotMob/SofaScore (terms of service unclear).
+
+### Football, the next five (2026-10-15)
+
+Picked to use verbs the site does not have yet (Chain and Rondo chain,
+Spoofed spots the liar, Pitch pin places). `data/careers.json` already has
+every stint's years, league apps and goals; `data/pool.json` has fame.
+
+- **Flight path** (daily, identify a shape). A career drawn as arcs between
+  club locations on a map, no names; name the player. Reveal more arcs, then
+  the years, per wrong guess. Journeymen make distinctive shapes. Needs
+  club coordinates from Wikidata (the club's or its ground's P625), free.
+  Filter: the path must be unique in the pool (no other player with the
+  same set of club locations) and the player famous enough. The share card
+  is the map itself, blank.
+- **Season line** (daily, identify a shape). A team's league position week
+  by week, as a line; name the team and season. Fans remember seasons as
+  stories (the 95/96 collapse, Leicester, the 13/14 slip). Data:
+  football-data.co.uk's free results CSVs (English leagues since 1993/94),
+  tables computed per matchweek. Filter: a computed drama score (late
+  collapses, great escapes, title races) plus club fame. Current seasons
+  add themselves.
+- **Tunnel** (daily, order). Five players line up in the tunnel; put them
+  in order by the day's attribute: age, height, league goals for a club,
+  number of clubs. Crouch at the end of the height line is the identity.
+  Ages and heights need Wikidata P569 and P2048 (heights are patchy; the
+  infobox has them). Filter: pick sets where fame or era misleads, such as
+  late bloomers, and keep gaps big enough to be fair. Score: pairs in the
+  right order; brag is a perfect line.
+- **Over** (pub, one phone, estimate). Price Is Right rules: closest
+  without going over. "League goals for Spurs: Defoe + Keane + Kane."
+  Everyone calls a number, the phone takes them and reveals. Going over is
+  the bust, like 501. Data already in `careers.json`; sums make it a
+  derived question, not a lookup. Zero infrastructure, same model as Rondo.
+- **Bluff** (party, a phone each). Fibbage rules on true football facts:
+  "Before Chelsea, Drogba played for ___". Everyone types a fake, all the
+  answers are shown, everyone votes for the truth; points for finding it
+  and for fooling mates. Unlike Spoofed, the lies come from your friends.
+  Prompts are generated from `careers.json` (an obscure early club before a
+  famous one). Needs rooms and realtime across phones: Vercel WebSockets
+  with a store, or a free tier such as Supabase Realtime; check limits and
+  flag any cost first.
+
+Reserve: **What year?** A club's XI (names only); slide to the season,
+scored in years off. Rosters come from `careers.json` stints, so they are
+approximate.
 
 ### Physical world (computed answers)
 
