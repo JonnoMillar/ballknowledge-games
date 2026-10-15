@@ -85,14 +85,21 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   off its own entrance animation. Not yet swept: content that loads after
   arrival (Spoofed's next player, Chain's puzzle card) still pops in, and
   in-game screens don't use `smooth` yet. Firefox gets the plain cut.
-  Retuned 2026-10-15 after Jonno called it rushed and a "flashbang"
-  (equal.design's "5 rules for motion"): the morph is 520ms ease-in-out
-  (`--t-page`); the faces swap mid-move; tiles that aren't clicked shrink
-  and fade out (240ms, ease-in) instead of vanishing; front-page cards and
-  hub tiles arrive after (ease-out, rising 18px, 100ms apart, by the
-  `a1`/`a2` view-transition classes). In-page moves are 320ms. Names must be
-  explicit for page-to-page (`lobby-2`...): `match-element` does not carry
-  across a page load. The rules are written at the top of MOTION.
+  Retuned twice on 2026-10-15 (Jonno: "rushed", "a flashbang", then "still
+  quick", "menus are big slow decisions"; equal.design's "5 rules for
+  motion"). Hub to a game's front page and back now runs in three stages,
+  one at a time: clear the table (300ms: every word and every other tile
+  fades, ease-in), grow the bare card (800ms ease-in-out: the coloured
+  grounds are their own layers, `.hub__ground` / `.lobby-hero__ground`,
+  so the card moves without its text), then fill in (from 1100ms: tag,
+  headline word by word via `components/Words.tsx`, the rest, then the
+  cards beneath; on the hub, the other tiles rise in). The browser
+  transition ends when the card lands; stage 3 runs on the page under
+  `.vt-arrived`, because anything under a transition layer can't show
+  through. `morph()` in `app/layout.tsx` marks only hub <-> front-page
+  moves (type `morph`); every other page change is a quick cross-fade.
+  `smooth()` waits for the fill-in to finish, so late content (saved
+  names, a match in progress) arrives last. In-page moves stay at 320ms.
 - **Next (Jonno's order):** Pitch pin's front page onto the kit (he likes it
   as is, so keep its content). Rondo is not a daily: its hero has no day
   tag and its red button starts a match; it is the pub game (orange

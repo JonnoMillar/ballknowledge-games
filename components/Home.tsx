@@ -17,6 +17,7 @@ import { readProgress, streakOf, type Play, type Progress } from '../src/lib/pro
 import { shareLine } from '../src/lib/chain/share';
 import { doneToday } from '../src/lib/today';
 import { readCollection } from '../src/lib/collection';
+import Words from './Words';
 
 /** Steps stands on Chain's ground, the same as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'chain')!.ground;
@@ -87,11 +88,12 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
       </header>
 
       <main className="lobby chub">
-        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND, viewTransitionName: 'game-chain' } as CSSProperties}>
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
+          <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-chain' }} aria-hidden />
           <img className="lobby-hero__mini" src="/hub/steps.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-chain-mini' }} />
           <div className="lobby-hero__ask">
             <span className="lobby-tag">Steps{today ? ` #${today}` : ''}</span>
-            <h1 className="lobby-hero__head display">How niche can you go?</h1>
+            <h1 className="lobby-hero__head display"><Words text="How niche can you go?" /></h1>
             <p className="lobby-hero__sub">Any answer holds. The rarer it is, the better the card.</p>
           </div>
           <div className="lobby-hero__go">

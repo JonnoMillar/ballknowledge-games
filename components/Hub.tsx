@@ -67,9 +67,10 @@ function Tile({ game: g, status, size }: { game: GameCard; status: Status; size:
     <a
       className={`hub__tile hub__tile--${size}${done ? ' is-done' : ''}`}
       href={g.href}
-      style={{ '--ground': g.ground, viewTransitionName: `game-${g.id}` } as CSSProperties}
+      style={{ '--ground': g.ground } as CSSProperties}
       aria-label={`${g.name}${done ? ', done today' : ''}`}
     >
+      <span className="hub__ground" style={{ viewTransitionName: `game-${g.id}` }} aria-hidden />
       <span className="hub__tag">
         {g.pub ? <People /> : null}
         {g.tag}

@@ -7,6 +7,7 @@ import Setup from './Setup';
 import { BIBS_OUT, newMatch, type Clock, type Match } from '../lib/match';
 import { readMatch, readSaved, writeMatch, writeSaved, type Saved } from '../lib/store';
 import { smooth } from '../../../src/lib/motion';
+import Words from '../../../components/Words';
 
 /** Rondo's ground: the same orange as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
@@ -48,11 +49,12 @@ export default function Lobby() {
         <a className="masthead__brand display" href="/rondo">Rondo</a>
       </header>
       <main className="lobby">
-        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND, viewTransitionName: 'game-rondo' } as CSSProperties}>
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
+          <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-rondo' }} aria-hidden />
           <img className="lobby-hero__mini" src="/hub/rondo.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-rondo-mini' }} />
           <div className="lobby-hero__ask vt">
             <span className="lobby-tag">Multiplayer</span>
-            <h1 className="lobby-hero__head display">Fancy a rondo?</h1>
+            <h1 className="lobby-hero__head display"><Words text="Fancy a rondo?" /></h1>
             <p className="lobby-hero__sub">Two to four of you and one phone. Pass it round; don’t lose the ball.</p>
           </div>
           <div className="lobby-hero__go">

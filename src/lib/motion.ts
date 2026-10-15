@@ -15,8 +15,16 @@ export async function smooth(update: () => void) {
   type Vt = { finished: Promise<void> };
   const doc = document as Document & { startViewTransition?: (cb: () => void) => Vt; activeViewTransition?: Vt | null };
   if (!doc.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return update();
-  // The page-to-page morph may still be running, before its animations even exist.
+  // The page-to-page morph may still be running, before its animations even
+  // exist, and then the page is still filling in (.vt-arrived): wait for both,
+  // so a change made on load comes after, in order.
   for (let vt = doc.activeViewTransition; vt; vt = doc.activeViewTransition) await vt.finished.catch(() => {});
+  await Promise.all(
+    document.getAnimations()
+      .filter((a) => (a as CSSAnimation).animationName === 'rise-in')
+      .map((a) => a.finished.catch(() => {})),
+  );
+  document.documentElement.classList.remove('vt-arrived');
   const root = document.documentElement;
   root.classList.add('is-smoothing');
   const t = doc.startViewTransition(() => flushSync(update));

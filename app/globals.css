@@ -30,8 +30,10 @@
   --ease-out: cubic-bezier(0.2, 0.9, 0.25, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  /* A page-sized move (the hub tile growing into a game's hero). */
-  --t-page: 520ms;
+  /* Hub to game (MOTION): clear the table, grow the card, then fill it. */
+  --vt-out: 300ms;
+  --t-page: 800ms;
+  --vt-land: 1100ms;
 
   /* Geometry. A sticker on a phone, a sticker on a desk. */
   --link-w: 40px;
@@ -1124,12 +1126,22 @@ button { font-family: inherit; }
   padding: 14px;
   color: #fff;
   text-decoration: none;
-  background: radial-gradient(110% 85% at 50% 28%, var(--lit) 0%, var(--ground) 52%, var(--deep) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 16px 30px rgba(20, 18, 16, 0.2);
-  transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+  isolation: isolate;
+  transition: transform var(--t-base) var(--ease-out);
   -webkit-tap-highlight-color: transparent;
 }
-.hub__tile:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 24px 40px rgba(20, 18, 16, 0.26); }
+/* The tile's ground is its own layer: it is what grows into the game's hero. */
+.hub__ground {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(110% 85% at 50% 28%, var(--lit) 0%, var(--ground) 52%, var(--deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 16px 30px rgba(20, 18, 16, 0.2);
+  transition: box-shadow var(--t-base) var(--ease-out);
+}
+.hub__tile:hover { transform: translateY(-3px); }
+.hub__tile:hover .hub__ground { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 24px 40px rgba(20, 18, 16, 0.26); }
 .hub__tile:active { transform: translateY(1px) scale(0.985); }
 .hub__tile:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
@@ -1606,6 +1618,15 @@ button { font-family: inherit; }
   padding: 24px 18px 20px;
   border-radius: 24px;
   color: #fff;
+  isolation: isolate;
+}
+/* The lit ground is its own layer, so it can grow out of the hub's tile
+   while the words wait (MOTION, below). */
+.lobby-hero__ground {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
   background: radial-gradient(110% 85% at 72% 16%, var(--lit) 0%, var(--ground) 55%, var(--deep) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 0 var(--deep), 0 18px 36px rgba(20, 18, 16, 0.22);
 }
@@ -1787,16 +1808,15 @@ button { font-family: inherit; }
    The rules (equal.design, "5 rules for motion in UI transitions"):
    - Easing by role: a thing that stays and changes shape moves ease-in-out;
      a thing arriving eases out; a thing leaving eases in. Never linear.
-   - Timing by size: a page-sized move ~500ms (--t-page); small in-page
-     moves ~300ms; nothing that matters under ~150ms, which reads as a cut.
-   - Order: the thing you clicked moves first; what leaves goes quickly but
-     visibly; what arrives comes after, related items 100ms apart.
+   - Timing: menus are big, slow decisions, so the hub-to-game move takes
+     its time (800ms, Jonno 2026-10-15); small in-page moves ~300ms;
+     nothing that matters under ~150ms, which reads as a cut.
+   - Order: one thing at a time. Clear the table, move the chosen thing,
+     then fill in; related items 100ms apart.
 
-   - Page to page: a hub tile and its game's front-page hero share a name
-     (`game-<id>`, set inline), so the tile grows into the hero and the
-     miniature (`game-<id>-mini`) glides to its corner; back does the
-     reverse. The masthead stays put. The other tiles shrink and fade away;
-     the front page's cards rise in after the hero, one after another.
+   - Page to page: each hub tile's ground and its game's hero ground share
+     a name (`game-<id>`, set inline; the grounds are their own layers), and
+     so do the miniatures (`game-<id>-mini`). See the three stages below.
    - In a page: `smooth()` (src/lib/motion.ts) wraps a state update and puts
      .is-smoothing on <html> while it runs; elements marked .vt (and every
      front-page card) glide to their new place, arrive, and leave. */
@@ -1804,54 +1824,73 @@ button { font-family: inherit; }
   @view-transition { navigation: auto; }
 }
 .masthead { view-transition-name: masthead; }
-.hub__tile, .lobby-hero { view-transition-class: game; }
-/* Everything on the hub and a front page that is not the morphing pair gets
-   its own snapshot, so it can leave or arrive rather than blink. The extra
-   classes stagger them: later on the page, later to arrive.
-   Names have to be spelled out: `match-element` does not carry across a
-   page load. A tile's miniature takes its tile's class, so they land together. */
-.hub__cell:nth-child(n+3) .hub__tile { view-transition-class: game a1; }
-.hub__cell:nth-child(n+4) .hub__tile { view-transition-class: game a2; }
-.hub__cell:nth-child(n+3) .hub__mini { view-transition-class: a1; }
-.hub__cell:nth-child(n+4) .hub__mini { view-transition-class: a2; }
-.lobby > :nth-child(2) { view-transition-name: lobby-2; }
-.lobby > :nth-child(3) { view-transition-name: lobby-3; view-transition-class: a1; }
-.lobby > :nth-child(4) { view-transition-name: lobby-4; view-transition-class: a2; }
-.lobby > :nth-child(5) { view-transition-name: lobby-5; view-transition-class: a2; }
-.lobby > :nth-child(6) { view-transition-name: lobby-6; view-transition-class: a2; }
-.lobby > :nth-child(7) { view-transition-name: lobby-7; view-transition-class: a2; }
+.hub__ground, .lobby-hero__ground { view-transition-class: game; }
+.hub__mini, .lobby-hero__mini { view-transition-class: mini; }
+/* Later on the hub, later to come back. */
+.hub__cell:nth-child(2) { --cell: 0ms; }
+.hub__cell:nth-child(3) { --cell: 100ms; }
+.hub__cell:nth-child(n+4) { --cell: 200ms; }
 /* In a page, identity not position: a card that appears above another must
    not take over its name. */
 html.is-smoothing .lobby > :not(.lobby-hero), .is-smoothing .vt { view-transition-name: match-element; }
-/* Arrived by a morph: the page's own entrance would fight it. */
-.vt-arrived .hub__cell { animation: none; }
 
 @keyframes vt-leave { to { opacity: 0; transform: scale(0.94); } }
 @keyframes vt-arrive { from { opacity: 0; transform: translateY(18px); } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(14px); } }
 
-/* Page to page. */
-::view-transition-group(*) { animation-duration: var(--t-page); animation-timing-function: var(--ease-in-out); }
-::view-transition-old(*), ::view-transition-new(*) { animation-duration: 260ms; animation-delay: 110ms; animation-timing-function: ease; animation-fill-mode: both; }
-::view-transition-old(root), ::view-transition-new(root) { animation-delay: 0ms; }
-/* Leaving: quick but visible, accelerating away. */
-::view-transition-old(*):only-child { animation: vt-leave 240ms var(--ease-in) both; }
-/* Arriving: once the hero has mostly landed, decelerating into place. */
-::view-transition-new(*):only-child { animation: vt-arrive 340ms var(--ease-out) 220ms both; }
-::view-transition-new(.a1):only-child { animation-delay: 320ms; }
-::view-transition-new(.a2):only-child { animation-delay: 420ms; }
-/* A tile and a hero are different shapes: fill the morphing box rather than
-   keep either face's aspect. The faces swap mid-move (the shared timing
-   above keeps the cross-fade's total constant, so it never flashes). */
-::view-transition-old(.game), ::view-transition-new(.game) { height: 100%; overflow: clip; }
+/* Any other page change: a short cross-fade. */
+::view-transition-group(*) { animation-duration: 400ms; animation-timing-function: var(--ease-in-out); }
+::view-transition-old(*), ::view-transition-new(*) { animation-duration: 300ms; }
+::view-transition-old(.game), ::view-transition-new(.game) { height: 100%; }
+
+/* Hub to game and back (type `morph`, set in app/layout.tsx), in three
+   stages, never two at once:
+   1. Clear the table (0 to --vt-out): every word, every other tile and card
+      fades away, accelerating. Only the chosen card's ground and its
+      miniature stay.
+   2. Grow (--t-page, ease-in-out): the bare ground moves and resizes into
+      the space, the miniature with it.
+   3. Fill (from --vt-land): the words rise in on the landed card, the
+      headline word by word, then the cards beneath; on the hub, the other
+      tiles come back one after another. */
+html:active-view-transition-type(morph)::view-transition-group(*) { animation-duration: var(--t-page); animation-delay: var(--vt-out); animation-fill-mode: both; }
+html:active-view-transition-type(morph)::view-transition-group(root),
+html:active-view-transition-type(morph)::view-transition-group(masthead) { animation-duration: var(--vt-out); animation-delay: 0ms; }
+html:active-view-transition-type(morph)::view-transition-old(*),
+html:active-view-transition-type(morph)::view-transition-new(*) { animation-duration: var(--vt-out); animation-delay: 0ms; animation-fill-mode: both; }
+html:active-view-transition-type(morph)::view-transition-old(.game),
+html:active-view-transition-type(morph)::view-transition-new(.game),
+html:active-view-transition-type(morph)::view-transition-old(.mini),
+html:active-view-transition-type(morph)::view-transition-new(.mini) { animation-duration: var(--t-page); animation-delay: var(--vt-out); }
+html:active-view-transition-type(morph)::view-transition-old(*):only-child { animation: vt-leave var(--vt-out) var(--ease-in) both; }
+/* Anything arriving shows its live self, which stage 3 keeps hidden until
+   its turn: the transition ends when the card lands, so nothing waits
+   under its layers. */
+html:active-view-transition-type(morph)::view-transition-new(*):only-child { animation: none; }
+
+/* Stage 3 runs on the page itself (.vt-arrived, set with the type). The
+   card that came back keeps its ground and miniature (the script in
+   app/layout.tsx says which); every other tile rises in after it. */
+.lobby-hero__head .word { display: inline-block; }
+.vt-arrived .hub__cell { animation: none; }
+.vt-arrived .lobby-hero__ask > *,
+.vt-arrived .lobby-hero__go,
+.vt-arrived .lobby > :not(.lobby-hero) { animation: rise-in 460ms var(--ease-out) var(--vt-land) both; }
+.vt-arrived .lobby-hero__ask > .lobby-hero__head { animation: none; }
+.vt-arrived .lobby-hero__head .word { animation: rise-in 460ms var(--ease-out) both; animation-delay: calc(var(--vt-land) + 140ms + var(--i, 0) * 90ms); }
+.vt-arrived .lobby-hero__ask > :nth-child(3) { animation-delay: calc(var(--vt-land) + 560ms); }
+.vt-arrived .lobby-hero__go { animation-delay: calc(var(--vt-land) + 660ms); }
+.vt-arrived .lobby > :nth-child(2):not(.lobby-hero) { animation-delay: calc(var(--vt-land) + 760ms); }
+.vt-arrived .lobby > :nth-child(3):not(.lobby-hero) { animation-delay: calc(var(--vt-land) + 860ms); }
+.vt-arrived .lobby > :nth-child(n+4):not(.lobby-hero) { animation-delay: calc(var(--vt-land) + 960ms); }
+.vt-arrived .hub__tile > * { animation: rise-in 460ms var(--ease-out) both; animation-delay: calc(var(--vt-land) + 120ms + var(--cell, 0ms)); }
+.vt-arrived .hub__tile > :not(.hub__ground, .hub__mini) { animation-delay: calc(var(--vt-land) + 240ms + var(--cell, 0ms)); }
 
 /* In a page: smaller moves, so shorter. */
 html.is-smoothing::view-transition-group(*) { animation-duration: 320ms; }
-/* Never scale a face: the same text in both would show double mid-fade. */
+/* Never scale a face: the same text in both would show double mid-fade.
+   A ground has no text, so it stretches with its box. */
 html.is-smoothing::view-transition-old(*), html.is-smoothing::view-transition-new(*) { animation-duration: 200ms; animation-delay: 60ms; height: 100%; object-fit: none; object-position: left top; }
+html.is-smoothing::view-transition-old(.game), html.is-smoothing::view-transition-new(.game) { object-fit: fill; }
 html.is-smoothing::view-transition-old(*):only-child { animation: vt-leave 180ms var(--ease-in) both; }
 html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260ms var(--ease-out) 90ms both; }
-/* The hero only changes size: show its new face, cropped to the growing box
-   (its .vt contents glide on their own), never a cross-fade. */
-html.is-smoothing::view-transition-group(.game) { overflow: clip; border-radius: 24px; }
-html.is-smoothing::view-transition-old(.game) { display: none; }
-html.is-smoothing::view-transition-new(.game) { animation: none; height: auto; object-fit: none; object-position: top; }

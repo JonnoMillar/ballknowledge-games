@@ -15,6 +15,7 @@ import { pointsOf, tierOf } from '../lib/score';
 import { allPlayed, type Played } from '../lib/progress';
 import type { ItkDay, ItkStop } from '../lib/types';
 import type { DemoCareer } from '../server';
+import Words from '../../../components/Words';
 
 /** Spoofed's ground: the same purple as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'spoofed')!.ground;
@@ -58,11 +59,12 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
         <a className="masthead__brand display" href="/spoofed">Spoofed</a>
       </header>
       <main className="lobby">
-        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND, viewTransitionName: 'game-spoofed' } as CSSProperties}>
+        <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
+          <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-spoofed' }} aria-hidden />
           <img className="lobby-hero__mini" src="/hub/spoofed.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-spoofed-mini' }} />
           <div className="lobby-hero__ask">
             <span className="lobby-tag">Daily{n ? ` #${n}` : ''}</span>
-            <h1 className="lobby-hero__head display">Can you spot the spoof?</h1>
+            <h1 className="lobby-hero__head display"><Words text="Can you spot the spoof?" /></h1>
             <p className="lobby-hero__sub">One of these moves never happened.</p>
           </div>
           <div className="lobby-hero__go itk-lobby__go">

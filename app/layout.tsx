@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Big_Shoulders, Libre_Franklin } from 'next/font/google';
 import './globals.css';
+import { GAMES } from '../src/games';
 
 /**
  * The two faces, self-hosted at build time by next/font so the page never
@@ -24,6 +25,42 @@ const text = Libre_Franklin({
   display: 'swap',
 });
 
+/**
+ * Runs in the page before its first frame (stringified below, so it must
+ * stand alone). A page change between the hub and a game's front page is the
+ * slow, staged move in MOTION (globals.css): mark the view transition with
+ * the type `morph`, and put .vt-arrived on <html> until everything has risen
+ * in. Back on the hub, the tile you came from keeps its ground and miniature
+ * (they flew there); the rest rise in. Any other page change is a plain
+ * cross-fade.
+ */
+function morph(fronts: string[]) {
+  addEventListener('pagereveal', (e) => {
+    const t = (e as Event & { viewTransition?: { types?: Set<string>; finished: Promise<void> } }).viewTransition;
+    const from = (window as Window & { navigation?: { activation?: { from?: { url: string } } } }).navigation?.activation?.from;
+    if (!t || !t.types || !from) return;
+    const a = new URL(from.url).pathname;
+    const b = location.pathname;
+    if (!((a === '/' && fronts.includes(b)) || (b === '/' && fronts.includes(a)))) return;
+    t.types.add('morph');
+    if (b === '/') {
+      const keep = document.createElement('style');
+      keep.textContent = `.vt-arrived .hub__tile[href="${a}"] > :is(.hub__ground, .hub__mini) { animation: none; }`;
+      document.head.appendChild(keep);
+    }
+    const root = document.documentElement;
+    root.classList.remove('vt-arrived');
+    void root.offsetWidth;
+    root.classList.add('vt-arrived');
+    t.finished
+      .then(() => Promise.all(document.getAnimations()
+        .filter((x) => (x as CSSAnimation).animationName === 'rise-in')
+        .map((x) => x.finished.catch(() => {}))))
+      .finally(() => root.classList.remove('vt-arrived'));
+  });
+}
+const MORPH = `(${morph.toString()})(${JSON.stringify(GAMES.map((g) => g.href))})`;
+
 export const metadata = {
   title: 'Chain',
   description: 'A football chain a day. Name the players who link the givens.',
@@ -34,9 +71,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     // suppressHydrationWarning: the script below may add a class before React hydrates.
     <html lang="en" className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
       <head>
-        {/* A page that arrives by a view transition (MOTION in globals.css)
-            is already moving; .vt-arrived switches off its own entrance. */}
-        <script dangerouslySetInnerHTML={{ __html: "addEventListener('pagereveal',function(e){if(e.viewTransition)document.documentElement.classList.add('vt-arrived')})" }} />
+        {/* The hub-to-game move: see morph() above. */}
+        <script dangerouslySetInnerHTML={{ __html: MORPH }} />
         {/* The parked XI board's face. Nothing else loads from here. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" />
