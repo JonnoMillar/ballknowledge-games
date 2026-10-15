@@ -1,8 +1,14 @@
-# Bluff (working name) — state of play
+# Odd Man Out — state of play
 
-**Updated:** 2026-10-15. Branch `claude/blissful-lewin-d41d05` (worktree
-`.claude/worktrees/blissful-lewin-d41d05`), cut from `main` at 43231e5.
-The name is a working name: ask Jonno before naming it.
+**Updated:** 2026-10-15. Route `/odd-man-out` (front page) and
+`/odd-man-out/play` (the match). Internal id and folder `bluff`, its first
+working name, like Spoofed's `itk`. Branch `claude/blissful-lewin-d41d05`
+(worktree `.claude/worktrees/blissful-lewin-d41d05`), cut from `main` at
+43231e5. Not merged.
+
+**Resume prompt:** "Read games/bluff/HANDOFF.md. Ask me for my playtest
+verdict on Odd Man Out (lives, help, the front page, the hub tile), then
+tune or merge."
 
 ## The game (Jonno, 2026-10-15)
 
@@ -94,44 +100,66 @@ its licence is grey and its famous matches are mostly the same tournaments.
   (pool `nation`, `careers.json` stint years, pool `positions`).
 - The fake can't be someone already in the XI (checked by id).
 
-## Stage 2: playable draft (in progress, 2026-10-15)
+## Stage 2: playable draft (done 2026-10-15)
 
-Jonno approved Wikipedia only, finals plus World Cup and Euro knockouts,
-1995 to now.
+Jonno, 2026-10-15: Wikipedia only, finals plus World Cup and Euro
+knockouts, 1995 to now. Name "Odd Man Out". No hub miniature yet. A faker
+caught on the first tap loses nothing for now; rules get another look
+after playtesting.
 
-**Done and tested** (typecheck clean, `npm test` 1,754 passed):
-- `scripts/bluff/build-sides.ts` (`npm run bluff:sides`) writes
-  `games/bluff/data/sides.json`: 408 XIs from 267 matches (CL finals 55,
-  FA Cup finals 41, World Cup 183, Euro 129). 73 more dropped as too obscure
-  (`MIN_MEDIAN_FAME` = 40, the XI's median pool fame). Only miss: the 2021
-  FA Cup final.
-- `lib/wiki.ts` (box styles `{{Football box`, `{{footballbox`,
-  `{{#invoke:football box`; `{{abbr|RB|..}}` codes; `{{nowrap}}`;
-  multi-line footnotes), `lib/lineup.ts` (codes to lines, formation, left
-  on the left), `lib/match.ts` (the round and match reducer; `LIVES` = 3,
-  `MAX_LOSSES_PER_ROUND` = 2, roles rotate, help suggestions), `server.ts`
-  and `POST /api/bluff/deal`.
-- Front page written, not yet routed: `components/Lobby.tsx`, `Setup.tsx`
-  (names 2 to 6, year range, Help the faker on/off).
-- Hub entry and `Hub.tsx` change (tile without a miniature) are in the
-  working tree, **not committed**: the tile would link to a page that
-  doesn't exist yet.
+**Data.** `npm run bluff:sides` (`scripts/bluff/build-sides.ts`) writes
+`games/bluff/data/sides.json`: 408 XIs from 267 matches (CL finals 55, FA
+Cup finals 41, World Cup 183, Euro 129); 73 more dropped as too obscure
+(`MIN_MEDIAN_FAME` = 40, the XI's median pool fame; quartiles 46/55/64).
+Only miss: the 2021 FA Cup final. Imported by `server.ts`, so file tracing
+ships it. Re-run when a final is played (manual for now; see below).
 
-**Left to build:**
-1. `components/Bluff.tsx` (the match on `/bluff/play`): scoreboard with
-   lives; plant (tap a slot, search via `/api/names` + `src/lib/search`,
-   help chips from `suggestions()`, red "Pass the phone"); cover ("Hand it
-   to Ben", red "I'm Ben"); guess (tap, red "That's the fake", wrong slots
-   marked real); reveal (fake marked, the real name under it, red "Next
-   round", or full time with Rematch). Every phase change through
-   `smooth()`, elements `.vt`.
-2. A pitch component: lines bottom (keeper) to top, names split first name
-   small / rest big, the same for real and fake. No numbers, flags or photos.
-3. `games/bluff/bluff.css` (`bf-` prefix; setup styles copied from Rondo's,
-   to move to shared `components/` when this merges), `app/bluff/page.tsx`
-   (Lobby with `YEARS`, count), `app/bluff/play/page.tsx`, credits line.
-4. Verify at 375 and 1200, commit with the hub entry, stage gate.
+**Code.**
+| Path | What |
+|---|---|
+| `lib/wiki.ts` | Wikitext to matches: the three box styles, `{{abbr}}` codes, `{{nowrap}}`, multi-line footnotes, kit titles or headings for national sides. |
+| `lib/lineup.ts` | Position codes to lines (wingers with an AM else up front; wing-backs in midfield behind a back three), left on the left, formation, pool position classes. |
+| `lib/match.ts` | The reducer: `LIVES` = 3, `MAX_LOSSES_PER_ROUND` = 2 (tune here), deal, plant, cover, guess, reveal, roles rotate past players who are out, rematch, `suggestions()` for Help the faker. |
+| `lib/store.ts` | Match and last names/options in localStorage. |
+| `server.ts`, `app/api/odd-man-out/deal` | A side in the year range the phone hasn't seen. |
+| `components/Lobby.tsx`, `Setup.tsx` | Front page on the kit: names 2 to 6, year range (native selects), Help the faker on/off, Kick off. |
+| `components/Game.tsx`, `Pitch.tsx`, `Swap.tsx` | The match. One red button a screen: Pass the phone, I'm <name>, That's the fake, Next round / Rematch. Every change through `smooth()`. |
+| `bluff.css` | `bf-` classes; the setup form is Rondo's, copied. |
 
-**Open for Jonno:** the name; a hub miniature (Higgsfield, needs his yes);
-whether the bluffer should pay anything when caught first time (now
-nothing: only the guesser loses lives); `MIN_MEDIAN_FAME`.
+Hub: a tile with no miniature gets `.hub__tile--bare` (words fill the tile);
+`GameCard.icon` is optional. Rondo's wide-tile line moved into its
+`line` field. Credits name Odd Man Out and its Wikipedia source.
+
+**Checked 2026-10-15.** Typecheck clean; `npm test` 1,754 passed (24 of them
+Odd Man Out: reducer, wiki parser on a trimmed real page, lines, and the
+shipped file: 11 a side, one keeper, unique keys, only id/name/pos per
+player); prod build clean. Browser (dev server, Playwright, 375×812 and
+1200×900): hub tile, hub to front page morph, setup, plant with help chips
+and search, cover, a wrong tap (life lost, slot greyed), the right tap,
+reveal, next round with roles swapped, full time ("Ann wins") and Rematch
+(lives back to 3, seen kept). No horizontal scroll, no console errors.
+Not covered: a real phone, reduced motion, a match of 3+ players in the
+browser (the reducer tests cover the rotation).
+
+**Known limits.**
+- Display names are the pool's, so a few read oddly ("Marcelo Vieira" for
+  Marcelo). Real and fake use the same source, so it doesn't leak; the fix
+  is pool aliases (the gap `src/lib/short-name.ts` notes).
+- Odd man out of the pool: about one starter in 20 isn't in it (e.g.
+  Ronaldinho 2002) and shows by his Wikipedia name; he can't be searched,
+  only swapped out.
+- Help the faker is "same club that season" from `careers.json` stint years,
+  which are calendar years: a few picks are a season off or were out on
+  loan (Morgan Rogers for City 2023). National picks need two years of
+  career by the match.
+- New finals are not added by themselves: re-run `npm run bluff:sides`. A
+  yearly GitHub Action would fit Jonno's no-manual-upkeep rule; not built.
+- The setup form is duplicated from Rondo; move it to `components/` when
+  this merges.
+- At 1200 wide the two pub tiles share the hub's bottom row unevenly (Odd
+  Man Out under Chain, a gap beside it). Revisit with the miniature.
+
+**Open for Jonno:** playtest the lives (3, two wrong taps a round); whether
+the faker should pay when caught first time; `MIN_MEDIAN_FAME`; the hub
+miniature when wanted (Higgsfield, his yes first); then merge to `main`
+(root HANDOFF gets one games-index line).

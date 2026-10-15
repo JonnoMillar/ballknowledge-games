@@ -8,12 +8,12 @@ export type GameCard = {
   id: string;
   href: string;
   name: string;
-  /** Under the name when the game is the hub's suggestion. Three words at most. */
+  /** Under the name when the game is the hub's suggestion, or on a pub game's wide tile. Three words at most, or the player count. */
   line: string;
   /** A one-word kind, on the tile's corner. */
   tag: string;
-  /** `public/hub/<icon>.webp`, a cut-out miniature. */
-  icon: string;
+  /** `public/hub/<icon>.webp`, a cut-out miniature. None yet for a draft: the tile shows its ground. */
+  icon?: string;
   /** The tile's ground, deep enough for white type and the green felt. */
   ground: string;
   /**
@@ -29,5 +29,7 @@ export const GAMES: readonly GameCard[] = [
   { id: 'chain', href: '/chain', name: 'Chain', line: 'Steps, then the puzzle', tag: 'Daily', icon: 'chain', ground: '#2A2622', dailies: ['step', 'chain'] },
   { id: 'spoofed', href: '/spoofed', name: 'Spoofed', line: 'Spot the fake move', tag: 'Daily', icon: 'spoofed', ground: '#5B2A86', dailies: ['spoofed'] },
   { id: 'pin', href: '/pin', name: 'Pitch pin', line: 'Pin the goal', tag: 'Packs', icon: 'pin', ground: '#2B4C9B', dailies: [] },
-  { id: 'rondo', href: '/rondo', name: 'Rondo', line: 'Pass it round', tag: 'Multiplayer', icon: 'rondo', ground: '#C9541A', dailies: [], pub: true },
+  { id: 'rondo', href: '/rondo', name: 'Rondo', line: '2 to 4 players, one phone', tag: 'Multiplayer', icon: 'rondo', ground: '#C9541A', dailies: [], pub: true },
+  // Internal id `bluff` (its first working name), like Spoofed's `itk`. No miniature yet.
+  { id: 'bluff', href: '/odd-man-out', name: 'Odd Man Out', line: '2 or more players, one phone', tag: 'Multiplayer', ground: '#14615B', dailies: [], pub: true },
 ];

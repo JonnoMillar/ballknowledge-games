@@ -30,7 +30,7 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
     if (me?.match && !confirm('Start a new match? The one in progress ends.')) return;
     writeSaved({ names, options });
     writeMatch(newMatch(names, options, me?.match?.seen ?? []));
-    location.assign('/bluff/play');
+    location.assign('/odd-man-out/play');
   };
 
   // Saved years outside what there is now (a rebuilt data file) fall back to the full range.
@@ -41,7 +41,7 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
     <div className="app bluff">
       <header className="masthead">
         <Back href="/" label="All games" />
-        <a className="masthead__brand display" href="/bluff">Bluff</a>
+        <a className="masthead__brand display" href="/odd-man-out">Odd Man Out</a>
       </header>
       <main className="lobby">
         <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
@@ -53,7 +53,7 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
           </div>
           <div className="lobby-hero__go">
             <Setup key={me ? 'saved' : 'blank'} initialNames={me?.saved.names ?? []} initialOptions={initial} years={years} onStart={start} />
-            {me?.match ? <a className="bf-lobby__resume vt" href="/bluff/play">Match in progress · back to it</a> : null}
+            {me?.match ? <a className="bf-lobby__resume vt" href="/odd-man-out/play">Match in progress · back to it</a> : null}
           </div>
         </section>
 

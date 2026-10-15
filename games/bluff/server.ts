@@ -10,6 +10,8 @@ const SIDES = sidesJson as Side[];
 
 const yearOf = (s: Side) => +s.date.slice(0, 4);
 
+export const SIDE_COUNT = SIDES.length;
+
 /** The years there are sides for: the range the front page offers. */
 export const YEARS = { first: Math.min(...SIDES.map(yearOf)), last: Math.max(...SIDES.map(yearOf)) };
 

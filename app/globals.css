@@ -1224,6 +1224,8 @@ button { font-family: inherit; }
 .hub__tile--wide { grid-template-columns: 38% 1fr; align-items: center; gap: 4px 14px; padding: 12px 18px 12px 8px; }
 .hub__tile--wide .hub__tag { left: auto; right: 12px; }
 .hub__tile--wide .hub__mini { margin: 6px 0 -4px; }
+/* A game with no miniature yet (a draft): the words fill the tile, low down. */
+.hub__tile--bare { grid-template-columns: 1fr; align-items: end; min-height: 150px; padding: 48px 20px 18px; }
 
 /* Feature: on a phone the miniature stands up out of the tile's top edge. */
 .hub__tile--feature {
