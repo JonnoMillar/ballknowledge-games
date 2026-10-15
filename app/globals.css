@@ -29,6 +29,9 @@
   --t-slow: 420ms;
   --ease-out: cubic-bezier(0.2, 0.9, 0.25, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  /* A page-sized move (the hub tile growing into a game's hero). */
+  --t-page: 520ms;
 
   /* Geometry. A sticker on a phone, a sticker on a desk. */
   --link-w: 40px;
@@ -1781,31 +1784,74 @@ button { font-family: inherit; }
    it from before to after. Native view transitions, no library; browsers
    without them, and reduced motion, get the plain cut.
 
+   The rules (equal.design, "5 rules for motion in UI transitions"):
+   - Easing by role: a thing that stays and changes shape moves ease-in-out;
+     a thing arriving eases out; a thing leaving eases in. Never linear.
+   - Timing by size: a page-sized move ~500ms (--t-page); small in-page
+     moves ~300ms; nothing that matters under ~150ms, which reads as a cut.
+   - Order: the thing you clicked moves first; what leaves goes quickly but
+     visibly; what arrives comes after, related items 100ms apart.
+
    - Page to page: a hub tile and its game's front-page hero share a name
      (`game-<id>`, set inline), so the tile grows into the hero and the
-     miniature (`game-<id>-mini`) glides to its corner. Back does the reverse.
-     The masthead stays put; everything else cross-fades.
+     miniature (`game-<id>-mini`) glides to its corner; back does the
+     reverse. The masthead stays put. The other tiles shrink and fade away;
+     the front page's cards rise in after the hero, one after another.
    - In a page: `smooth()` (src/lib/motion.ts) wraps a state update and puts
-     .is-smoothing on <html> while it runs; elements marked .vt glide to their
-     new place, arrive with a fade, and leave with one. */
+     .is-smoothing on <html> while it runs; elements marked .vt (and every
+     front-page card) glide to their new place, arrive, and leave. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
 }
 .masthead { view-transition-name: masthead; }
 .hub__tile, .lobby-hero { view-transition-class: game; }
-.is-smoothing .vt { view-transition-name: match-element; }
+/* Everything on the hub and a front page that is not the morphing pair gets
+   its own snapshot, so it can leave or arrive rather than blink. The extra
+   classes stagger them: later on the page, later to arrive.
+   Names have to be spelled out: `match-element` does not carry across a
+   page load. A tile's miniature takes its tile's class, so they land together. */
+.hub__cell:nth-child(n+3) .hub__tile { view-transition-class: game a1; }
+.hub__cell:nth-child(n+4) .hub__tile { view-transition-class: game a2; }
+.hub__cell:nth-child(n+3) .hub__mini { view-transition-class: a1; }
+.hub__cell:nth-child(n+4) .hub__mini { view-transition-class: a2; }
+.lobby > :nth-child(2) { view-transition-name: lobby-2; }
+.lobby > :nth-child(3) { view-transition-name: lobby-3; view-transition-class: a1; }
+.lobby > :nth-child(4) { view-transition-name: lobby-4; view-transition-class: a2; }
+.lobby > :nth-child(5) { view-transition-name: lobby-5; view-transition-class: a2; }
+.lobby > :nth-child(6) { view-transition-name: lobby-6; view-transition-class: a2; }
+.lobby > :nth-child(7) { view-transition-name: lobby-7; view-transition-class: a2; }
+/* In a page, identity not position: a card that appears above another must
+   not take over its name. */
+html.is-smoothing .lobby > :not(.lobby-hero), .is-smoothing .vt { view-transition-name: match-element; }
 /* Arrived by a morph: the page's own entrance would fight it. */
 .vt-arrived .hub__cell { animation: none; }
 
-::view-transition-group(*) { animation-duration: var(--t-slow); animation-timing-function: var(--ease-out); }
-::view-transition-old(*), ::view-transition-new(*) { animation-duration: var(--t-base); }
-::view-transition-old(root) { animation-duration: var(--t-fast); }
-/* A tile and a hero are different shapes: fill the morphing box rather
-   than keep either snapshot's aspect, and let the old face go quickly. */
+@keyframes vt-leave { to { opacity: 0; transform: scale(0.94); } }
+@keyframes vt-arrive { from { opacity: 0; transform: translateY(18px); } }
+
+/* Page to page. */
+::view-transition-group(*) { animation-duration: var(--t-page); animation-timing-function: var(--ease-in-out); }
+::view-transition-old(*), ::view-transition-new(*) { animation-duration: 260ms; animation-delay: 110ms; animation-timing-function: ease; animation-fill-mode: both; }
+::view-transition-old(root), ::view-transition-new(root) { animation-delay: 0ms; }
+/* Leaving: quick but visible, accelerating away. */
+::view-transition-old(*):only-child { animation: vt-leave 240ms var(--ease-in) both; }
+/* Arriving: once the hero has mostly landed, decelerating into place. */
+::view-transition-new(*):only-child { animation: vt-arrive 340ms var(--ease-out) 220ms both; }
+::view-transition-new(.a1):only-child { animation-delay: 320ms; }
+::view-transition-new(.a2):only-child { animation-delay: 420ms; }
+/* A tile and a hero are different shapes: fill the morphing box rather than
+   keep either face's aspect. The faces swap mid-move (the shared timing
+   above keeps the cross-fade's total constant, so it never flashes). */
 ::view-transition-old(.game), ::view-transition-new(.game) { height: 100%; overflow: clip; }
-::view-transition-old(.game) { animation-duration: var(--t-fast); }
-/* In a page the hero only changes size: show its new face, cropped to the
-   growing box (its .vt contents glide on their own), never a cross-fade. */
+
+/* In a page: smaller moves, so shorter. */
+html.is-smoothing::view-transition-group(*) { animation-duration: 320ms; }
+/* Never scale a face: the same text in both would show double mid-fade. */
+html.is-smoothing::view-transition-old(*), html.is-smoothing::view-transition-new(*) { animation-duration: 200ms; animation-delay: 60ms; height: 100%; object-fit: none; object-position: left top; }
+html.is-smoothing::view-transition-old(*):only-child { animation: vt-leave 180ms var(--ease-in) both; }
+html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260ms var(--ease-out) 90ms both; }
+/* The hero only changes size: show its new face, cropped to the growing box
+   (its .vt contents glide on their own), never a cross-fade. */
 html.is-smoothing::view-transition-group(.game) { overflow: clip; border-radius: 24px; }
 html.is-smoothing::view-transition-old(.game) { display: none; }
 html.is-smoothing::view-transition-new(.game) { animation: none; height: auto; object-fit: none; object-position: top; }

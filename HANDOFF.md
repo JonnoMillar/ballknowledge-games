@@ -85,6 +85,14 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   off its own entrance animation. Not yet swept: content that loads after
   arrival (Spoofed's next player, Chain's puzzle card) still pops in, and
   in-game screens don't use `smooth` yet. Firefox gets the plain cut.
+  Retuned 2026-10-15 after Jonno called it rushed and a "flashbang"
+  (equal.design's "5 rules for motion"): the morph is 520ms ease-in-out
+  (`--t-page`); the faces swap mid-move; tiles that aren't clicked shrink
+  and fade out (240ms, ease-in) instead of vanishing; front-page cards and
+  hub tiles arrive after (ease-out, rising 18px, 100ms apart, by the
+  `a1`/`a2` view-transition classes). In-page moves are 320ms. Names must be
+  explicit for page-to-page (`lobby-2`...): `match-element` does not carry
+  across a page load. The rules are written at the top of MOTION.
 - **Next (Jonno's order):** Pitch pin's front page onto the kit (he likes it
   as is, so keep its content). Rondo is not a daily: its hero has no day
   tag and its red button starts a match; it is the pub game (orange
@@ -106,7 +114,9 @@ the pundit's ink loop; redo only if Jonno minds.
 - To see a view transition mid-frame: wait for `document.activeViewTransition`,
   `await .ready`, then pause every `::view-transition` animation from
   `document.getAnimations()` at a `currentTime` and screenshot. CDP
-  playback-rate tricks don't hold across navigations.
+  playback-rate tricks don't hold across navigations. Freezing a page
+  morph mid-way can trip a harmless hydration warning (an empty `style` on
+  Rondo's inputs); it does not happen in normal play.
 - Icons are cropped from the cut-outs with one fixed box (150,150,854,854 of
   1024) so every disc is the same size on screen; keep that box for new ones.
 
