@@ -33,7 +33,8 @@
     "build:completion": "tsx scripts/build-completion.ts",
     "fetch:careers": "tsx scripts/fetch-careers.ts",
     "merge:careers": "tsx scripts/merge-careers.ts",
-    "fetch:credits": "tsx scripts/fetch-credits.ts"
+    "fetch:credits": "tsx scripts/fetch-credits.ts",
+    "bluff:sides": "tsx scripts/bluff/build-sides.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

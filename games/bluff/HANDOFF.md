@@ -93,3 +93,45 @@ its licence is grey and its famous matches are mostly the same tournaments.
 - "Help the faker" for a national side is same nation, era and position
   (pool `nation`, `careers.json` stint years, pool `positions`).
 - The fake can't be someone already in the XI (checked by id).
+
+## Stage 2: playable draft (in progress, 2026-10-15)
+
+Jonno approved Wikipedia only, finals plus World Cup and Euro knockouts,
+1995 to now.
+
+**Done and tested** (typecheck clean, `npm test` 1,754 passed):
+- `scripts/bluff/build-sides.ts` (`npm run bluff:sides`) writes
+  `games/bluff/data/sides.json`: 408 XIs from 267 matches (CL finals 55,
+  FA Cup finals 41, World Cup 183, Euro 129). 73 more dropped as too obscure
+  (`MIN_MEDIAN_FAME` = 40, the XI's median pool fame). Only miss: the 2021
+  FA Cup final.
+- `lib/wiki.ts` (box styles `{{Football box`, `{{footballbox`,
+  `{{#invoke:football box`; `{{abbr|RB|..}}` codes; `{{nowrap}}`;
+  multi-line footnotes), `lib/lineup.ts` (codes to lines, formation, left
+  on the left), `lib/match.ts` (the round and match reducer; `LIVES` = 3,
+  `MAX_LOSSES_PER_ROUND` = 2, roles rotate, help suggestions), `server.ts`
+  and `POST /api/bluff/deal`.
+- Front page written, not yet routed: `components/Lobby.tsx`, `Setup.tsx`
+  (names 2 to 6, year range, Help the faker on/off).
+- Hub entry and `Hub.tsx` change (tile without a miniature) are in the
+  working tree, **not committed**: the tile would link to a page that
+  doesn't exist yet.
+
+**Left to build:**
+1. `components/Bluff.tsx` (the match on `/bluff/play`): scoreboard with
+   lives; plant (tap a slot, search via `/api/names` + `src/lib/search`,
+   help chips from `suggestions()`, red "Pass the phone"); cover ("Hand it
+   to Ben", red "I'm Ben"); guess (tap, red "That's the fake", wrong slots
+   marked real); reveal (fake marked, the real name under it, red "Next
+   round", or full time with Rematch). Every phase change through
+   `smooth()`, elements `.vt`.
+2. A pitch component: lines bottom (keeper) to top, names split first name
+   small / rest big, the same for real and fake. No numbers, flags or photos.
+3. `games/bluff/bluff.css` (`bf-` prefix; setup styles copied from Rondo's,
+   to move to shared `components/` when this merges), `app/bluff/page.tsx`
+   (Lobby with `YEARS`, count), `app/bluff/play/page.tsx`, credits line.
+4. Verify at 375 and 1200, commit with the hub entry, stage gate.
+
+**Open for Jonno:** the name; a hub miniature (Higgsfield, needs his yes);
+whether the bluffer should pay anything when caught first time (now
+nothing: only the guesser loses lives); `MIN_MEDIAN_FAME`.
