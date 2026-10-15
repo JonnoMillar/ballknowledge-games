@@ -4,11 +4,13 @@ import Back from '../../../components/Back';
 import { GAMES } from '../../../src/games';
 import Bib from './Bib';
 import ClubBadge from '../../../components/ClubBadge';
+import { StickerFace, solid } from '../../../components/Sticker';
 import Setup from './Setup';
-import { BIBS_OUT, newMatch, type Clock, type Match } from '../lib/match';
+import { newMatch, type Clock, type Match } from '../lib/match';
 import { readMatch, readSaved, writeMatch, writeSaved, type Saved } from '../lib/store';
 import { smooth } from '../../../src/lib/motion';
 import Words from '../../../components/Words';
+import type { DemoBall } from '../server';
 
 /** Rondo's ground: the same orange as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
@@ -20,12 +22,11 @@ const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
  * - The hero: the ask on the left; who's playing, the clock, and Kick off
  *   (the page's one red button) on the right. Rondo is not a daily, so no
  *   day tag.
- * - A match in progress, if the phone has one: the names and bibs, and the
- *   way back to it.
- * - How it goes: the rules as one real ball, four pictures with a few
- *   words each.
+ *   A match in progress on this phone gets a quiet way back under it.
+ * - How it goes: a looping demo of one real ball beside the three rules in
+ *   plain words, each rule lit while the demo shows it.
  */
-export default function Lobby() {
+export default function Lobby({ demo }: { demo: DemoBall }) {
   // Read after mount: localStorage is the phone's, and the server render knows nothing of it.
   const [me, setMe] = useState<{ match: Match | null; saved: Saved } | null>(null);
   // The form is there from the first frame (blank), so the hero it sits in
@@ -61,81 +62,56 @@ export default function Lobby() {
           </div>
           <div className="lobby-hero__go">
             <Setup key={me ? 'saved' : 'blank'} initialNames={me?.saved.names ?? []} initialClock={me?.saved.clock ?? 30} onStart={start} />
+            {me?.match ? <a className="rondo-lobby__resume vt" href="/rondo/play">Match in progress · back to it</a> : null}
           </div>
         </section>
 
-        {me?.match ? <Resume match={me.match} /> : null}
-
-        <How wide={!me?.match} />
+        <How demo={demo} />
       </main>
     </div>
   );
 }
 
-const UNITED = { id: 'Q18656', club: { name: 'Manchester United F.C.', crest: true } };
-const MADRID = { id: 'Q8682', club: { name: 'Real Madrid Club de Fútbol', crest: true } };
-
 /**
- * How it goes, drawn the way the match draws it: one ball, Rooney to
- * Ronaldo through United, on to Benzema through Madrid; both crests burn;
- * Benzema has nowhere to go, so a bib; three bibs and you're out.
+ * How it goes. The demo plays one ball on a 10 s loop (CSS only, in
+ * rondo.css): Rooney; Ronaldo, through United; Benzema, through Madrid;
+ * both crests are crossed out; Benzema is stuck and a bib lands. Each rule
+ * lights up while the demo shows it. Reduced motion shows the last frame.
  */
-function How({ wide }: { wide: boolean }) {
+function How({ demo }: { demo: DemoBall }) {
+  const [a, b, c] = demo.players;
+  const [united, madrid] = demo.clubs;
+  const player = (p: typeof a, n: number) => (
+    <span className={`rondo-demo__p rondo-demo__p--${n}`}>
+      <StickerFace player={p!} image={p!.image} ground={solid(p!.ground)} className="sticker--still" />
+    </span>
+  );
+  const link = (k: typeof united, n: number) => (
+    <span className={`rondo-demo__link rondo-demo__link--${n}`}>
+      <ClubBadge clubId={k!.id} club={k!.club} size={26} />
+    </span>
+  );
   return (
-    <section className={`lobby-card rondo-how vt ${wide ? 'lobby__wide' : ''}`}>
+    <section className="lobby-card lobby__wide rondo-how vt">
       <span className="lobby-tag lobby-tag--paper">How it goes</span>
-      <ol className="rondo-how__steps">
-        <li>
-          <div className="rondo-how__art">
-            <span className="rondo-how__pass display">Rooney <ClubBadge clubId={UNITED.id} club={UNITED.club} size={22} /> Ronaldo</span>
+      <div className="rondo-how__body">
+        <div className="rondo-demo" aria-hidden>
+          <div className="rondo-demo__row">
+            {player(a, 1)}{link(united, 1)}{player(b, 2)}{link(madrid, 2)}{player(c, 3)}
           </div>
-          <b>Pass to a teammate</b>
-        </li>
-        <li>
-          <div className="rondo-how__art">
-            <span className="burnt__club"><ClubBadge clubId={UNITED.id} club={UNITED.club} size={30} /></span>
-            <span className="burnt__club"><ClubBadge clubId={MADRID.id} club={MADRID.club} size={30} /></span>
+          <div className="rondo-demo__bibs">
+            <span className="rondo-demo__bib"><Bib earned={false} size={22} /><Bib earned size={22} className="rondo-demo__earned" /></span>
+            <Bib earned={false} size={22} />
+            <Bib earned={false} size={22} />
           </div>
-          <b>Each club once a ball</b>
-        </li>
-        <li>
-          <div className="rondo-how__art">
-            <span className="rondo-how__pass display">Benzema <span className="rondo-how__stuck">?</span></span>
-            <Bib earned size={24} />
-          </div>
-          <b>Stuck? Take a bib</b>
-        </li>
-        <li>
-          <div className="rondo-how__art">
-            <Bib earned size={24} /><Bib earned size={24} /><Bib earned size={24} />
-          </div>
-          <b>Three and you’re out</b>
-        </li>
-      </ol>
+        </div>
+        <ol className="rondo-how__rules">
+          <li>Name a player who played for one of the same clubs as the player on the ball.</li>
+          <li>A club that links two players can’t be used again.</li>
+          <li>Can’t name anyone? That’s a strike. Three strikes and you’re out.</li>
+        </ol>
+      </div>
       <p className="how__note">The ref knows 11,741 players since 1992.</p>
     </section>
-  );
-}
-
-/** The match on this phone: who's in it, their bibs, and the way back. Never red. */
-function Resume({ match }: { match: Match }) {
-  return (
-    <a className="lobby-card lobby-link rondo-resume vt" href="/rondo/play">
-      <span className="lobby-tag lobby-tag--paper">Match in progress</span>
-      <ol className="rondo-resume__sides">
-        {match.players.map((p, i) => (
-          <li key={i} className={p.bibs >= BIBS_OUT ? 'is-out' : ''}>
-            <span className="rondo-resume__name display">{p.name}</span>
-            <span className="rondo-resume__bibs" aria-label={`${p.bibs} of ${BIBS_OUT} bibs`}>
-              {Array.from({ length: BIBS_OUT }, (_, k) => <Bib key={k} earned={k < p.bibs} size={15} />)}
-            </span>
-          </li>
-        ))}
-      </ol>
-      <span className="lobby-link__line">
-        {match.ballNo ? `Ball ${match.ballNo}` : 'Kick-off'} · back to it
-        <svg className="lobby-link__arrow" viewBox="0 0 20 12" aria-hidden><path d="M1 6h17M13 1.5 18 6l-5 4.5" /></svg>
-      </span>
-    </a>
   );
 }

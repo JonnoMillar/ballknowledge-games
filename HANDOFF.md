@@ -114,10 +114,19 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
 - Red buttons (`.lobby-play`): pointer cursor (Kick off is a `<button>`)
   and a 2px lift on hover, hover-capable devices only. The hub's Play gets
   no lift of its own: its whole tile already lifts.
-- Rondo's front page: Jonno fine with it, but "How it goes" was "cringe
-  text, nothing visual". Now four pictures in the match's own visuals, one
-  real ball (Rooney, United crest, Ronaldo; United and Madrid crests
-  burnt; Benzema ? and a bib; three bibs), a few words each.
+- **Second verdict, same day:** the flash he meant was the other tiles'
+  slide-up (`rise-in`, 14px) when coming back to the hub: they are already
+  in place, so on a return they now only fade (`--rise: 0px`; the keyframe
+  reads `--rise`, default 14px). A refresh keeps its slide.
+- Rondo's "How it goes" is a live demo (`How` in `games/rondo/components/
+  Lobby.tsx`, `rd-*` keyframes in `rondo.css`, 10 s CSS loop): real
+  stickers, Rooney to Ronaldo through the United crest, Ronaldo to Benzema
+  through Madrid, both crests crossed out, Benzema stuck, a bib lands.
+  Beside it the three rules in plain English (Jonno: no "pass"/"bib"
+  roleplay in the words, let the pictures carry it), each lit while the
+  demo shows it. Data from `demoBall()` in `games/rondo/server.ts`.
+  The "Match in progress" card is gone (it broke the layout and Jonno
+  doubted it); a saved match gets a quiet "back to it" link under Kick off.
 - **Pitch pin's front page on the kit** (2026-10-15,
   `games/pin/components/Library.tsx`): blue hero with the pin miniature,
   "Where was it struck from?" in `<Words>`, the pack to play on the right
@@ -154,8 +163,8 @@ the pundit's ink loop; redo only if Jonno minds.
 
 **Resume prompt:** "Read HANDOFF.md, section 'The site hub and Chain's hub'
 (especially 'No teleports' and the Gotchas). First ask me for my verdict
-on Pitch pin's new front page, Rondo's How it goes pictures and the hub
-coming back without the flash. Then do the no-teleport sweep."
+on Pitch pin's new front page, Rondo's live How it goes demo and the hub
+tiles fading back without the slide. Then do the no-teleport sweep."
 
 ## What this is
 

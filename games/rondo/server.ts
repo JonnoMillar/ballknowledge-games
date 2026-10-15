@@ -60,6 +60,24 @@ async function carrierOf(p: Player): Promise<Carrier> {
 }
 
 /** A starter not in `exclude`, at random. Wraps to the whole set if everyone is excluded. */
+/**
+ * The front page's demo: one ball every fan can follow. Rooney to Ronaldo
+ * through United, Ronaldo to Benzema through Madrid, then Benzema is stuck.
+ * Each stands on the club the demo links them through, not where their
+ * career ended (Ronaldo and Benzema would be in Saudi yellow).
+ */
+const DEMO = { players: ['Q266613', 'Q11571', 'Q1912'], clubs: ['Q18656', 'Q8682'], grounds: ['Q18656', 'Q8682', 'Q8682'] } as const;
+
+export interface DemoBall { players: Carrier[]; clubs: { id: string; club: ClubView }[] }
+
+export async function demoBall(): Promise<DemoBall> {
+  const { byId, clubs } = await loadRef();
+  return {
+    players: await Promise.all(DEMO.players.map(async (id, i) => ({ ...await carrierOf(byId.get(id)!), ground: clubColour(DEMO.grounds[i]!) }))),
+    clubs: DEMO.clubs.map((id) => ({ id, club: clubView(clubs[id] ?? { name: id }) })),
+  };
+}
+
 export async function deal(exclude: readonly string[]): Promise<Carrier> {
   const { starters } = await loadRef();
   const gone = new Set(exclude);

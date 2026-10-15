@@ -103,29 +103,68 @@
 .seg__opt:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ── THE FRONT PAGE'S CARDS ─────────────────────────────────────────── */
-/* How it goes: four pictures, a few words under each. */
-.rondo-how__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.rondo-how__steps li { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 8px 12px; border-radius: 12px; background: rgba(20, 18, 16, 0.04); text-align: center; }
-.rondo-how__steps b { font-size: 14.5px; font-weight: 600; line-height: 1.2; }
-.rondo-how__art { display: flex; align-items: center; justify-content: center; gap: 6px; height: 44px; }
-.rondo-how__pass { display: inline-flex; align-items: center; gap: 5px; font-size: 16px; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
-.rondo-how__stuck { color: var(--muted); }
-/* Grey the crest, not the red line through it. */
-.rondo-how__art .burnt__club { padding: 2px; filter: none; opacity: 1; }
-.rondo-how__art .burnt__club img { filter: grayscale(1); opacity: 0.5; }
+/* How it goes: the demo beside the rules, on one clock. */
+.rondo-how { --loop: 10s; }
+.rondo-how__body { display: flex; flex-direction: column; gap: 18px; }
+.rondo-how__rules { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 16px; line-height: 1.4; }
+.rondo-how__rules li::marker { font-family: var(--font-display), Impact, sans-serif; font-weight: 800; color: var(--bib-deep); }
 @media (min-width: 760px) {
-  .rondo-how__steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .rondo-how__pass { gap: 6px; font-size: 19px; }
+  .rondo-how__body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 40px; }
+  .rondo-how__rules { font-size: 17px; gap: 14px; }
 }
+
+/* The demo: one ball, 10 s, looped. Every resting style is the last frame,
+   so reduced motion (no animation) shows the whole story still. */
+.rondo-demo { --sticker-w: 66px; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px 10px 14px; border-radius: 16px; background: var(--page); }
+.rondo-demo .sticker__name { font-size: 11px; }
+.rondo-demo .sticker__name--long { font-size: 9.5px; }
+.rondo-demo__row { display: flex; align-items: center; gap: 2px; }
+.rondo-demo__link { position: relative; display: inline-flex; padding: 2px; }
+.rondo-demo__link img { filter: grayscale(1); opacity: 0.45; }
+.rondo-demo__link::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; border-radius: 1px; background: var(--red); transform: rotate(-24deg); }
+.rondo-demo__bibs { display: flex; gap: 6px; }
+.rondo-demo__bib { position: relative; display: inline-flex; }
+.rondo-demo__earned { position: absolute; inset: 0; }
+@media (min-width: 760px) {
+  .rondo-demo { --sticker-w: 96px; padding: 20px 18px 16px; }
+  .rondo-demo__row { gap: 8px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rondo-demo__p--1 { animation: rd-in var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__link--1 { animation: rd-link1 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__p--2 { animation: rd-p2 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__link--2 { animation: rd-link2 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__p--3 { animation: rd-p3 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__p--3 .sticker { animation: rd-stuck var(--loop) linear infinite; }
+  .rondo-demo__link--1 img { animation: rd-grey1 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__link--1::after { animation: rd-line1 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__link--2 img { animation: rd-grey2 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__link--2::after { animation: rd-line2 var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__bibs { animation: rd-in var(--loop) var(--ease-out) infinite; }
+  .rondo-demo__earned { animation: rd-bib var(--loop) var(--ease-out) infinite; }
+  .rondo-how__rules li:nth-child(1) { animation: rd-rule1 var(--loop) var(--ease-in-out) infinite; }
+  .rondo-how__rules li:nth-child(2) { animation: rd-rule2 var(--loop) var(--ease-in-out) infinite; }
+  .rondo-how__rules li:nth-child(3) { animation: rd-rule3 var(--loop) var(--ease-in-out) infinite; }
+}
+/* 0-4 s two passes, 4-6 s both clubs crossed out, 6-9 s stuck and a bib, then out. */
+@keyframes rd-in { 0% { opacity: 0; } 3%, 90% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes rd-link1 { 0%, 7% { opacity: 0; transform: scale(0.4); } 11%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes rd-p2 { 0%, 13% { opacity: 0; transform: translateY(-12px) scale(1.12); } 18%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes rd-link2 { 0%, 24% { opacity: 0; transform: scale(0.4); } 28%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes rd-p3 { 0%, 30% { opacity: 0; transform: translateY(-12px) scale(1.12); } 35%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes rd-grey1 { 0%, 42% { filter: none; opacity: 1; } 46%, 100% { filter: grayscale(1); opacity: 0.45; } }
+@keyframes rd-line1 { 0%, 42% { transform: rotate(-24deg) scaleX(0); } 46%, 100% { transform: rotate(-24deg) scaleX(1); } }
+@keyframes rd-grey2 { 0%, 50% { filter: none; opacity: 1; } 54%, 100% { filter: grayscale(1); opacity: 0.45; } }
+@keyframes rd-line2 { 0%, 50% { transform: rotate(-24deg) scaleX(0); } 54%, 100% { transform: rotate(-24deg) scaleX(1); } }
+@keyframes rd-stuck { 0%, 63% { transform: none; } 64.5% { transform: translateX(-4px); } 66% { transform: translateX(4px); } 67.5% { transform: translateX(-3px); } 69%, 100% { transform: none; } }
+@keyframes rd-bib { 0%, 71% { opacity: 0; transform: scale(2.2) rotate(-8deg); } 76%, 100% { opacity: 1; transform: none; } }
+@keyframes rd-rule1 { 0%, 38% { opacity: 1; } 42%, 96% { opacity: 0.35; } 100% { opacity: 1; } }
+@keyframes rd-rule2 { 0%, 38% { opacity: 0.35; } 42%, 58% { opacity: 1; } 62%, 100% { opacity: 0.35; } }
+@keyframes rd-rule3 { 0%, 58% { opacity: 0.35; } 62%, 92% { opacity: 1; } 96%, 100% { opacity: 0.35; } }
 .how__note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
 
-.rondo-resume { flex-direction: column; align-items: stretch; gap: 14px; }
-.rondo-resume__sides { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.rondo-resume__sides li { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.rondo-resume__sides li.is-out { opacity: 0.5; }
-.rondo-resume__name { font-size: 24px; font-weight: 800; line-height: 1; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rondo-resume__bibs { display: inline-flex; gap: 3px; flex: none; }
-.rondo-resume .lobby-link__line { margin-top: auto; }
+.rondo-lobby__resume { align-self: center; color: #fff; font-size: 15px; font-weight: 600; text-underline-offset: 3px; }
 
 /* ── SCOREBOARD ─────────────────────────────────────────────────────── */
 .score {

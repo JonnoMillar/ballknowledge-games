@@ -1,4 +1,5 @@
 import Lobby from '../../games/rondo/components/Lobby';
+import { demoBall } from '../../games/rondo/server';
 import '../../games/rondo/rondo.css';
 
 export const metadata = {
@@ -7,6 +8,6 @@ export const metadata = {
 };
 
 /** Rondo's front page; the match is at /rondo/play. See games/rondo/DESIGN.md. */
-export default function RondoLobby() {
-  return <Lobby />;
+export default async function RondoLobby() {
+  return <Lobby demo={await demoBall()} />;
 }

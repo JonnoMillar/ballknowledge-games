@@ -1843,7 +1843,8 @@ html.is-smoothing .lobby > :not(.lobby-hero), .is-smoothing .vt { view-transitio
 
 @keyframes vt-leave { to { opacity: 0; transform: scale(0.94); } }
 @keyframes vt-arrive { from { opacity: 0; transform: translateY(18px); } }
-@keyframes rise-in { from { opacity: 0; transform: translateY(14px); } }
+/* --rise: how far it comes up from; 0 is a plain fade, for things already in place. */
+@keyframes rise-in { from { opacity: 0; transform: translateY(var(--rise, 14px)); } }
 
 /* Any other page change: a short cross-fade. */
 ::view-transition-group(*) { animation-duration: 400ms; animation-timing-function: var(--ease-in-out); }
@@ -1890,7 +1891,8 @@ html:active-view-transition-type(morph)::view-transition-new(*):only-child { ani
 .vt-arrived .lobby > :nth-child(2):not(.lobby-hero) { animation-delay: calc(var(--vt-land) + 760ms); }
 .vt-arrived .lobby > :nth-child(3):not(.lobby-hero) { animation-delay: calc(var(--vt-land) + 860ms); }
 .vt-arrived .lobby > :nth-child(n+4):not(.lobby-hero) { animation-delay: calc(var(--vt-land) + 960ms); }
-.vt-arrived .hub__tile > * { animation: rise-in 460ms var(--ease-out) both; animation-delay: calc(var(--vt-land) + 120ms + var(--cell, 0ms)); }
+/* Back on the hub the other tiles are already where they belong: they fade in, no slide. */
+.vt-arrived .hub__tile > * { --rise: 0px; animation: rise-in 460ms var(--ease-out) both; animation-delay: calc(var(--vt-land) + 120ms + var(--cell, 0ms)); }
 .vt-arrived .hub__tile > :not(.hub__ground, .hub__mini) { animation-delay: calc(var(--vt-land) + 240ms + var(--cell, 0ms)); }
 
 /* In a page: smaller moves, so shorter. */
