@@ -191,6 +191,23 @@ every stint's years, league apps and goals; `data/pool.json` has fame.
   the other picks it while being stared at. The open question is what to
   lie about; Jonno's first idea is a real lineup with one player swapped.
 
+**Decisions for the drafts (2026-10-15)** — full detail is in each game's
+kickoff prompt and then its own `games/<name>/HANDOFF.md`:
+- Season line: daily is 2000 onwards; an endless mode (a big archive) lets
+  the player pick a year range. Line grows by fifths (8/15/23/30/38 games).
+  Hints: 2 a squad regular, 3 another club's line on the chart, 4 a second
+  squad player, 5 the club's top scorer with tally. Season feedback is up or
+  down only. Open risk: up/down arrows on ~26 seasons allow a binary search
+  in about five guesses.
+- Tunnel: mixed, sometimes outrageous lineups; themes only sometimes. Age,
+  height, apps for a club (at least four of the five played there), career
+  goals (assists are not in our data), then a hard final category: peak
+  market value if a usable source exists, otherwise air miles.
+- Bluff: one phone, turns. Full XI in formation from a real match; the
+  bluffer swaps any player for anyone. Year range choice. Faker suggestions
+  as an on/off toggle. Up to two lives lost per round, three per player,
+  several rounds; tune after playtesting. Clean sheet left for later.
+
 Reserve: **What year?** A club's XI (names only); slide to the season,
 scored in years off. Rosters come from `careers.json` stints, so they are
 approximate.
