@@ -1,0 +1,42 @@
+# Season line's data, kept up to date with no one in the loop. Daily at
+# 05:30 UTC: add any season that has finished (results, top scorers, boards),
+# keep the daily schedule at least two weeks ahead, test, and commit to the
+# default branch; the push deploys. Off until the game is merged to main.
+name: Season line
+
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: season-line
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run season-line:update
+      - run: npx vitest run games/season-line
+      - name: Commit new data
+        run: |
+          if [ -z "$(git status --porcelain games/season-line/data)" ]; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/season-line/data
+          git commit -m "chore(season-line): data update"
+          git push

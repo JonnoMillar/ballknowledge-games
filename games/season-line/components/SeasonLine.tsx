@@ -125,7 +125,7 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
         ) : (
           <p className="sl-stage__ask display vt">Whose season? <span>{view.line.length} of {view.games} games</span></p>
         )}
-        <Chart games={view.games} teams={view.teams} line={view.line} from={drawn} rival={view.rival} />
+        <Chart games={view.games} teams={view.teams} line={view.line} from={drawn} rival={view.rival && { name: view.rival.club, line: view.rival.line }} />
         {hints.length ? (
           <ul className="sl-hints">
             {hints.map((h) => <li key={h.k} className="sl-hint vt"><span>{h.label}</span><b>{h.value}</b></li>)}
@@ -178,7 +178,7 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
             {locked ? (
               <span className="sl-locked">
                 {q(locked) ? <img src={crestPath(q(locked)!)} alt="" width={22} height={22} /> : null}
-                {name(locked)}
+                <span>{name(locked)}</span>
               </span>
             ) : (
               <select className="sl-select" aria-label="Club" value={club} onChange={(e) => setClub(e.target.value)}>

@@ -33,6 +33,9 @@ async function fetchResults(start: number): Promise<string | null> {
   return res.ok ? res.text() : null;
 }
 
+/** A club's names: from the list, or guessed from football-data's short name for a club new to the PL. */
+const club = (c: string): { name: string; wiki: string; seasonWiki?: string } => CLUBS[c] ?? { name: c, wiki: `${c} F.C.` };
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 /** Wikipedia rate-limits bursts with a plain-text page: wait and try again. */
 async function politely(u: string): Promise<unknown> {
@@ -49,7 +52,7 @@ async function politely(u: string): Promise<unknown> {
 
 async function fetchTopScorers(start: number, clubs: string[]): Promise<Record<string, string | null>> {
   const label = start === 1999 ? '1999–2000' : `${start}–${String((start + 1) % 100).padStart(2, '0')}`;
-  const title = (c: string) => `${label} ${CLUBS[c]!.seasonWiki ?? CLUBS[c]!.wiki} season`;
+  const title = (c: string) => `${label} ${club(c).seasonWiki ?? club(c).wiki} season`;
   const u = 'https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&redirects=1&prop=revisions&rvprop=content&rvslots=main&titles='
     + encodeURIComponent(clubs.map(title).join('|'));
   const j = await politely(u) as {
@@ -78,7 +81,8 @@ for (let start = FIRST; start < thisYear; start++) {
   const table = positions(games, id);
   const clubs = Object.keys(table);
   const unknown = clubs.filter((c) => !CLUBS[c]);
-  if (unknown.length) throw new Error(`${id}: add ${unknown.join(', ')} to games/season-line/lib/clubs.ts`);
+  // Still added: a guessed name and article. A wrong guess only costs that club its top scorer (no boards); add it to clubs.ts to fix.
+  if (unknown.length) console.warn(`${id}: not in games/season-line/lib/clubs.ts, guessing: ${unknown.join(', ')}`);
   const n = clubs.length;
   if (games.length < n * (n - 1)) { console.log(`${id}: in progress (${games.length} of ${n * (n - 1)} games)`); continue; }
   const top = await fetchTopScorers(start, clubs);
@@ -94,16 +98,17 @@ if (added || process.argv.includes('--boards') || data.boards.length === 0) {
   const careers = JSON.parse(readFileSync('data/careers.json', 'utf8')) as { players: Record<string, { title: string; stints: { loan: boolean; from: number; to: number | null; title: string; apps: number | null; q?: string }[] }> };
   const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as { id: string; fame?: { value: number } }[];
   const fame = new Map(pool.map((p) => [p.id, p.fame?.value ?? 0]));
-  const byWiki = new Map(Object.entries(CLUBS).map(([k, c]) => [c.wiki, k]));
+  const every = [...new Set(data.seasons.flatMap((s) => Object.keys(s.table)))];
+  const byWiki = new Map(every.map((k) => [club(k).wiki, k]));
   const stints = new Map<string, Stint[]>();
   const qid = new Map<string, string>();
   for (const [id, p] of Object.entries(careers.players)) for (const s of p.stints) {
-    const club = byWiki.get(s.title);
-    if (!club || s.loan) continue;
-    if (s.q) qid.set(club, s.q);
-    (stints.get(club) ?? stints.set(club, []).get(club)!).push({ name: p.title, fame: fame.get(id) ?? 0, from: s.from, to: s.to, apps: s.apps });
+    const k = byWiki.get(s.title);
+    if (!k || s.loan) continue;
+    if (s.q) qid.set(k, s.q);
+    (stints.get(k) ?? stints.set(k, []).get(k)!).push({ name: p.title, fame: fame.get(id) ?? 0, from: s.from, to: s.to, apps: s.apps });
   }
-  data.clubs = Object.fromEntries(Object.entries(CLUBS).map(([k, c]) => [k, { name: c.name, q: qid.get(k) ?? null }]));
+  data.clubs = Object.fromEntries(every.sort().map((k) => [k, { name: club(k).name, q: qid.get(k) ?? null }]));
   const plSeasons = new Map<string, number>();
   for (const s of data.seasons) for (const c of Object.keys(s.table)) plSeasons.set(c, (plSeasons.get(c) ?? 0) + 1);
 

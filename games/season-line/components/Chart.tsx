@@ -7,8 +7,7 @@ import { fifths } from '../lib/table';
  * where the line stopped (`from`), so the line grows, never jumps.
  */
 const W = 360, H = 232;
-const L = 34, R = 84, T = 10, B = 26;
-const PW = W - L - R, PH = H - T - B;
+const T = 10, B = 26, PH = H - T - B;
 
 export const ordinal = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
 
@@ -21,7 +20,10 @@ export default function Chart({ games, teams, line, from = line.length, rival, m
   rival?: { name: string; line: number[] } | null;
   mini?: boolean;
 }) {
-  const x = (i: number) => L + (i / (games - 1)) * PW;
+  // Room for the labels; the front page's picture has none and is only the part shown, edge to edge.
+  const L = mini ? 8 : 34, R = mini ? 14 : 74, PW = W - L - R;
+  const span = mini ? Math.max(2, line.length) : games;
+  const x = (i: number) => L + (i / (span - 1)) * PW;
   const y = (p: number) => T + ((p - 1) / (teams - 1)) * PH;
   const row = PH / (teams - 1);
   const path = (ps: number[], start = 0) => ps.map((p, i) => `${i ? 'L' : 'M'}${x(start + i).toFixed(1)} ${y(p).toFixed(1)}`).join(' ');
@@ -46,7 +48,7 @@ export default function Chart({ games, teams, line, from = line.length, rival, m
           {mini ? null : <text className="sl-chart__axis" x={L - 6} y={y(p) + 4} textAnchor="end">{ordinal(p)}</text>}
         </g>
       ))}
-      {fifths(games).map((g) => (
+      {(mini ? [] : fifths(games)).map((g) => (
         <g key={g}>
           <line className={`sl-chart__tick${g <= shown ? ' is-on' : ''}`} x1={x(g - 1)} x2={x(g - 1)} y1={T + PH + 6} y2={T + PH + 11} />
           {mini ? null : <text className={`sl-chart__axis${g <= shown ? ' is-on' : ''}`} x={x(g - 1)} y={H - 4} textAnchor="middle">{g}</text>}

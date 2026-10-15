@@ -67,24 +67,45 @@ the top scorer as a squad hint.
 first ("not very rewarding to get it in 5 if they got the club in 1");
 step 3 is the nearest rival, named (the club whose line tangled most).
 
-## Draft build (2026-10-15) — NOT yet browser-checked
+## Draft build (2026-10-15) — gate 2, playable
+
+Play it: `npm run dev`, then `/season-line` (front page) and
+`/season-line/play` (today) or `/season-line/play?from=2000&to=2010` (endless).
 
 - Data: `npm run season-line:update` (`scripts/season-line/update.ts`) fetches
   any finished season not yet in `data/seasons.json` (results + raw
   `league_topscorer` field, retried politely: Wikipedia rate-limits bursts),
-  rebuilds boards (`--boards`), tops up `data/days.json` (append-only,
-  `EPOCH` 2026-10-15 is a draft date). Real run: 33 seasons, 268 boards
-  (385 flat lines dropped), 204 daily-grade; schedule to 2026-12-14.
+  rebuilds boards (`--boards`), tops up `data/days.json` (append-only).
+  `.github/workflows/season-line.yml` runs it daily once on `main`. A club new
+  to the PL gets a guessed name and article (warning, not a failure); add it
+  to `lib/clubs.ts` for a proper name. Real run: 33 seasons, 268 boards (385
+  flat lines dropped, 11 without hints), 204 daily-grade; schedule to
+  2026-12-14. `EPOCH` 2026-10-15 is a draft date: reset it, and rebuild
+  `days.json`, at launch.
 - Stories (`lib/drama.ts`): title, race, chase, collapse, escape, drop,
   surge, boom/slump (vs the club's median finish). Daily = 2000+ and
-  story score + 2 x club fame >= 3.
+  story score + 2 x club fame >= 3 (keeps every champion, Invincibles too).
 - Server (`server.ts`) judges every guess; answer only when done. Ids: a date,
   or `e<n>-<from>-<to>` for endless. Demo board Newcastle 95/96 never dealt.
-- Routes: `/season-line` (front page: hero with today's first fifth, How it
-  goes, Endless year range), `/season-line/play` (`?from=&to=` = endless),
-  `/api/season-line/{board,endless}`.
-- Checked: `npm run typecheck` clean; `npx vitest run games/season-line`
-  17 passed (real-data tables, parse, hints, schedule, no answer leak).
-- **Not done:** full `npm test`, browser check at 375/1200, prod build, a
-  GitHub workflow for the daily update, hub tile (needs a miniature:
-  Higgsfield credits, ask first) and the name (ask Jonno).
+- Screens: front page on the kit (teal ground `#1F5F57`, today's line so far
+  as the hero picture, red Play; once done the red moves to Endless); How it
+  goes (Newcastle 95/96 vs Man United); Endless with a year range. Game: the
+  chart (top four and bottom three shaded, the rest of the season paper, new
+  games draw in), hint chips, five guess rows (club green once right, season
+  ▲/▼), native selects for club and season (season list = that club's PL
+  seasons), share line `🟩⬆️`-style.
+- Checked 2026-10-15: `npm run typecheck` clean; `npm test` 1,747 passed
+  (56 files); prod build clean (only the site-wide Big Shoulders font
+  warning); Playwright at 375 and 1200: front page, a daily played to a win
+  in 4 (line grew 8/15/23/30, hints in order, club locked green, reveal with
+  champion, red moved to Endless), endless deal. No console errors.
+- Gotcha: Playwright screenshots right after a guess can show the frame
+  before the view transition; the DOM is right, take the shot again.
+
+**Not done / for Jonno:**
+- Name (working name only) and a hub tile (needs a miniature: Higgsfield
+  credits, ask first). Until then it is not on the hub and not in `src/games.ts`.
+- Squad hints are estimates from careers stints (a player's season inside a
+  spell, 20+ apps a season on average); expect the odd wrong one.
+- Tied positions break by name (the PL uses head-to-head after goals).
+- Not checked: a real phone, Share sheet, reduced motion, a deploy.

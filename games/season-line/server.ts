@@ -128,7 +128,7 @@ export async function demo() {
   const s = data.seasons.find((x) => x.id === b.season)!;
   return {
     games: s.games, teams: Object.keys(s.table).length, line: s.table[b.club]!, rival: s.table[b.rival]!,
-    rivalName: data.clubs[b.rival]!.name, caption: `${data.clubs[b.club]!.name}, ${b.start}/${String((b.start + 1) % 100).padStart(2, '0')}`,
+    rivalName: b.rival, caption: `${data.clubs[b.club]!.name}, ${b.start}/${String((b.start + 1) % 100).padStart(2, '0')}`,
   };
 }
 
