@@ -1,0 +1,165 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   SEASON LINE — a club's season drawn as a line; name the club and season.
+   The album's paper and ink; the line is ink, the second line a pencil
+   grey. Green is "right" and nothing else; red is the one button.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sl__main {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 16px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 760px) { .sl__main { padding: 32px 28px 72px; gap: 20px; } }
+.sl__none { margin: 40px 0; text-align: center; color: var(--muted); }
+
+.sl-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 16px 20px;
+  border-radius: 24px;
+  background: var(--sticker);
+  box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 14px 30px rgba(20, 18, 16, 0.1);
+}
+@media (min-width: 760px) { .sl-card { padding: 24px 28px 26px; } }
+.sl-card--wait { min-height: 360px; }
+
+/* ── THE CHART ─────────────────────────────────────────────────────────── */
+.sl-chart { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--font-text), sans-serif; }
+.sl-chart__band { fill: rgba(226, 181, 58, 0.16); }
+.sl-chart__band--drop { fill: rgba(20, 18, 16, 0.07); }
+.sl-chart__future { fill: var(--page); opacity: 0.7; transition: x var(--t-slow) var(--ease-in-out), width var(--t-slow) var(--ease-in-out); }
+.sl-chart__grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
+.sl-chart__tick { stroke: var(--rule-strong); stroke-width: 1.5; }
+.sl-chart__tick.is-on { stroke: var(--ink); }
+.sl-chart__axis { fill: var(--muted); font-size: 10.5px; font-weight: 600; }
+.sl-chart__axis.is-on { fill: var(--ink); }
+.sl-chart__line { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sl-chart__rival path { fill: none; stroke: var(--silhouette-figure); stroke-width: 2.2; stroke-dasharray: 5 4; stroke-linejoin: round; }
+.sl-chart__rival text { fill: var(--muted); font-size: 11px; font-weight: 600; }
+.sl-chart__end circle { fill: var(--ink); stroke: var(--sticker); stroke-width: 2; }
+.sl-chart__end text { fill: var(--ink); font-size: 12px; font-weight: 700; }
+.sl-chart--mini .sl-chart__band { fill: rgba(255, 255, 255, 0.12); }
+.sl-chart--mini .sl-chart__band--drop { fill: rgba(0, 0, 0, 0.12); }
+.sl-chart--mini .sl-chart__future { fill: transparent; }
+.sl-chart--mini .sl-chart__grid { stroke: rgba(255, 255, 255, 0.22); }
+.sl-chart--mini .sl-chart__tick { stroke: rgba(255, 255, 255, 0.35); }
+.sl-chart--mini .sl-chart__tick.is-on { stroke: #fff; }
+.sl-chart--mini .sl-chart__line { stroke: #fff; stroke-width: 4; }
+.sl-chart--mini .sl-chart__end circle { fill: #fff; stroke: none; }
+.sl-chart--mini .sl-chart__rival path { stroke: rgba(255, 255, 255, 0.5); }
+
+/* The part a guess added draws in from where the line stopped. */
+@keyframes sl-draw { from { stroke-dashoffset: 1; } }
+@keyframes sl-pop { from { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .sl-chart__line--new { stroke-dasharray: 1; animation: sl-draw 900ms var(--ease-in-out) 200ms both; }
+  .sl-chart__end.is-new { animation: sl-pop 240ms var(--ease-out) 1050ms both; }
+}
+
+/* ── THE STAGE ─────────────────────────────────────────────────────────── */
+.sl-stage__ask { margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 26px; font-weight: 800; text-transform: uppercase; line-height: 1; }
+.sl-stage__ask span { font-family: var(--font-text), sans-serif; font-size: 13.5px; font-weight: 600; text-transform: none; color: var(--muted); }
+
+.sl-hints { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.sl-hint { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 12px; border-radius: 12px; background: var(--card-b); box-shadow: inset 0 0 0 1px var(--rule); font-size: 14.5px; }
+.sl-hint span { font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+
+.sl-answer { display: flex; align-items: center; gap: 14px; }
+.sl-answer__crest { width: 56px; height: 56px; object-fit: contain; flex: none; }
+.sl-answer__name { margin: 0; font-size: 30px; font-weight: 900; line-height: 0.95; text-transform: uppercase; }
+.sl-answer__name span { color: var(--muted); }
+.sl-answer__champ { margin: 4px 0 0; font-size: 14.5px; font-weight: 600; color: var(--muted); }
+
+/* ── THE GUESSES ───────────────────────────────────────────────────────── */
+.sl-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.sl-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; min-height: 40px; }
+.sl-row.is-empty { grid-template-columns: 1fr; }
+.sl-row__n { display: flex; align-items: center; padding: 0 14px; border-radius: 10px; border: 1.5px dashed var(--rule-strong); color: var(--silhouette-figure); font-weight: 700; font-size: 14px; }
+.sl-row__club, .sl-row__season {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--panel-2);
+  font-weight: 600;
+  font-size: 15px;
+  animation: sl-pop var(--t-base) var(--ease-out) both;
+}
+.sl-row__club { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sl-row__club img { width: 22px; height: 22px; object-fit: contain; flex: none; }
+.sl-row__season { justify-content: center; min-width: 104px; font-variant-numeric: tabular-nums; }
+.sl-row__season i { font-style: normal; font-size: 13px; }
+.sl-row .is-right { background: var(--green); color: #fff; }
+
+.sl-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.sl-form__go { grid-column: 1 / -1; }
+.sl-form__go:disabled { background: var(--silhouette); box-shadow: none; cursor: not-allowed; transform: none; }
+@media (min-width: 640px) {
+  .sl-form { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; }
+  .sl-form__go { grid-column: auto; min-width: 140px; }
+}
+.sl-select {
+  min-height: 52px;
+  width: 100%;
+  padding: 0 36px 0 14px;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--sticker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23141210' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") right 14px center / 12px 8px no-repeat;
+  appearance: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sl-select:disabled { border-color: var(--rule-strong); color: var(--muted); cursor: not-allowed; }
+.sl-select:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.sl-locked { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 14px; border-radius: 14px; background: var(--green); color: #fff; font-weight: 700; font-size: 16px; overflow: hidden; white-space: nowrap; }
+.sl-locked img { width: 24px; height: 24px; object-fit: contain; flex: none; }
+
+.sl-end { display: flex; flex-direction: column; gap: 12px; }
+.sl-end__verdict { margin: 0; font-size: 32px; font-weight: 900; text-transform: uppercase; line-height: 1; }
+.sl-end__go { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.sl-end__go .lobby-play { flex: 1 1 200px; }
+
+/* A second way on, never red. */
+.sl-quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sl-quiet:hover { background: var(--ink); color: var(--page); }
+.sl-quiet:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* ── THE FRONT PAGE ────────────────────────────────────────────────────── */
+.sl-lobby__art { padding: 14px 12px 8px; border-radius: 18px; background: rgba(0, 0, 0, 0.14); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
+.sl-lobby__blank { display: block; aspect-ratio: 360 / 232; }
+.sl-lobby__result { margin: 0; font-size: 22px; font-weight: 800; text-transform: uppercase; line-height: 1.1; }
+@media (min-width: 760px) { .sl-lobby__go { padding-top: 0; } }
+
+.sl-how__art { display: flex; flex-direction: column; gap: 4px; }
+.sl-how__caption { margin: 0; font-size: 13px; font-weight: 600; color: var(--muted); text-align: right; }
+.sl-how__rules { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4; color: var(--soft); }
+
+.sl-endless__head { margin: 0; font-size: 28px; font-weight: 900; text-transform: uppercase; line-height: 1; }
+.sl-endless__range { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; color: var(--muted); font-weight: 600; }
+.sl-endless .lobby-play, .sl-endless .sl-quiet { margin-top: auto; }

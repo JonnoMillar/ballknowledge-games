@@ -62,3 +62,29 @@ the top scorer as a squad hint.
 2. **Step 3's second line.** The champion's line (to the same game) names
    a club that won in 1 to 8 seasons, which with the shape is often decisive
    (Leicester, Liverpool). A rival is weaker.
+
+**Jonno's answers (gate 1, 2026-10-15):** arrows on every guess, from the
+first ("not very rewarding to get it in 5 if they got the club in 1");
+step 3 is the nearest rival, named (the club whose line tangled most).
+
+## Draft build (2026-10-15) — NOT yet browser-checked
+
+- Data: `npm run season-line:update` (`scripts/season-line/update.ts`) fetches
+  any finished season not yet in `data/seasons.json` (results + raw
+  `league_topscorer` field, retried politely: Wikipedia rate-limits bursts),
+  rebuilds boards (`--boards`), tops up `data/days.json` (append-only,
+  `EPOCH` 2026-10-15 is a draft date). Real run: 33 seasons, 268 boards
+  (385 flat lines dropped), 204 daily-grade; schedule to 2026-12-14.
+- Stories (`lib/drama.ts`): title, race, chase, collapse, escape, drop,
+  surge, boom/slump (vs the club's median finish). Daily = 2000+ and
+  story score + 2 x club fame >= 3.
+- Server (`server.ts`) judges every guess; answer only when done. Ids: a date,
+  or `e<n>-<from>-<to>` for endless. Demo board Newcastle 95/96 never dealt.
+- Routes: `/season-line` (front page: hero with today's first fifth, How it
+  goes, Endless year range), `/season-line/play` (`?from=&to=` = endless),
+  `/api/season-line/{board,endless}`.
+- Checked: `npm run typecheck` clean; `npx vitest run games/season-line`
+  17 passed (real-data tables, parse, hints, schedule, no answer leak).
+- **Not done:** full `npm test`, browser check at 375/1200, prod build, a
+  GitHub workflow for the daily update, hub tile (needs a miniature:
+  Higgsfield credits, ask first) and the name (ask Jonno).
