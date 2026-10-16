@@ -138,3 +138,14 @@ guess is kept in `seasonline.bonus.v1`. Solved on guess 5 or missed: no bonus.
 **How it goes** is a live loop (`How.tsx`): a real board (Newcastle 95/96)
 plays its five steps and the reveal, rules light in step. Lobby: How and
 Endless are full width.
+
+## No-scroll pass (2026-10-16)
+
+Rule: the red button and everything needed to play are on screen without
+scrolling, laptop (checked 1280x560 and 1366x768) and phone (390x740).
+Front page: the hero is the whole pitch (question + red button left, the
+game playing itself in a white panel right, rules lit under it; a phone gets
+button then demo); once today is started the panel shows the player's own
+line. Endless is one row beneath. `How.tsx` is now `useLoop`/`Demo`/`Rules`
+(no How card). Board: finished boards drop the empty guess rows; a short
+window (<700px high) tightens spacing.

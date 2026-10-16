@@ -8,7 +8,7 @@ import { EPOCH } from '../lib/day';
 import { loadGuesses, loadRange, saveRange } from '../lib/progress';
 import type { BoardView } from '../lib/types';
 import Chart from './Chart';
-import How, { type Demo } from './How';
+import { Demo as DemoView, Rules, useLoop, type Demo } from './How';
 
 /** The working colour of its hub tile, until it has one. */
 export const GROUND = '#1F5F57';
@@ -33,6 +33,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
       .then(setToday, () => {});
   }, [years]);
 
+  const loop = useLoop();
   const done = today?.done ?? false;
   const n = me ? dayNumber(me.date, EPOCH) : null;
   const all = Array.from({ length: years[1] - years[0] + 1 }, (_, i) => years[0] + i);
@@ -56,10 +57,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
             <h1 className="lobby-hero__head display"><Words text="Whose season was it?" /></h1>
             <p className="lobby-hero__sub">A Premier League club, week by week. Name the club and the season.</p>
           </div>
-          <div className="lobby-hero__go sl-lobby__go">
-            <div className="sl-lobby__art">
-              {today ? <Chart games={today.games} teams={today.teams} line={today.line} me={{ colour: '#fff', q: null }} rivals={today.rivals} mini /> : <span className="sl-lobby__blank" />}
-            </div>
+          <div className="lobby-hero__go sl-lobby__play">
             {me === null ? null : done && today ? (
               <p className="sl-lobby__result display">
                 {today.won ? `Got it in ${today.judged.length}` : 'Missed it'} · {today.answer?.name} {today.answer ? seasonLabel(today.answer.start) : ''}
@@ -68,9 +66,13 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
               <a className="lobby-play display" href="/season-line/play">{me.started ? 'Continue today’s daily' : 'Play today’s daily'}</a>
             )}
           </div>
+          <div className="lobby-hero__go sl-lobby__art">
+            {me?.started && today
+              ? <div className="sl-lobby__mine"><Chart games={today.games} teams={today.teams} line={today.line} me={{ colour: '#fff', q: null }} rivals={today.rivals} mini /></div>
+              : <div className="sl-lobby__demo"><DemoView demo={demo} step={loop.step} cycle={loop.cycle} /></div>}
+            <Rules step={loop.step} still={!!me?.started} />
+          </div>
         </section>
-
-        <How demo={demo} />
 
         <section className="lobby-card lobby__wide sl-endless" id="endless" aria-label="Endless">
           <span className="lobby-tag lobby-tag--paper">Endless</span>

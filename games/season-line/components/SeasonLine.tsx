@@ -174,7 +174,7 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
           )}
 
           <ol className="sl-rows">
-            {Array.from({ length: GUESSES }, (_, i) => {
+            {Array.from({ length: view.done ? view.judged.length : GUESSES }, (_, i) => {
               const j = view.judged[i];
               return (
                 <li key={i} className={`sl-row${j ? '' : ' is-empty'}`}>
