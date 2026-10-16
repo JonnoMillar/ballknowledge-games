@@ -7,9 +7,9 @@ working name, like Spoofed's `itk`. Branch `claude/blissful-lewin-d41d05`
 43231e5. Merged to `main` 2026-10-16.
 
 **Resume prompt:** "Read games/bluff/HANDOFF.md. Odd Man Out is merged to
-main and live. Next: decide on a Higgsfield-generated icon for its hub tile
-(it has none; the hub tile is bare, see Playtest round 1), then any
-playtest round 3 notes."
+main and live, with a mole miniature on its hub tile (see Icon, last
+section). Next: any playtest round 3 notes; the icon and the name are not
+final."
 
 ## The game (Jonno, 2026-10-15)
 

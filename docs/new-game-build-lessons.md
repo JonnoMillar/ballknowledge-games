@@ -28,9 +28,9 @@ map says which game each rule was learned on.
 | Steps (`games/step`) | Live inside Chain's hub. | Grade calibration is global fame, not British; "Steps" vs "Step". |
 | Pitch pin (`games/pin`) | Merged. Front page on the kit. | Jonno's verdict on the front page; icon; StatsBomb licence. |
 | Rondo (`games/rondo`) | Live, front page on the kit. | Jonno's verdict on the live demo. |
-| Odd Man Out (`games/bluff`) | Merged, two playtest rounds. | Lives, `MIN_MEDIAN_FAME`, icon, whether the name and headline change. |
+| Odd Man Out (`games/bluff`) | Merged, two playtest rounds, mole icon on the hub (direction approved, not final art). | Lives, `MIN_MEDIAN_FAME`, whether the name and headline change. |
 | Sorted (`games/tunnel`, branch only) | Playable draft, not on the hub. | Hub tile, archive, portraits. Name chosen. |
-| Season line (`games/season-line`, branch only) | Playable draft, working name, two playtests. | Name, hub tile, `EPOCH` reset at launch. |
+| Season line (`games/season-line`) | Merged to `main` 2026-10-16, three playtests, not on the hub. | Name, hub icon, credits line, `EPOCH` reset at launch. |
 | Slugger | Off the hub ("not good enough"), route still works. | Parked. |
 | Recall XI | Parked. | Parked. |
 | Deep Cuts | Archived 2026-10-14, collection stays. | Parked. |
