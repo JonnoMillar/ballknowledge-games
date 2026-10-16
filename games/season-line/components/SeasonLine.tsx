@@ -71,16 +71,19 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
   const [season, setSeason] = useState<string>('');
   const [pending, setPending] = useState(false);
   const [copied, setCopied] = useState(false);
+  // A right club, or a right year, stays put: only the other half is still a guess.
+  const lockedYear = view.judged.find((j) => j.season === 0)?.start ?? null;
   const pick = locked ?? club;
-  const tried = view.judged.some((j) => j.club === pick && String(j.start) === season);
+  const pickYear = lockedYear !== null ? String(lockedYear) : season;
+  const tried = view.judged.some((j) => j.club === pick && String(j.start) === pickYear);
   const years = Array.from({ length: view.range[1] - view.range[0] + 1 }, (_, i) => view.range[1] - i);
 
   useEffect(() => { if (view.done && view.date) markDone('season-line', view.date); }, [view.done, view.date]);
 
   async function guess() {
-    if (!pick || !season || pending || tried || view.done) return;
+    if (!pick || !pickYear || pending || tried || view.done) return;
     setPending(true);
-    const next = [...guesses, { club: pick, start: Number(season) }];
+    const next = [...guesses, { club: pick, start: Number(pickYear) }];
     const v = await post(view.id, next).catch(() => null);
     setPending(false);
     if (!v) return;
@@ -163,11 +166,15 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
                   {view.clubs.map((c) => <option key={c.club} value={c.club}>{c.name}</option>)}
                 </select>
               )}
-              <select className="sl-select" aria-label="Season" value={season} onChange={(e) => setSeason(e.target.value)}>
-                <option value="" disabled>Season</option>
-                {years.map((s) => <option key={s} value={s}>{seasonLabel(s)}</option>)}
-              </select>
-              <button type="submit" className="lobby-play display sl-form__go" disabled={!pick || !season || pending || tried}>
+              {lockedYear !== null ? (
+                <span className="sl-locked"><span>{seasonLabel(lockedYear)}</span></span>
+              ) : (
+                <select className="sl-select" aria-label="Season" value={season} onChange={(e) => setSeason(e.target.value)}>
+                  <option value="" disabled>Season</option>
+                  {years.map((s) => <option key={s} value={s}>{seasonLabel(s)}</option>)}
+                </select>
+              )}
+              <button type="submit" className="lobby-play display sl-form__go" disabled={!pick || !pickYear || pending || tried}>
                 {tried ? 'Tried' : 'Guess'}
               </button>
             </form>

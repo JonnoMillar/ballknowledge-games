@@ -40,7 +40,7 @@ export function useLoop() {
   return { step, cycle, calm };
 }
 
-export function Demo({ demo, step, cycle }: { demo: Demo; step: number; cycle: number }) {
+export function DemoView({ demo, step, cycle }: { demo: Demo; step: number; cycle: number }) {
   const done = step >= 5;
   const shown = done ? demo.games : fifths(demo.games)[step]!;
   const near = demo.rivals.slice(0, step >= 3 ? 3 : step >= 1 ? 1 : 0);
@@ -84,5 +84,17 @@ export function Rules({ step, still }: { step: number; still: boolean }) {
       <li className={lit(1) ? 'is-lit' : ''}>Each miss adds games and a clue.</li>
       <li className={lit(2) ? 'is-lit' : ''}>Solve it early for a bonus guess.</li>
     </ol>
+  );
+}
+
+/** How it goes: the demo and the three rules, on paper. */
+export default function How({ demo }: { demo: Demo }) {
+  const { step, cycle, calm } = useLoop();
+  return (
+    <section className="lobby-card lobby__wide sl-how vt">
+      <span className="lobby-tag lobby-tag--paper">How it goes</span>
+      <DemoView demo={demo} step={step} cycle={cycle} />
+      <Rules step={step} still={calm} />
+    </section>
   );
 }

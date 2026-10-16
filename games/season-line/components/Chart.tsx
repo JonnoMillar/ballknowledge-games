@@ -39,18 +39,16 @@ function useTween(target: number, ms = 850) {
   return v;
 }
 
-export default function Chart({ games, teams, line, me, rivals = [], mini = false }: {
+export default function Chart({ games, teams, line, me, rivals = [] }: {
   games: number;
   teams: number;
   line: number[];
   /** The main line's colour and badge; `q` null is the hidden club. */
   me: { colour: string; q: string | null; name?: string };
   rivals?: { club: string; line: number[]; colour: string; q: string | null; name?: string }[];
-  /** The front page's picture: no axes, no badges. */
-  mini?: boolean;
 }) {
   const box = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ w: mini ? 360 : 600, h: mini ? 170 : 400 });
+  const [size, setSize] = useState({ w: 600, h: 400 });
   useLayout(() => {
     const el = box.current;
     if (!el) return;
@@ -66,7 +64,7 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
   const shown = line.length;
   const t = useTween(Math.max(2, shown));
   const { w, h } = size;
-  const L = mini ? 4 : 44, Rt = mini ? 14 : R * 2 + 14, T = mini ? 8 : 12, B = mini ? 8 : 46;
+  const L = 44, Rt = R * 2 + 14, T = 12, B = 46;
   const PW = w - L - Rt, PH = h - T - B;
   const idx = t - 1;
   const x = (i: number) => L + (i / idx) * PW;
@@ -107,8 +105,8 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
   const rows = [1, 5, 10, 15, 20].filter((p) => p <= teams);
 
   return (
-    <div ref={box} className={`sl-plot${mini ? ' sl-plot--mini' : ''}`}>
-      <svg className={`sl-chart${mini ? ' sl-chart--mini' : ''}`} width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img"
+    <div ref={box} className="sl-plot">
+      <svg className="sl-chart" width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img"
         aria-label={`After ${shown} of ${games} games`}>
         <rect className="sl-chart__band" x={L} y={T - row / 2} width={PW} height={row * 4} />
         <rect className="sl-chart__band sl-chart__band--drop" x={L} y={y(teams - 2) - row / 2} width={PW} height={row * 3} />
@@ -116,7 +114,7 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
           {Array.from({ length: teams }, (_, i) => <line key={`r${i}`} x1={L} x2={L + PW} y1={Math.round(y(i + 1)) + 0.5} y2={Math.round(y(i + 1)) + 0.5} />)}
           {Array.from({ length: Math.floor(idx + 1e-6) + 1 }, (_, i) => <line key={`c${i}`} x1={Math.round(x(i)) + 0.5} x2={Math.round(x(i)) + 0.5} y1={T - row / 2} y2={T + PH + row / 2} />)}
         </g>
-        {mini ? null : (
+        {(
           <>
             {rows.map((p) => <text key={p} className="sl-chart__axis" x={L - 7} y={y(p) + 3.5} textAnchor="end">{p}</text>)}
             {labelled.map((g) => (
@@ -130,8 +128,8 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
           <g key={r.key} className={`${r.main ? 'sl-chart__me' : 'sl-chart__rival'}${hot && lone ? (hot === r.key ? ' is-hot' : ' is-dim') : ''}`} style={{ '--c': r.colour } as CSSProperties}
             onPointerEnter={() => setHot(r.key)} onPointerLeave={() => setHot(null)}>
             <path className="sl-chart__line" d={d(p)} />
-            {mini ? null : <path className="sl-chart__hit" d={d(p)} />}
-            {mini ? null : (
+            <path className="sl-chart__hit" d={d(p)} />
+            {(
               <g transform={`translate(${L + PW + R + 6} ${by[k]!.toFixed(1)})`}>
                 <path className="sl-chart__lead" d={`M${-(R + 6)} ${(ends[k]! - by[k]!).toFixed(1)}L${-R} 0`} />
                 {r.q ? <image href={crestPath(r.q)} x={-R} y={-R} width={R * 2} height={R * 2} preserveAspectRatio="xMidYMid meet" />

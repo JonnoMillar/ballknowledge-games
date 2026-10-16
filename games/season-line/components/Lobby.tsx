@@ -7,8 +7,7 @@ import { seasonLabel } from '../lib/clubs';
 import { EPOCH } from '../lib/day';
 import { loadGuesses, loadRange, saveRange } from '../lib/progress';
 import type { BoardView } from '../lib/types';
-import Chart from './Chart';
-import { Demo as DemoView, Rules, useLoop, type Demo } from './How';
+import How, { type Demo } from './How';
 
 /** The working colour of its hub tile, until it has one. */
 export const GROUND = '#1F5F57';
@@ -33,7 +32,6 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
       .then(setToday, () => {});
   }, [years]);
 
-  const loop = useLoop();
   const done = today?.done ?? false;
   const n = me ? dayNumber(me.date, EPOCH) : null;
   const all = Array.from({ length: years[1] - years[0] + 1 }, (_, i) => years[0] + i);
@@ -66,30 +64,23 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
               <a className="lobby-play display" href="/season-line/play">{me.started ? 'Continue today’s daily' : 'Play today’s daily'}</a>
             )}
           </div>
-          <div className="lobby-hero__go sl-lobby__art">
-            {me?.started && today
-              ? <div className="sl-lobby__mine"><Chart games={today.games} teams={today.teams} line={today.line} me={{ colour: '#fff', q: null }} rivals={today.rivals} mini /></div>
-              : <div className="sl-lobby__demo"><DemoView demo={demo} step={loop.step} cycle={loop.cycle} /></div>}
-            <Rules step={loop.step} still={!!me?.started} />
+          <div className="lobby-hero__go sl-endless" id="endless">
+            <span className="lobby-tag lobby-tag--paper">Endless</span>
+            <p className="sl-endless__head display">Pick your years</p>
+            <div className="sl-endless__range">
+              <select className="sl-select" aria-label="From" value={range[0]} onChange={(e) => set(0, Number(e.target.value))}>
+                {all.map((y) => <option key={y} value={y}>{seasonLabel(y)}</option>)}
+              </select>
+              <span aria-hidden>to</span>
+              <select className="sl-select" aria-label="To" value={range[1]} onChange={(e) => set(1, Number(e.target.value))}>
+                {all.map((y) => <option key={y} value={y}>{seasonLabel(y)}</option>)}
+              </select>
+            </div>
+            <a className={done ? 'lobby-play display' : 'sl-quiet'} href={`/season-line/play?from=${range[0]}&to=${range[1]}`}>Play endless</a>
           </div>
         </section>
 
-        <section className="lobby-card lobby__wide sl-endless" id="endless" aria-label="Endless">
-          <span className="lobby-tag lobby-tag--paper">Endless</span>
-          <div className="sl-endless__row">
-          <p className="sl-endless__head display">Pick your years</p>
-          <div className="sl-endless__range">
-            <select className="sl-select" aria-label="From" value={range[0]} onChange={(e) => set(0, Number(e.target.value))}>
-              {all.map((y) => <option key={y} value={y}>{seasonLabel(y)}</option>)}
-            </select>
-            <span aria-hidden>to</span>
-            <select className="sl-select" aria-label="To" value={range[1]} onChange={(e) => set(1, Number(e.target.value))}>
-              {all.map((y) => <option key={y} value={y}>{seasonLabel(y)}</option>)}
-            </select>
-          </div>
-          <a className={done ? 'lobby-play display' : 'sl-quiet'} href={`/season-line/play?from=${range[0]}&to=${range[1]}`}>Play endless</a>
-          </div>
-        </section>
+        <How demo={demo} />
       </main>
     </div>
   );
