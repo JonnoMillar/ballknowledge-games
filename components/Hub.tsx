@@ -67,7 +67,7 @@ function Tile({ game: g, status, size }: { game: GameCard; status: Status; size:
   const streak = g.id === 'chain' && status.streak > 0 ? status.streak : 0;
   return (
     <a
-      className={`hub__tile hub__tile--${size}${done ? ' is-done' : ''}`}
+      className={`hub__tile hub__tile--${size}${g.icon ? '' : ' hub__tile--bare'}${done ? ' is-done' : ''}`}
       href={g.href}
       style={{ '--ground': g.ground } as CSSProperties}
       aria-label={`${g.name}${done ? ', done today' : ''}`}
@@ -84,10 +84,10 @@ function Tile({ game: g, status, size }: { game: GameCard; status: Status; size:
         ) : null}
       </span>
       {done ? <span className="hub__done" aria-hidden>✓</span> : null}
-      <img className="hub__mini" src={`/hub/${g.icon}.webp`} alt="" width={480} height={480} style={{ viewTransitionName: `game-${g.id}-mini` }} />
+      {g.icon ? <img className="hub__mini" src={`/hub/${g.icon}.webp`} alt="" width={480} height={480} style={{ viewTransitionName: `game-${g.id}-mini` }} /> : null}
       <span className="hub__words">
         <span className="hub__name display">{g.name}</span>
-        {size !== 'square' ? <span className="hub__line">{g.pub ? '2 to 4 players, one phone' : g.line}</span> : null}
+        {size !== 'square' ? <span className="hub__line">{g.line}</span> : null}
       </span>
       {size === 'feature' ? <span className="hub__play display">Play</span> : null}
     </a>

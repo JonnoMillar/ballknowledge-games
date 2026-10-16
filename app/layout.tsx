@@ -30,7 +30,8 @@ const text = Libre_Franklin({
  * stand alone). A page change between the hub and a game's front page is the
  * slow, staged move in MOTION (globals.css): mark the view transition with
  * the type `morph`, and put .vt-arrived on <html> until everything has risen
- * in. Back on the hub, the tile you came from keeps its ground and miniature
+ * in, and .vt-landed for good, so the page's own load-in never replays when
+ * .vt-arrived comes off. Back on the hub, the tile you came from keeps its ground and miniature
  * (they flew there); the rest rise in. Any other page change is a plain
  * cross-fade.
  */
@@ -51,7 +52,7 @@ function morph(fronts: string[]) {
     const root = document.documentElement;
     root.classList.remove('vt-arrived');
     void root.offsetWidth;
-    root.classList.add('vt-arrived');
+    root.classList.add('vt-arrived', 'vt-landed');
     t.finished
       .then(() => Promise.all(document.getAnimations()
         .filter((x) => (x as CSSAnimation).animationName === 'rise-in')

@@ -23,7 +23,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
         <section className="page credits__page">
           <h1 className="home__head display">Credits</h1>
           <p>
-            Chain, Rondo, Slugger and Pitch pin are an unofficial fan project. They are not affiliated with or
+            Chain, Rondo, Slugger, Pitch pin and Odd Man Out are an unofficial fan project. They are not affiliated with or
             endorsed by any club, league or player.
           </p>
 
@@ -42,6 +42,15 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             shortlists are the <a href="https://www.premierleague.com/">Premier League</a>’s; past winners are
             from the <a href="https://en.wikipedia.org/wiki/Premier_League_Goal_of_the_Month">English Wikipedia</a>{' '}
             (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>). Only the goals in a pack are used.
+          </p>
+
+          <p>
+            The team sheets in Odd Man Out are read from the match reports of the{' '}
+            <a href="https://en.wikipedia.org/">English Wikipedia</a> (finals, and World Cup and Euro knockout
+            games), whose text is available under{' '}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. National flags are from{' '}
+            <a href="https://github.com/lipis/flag-icons">flag-icons</a> (MIT); Yugoslavia&rsquo;s is from Wikimedia
+            Commons.
           </p>
 
           <h2 className="credits__head display">Card cases</h2>

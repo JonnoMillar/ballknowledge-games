@@ -21,6 +21,7 @@ are in `CLAUDE.md`.
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12; front page on the kit 2026-10-15. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
+| Odd Man Out | `/odd-man-out` (front page), `/odd-man-out/play` | `games/bluff` (internal id `bluff`) | Merged to `main` 2026-10-16; headline "Can you find the mole?". Needs an icon (Higgsfield, undecided). `games/bluff/HANDOFF.md`. |
 
 ## The site hub and Chain's hub (2026-10-14)
 
@@ -118,6 +119,14 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
   slide-up (`rise-in`, 14px) when coming back to the hub: they are already
   in place, so on a return they now only fade (`--rise: 0px`; the keyframe
   reads `--rise`, default 14px). A refresh keeps its slide.
+- **Third verdict:** ~0.5 s after landing on the hub the tiles blinked out
+  and back. Cause: removing `.vt-arrived` after stage 3 switched the hub's
+  page-load entrance (`hub-in` on cells, `hub-stamp` on the tick) back on,
+  so it replayed. Fix: `morph()` also sets `.vt-landed`, never removed;
+  the page-load entrances are off under it. Verified for all four games,
+  in and back: nothing animates after the class comes off. Rule for new
+  pages: a page-load entrance on anything a morph lands on must be off
+  under `.vt-landed`, not `.vt-arrived`.
 - Rondo's "How it goes" is a live demo (`How` in `games/rondo/components/
   Lobby.tsx`, `rd-*` keyframes in `rondo.css`, 10 s CSS loop): real
   stickers, Rooney to Ronaldo through the United crest, Ronaldo to Benzema

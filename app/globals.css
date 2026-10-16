@@ -1224,6 +1224,8 @@ button { font-family: inherit; }
 .hub__tile--wide { grid-template-columns: 38% 1fr; align-items: center; gap: 4px 14px; padding: 12px 18px 12px 8px; }
 .hub__tile--wide .hub__tag { left: auto; right: 12px; }
 .hub__tile--wide .hub__mini { margin: 6px 0 -4px; }
+/* A game with no miniature yet (a draft): the words fill the tile, low down. */
+.hub__tile--bare { grid-template-columns: 1fr; align-items: end; min-height: 150px; padding: 48px 20px 18px; }
 
 /* Feature: on a phone the miniature stands up out of the tile's top edge. */
 .hub__tile--feature {
@@ -1880,7 +1882,10 @@ html:active-view-transition-type(morph)::view-transition-new(*):only-child { ani
    card that came back keeps its ground and miniature (the script in
    app/layout.tsx says which); every other tile rises in after it. */
 .lobby-hero__head .word { display: inline-block; }
-.vt-arrived .hub__cell { animation: none; }
+/* A page that arrived by the morph never plays its page-load entrance,
+   not even after stage 3 ends and .vt-arrived comes off (that replayed the
+   hub's tiles, Jonno 2026-10-15). .vt-landed stays for the page's life. */
+.vt-landed .hub__cell, .vt-landed .hub__done { animation: none; }
 .vt-arrived .lobby-hero__ask > *,
 .vt-arrived .lobby-hero__go,
 .vt-arrived .lobby > :not(.lobby-hero) { animation: rise-in 460ms var(--ease-out) var(--vt-land) both; }
