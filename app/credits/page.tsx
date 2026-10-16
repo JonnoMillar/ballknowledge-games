@@ -48,7 +48,9 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             The team sheets in Odd Man Out are read from the match reports of the{' '}
             <a href="https://en.wikipedia.org/">English Wikipedia</a> (finals, and World Cup and Euro knockout
             games), whose text is available under{' '}
-            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. National flags are from{' '}
+            <a href="https://github.com/lipis/flag-icons">flag-icons</a> (MIT); Yugoslavia&rsquo;s is from Wikimedia
+            Commons.
           </p>
 
           <h2 className="credits__head display">Card cases</h2>

@@ -1,8 +1,9 @@
 /**
  * The crest or flag for a team on a sheet. Sheets name teams the way
  * Wikipedia does ("Liverpool", "Republic of Ireland"); this maps each to the
- * pool's club id (its crest) or to the nation id the site draws a flag for
- * (components/ClueBadge). tests/team.test.ts holds every team in the data.
+ * pool's club id (its crest, as ClubBadge shows everywhere) or to the code of
+ * its real flag in public/flags (flag-icons, MIT; Yugoslavia's is from
+ * Commons). tests/team.test.ts holds every team in the data.
  */
 export type TeamMark = { kind: 'club' | 'nation'; id: string };
 
@@ -17,15 +18,57 @@ const CLUB: Record<string, string> = {
 };
 
 const NATION: Record<string, string> = {
-  'Algeria': 'Q262', 'Argentina': 'Q414', 'Australia': 'Q408', 'Austria': 'Q40', 'Belgium': 'Q31', 'Brazil': 'Q155',
-  'Canada': 'Q16', 'Chile': 'Q298', 'Colombia': 'Q739', 'Costa Rica': 'Q800', 'Croatia': 'Q224', 'Czech Republic': 'Q213',
-  'Denmark': 'Q35', 'Ecuador': 'Q736', 'Egypt': 'Q79', 'England': 'Q21', 'FR Yugoslavia': 'Q36704', 'France': 'Q142',
-  'Georgia': 'Q230', 'Germany': 'Q183', 'Ghana': 'Q117', 'Greece': 'Q41', 'Hungary': 'Q28', 'Iceland': 'Q189',
-  'Italy': 'Q38', 'Japan': 'Q17', 'Mexico': 'Q96', 'Morocco': 'Q1028', 'Netherlands': 'Q55', 'Nigeria': 'Q1033',
-  'Northern Ireland': 'Q26', 'Norway': 'Q20', 'Paraguay': 'Q733', 'Poland': 'Q36', 'Portugal': 'Q45',
-  'Republic of Ireland': 'Q27', 'Romania': 'Q218', 'Russia': 'Q159', 'Senegal': 'Q1041', 'Slovakia': 'Q214',
-  'Slovenia': 'Q215', 'South Korea': 'Q884', 'Spain': 'Q29', 'Sweden': 'Q34', 'Switzerland': 'Q39', 'Turkey': 'Q43',
-  'Ukraine': 'Q212', 'United States': 'Q30', 'Uruguay': 'Q77', 'Wales': 'Q25', 'Yugoslavia': 'Q36704',
+  'Algeria': 'dz',
+  'Argentina': 'ar',
+  'Australia': 'au',
+  'Austria': 'at',
+  'Belgium': 'be',
+  'Brazil': 'br',
+  'Canada': 'ca',
+  'Chile': 'cl',
+  'Colombia': 'co',
+  'Costa Rica': 'cr',
+  'Croatia': 'hr',
+  'Czech Republic': 'cz',
+  'Denmark': 'dk',
+  'Ecuador': 'ec',
+  'Egypt': 'eg',
+  'England': 'gb-eng',
+  'FR Yugoslavia': 'yu',
+  'France': 'fr',
+  'Georgia': 'ge',
+  'Germany': 'de',
+  'Ghana': 'gh',
+  'Greece': 'gr',
+  'Hungary': 'hu',
+  'Iceland': 'is',
+  'Italy': 'it',
+  'Japan': 'jp',
+  'Mexico': 'mx',
+  'Morocco': 'ma',
+  'Netherlands': 'nl',
+  'Nigeria': 'ng',
+  'Northern Ireland': 'gb-nir',
+  'Norway': 'no',
+  'Paraguay': 'py',
+  'Poland': 'pl',
+  'Portugal': 'pt',
+  'Republic of Ireland': 'ie',
+  'Romania': 'ro',
+  'Russia': 'ru',
+  'Senegal': 'sn',
+  'Slovakia': 'sk',
+  'Slovenia': 'si',
+  'South Korea': 'kr',
+  'Spain': 'es',
+  'Sweden': 'se',
+  'Switzerland': 'ch',
+  'Turkey': 'tr',
+  'Ukraine': 'ua',
+  'United States': 'us',
+  'Uruguay': 'uy',
+  'Wales': 'gb-wls',
+  'Yugoslavia': 'yu',
 };
 
 export function teamMark(team: string): TeamMark | null {

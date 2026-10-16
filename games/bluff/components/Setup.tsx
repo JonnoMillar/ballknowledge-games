@@ -102,7 +102,7 @@ export default function Setup({
         </button>
       </div>
       <div className={`bf-tip${tip ? ' is-open' : ''}`} id="bf-help-tip" role="note">
-        <p>Suggests a few players the faker can swap in: one keeper, two each for defence, midfield and attack. Off, they pick anyone they like.</p>
+        <div><p>The faker gets a few suggested players that make sense for each position.</p></div>
       </div>
 
       <button type="submit" className="lobby-play display vt">Kick off</button>

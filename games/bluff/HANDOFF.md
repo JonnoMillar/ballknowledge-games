@@ -191,3 +191,14 @@ search results are not draggable, only the suggested cards. Dev overlay
 shows "Transition was skipped" from `smooth()` in `src/lib/motion.ts`
 (shared, unhandled `t.finished` rejection, harmless; not touched on this
 branch).
+
+## Playtest round 2 (Jonno, 2026-10-16)
+
+Done: flags are the real ones (flag-icons, MIT, copied to `public/flags`
+with its licence; Yugoslavia's from Commons; credits page says so): the
+drawn flags added in round 1 are gone and `ClueBadge` is back as it was.
+Clubs use the real crests via `ClubBadge`. Suggested cards show only after a
+position is tapped, and only that position's. The (i) note is a short white
+card. The demo no longer plays by itself: it stays on the step tapped, tap it
+again to replay. On a laptop (900px up) the pitch sits beside the head and
+controls (`bf-stage`), checked at 1366x768 with no scroll, footer included.

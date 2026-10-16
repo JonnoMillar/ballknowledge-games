@@ -105,7 +105,9 @@ export default function Game() {
     go((m) => guessed(m, pick));
   };
 
-  let body: ReactNode;
+  let body: ReactNode = null;
+  // The plant, guess and reveal screens: the pitch beside the controls on a laptop, stacked on a phone.
+  let stage: { head: ReactNode; pitch: ReactNode; controls: ReactNode } | null = null;
   if (phase === 'deal' || !side) {
     body = (
       <div className="bf-card bf-card--wait vt" aria-busy={!failed}>
@@ -120,22 +122,27 @@ export default function Game() {
   } else if (phase === 'plant') {
     const shown = at && fake ? sheet(side, { at, fake }) : side.lines;
     const mark = (s: At): Mark => (at && sameAt(s, at) ? (fake ? 'swapped' : 'picked') : null);
-    body = (
-      <>
-        <Ask head={`${bluffer}, plant a fake`} sub={`${guesser}, look away.`} />
-        <Scoreline side={side} />
-        <Pitch lines={shown} team={side.team} mark={mark} over={dnd.over} onTap={(s) => { setAt(s); setFake(null); }} />
-        {help ? (
-          <Help set={help} group={at ? groupAt(side, at) : null} chosen={fake} onChoose={setFake} grab={dnd.grab} />
-        ) : null}
-        {at ? (
-          <Swap side={side} slot={slotAt(side, at)!} index={index} chosen={fake} onChoose={setFake} />
-        ) : <p className="bf-hint vt">Tap the player to take out{help ? ', or drag a card onto them' : ''}.</p>}
-        <button type="button" className="lobby-play display vt" disabled={!at || !fake} onClick={() => at && fake && go((m) => planted(m, at, fake))}>
-          Pass the phone
-        </button>
-      </>
-    );
+    const group = at ? groupAt(side, at) : null;
+    stage = {
+      head: (
+        <>
+          <Ask head={`${bluffer}, plant a fake`} sub={`${guesser}, look away.`} />
+          <Scoreline side={side} />
+        </>
+      ),
+      pitch: <Pitch lines={shown} team={side.team} mark={mark} over={dnd.over} onTap={(s) => { setAt(s); setFake(null); }} />,
+      controls: (
+        <>
+          {help && group ? <Help cards={help[group]} group={group} chosen={fake} onChoose={setFake} grab={dnd.grab} /> : null}
+          {at ? (
+            <Swap side={side} slot={slotAt(side, at)!} index={index} chosen={fake} onChoose={setFake} />
+          ) : <p className="bf-hint vt">Tap the player to take out.</p>}
+          <button type="button" className="lobby-play display vt" disabled={!at || !fake} onClick={() => at && fake && go((m) => planted(m, at, fake))}>
+            Pass the phone
+          </button>
+        </>
+      ),
+    };
   } else if (phase === 'cover') {
     body = (
       <div className="bf-card bf-cover vt">
@@ -153,17 +160,21 @@ export default function Game() {
       return null;
     };
     const left = players[round.guesser]!.lives;
-    body = (
-      <>
-        {done ? (
-          <Ask head={round.caught ? `${guesser} spotted it` : `${bluffer} got away with it`} />
-        ) : (
-          <Ask
-            head={`${guesser}, find the fake`}
-            sub={round.wrong.length ? `Real. ${left === 1 ? 'Last life.' : 'Go again.'}` : 'Tap the one who wasn’t there.'}
-          />
-        )}
-        <Scoreline side={side} />
+    stage = {
+      head: (
+        <>
+          {done ? (
+            <Ask head={round.caught ? `${guesser} spotted it` : `${bluffer} got away with it`} />
+          ) : (
+            <Ask
+              head={`${guesser}, find the fake`}
+              sub={round.wrong.length ? `Real. ${left === 1 ? 'Last life.' : 'Go again.'}` : 'Tap the one who wasn’t there.'}
+            />
+          )}
+          <Scoreline side={side} />
+        </>
+      ),
+      pitch: (
         <Pitch
           lines={sheet(side, plant)}
           team={side.team}
@@ -172,25 +183,38 @@ export default function Game() {
           shake={shake}
           reveal={done ? { at: plant.at, real: slotAt(side, plant.at)!, caught: round.caught } : null}
         />
-        {!done ? (
-          <button type="button" className="lobby-play display vt" disabled={!pick} onClick={guess}>That’s the fake</button>
-        ) : match.winner !== null ? (
-          <div className="bf-full vt">
-            <p className="bf-full__head display">{players[match.winner]!.name} wins</p>
-            <button type="button" className="lobby-play display" onClick={() => go(rematch)}>Rematch</button>
-            <button type="button" className="bf-menu display" onClick={leave}>Back to main menu</button>
-          </div>
-        ) : (
-          <button type="button" className="lobby-play display vt" onClick={() => go(nextRound)}>Next round</button>
-        )}
-      </>
-    );
+      ),
+      controls: !done ? (
+        <button type="button" className="lobby-play display vt" disabled={!pick} onClick={guess}>That’s the fake</button>
+      ) : match.winner !== null ? (
+        <div className="bf-full vt">
+          <p className="bf-full__head display">{players[match.winner]!.name} wins</p>
+          <button type="button" className="lobby-play display" onClick={() => go(rematch)}>Rematch</button>
+          <button type="button" className="bf-menu display" onClick={leave}>Back to main menu</button>
+        </div>
+      ) : (
+        <button type="button" className="lobby-play display vt" onClick={() => go(nextRound)}>Next round</button>
+      ),
+    };
   }
 
   return (
     <>
-      <Board match={match} />
-      {body}
+      {stage ? (
+        <div className="bf-stage">
+          <div className="bf-stage__head">
+            <Board match={match} />
+            {stage.head}
+          </div>
+          <div className="bf-stage__pitch">{stage.pitch}</div>
+          <div className="bf-stage__controls">{stage.controls}</div>
+        </div>
+      ) : (
+        <div className="bf-narrow">
+          <Board match={match} />
+          {body}
+        </div>
+      )}
       {dnd.drag ? (
         <div className="bf-slot bf-slot--ghost" style={{ left: dnd.drag.x, top: dnd.drag.y, width: dnd.drag.w }} aria-hidden>
           <Name name={dnd.drag.p.name} />

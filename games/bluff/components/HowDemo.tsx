@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import Lives from './Lives';
 import { LIVES } from '../lib/match';
 
-const STEP_MS = 3600;
-
 const STEPS = [
   { title: 'Swap a player', sub: 'One of you sees a real XI and swaps any one player for anyone.' },
   { title: 'Pass the phone', sub: 'Cover it up and hand it over. No peeking.' },
@@ -16,34 +14,27 @@ const STEPS = [
 const XI = [['Alisson'], ['Trent', 'Matip', 'Van Dijk', 'Robertson'], ['Henderson', 'Fabinho', 'Wijnaldum'], ['Mané', 'Firmino', 'Salah']];
 
 /**
- * How it goes, shown rather than told: a small phone playing a round on a
- * loop, one step at a time, with the four steps beside it to jump to. It
- * only moves by itself for people who have not asked for reduced motion.
+ * How it goes, shown rather than told: a small phone playing one step of a
+ * round, with the four steps beside it. It stays on the step picked (tap it
+ * again to replay) and never moves by itself.
  */
 export default function HowDemo() {
   const [step, setStep] = useState(0);
-  const [auto, setAuto] = useState(true);
+  // Bumped to play the step again; the demo only moves when asked to.
+  const [run, setRun] = useState(0);
   const [lives, setLives] = useState(LIVES);
 
-  useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) setAuto(false);
-  }, []);
   // The heart goes when the wrong tap lands, not as the step starts.
   useEffect(() => {
     if (step < 2) { setLives(LIVES); return; }
     if (step > 2) { setLives(LIVES - 1); return; }
     const t = setTimeout(() => setLives(LIVES - 1), 900);
     return () => clearTimeout(t);
-  }, [step]);
-  useEffect(() => {
-    if (!auto) return;
-    const t = setTimeout(() => setStep((s) => (s + 1) % STEPS.length), STEP_MS);
-    return () => clearTimeout(t);
-  }, [step, auto]);
+  }, [step, run]);
 
   return (
     <div className="hd">
-      <div className="hd__phone" data-step={step} aria-hidden>
+      <div className="hd__phone" key={run} data-step={step} aria-hidden>
         <div className="hd__top">
           <span className="hd__who">Ben</span>
           <Lives lives={lives} size={13} />
@@ -82,13 +73,12 @@ export default function HowDemo() {
       <ol className="hd__steps">
         {STEPS.map((s, i) => (
           <li key={s.title}>
-            <button type="button" className={`hd__step${i === step ? ' is-on' : ''}`} aria-current={i === step ? 'step' : undefined} onClick={() => setStep(i)}>
+            <button type="button" className={`hd__step${i === step ? ' is-on' : ''}`} aria-current={i === step ? 'step' : undefined} onClick={() => { if (i === step) setRun((r) => r + 1); else setStep(i); }}>
               <span className="hd__no display">{i + 1}</span>
               <span className="hd__text">
                 <b>{s.title}</b>
                 <span>{s.sub}</span>
               </span>
-              {i === step && auto ? <span className="hd__bar" key={step} style={{ animationDuration: `${STEP_MS}ms` }} /> : null}
             </button>
           </li>
         ))}
