@@ -139,13 +139,38 @@ guess is kept in `seasonline.bonus.v1`. Solved on guess 5 or missed: no bonus.
 plays its five steps and the reveal, rules light in step. Lobby: How and
 Endless are full width.
 
-## No-scroll pass (2026-10-16)
+## Playtest round 3 (2026-10-16)
 
-Rule: the red button and everything needed to play are on screen without
-scrolling, laptop (checked 1280x560 and 1366x768) and phone (390x740).
-Front page: the hero is the whole pitch (question + red button left, the
-game playing itself in a white panel right, rules lit under it; a phone gets
-button then demo); once today is started the panel shows the player's own
-line. Endless is one row beneath. `How.tsx` is now `useLoop`/`Demo`/`Rules`
-(no How card). Board: finished boards drop the empty guess rows; a short
-window (<700px high) tightens spacing.
+Front page: the coloured card holds both ways to play, today's daily on the
+left and Endless (years + button) on the right; the red button is on
+whichever is not done. The live How it goes card is back underneath (paper,
+`How.tsx`: demo chart + clues + a guess row, rules lit in step). On the
+board: a right year locks (green) just as a right club does; a finished
+board drops the empty guess rows; windows under 700px high tighten so the
+whole board stays on screen (checked 1280x560, 1366x768, 390x740). The
+unused mini chart mode is gone.
+
+## Merged to main (2026-10-16) and what is next
+
+Merged to `main`. It is **not on the hub**: no entry in `src/games.ts`, no
+credits line. The route works (`/season-line`) but nothing links to it.
+
+**Next: the hub icon.** Every tile has a Higgsfield cut-out tabletop
+miniature in `public/hub/<id>.webp` (see the root `HANDOFF.md`, Games, and
+the four existing ones for the style Jonno chose 2026-10-14). Higgsfield costs
+credits: ask Jonno first, and agree the picture before generating. Working
+ground colour is `#1F5F57` (`GROUND` in `components/Lobby.tsx`); the hub tile
+and the front page hero share it. Then: add the `GAMES` entry (`id:
+'season-line'`, `href: '/season-line'`, `dailies: ['season-line']`, the board
+already calls `markDone('season-line', date)`), a credits line (football-data.co.uk
+results, Wikipedia top scorers, the Premier League lion if it stays), and one
+line in the root `HANDOFF.md` games index.
+
+**Before launch:** `EPOCH` (2026-10-15) in `lib/day.ts` is a draft date; reset
+it and rebuild `data/days.json`. The Premier League lion
+(`public/season-line/pl-lion.png`) is the league's trademark: decide if it
+stays on a public site. A name (working title only).
+
+**Resume prompt:** "Read games/season-line/HANDOFF.md. Season line is merged
+to main (not on the hub yet). Next: decide the Higgsfield hub icon for it
+(ask before spending credits), then add its hub tile and credits."
