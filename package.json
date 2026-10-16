@@ -34,6 +34,7 @@
     "fetch:careers": "tsx scripts/fetch-careers.ts",
     "merge:careers": "tsx scripts/merge-careers.ts",
     "fetch:credits": "tsx scripts/fetch-credits.ts",
+    "season-line:update": "tsx scripts/season-line/update.ts",
     "bluff:sides": "tsx scripts/bluff/build-sides.ts"
   },
   "devDependencies": {
