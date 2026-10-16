@@ -203,3 +203,13 @@ position is tapped, and only that position's. The (i) note is a short white
 card. The demo no longer plays by itself: it stays on the step tapped, tap it
 again to replay. On a laptop (900px up) the pitch sits beside the head and
 controls (`bf-stage`), checked at 1366x768 with no scroll, footer included.
+
+## Icon (2026-10-16)
+
+Jonno likes the miniature direction; the name and objects are not final.
+One candidate generated (his yes for exactly one): a needle-felted mole on a
+molehill on the felt disc with one straight white pitch line. Higgsfield job
+`5355225a-4e58-48d3-81a8-747f2c504e3b` (gpt_image_2_5, reference
+`docs/hub-icon-reference.png`). Not cut out, cropped or on the hub yet; show
+Jonno first. Pitch lines on any icon must be ones that exist on a real pitch
+(rules in `docs/new-game-build-lessons.md` 1.6).
