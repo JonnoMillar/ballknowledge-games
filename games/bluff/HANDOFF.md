@@ -210,6 +210,9 @@ Jonno likes the miniature direction; the name and objects are not final.
 One candidate generated (his yes for exactly one): a needle-felted mole on a
 molehill on the felt disc with one straight white pitch line. Higgsfield job
 `5355225a-4e58-48d3-81a8-747f2c504e3b` (gpt_image_2_5, reference
-`docs/hub-icon-reference.png`). Not cut out, cropped or on the hub yet; show
-Jonno first. Pitch lines on any icon must be ones that exist on a real pitch
-(rules in `docs/new-game-build-lessons.md` 1.6).
+`docs/hub-icon-reference.png`). Jonno approved the look, so it was cut out
+(job `c1a8860c-6ff6-4ba9-bd87-297fe1c4bc2a`), cropped with the standard box
+and is live on the hub tile and the lobby hero as `public/hub/odd-man-out.webp`.
+Direction approved, not final art: name and object can still change. Pitch
+lines on any icon must exist on a real pitch (rules in
+`docs/new-game-build-lessons.md` 1.6).

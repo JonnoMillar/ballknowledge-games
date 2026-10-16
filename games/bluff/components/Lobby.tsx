@@ -47,6 +47,7 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
       <main className="lobby">
         <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
           <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-bluff' }} aria-hidden />
+          <img className="lobby-hero__mini" src="/hub/odd-man-out.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-bluff-mini' }} />
           <div className="lobby-hero__ask vt">
             <span className="bf-eyebrow bf-eyebrow--light">Multiplayer</span>
             <h1 className="lobby-hero__head display"><Words text="Can you find the mole?" /></h1>

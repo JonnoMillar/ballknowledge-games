@@ -30,6 +30,6 @@ export const GAMES: readonly GameCard[] = [
   { id: 'spoofed', href: '/spoofed', name: 'Spoofed', line: 'Spot the fake move', tag: 'Daily', icon: 'spoofed', ground: '#5B2A86', dailies: ['spoofed'] },
   { id: 'pin', href: '/pin', name: 'Pitch pin', line: 'Pin the goal', tag: 'Packs', icon: 'pin', ground: '#2B4C9B', dailies: [] },
   { id: 'rondo', href: '/rondo', name: 'Rondo', line: '2 to 4 players, one phone', tag: 'Multiplayer', icon: 'rondo', ground: '#C9541A', dailies: [], pub: true },
-  // Internal id `bluff` (its first working name), like Spoofed's `itk`. No miniature yet.
-  { id: 'bluff', href: '/odd-man-out', name: 'Odd Man Out', line: '2 or more players, one phone', tag: 'Multiplayer', ground: '#14615B', dailies: [], pub: true },
+  // Internal id `bluff` (its first working name), like Spoofed's `itk`.
+  { id: 'bluff', href: '/odd-man-out', name: 'Odd Man Out', line: '2 or more players, one phone', tag: 'Multiplayer', icon: 'odd-man-out', ground: '#14615B', dailies: [], pub: true },
 ];
