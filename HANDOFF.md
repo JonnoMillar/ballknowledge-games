@@ -21,6 +21,7 @@ are in `CLAUDE.md`.
 | Pitch pin | `/pin` | `games/pin` | Merged to `main` 2026-10-12; front page on the kit 2026-10-15. `games/pin/HANDOFF.md`. |
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
+| Odd Man Out | `/odd-man-out` (front page), `/odd-man-out/play` | `games/bluff` (internal id `bluff`) | Merged to `main` 2026-10-16; headline "Can you find the mole?". Needs an icon (Higgsfield, undecided). `games/bluff/HANDOFF.md`. |
 
 ## The site hub and Chain's hub (2026-10-14)
 
