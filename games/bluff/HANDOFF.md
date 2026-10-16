@@ -4,11 +4,12 @@
 `/odd-man-out/play` (the match). Internal id and folder `bluff`, its first
 working name, like Spoofed's `itk`. Branch `claude/blissful-lewin-d41d05`
 (worktree `.claude/worktrees/blissful-lewin-d41d05`), cut from `main` at
-43231e5. Not merged.
+43231e5. Merged to `main` 2026-10-16.
 
-**Resume prompt:** "Read games/bluff/HANDOFF.md. Ask me for my playtest
-verdict on Odd Man Out (lives, help, the front page, the hub tile), then
-tune or merge."
+**Resume prompt:** "Read games/bluff/HANDOFF.md. Odd Man Out is merged to
+main and live. Next: decide on a Higgsfield-generated icon for its hub tile
+(it has none; the hub tile is bare, see Playtest round 1), then any
+playtest round 3 notes."
 
 ## The game (Jonno, 2026-10-15)
 
