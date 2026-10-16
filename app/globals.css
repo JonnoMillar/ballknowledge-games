@@ -1882,7 +1882,10 @@ html:active-view-transition-type(morph)::view-transition-new(*):only-child { ani
    card that came back keeps its ground and miniature (the script in
    app/layout.tsx says which); every other tile rises in after it. */
 .lobby-hero__head .word { display: inline-block; }
-.vt-arrived .hub__cell { animation: none; }
+/* A page that arrived by the morph never plays its page-load entrance,
+   not even after stage 3 ends and .vt-arrived comes off (that replayed the
+   hub's tiles, Jonno 2026-10-15). .vt-landed stays for the page's life. */
+.vt-landed .hub__cell, .vt-landed .hub__done { animation: none; }
 .vt-arrived .lobby-hero__ask > *,
 .vt-arrived .lobby-hero__go,
 .vt-arrived .lobby > :not(.lobby-hero) { animation: rise-in 460ms var(--ease-out) var(--vt-land) both; }
