@@ -16,9 +16,11 @@ function featured(done: Set<string>): GameCard {
 }
 
 /**
- * The front door, laid out like a table of games: the suggestion is the big
- * tile and carries the page's only red button, the rest sit round it, the
- * pub game runs along the bottom. Each game's miniature stands on its own
+ * The front door, laid out like a table of games: two large tiles, the
+ * suggestion top left (it carries the page's only red button) and the `big`
+ * game bottom right, with the rest small in the gaps. Any game can be the
+ * suggestion, so a game shifts from small to large once the one before it
+ * is done. Each game's miniature stands on its own
  * coloured ground; no blurbs, each game's front page explains itself.
  */
 export default function Hub({ initial }: { initial: HubStatus }) {
@@ -49,25 +51,26 @@ export default function Hub({ initial }: { initial: HubStatus }) {
 
 function Board({ status }: { status: Status }) {
   const top = featured(status.done);
-  const rest = GAMES.filter((g) => g !== top);
+  const big = GAMES.find((g) => g.big && g !== top);
+  const small = GAMES.filter((g) => g !== top && g !== big);
   return (
     <ul className="hub__board">
-      <li className="hub__cell hub__cell--feature"><Tile game={top} status={status} size="feature" /></li>
-      {rest.map((g) => (
-        <li key={g.id} className={`hub__cell hub__cell--${g.pub ? 'wide' : 'square'}`}>
-          <Tile game={g} status={status} size={g.pub ? 'wide' : 'square'} />
-        </li>
+      <li className="hub__cell hub__cell--feature"><Tile game={top} status={status} size="large" play /></li>
+      {small.map((g) => (
+        <li key={g.id} className="hub__cell hub__cell--small"><Tile game={g} status={status} size="small" /></li>
       ))}
+      {big ? <li className="hub__cell hub__cell--big"><Tile game={big} status={status} size="large" /></li> : null}
     </ul>
   );
 }
 
-function Tile({ game: g, status, size }: { game: GameCard; status: Status; size: 'feature' | 'square' | 'wide' }) {
+/** `play`: the red button, on the suggestion only. */
+function Tile({ game: g, status, size, play }: { game: GameCard; status: Status; size: 'large' | 'small'; play?: boolean }) {
   const done = g.dailies.length > 0 && allDone(g, status.done);
   const streak = g.id === 'chain' && status.streak > 0 ? status.streak : 0;
   return (
     <a
-      className={`hub__tile hub__tile--${size}${g.icon ? '' : ' hub__tile--bare'}${done ? ' is-done' : ''}`}
+      className={`hub__tile hub__tile--${size === 'large' ? 'feature' : 'square'}${g.icon ? '' : ' hub__tile--bare'}${done ? ' is-done' : ''}`}
       href={g.href}
       style={{ '--ground': g.ground } as CSSProperties}
       aria-label={`${g.name}${done ? ', done today' : ''}`}
@@ -87,9 +90,9 @@ function Tile({ game: g, status, size }: { game: GameCard; status: Status; size:
       {g.icon ? <img className="hub__mini" src={`/hub/${g.icon}.webp`} alt="" width={480} height={480} style={{ viewTransitionName: `game-${g.id}-mini` }} /> : null}
       <span className="hub__words">
         <span className="hub__name display">{g.name}</span>
-        {size !== 'square' ? <span className="hub__line">{g.line}</span> : null}
+        {size === 'large' && g.line ? <span className="hub__line">{g.line}</span> : null}
       </span>
-      {size === 'feature' ? <span className="hub__play display">Play</span> : null}
+      {play ? <span className="hub__play display">Play</span> : null}
     </a>
   );
 }

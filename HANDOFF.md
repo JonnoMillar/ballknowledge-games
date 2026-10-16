@@ -6,7 +6,7 @@ path back to full context. The design is in
 
 ## Games
 
-One site; `/` is the hub (`components/Hub.tsx`): a bento of coloured tiles, each with a cut-out tabletop miniature (`public/hub/`, Higgsfield, style Jonno chose 2026-10-14, backgrounds removed so the art stands on the tile's own lit ground). The big tile is the suggestion (first game with a daily not done today, per `src/lib/today.ts`) and has the page's only red button; the pub game (Rondo, tagged Multiplayer) runs wide along the bottom. Read from
+One site; `/` is the hub (`components/Hub.tsx`): a bento of coloured tiles, each with a cut-out tabletop miniature (`public/hub/`, Higgsfield, style Jonno chose 2026-10-14, backgrounds removed so the art stands on the tile's own lit ground). There are two large tiles and four small: the suggestion (first game with a daily not done today, per `src/lib/today.ts`, top left, the page's only red button) and the `big` game (Rondo, bottom right, no button), with two small tiles in each gap (a pinwheel, three equal rows from 760px). Any game can be the suggestion, so one shifts small to large once the game before it is done. Odd Man Out has no hub line (it only sits small). Read from
 `src/games.ts`: add a game there and it appears. Each game is a route. A game's own state of play is in its
 `HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
 are in `CLAUDE.md`.

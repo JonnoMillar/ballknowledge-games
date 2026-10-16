@@ -165,11 +165,13 @@ tag Daily, ground `#1F5F57`, `dailies: ['season-line']`); credits line on
 updated. Checked: typecheck, 1,777 tests, prod build, hub in the browser
 at 1366x768.
 
-**Open on the hub:** with three square tiles and two wide ones the 4-column
-board has one hole, bottom right (pin moved last in `GAMES` so the hole sits
-at the end, not mid-board). The page is ~1020px tall at 1366x768, so it
-scrolls (it did before this tile). Season line's ground is close to Odd Man
-Out's teal (`#14615B`).
+**Hub layout (Jonno, 2026-10-16):** two large tiles and four small, a
+pinwheel: the suggestion top left, Rondo (`big: true`) bottom right, two
+small tiles in each gap; any game can be the suggestion and shifts up once
+the one before it is done. Odd Man Out lost its hub line. Checked at
+1366x768 (board ~870px tall, so the page scrolls, as before), on a phone, and
+with Chain and Spoofed marked done (Season line takes the hero). Season
+line's ground is close to Odd Man Out's teal (`#14615B`).
 
 **Before launch:** `EPOCH` (2026-10-15) in `lib/day.ts` is a draft date; reset
 it and rebuild `data/days.json`. The Premier League lion
