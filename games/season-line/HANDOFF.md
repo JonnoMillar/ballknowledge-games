@@ -120,3 +120,21 @@ every year in range for any club (no hint from the list); arrows green up /
 red down; hidden club = `?` badge, crest once named; rivals are crest badges
 (no text clue); clue slots are grey missing stickers that stick down when
 earned; line colours per club in `lib/clubs.ts` `COLOUR`.
+
+## Playtest round 2 (2026-10-16)
+
+PL lion (`public/season-line/pl-lion.png`, from Jonno) tops the chart card.
+Crests have no ring; the hidden club is a solid `?` disc. Hovering a line
+(or its badge) brings it forward, dims the rest, tags rivals with their name.
+Axis titles `Games` / `Position`. Roomier reveal card.
+
+**Bonus:** solve by guess 4 (before the top scorer clue was earned) and that
+slot becomes one guess at the season's top scorer (datalist of every board's
+scorer; full name or surname, accents ignored; `scorerMatches` in
+`server.ts`). Right = green "Bonus" card and a ⭐ on the share line; wrong =
+"Missed" with the answer. Server decides (`view(id, guesses, bonus)`), the
+guess is kept in `seasonline.bonus.v1`. Solved on guess 5 or missed: no bonus.
+
+**How it goes** is a live loop (`How.tsx`): a real board (Newcastle 95/96)
+plays its five steps and the reveal, rules light in step. Lobby: How and
+Endless are full width.

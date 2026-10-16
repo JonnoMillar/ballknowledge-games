@@ -7,7 +7,8 @@ import { seasonLabel } from '../lib/clubs';
 import { EPOCH } from '../lib/day';
 import { loadGuesses, loadRange, saveRange } from '../lib/progress';
 import type { BoardView } from '../lib/types';
-import Chart, { type Runner } from './Chart';
+import Chart from './Chart';
+import How, { type Demo } from './How';
 
 /** The working colour of its hub tile, until it has one. */
 export const GROUND = '#1F5F57';
@@ -17,7 +18,7 @@ export const GROUND = '#1F5F57';
  * (the first fifth of today's line as the picture, and the one red button),
  * then How it goes and Endless. Once today is done the red moves to Endless.
  */
-export default function Lobby({ years, demo }: { years: [number, number]; demo: { games: number; teams: number; me: Runner; rival: Runner & { club: string }; caption: string } }) {
+export default function Lobby({ years, demo }: { years: [number, number]; demo: Demo }) {
   const [today, setToday] = useState<BoardView | null>(null);
   const [me, setMe] = useState<{ date: string; started: boolean } | null>(null);
   const [range, setRange] = useState<[number, number]>([2000, years[1]]);
@@ -69,18 +70,11 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
           </div>
         </section>
 
-        <section className="lobby-card sl-how" aria-label="How it goes">
-          <span className="lobby-tag lobby-tag--paper">How it goes</span>
-          <div className="sl-how__art"><Chart games={demo.games} teams={demo.teams} line={demo.me.line} me={demo.me} rivals={[demo.rival]} /><p className="sl-how__caption">{demo.caption}</p></div>
-          <ol className="sl-how__rules">
-            <li>The line is a club’s league position, game by game.</li>
-            <li>Five guesses. Each miss grows the line and adds a clue.</li>
-            <li>The club goes green when it’s right; arrows point to the season.</li>
-          </ol>
-        </section>
+        <How demo={demo} />
 
-        <section className="lobby-card sl-endless" id="endless" aria-label="Endless">
+        <section className="lobby-card lobby__wide sl-endless" id="endless" aria-label="Endless">
           <span className="lobby-tag lobby-tag--paper">Endless</span>
+          <div className="sl-endless__row">
           <p className="sl-endless__head display">Pick your years</p>
           <div className="sl-endless__range">
             <select className="sl-select" aria-label="From" value={range[0]} onChange={(e) => set(0, Number(e.target.value))}>
@@ -92,6 +86,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
             </select>
           </div>
           <a className={done ? 'lobby-play display' : 'sl-quiet'} href={`/season-line/play?from=${range[0]}&to=${range[1]}`}>Play endless</a>
+          </div>
         </section>
       </main>
     </div>

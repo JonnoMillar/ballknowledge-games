@@ -66,6 +66,8 @@ export interface BoardView {
   rivals: { club: string; name: string; q: string | null; colour: string; line: number[] }[];
   /** A squad player after the second miss; the top scorer after the fourth. */
   hints: { squad: string | null; top: TopScorer | null };
+  /** Solved by guess 4: one guess at the top scorer, for a bonus. Null when not on offer. */
+  bonus: { state: 'open' | 'right' | 'wrong'; guess: string | null; options: string[] } | null;
   done: boolean;
   won: boolean;
   answer: { club: string; name: string; q: string | null; start: number; champion: string; championName: string } | null;

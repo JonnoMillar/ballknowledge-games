@@ -6,7 +6,7 @@ import { squadHints } from '../lib/squad';
 import { fifths, nearestRival, parseResults, positions, rivals } from '../lib/table';
 import type { StoredData, StoredDay } from '../lib/types';
 import { parseTopScorer } from '../lib/wiki';
-import { pickEndless, playable, view } from '../server';
+import { pickEndless, playable, scorerMatches, view } from '../server';
 
 const data = JSON.parse(readFileSync('games/season-line/data/seasons.json', 'utf8')) as StoredData;
 const days = JSON.parse(readFileSync('games/season-line/data/days.json', 'utf8')) as StoredDay[];
@@ -157,6 +157,32 @@ describe('the server', () => {
     const v = (await view(today, [...g, { club: b.club, start: b.start }, { club: b.club, start: b.start }]))!;
     expect(v.judged.map((j) => j.season)).toEqual([...(earlier !== undefined ? [1] : []), ...(later !== undefined ? [-1] : []), 0]);
     expect(v.won && v.done).toBe(true);
+  });
+
+  it('offers the top scorer as a bonus when solved before the clue, and only then', async () => {
+    const b = answer();
+    const hit = { club: b.club, start: b.start };
+    const open = (await view(today, [hit]))!;
+    expect(open.bonus?.state).toBe('open');
+    expect(open.hints.top).toBeNull();
+    expect(open.bonus!.options).toContain(b.top.names[0]);
+    const right = (await view(today, [hit], b.top.names[0]!.toUpperCase()))!;
+    expect(right.bonus).toMatchObject({ state: 'right', options: [] });
+    expect(right.hints.top).toEqual(b.top);
+    expect((await view(today, [hit], 'Nobody Atall'))!.bonus?.state).toBe('wrong');
+    const other = Object.keys(data.seasons.find((x) => x.start === b.start)!.table).find((c) => c !== b.club)!;
+    const late = (await view(today, [...Array(4).fill({ club: other, start: b.start }), hit], b.top.names[0]))!;
+    expect(late.won && late.bonus).toBeNull();
+    expect(late.hints.top).toEqual(b.top);
+    expect((await view(today, Array(5).fill({ club: other, start: b.start })))!.bonus).toBeNull();
+  });
+
+  it('matches a scorer by full name or surname, ignoring accents and case', () => {
+    expect(scorerMatches(['Luis Suárez'], 'luis suarez')).toBe(true);
+    expect(scorerMatches(['Luis Suárez'], 'Suárez')).toBe(true);
+    expect(scorerMatches(['Luis Suárez'], 'Luis')).toBe(false);
+    expect(scorerMatches(['Rúben Neves', 'Daniel Podence'], 'podence')).toBe(true);
+    expect(scorerMatches(['Wu'], 'wu')).toBe(false);
   });
 
   it('refuses what is not on the list, and dates it should not show', async () => {

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { dayNumber } from '../../src/lib/daily';
-import { COLOUR, INK } from './lib/clubs';
+import { COLOUR, INK, seasonLabel } from './lib/clubs';
 import { addDays, dailyPool, EPOCH, FIRST_DAILY_SEASON } from './lib/day';
 import { fifths, rivals } from './lib/table';
 import { GUESSES, type BoardView, type Guess, type Judged, type StoredBoard, type StoredData, type StoredDay } from './lib/types';
@@ -73,12 +73,20 @@ async function resolve(id: string): Promise<{ board: StoredBoard; range: [number
   return b && b.start >= range[0] && b.start <= range[1] ? { board: b, range, day: null, date: null } : null;
 }
 
+const plain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+
+/** A bonus guess is right when it is a top scorer's full name or surname, ignoring accents and case. */
+export function scorerMatches(names: readonly string[], guess: string): boolean {
+  const g = plain(guess);
+  return g.length >= 3 && names.some((n) => plain(n) === g || plain(n).split(' ').at(-1) === g);
+}
+
 /**
  * Everything the page may see after `guesses`. Guesses past the end, or
  * after the right one, are ignored; one that names a club or season outside
  * the board's list makes the whole request bad (null).
  */
-export async function view(id: string, guesses: readonly Guess[]): Promise<BoardView | null> {
+export async function view(id: string, guesses: readonly Guess[], bonus?: unknown): Promise<BoardView | null> {
   const r = await resolve(id);
   if (!r) return null;
   const { data } = await load();
@@ -102,6 +110,10 @@ export async function view(id: string, guesses: readonly Guess[]): Promise<Board
   const shown = done ? season.games : fifths(season.games)[step]!;
   const name = (c: string) => data.clubs[c]!.name;
   // After the first miss one other line joins the chart; after the third, two more.
+  // Solved before the top scorer clue was earned (guess 4 or sooner): one bonus guess at who it was.
+  const bonusOpen = won && judged.length < GUESSES;
+  const tried = bonusOpen && typeof bonus === 'string' && bonus.trim() ? bonus.trim().slice(0, 60) : null;
+  const options = bonusOpen && !tried ? [...new Set(data.boards.flatMap((x) => x.top.names))].sort((x, y) => x.localeCompare(y)) : [];
   const near = rivals(season.table, b.club).slice(0, done || step >= 3 ? 3 : step >= 1 ? 1 : 0);
 
   return {
@@ -111,8 +123,9 @@ export async function view(id: string, guesses: readonly Guess[]): Promise<Board
     hints: {
       // The better-known of the two: one hint, so it should be one people can place.
       squad: done || step >= 2 ? b.squad[1] : null,
-      top: done || step >= 4 ? b.top : null,
+      top: tried || (!bonusOpen && (done || step >= 4)) ? b.top : null,
     },
+    bonus: !bonusOpen ? null : tried ? { state: scorerMatches(b.top.names, tried) ? 'right' : 'wrong', guess: tried, options: [] } : { state: 'open', guess: null, options },
     done, won,
     answer: done ? { club: b.club, name: name(b.club), q: data.clubs[b.club]!.q, start: b.start, champion: season.champion, championName: name(season.champion) } : null,
   };
@@ -132,7 +145,9 @@ export async function demo() {
   return {
     games: s.games, teams: Object.keys(s.table).length,
     me: { line: s.table[b.club]!, q: data.clubs[b.club]!.q, colour: COLOUR[b.club] ?? INK },
-    rival: { club: b.rival, line: s.table[b.rival]!, q: data.clubs[b.rival]!.q, colour: COLOUR[b.rival] ?? INK },
+    rivals: rivals(s.table, b.club).slice(0, 3).map((c) => ({ club: c, name: data.clubs[c]!.name, q: data.clubs[c]!.q, colour: COLOUR[c] ?? INK, line: s.table[c]! })),
+    squad: b.squad[1], top: b.top,
+    answer: { name: data.clubs[b.club]!.name, season: seasonLabel(b.start) },
     caption: `${data.clubs[b.club]!.name}, ${b.start}/${String((b.start + 1) % 100).padStart(2, '0')}`,
   };
 }

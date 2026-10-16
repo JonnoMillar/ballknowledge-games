@@ -11,10 +11,10 @@ import { crestPath } from '../../../src/lib/clubs';
  * question mark for the club the player has not named yet. Drawn at the size
  * of its box, so the type stays small on a big screen.
  */
-export interface Runner { line: number[]; colour: string; q: string | null }
+export interface Runner { line: number[]; colour: string; q: string | null; name?: string }
 
 const useLayout = typeof window === 'undefined' ? useEffect : useLayoutEffect;
-const R = 12; // badge radius
+const R = 13; // badge radius
 const ease = (k: number) => (k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2);
 const calm = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -44,8 +44,8 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
   teams: number;
   line: number[];
   /** The main line's colour and badge; `q` null is the hidden club. */
-  me: { colour: string; q: string | null };
-  rivals?: { club: string; line: number[]; colour: string; q: string | null }[];
+  me: { colour: string; q: string | null; name?: string };
+  rivals?: { club: string; line: number[]; colour: string; q: string | null; name?: string }[];
   /** The front page's picture: no axes, no badges. */
   mini?: boolean;
 }) {
@@ -61,10 +61,12 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
     return () => ro.disconnect();
   }, []);
 
+  /** The line the pointer is on: the rest step back. */
+  const [hot, setHot] = useState<string | null>(null);
   const shown = line.length;
   const t = useTween(Math.max(2, shown));
   const { w, h } = size;
-  const L = mini ? 4 : 26, Rt = mini ? 14 : R * 2 + 14, T = mini ? 8 : 12, B = mini ? 8 : 24;
+  const L = mini ? 4 : 44, Rt = mini ? 14 : R * 2 + 14, T = mini ? 8 : 12, B = mini ? 8 : 46;
   const PW = w - L - Rt, PH = h - T - B;
   const idx = t - 1;
   const x = (i: number) => L + (i / idx) * PW;
@@ -83,9 +85,10 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
 
   const runners: (Runner & { key: string; main?: boolean })[] = [
     ...rivals.map((r) => ({ ...r, key: r.club })),
-    { line, colour: me.colour, q: me.q, key: 'me', main: true },
+    { line, colour: me.colour, q: me.q, name: me.name, key: 'me', main: true },
   ].map((r) => ({ ...r, line: r.line.slice(0, shown) }));
   const drawn = runners.map((r) => ({ r, p: pts(r.line) }));
+  const lone = runners.length > 1;
 
   // Badges sit at the right, nudged apart where the lines finish close together.
   const ends = drawn.map(({ p }) => p[p.length - 1]![1]);
@@ -117,19 +120,23 @@ export default function Chart({ games, teams, line, me, rivals = [], mini = fals
           <>
             {rows.map((p) => <text key={p} className="sl-chart__axis" x={L - 7} y={y(p) + 3.5} textAnchor="end">{p}</text>)}
             {labelled.map((g) => (
-              <text key={g} className={`sl-chart__axis${g === last ? ' is-end' : ''}`} x={x(g - 1)} y={h - 6} textAnchor="middle">{g}</text>
+              <text key={g} className={`sl-chart__axis${g === last ? ' is-end' : ''}`} x={x(g - 1)} y={T + PH + row / 2 + 13} textAnchor="middle">{g}</text>
             ))}
+            <text className="sl-chart__title" x={L + PW / 2} y={h - 4} textAnchor="middle">Games</text>
+            <text className="sl-chart__title" transform={`translate(10 ${T + PH / 2}) rotate(-90)`} textAnchor="middle">Position</text>
           </>
         )}
-        {drawn.map(({ r, p }, k) => (
-          <g key={r.key} className={r.main ? 'sl-chart__me' : 'sl-chart__rival'} style={{ '--c': r.colour } as CSSProperties}>
+        {drawn.map(({ r, p }, k) => ({ r, p, k })).sort((a, b) => Number(a.r.key === hot) - Number(b.r.key === hot)).map(({ r, p, k }) => (
+          <g key={r.key} className={`${r.main ? 'sl-chart__me' : 'sl-chart__rival'}${hot && lone ? (hot === r.key ? ' is-hot' : ' is-dim') : ''}`} style={{ '--c': r.colour } as CSSProperties}
+            onPointerEnter={() => setHot(r.key)} onPointerLeave={() => setHot(null)}>
             <path className="sl-chart__line" d={d(p)} />
+            {mini ? null : <path className="sl-chart__hit" d={d(p)} />}
             {mini ? null : (
               <g transform={`translate(${L + PW + R + 6} ${by[k]!.toFixed(1)})`}>
                 <path className="sl-chart__lead" d={`M${-(R + 6)} ${(ends[k]! - by[k]!).toFixed(1)}L${-R} 0`} />
-                <circle className="sl-chart__badge" r={R} />
-                {r.q ? <image href={crestPath(r.q)} x={-R + 2.5} y={-R + 2.5} width={R * 2 - 5} height={R * 2 - 5} preserveAspectRatio="xMidYMid meet" />
-                  : <text className="sl-chart__q" y={4.5} textAnchor="middle">?</text>}
+                {r.q ? <image href={crestPath(r.q)} x={-R} y={-R} width={R * 2} height={R * 2} preserveAspectRatio="xMidYMid meet" />
+                  : <><circle className="sl-chart__q-disc" r={R - 1} /><text className="sl-chart__q" y={5.5} textAnchor="middle">?</text></>}
+                {hot === r.key && r.name ? <text className="sl-chart__tag" x={-R - 8} y={4} textAnchor="end">{r.name}</text> : null}
               </g>
             )}
           </g>

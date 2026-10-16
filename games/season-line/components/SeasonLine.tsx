@@ -1,14 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Back from '../../../components/Back';
-import { crestPath } from '../../../src/lib/clubs';
 import { localDate } from '../../../src/lib/daily';
 import { smooth } from '../../../src/lib/motion';
 import { markDone } from '../../../src/lib/today';
 import { INK, seasonLabel } from '../lib/clubs';
-import { loadGuesses, markSeen, saveGuesses, seenEndless, shareLine } from '../lib/progress';
+import { loadBonus, loadGuesses, markSeen, saveBonus, saveGuesses, seenEndless, shareLine } from '../lib/progress';
 import { GUESSES, type BoardView, type Guess } from '../lib/types';
 import Chart from './Chart';
+import { Bonus, Clue, Crest } from './Clue';
 
 /**
  * One board: the line, the clues, the guess box and the guesses so far.
@@ -16,8 +16,8 @@ import Chart from './Chart';
  * in those years. Every guess goes to /api/season-line/board, which sends
  * back what the page may now see; the answer only once it is over.
  */
-const post = (id: string, guesses: Guess[]) => fetch('/api/season-line/board', {
-  method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, guesses }),
+const post = (id: string, guesses: Guess[], bonus?: string | null) => fetch('/api/season-line/board', {
+  method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, guesses, bonus }),
 }).then((r) => (r.ok ? (r.json() as Promise<BoardView>) : null));
 
 export default function SeasonLine() {
@@ -38,7 +38,7 @@ export default function SeasonLine() {
       markSeen(id);
     }
     const guesses = loadGuesses(id);
-    const view = await post(id, guesses).catch(() => null);
+    const view = await post(id, guesses, loadBonus(id)).catch(() => null);
     const n = ++deal.current;
     await smooth(() => { if (n === deal.current) setBoard(view ? { view, guesses } : null); });
   }
@@ -62,34 +62,6 @@ export default function SeasonLine() {
     </div>
   );
 }
-
-/** A clue's glyph: a shirt for the squad player, a ball for the top scorer. */
-const Glyph = ({ kind }: { kind: 'squad' | 'top' }) => (
-  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
-    {kind === 'squad'
-      ? <path d="M8.5 3.5 3 6l2 4.5 2.5-1V20.5h9V9.5l2.5 1L21 6l-5.5-2.5a3.5 3.5 0 0 1-7 0Z" />
-      : <><circle cx="12" cy="12" r="9" /><path d="m12 8 3.4 2.5-1.3 4h-4.2l-1.3-4Z" /><path d="M12 8V3.2M15.4 10.5l4.4-1.6M14.1 14.5l2.7 3.7M9.9 14.5l-2.7 3.7M8.6 10.5 4.2 8.9" /></>}
-  </svg>
-);
-
-/** A clue: a grey missing-sticker slot until a miss earns it, then a card stuck down. */
-function Clue({ kind, label, name, note }: { kind: 'squad' | 'top'; label: string; name: string | null; note?: string }) {
-  return name ? (
-    <li className="sl-clue is-on">
-      <span className="sl-clue__glyph"><Glyph kind={kind} /></span>
-      <span className="sl-clue__label">{label}</span>
-      <b className="sl-clue__name display">{name}</b>
-      {note ? <span className="sl-clue__note">{note}</span> : null}
-    </li>
-  ) : (
-    <li className="sl-clue" aria-label={`${label}, not yet`}>
-      <span className="sl-clue__glyph"><Glyph kind={kind} /></span>
-      <span className="sl-clue__label">{label}</span>
-    </li>
-  );
-}
-
-const Crest = ({ q, size = 22 }: { q: string | null; size?: number }) => (q ? <img src={crestPath(q)} alt="" width={size} height={size} /> : null);
 
 function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Guess[] }; title: string; onNext: (() => void) | null }) {
   const [view, setView] = useState(start.view);
@@ -116,8 +88,17 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
     await smooth(() => { setGuesses(next); setView(v); });
   }
 
+  async function bonus(name: string) {
+    setPending(true);
+    const v = await post(view.id, guesses, name).catch(() => null);
+    setPending(false);
+    if (!v) return;
+    saveBonus(view.id, name);
+    await smooth(() => setView(v));
+  }
+
   async function share() {
-    const text = shareLine(title, view.judged, view.won);
+    const text = shareLine(title, view.judged, view.won, view.bonus?.state === 'right');
     if (navigator.share && matchMedia('(pointer: coarse)').matches) await navigator.share({ text }).catch(() => {});
     else { await navigator.clipboard?.writeText(text).catch(() => {}); setCopied(true); }
   }
@@ -127,18 +108,21 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
   const q = (c: string) => info(c)?.q ?? null;
   // The hidden club is a question mark until it is named (or the board is over).
   const known = view.answer?.club ?? locked;
-  const me = { q: known ? q(known) : null, colour: known ? (info(known)?.colour ?? INK) : INK };
+  const me = { q: known ? q(known) : null, colour: known ? (info(known)?.colour ?? INK) : INK, name: known ? name(known) : undefined };
 
   return (
     <div className="sl-play">
       <section className="sl-card sl-chartcard" aria-label="The season">
+        <img className="sl-lion" src="/season-line/pl-lion.png" alt="Premier League" width={27} height={34} />
         <Chart games={view.games} teams={view.teams} line={view.line} me={me} rivals={view.rivals} />
       </section>
 
       <div className="sl-side">
         <ul className="sl-clues" aria-label="Clues">
           <Clue kind="squad" label="Squad" name={view.hints.squad} />
-          <Clue kind="top" label="Top scorer" name={view.hints.top ? view.hints.top.names.join(' & ') : null} note={view.hints.top ? `${view.hints.top.goals} goals` : undefined} />
+          {view.bonus?.state === 'open' ? <Bonus options={view.bonus.options} busy={pending} onGuess={bonus} />
+            : <Clue kind="top" label="Top scorer" name={view.hints.top ? view.hints.top.names.join(' & ') : null} note={view.hints.top ? `${view.hints.top.goals} goals` : undefined}
+              result={view.bonus?.state === 'right' || view.bonus?.state === 'wrong' ? view.bonus.state : undefined} />}
         </ul>
 
         <section className="sl-card sl-guesses" aria-label="Guesses">
