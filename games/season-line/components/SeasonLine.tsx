@@ -5,13 +5,13 @@ import { crestPath } from '../../../src/lib/clubs';
 import { localDate } from '../../../src/lib/daily';
 import { smooth } from '../../../src/lib/motion';
 import { markDone } from '../../../src/lib/today';
-import { seasonLabel } from '../lib/clubs';
+import { INK, seasonLabel } from '../lib/clubs';
 import { loadGuesses, markSeen, saveGuesses, seenEndless, shareLine } from '../lib/progress';
 import { GUESSES, type BoardView, type Guess } from '../lib/types';
 import Chart from './Chart';
 
 /**
- * One board: the line, the hints so far, the guesses, and the guess box.
+ * One board: the line, the clues, the guess box and the guesses so far.
  * The daily is the player's own date; `?from=&to=` deals an endless board
  * in those years. Every guess goes to /api/season-line/board, which sends
  * back what the page may now see; the answer only once it is over.
@@ -63,22 +63,47 @@ export default function SeasonLine() {
   );
 }
 
+/** A clue's glyph: a shirt for the squad player, a ball for the top scorer. */
+const Glyph = ({ kind }: { kind: 'squad' | 'top' }) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
+    {kind === 'squad'
+      ? <path d="M8.5 3.5 3 6l2 4.5 2.5-1V20.5h9V9.5l2.5 1L21 6l-5.5-2.5a3.5 3.5 0 0 1-7 0Z" />
+      : <><circle cx="12" cy="12" r="9" /><path d="m12 8 3.4 2.5-1.3 4h-4.2l-1.3-4Z" /><path d="M12 8V3.2M15.4 10.5l4.4-1.6M14.1 14.5l2.7 3.7M9.9 14.5l-2.7 3.7M8.6 10.5 4.2 8.9" /></>}
+  </svg>
+);
+
+/** A clue: a grey missing-sticker slot until a miss earns it, then a card stuck down. */
+function Clue({ kind, label, name, note }: { kind: 'squad' | 'top'; label: string; name: string | null; note?: string }) {
+  return name ? (
+    <li className="sl-clue is-on">
+      <span className="sl-clue__glyph"><Glyph kind={kind} /></span>
+      <span className="sl-clue__label">{label}</span>
+      <b className="sl-clue__name display">{name}</b>
+      {note ? <span className="sl-clue__note">{note}</span> : null}
+    </li>
+  ) : (
+    <li className="sl-clue" aria-label={`${label}, not yet`}>
+      <span className="sl-clue__glyph"><Glyph kind={kind} /></span>
+      <span className="sl-clue__label">{label}</span>
+    </li>
+  );
+}
+
+const Crest = ({ q, size = 22 }: { q: string | null; size?: number }) => (q ? <img src={crestPath(q)} alt="" width={size} height={size} /> : null);
+
 function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Guess[] }; title: string; onNext: (() => void) | null }) {
   const [view, setView] = useState(start.view);
   const [guesses, setGuesses] = useState(start.guesses);
-  const [drawn, setDrawn] = useState(start.view.line.length);
   const locked = view.judged.find((j) => j.clubRight)?.club ?? null;
   const [club, setClub] = useState<string>('');
   const [season, setSeason] = useState<string>('');
   const [pending, setPending] = useState(false);
   const [copied, setCopied] = useState(false);
   const pick = locked ?? club;
-  const seasons = pick ? view.clubs.find((c) => c.club === pick)!.seasons : [];
   const tried = view.judged.some((j) => j.club === pick && String(j.start) === season);
+  const years = Array.from({ length: view.range[1] - view.range[0] + 1 }, (_, i) => view.range[1] - i);
 
   useEffect(() => { if (view.done && view.date) markDone('season-line', view.date); }, [view.done, view.date]);
-  // A season that the chosen club never played in the PL is not on offer.
-  useEffect(() => { if (season && !seasons.includes(Number(season))) setSeason(''); }, [pick]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function guess() {
     if (!pick || !season || pending || tried || view.done) return;
@@ -88,8 +113,7 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
     setPending(false);
     if (!v) return;
     saveGuesses(view.id, next);
-    setDrawn(view.line.length);
-    await smooth(() => { setGuesses(next); setView(v); setSeason(''); });
+    await smooth(() => { setGuesses(next); setView(v); });
   }
 
   async function share() {
@@ -98,104 +122,96 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
     else { await navigator.clipboard?.writeText(text).catch(() => {}); setCopied(true); }
   }
 
-  const name = (c: string) => view.clubs.find((x) => x.club === c)?.name ?? c;
-  const q = (c: string) => view.clubs.find((x) => x.club === c)?.q ?? null;
-  const hints: { k: string; label: string; value: string }[] = [
-    ...view.hints.squad.map((s, i) => ({ k: `squad${i}`, label: 'In the squad', value: s })),
-    ...(view.rival ? [{ k: 'rival', label: 'Second line', value: view.rival.name }] : []),
-    ...(view.hints.top ? [{ k: 'top', label: 'Top scorer', value: `${view.hints.top.names.join(' & ')}, ${view.hints.top.goals}` }] : []),
-  ];
-  // In the order they arrived: squad, rival, squad, top.
-  const order = ['squad0', 'rival', 'squad1', 'top'];
-  hints.sort((a, b) => order.indexOf(a.k) - order.indexOf(b.k));
+  const info = (c: string) => view.clubs.find((x) => x.club === c);
+  const name = (c: string) => info(c)?.name ?? c;
+  const q = (c: string) => info(c)?.q ?? null;
+  // The hidden club is a question mark until it is named (or the board is over).
+  const known = view.answer?.club ?? locked;
+  const me = { q: known ? q(known) : null, colour: known ? (info(known)?.colour ?? INK) : INK };
 
   return (
-    <>
-      <section className="sl-card sl-stage">
-        {view.done && view.answer ? (
-          <div className="sl-answer vt">
-            <img className="sl-answer__crest" src={q(view.answer.club) ? crestPath(q(view.answer.club)!) : ''} alt="" width={56} height={56} />
-            <div>
-              <p className="sl-answer__name display">{view.answer.name} <span>{seasonLabel(view.answer.start)}</span></p>
-              <p className="sl-answer__champ">
-                {view.answer.champion === view.answer.club ? 'Champions that year' : `Champions: ${view.answer.championName}`}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <p className="sl-stage__ask display vt">Whose season? <span>{view.line.length} of {view.games} games</span></p>
-        )}
-        <Chart games={view.games} teams={view.teams} line={view.line} from={drawn} rival={view.rival && { name: view.rival.club, line: view.rival.line }} />
-        {hints.length ? (
-          <ul className="sl-hints">
-            {hints.map((h) => <li key={h.k} className="sl-hint vt"><span>{h.label}</span><b>{h.value}</b></li>)}
-          </ul>
-        ) : null}
+    <div className="sl-play">
+      <section className="sl-card sl-chartcard" aria-label="The season">
+        <Chart games={view.games} teams={view.teams} line={view.line} me={me} rivals={view.rivals} />
       </section>
 
-      <section className="sl-card sl-guesses" aria-label="Guesses">
-        <ol className="sl-rows">
-          {Array.from({ length: GUESSES }, (_, i) => {
-            const j = view.judged[i];
-            return (
-              <li key={i} className={`sl-row${j ? '' : ' is-empty'}`}>
-                {j ? (
+      <div className="sl-side">
+        <ul className="sl-clues" aria-label="Clues">
+          <Clue kind="squad" label="Squad" name={view.hints.squad} />
+          <Clue kind="top" label="Top scorer" name={view.hints.top ? view.hints.top.names.join(' & ') : null} note={view.hints.top ? `${view.hints.top.goals} goals` : undefined} />
+        </ul>
+
+        <section className="sl-card sl-guesses" aria-label="Guesses">
+          {view.done && view.answer ? (
+            <div className="sl-end vt">
+              <div className="sl-answer">
+                <Crest q={view.answer.q} size={56} />
+                <div>
+                  <p className="sl-answer__name display">{view.answer.name} <span>{seasonLabel(view.answer.start)}</span></p>
+                  <p className="sl-answer__champ">{view.answer.champion === view.answer.club ? 'Champions' : `Champions: ${view.answer.championName}`}</p>
+                </div>
+              </div>
+              <p className="sl-end__verdict display">{view.won ? (view.judged.length === 1 ? 'First time' : `Got it in ${view.judged.length}`) : 'Not this time'}</p>
+              <div className="sl-end__go">
+                {onNext ? (
                   <>
-                    <span className={`sl-row__club${j.clubRight ? ' is-right' : ''}`}>
-                      {q(j.club) ? <img src={crestPath(q(j.club)!)} alt="" width={22} height={22} /> : null}
-                      {name(j.club)}
-                    </span>
-                    <span className={`sl-row__season${j.season === 0 ? ' is-right' : ''}`}>
-                      {seasonLabel(j.start)}
-                      {j.season === 0 ? null : <i aria-label={j.season > 0 ? 'later' : 'earlier'}>{j.season > 0 ? '▲' : '▼'}</i>}
-                    </span>
+                    <button type="button" className="lobby-play display" onClick={onNext}>Next season</button>
+                    <button type="button" className="sl-quiet" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
                   </>
-                ) : <span className="sl-row__n">{i + 1}</span>}
-              </li>
-            );
-          })}
-        </ol>
-
-        {view.done ? (
-          <div className="sl-end vt">
-            <p className="sl-end__verdict display">{view.won ? (view.judged.length === 1 ? 'First time' : `Got it in ${view.judged.length}`) : 'Not this time'}</p>
-            <div className="sl-end__go">
-              {onNext ? (
-                <>
-                  <button type="button" className="lobby-play display" onClick={onNext}>Next season</button>
-                  <button type="button" className="sl-quiet" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-                </>
-              ) : (
-                <>
-                  <button type="button" className="lobby-play display" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-                  <a className="sl-quiet" href="/season-line#endless">Endless</a>
-                </>
-              )}
+                ) : (
+                  <>
+                    <button type="button" className="lobby-play display" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+                    <a className="sl-quiet" href="/season-line#endless">Endless</a>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        ) : (
-          <form className="sl-form vt" onSubmit={(e) => { e.preventDefault(); void guess(); }}>
-            {locked ? (
-              <span className="sl-locked">
-                {q(locked) ? <img src={crestPath(q(locked)!)} alt="" width={22} height={22} /> : null}
-                <span>{name(locked)}</span>
-              </span>
-            ) : (
-              <select className="sl-select" aria-label="Club" value={club} onChange={(e) => setClub(e.target.value)}>
-                <option value="" disabled>Club</option>
-                {view.clubs.map((c) => <option key={c.club} value={c.club}>{c.name}</option>)}
+          ) : (
+            <form className="sl-form vt" onSubmit={(e) => { e.preventDefault(); void guess(); }}>
+              {locked ? (
+                <span className="sl-locked">
+                  <Crest q={q(locked)} size={24} />
+                  <span>{name(locked)}</span>
+                </span>
+              ) : (
+                <select className="sl-select" aria-label="Club" value={club} onChange={(e) => setClub(e.target.value)}>
+                  <option value="" disabled>Club</option>
+                  {view.clubs.map((c) => <option key={c.club} value={c.club}>{c.name}</option>)}
+                </select>
+              )}
+              <select className="sl-select" aria-label="Season" value={season} onChange={(e) => setSeason(e.target.value)}>
+                <option value="" disabled>Season</option>
+                {years.map((s) => <option key={s} value={s}>{seasonLabel(s)}</option>)}
               </select>
-            )}
-            <select className="sl-select" aria-label="Season" value={season} onChange={(e) => setSeason(e.target.value)} disabled={!pick}>
-              <option value="" disabled>Season</option>
-              {[...seasons].reverse().map((s) => <option key={s} value={s}>{seasonLabel(s)}</option>)}
-            </select>
-            <button type="submit" className="lobby-play display sl-form__go" disabled={!pick || !season || pending || tried}>
-              {tried ? 'Tried' : 'Guess'}
-            </button>
-          </form>
-        )}
-      </section>
-    </>
+              <button type="submit" className="lobby-play display sl-form__go" disabled={!pick || !season || pending || tried}>
+                {tried ? 'Tried' : 'Guess'}
+              </button>
+            </form>
+          )}
+
+          <ol className="sl-rows">
+            {Array.from({ length: GUESSES }, (_, i) => {
+              const j = view.judged[i];
+              return (
+                <li key={i} className={`sl-row${j ? '' : ' is-empty'}`}>
+                  {j ? (
+                    <>
+                      <span className={`sl-row__club${j.clubRight ? ' is-right' : ''}`}>
+                        <Crest q={q(j.club)} />
+                        <span>{name(j.club)}</span>
+                      </span>
+                      <span className={`sl-row__season${j.season === 0 ? ' is-right' : ''}`}>
+                        {seasonLabel(j.start)}
+                        {j.season === 0 ? null : <i className={j.season > 0 ? 'is-up' : 'is-down'} aria-label={j.season > 0 ? 'later' : 'earlier'}>{j.season > 0 ? '▲' : '▼'}</i>}
+                      </span>
+                    </>
+                  ) : <span className="sl-row__n">{i + 1}</span>}
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      </div>
+    </div>
   );
 }

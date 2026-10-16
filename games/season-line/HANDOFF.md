@@ -6,9 +6,9 @@ Jonno's decision of 2026-10-15 in `docs/game-design-playbook.md` section 4.
 
 A Premier League club's league position game by game, drawn as a line. Guess
 team + season, five guesses. The line grows by fifths (8, 15, 23, 30, 38
-games); each wrong guess adds a hint: 2 a squad regular (not the star), 3
-another club's line on the same chart, 4 a second squad player, 5 the club's
-top scorer with tally. Team locks green once right; season feedback up/down.
+games); each wrong guess adds a hint: after miss 1 the nearest rival's line,
+2 a squad player (the better known of the two stored), 3 the next two rivals'
+lines, 4 the top scorer with tally. Team locks green once right; season feedback up/down.
 After the last guess: the answer and that year's champion. Daily from
 2000/01; endless mode over a year range the player picks.
 
@@ -109,3 +109,14 @@ Play it: `npm run dev`, then `/season-line` (front page) and
   spell, 20+ apps a season on average); expect the odd wrong one.
 - Tied positions break by name (the PL uses head-to-head after goals).
 - Not checked: a real phone, Share sheet, reduced motion, a deploy.
+
+## Playtest round 1 (2026-10-16)
+
+Jonno's playtest notes, done: games axis ends at the last game shown (8, 15,
+23, 30, 38) and the line grows into it (`Chart.tsx` draws at its box's pixel
+size, tweens the axis); chart left, clues + guess box right on laptop (the
+front page's 1000px), phone stacks chart, guess box, clues; season list is
+every year in range for any club (no hint from the list); arrows green up /
+red down; hidden club = `?` badge, crest once named; rivals are crest badges
+(no text clue); clue slots are grey missing stickers that stick down when
+earned; line colours per club in `lib/clubs.ts` `COLOUR`.

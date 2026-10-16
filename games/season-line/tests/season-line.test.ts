@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { dailyPool, extend, EPOCH } from '../lib/day';
 import { drama } from '../lib/drama';
 import { squadHints } from '../lib/squad';
-import { fifths, nearestRival, parseResults, positions } from '../lib/table';
+import { fifths, nearestRival, parseResults, positions, rivals } from '../lib/table';
 import type { StoredData, StoredDay } from '../lib/types';
 import { parseTopScorer } from '../lib/wiki';
 import { pickEndless, playable, view } from '../server';
@@ -43,9 +43,10 @@ describe('tables', () => {
     expect(fifths(42)).toEqual([8, 17, 25, 34, 42]);
   });
 
-  it('finds the rival that tangled most', () => {
+  it('finds the rivals that tangled most, closest first', () => {
     expect(nearestRival(season('2013-14').table, 'Liverpool')).toBe('Chelsea');
     expect(nearestRival(season('2011-12').table, 'Man City')).toBe('Man United');
+    expect(rivals(season('2013-14').table, 'Liverpool').slice(0, 3)).toHaveLength(3);
   });
 });
 
@@ -136,12 +137,12 @@ describe('the server', () => {
     const v0 = (await view(today, []))!;
     expect(v0.line).toHaveLength(8);
     expect(v0.answer).toBeNull();
-    expect(v0.rival).toBeNull();
+    expect(v0.rivals).toEqual([]);
     expect(JSON.stringify(v0)).not.toContain(b.season);
     const steps = await Promise.all([1, 2, 3, 4].map((k) => view(today, Array(k).fill(miss))));
     expect(steps.map((v) => v!.line.length)).toEqual([15, 23, 30, 38]);
-    expect(steps.map((v) => v!.hints.squad.length)).toEqual([1, 1, 2, 2]);
-    expect(steps.map((v) => !!v!.rival)).toEqual([false, true, true, true]);
+    expect(steps.map((v) => v!.rivals.length)).toEqual([1, 1, 3, 3]);
+    expect(steps.map((v) => !!v!.hints.squad)).toEqual([false, true, true, true]);
     expect(steps.map((v) => !!v!.hints.top)).toEqual([false, false, false, true]);
     expect(steps.every((v) => v!.answer === null)).toBe(true);
     const last = (await view(today, Array(5).fill(miss)))!;
@@ -161,6 +162,7 @@ describe('the server', () => {
   it('refuses what is not on the list, and dates it should not show', async () => {
     expect(await view(today, [{ club: 'Barcelona', start: 2010 }])).toBeNull();
     expect(await view(today, [{ club: 'Arsenal', start: 1995 }])).toBeNull(); // before the daily's years
+    expect(await view(today, [{ club: 'Arsenal', start: 2000.5 }])).toBeNull();
     expect(playable('2026-10-14')).toBe(false);
     expect(playable('2999-01-01')).toBe(false);
     expect(await view('2015-16|Leicester', [])).toBeNull();

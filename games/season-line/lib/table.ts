@@ -71,14 +71,16 @@ export function positions(games: readonly Game[], season: string): Record<string
 export const fifths = (games: number) => [1, 2, 3, 4, 5].map((k) => Math.round((games * k) / 5));
 
 /**
- * The club whose line tangled most with this one: closest on average across
- * the season, most crossings to break a tie. In a title race that is the
- * other contender; at the bottom, a fellow struggler.
+ * The clubs whose lines tangled most with this one, closest first: closest on
+ * average across the season, most crossings to break a tie. In a title race
+ * the first is the other contender; at the bottom, a fellow struggler.
  */
-export function nearestRival(table: Record<string, number[]>, club: string): string {
+export function rivals(table: Record<string, number[]>, club: string): string[] {
   const me = table[club]!;
   const near = (other: number[]) => me.reduce((s, p, i) => s + Math.abs(p - other[i]!), 0) / me.length;
   const crossings = (other: number[]) => me.slice(1).filter((p, i) => Math.sign(p - other[i + 1]!) !== Math.sign(me[i]! - other[i]!)).length;
   return Object.keys(table).filter((c) => c !== club)
-    .sort((a, b) => near(table[a]!) - near(table[b]!) || crossings(table[b]!) - crossings(table[a]!) || a.localeCompare(b))[0]!;
+    .sort((a, b) => near(table[a]!) - near(table[b]!) || crossings(table[b]!) - crossings(table[a]!) || a.localeCompare(b));
 }
+
+export const nearestRival = (table: Record<string, number[]>, club: string) => rivals(table, club)[0]!;

@@ -7,7 +7,7 @@ import { seasonLabel } from '../lib/clubs';
 import { EPOCH } from '../lib/day';
 import { loadGuesses, loadRange, saveRange } from '../lib/progress';
 import type { BoardView } from '../lib/types';
-import Chart from './Chart';
+import Chart, { type Runner } from './Chart';
 
 /** The working colour of its hub tile, until it has one. */
 export const GROUND = '#1F5F57';
@@ -17,7 +17,7 @@ export const GROUND = '#1F5F57';
  * (the first fifth of today's line as the picture, and the one red button),
  * then How it goes and Endless. Once today is done the red moves to Endless.
  */
-export default function Lobby({ years, demo }: { years: [number, number]; demo: { games: number; teams: number; line: number[]; rival: number[]; rivalName: string; caption: string } }) {
+export default function Lobby({ years, demo }: { years: [number, number]; demo: { games: number; teams: number; me: Runner; rival: Runner & { club: string }; caption: string } }) {
   const [today, setToday] = useState<BoardView | null>(null);
   const [me, setMe] = useState<{ date: string; started: boolean } | null>(null);
   const [range, setRange] = useState<[number, number]>([2000, years[1]]);
@@ -57,7 +57,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
           </div>
           <div className="lobby-hero__go sl-lobby__go">
             <div className="sl-lobby__art">
-              {today ? <Chart games={today.games} teams={today.teams} line={today.line} rival={today.rival} mini /> : <span className="sl-lobby__blank" />}
+              {today ? <Chart games={today.games} teams={today.teams} line={today.line} me={{ colour: '#fff', q: null }} rivals={today.rivals} mini /> : <span className="sl-lobby__blank" />}
             </div>
             {me === null ? null : done && today ? (
               <p className="sl-lobby__result display">
@@ -71,7 +71,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
 
         <section className="lobby-card sl-how" aria-label="How it goes">
           <span className="lobby-tag lobby-tag--paper">How it goes</span>
-          <div className="sl-how__art"><Chart games={demo.games} teams={demo.teams} line={demo.line} rival={{ name: demo.rivalName, line: demo.rival }} /><p className="sl-how__caption">{demo.caption}</p></div>
+          <div className="sl-how__art"><Chart games={demo.games} teams={demo.teams} line={demo.me.line} me={demo.me} rivals={[demo.rival]} /><p className="sl-how__caption">{demo.caption}</p></div>
           <ol className="sl-how__rules">
             <li>The line is a club’s league position, game by game.</li>
             <li>Five guesses. Each miss grows the line and adds a clue.</li>

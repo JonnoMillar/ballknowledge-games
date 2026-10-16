@@ -57,13 +57,15 @@ export interface BoardView {
   teams: number;
   /** The years a guess may name, oldest first. */
   range: [number, number];
-  /** Clubs a guess may name, and the seasons each was in the PL within the range. */
-  clubs: { club: string; name: string; q: string | null; seasons: number[] }[];
+  /** Clubs a guess may name: every club that was in the PL in the range. Any season in the range may be named with any of them. */
+  clubs: { club: string; name: string; q: string | null; colour: string }[];
   judged: Judged[];
   /** Positions shown so far. */
   line: number[];
-  rival: { club: string; name: string; line: number[] } | null;
-  hints: { squad: string[]; top: TopScorer | null };
+  /** Other clubs' lines on the chart: one after the first miss, three after the third. */
+  rivals: { club: string; name: string; q: string | null; colour: string; line: number[] }[];
+  /** A squad player after the second miss; the top scorer after the fourth. */
+  hints: { squad: string | null; top: TopScorer | null };
   done: boolean;
   won: boolean;
   answer: { club: string; name: string; q: string | null; start: number; champion: string; championName: string } | null;

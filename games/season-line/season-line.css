@@ -6,108 +6,127 @@
 
 .sl__main {
   width: 100%;
-  max-width: 760px;
+  max-width: 1000px; /* the width of every game's front page */
   margin: 0 auto;
-  padding: 20px 16px 56px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  padding: 16px 16px 48px;
 }
-@media (min-width: 760px) { .sl__main { padding: 32px 28px 72px; gap: 20px; } }
+@media (min-width: 860px) { .sl__main { padding: 20px 28px 32px; } }
 .sl__none { margin: 40px 0; text-align: center; color: var(--muted); }
 
 .sl-card {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 18px 16px 20px;
+  padding: 16px;
   border-radius: 24px;
   background: var(--sticker);
   box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 14px 30px rgba(20, 18, 16, 0.1);
 }
-@media (min-width: 760px) { .sl-card { padding: 24px 28px 26px; } }
 .sl-card--wait { min-height: 360px; }
 
-/* ── THE CHART ─────────────────────────────────────────────────────────── */
-.sl-chart { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; overflow: visible; font-family: var(--font-text), sans-serif; }
-.sl-chart__band { fill: rgba(226, 181, 58, 0.16); }
-.sl-chart__band--drop { fill: rgba(20, 18, 16, 0.07); }
-.sl-chart__future { fill: var(--page); opacity: 0.7; transition: x var(--t-slow) var(--ease-in-out), width var(--t-slow) var(--ease-in-out); }
-.sl-chart__grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
-.sl-chart__tick { stroke: var(--rule-strong); stroke-width: 1.5; }
-.sl-chart__tick.is-on { stroke: var(--ink); }
-.sl-chart__axis { fill: var(--muted); font-size: 10.5px; font-weight: 600; }
-.sl-chart__axis.is-on { fill: var(--ink); }
-.sl-chart__line { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.sl-chart__rival path { fill: none; stroke: var(--silhouette-figure); stroke-width: 2.2; stroke-dasharray: 5 4; stroke-linejoin: round; }
-.sl-chart__rival text { fill: var(--muted); font-size: 11px; font-weight: 600; }
-.sl-chart__end circle { fill: var(--ink); stroke: var(--sticker); stroke-width: 2; }
-.sl-chart__end text { fill: var(--ink); font-size: 12px; font-weight: 700; }
-.sl-chart--mini .sl-chart__band { fill: rgba(255, 255, 255, 0.12); }
-.sl-chart--mini .sl-chart__band--drop { fill: rgba(0, 0, 0, 0.12); }
-.sl-chart--mini .sl-chart__future { fill: transparent; }
-.sl-chart--mini .sl-chart__grid { stroke: rgba(255, 255, 255, 0.22); }
-.sl-chart--mini .sl-chart__tick { stroke: rgba(255, 255, 255, 0.35); }
-.sl-chart--mini .sl-chart__tick.is-on { stroke: #fff; }
-.sl-chart--mini .sl-chart__line { stroke: #fff; stroke-width: 4; }
-.sl-chart--mini .sl-chart__end circle { fill: #fff; stroke: none; }
-.sl-chart--mini .sl-chart__rival path { stroke: rgba(255, 255, 255, 0.5); }
-
-/* The part a guess added draws in from where the line stopped. */
-@keyframes sl-draw { from { stroke-dashoffset: 1; } }
-@keyframes sl-pop { from { opacity: 0; } }
-@media (prefers-reduced-motion: no-preference) {
-  .sl-chart__line--new { stroke-dasharray: 1; animation: sl-draw 900ms var(--ease-in-out) 200ms both; }
-  .sl-chart__end.is-new { animation: sl-pop 240ms var(--ease-out) 1050ms both; }
+/* The chart left, everything you act on right, so the line grows in view of the guess box. */
+.sl-play { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: start; }
+.sl-side { display: flex; flex-direction: column; gap: 14px; }
+/* On a phone the guess box comes first, so it shows with the chart; the clues follow. */
+@media (max-width: 859px) { .sl-clues { order: 1; } }
+@media (min-width: 860px) {
+  .sl-play { grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; }
+  .sl-chartcard { padding: 20px 14px 14px 18px; }
 }
 
-/* ── THE STAGE ─────────────────────────────────────────────────────────── */
-.sl-stage__ask { margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 26px; font-weight: 800; text-transform: uppercase; line-height: 1; }
-.sl-stage__ask span { font-family: var(--font-text), sans-serif; font-size: 13.5px; font-weight: 600; text-transform: none; color: var(--muted); }
+/* ── THE CHART ─────────────────────────────────────────────────────────── */
+.sl-plot { width: 100%; height: clamp(250px, 66vw, 420px); }
+@media (min-width: 860px) { .sl-plot { height: clamp(380px, calc(100dvh - 190px), 600px); } }
+.sl-plot--mini { height: 170px; }
+.sl-chart { display: block; overflow: visible; font-family: var(--font-text), sans-serif; }
+.sl-chart__band { fill: rgba(226, 181, 58, 0.14); }
+.sl-chart__band--drop { fill: rgba(20, 18, 16, 0.06); }
+.sl-chart__grid line { stroke: rgba(20, 18, 16, 0.1); stroke-width: 1; }
+.sl-chart__axis { fill: var(--muted); font-size: 10px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sl-chart__axis.is-end { fill: var(--ink); font-weight: 800; }
+.sl-chart__line { fill: none; stroke: var(--c, var(--ink)); stroke-linecap: round; stroke-linejoin: round; }
+.sl-chart__me .sl-chart__line { stroke-width: 3.2; transition: stroke var(--t-slow) var(--ease-out); }
+.sl-chart__rival { animation: sl-pop 420ms var(--ease-out) both; }
+.sl-chart__rival .sl-chart__line { stroke-width: 2; opacity: 0.92; }
+.sl-chart__lead { fill: none; stroke: var(--c, var(--ink)); stroke-width: 2; }
+.sl-chart__badge { fill: #fff; stroke: var(--c, var(--ink)); stroke-width: 2; }
+.sl-chart__me .sl-chart__badge { stroke-width: 2.6; }
+.sl-chart__q { fill: var(--c, var(--ink)); font-family: var(--font-display), Impact, sans-serif; font-size: 15px; font-weight: 900; }
+.sl-chart--mini .sl-chart__band { fill: rgba(255, 255, 255, 0.12); }
+.sl-chart--mini .sl-chart__band--drop { fill: rgba(0, 0, 0, 0.12); }
+.sl-chart--mini .sl-chart__grid line { stroke: rgba(255, 255, 255, 0.14); }
+.sl-chart--mini .sl-chart__me .sl-chart__line { stroke: #fff; stroke-width: 4; }
+.sl-chart--mini .sl-chart__rival .sl-chart__line { stroke: rgba(255, 255, 255, 0.5); }
+@keyframes sl-pop { from { opacity: 0; } }
 
-.sl-hints { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.sl-hint { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 12px; border-radius: 12px; background: var(--card-b); box-shadow: inset 0 0 0 1px var(--rule); font-size: 14.5px; }
-.sl-hint span { font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+/* ── THE CLUES ─────────────────────────────────────────────────────────── */
+/* Grey missing-sticker slots until a miss earns the clue; then it sticks down. */
+.sl-clues { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.sl-clue {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  min-height: 104px;
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--silhouette);
+  color: var(--silhouette-figure);
+  box-shadow: inset 0 0 0 2px rgba(20, 18, 16, 0.05);
+}
+.sl-clue__glyph { position: absolute; top: 10px; left: 10px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); }
+.sl-clue__label { position: absolute; top: 14px; right: 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.sl-clue.is-on { background: var(--sticker); color: var(--ink); box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 10px 22px rgba(20, 18, 16, 0.12), inset 0 0 0 2px var(--gold); animation: sl-stick 520ms var(--ease-out) both; }
+.sl-clue.is-on .sl-clue__glyph { background: var(--gold); }
+.sl-clue.is-on .sl-clue__label { color: var(--muted); }
+.sl-clue__name { margin-top: 40px; font-size: 22px; font-weight: 900; line-height: 0.95; text-transform: uppercase; overflow-wrap: anywhere; }
+.sl-clue__note { font-size: 13px; font-weight: 700; color: var(--muted); }
+@keyframes sl-stick {
+  from { transform: scale(1.18) rotate(-3deg); opacity: 0; }
+  60% { transform: scale(0.97) rotate(0.6deg); opacity: 1; }
+  to { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .sl-clue.is-on, .sl-chart__rival { animation: none; } }
 
 .sl-answer { display: flex; align-items: center; gap: 14px; }
-.sl-answer__crest { width: 56px; height: 56px; object-fit: contain; flex: none; }
-.sl-answer__name { margin: 0; font-size: 30px; font-weight: 900; line-height: 0.95; text-transform: uppercase; }
-.sl-answer__name span { color: var(--muted); }
-.sl-answer__champ { margin: 4px 0 0; font-size: 14.5px; font-weight: 600; color: var(--muted); }
+.sl-answer img { width: 56px; height: 56px; object-fit: contain; flex: none; }
+.sl-answer__name { margin: 0; font-size: 28px; font-weight: 900; line-height: 0.95; text-transform: uppercase; }
+.sl-answer__name span { display: block; margin-top: 4px; font-size: 20px; color: var(--muted); }
+.sl-answer__champ { margin: 6px 0 0; font-size: 14px; font-weight: 600; color: var(--muted); }
 
 /* ── THE GUESSES ───────────────────────────────────────────────────────── */
-.sl-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.sl-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; min-height: 40px; }
+.sl-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.sl-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; min-height: 36px; }
 .sl-row.is-empty { grid-template-columns: 1fr; }
-.sl-row__n { display: flex; align-items: center; padding: 0 14px; border-radius: 10px; border: 1.5px dashed var(--rule-strong); color: var(--silhouette-figure); font-weight: 700; font-size: 14px; }
+.sl-row__n { display: flex; align-items: center; padding: 0 12px; border-radius: 10px; border: 1.5px dashed var(--rule-strong); color: var(--silhouette-figure); font-weight: 700; font-size: 13px; }
 .sl-row__club, .sl-row__season {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 12px;
+  padding: 0 10px;
   border-radius: 10px;
   background: var(--panel-2);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   animation: sl-pop var(--t-base) var(--ease-out) both;
 }
-.sl-row__club { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.sl-row__club img { width: 22px; height: 22px; object-fit: contain; flex: none; }
-.sl-row__season { justify-content: center; min-width: 104px; font-variant-numeric: tabular-nums; }
-.sl-row__season i { font-style: normal; font-size: 13px; }
+.sl-row__club span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sl-row__club img { width: 20px; height: 20px; object-fit: contain; flex: none; }
+.sl-row__season { justify-content: center; min-width: 98px; font-variant-numeric: tabular-nums; }
+.sl-row__season i { font-style: normal; font-size: 12px; line-height: 1; }
+.sl-row__season i.is-up { color: var(--green); }
+.sl-row__season i.is-down { color: var(--red); }
 .sl-row .is-right { background: var(--green); color: #fff; }
 
 .sl-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
-.sl-form__go { grid-column: 1 / -1; }
+.sl-form > :first-child { grid-column: 1 / -1; }
+.sl-form__go { min-height: 52px; padding: 0 16px; font-size: 22px; }
 .sl-form__go:disabled { background: var(--silhouette); box-shadow: none; cursor: not-allowed; transform: none; }
-@media (min-width: 640px) {
-  .sl-form { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; }
-  .sl-form__go { grid-column: auto; min-width: 140px; }
-}
 .sl-select {
   min-height: 52px;
   width: 100%;
-  padding: 0 36px 0 14px;
+  padding: 0 34px 0 14px;
   border: 2px solid var(--ink);
   border-radius: 14px;
   background: var(--sticker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23141210' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") right 14px center / 12px 8px no-repeat;
@@ -118,16 +137,15 @@
   font-weight: 600;
   cursor: pointer;
 }
-.sl-select:disabled { border-color: var(--rule-strong); color: var(--muted); cursor: not-allowed; }
 .sl-select:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .sl-locked { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 14px; border-radius: 14px; background: var(--green); color: #fff; font-weight: 700; font-size: 16px; overflow: hidden; white-space: nowrap; }
 .sl-locked span { overflow: hidden; text-overflow: ellipsis; }
 .sl-locked img { width: 24px; height: 24px; object-fit: contain; flex: none; }
 
 .sl-end { display: flex; flex-direction: column; gap: 12px; }
-.sl-end__verdict { margin: 0; font-size: 32px; font-weight: 900; text-transform: uppercase; line-height: 1; }
+.sl-end__verdict { margin: 0; font-size: 30px; font-weight: 900; text-transform: uppercase; line-height: 1; }
 .sl-end__go { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.sl-end__go .lobby-play { flex: 1 1 200px; }
+.sl-end__go .lobby-play { flex: 1 1 140px; }
 
 /* A second way on, never red. */
 .sl-quiet {
@@ -155,12 +173,12 @@
 /* No miniature in the corner yet, so the headline may use the width. */
 .sl .lobby-hero__head { max-width: none; }
 .sl-lobby__art { padding: 14px 12px 8px; border-radius: 18px; background: rgba(0, 0, 0, 0.14); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
-.sl-lobby__blank { display: block; aspect-ratio: 360 / 232; }
-.sl-lobby__art .sl-chart { max-height: 220px; }
+.sl-lobby__blank { display: block; height: 170px; }
 .sl-lobby__result { margin: 0; font-size: 22px; font-weight: 800; text-transform: uppercase; line-height: 1.1; }
 @media (min-width: 760px) { .sl-lobby__go { padding-top: 0; } }
 
 .sl-how__art { display: flex; flex-direction: column; gap: 4px; }
+.sl-how__art .sl-plot { height: 230px; }
 .sl-how__caption { margin: 0; font-size: 13px; font-weight: 600; color: var(--muted); text-align: right; }
 .sl-how__rules { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4; color: var(--soft); }
 

@@ -62,3 +62,21 @@ export const CLUBS: Record<string, { name: string; wiki: string; seasonWiki?: st
 /** 2015 to "2015-16" (an id) and "2015/16" (what the page prints). */
 export const seasonId = (start: number) => `${start}-${String((start + 1) % 100).padStart(2, '0')}`;
 export const seasonLabel = (start: number) => `${start}/${String((start + 1) % 100).padStart(2, '0')}`;
+
+/**
+ * The line colour of each club, by short name: the shirt's main colour, one
+ * shade darker where it would vanish on white (yellows, sky blues). A club
+ * missing here draws in ink.
+ */
+export const INK = '#141210';
+export const COLOUR: Record<string, string> = {
+  Arsenal: '#EF0107', 'Aston Villa': '#7B1F3F', Barnsley: '#D71920', Birmingham: '#1C4FA0', Blackburn: '#1F8FD0', Blackpool: '#F26A1B',
+  Bolton: '#263C7C', Bournemouth: '#C8102E', Bradford: '#8B1A3A', Brentford: '#E30613', Brighton: '#0057B8', Burnley: '#6C1D45',
+  Cardiff: '#0070B5', Charlton: '#D4021D', Chelsea: '#034694', Coventry: '#4C9AD0', 'Crystal Palace': '#1B458F', Derby: '#4A4A4A',
+  Everton: '#003399', Fulham: '#3A3A3A', Huddersfield: '#0E63AD', Hull: '#F08A00', Ipswich: '#3A64A3', Leeds: '#1D428A',
+  Leicester: '#0B3FA8', Liverpool: '#C8102E', Luton: '#F78F1E', 'Man City': '#6CABDD', 'Man United': '#DA291C', Middlesbrough: '#E2231A',
+  Newcastle: '#6B6B6B', Norwich: '#00A650', "Nott'm Forest": '#DD0000', Oldham: '#1E5BA8', Portsmouth: '#2147B2', QPR: '#005BAC',
+  Reading: '#004494', 'Sheffield United': '#EE2737', 'Sheffield Weds': '#1F3A93', Southampton: '#D71920', Stoke: '#E03A3E',
+  Sunderland: '#EB172B', Swansea: '#666666', Swindon: '#D4141C', Tottenham: '#132257', Watford: '#C9A400', 'West Brom': '#122F67',
+  'West Ham': '#7A263A', Wigan: '#1B5FAF', Wimbledon: '#1B3F8B', Wolves: '#E3A400',
+};
