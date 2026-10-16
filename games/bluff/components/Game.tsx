@@ -1,12 +1,16 @@
 'use client';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import Pitch, { type Mark } from './Pitch';
+import Pitch, { Name, type Mark } from './Pitch';
 import Swap from './Swap';
+import Help from './Help';
+import Lives from './Lives';
+import TeamBadge from './TeamBadge';
+import { useCardDrag } from './useCardDrag';
 import { buildIndex, type SearchIndex } from '../../../src/lib/search/index';
 import { decodeNames, type NameEntry, type NameRow } from '../../../src/lib/chain/client';
 import { smooth } from '../../../src/lib/motion';
 import {
-  LIVES, dealt, guessed, nextRound, planted, rematch, sameAt, sheet, slotAt, suggestions, uncovered,
+  dealt, groupAt, guessed, helpSet, nextRound, planted, rematch, sameAt, sheet, slotAt, uncovered,
   type At, type Match,
 } from '../lib/match';
 import type { Named, Side } from '../lib/types';
@@ -30,6 +34,9 @@ export default function Game() {
   const [shake, setShake] = useState<At | null>(null);
   const [failed, setFailed] = useState(false);
   const dealing = useRef(false);
+
+  // A card dragged onto the pitch swaps that player out for it.
+  const dnd = useCardDrag((to, p) => { setAt(to); setFake(p); });
 
   useEffect(() => {
     const m = readMatch();
@@ -69,10 +76,11 @@ export default function Game() {
   useEffect(() => { setAt(null); setFake(null); setPick(null); }, [roundKey]);
 
   const side = match?.round.side ?? null;
-  const helpFor = useMemo(
-    () => (side && at && match?.options.help ? suggestions(side, at) : []),
+  // The round's suggestions, drawn once so a group gets the same ones whichever of its players is tapped.
+  const help = useMemo(
+    () => (side && match?.options.help ? helpSet(side) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [side?.key, at?.[0], at?.[1], match?.options.help],
+    [side?.key, match?.round.no, match?.options.help],
   );
 
   /** Every screen change glides (no teleports). */
@@ -115,11 +123,14 @@ export default function Game() {
     body = (
       <>
         <Ask head={`${bluffer}, plant a fake`} sub={`${guesser}, look away.`} />
-        <Sheet side={side} />
-        <Pitch lines={shown} mark={mark} onTap={(s) => { setAt(s); setFake(null); }} />
+        <Scoreline side={side} />
+        <Pitch lines={shown} team={side.team} mark={mark} over={dnd.over} onTap={(s) => { setAt(s); setFake(null); }} />
+        {help ? (
+          <Help set={help} group={at ? groupAt(side, at) : null} chosen={fake} onChoose={setFake} grab={dnd.grab} />
+        ) : null}
         {at ? (
-          <Swap side={side} slot={slotAt(side, at)!} help={helpFor} index={index} chosen={fake} onChoose={setFake} />
-        ) : <p className="bf-hint vt">Tap the player to take out.</p>}
+          <Swap side={side} slot={slotAt(side, at)!} index={index} chosen={fake} onChoose={setFake} />
+        ) : <p className="bf-hint vt">Tap the player to take out{help ? ', or drag a card onto them' : ''}.</p>}
         <button type="button" className="lobby-play display vt" disabled={!at || !fake} onClick={() => at && fake && go((m) => planted(m, at, fake))}>
           Pass the phone
         </button>
@@ -137,35 +148,37 @@ export default function Game() {
     const plant = round.plant!;
     const done = phase === 'reveal';
     const mark = (s: At): Mark => {
-      if (done && sameAt(s, plant.at)) return round.caught ? 'caught' : 'fake';
       if (round.wrong.some((w) => sameAt(w, s))) return 'real';
       if (!done && pick && sameAt(s, pick)) return 'picked';
       return null;
     };
-    const real = slotAt(side, plant.at)!;
-    const left = LIVES_LEFT(match);
+    const left = players[round.guesser]!.lives;
     body = (
       <>
         {done ? (
-          <Ask
-            head={round.caught ? `${guesser} spotted it` : `${bluffer} got away with it`}
-            sub={`${plant.fake.name} was the fake. ${real.name} played.`}
-          />
+          <Ask head={round.caught ? `${guesser} spotted it` : `${bluffer} got away with it`} />
         ) : (
           <Ask
             head={`${guesser}, find the fake`}
             sub={round.wrong.length ? `Real. ${left === 1 ? 'Last life.' : 'Go again.'}` : 'Tap the one who wasn’t there.'}
           />
         )}
-        <Sheet side={side} />
-        <Pitch lines={sheet(side, plant)} mark={mark} onTap={done ? null : setPick} shake={shake} />
+        <Scoreline side={side} />
+        <Pitch
+          lines={sheet(side, plant)}
+          team={side.team}
+          mark={mark}
+          onTap={done ? null : setPick}
+          shake={shake}
+          reveal={done ? { at: plant.at, real: slotAt(side, plant.at)!, caught: round.caught } : null}
+        />
         {!done ? (
           <button type="button" className="lobby-play display vt" disabled={!pick} onClick={guess}>That’s the fake</button>
         ) : match.winner !== null ? (
           <div className="bf-full vt">
             <p className="bf-full__head display">{players[match.winner]!.name} wins</p>
             <button type="button" className="lobby-play display" onClick={() => go(rematch)}>Rematch</button>
-            <button type="button" className="bf-quiet" onClick={leave}>New game</button>
+            <button type="button" className="bf-menu display" onClick={leave}>Back to main menu</button>
           </div>
         ) : (
           <button type="button" className="lobby-play display vt" onClick={() => go(nextRound)}>Next round</button>
@@ -178,33 +191,35 @@ export default function Game() {
     <>
       <Board match={match} />
       {body}
-      <footer className="bf-foot">
-        <button type="button" className="bf-quiet" onClick={() => { if (confirm('Abandon this match?')) leave(); }}>Abandon match</button>
-      </footer>
+      {dnd.drag ? (
+        <div className="bf-slot bf-slot--ghost" style={{ left: dnd.drag.x, top: dnd.drag.y, width: dnd.drag.w }} aria-hidden>
+          <Name name={dnd.drag.p.name} />
+        </div>
+      ) : null}
     </>
   );
 }
 
-const LIVES_LEFT = (m: Match) => m.players[m.round.guesser]!.lives;
-
-function Ask({ head, sub }: { head: string; sub: string }) {
+function Ask({ head, sub }: { head: string; sub?: string }) {
   return (
     <header className="bf-ask vt">
       <h1 className="bf-ask__head display">{head}</h1>
-      <p className="bf-ask__sub">{sub}</p>
+      {sub ? <p className="bf-ask__sub">{sub}</p> : null}
     </header>
   );
 }
 
-/** The match it is from: both players need it, so it's no clue. */
-function Sheet({ side }: { side: Side }) {
+/** The match it is from, crest or flag each side: both players need it, so it's no clue. */
+function Scoreline({ side }: { side: Side }) {
   const year = side.date.slice(0, 4);
   const comp = /\d{4}/.test(side.comp) ? side.comp : `${side.comp} ${year}`;
   return (
-    <p className="bf-sheet vt">
-      <b>{side.team}</b> {side.score ?? 'v'} {side.opponent}
+    <div className="bf-sheet vt">
+      <span className="bf-sheet__team"><TeamBadge team={side.team} size={30} /><b>{side.team}</b></span>
+      <span className="bf-sheet__score display">{side.score ?? 'v'}</span>
+      <span className="bf-sheet__team bf-sheet__team--opp"><b>{side.opponent}</b><TeamBadge team={side.opponent} size={30} /></span>
       <span className="bf-sheet__comp">{comp} · {side.formation}</span>
-    </p>
+    </div>
   );
 }
 
@@ -218,9 +233,7 @@ function Board({ match }: { match: Match }) {
         return (
           <li key={i} className={`bf-board__p${p.lives === 0 ? ' is-out' : ''}${role ? ' is-up' : ''}`}>
             <span className="bf-board__name display">{p.name}</span>
-            <span className="bf-lives" aria-label={`${p.lives} of ${LIVES} lives`}>
-              {Array.from({ length: LIVES }, (_, k) => <i key={k} className={k < p.lives ? 'is-on' : ''} />)}
-            </span>
+            <Lives lives={p.lives} />
             {role ? <span className="bf-board__role">{role}</span> : p.lives === 0 ? <span className="bf-board__role">out</span> : null}
           </li>
         );

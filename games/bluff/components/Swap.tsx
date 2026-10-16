@@ -6,17 +6,15 @@ import { canPlant } from '../lib/match';
 import type { Named, Side, Slot } from '../lib/types';
 
 /**
- * Who goes in. The slot being swapped, the faker's help (when it is on),
- * and a search over every player, as everywhere on the site: nothing is
- * listed until a name is typed.
+ * Who goes in. The slot being swapped and a search over every player, as
+ * everywhere on the site: nothing is listed until a name is typed. The
+ * faker's help is its own card tray (Help).
  */
 export default function Swap({
-  side, slot, help, index, chosen, onChoose,
+  side, slot, index, chosen, onChoose,
 }: {
   side: Side;
   slot: Slot;
-  /** Help the faker's picks for this slot; empty when it is off. */
-  help: Named[];
   index: SearchIndex<NameEntry> | null;
   chosen: Named | null;
   onChoose: (p: Named) => void;
@@ -33,13 +31,6 @@ export default function Swap({
   return (
     <section className="bf-swap vt" aria-label="The swap">
       <p className="bf-swap__out">Out: <b>{slot.name}</b>{chosen ? <> · In: <b>{chosen.name}</b></> : null}</p>
-      {help.length ? (
-        <div className="bf-swap__help">
-          {help.map((p) => (
-            <button key={p.id} type="button" className={`bf-chip ${chosen?.id === p.id ? 'is-on' : ''}`} onClick={() => choose(p)}>{p.name}</button>
-          ))}
-        </div>
-      ) : null}
       <div className="bf-search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
           <circle cx="11" cy="11" r="7" />

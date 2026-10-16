@@ -1,5 +1,4 @@
 import type { Named, Side, Slot } from './types';
-import { bucketsFor } from './lineup';
 
 /**
  * A match of Bluff, as the phone on the table keeps it.
@@ -21,7 +20,7 @@ export const MAX_LOSSES_PER_ROUND = 2;
 export interface Options {
   from: number;
   to: number;
-  /** "Help the faker": three plausible fakes for the slot picked. */
+  /** "Help the faker": a few plausible fakes for each part of the pitch (HELP_COUNT). */
   help: boolean;
 }
 
@@ -133,23 +132,35 @@ export function sheet(side: Side, plant: Round['plant']): Slot[][] {
   return side.lines.map((line, l) => line.map((s, k) => (sameAt([l, k], plant.at) ? { id: plant.fake.id, name: plant.fake.name, pos: s.pos } : s)));
 }
 
-/** Help the faker: `n` plausible fakes for a slot, picked from its best few. */
-export function suggestions(side: Side, at: At, n = 3, rand: () => number = Math.random): Named[] {
-  const slot = slotAt(side, at);
-  if (!slot) return [];
-  const seen = new Set<string>();
-  const pool: Named[] = [];
-  for (const b of bucketsFor(slot.pos)) {
-    for (const p of side.help[b] ?? []) {
-      if (seen.has(p.id) || !canPlant(side, p)) continue;
-      seen.add(p.id);
-      pool.push(p);
+/** The four places on the pitch the faker's help is given for. */
+export type Group = 'GK' | 'DEF' | 'MID' | 'FWD';
+export const GROUPS: readonly Group[] = ['GK', 'DEF', 'MID', 'FWD'];
+/** Suggestions per group, once a round: a keeper is too easy to guess with more. Jonno tunes these. */
+export const HELP_COUNT: Record<Group, number> = { GK: 1, DEF: 2, MID: 2, FWD: 2 };
+
+/** Which group a slot is in, by its line: keeper, back line, front line, anything between is midfield. */
+export function groupAt(side: Side, at: At): Group {
+  const last = side.lines.length - 1;
+  return at[0] === 0 ? 'GK' : at[0] === 1 ? 'DEF' : at[0] === last ? 'FWD' : 'MID';
+}
+
+/**
+ * Help the faker: the round's suggested fakes, drawn once so every slot in a
+ * group gets the same ones. Picked from each group's best few, never someone
+ * in the XI, and nobody twice.
+ */
+export function helpSet(side: Side, rand: () => number = Math.random): Record<Group, Named[]> {
+  const used = new Set<string>();
+  const out = { GK: [], DEF: [], MID: [], FWD: [] } as Record<Group, Named[]>;
+  for (const g of GROUPS) {
+    const n = HELP_COUNT[g];
+    const best = (side.help[g] ?? []).filter((p) => canPlant(side, p) && !used.has(p.id)).slice(0, n * 2);
+    for (let i = best.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [best[i], best[j]] = [best[j]!, best[i]!];
     }
+    out[g] = best.slice(0, n);
+    for (const p of out[g]) used.add(p.id);
   }
-  const best = pool.slice(0, n * 2);
-  for (let i = best.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [best[i], best[j]] = [best[j]!, best[i]!];
-  }
-  return best.slice(0, n);
+  return out;
 }

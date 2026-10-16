@@ -272,6 +272,27 @@ const FLAGS: Readonly<Record<string, () => ReactNode>> = {
   Q736: () => horizontal(['#ffdd00', '#034ea2', '#ed1c24'], [2, 1, 1]), // Ecuador
   Q717: () => horizontal(['#ffcc00', '#00247d', '#cf142b']),        // Venezuela
   Q800: () => horizontal(['#002b7f', '#ffffff', '#ce1126', '#ffffff', '#002b7f'], [1, 1, 2, 1, 1]), // Costa Rica
+  Q230: () => (                                                     // Georgia
+    <>
+      <rect width={W} height={H} fill="#ffffff" />
+      <rect x={13} y={0} width={4} height={H} fill="#e8112d" />
+      <rect x={0} y={8} width={W} height={4} fill="#e8112d" />
+      {[[7, 4], [23, 4], [7, 16], [23, 16]].map(([x, y]) => (
+        <g key={`${x}${y}`} fill="#e8112d">
+          <rect x={x! - 0.7} y={y! - 2} width={1.4} height={4} />
+          <rect x={x! - 2} y={y! - 0.7} width={4} height={1.4} />
+        </g>
+      ))}
+    </>
+  ),
+  Q26: () => (                                                      // Northern Ireland (the Ulster banner)
+    <>
+      {cross('#ffffff', '#cf142b', 13, 4)}
+      <circle cx={15} cy={10} r={3.6} fill="#ffffff" />
+      <circle cx={15} cy={10} r={1.8} fill="#cf142b" />
+    </>
+  ),
+  Q36704: () => horizontal(['#0c4076', '#ffffff', '#c6363c']),      // Yugoslavia
   Q766: () => (                                                     // Jamaica
     <>
       <rect width={W} height={H} fill="#009b3a" />
@@ -302,6 +323,19 @@ function Roundel({ text, colour }: { text: string; colour: string }) {
 
 const initials = (label: string) =>
   label.replace(/^(an?|the)\s+/i, '').split(/\s+/).map((w) => w[0] ?? '').join('').slice(0, 3).toUpperCase();
+
+export const hasFlag = (qid: string) => qid in FLAGS;
+
+/** A nation's flag by QID, unframed at `width` (it is 3:2); null when there is no drawing for it. */
+export function Flag({ qid, width = W }: { qid: string; width?: number }) {
+  const draw = FLAGS[qid];
+  if (!draw) return null;
+  return (
+    <svg aria-hidden width={width} height={(width * H) / W} viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', flexShrink: 0 }}>
+      {draw()}
+    </svg>
+  );
+}
 
 export default function ClueBadge({ clue, colour }: {
   clue: SlotClue;

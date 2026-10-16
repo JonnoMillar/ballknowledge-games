@@ -5,6 +5,7 @@ import Words from '../../../components/Words';
 import { GAMES } from '../../../src/games';
 import { smooth } from '../../../src/lib/motion';
 import Setup from './Setup';
+import HowDemo from './HowDemo';
 import { newMatch, type Match, type Options } from '../lib/match';
 import { readMatch, readSaved, writeMatch, writeSaved, type Saved } from '../lib/store';
 
@@ -47,8 +48,8 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
         <section className="lobby-hero lobby__wide" style={{ '--ground': GROUND } as CSSProperties}>
           <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-bluff' }} aria-hidden />
           <div className="lobby-hero__ask vt">
-            <span className="lobby-tag">Multiplayer</span>
-            <h1 className="lobby-hero__head display"><Words text="Who’s the ringer?" /></h1>
+            <span className="bf-eyebrow bf-eyebrow--light">Multiplayer</span>
+            <h1 className="lobby-hero__head display"><Words text="Can you find the mole?" /></h1>
             <p className="lobby-hero__sub">A real team sheet with one player swapped. Two or more of you, one phone.</p>
           </div>
           <div className="lobby-hero__go">
@@ -58,12 +59,8 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
         </section>
 
         <section className="lobby-card lobby__wide bf-how vt">
-          <span className="lobby-tag lobby-tag--paper">How it goes</span>
-          <ol className="bf-how__rules">
-            <li>One of you gets a real starting XI and swaps any one player for anyone.</li>
-            <li>Pass the phone. The other taps the one they think is fake.</li>
-            <li>A wrong tap costs a life, and you go again. Lose all your lives and you’re out.</li>
-          </ol>
+          <h2 className="bf-eyebrow">How it goes</h2>
+          <HowDemo />
           <p className="bf-how__note">{count} team sheets from finals and knockout games, {years.first} to {years.last}, from Wikipedia.</p>
         </section>
       </main>

@@ -39,14 +39,7 @@
 }
 .bf-setup__add:hover { border-style: solid; border-color: #fff; }
 .bf-setup__opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 0; }
-.bf-setup__label { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.86; }
-.bf-seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: rgba(0, 0, 0, 0.16); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
-.bf-seg__opt {
-  appearance: none; border: 0; background: none; padding: 7px 14px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 700;
-  color: #fff; cursor: pointer;
-}
-.bf-seg__opt.is-on { background: #fff; color: var(--ink); }
-.bf-seg__opt:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.bf-setup__label { display: inline-flex; align-items: center; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.86; }
 .bf-years { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
 .bf-years select {
   appearance: none; border: 0; border-radius: 999px; padding: 7px 14px; font: inherit; font-size: 15px; font-weight: 700;
@@ -55,10 +48,7 @@
 .bf-years select:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .bf-lobby__resume { align-self: center; color: #fff; font-size: 15px; font-weight: 600; text-underline-offset: 3px; }
 
-.bf-how__rules { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 16px; line-height: 1.4; }
-.bf-how__rules li::marker { font-family: var(--font-display), Impact, sans-serif; font-weight: 800; color: var(--bf); }
 .bf-how__note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
-@media (min-width: 760px) { .bf-how__rules { font-size: 17px; gap: 14px; } }
 
 /* ── THE MATCH ──────────────────────────────────────────────────────── */
 .bf-main {
@@ -66,13 +56,6 @@
   display: flex; flex-direction: column; gap: 14px;
 }
 .bf-loading { text-align: center; color: var(--muted); padding: 40px 0; }
-.bf-foot { display: flex; justify-content: center; padding-top: 8px; }
-.bf-quiet {
-  appearance: none; border: 0; background: none; padding: 8px 12px; font: inherit; font-size: 13px;
-  color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
-}
-.bf-quiet:hover { color: var(--ink); }
-
 /* Names and lives. */
 .bf-board { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
 .bf-board__p {
@@ -85,17 +68,10 @@
 .bf-board__name { font-size: 19px; font-weight: 800; line-height: 1; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bf-board__role { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--bf); }
 .bf-board__p.is-out .bf-board__role { color: var(--muted); }
-.bf-lives { display: inline-flex; gap: 4px; }
-.bf-lives i { width: 11px; height: 11px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--rule-strong); transition: background var(--t-slow) var(--ease-out); }
-.bf-lives i.is-on { background: var(--bf); box-shadow: none; }
-
 .bf-ask { display: flex; flex-direction: column; gap: 4px; }
 .bf-ask__head { margin: 0; font-size: 30px; font-weight: 800; line-height: 0.95; text-transform: uppercase; }
 .bf-ask__sub { margin: 0; font-size: 15px; color: var(--muted); }
 .bf-hint { margin: 0; text-align: center; font-size: 15px; color: var(--muted); }
-.bf-sheet { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; font-size: 16px; }
-.bf-sheet__comp { flex-basis: 100%; font-size: 13px; color: var(--muted); }
-
 /* The pitch: the game's own ground, attacking up, keeper at the bottom. */
 .bf-pitch {
   position: relative;
@@ -153,13 +129,6 @@ button.bf-slot:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 .bf-swap { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 18px; background: var(--sticker); box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 10px 24px rgba(20, 18, 16, 0.08); }
 .bf-swap__out { margin: 0; font-size: 15px; color: var(--muted); }
 .bf-swap__out b { color: var(--ink); }
-.bf-swap__help { display: flex; flex-wrap: wrap; gap: 6px; }
-.bf-chip {
-  appearance: none; border: 0; border-radius: 999px; padding: 8px 13px; font: inherit; font-size: 14px; font-weight: 600;
-  background: var(--page); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--rule); cursor: pointer;
-}
-.bf-chip:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
-.bf-chip.is-on { background: var(--gold); box-shadow: none; }
 .bf-search { display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 12px; background: var(--page); color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--rule); }
 .bf-search:focus-within { box-shadow: inset 0 0 0 2px var(--bf); }
 .bf-search input { flex-grow: 1; min-width: 0; border: 0; background: none; padding: 12px 0; font: inherit; font-size: 17px; color: var(--ink); }
@@ -188,3 +157,213 @@ button.bf-slot:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
 .bf-full { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
 .bf-full__head { margin: 0; text-align: center; font-size: 36px; font-weight: 800; text-transform: uppercase; }
+
+/* ── MINI TITLES: a short rule and small caps, not a pill ───────────── */
+.bf-eyebrow {
+  display: flex; align-items: center; gap: 10px; margin: 0;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.bf-eyebrow::before { content: ''; flex: none; width: 22px; height: 2px; border-radius: 2px; background: var(--bf); }
+.bf-eyebrow--light { color: rgba(255, 255, 255, 0.9); }
+.bf-eyebrow--light::before { background: rgba(255, 255, 255, 0.9); }
+
+/* ── HELP THE FAKER: the switch, its info, its note ─────────────────── */
+.bf-switch {
+  appearance: none; border: 0; padding: 0; flex: none; position: relative; width: 52px; height: 30px; border-radius: 999px; cursor: pointer;
+  background: rgba(0, 0, 0, 0.28); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+  transition: background 260ms var(--ease-out), box-shadow 260ms var(--ease-out);
+}
+.bf-switch__knob {
+  position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 320ms cubic-bezier(0.3, 1.35, 0.5, 1), background 260ms var(--ease-out), width 140ms var(--ease-out);
+}
+.bf-switch.is-on { background: #fff; box-shadow: none; }
+.bf-switch.is-on .bf-switch__knob { transform: translateX(22px); background: var(--bf); }
+.bf-switch:active .bf-switch__knob { width: 28px; }
+.bf-switch.is-on:active .bf-switch__knob { transform: translateX(18px); }
+.bf-switch:focus-visible, .bf-info:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.bf-info {
+  appearance: none; flex: none; width: 20px; height: 20px; margin-left: 8px; padding: 0; border-radius: 50%; cursor: pointer;
+  border: 1.5px solid rgba(255, 255, 255, 0.75); background: none; color: #fff;
+  font: italic 700 12px/1 Georgia, 'Times New Roman', serif; display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
+}
+.bf-info:hover, .bf-info[aria-expanded='true'] { background: #fff; color: var(--bf); }
+.bf-tip {
+  display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -12px;
+  transition: grid-template-rows 280ms var(--ease-out), opacity 220ms var(--ease-out), margin-top 280ms var(--ease-out);
+}
+.bf-tip > p { overflow: hidden; margin: 0; font-size: 13.5px; line-height: 1.45; color: rgba(255, 255, 255, 0.92); }
+.bf-tip.is-open { grid-template-rows: 1fr; opacity: 1; margin-top: -4px; }
+
+/* ── HOW IT GOES: a round playing itself ────────────────────────────── */
+.hd { display: grid; gap: 22px; align-items: center; }
+@media (min-width: 760px) { .hd { grid-template-columns: 250px minmax(0, 1fr); gap: 44px; } }
+.hd__phone {
+  justify-self: center; width: 236px; padding: 10px; border-radius: 30px; background: #1c1a17;
+  box-shadow: 0 0 0 2px #3a3733, 0 18px 34px rgba(20, 18, 16, 0.28); display: flex; flex-direction: column; gap: 8px;
+}
+.hd__top { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 12px; background: var(--sticker); color: var(--ink); }
+.hd__who { font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.hd__stage { position: relative; }
+.hd__pitch {
+  position: relative; height: 272px; padding: 8px 5px; border-radius: 16px; display: flex; flex-direction: column-reverse; justify-content: space-around;
+  background: radial-gradient(120% 80% at 50% 0%, var(--bf-lit) 0%, var(--bf) 55%, var(--bf-deep) 100%);
+}
+.hd__line { display: flex; justify-content: space-evenly; gap: 4px; }
+.hd__card {
+  position: relative; flex: 0 1 46px; min-width: 0; padding: 6px 1px; border-radius: 6px; text-align: center; white-space: nowrap; overflow: hidden;
+  font-family: var(--font-display), Impact, sans-serif; font-size: 8px; font-weight: 800; letter-spacing: 0.01em; line-height: 1; text-transform: uppercase;
+  background: var(--sticker); color: var(--ink); box-shadow: 0 1.5px 0 rgba(0, 0, 0, 0.25);
+  transition: background 300ms var(--ease-out), opacity 300ms var(--ease-out);
+}
+.hd__card--target { display: grid; place-items: center; overflow: visible; }
+.hd__card--target > span { grid-area: 1 / 1; }
+.hd__b, .hd__c { opacity: 0; }
+.hd__tag {
+  position: absolute; left: 50%; top: 5%; padding: 2px 6px; border-radius: 5px; background: var(--ink); color: #fff; white-space: nowrap;
+  font-size: 8px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; box-shadow: 0 0 0 1.5px #fff; opacity: 0; transform: translate(-50%, 4px);
+}
+.hd__tap {
+  position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: rgba(255, 255, 255, 0.35); box-shadow: 0 0 0 2px #fff; left: 50%; top: 50%;
+}
+.hd__cover {
+  position: absolute; inset: 0; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #fff;
+  background: radial-gradient(120% 80% at 50% 0%, var(--bf-lit) 0%, var(--bf) 55%, var(--bf-deep) 100%); opacity: 0; pointer-events: none;
+  transition: opacity 320ms var(--ease-out);
+}
+.hd__cover .display { font-size: 17px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.hd__cover svg { animation: hd-pass 1.4s var(--ease-out) infinite alternate; }
+
+/* Step 0: the swap. The card is picked, then its name turns into the fake's, in gold. */
+.hd__phone[data-step='0'] .hd__card--target { animation: hd-pick 1.2s var(--ease-out) both, hd-gold 320ms 1.2s forwards; }
+.hd__phone[data-step='0'] .hd__a { animation: hd-out 240ms 1.2s forwards; }
+.hd__phone[data-step='0'] .hd__b { animation: hd-in 240ms 1.2s forwards; }
+.hd__phone:not([data-step='0']) .hd__a { opacity: 0; }
+.hd__phone:not([data-step='0']) .hd__b { opacity: 1; }
+/* Step 1: the cover. */
+.hd__phone[data-step='1'] .hd__cover { opacity: 1; }
+/* Step 2: a wrong tap on a real player, who dims. */
+.hd__phone[data-step='2'] .hd__card--wrong { opacity: 0.45; transition-delay: 0.85s; }
+.hd__phone[data-step='2'] .hd__tap { left: 20%; top: 38%; animation: hd-tap 1.5s 0.25s var(--ease-out) both; }
+/* Step 3: a tap on the fake; the card turns over to the real player, the fake kept on a tab. */
+.hd__phone[data-step='3'] .hd__card--wrong { opacity: 0.45; }
+.hd__phone[data-step='3'] .hd__tap { left: 50%; top: 15%; animation: hd-tap 1.1s 0.2s var(--ease-out) both; }
+.hd__phone[data-step='3'] .hd__card--target { background: var(--green); color: #fff; animation: hd-turn 700ms 1.2s var(--ease-out) both; }
+.hd__phone[data-step='3'] .hd__b { animation: hd-out 10ms 1.55s forwards; }
+.hd__phone[data-step='3'] .hd__c { color: var(--ink); animation: hd-in 10ms 1.55s forwards; }
+.hd__phone[data-step='3'] .hd__tag { left: 50%; top: 3%; animation: hd-tag 360ms 1.8s var(--ease-out) forwards; }
+
+@keyframes hd-pick { 0%, 100% { box-shadow: 0 1.5px 0 rgba(0, 0, 0, 0.25); } 25%, 85% { box-shadow: 0 0 0 2px var(--gold), 0 4px 8px rgba(0, 0, 0, 0.25); transform: translateY(-2px); } }
+@keyframes hd-gold { to { background: var(--gold); } }
+@keyframes hd-out { to { opacity: 0; } }
+@keyframes hd-in { to { opacity: 1; } }
+@keyframes hd-tap { 0% { opacity: 0; transform: scale(1.7); } 25% { opacity: 1; transform: scale(1); } 40% { transform: scale(0.7); } 55% { transform: scale(1); } 85% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes hd-turn { 0% { transform: scaleX(1); } 50% { transform: scaleX(0); background: var(--green); } 51% { background: var(--sticker); } 100% { transform: scaleX(1); background: var(--sticker); } }
+@keyframes hd-tag { from { opacity: 0; transform: translate(-50%, 6px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes hd-pass { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+
+.hd__steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.hd__step {
+  appearance: none; position: relative; width: 100%; display: flex; align-items: flex-start; gap: 14px; padding: 10px 12px; border: 0; border-radius: 14px; overflow: hidden;
+  background: none; text-align: left; font: inherit; color: var(--muted); cursor: pointer;
+  transition: background var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+}
+.hd__step:hover { background: rgba(20, 18, 16, 0.04); }
+.hd__step.is-on { background: var(--page); box-shadow: inset 0 0 0 1.5px var(--rule); }
+.hd__step:focus-visible { outline: 3px solid var(--bf); outline-offset: 2px; }
+.hd__no {
+  flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; font-weight: 800;
+  box-shadow: inset 0 0 0 1.5px var(--rule-strong); transition: background var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
+}
+.hd__step.is-on .hd__no { background: var(--bf); color: #fff; box-shadow: none; }
+.hd__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-top: 4px; }
+.hd__text b { font-size: 16px; color: var(--ink); }
+.hd__text span { max-height: 0; opacity: 0; overflow: hidden; font-size: 14px; line-height: 1.4; transition: max-height 300ms var(--ease-out), opacity 240ms var(--ease-out); }
+.hd__step.is-on .hd__text span { max-height: 5em; opacity: 1; }
+.hd__bar { position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; background: var(--bf); transform-origin: left; animation: hd-progress linear forwards; }
+@keyframes hd-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ── HEARTS ─────────────────────────────────────────────────────────── */
+.bf-lives { display: inline-flex; gap: 3px; }
+.bf-heart { position: relative; display: inline-block; flex: none; }
+.bf-heart svg { display: block; width: 100%; height: 100%; fill: transparent; stroke: var(--rule-strong); stroke-width: 2; stroke-linejoin: round; transition: fill 420ms var(--ease-out) 120ms, stroke 420ms var(--ease-out) 120ms; }
+.bf-heart.is-on svg { fill: var(--bf); stroke: var(--bf); }
+.bf-heart.is-lost { animation: bf-heart-pop 720ms var(--ease-out) 150ms; }
+.bf-heart .bf-heart__ghost { position: absolute; inset: 0; fill: var(--bf); stroke: none; pointer-events: none; transition: none; animation: bf-heart-float 820ms var(--ease-out) 150ms forwards; }
+@keyframes bf-heart-pop { 0% { transform: scale(1); } 18% { transform: scale(1.4); } 36% { transform: scale(0.85) rotate(-10deg); } 56% { transform: scale(1.08) rotate(7deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes bf-heart-float { from { opacity: 0.9; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-22px) scale(1.7); } }
+
+/* ── THE SCORELINE: crest or flag each side ─────────────────────────── */
+.bf-sheet { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; column-gap: 10px; row-gap: 3px; }
+.bf-sheet__team { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 16px; line-height: 1.1; }
+.bf-sheet__team--opp { justify-content: flex-end; text-align: right; }
+.bf-sheet__team b { font-weight: 700; overflow-wrap: anywhere; }
+.bf-sheet__score { font-size: 28px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.bf-sheet__comp { grid-column: 1 / -1; text-align: center; font-size: 13px; color: var(--muted); }
+.bf-flag { display: inline-flex; flex: none; overflow: hidden; border-radius: 3px; box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.2), 0 1px 3px rgba(20, 18, 16, 0.2); }
+
+/* ── THE PITCH, extras: the crest, dragging, the turned card ────────── */
+.bf-pitch { padding-top: 66px; min-height: 480px; }
+.bf-pitch__crest {
+  position: absolute; top: 9px; left: 50%; transform: translateX(-50%); min-width: 54px; height: 54px; padding: 0 8px; border-radius: 999px; background: #fff;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+@media (min-width: 760px) { .bf-pitch { min-height: 570px; } }
+.bf-slot.is-over { transform: translateY(-3px) scale(1.07); box-shadow: 0 0 0 3px var(--gold), 0 10px 18px rgba(0, 0, 0, 0.28); }
+.bf-slot--ghost { position: fixed; z-index: 60; flex: none; pointer-events: none; transform: translate(-50%, -62%) rotate(-4deg) scale(1.08); box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35); }
+
+.bf-pitch__line.has-tab { margin-top: 24px; }
+.bf-flip { position: relative; flex: 0 1 92px; min-width: 0; perspective: 700px; }
+.bf-flip__in {
+  position: relative; display: block; transform-style: preserve-3d; transform: rotateY(180deg);
+  animation: bf-flip 700ms var(--ease-out) 250ms backwards;
+}
+@keyframes bf-flip { from { transform: rotateY(0deg); } }
+.bf-flip__face { backface-visibility: hidden; -webkit-backface-visibility: hidden; width: 100%; }
+.bf-flip__back { position: absolute; inset: 0; transform: rotateY(180deg); box-shadow: 0 0 0 3px #fff, 0 8px 16px rgba(0, 0, 0, 0.25); }
+.bf-flip__tab {
+  position: absolute; left: 50%; bottom: calc(100% + 7px); transform: translateX(-50%); max-width: 170%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 3px 8px; border-radius: 6px; background: var(--ink); color: #fff; box-shadow: 0 0 0 2px #fff;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase;
+  animation: bf-tab-in 380ms var(--ease-out) 800ms backwards;
+}
+.bf-flip__tab.is-caught { background: var(--green); }
+.bf-flip__tab.is-start { left: 0; transform: none; animation-name: bf-tab-edge; }
+.bf-flip__tab.is-end { left: auto; right: 0; transform: none; animation-name: bf-tab-edge; }
+@keyframes bf-tab-in { from { opacity: 0; transform: translate(-50%, 8px); } }
+@keyframes bf-tab-edge { from { opacity: 0; transform: translateY(8px); } }
+@media (min-width: 760px) { .bf-flip { flex-basis: 100px; } }
+@media (prefers-reduced-motion: reduce) {
+  .bf-flip__in, .bf-flip__tab, .bf-heart.is-lost, .hd__cover svg { animation: none; }
+  .bf-heart .bf-heart__ghost { display: none; }
+}
+
+/* ── THE SUGGESTED CARDS: the pitch's own white cards, on a strip of the pitch ── */
+.bf-help {
+  display: flex; flex-direction: column; gap: 12px; padding: 14px 14px 16px; border-radius: 18px; color: #fff;
+  background: radial-gradient(120% 80% at 50% 0%, var(--bf-lit) 0%, var(--bf) 55%, var(--bf-deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 0 var(--bf-deep), 0 10px 22px rgba(20, 18, 16, 0.14);
+}
+.bf-help__groups { display: flex; flex-wrap: wrap; gap: 14px 22px; }
+.bf-help__group { display: flex; flex-direction: column; gap: 6px; animation: bf-help-in 240ms var(--ease-out); }
+@keyframes bf-help-in { from { opacity: 0; transform: translateY(4px); } }
+.bf-help__label { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); }
+.bf-help__cards { display: flex; gap: 8px; }
+.bf-slot--help { flex: 0 0 92px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.bf-slot--help:active { cursor: grabbing; }
+@media (min-width: 760px) { .bf-slot--help { flex-basis: 100px; } }
+
+/* ── THE END: Rematch is the red button, the way out is a quiet one ─── */
+.bf-menu {
+  appearance: none; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 16px;
+  background: var(--sticker); color: var(--ink); font-size: 18px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  box-shadow: inset 0 0 0 1.5px var(--rule-strong), 0 3px 0 rgba(20, 18, 16, 0.08);
+  transition: box-shadow var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) { .bf-menu:hover { box-shadow: inset 0 0 0 1.5px var(--ink), 0 3px 0 rgba(20, 18, 16, 0.12); } }
+.bf-menu:active { transform: translateY(1px); }
+.bf-menu:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }

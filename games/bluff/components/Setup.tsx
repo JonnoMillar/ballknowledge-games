@@ -21,6 +21,7 @@ export default function Setup({
   // Each row keeps its own key, so removing one lets the others slide up.
   const [rows, setRows] = useState(() => (initialNames.length >= 2 ? initialNames : ['', '']).map((name, i) => ({ id: i, name })));
   const [opts, setOpts] = useState<Options>(initialOptions);
+  const [tip, setTip] = useState(false);
   const names = rows.map((r) => r.name);
   const all = Array.from({ length: years.last - years.first + 1 }, (_, i) => years.first + i);
 
@@ -77,22 +78,31 @@ export default function Setup({
         </span>
       </div>
 
-      <div className="bf-setup__opt vt" role="radiogroup" aria-label="Help the faker">
-        <span className="bf-setup__label">Help the faker</span>
-        <div className="bf-seg">
-          {[true, false].map((on) => (
-            <button
-              key={String(on)}
-              type="button"
-              role="radio"
-              aria-checked={opts.help === on}
-              className={`bf-seg__opt ${opts.help === on ? 'is-on' : ''}`}
-              onClick={() => setOpts((o) => ({ ...o, help: on }))}
-            >
-              {on ? 'On' : 'Off'}
-            </button>
-          ))}
-        </div>
+      <div className="bf-setup__opt vt">
+        <span className="bf-setup__label">
+          Help the faker
+          <button
+            type="button"
+            className="bf-info"
+            aria-expanded={tip}
+            aria-controls="bf-help-tip"
+            aria-label="What does Help the faker do?"
+            onClick={() => setTip((t) => !t)}
+          >i</button>
+        </span>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={opts.help}
+          aria-label="Help the faker"
+          className={`bf-switch${opts.help ? ' is-on' : ''}`}
+          onClick={() => setOpts((o) => ({ ...o, help: !o.help }))}
+        >
+          <span className="bf-switch__knob" />
+        </button>
+      </div>
+      <div className={`bf-tip${tip ? ' is-open' : ''}`} id="bf-help-tip" role="note">
+        <p>Suggests a few players the faker can swap in: one keeper, two each for defence, midfield and attack. Off, they pick anyone they like.</p>
       </div>
 
       <button type="submit" className="lobby-play display vt">Kick off</button>

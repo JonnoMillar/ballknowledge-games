@@ -1,6 +1,6 @@
 # Odd Man Out — state of play
 
-**Updated:** 2026-10-15. Route `/odd-man-out` (front page) and
+**Updated:** 2026-10-16 (playtest round 1 changes below). Route `/odd-man-out` (front page) and
 `/odd-man-out/play` (the match). Internal id and folder `bluff`, its first
 working name, like Spoofed's `itk`. Branch `claude/blissful-lewin-d41d05`
 (worktree `.claude/worktrees/blissful-lewin-d41d05`), cut from `main` at
@@ -119,7 +119,7 @@ ships it. Re-run when a final is played (manual for now; see below).
 |---|---|
 | `lib/wiki.ts` | Wikitext to matches: the three box styles, `{{abbr}}` codes, `{{nowrap}}`, multi-line footnotes, kit titles or headings for national sides. |
 | `lib/lineup.ts` | Position codes to lines (wingers with an AM else up front; wing-backs in midfield behind a back three), left on the left, formation, pool position classes. |
-| `lib/match.ts` | The reducer: `LIVES` = 3, `MAX_LOSSES_PER_ROUND` = 2 (tune here), deal, plant, cover, guess, reveal, roles rotate past players who are out, rematch, `suggestions()` for Help the faker. |
+| `lib/match.ts` | The reducer: `LIVES` = 3, `MAX_LOSSES_PER_ROUND` = 2 (tune here), deal, plant, cover, guess, reveal, roles rotate past players who are out, rematch, `helpSet()` and `groupAt()` for Help the faker. |
 | `lib/store.ts` | Match and last names/options in localStorage. |
 | `server.ts`, `app/api/odd-man-out/deal` | A side in the year range the phone hasn't seen. |
 | `components/Lobby.tsx`, `Setup.tsx` | Front page on the kit: names 2 to 6, year range (native selects), Help the faker on/off, Kick off. |
@@ -163,3 +163,31 @@ browser (the reducer tests cover the rotation).
 the faker should pay when caught first time; `MIN_MEDIAN_FAME`; the hub
 miniature when wanted (Higgsfield, his yes first); then merge to `main`
 (root HANDOFF gets one games-index line).
+
+## Playtest round 1 (Jonno, 2026-10-16)
+
+Done: front-page headline "Can you find the mole?" (the game's name, hub
+tile and masthead are still Odd Man Out, say if they should change);
+crest or flag each side of the scoreline and on the pitch's halfway line
+(`lib/team.ts` maps every team in the data to a club id or nation id, tests
+hold all 81; `components/TeamBadge.tsx`; flags are `ClueBadge`'s drawn ones,
+now exported as `Flag`, plus Georgia, Northern Ireland, Yugoslavia).
+Help the faker is now one keeper and two each for defence, midfield and
+attack, drawn once a round (`HELP_COUNT`), so every player in a group sees
+the same ones; shown as the pitch's own white cards (`Help.tsx`), tap or
+drag onto the pitch (`useCardDrag.ts`, pointer events, works on touch).
+The reveal turns the fake's card over to the real player's, the fake kept
+on a tab above it. Abandon match and New game gone: the end has Rematch
+(red) and Back to main menu (plain button, `bf-menu`, goes to the front
+page; the masthead Back is the way out mid-match). Help the faker is a
+sliding switch with an (i) that opens a short note. Mini titles are an
+eyebrow (a short rule and small caps, `bf-eyebrow`), not pills. How it
+goes is a looping demo phone (`HowDemo.tsx`) with four steps to jump to.
+Lives are hearts (`Lives.tsx`) in the game's teal, not red: red stays the
+brand and the action. A lost heart pops and floats away.
+
+Open: Back to main menu goes to the front page, not the site hub. The
+search results are not draggable, only the suggested cards. Dev overlay
+shows "Transition was skipped" from `smooth()` in `src/lib/motion.ts`
+(shared, unhandled `t.finished` rejection, harmless; not touched on this
+branch).

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  LIVES, MAX_LOSSES_PER_ROUND, canPlant, dealt, guessed, newMatch, nextRound, planted, rematch, sheet, suggestions, uncovered,
+  LIVES, MAX_LOSSES_PER_ROUND, canPlant, dealt, guessed, newMatch, nextRound, planted, rematch, groupAt, helpSet, sheet, uncovered,
   type At, type Match,
 } from '../lib/match';
 import type { Side } from '../lib/types';
@@ -114,15 +114,29 @@ describe('the match', () => {
 });
 
 describe('help the faker', () => {
-  it('offers fakes for the slot\'s position, never someone in the XI', () => {
-    const got = suggestions(side(), AT, 3, () => 0);
-    expect(got).toHaveLength(3);
-    expect(got.map((p) => p.id)).not.toContain('m2');
-    expect(got.every((p) => ['h1', 'h2', 'h3'].includes(p.id))).toBe(true);
+  it('names the group of a slot by its line', () => {
+    expect(([[0, 0], [1, 2], [2, 0], [3, 1]] as At[]).map((at) => groupAt(side(), at))).toEqual(['GK', 'DEF', 'MID', 'FWD']);
+  });
+
+  it('draws a fixed few per group, never someone in the XI', () => {
+    const got = helpSet(side(), () => 0);
+    expect(got.MID).toHaveLength(2);
+    expect(got.MID.map((p) => p.id)).not.toContain('m2');
+    expect(got.MID.every((p) => ['h1', 'h2', 'h3'].includes(p.id))).toBe(true);
+    expect(got.FWD.map((p) => p.id)).toEqual(['h4']);
+  });
+
+  it('gives the keeper one and the rest two when there is enough', () => {
+    const rich = side();
+    const some = (p: string) => [1, 2, 3, 4, 5].map((i) => ({ id: `${p}-pick-${i}`, name: `Pick ${p}${i}` }));
+    rich.help = { GK: some('g'), DEF: some('d'), MID: some('m'), FWD: some('f') };
+    const got = helpSet(rich);
+    expect(Object.values(got).map((l) => l.length)).toEqual([1, 2, 2, 2]);
+    const ids = Object.values(got).flat().map((p) => p.id);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('offers what there is', () => {
-    expect(suggestions(side(), [3, 0]).map((p) => p.id)).toEqual(['h4']);
-    expect(suggestions(side(), [0, 0])).toEqual([]);
+    expect(helpSet(side()).GK).toEqual([]);
   });
 });
