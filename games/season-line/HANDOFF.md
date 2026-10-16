@@ -150,27 +150,28 @@ board drops the empty guess rows; windows under 700px high tighten so the
 whole board stays on screen (checked 1280x560, 1366x768, 390x740). The
 unused mini chart mode is gone.
 
-## Merged to main (2026-10-16) and what is next
+## Hub tile and icon (2026-10-16)
 
-Merged to `main`. It is **not on the hub**: no entry in `src/games.ts`, no
-credits line. The route works (`/season-line`) but nothing links to it.
+On the hub. Icon: `public/hub/season-line.webp`, one Higgsfield generation
+(gpt_image_2_5, job `6bfa35fc-beb2-405c-86e6-1843fdbd6e78`, Chain reference)
+and one cut-out (`04f17760-6e43-4a63-8663-db9b7da74ee5`), cropped with the
+standard box. Jonno steered the concept: a cream wool cord in a sharp
+zigzag, white axis lines in the disc's corner (two lines, no arc), and a
+mustard shield with a `?` at the end of the line (the game's hidden-club
+disc, as a club-badge template). First try (a smooth cord, round `?` disc)
+read as a worm. `GAMES` entry in `src/games.ts` (line "Name that season",
+tag Daily, ground `#1F5F57`, `dailies: ['season-line']`); credits line on
+`/credits` (football-data.co.uk, Wikipedia, the lion); root `HANDOFF.md` row
+updated. Checked: typecheck, 1,777 tests, prod build, hub in the browser
+at 1366x768.
 
-**Next: the hub icon.** Every tile has a Higgsfield cut-out tabletop
-miniature in `public/hub/<id>.webp` (see the root `HANDOFF.md`, Games, and
-the four existing ones for the style Jonno chose 2026-10-14). Higgsfield costs
-credits: ask Jonno first, and agree the picture before generating. Working
-ground colour is `#1F5F57` (`GROUND` in `components/Lobby.tsx`); the hub tile
-and the front page hero share it. Then: add the `GAMES` entry (`id:
-'season-line'`, `href: '/season-line'`, `dailies: ['season-line']`, the board
-already calls `markDone('season-line', date)`), a credits line (football-data.co.uk
-results, Wikipedia top scorers, the Premier League lion if it stays), and one
-line in the root `HANDOFF.md` games index.
+**Open on the hub:** with three square tiles and two wide ones the 4-column
+board has one hole, bottom right (pin moved last in `GAMES` so the hole sits
+at the end, not mid-board). The page is ~1020px tall at 1366x768, so it
+scrolls (it did before this tile). Season line's ground is close to Odd Man
+Out's teal (`#14615B`).
 
 **Before launch:** `EPOCH` (2026-10-15) in `lib/day.ts` is a draft date; reset
 it and rebuild `data/days.json`. The Premier League lion
 (`public/season-line/pl-lion.png`) is the league's trademark: decide if it
 stays on a public site. A name (working title only).
-
-**Resume prompt:** "Read games/season-line/HANDOFF.md. Season line is merged
-to main (not on the hub yet). Next: decide the Higgsfield hub icon for it
-(ask before spending credits), then add its hub tile and credits."

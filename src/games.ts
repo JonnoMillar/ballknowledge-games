@@ -28,8 +28,9 @@ export type GameCard = {
 export const GAMES: readonly GameCard[] = [
   { id: 'chain', href: '/chain', name: 'Chain', line: 'Steps, then the puzzle', tag: 'Daily', icon: 'chain', ground: '#2A2622', dailies: ['step', 'chain'] },
   { id: 'spoofed', href: '/spoofed', name: 'Spoofed', line: 'Spot the fake move', tag: 'Daily', icon: 'spoofed', ground: '#5B2A86', dailies: ['spoofed'] },
-  { id: 'pin', href: '/pin', name: 'Pitch pin', line: 'Pin the goal', tag: 'Packs', icon: 'pin', ground: '#2B4C9B', dailies: [] },
+  { id: 'season-line', href: '/season-line', name: 'Season line', line: 'Name that season', tag: 'Daily', icon: 'season-line', ground: '#1F5F57', dailies: ['season-line'] },
   { id: 'rondo', href: '/rondo', name: 'Rondo', line: '2 to 4 players, one phone', tag: 'Multiplayer', icon: 'rondo', ground: '#C9541A', dailies: [], pub: true },
   // Internal id `bluff` (its first working name), like Spoofed's `itk`.
   { id: 'bluff', href: '/odd-man-out', name: 'Odd Man Out', line: '2 or more players, one phone', tag: 'Multiplayer', icon: 'odd-man-out', ground: '#14615B', dailies: [], pub: true },
+  { id: 'pin', href: '/pin', name: 'Pitch pin', line: 'Pin the goal', tag: 'Packs', icon: 'pin', ground: '#2B4C9B', dailies: [] },
 ];
