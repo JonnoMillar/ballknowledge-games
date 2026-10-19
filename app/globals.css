@@ -1115,7 +1115,7 @@ button { font-family: inherit; }
 .hub__cell:nth-child(2) { animation-delay: 60ms; }
 .hub__cell:nth-child(3) { animation-delay: 120ms; }
 .hub__cell:nth-child(4) { animation-delay: 180ms; }
-.hub__cell--feature, .hub__cell--wide { grid-column: span 2; }
+.hub__cell--feature, .hub__cell--big { grid-column: span 2; }
 
 .hub__tile {
   --lit: color-mix(in srgb, var(--ground) 62%, #fff);
@@ -1221,10 +1221,6 @@ button { font-family: inherit; }
 .hub__tile--square { grid-template-rows: 1fr auto; padding-top: 30px; }
 .hub__tile--square .hub__mini { width: 92%; margin: 0 auto -6px; }
 
-/* Wide: the miniature on the left, the words beside it. */
-.hub__tile--wide { grid-template-columns: 38% 1fr; align-items: center; gap: 4px 14px; padding: 12px 18px 12px 8px; }
-.hub__tile--wide .hub__tag { left: auto; right: 12px; }
-.hub__tile--wide .hub__mini { margin: 6px 0 -4px; }
 /* A game with no miniature yet (a draft): the words fill the tile, low down. */
 .hub__tile--bare { grid-template-columns: 1fr; align-items: end; min-height: 150px; padding: 48px 20px 18px; }
 
@@ -1248,8 +1244,10 @@ button { font-family: inherit; }
 
 @media (min-width: 760px) {
   .hub__main { padding-top: 36px; }
-  .hub__board { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-  .hub__cell--feature { grid-column: span 2; grid-row: span 2; }
+  .hub__board { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 18px; }
+  /* A pinwheel: the suggestion top left, the big game bottom right, two small tiles in each gap. */
+  .hub__cell--feature { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+  .hub__cell--big { grid-column: 3 / span 2; grid-row: 2 / span 2; }
   .hub__tile--feature {
     grid-template-columns: 1fr;
     grid-template-areas: 'mini' 'words' 'play';
@@ -1258,7 +1256,7 @@ button { font-family: inherit; }
     padding: 22px 22px 22px;
     gap: 10px;
   }
-  .hub__tile--feature .hub__mini { margin: 4px auto -10px; width: 86%; }
+  .hub__tile--feature .hub__mini { margin: 4px auto -10px; width: 74%; }
   .hub__tile--feature .hub__name { font-size: 56px; }
   .hub__tile--feature .hub__line { font-size: 17px; }
   .hub__tile--feature .hub__play { min-height: 60px; font-size: 28px; }

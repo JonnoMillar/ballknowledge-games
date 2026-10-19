@@ -6,7 +6,7 @@ path back to full context. The design is in
 
 ## Games
 
-One site; `/` is the hub (`components/Hub.tsx`): a bento of coloured tiles, each with a cut-out tabletop miniature (`public/hub/`, Higgsfield, style Jonno chose 2026-10-14, backgrounds removed so the art stands on the tile's own lit ground). The big tile is the suggestion (first game with a daily not done today, per `src/lib/today.ts`) and has the page's only red button; the pub game (Rondo, tagged Multiplayer) runs wide along the bottom. Read from
+One site; `/` is the hub (`components/Hub.tsx`): a bento of coloured tiles, each with a cut-out tabletop miniature (`public/hub/`, Higgsfield, style Jonno chose 2026-10-14, backgrounds removed so the art stands on the tile's own lit ground). There are two large tiles and four small: the suggestion (first game with a daily not done today, per `src/lib/today.ts`, top left, the page's only red button) and the `big` game (Rondo, bottom right, no button), with two small tiles in each gap (a pinwheel, three equal rows from 760px). Any game can be the suggestion, so one shifts small to large once the game before it is done. Odd Man Out has no hub line (it only sits small). Read from
 `src/games.ts`: add a game there and it appears. Each game is a route. A game's own state of play is in its
 `HANDOFF.md`; this file covers the site and Chain. Branch and layout rules
 are in `CLAUDE.md`.
@@ -22,7 +22,7 @@ are in `CLAUDE.md`.
 | Spoofed | `/spoofed` | `games/itk` (internal id `itk`) | Live (daily from 2026-10-14). `games/itk/HANDOFF.md`. |
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
 | Odd Man Out | `/odd-man-out` (front page), `/odd-man-out/play` | `games/bluff` (internal id `bluff`) | Merged to `main` 2026-10-16; headline "Can you find the mole?". Mole miniature on the hub (2026-10-16; direction approved, not final art). `games/bluff/HANDOFF.md`. |
-| Season line (working name) | `/season-line` (front page), `/season-line/play` | `games/season-line` | Merged to `main` 2026-10-16; not on the hub yet (no `src/games.ts` entry): needs a Higgsfield icon (undecided), a credits line, and `EPOCH` reset at launch. `games/season-line/HANDOFF.md`. |
+| Season line (working name) | `/season-line` (front page), `/season-line/play` | `games/season-line` | Merged to `main` 2026-10-16; on the hub with a cord-and-shield miniature (2026-10-16) and a credits line. Still needs `EPOCH` reset at launch, a name, and a decision on the Premier League lion. `games/season-line/HANDOFF.md`. |
 
 ## The site hub and Chain's hub (2026-10-14)
 

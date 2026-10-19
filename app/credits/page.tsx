@@ -53,6 +53,14 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             Commons.
           </p>
 
+          <p>
+            Season line draws each club&rsquo;s league position from the match results at{' '}
+            <a href="https://www.football-data.co.uk/">football-data.co.uk</a>. Top scorers are read from the
+            infoboxes of the <a href="https://en.wikipedia.org/">English Wikipedia</a>&rsquo;s club season articles,
+            under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. The Premier League
+            lion is the league&rsquo;s trademark, shown only to identify the competition.
+          </p>
+
           <h2 className="credits__head display">Card cases</h2>
           <p>
             The sapphire and onyx textures on graded cards were generated for Chain with
