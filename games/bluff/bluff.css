@@ -354,15 +354,6 @@ button.bf-slot:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 @media (min-width: 760px) { .bf-slot--help { flex-basis: 100px; } }
 
 /* ── THE END: Rematch is the red button, the way out is a quiet one ─── */
-.bf-menu {
-  appearance: none; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 16px;
-  background: var(--sticker); color: var(--ink); font-size: 18px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
-  box-shadow: inset 0 0 0 1.5px var(--rule-strong), 0 3px 0 rgba(20, 18, 16, 0.08);
-  transition: box-shadow var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
-}
-@media (hover: hover) { .bf-menu:hover { box-shadow: inset 0 0 0 1.5px var(--ink), 0 3px 0 rgba(20, 18, 16, 0.12); } }
-.bf-menu:active { transform: translateY(1px); }
-.bf-menu:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
 /* ── ONE SCREEN ON A LAPTOP: the pitch beside everything else ───────── */
 .bf-narrow { width: 100%; max-width: 560px; margin-inline: auto; display: flex; flex-direction: column; gap: 14px; }

@@ -373,7 +373,10 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
           </li>
         ))}
       </ol>
-      <button type="button" className="seal" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+      <div className="step-end__actions">
+        <button type="button" className="lobby-play display" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+        <a className="lobby-quiet display" href="/collection">View collection</a>
+      </div>
 
       <h2 className="step-end__sub display">Deepest answers</h2>
       <ol className="step-end__deep">
@@ -393,7 +396,6 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
       </ol>
       <p className="step-end__links">
         <a href="/step/archive">Archive</a>
-        <a href="/collection">Your cards</a>
       </p>
     </section>
   );

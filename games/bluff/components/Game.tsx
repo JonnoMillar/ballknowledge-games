@@ -190,7 +190,7 @@ export default function Game() {
         <div className="bf-full vt">
           <p className="bf-full__head display">{players[match.winner]!.name} wins</p>
           <button type="button" className="lobby-play display" onClick={() => go(rematch)}>Rematch</button>
-          <button type="button" className="bf-menu display" onClick={leave}>Back to main menu</button>
+          <button type="button" className="lobby-quiet display" onClick={leave}>Back to main menu</button>
         </div>
       ) : (
         <button type="button" className="lobby-play display vt" onClick={() => go(nextRound)}>Next round</button>

@@ -279,8 +279,9 @@ button { font-family: inherit; }
   position: absolute;
   transition: border-color var(--t-slow) var(--ease-in-out);
 }
-.link--h .link__rule { left: 0; right: 0; top: 50%; border-top: 2px dotted var(--rule-strong); }
-.link--v .link__rule { top: 0; bottom: 0; left: 50%; border-left: 2px dotted var(--rule-strong); }
+/* Centred on the axis (-1px), so a rule lines up with the die and the rail. */
+.link--h .link__rule { left: 0; right: 0; top: calc(50% - 1px); border-top: 2px dotted var(--rule-strong); }
+.link--v .link__rule { top: 0; bottom: 0; left: calc(50% - 1px); border-left: 2px dotted var(--rule-strong); }
 .link--named .link__rule { border-style: solid; border-color: var(--ink); }
 .link--held .link__rule { border-style: solid; border-color: var(--green); }
 .link--broken .link__rule { border-style: solid; border-color: var(--red); }
@@ -769,8 +770,8 @@ button { font-family: inherit; }
 .plink--h { width: var(--link-w); height: var(--link-h); }
 .plink--v { width: var(--sticker-w); height: var(--link-h); }
 .plink__rule { position: absolute; }
-.plink--h .plink__rule { left: 0; right: 0; top: 50%; border-top: 2px dotted var(--rule-strong); }
-.plink--v .plink__rule { top: 0; bottom: 0; left: 50%; border-left: 2px dotted var(--rule-strong); }
+.plink--h .plink__rule { left: 0; right: 0; top: calc(50% - 1px); border-top: 2px dotted var(--rule-strong); }
+.plink--v .plink__rule { top: 0; bottom: 0; left: calc(50% - 1px); border-left: 2px dotted var(--rule-strong); }
 .plink__die {
   position: relative;
   width: 18px;
@@ -1674,6 +1675,17 @@ button { font-family: inherit; }
 }
 .lobby-play:active { transform: translateY(1px); box-shadow: inset 0 -3px 0 var(--red-deep), 0 4px 10px rgba(0, 0, 0, 0.25); }
 .lobby-play:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+/* The quiet partner to .lobby-play: the second choice on a screen (Odd Man
+   Out's end screen set the look). */
+.lobby-quiet {
+  appearance: none; border: 0; cursor: pointer; display: flex; text-decoration: none; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 16px;
+  background: var(--sticker); color: var(--ink); font-size: 18px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  box-shadow: inset 0 0 0 1.5px var(--rule-strong), 0 3px 0 rgba(20, 18, 16, 0.08);
+  transition: box-shadow var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) { .lobby-quiet:hover { box-shadow: inset 0 0 0 1.5px var(--ink), 0 3px 0 rgba(20, 18, 16, 0.12); } }
+.lobby-quiet:active { transform: translateY(1px); }
+.lobby-quiet:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 .lobby-hero .lobby-play:focus-visible { outline-color: #fff; }
 
 @media (min-width: 760px) {

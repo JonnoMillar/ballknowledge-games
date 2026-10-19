@@ -315,7 +315,7 @@ export default function Chain({
           <div className="board-col" ref={board}>
             <p className="brief">
               {corners ? (
-                <>Close the ring: <b>{corners.slice(0, -1).join(', ')}</b> and <b>{corners[corners.length - 1]}</b>, with a link between each pair.</>
+                <>Close the ring: <b>{corners.slice(0, -1).join(', ')}</b> and <b>{corners[corners.length - 1]}</b>.</>
               ) : namedClub ? (
                 <>Find the {count} who take <b>{ends[0]}</b> to <b>{ends[1]}</b>, through <b>{namedClub}</b>.</>
               ) : (
@@ -325,8 +325,8 @@ export default function Chain({
                 {deep
                   ? 'Every link is a shared club, and anyone who links holds. The deeper your pick, the rarer the card you keep.'
                   : Object.keys(clues).length > 0
-                  ? 'Every link is a shared club, and a plate that asks for a German only holds with a German. Stuck? Show a given’s clubs, and the share line says you did.'
-                  : 'Every link is a shared club. Anyone who links will do. Stuck? Show a given’s clubs, and the share line says you did.'}
+                  ? 'Each link is a shared club. Clues must match.'
+                  : 'Each link is a shared club.'}
               </span>
             </p>
 
