@@ -33,6 +33,22 @@ export const GRADE_LINE: Record<Grade, string> = {
   basic: 'The name everyone says first.',
 };
 
+/**
+ * The key's worked example: one question, one pick per grade, rarer as it
+ * climbs. Held to the real rule by tests/chain/grade-example.test.ts.
+ */
+export const GRADE_EXAMPLE = {
+  club: 'Q9617',
+  question: 'played for Arsenal',
+  picks: {
+    basic: { id: 'Q45901', name: 'Thierry Henry' },
+    decent: { id: 'Q10560', name: 'Freddie Ljungberg' },
+    solid: { id: 'Q1929', name: 'Gaël Clichy' },
+    sharp: { id: 'Q42010', name: 'Marouane Chamakh' },
+    elite: { id: 'Q960589', name: 'Igors Stepanovs' },
+  } satisfies Record<Grade, { id: string; name: string }>,
+} as const;
+
 /** The share line's glyph per grade. A plate that broke is 🟥, as on the daily. */
 export const GRADE_GLYPH: Record<Grade, string> = {
   basic: '🟫', decent: '⬜', solid: '🟨', sharp: '🟦', elite: '🏆',
