@@ -9,7 +9,7 @@
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { addDays, buildWorld, daysBetween, EPOCH, extend, MIN_AHEAD, problems, TOP_UP, type StoredDay } from '../../games/step/lib/day';
-import { fieldOf, stepsOf } from '../../games/step/lib/rules';
+import { fieldOf, stepsOf, type Views } from '../../games/step/lib/rules';
 import type { Player } from '../../src/lib/chemistry/types';
 import type { ClubRecord } from '../../src/lib/clubs';
 
@@ -17,7 +17,7 @@ export const DAYS = 'games/step/data/days.json';
 
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
 const clubs = JSON.parse(readFileSync('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
-const world = buildWorld(pool);
+const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')) as Views);
 const today = new Date().toISOString().slice(0, 10);
 const days: StoredDay[] = existsSync(DAYS) ? (JSON.parse(readFileSync(DAYS, 'utf8')) as StoredDay[]) : [];
 

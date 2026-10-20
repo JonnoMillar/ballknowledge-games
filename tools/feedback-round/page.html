@@ -1,0 +1,233 @@
+<title>Feedback Round</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<!--
+  A feedback round: a list of real items, each with the verdict the game gave
+  it, and one tap per item to say whether that verdict is right. Reusable: the
+  round is round.json, published beside this page (tools/feedback-round/rounds/),
+  and answers go to the artifact's db at rounds/<round id>/answers/<item id>,
+  so a new round is a new round.json on the same page. Claude reads answers
+  back with ArtifactData. Item fields: id, kicker, title, lines[], value, rank
+  (0-based on round.scale; omit for no ladder), image (asset url; optional).
+-->
+<style>
+  /* Layout: one column of item cards under a short masthead; a progress bar sticks to the top. */
+  :root {
+    --bg: #f3f1ec;
+    --paper: #fffdf8;
+    --ink: #1d2128;
+    --muted: #5f6570;
+    --line: #d9d5cb;
+    --step-off: #e4e0d6;
+    --step-on: #2c3442;
+    --chosen: #1d2128;
+    --chosen-ink: #fffdf8;
+    --focus: #2f6fd6;
+    --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181d; --paper: #1e2229; --ink: #eceae4; --muted: #a2a7b0; --line: #343a44;
+      --step-off: #2e343d; --step-on: #d9dde4; --chosen: #eceae4; --chosen-ink: #15181d; --focus: #7aa7f0;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181d; --paper: #1e2229; --ink: #eceae4; --muted: #a2a7b0; --line: #343a44;
+    --step-off: #2e343d; --step-on: #d9dde4; --chosen: #eceae4; --chosen-ink: #15181d; --focus: #7aa7f0;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.45; }
+  .wrap { max-width: 720px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; display: grid; gap: 20px; }
+  header { display: grid; gap: 6px; }
+  .eyebrow { font: 600 13px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 700 clamp(30px, 6vw, 42px)/1 var(--display); margin: 0; text-wrap: balance; }
+  .intro { margin: 0; color: var(--muted); max-width: 62ch; }
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--bg); padding-block: 10px; display: grid; gap: 6px; }
+  .bar__text { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar__track { height: 6px; background: var(--step-off); border-radius: 3px; overflow: hidden; }
+  .bar__fill { height: 100%; width: 0; background: var(--step-on); transition: width .3s ease; }
+  .notice { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .item { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; scroll-margin-top: 64px; }
+  .item[data-done] { border-color: var(--muted); }
+  .item__head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
+  .item__head:not(:has(img)) { grid-template-columns: 1fr; }
+  .item img { width: 72px; height: 90px; object-fit: cover; border-radius: 6px; background: var(--step-off); }
+  .item__text { min-width: 0; display: grid; gap: 2px; }
+  .kicker { font-size: 13px; color: var(--muted); }
+  .num { font-variant-numeric: tabular-nums; }
+  h2 { font: 700 26px/1.05 var(--display); margin: 0; }
+  .lines { margin: 2px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--muted); }
+  .verdict { display: grid; gap: 6px; }
+  .verdict__label { font-size: 14px; }
+  .verdict__label b { font: 700 18px/1 var(--display); letter-spacing: .02em; }
+  .ladder { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 3px; }
+  .ladder span { height: 10px; background: var(--step-off); }
+  .ladder span:first-child { border-radius: 5px 0 0 5px; }
+  .ladder span:last-child { border-radius: 0 5px 5px 0; }
+  .ladder span[data-on] { background: var(--step-on); }
+  .ladder__ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+  .choices { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 8px; }
+  .choices button { font: 600 15px/1.1 var(--body); color: var(--ink); background: transparent; border: 1.5px solid var(--line); border-radius: 8px; padding: 11px 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .choices button:hover { border-color: var(--ink); }
+  .choices button[aria-pressed="true"] { background: var(--chosen); color: var(--chosen-ink); border-color: var(--chosen); }
+  .choices button[aria-pressed="true"]::before { content: "✓"; }
+  button:focus-visible, textarea:focus-visible, .link:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .link { font: 500 14px/1 var(--body); color: var(--muted); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; justify-self: start; }
+  textarea { width: 100%; min-height: 64px; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; resize: vertical; }
+  .saved { font-size: 13px; color: var(--muted); min-height: 1em; }
+  footer { display: grid; gap: 8px; }
+  footer h3 { font: 700 20px/1 var(--display); margin: 0; }
+  @media (prefers-reduced-motion: reduce) { .bar__fill { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">Feedback round</div>
+    <h1 id="title">Loading the round</h1>
+    <p class="intro" id="intro"></p>
+  </header>
+  <div class="bar" aria-live="polite">
+    <div class="bar__text"><span id="count">0 answered</span><span id="saveState"></span></div>
+    <div class="bar__track"><div class="bar__fill" id="fill"></div></div>
+  </div>
+  <div class="notice" id="notice" hidden></div>
+  <ol id="items"></ol>
+  <footer id="overall" hidden>
+    <h3>Anything else?</h3>
+    <textarea id="overallNote" placeholder="A pattern you noticed, a pick that should never be Basic…"></textarea>
+    <div class="saved" id="overallSaved"></div>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let round = null;
+  let db = null;
+  const answers = {};          // item id -> { choice, note }
+  const local = (k, v) => {   // per-browser fallback when the db is out of reach
+    try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); localStorage.setItem(k, JSON.stringify(v)); } catch { return null; }
+  };
+
+  function el(tag, attrs = {}, ...kids) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === null || v === undefined || v === false) continue;
+      if (k === 'text') n.textContent = v; else if (k.startsWith('on')) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids) if (kid) n.append(kid);
+    return n;
+  }
+
+  function progress() {
+    const done = round.items.filter((it) => answers[it.id]?.choice).length;
+    $('count').textContent = `${done} of ${round.items.length} answered`;
+    $('fill').style.width = `${(100 * done) / round.items.length}%`;
+  }
+
+  async function save(itemId) {
+    const a = answers[itemId];
+    local(`fr:${round.id}`, answers);
+    if (!db) return;
+    $('saveState').textContent = 'Saving…';
+    try {
+      await db.doc(`rounds/${round.id}/answers/${itemId}`).set({ choice: a.choice || null, note: a.note || '', at: new Date().toISOString() });
+      $('saveState').textContent = 'Saved';
+    } catch (e) {
+      $('saveState').textContent = 'Not saved';
+      $('notice').hidden = false;
+      $('notice').textContent = `Answers aren't saving (${e && e.code ? e.code : 'error'}). They are kept in this browser; try again later.`;
+    }
+  }
+
+  function card(it, i) {
+    const n = round.options.length;
+    const li = el('li', { class: 'item', id: `item-${it.id}` });
+    const head = el('div', { class: 'item__head' },
+      it.image ? el('img', { src: it.image, alt: '' }) : null,
+      el('div', { class: 'item__text' },
+        el('div', { class: 'kicker' }, el('span', { class: 'num', text: `${i + 1}. ` }), document.createTextNode(it.kicker || '')),
+        el('h2', { text: it.title }),
+        it.lines?.length ? el('ul', { class: 'lines' }, ...it.lines.map((l) => el('li', { text: l }))) : null));
+    li.append(head);
+
+    if (it.value) {
+      const v = el('div', { class: 'verdict' }, el('div', { class: 'verdict__label' }, document.createTextNode(`${round.valueLabel || 'Graded'} `), el('b', { text: it.value })));
+      if (round.scale && Number.isInteger(it.rank)) {
+        const ladder = el('div', { class: 'ladder', style: `--n:${round.scale.length}`, 'aria-hidden': 'true' },
+          ...round.scale.map((_, k) => el('span', { 'data-on': k <= it.rank })));
+        v.append(ladder, el('div', { class: 'ladder__ends', 'aria-hidden': 'true' }, el('span', { text: round.scale[0] }), el('span', { text: round.scale[round.scale.length - 1] })));
+      }
+      li.append(v);
+    }
+
+    const buttons = round.options.map((o) => el('button', {
+      type: 'button', 'aria-pressed': 'false', title: o.hint || null, text: o.label,
+      onclick: () => {
+        answers[it.id] = { ...(answers[it.id] || {}), choice: o.id };
+        paint();
+        save(it.id);
+        const next = li.nextElementSibling;
+        if (next && !answers[next.id.slice(5)]?.choice) next.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+      },
+    }));
+    li.append(el('div', { class: 'choices', style: `--n:${n}`, role: 'group', 'aria-label': `Verdict on ${it.title}` }, ...buttons));
+
+    const note = el('textarea', { id: `note-${it.id}`, placeholder: 'Why? (optional)', hidden: true });
+    const toggle = el('button', { type: 'button', class: 'link', text: 'Add a note', onclick: () => { note.hidden = false; toggle.hidden = true; note.focus(); } });
+    let t;
+    note.addEventListener('input', () => { answers[it.id] = { ...(answers[it.id] || {}), note: note.value }; clearTimeout(t); t = setTimeout(() => save(it.id), 600); });
+    li.append(toggle, note);
+
+    function paint() {
+      const a = answers[it.id] || {};
+      buttons.forEach((b, k) => b.setAttribute('aria-pressed', String(a.choice === round.options[k].id)));
+      li.toggleAttribute('data-done', Boolean(a.choice));
+      if (a.note && note.hidden) { note.hidden = false; toggle.hidden = true; }
+      if (document.activeElement !== note) note.value = a.note || '';
+      progress();
+    }
+    li.paint = paint;
+    return li;
+  }
+
+  async function start() {
+    try { round = await fetch('round.json').then((r) => r.json()); } catch { $('title').textContent = 'No round loaded'; return; }
+    $('eyebrow').textContent = round.eyebrow || 'Feedback round';
+    $('title').textContent = round.title;
+    $('intro').textContent = round.intro || '';
+    Object.assign(answers, local(`fr:${round.id}`) || {});
+    const list = $('items');
+    round.items.forEach((it, i) => list.append(card(it, i)));
+    const repaint = () => [...list.children].forEach((li) => li.paint());
+    repaint();
+    $('overall').hidden = false;
+    const overall = $('overallNote');
+    overall.value = answers._round?.note || '';
+    let t;
+    overall.addEventListener('input', () => { answers._round = { note: overall.value }; clearTimeout(t); t = setTimeout(async () => { await save('_round'); $('overallSaved').textContent = $('saveState').textContent; }, 600); });
+
+    db = window.claude?.use ? await window.claude.use('db').catch(() => null) : null;
+    if (!db) {
+      $('notice').hidden = false;
+      $('notice').textContent = 'Answers are kept in this browser only. Open this page signed in to claude.ai to send them.';
+      return;
+    }
+    db.collection(`rounds/${round.id}/answers`).onSnapshot((snap) => {
+      for (const d of snap.docs) {
+        const x = d.data() || {};
+        answers[d.id] = { choice: x.choice || undefined, note: x.note || '' };
+      }
+      repaint();
+      if (document.activeElement !== overall) overall.value = answers._round?.note || '';
+    }, () => {});
+  }
+  start();
+})();
+</script>

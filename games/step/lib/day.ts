@@ -1,4 +1,4 @@
-import { STEPS, endsOf, fieldOf, stepsOf, CHECKABLE, type Givens } from './rules';
+import { STEPS, endsOf, fieldOf, stepsOf, CHECKABLE, type Givens, type Views } from './rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 /**
@@ -67,11 +67,13 @@ export interface World {
   shown: Map<string, string[]>;
   /** The clubs in the pool whose league is the Premier League. */
   english: Set<string>;
+  /** English Wikipedia views, the grading ruler's fame. */
+  views: Views;
 }
 
 const stepKey = (player: string, club: string) => `${player}|${club}`;
 
-export function buildWorld(pool: readonly Player[]): World {
+export function buildWorld(pool: readonly Player[], views: Views): World {
   const byId = new Map(pool.map((p) => [p.id, p]));
   const byClub = new Map<string, Player[]>();
   const votes = new Map<string, Map<string, number>>();
@@ -96,11 +98,12 @@ export function buildWorld(pool: readonly Player[]): World {
   const world: World = {
     byId, byClub, good: new Map(), givensAt: new Map(), fields: new Map(), shown: new Map(),
     english: new Set(clubs.filter((c) => league(c) === PREMIER_LEAGUE)),
+    views,
   };
   for (const g of givens) for (const c of clubs) {
     if (!isGood(world, g, c)) continue;
     const field = fieldOf(g, byClub.get(c)!);
-    const { obvious, elite } = endsOf(g, c, field);
+    const { obvious, elite } = endsOf(g, c, field, views);
     world.fields.set(stepKey(g.id, c), new Set(field.map((p) => p.id)));
     world.shown.set(stepKey(g.id, c), [obvious!.id, elite!.id]);
     if (!world.good.has(g.id)) world.good.set(g.id, new Set());

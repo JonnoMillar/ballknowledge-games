@@ -5,7 +5,7 @@ import { stepsOf } from '../lib/rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
-const world = buildWorld(pool);
+const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')));
 
 describe('the world', () => {
   it('has enough good steps for a daily (1,254 measured 2026-10-14)', () => {

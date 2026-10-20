@@ -10,8 +10,8 @@ export function readInputs(): Inputs {
     pool: json('data/pool.json'),
     careers: json<{ players: Inputs['careers'] }>('data/careers.json').players,
     clubs: json('data/clubs.json'),
-    views: json('games/itk/data/enwiki-views.json'),
-    redirects: json('games/itk/data/enwiki-views.redirects.json'),
+    views: json('data/enwiki-views.json'),
+    redirects: json('data/enwiki-views.redirects.json'),
     countries: existsSync(COUNTRIES) ? json(COUNTRIES) : {},
     portraits: existsSync('data/portraits.json') ? json('data/portraits.json') : {},
   };

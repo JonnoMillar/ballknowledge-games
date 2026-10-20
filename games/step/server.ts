@@ -6,7 +6,7 @@ import { sharedClubsByProminence } from '../../src/lib/chain/score';
 import { dayNumber } from '../../src/lib/daily';
 import type { Player } from '../../src/lib/chemistry/types';
 import { addDays, EPOCH, type StoredDay } from './lib/day';
-import { judge, stepsOf, STEPS } from './lib/rules';
+import { judge, stepsOf, STEPS, type Views } from './lib/rules';
 import type { StepCard, StepClub, StepDay, Verdict } from './lib/types';
 
 /**
@@ -18,6 +18,9 @@ let stored: Promise<Map<string, StoredDay>> | null = null;
 // Read once in production; every request in development, so a regenerated schedule shows without a restart.
 const readDays = () => (process.env.NODE_ENV === 'development' ? null : stored) ?? (stored = readFile('games/step/data/days.json', 'utf8')
   .then((s) => new Map((JSON.parse(s) as StoredDay[]).map((d) => [d.date, d]))));
+
+let viewIndex: Promise<Views> | null = null;
+const playerViews = () => viewIndex ??= readFile('data/player-views.json', 'utf8').then((s) => JSON.parse(s) as Views);
 
 let clubIndex: Promise<Map<string, Player[]>> | null = null;
 const byClub = () => clubIndex ??= loadData().then(({ players }) => {
@@ -75,7 +78,7 @@ export async function judgePick(date: string, step: number, pickId: string, earl
   const s = stepsOf(d)[step]!;
   if (d.players.includes(pickId)) return null;
   const given = byId.get(s.player)!;
-  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? []);
+  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? [], await playerViews());
 
   const card = async (p: Player, via: string | null): Promise<StepCard> => ({
     id: p.id, name: p.name, image: images[p.id] ?? null,

@@ -1,7 +1,7 @@
 # Step chain — state of play
 
-**Updated 2026-10-14.** Branch `feat/step-chain` (cut from `main` at 3c2660e),
-worktree `.claude/worktrees/kind-tharp-12c680`. Site-wide notes: root
+**Updated 2026-10-20** (grading ruler, below). Merged to `main` 2026-10-14;
+the ruler work was branch `claude/steps-grading-555384`. Site-wide notes: root
 `HANDOFF.md`. Spec (the decision record): `games/step/SPEC.md`. Working name
 "Step" (`NAME` in `lib/rules.ts`, route `/step`) until Jonno names it.
 
@@ -36,6 +36,89 @@ shot, run = average rounded down, automatic daily.
   years. The schedule was regenerated from day 1 (pre-launch) and the
   progress key bumped to `step.progress.v2`.
 
+## Grading ruler (2026-10-20)
+
+Jonno: "some of the rankings are just way off". Diagnosed on every step of
+days 1 to 54 (216 steps, 8,340 picks that hold), read as a fan with
+`scripts/step/grade-report.ts` (a step's field ranked by the ruler, with
+fame, English views and the stint) and measured with
+`scripts/step/compare-rulers.ts` (candidates side by side).
+
+**What was wrong (old ruler: sitelinks × the less known of link and stint).**
+1. *Stints swamped fame.* Sitelink fame spans about 3× across a field, a
+   stint's weight 20× (0.05 to 1), so any famous player's short spell graded
+   deep: Salah at Roma for Robben was **Sharp** (his 13 Chelsea games), Robbie
+   Keane at Spurs for Sterling Sharp (half a season at Liverpool), Eto'o at
+   Chelsea for Neymar Sharp.
+2. *The given's own short spell buried every link through it*, whoever the
+   pick was: Henry's 16 games at Juventus made Baggio **Decent** and Chiesa,
+   Vlahović **Solid** at Fiorentina, while Ramón Díaz (linked through Monaco,
+   where Henry was long) was **Basic**.
+3. *Sitelinks are global*: Asamoah Gyan 62, Roy Keane 63.
+
+**The fix** (`factOf` in `lib/rules.ts`): fame is English Wikipedia views
+over 24 months (`data/player-views.json`), raised to `FAME_POWER` 0.8;
+each half of the fact is a player-at-a-club fact (that player's fame × their
+stint), so the given's half is measured by the given's fame (Henry's season at
+Juventus is known because Henry is), and the link is its best shared club,
+each club as its less known end. Players with no English page fall back on a
+sitelinks fit (`FIT_A`, `FIT_B`). Raw views (power 1) over-corrected: Ian
+Wright's ten-game loan at Forest went Basic on pundit views; tempering the
+stint instead made Eto'o's 1997 loan at Espanyol Basic. Blending sitelinks
+back in (log space) scored the same on the pins and adds a knob, so no.
+
+| On the same 216 steps | Old | New |
+|---|---|---|
+| Fan-judged pins in range (`tests/grades.test.ts`) | 3 of 10 | 10 of 10 |
+| 1M+ views, 100+ games at the club, graded Sharp/Elite | 22 | 10 |
+| Under 100k views, under 30 games there, graded Basic/Decent | 9 | 1 |
+| Spread Basic / Decent / Solid / Sharp / Elite | 11 / 14 / 20 / 47 / 8 % | 13 / 13 / 20 / 48 / 7 % |
+| Picks that move two grades or more | | 637 (7.6%) |
+
+The 10 left are nearly all links through a short spell, deep by design
+(Eto'o for Benzema at Barcelona: his few Real Madrid games; Torres for
+Beckham at Liverpool: Milan). Two pins (Ian Wright, Guardiola at Roma) only
+promise Decent or deeper: whether they are Decent or Solid is Jonno's call.
+
+**Data.** Views moved from `games/itk/data` to `data/enwiki-views*.json`
+(shared; Spoofed reads them at generation). `scripts/fetch-views.mjs` now
+covers the whole pool and writes `data/player-views.json` (QID to views,
+what the server reads): 11,574 of 11,741 players. Same window as before (Oct
+2023 to Sep 2025) so old and new numbers compare; move it all at once.
+Wikimedia rate-limits it (429s): a cold run took about 3 hours, resumable.
+
+**Schedule.** The ruler decides each step's shown answers, so 12 unplayed days
+leaked one into another step. Days from 2026-10-22 were regenerated (27 days,
+to 11-17); 10-20 and 10-21 (possibly in play) were kept and pass.
+
+**Still for judgement (feedback round 1, below):** links through the given's
+short spell (Weah at Monaco for Vieira, via his two Milan games: Solid);
+managers' and pundits' views (Enzo Maresca, Chelsea manager, is **Basic** as a
+Sevilla player; Ian Wright); American readers (Matt Turner, USMNT keeper,
+Basic at Forest from 17 games); recency (a stint ended within two years counts
+as fully known, `spellWeight`, shared with Chain).
+
+### Feedback round 1
+
+https://claude.ai/artifact/6yji2HfZKaBK5DiaHbr8hj (private to Jonno). 30
+picks from days already played (no spoilers), built by
+`npx tsx scripts/step/feedback-round.ts steps-1` into
+`tools/feedback-round/rounds/steps-1.json`: the judgement calls above, the
+biggest moves, links through a short given spell, high-views players, and two
+or more per grade. Each shows the grade; Jonno taps Too low / Right / Too
+high, with an optional note. Answers: ArtifactData `list` on
+`rounds/steps-1/answers` (doc id = item id; `_round` is the closing note);
+each item's `meta` in the round file names the step and its old grade.
+
+**The page is reusable** (`tools/feedback-round/page.html`): a round is a
+JSON file (`id`, `title`, `intro`, `options`, optional `scale`, items
+with `kicker`, `title`, `lines`, `value`, `rank`, `image`), published
+as `round.json` beside the page, answers at `rounds/<id>/answers`. Rondo's
+starting players or player photos: write a round file with its own options
+("Too easy / Right / Too hard", "Good / Wrong era / Wrong person") and
+republish the same artifact. Photos must be uploaded as artifact assets: the
+page cannot load images from other sites.
+
 ## The game
 
 PLAYER — ? — CLUB, then CLUB — ? — NEXT PLAYER: givens P1 C1 P2 C2 P3. A gap is
@@ -47,7 +130,7 @@ Share, the deepest answer per step.
 
 | Path | What |
 |---|---|
-| `lib/rules.ts` | `STEPS`, `stepsOf`, `fieldOf`, `factOf` (fame × the less known of: link to the given, stint at the club), `endsOf` (obvious, deepest), `judge`, `runGrade`, `shareLine`. Pure. |
+| `lib/rules.ts` | `STEPS`, `stepsOf`, `fieldOf`, `knownOf` (English views ** 0.8), `factOf` (the less known of: link to the given, stint at the club, each a player's fame × stint), `endsOf` (obvious, deepest), `judge`, `runGrade`, `shareLine`. Pure; views passed in. |
 | `lib/day.ts` | `RULES`, `buildWorld` (good steps, their fields and shown answers), `clash`, `composeDay` (seeded DFS), `extend`, `problems`. `EPOCH` 2026-09-19. |
 | `lib/progress.ts` | `step.progress.v1`: per date, one verdict per step. |
 | `lib/types.ts` | Wire types. |
@@ -58,6 +141,8 @@ Share, the deepest answer per step.
 | `step.css` | Its stylesheet. |
 | `data/days.json` | The schedule, one day a line. Server-only. |
 | `scripts/step/build-days.ts` | `npm run step:days [-- --print]`: top up to 28 days ahead when under 14. |
+| `scripts/step/grade-report.ts`, `compare-rulers.ts`, `feedback-round.ts` | Read a day's fields as graded; measure rulers (`--probes`, `--odd`, `--moves`); build a feedback round. |
+| `data/player-views.json` | Shared: English views by player, from `scripts/fetch-views.mjs`. Rerun it after the pool grows (new players fall back on sitelinks until then). |
 | `.github/workflows/step-days.yml` | Daily 05:30 UTC: `step:days`, `npm test`, commit, `pull --rebase`, push. Runs once on `main`. |
 | `app/step/`, `app/api/step/{day,pick}` | Thin shells. |
 
@@ -97,16 +182,13 @@ the Share sheet, the cron on GitHub (runs once merged).
 
 ## Known / next
 
-- **Grade calibration is global fame** (sitelinks): a player only Britain knows still grades deep. If Jonno meant the
-  calibration too, the fix is enwiki pageviews in the fact ruler (needs a full
-  pool fetch: `games/itk/data/enwiki-views.json` covers 7,761 titles and misses
-  Gerrard, Terry, Puyol).
 - **Givens' portraits:** Courtois shows a broken image on #26. many givens show a late-career photo (Bergkamp,
   Schweinsteiger in suits): `fetch:portraits` resolves only Chain board players.
   Add a `--step` target like `--itk` and run it before launch.
-- **Fame is sitelinks.** A given a British fan cannot place can still come up;
-  Louis van Gaal was excluded by hand (`NOT_A_GIVEN`). Spoofed's enwiki views
-  would be better but live in `games/itk/data`; move them to `data/` first.
+- **Givens are still picked on sitelinks** (`RULES.givenFame`); English views
+  are now in `data/` and would place them better (Louis van Gaal is excluded
+  by hand, `NOT_A_GIVEN`).
+- **Read round 1's answers** and tune `FAME_POWER` or the stint rules from them.
 - **Links ignore time:** Mbappé fits Sneijder via Real Madrid. Same as Chain.
 - Measured feasibility: 1,254 good steps over 73 givens and 35 clubs; two
   years generate with no rule broken (test).
