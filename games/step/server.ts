@@ -106,7 +106,7 @@ export async function demoSteps(): Promise<StepsDemo> {
   const given = byId.get(rooney)!;
   const picks = await Promise.all(['Q11571', 'Q63659'].map(async (id) => ({
     player: await demoSticker(id, united, madrid),
-    grade: judge(byId.get(id)!, given, madrid, members).grade,
+    grade: judge(byId.get(id)!, given, madrid, members, await playerViews()).grade,
   })));
   // A pool change that stopped one holding drops it rather than showing a grade the game would not give.
   return { given: await demoSticker(rooney, united), club: await demoClub(madrid), picks: picks.flatMap((p) => (p.grade ? [{ ...p, grade: p.grade }] : [])) };
