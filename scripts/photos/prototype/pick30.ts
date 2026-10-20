@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { clubColour, signatureClub } from '../../src/lib/club-colours';
+import { clubColour, signatureClub } from '../../../src/lib/club-colours';
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8'));
 const P = JSON.parse(readFileSync('data/portraits.json', 'utf8'));
 const clubs = JSON.parse(readFileSync('data/clubs.json', 'utf8'));
