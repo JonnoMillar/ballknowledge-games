@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { factOf, fieldOf, judge, knownOf, runGrade, shareLine, stepsOf, STEPS, type Views } from '../lib/rules';
+import { barOf, factOf, fieldOf, judge, knownOf, runGrade, shareLine, stepsOf, stintWeight, STEPS, type Bar, type Views } from '../lib/rules';
 import type { Player, Spell } from '../../../src/lib/chemistry/types';
 
 const player = (id: string, clubIds: string[], fame: number, spells: Record<string, Spell> = {}): Player => ({
@@ -16,6 +16,8 @@ const deep = player('deep', ['A', 'C'], 35);
 const members = [famous, middling, stranger, deep, given];
 // English Wikipedia views: the ruler's fame. Sitelinks above are only the fallback.
 const views: Views = { P: 5e6, famous: 2e6, middling: 2e5, stranger: 1e6, deep: 3e4 };
+// A bar every fact clears: grades by the field alone.
+const OPEN: Bar = [0, 0, 0];
 
 describe('stepsOf', () => {
   it('alternates player-first and club-first, carrying each club over', () => {
@@ -71,32 +73,64 @@ describe('factOf', () => {
 
 describe('judge', () => {
   it('a pick that never shared a club with the given does not hold', () => {
-    const j = judge(stranger, given, 'C', members, views);
+    const j = judge(stranger, given, 'C', members, views, OPEN);
     expect(j.held).toBe(false);
     expect(j.grade).toBeNull();
   });
 
   it('a pick that never played for the club does not hold', () => {
-    const j = judge(player('elsewhere', ['A'], 60), given, 'C', members, views);
+    const j = judge(player('elsewhere', ['A'], 60), given, 'C', members, views, OPEN);
     expect(j.held).toBe(false);
   });
 
   it('the most famous answer is Basic; the field is graded by fact', () => {
-    const j = judge(famous, given, 'C', members, views);
+    const j = judge(famous, given, 'C', members, views, OPEN);
     expect(j).toMatchObject({ held: true, grade: 'basic', via: 'A' });
-    expect(judge(deep, given, 'C', members, views).grade).toBe('sharp');
+    expect(judge(deep, given, 'C', members, views, OPEN).grade).toBe('sharp');
   });
 
   it('names the obvious and the deepest checkable answers, whatever was picked', () => {
-    const j = judge(stranger, given, 'C', members, views);
+    const j = judge(stranger, given, 'C', members, views, OPEN);
     expect(j.obvious?.id).toBe('famous');
     expect(j.elite?.id).toBe('deep');
   });
 
   it('Elite needs a field of eight or more', () => {
     const wide = [...members, ...Array.from({ length: 6 }, (_, i) => player(`w${i}`, ['A', 'C'], 60 + i))];
-    expect(judge(deep, given, 'C', wide, views).grade).toBe('elite');
-    expect(judge(deep, given, 'C', members, views).grade).not.toBe('elite');
+    expect(judge(deep, given, 'C', wide, views, OPEN).grade).toBe('elite');
+    expect(judge(deep, given, 'C', members, views, OPEN).grade).not.toBe('elite');
+  });
+});
+
+describe('stintWeight', () => {
+  const now = new Date().getFullYear();
+  it('is the length of the stint, recent or not: ten games this year are ten games', () => {
+    expect(stintWeight([10, 1, now])).toBe(stintWeight([10, 1, now - 20]));
+    expect(stintWeight([10, 1, now])).toBeCloseTo(10 / 50);
+    expect(stintWeight([300, 10, now - 30])).toBe(1);
+  });
+  it('leaves missing data neutral and never weighs nothing', () => {
+    expect(stintWeight(undefined)).toBe(1);
+    expect(stintWeight([null, null, now])).toBe(1);
+    expect(stintWeight([0, 1, now])).toBe(0.05);
+  });
+});
+
+describe('the absolute bar', () => {
+  it('sits at the best known 3%, 10% and 25% of a population of facts', () => {
+    const facts = Array.from({ length: 100 }, (_, i) => 100 - i); // 100 .. 1
+    expect(barOf(facts)).toEqual([97, 90, 75]);
+  });
+
+  it("deepens the best known answer of an obscure step: top of its field, short of the site's bar", () => {
+    const bar: Bar = [5e6, 1e6, 1e5];
+    expect(judge(famous, given, 'C', members, views, OPEN).grade).toBe('basic');
+    expect(judge(famous, given, 'C', members, views, bar).grade).toBe('solid');
+  });
+
+  it('never makes a grade shallower than the field gives', () => {
+    const lenient: Bar = [0, 0, 0];
+    expect(judge(deep, given, 'C', members, views, lenient).grade).toBe('sharp');
   });
 });
 

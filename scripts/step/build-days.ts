@@ -14,12 +14,17 @@ import type { Player } from '../../src/lib/chemistry/types';
 import type { ClubRecord } from '../../src/lib/clubs';
 
 export const DAYS = 'games/step/data/days.json';
+export const BAR = 'games/step/data/bar.json';
 
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
 const clubs = JSON.parse(readFileSync('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
 const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')) as Views);
 const today = new Date().toISOString().slice(0, 10);
 const days: StoredDay[] = existsSync(DAYS) ? (JSON.parse(readFileSync(DAYS, 'utf8')) as StoredDay[]) : [];
+
+// The absolute bar follows the pool: rewritten on every run (tests/server.test.ts checks it is current).
+writeFileSync(BAR, `${JSON.stringify(world.bar)}
+`);
 
 const last = days[days.length - 1]?.date;
 const ahead = last ? daysBetween(today, last) : -1;

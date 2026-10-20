@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { judge, type Views } from '../lib/rules';
+import { judge, type Bar, type Views } from '../lib/rules';
 import { GRADES, type Grade } from '../../../src/lib/chain/grade';
 import type { Player } from '../../../src/lib/chemistry/types';
 
@@ -12,12 +12,13 @@ import type { Player } from '../../../src/lib/chemistry/types';
  */
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
 const views = JSON.parse(readFileSync('data/player-views.json', 'utf8')) as Views;
+const bar = JSON.parse(readFileSync('games/step/data/bar.json', 'utf8')) as Bar;
 const clubs = JSON.parse(readFileSync('data/clubs.json', 'utf8')) as Record<string, { name: string }>;
 const byName = new Map(pool.map((p) => [p.name, p]));
 const clubId = new Map(Object.entries(clubs).map(([id, c]) => [c.name, id]));
 
 const PINS: [given: string, club: string, pick: string, lowest: Grade, highest: Grade, why: string][] = [
-  ['Thierry Henry', 'ACF Fiorentina', 'Roberto Baggio', 'basic', 'basic', 'was Decent: Henry\'s one season at Juventus buried every Juventus link'],
+  ['Thierry Henry', 'ACF Fiorentina', 'Roberto Baggio', 'basic', 'decent', 'was Decent while Ramón Díaz was Basic: Henry\'s one season at Juventus buried every Juventus link; the absolute bar may hold a 1990s Italian star at Decent'],
   ['Thierry Henry', 'ACF Fiorentina', 'Federico Chiesa', 'basic', 'decent', 'was Solid, same cause'],
   ['Thierry Henry', 'ACF Fiorentina', 'Dušan Vlahović', 'basic', 'decent', 'was Solid, same cause'],
   ['Thierry Henry', 'ACF Fiorentina', 'Ramón Díaz', 'solid', 'elite', 'was Basic: linked through Monaco, where Henry was long'],
@@ -34,7 +35,7 @@ describe('grades on real steps', () => {
     it(`${p} (${g} · ${c}) is ${lo === hi ? lo : `${lo} to ${hi}`}: ${why}`, () => {
       const given = byName.get(g)!, pick = byName.get(p)!, club = clubId.get(c)!;
       const members = pool.filter((x) => x.clubIds.includes(club));
-      const { held, grade } = judge(pick, given, club, members, views);
+      const { held, grade } = judge(pick, given, club, members, views, bar);
       expect(held).toBe(true);
       const at = GRADES.indexOf(grade!);
       expect(at, grade!).toBeGreaterThanOrEqual(GRADES.indexOf(lo));

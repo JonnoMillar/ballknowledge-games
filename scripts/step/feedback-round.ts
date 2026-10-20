@@ -53,7 +53,7 @@ for (const d of days) for (const s of stepsOf(d)) {
   for (const pick of field) {
     const called = ['Viv Anderson'].includes(pick.name);
     if ((views[pick.id] ?? 0) < 150e3 && !called) continue; // nobody names a player nobody reads about
-    const j = judge(pick, given, s.club, members, views);
+    const j = judge(pick, given, s.club, members, views, JSON.parse(await readFile('games/step/data/bar.json', 'utf8')));
     const old = oldGrade(field, pick, given, s.club);
     const shared = pick.clubIds.filter((c) => given.clubIds.includes(c));
     const via = j.via!;
