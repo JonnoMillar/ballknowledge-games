@@ -56,7 +56,6 @@
 .step-act { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 16px; min-height: 120px; text-align: center; }
 .step-act__rule { margin: 0; font-size: 16px; color: var(--soft); }
 .step-act__rule b { color: var(--ink); }
-.step-act__change { appearance: none; border: 0; background: none; color: var(--muted); text-decoration: underline; font-size: 14px; cursor: pointer; }
 
 .step-verdict { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .step-verdict__kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
@@ -85,8 +84,7 @@
 .step-end__tag { font-size: 12px; color: var(--muted); text-align: center; }
 .step-end__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .step-end__actions > * { min-width: 200px; }
-.step-end__links { display: flex; gap: 20px; font-size: 14px; }
-.step-end__links a { color: var(--ink); }
+.step-end__links { display: flex; gap: 12px; margin: 0; }
 
 .step-arch { padding: 0 16px; width: 100%; }
 .step-arch__grid { font-size: 14px; letter-spacing: 1px; }

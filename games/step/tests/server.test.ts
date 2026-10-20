@@ -8,7 +8,7 @@ import config from '../../../next.config';
 
 const days = JSON.parse(readFileSync('games/step/data/days.json', 'utf8')) as StoredDay[];
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
-const world = buildWorld(pool);
+const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')));
 
 describe('playable', () => {
   const now = new Date(`${EPOCH}T23:00:00Z`);

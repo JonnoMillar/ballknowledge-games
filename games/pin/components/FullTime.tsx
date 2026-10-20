@@ -71,7 +71,7 @@ export default function FullTime({ board, throws, next, rec }: {
         <div className="pin__fullactions">
           <ShareButton text={shareText(board.title, ds)} />
           {next ? (
-            <a className="pin__nextpack display" href={`/pin/${next.id}`}>
+            <a className="lobby-quiet pin__nextpack" href={`/pin/${next.id}`}>
               Next pack<small>{next.title}</small>
             </a>
           ) : null}
@@ -100,7 +100,7 @@ function ShareButton({ text }: { text: string }) {
     setTimeout(() => setState('idle'), 2200);
   }
   return (
-    <button type="button" className="pin__throw display" onClick={share}>
+    <button type="button" className="lobby-play" onClick={share}>
       {state === 'copied' ? 'Copied' : state === 'failed' ? 'Could not share' : 'Share'}
     </button>
   );

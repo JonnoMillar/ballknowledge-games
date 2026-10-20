@@ -209,7 +209,7 @@ export function DeepCards({ result, images, players, groundFor, news, show, coll
           </div>
         ))}
       </div>
-      {collects ? <a className="cards__link" href="/collection">See your collection</a> : null}
+      {collects ? <a className="lobby-quiet" href="/collection">See your collection</a> : null}
     </section>
   );
 }
@@ -227,7 +227,7 @@ export function ShareButton({ text }: { text: string }) {
     setTimeout(() => setState('idle'), 2200);
   }
   return (
-    <button type="button" className="seal" onClick={copy}>
+    <button type="button" className="lobby-play" onClick={copy}>
       {state === 'copied' ? 'Copied' : state === 'failed' ? 'Could not copy' : 'Share'}
     </button>
   );

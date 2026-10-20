@@ -96,7 +96,9 @@ map says which game each rule was learned on.
 - **One red button per screen**, the one action. Red is rationed to the brand
   and that action. A secondary way out is a plain button of the same shape in
   the paper colour, never an underlined link, and never the words "Abandon"
-  or "New game".
+  or "New game". Use only the shared classes ("BUTTONS" in
+  `app/globals.css`): `.lobby-play`, `.lobby-quiet`, `.lobby-small`; no
+  game defines its own button.
 - **Nobody is ever trapped.** The back chevron (`components/Back.tsx`) is
   first in every masthead, in the same spot. Mid-game it is the way out; a
   finished game ends with "Back to main menu".
@@ -280,11 +282,13 @@ generation, 2026-10-16, not cut out or chosen).
 - **Explain with a picture of the real thing**, one short line per step: a
   mini phone playing one step (Odd Man Out), a real career with a real fake
   (Spoofed), real stickers (Rondo). Not a paragraph.
-- **No self-playing loops, progress bars or autoplay** (Odd Man Out, round
-  2). They "stress" the player and a demo cannot be paused. A demo stays on
-  the step chosen, plays once, and replays when that step is tapped.
-  **(conflict)** Rondo (10s loop), Pitch pin (8s loop), Spoofed (7s) and
-  Season line (live loop) all ship looping demos Jonno has not ruled on.
+- **Every front page uses the one How to play card**
+  (`components/HowItWorks.tsx`, 2026-10-19): a live demo of real stickers
+  and crests beside three short numbered rules, the one shown lit. Pass
+  `rules` and `demo(frame)`; never build a game's own explainer. It loops
+  until a rule is tapped, then plays that rule once and holds (the answer
+  to Odd Man Out's "a demo cannot be paused"); reduced motion never loops.
+  Rules are plain English a first-time visitor gets in ten seconds.
 - **The reveal shows the truth visually.** Turn the card over to the real
   one and keep the fake in sight on a tab; peel a fake off its corner to the
   real club underneath; do not write "it was X".
@@ -307,7 +311,7 @@ generation, 2026-10-16, not cut out or chosen).
 3. One red button; other actions plain; back chevron present.
 4. Marks have a symbol as well as a colour.
 5. Text cut to the bone; titles one or two words; help text on a card.
-6. No autoplay or looping motion; demo uses real examples.
+6. Demo is the shared How to play card with real examples; buttons are the shared classes.
 7. Every screen change glides, staged, nothing at once; reduced motion shows
    the end state; no stamp, shake or slam.
 8. Phone width checked with the mobile preset (and one wide width).
@@ -563,9 +567,8 @@ generation, 2026-10-16, not cut out or chosen).
 
 # Open: needs Jonno's ruling
 
-1. **Looping demos.** Odd Man Out bans self-playing loops; Rondo, Pitch pin,
-   Spoofed and Season line have them. Convert them all to tap-to-play, or
-   keep loops on the games he already accepted?
+1. ~~Looping demos~~: settled 2026-10-19 by the shared card (loops until a
+   rule is tapped, then holds). Jonno to confirm.
 2. **Red inside games.** Spoofed's miss, Pitch pin's Deadly tier and Season
    line's down arrow are red, against "red is the brand and the one action".
    Which colour for a result, and does the tier scale change?

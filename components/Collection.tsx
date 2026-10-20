@@ -63,8 +63,8 @@ export default function Collection() {
         {cards !== null && cards.length === 0 ? (
           <section className="page collection__empty">
             <GradeChip grade="elite" />
-            <p><b>No cards yet.</b> Seal a Deep Cuts board and every pick that holds comes back in a case. The deeper the pick, the rarer the case.</p>
-            <a className="seal seal--link" href="/deep">Play Deep Cuts</a>
+            <p><b>No cards yet.</b> Every pick that holds in Steps comes back as a card. The deeper the pick, the rarer the card.</p>
+            <a className="lobby-play" href="/step">Play today’s steps</a>
           </section>
         ) : null}
 

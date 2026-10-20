@@ -83,13 +83,13 @@ export default function LossCard({
               ))}
             </ul>
             <div className="lost__actions">
-              <button type="button" className="kick display" onClick={onRematch}>Rematch</button>
-              <button type="button" className="lost__quiet" onClick={onNewGame}>Change players</button>
+              <button type="button" className="lobby-play" onClick={onRematch}>Rematch</button>
+              <button type="button" className="lobby-quiet" onClick={onNewGame}>Change players</button>
             </div>
           </div>
         ) : (
           <div className="lost__actions">
-            <button type="button" className="kick display" onClick={onNext}>
+            <button type="button" className="lobby-play" onClick={onNext}>
               Next ball
             </button>
             <span className="lost__kickoff">{loser.bibs < BIBS_OUT ? `${loser.name} kicks off` : `${loser.name} is in the middle`}</span>

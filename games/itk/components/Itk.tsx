@@ -162,7 +162,7 @@ function Game({ day }: { day: ItkDay }) {
                 It was {shortClubName(r.stops[played.fakes[view]!]!.name)}{played.reals[view] ? `, really ${shortClubName(played.reals[view]!.name)}` : ', a move that never happened'}
               </span>
             ) : null}
-            <button type="button" className="seal itk-status__next" onClick={next}>
+            <button type="button" className="lobby-play lobby-small itk-status__next" onClick={next}>
               {done ? 'Your result' : view === round - 1 ? 'Next' : 'Back'}
             </button>
           </>
@@ -193,7 +193,7 @@ function Summary({ day, marks, onReview }: { day: ItkDay; marks: PlateMark[]; on
           rung={tierOf(marks)}
           day={day.day}
           onReview={onReview}
-          actions={<button type="button" className="seal" onClick={share}>{copied ? 'Copied' : 'Share'}</button>}
+          actions={<button type="button" className="lobby-play" onClick={share}>{copied ? 'Copied' : 'Share'}</button>}
         />
       </div>
     </section>

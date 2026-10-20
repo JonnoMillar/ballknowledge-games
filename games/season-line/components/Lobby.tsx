@@ -61,7 +61,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
                 {today.won ? `Got it in ${today.judged.length}` : 'Missed it'} · {today.answer?.name} {today.answer ? seasonLabel(today.answer.start) : ''}
               </p>
             ) : (
-              <a className="lobby-play display" href="/season-line/play">{me.started ? 'Continue today’s daily' : 'Play today’s daily'}</a>
+              <a className="lobby-play" href="/season-line/play">{me.started ? 'Continue today’s daily' : 'Play today’s daily'}</a>
             )}
           </div>
           <div className="lobby-hero__go sl-endless" id="endless">
@@ -76,7 +76,7 @@ export default function Lobby({ years, demo }: { years: [number, number]; demo: 
                 {all.map((y) => <option key={y} value={y}>{seasonLabel(y)}</option>)}
               </select>
             </div>
-            <a className={done ? 'lobby-play display' : 'sl-quiet'} href={`/season-line/play?from=${range[0]}&to=${range[1]}`}>Play endless</a>
+            <a className={done ? 'lobby-play' : 'lobby-quiet'} href={`/season-line/play?from=${range[0]}&to=${range[1]}`}>Play endless</a>
           </div>
         </section>
 

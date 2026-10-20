@@ -16,6 +16,7 @@ import { allPlayed, type Played } from '../lib/progress';
 import type { ItkDay, ItkStop } from '../lib/types';
 import type { DemoCareer } from '../server';
 import Words from '../../../components/Words';
+import HowItWorks, { type HowRule } from '../../../components/HowItWorks';
 
 /** Spoofed's ground: the same purple as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'spoofed')!.ground;
@@ -27,9 +28,9 @@ const GROUND = GAMES.find((g) => g.id === 'spoofed')!.ground;
  * - Today's daily, across the top: the question on the left; on the right
  *   the player you play next, five marks for the day, and the one red button.
  *   Once the day is done: your card and the time to the next one, no red.
- * - An example, bottom left: Ronaldo, three clubs, the marker circles the
- *   fake and it peels back to the real one.
- * - The archive, bottom right: how many past dailies you have not finished.
+ * - How to play (the shared card): Ronaldo, three clubs, the marker circles
+ *   the fake and it peels back to the real one, beside the three rules.
+ * - The archive: how many past dailies you have not finished.
  */
 export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer }) {
   // Read after mount: localStorage is the player's, and the server render knows nothing of it.
@@ -89,7 +90,7 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
                   )}
                 </div>
                 <Marks marks={marks} />
-                <a className="lobby-play display" href="/spoofed/play">
+                <a className="lobby-play" href="/spoofed/play">
                   {started ? 'Continue today’s daily' : 'Play today’s daily'}
                 </a>
               </>
@@ -97,10 +98,7 @@ export default function Lobby({ epoch, demo }: { epoch: string; demo: DemoCareer
           </div>
         </section>
 
-        <section className="lobby-card itk-lobby--demo" aria-label="An example">
-          <span className="lobby-tag lobby-tag--paper">Example</span>
-          <Demo demo={demo} />
-        </section>
+        <How demo={demo} />
 
         <LobbyLink
           href="/spoofed/archive"
@@ -134,10 +132,20 @@ function Countdown() {
 }
 
 /**
- * What you do, with no instructions: three clubs from a career everyone
- * knows. The marker circles the fake, it peels off, the real club is
- * underneath. CSS only, a 7 s loop; reduced motion shows the last frame.
+ * How to play, on the shared card: three clubs from a career everyone knows.
+ * The trail is laid out; the marker circles the fake; it peels off and the
+ * real club is underneath.
  */
+const RULES: HowRule[] = [
+  { text: 'Five careers a day. In each, one move never happened.', frames: [2600] },
+  { text: 'Tap the club you think is fake. You get two goes.', frames: [2600] },
+  { text: 'It peels back to the real club. First go scores 2, second 1.', frames: [3800] },
+];
+
+function How({ demo }: { demo: DemoCareer }) {
+  return <HowItWorks rules={RULES} demo={(step) => <Demo demo={demo} step={step} />} />;
+}
+
 function Face({ stop, clubId, name }: { stop: ItkStop; clubId: string; name: string }) {
   return (
     <span className="itk-demo__face">
@@ -148,10 +156,10 @@ function Face({ stop, clubId, name }: { stop: ItkStop; clubId: string; name: str
   );
 }
 
-function Demo({ demo }: { demo: DemoCareer }) {
+function Demo({ demo, step }: { demo: DemoCareer; step: number }) {
   const { round, fake, real } = demo;
   return (
-    <div className="itk-demo" aria-hidden>
+    <div className="itk-demo" data-step={step}>
       <div className="itk-demo__who">
         <StickerFace player={round.player} image={round.image ?? undefined} ground={solid(round.ground)} className="sticker--still" />
       </div>
@@ -160,13 +168,13 @@ function Demo({ demo }: { demo: DemoCareer }) {
           <Fragment key={i}>
             {i ? <span className={`itk-demo__leg ${i === fake || i === fake + 1 ? 'is-mended' : ''}`} /> : null}
             {i === fake ? (
-              <span className="itk-demo__card is-fake">
+              <span className="itk-demo__card is-fake" style={{ '--i': i } as CSSProperties}>
                 <Face stop={s} clubId={real.clubId} name={real.name} />
                 <span className="itk-demo__peel"><Face stop={s} clubId={s.clubId} name={s.name} /></span>
                 <Loop className="itk-demo__loop" />
               </span>
             ) : (
-              <span className="itk-demo__card"><Face stop={s} clubId={s.clubId} name={s.name} /></span>
+              <span className="itk-demo__card" style={{ '--i': i } as CSSProperties}><Face stop={s} clubId={s.clubId} name={s.name} /></span>
             )}
           </Fragment>
         ))}

@@ -149,6 +149,46 @@ card) and the hub's lit tiles. Applied to Chain and Spoofed:
 - **Next:** the no-teleport sweep (every click-driven change on every game
   screen through `smooth()`/`.vt`, by the rules at the top of MOTION).
 
+**One button system and one demo card (2026-10-19, branch
+`claude/ui-consistency-5e307e`).** Jonno: "ensure there aren't unique
+buttons", "the demo sections need to be all in the same vibe".
+- **Buttons** ("BUTTONS" in `app/globals.css`): `.lobby-play` (the one red
+  button), `.lobby-quiet` (every other button, Odd Man Out's white end-screen
+  look), `.lobby-small` (one size step for either, for in-game spots), and
+  one grey disabled state. Colours and font are `--btn-*` tokens, so the
+  coming brand kit restyles every button in one place. Gone: `.seal`,
+  `.seal--link`, `.kick` (Rondo's orange), `.sl-quiet`, `.chub__quiet`,
+  `.pin__throw`, `.hint-btn`, `.finder__remove`, and the underlined text
+  links used as buttons (Another chain, Look at the board, See your cards,
+  Watch it, All packs, Change, I've got nothing, Abandon, back to it,
+  Archive, Your collection). The hub's Play is a drawn `.lobby-play`.
+  Rondo's "Abandon match" is "Leave match" (lessons 1.3). Controls (chips,
+  segmented clock, switches) and tappable cards keep their own looks;
+  masthead pills (`.masthead__back`, `.masthead__button`) stay their own
+  family. Collection's empty state pointed at archived Deep Cuts; it now
+  says Steps and links `/step`.
+- **How to play** (`components/HowItWorks.tsx`, "HOW TO PLAY" CSS): Rondo's
+  pattern for every game: a live demo with real stickers and crests beside
+  three numbered rules, the one shown lit (ink edge and lightness, not hue).
+  It loops, and tapping a rule takes over: it plays that rule once and holds
+  (Odd Man Out's control), which settles lessons "Open 1". Reduced motion
+  never loops. Each game passes `rules` (text and frame lengths) and a
+  `demo(frame)`; demo CSS keys off `data-step`, each frame resting on its
+  last moment. Moved onto it: Rondo, Odd Man Out (`HowDemo.tsx`, 3 rules),
+  Season line (`How.tsx`), Pitch pin (`Demo.tsx`, scale under the rules,
+  now on every visit), Spoofed (was "Example" with no rules), and `/chain`,
+  which gets two half cards (`components/ChainHow.tsx`: Steps with Ronaldo
+  and Heinze graded live by `demoSteps()` in `games/step/server.ts`; the
+  puzzle with Rooney, a Portuguese, Benzema from `demoChain()` in
+  `src/server/board.ts`) in place of the "How the puzzle works" details.
+- Card names (`.lobby-tag`) are an eyebrow (rule and small caps) site-wide,
+  not pills, per Jonno's no-pill rule. The hub tiles' tags (`.hub__tag`)
+  are still pills: not touched.
+- Checked: typecheck, `npm test` 1,777, prod build; Playwright at 375 and
+  1200 on every front page (each demo frame), Steps, Spoofed, Pitch pin,
+  Season line, Rondo, Odd Man Out and Chain's end screens, no horizontal
+  scroll, no console errors.
+
 **Open:** "Steps" (hub, Jonno's word) vs "Step" (the game's own masthead):
 ask before renaming. Spoofed's icon came out with a centre circle instead of
 the pundit's ink loop; redo only if Jonno minds.

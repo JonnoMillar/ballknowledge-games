@@ -45,7 +45,7 @@ open career; a finished day reopens on the end screen.
 | `app/itk/page.tsx`, `app/api/itk/{day,pick}/route.ts` | Thin shells. |
 | `games/itk/data/days.json` | The schedule, one day per line. Server-only. |
 | `games/itk/data/club-countries.json` | P17 for the 446 clubs with ≥300k views (`npm run itk:countries`). |
-| `games/itk/data/enwiki-views*.json` | 24 months of views (Oct 2023–Sep 2025), moved from `data/itk/`. |
+| `data/enwiki-views*.json` | 24 months of views (Oct 2023–Sep 2025), shared with Steps since 2026-10-20 (`scripts/fetch-views.mjs`, whole pool). That full fetch filled in 23 candidates whose views had failed before (Ødegaard, Maddison…); no existing number changed. |
 | `scripts/itk/build-days.ts` | `npm run itk:days [-- --print]`: if <14 days ahead, generate to 28 ahead, self-check, write. `--print` shows upcoming days with answers. |
 | `scripts/itk/inputs.ts` | Reads the committed inputs (no network). |
 | `.github/workflows/itk-days.yml` | Daily 05:00 UTC: `itk:days`, `npm test`, commit `days.json` to `main`. |

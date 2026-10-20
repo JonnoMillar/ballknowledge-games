@@ -14,7 +14,7 @@ const GROUND = GAMES.find((g) => g.id === 'bluff')!.ground;
 /**
  * The way in, on the site's front-page kit: the hero on the game's ground
  * with the ask on the left and the setup (and Kick off, the page's one red
- * button) on the right; How it goes beneath.
+ * button) on the right; How to play (the shared card) beneath.
  */
 export default function Lobby({ years, count }: { years: { first: number; last: number }; count: number }) {
   const blank: Options = { from: years.first, to: years.last, help: true };
@@ -49,21 +49,17 @@ export default function Lobby({ years, count }: { years: { first: number; last: 
           <span className="lobby-hero__ground" style={{ viewTransitionName: 'game-bluff' }} aria-hidden />
           <img className="lobby-hero__mini" src="/hub/odd-man-out.webp" alt="" width={480} height={480} style={{ viewTransitionName: 'game-bluff-mini' }} />
           <div className="lobby-hero__ask vt">
-            <span className="bf-eyebrow bf-eyebrow--light">Multiplayer</span>
+            <span className="lobby-tag">Multiplayer</span>
             <h1 className="lobby-hero__head display"><Words text="Can you find the mole?" /></h1>
             <p className="lobby-hero__sub">A real team sheet with one player swapped. Two or more of you, one phone.</p>
           </div>
           <div className="lobby-hero__go">
             <Setup key={me ? 'saved' : 'blank'} initialNames={me?.saved.names ?? []} initialOptions={initial} years={years} onStart={start} />
-            {me?.match ? <a className="bf-lobby__resume vt" href="/odd-man-out/play">Match in progress · back to it</a> : null}
+            {me?.match ? <a className="lobby-quiet lobby-small lobby-resume vt" href="/odd-man-out/play">Back to your match</a> : null}
           </div>
         </section>
 
-        <section className="lobby-card lobby__wide bf-how vt">
-          <h2 className="bf-eyebrow">How it goes</h2>
-          <HowDemo />
-          <p className="bf-how__note">{count} team sheets from finals and knockout games, {years.first} to {years.last}, from Wikipedia.</p>
-        </section>
+        <HowDemo note={`${count} team sheets from finals and knockout games, ${years.first} to ${years.last}, from Wikipedia.`} />
       </main>
     </div>
   );

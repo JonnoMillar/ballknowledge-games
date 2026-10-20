@@ -92,7 +92,7 @@ function Tile({ game: g, status, size, play }: { game: GameCard; status: Status;
         <span className="hub__name display">{g.name}</span>
         {size === 'large' && g.line ? <span className="hub__line">{g.line}</span> : null}
       </span>
-      {play ? <span className="hub__play display">Play</span> : null}
+      {play ? <span className="lobby-play hub__play">Play</span> : null}
     </a>
   );
 }

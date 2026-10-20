@@ -18,6 +18,8 @@ import { shareLine } from '../src/lib/chain/share';
 import { doneToday } from '../src/lib/today';
 import { readCollection } from '../src/lib/collection';
 import Words from './Words';
+import { PuzzleHow, StepsHow } from './ChainHow';
+import type { ChainDemo, StepsDemo } from '../src/lib/demo';
 
 /** Steps stands on Chain's ground, the same as its tile on the hub. */
 const GROUND = GAMES.find((g) => g.id === 'chain')!.ground;
@@ -41,11 +43,12 @@ type FirstStep = {
  *   rarer the card. Dark ground, the cards' world.
  * - The puzzle: one board, one answer per plate, seal it once. Paper.
  * - The two archives, then the collection the Steps cards go into.
+ * - How to play each, side by side on the shared card.
  *
  * The one red button goes to whichever daily is next: Steps, then the
  * puzzle. Once both are done there is none.
  */
-export default function Home({ boards }: { boards: BoardSummary[] }) {
+export default function Home({ boards, demos }: { boards: BoardSummary[]; demos: { chain: ChainDemo; steps: StepsDemo } }) {
   const daily = boards.filter((b) => b.daily);
   const byId = new Map(boards.map((b) => [b.id, b]));
   const [today, setToday] = useState<number | null>(null);
@@ -101,10 +104,10 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
             {today === null ? null : stepsDone ? (
               <div className="chub__after">
                 <span className="chub__donemark">✓ Done today</span>
-                <a className="chub__link" href="/step">See your cards</a>
+                <a className="lobby-quiet" href="/step">See your cards</a>
               </div>
             ) : (
-              <a className="lobby-play display" href="/step">Play today’s steps</a>
+              <a className="lobby-play" href="/step">Play today’s steps</a>
             )}
           </div>
         </section>
@@ -133,14 +136,8 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
           />
         </div>
 
-        <details className="chub__how lobby__wide">
-          <summary className="display">How the puzzle works</summary>
-          <ol>
-            <li><b>Every link is a club two players both played for.</b> The givens are on the page; the gaps are yours.</li>
-            <li><b>Each empty sticker says who fits it.</b> A plate that asks for a German only holds with a German.</li>
-            <li><b>Seal it once.</b> The chain holds or it doesn’t, and your streak counts the days it held.</li>
-          </ol>
-        </details>
+        <StepsHow demo={demos.steps} />
+        <PuzzleHow demo={demos.chain} />
       </main>
     </div>
   );
@@ -185,14 +182,14 @@ function Puzzle({ board, day, play, streak, next }: {
             <p className="brief">{streak.current > 0 ? `Day ${streak.current} of your streak.` : 'A new one tomorrow.'}</p>
             <div className="hero__actions">
               <ShareButton text={shareLine({ title: `Chain #${day}`, plates: play.plates ?? [] })} loud={next} />
-              <a className="actions__link" href={`/play/${board.id}`}>Look at the board</a>
+              <a className="lobby-quiet" href={`/play/${board.id}`}>Look at the board</a>
             </div>
           </>
         ) : (
           <>
             <h2 className="hero__head display">Puzzle mode</h2>
             <div className="hero__actions">
-              <a className={next ? 'lobby-play display' : 'chub__quiet display'} href={`/play/${board.id}`}>Play today’s puzzle</a>
+              <a className={next ? 'lobby-play' : 'lobby-quiet'} href={`/play/${board.id}`}>Play today’s puzzle</a>
             </div>
           </>
         )}
@@ -210,6 +207,6 @@ function ShareButton({ text, loud }: { text: string; loud: boolean }) {
     try { await navigator.clipboard.writeText(text); setState('copied'); } catch { setState('failed'); }
     setTimeout(() => setState('idle'), 2200);
   }
-  return <button type="button" className={loud ? 'seal' : 'chub__quiet display'} onClick={copy}>{state === 'copied' ? 'Copied' : state === 'failed' ? 'Could not copy' : 'Share'}</button>;
+  return <button type="button" className={loud ? 'lobby-play' : 'lobby-quiet'} onClick={copy}>{state === 'copied' ? 'Copied' : state === 'failed' ? 'Could not copy' : 'Share'}</button>;
 }
 

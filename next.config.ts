@@ -22,6 +22,7 @@ const config: NextConfig = {
       './data/images.json',
       './data/portraits.json',
       './data/credits.json',
+      './data/player-views.json',
       './content/chains/*.json',
       './content/puzzles/*.json',
       './games/pin/data/packs/*.json',

@@ -1,4 +1,4 @@
-import { factFame, spellWeight } from '../../../src/lib/fame/spell';
+import { spellWeight } from '../../../src/lib/fame/spell';
 import { sharedClubsByProminence } from '../../../src/lib/chain/score';
 import { ELITE_MIN_FIELD, GRADES, GRADE_GLYPH, GRADE_WORD, gradeOf, gradeRank, type Grade } from '../../../src/lib/chain/grade';
 import { MARK_GLYPH } from '../../../src/lib/chain/share';
@@ -39,21 +39,56 @@ export function fieldOf(given: Player, members: readonly Player[]): Player[] {
   return members.filter((p) => p.id !== given.id && shares(p, given));
 }
 
+/** English Wikipedia views over 24 months, by player id: data/player-views.json (scripts/fetch-views.mjs). */
+export type Views = Readonly<Record<string, number>>;
+
 /**
- * How well known the fact "x fits here" is: fame scaled by the less known of
- * its two halves, the link to the given and the stint at the club. Kane at
+ * The ruler's tuning surface (measured 2026-10-19, games/step/HANDOFF.md).
+ *
+ * FAME_POWER: views span a thousandfold across a field, a stint's weight only
+ * twentyfold (spellWeight, 0.05..1), so raw views let any household name's
+ * loan spell rank as obvious (Ian Wright at Forest). Views ** FAME_POWER
+ * balances the two: 1 is views alone, 0 is the stint alone.
+ *
+ * FIT_A, FIT_B: where a player has no English page (or a title that finds
+ * none), log10(views) is estimated from sitelinks, fitted on the pool.
+ */
+export const FAME_POWER = 0.8;
+export const FIT_A = 2.943;
+export const FIT_B = 0.0425;
+
+/**
+ * How well known a player is to the audience: English Wikipedia views.
+ * Not sitelinks, which count every language's page, so a player famous in
+ * Japan or Ghana reads as well known as Roy Keane.
+ */
+export function knownOf(p: Player, views: Views): number {
+  const v = views[p.id];
+  return (v !== undefined && v > 0 ? v : 10 ** (FIT_A + FIT_B * p.fame.value)) ** FAME_POWER;
+}
+
+/**
+ * How well known the fact "x fits here" is: the less known of its two
+ * halves, the link to the given and the stint at the club. Each half is a
+ * fact about a player at a club, that player's fame times how much of a
+ * stint it was (src/lib/fame/spell.ts). The link is as known as its best
+ * shared club, and a shared club as its less known end: Ferdinand's loan at
+ * Bournemouth is obscure whoever played there with him, Henry's season at
+ * Juventus is not, because Henry is famous enough that it is known. Kane at
  * Leicester is a deep answer whoever he links to.
  */
-export function factOf(x: Player, given: Player, club: string): number {
-  return Math.min(factFame(x, [{ player: given }], 'clubs'), x.fame.value * spellWeight(x.spells?.[club]));
+export function factOf(x: Player, given: Player, club: string, views: Views): number {
+  const at = (p: Player, c: string) => knownOf(p, views) * spellWeight(p.spells?.[c]);
+  const link = Math.max(0, ...x.clubIds.filter((c) => given.clubIds.includes(c)).map((c) => Math.min(at(x, c), at(given, c))));
+  return Math.min(link, at(x, club));
 }
 
 /**
  * The two answers a step shows once it is played: the obvious one (the best
  * known fact) and the deepest checkable one. Null on an empty field.
  */
-export function endsOf(given: Player, club: string, field: readonly Player[]): { obvious: Player | null; elite: Player | null } {
-  const fact = (p: Player) => factOf(p, given, club);
+export function endsOf(given: Player, club: string, field: readonly Player[], views: Views): { obvious: Player | null; elite: Player | null } {
+  const fact = (p: Player) => factOf(p, given, club, views);
   const checkable = field.filter((p) => p.fame.value >= CHECKABLE);
   const pick = (xs: readonly Player[], better: (a: number, b: number) => boolean) =>
     xs.reduce<Player | null>((best, p) => (best === null || better(fact(p), fact(best)) ? p : best), null);
@@ -71,10 +106,10 @@ export interface Judged {
   elite: Player | null;
 }
 
-export function judge(pick: Player, given: Player, club: string, members: readonly Player[]): Judged {
+export function judge(pick: Player, given: Player, club: string, members: readonly Player[], views: Views): Judged {
   const field = fieldOf(given, members);
-  const fact = (p: Player) => factOf(p, given, club);
-  const { obvious, elite } = endsOf(given, club, field);
+  const fact = (p: Player) => factOf(p, given, club, views);
+  const { obvious, elite } = endsOf(given, club, field, views);
 
   const held = field.some((p) => p.id === pick.id);
   if (!held) return { held, grade: null, via: null, obvious, elite };
