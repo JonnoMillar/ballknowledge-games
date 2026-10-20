@@ -613,14 +613,12 @@ is not; club crests are in.
 
 ## Next up
 
-- **Chain dailies 131-155 added 2026-10-20** (`from` 2026-10-22): first
-  served 5 Nov, the first repeat moves from 14 Nov to 9 Dec. Culled from 40
-  generated (seed 7): dropped boards whose answer a British fan would not
-  reach (Panucci, Banega, Altıntop, Emre, Karembeu, Sakai) or whose link is
-  a spell with 0 appearances (Henderson "at Chelsea", Rodri "at Barcelona",
-  ter Stegen "at Ajax": pool data errors, still in `data/pool.json`). The
-  generator does not check appearances; a link on a 0-app spell passes it.
-  Next batch before 9 Dec.
+- **New Chain dailies before 14 Nov 2026.** 53 boards are live; day 57
+  (14 Nov) starts repeating them. Run `build-completion.ts --write` on the
+  current pool: it stamps `"from"` two days out, and `tests/daily.test.ts`
+  fails any new board without one. Accept: `npm test` green and
+  `schedule()` shows the new ids from their `from` date, days before it
+  unchanged.
 - **96 enwiki titles have no views** (`node scripts/fetch-views.mjs` failed
   them on 2026-10-20; it resumes). Steps falls back on sitelinks for them.
 - **Play the dailies.** A fixed order since 2026-10-20 (see the daily). Cull the givens a
