@@ -1,7 +1,7 @@
 'use client';
 import { useRef } from 'react';
 import { GradeChip } from './Slab';
-import { GRADES, GRADE_LINE } from '../src/lib/chain/grade';
+import { GRADES, GRADE_EXAMPLE, GRADE_LINE } from '../src/lib/chain/grade';
 
 /**
  * The key to the grades, reachable from every masthead: a button that opens
@@ -28,14 +28,16 @@ export default function GradesKey({ className = '' }: { className?: string }) {
           </button>
           <h2 id="grades-key-head" className="key__head display">The grades</h2>
           <p className="key__intro">
-            Every pick that holds is graded on your ball knowledge: the deeper the answer, the rarer the case you
-            keep it in.
+            The deeper your answer, the rarer the case. Asked for someone who <b>{GRADE_EXAMPLE.question}</b>:
           </p>
           <ul className="key__list">
             {[...GRADES].reverse().map((g) => (
               <li key={g} className="key__row">
                 <GradeChip grade={g} />
-                <span>{GRADE_LINE[g]}</span>
+                <span className="key__eg">
+                  <b>{GRADE_EXAMPLE.picks[g].name}</b>
+                  <small>{GRADE_LINE[g]}</small>
+                </span>
               </li>
             ))}
           </ul>

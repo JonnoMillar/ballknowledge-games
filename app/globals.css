@@ -1358,6 +1358,9 @@ button { font-family: inherit; }
 .key__list { list-style: none; margin: 0; padding: 0; }
 .key__row { display: grid; grid-template-columns: 136px 1fr; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 15px; line-height: 1.4; }
 .key__row .grade-chip { justify-self: start; }
+.key__eg { display: flex; flex-direction: column; gap: 2px; }
+.key__eg b { font-size: 16px; color: var(--ink); }
+.key__eg small { font-size: 13px; color: var(--muted); }
 .key__links { display: flex; gap: 12px; margin: 16px 0 0; }
 
 .card-detail { max-width: min(640px, calc(100vw - 32px)); }

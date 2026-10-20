@@ -3148,5 +3148,113 @@
       "y": 17
     },
     "xg": 0.06
+  },
+  "u-699533": {
+    "scorer": "Diego Gómez",
+    "match": "Brighton v Crystal Palace",
+    "date": "2026-10-18",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 6th minute, to make it 2–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31245,
+      "shotId": "699533"
+    },
+    "at": {
+      "x": 30.3,
+      "y": 51.1
+    },
+    "xg": 0.02
+  },
+  "u-700134": {
+    "scorer": "James Maddison",
+    "match": "Tottenham v Coventry",
+    "date": "2026-10-19",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 13th minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31249,
+      "shotId": "700134"
+    },
+    "at": {
+      "x": 44.7,
+      "y": 19.7
+    },
+    "xg": 0.03
+  },
+  "u-699912": {
+    "scorer": "Noni Madueke",
+    "match": "Nottingham Forest v Arsenal",
+    "date": "2026-10-18",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 79th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31248,
+      "shotId": "699912"
+    },
+    "at": {
+      "x": 18.7,
+      "y": 14.1
+    },
+    "xg": 0.04
+  },
+  "u-699057": {
+    "scorer": "Alex Iwobi",
+    "match": "Fulham v Hull",
+    "date": "2026-10-17",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 32nd minute, to make it 1–0.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31241,
+      "shotId": "699057"
+    },
+    "at": {
+      "x": 41.4,
+      "y": 17.7
+    },
+    "xg": 0.06
+  },
+  "u-698813": {
+    "scorer": "Pedro Neto",
+    "match": "Everton v Chelsea",
+    "date": "2026-10-17",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a set piece, in the 89th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31240,
+      "shotId": "698813"
+    },
+    "at": {
+      "x": 37.4,
+      "y": 14.4
+    },
+    "xg": 0.08
+  },
+  "u-699017": {
+    "scorer": "Alexander Isak",
+    "match": "Brentford v Liverpool",
+    "date": "2026-10-17",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a flick-on, in the 69th minute, to make it 1–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31242,
+      "shotId": "699017"
+    },
+    "at": {
+      "x": 30.5,
+      "y": 5.8
+    },
+    "xg": 0.13
   }
 }
