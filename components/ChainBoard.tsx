@@ -131,7 +131,7 @@ function Slot({
       {given && hint ? (
         <Hint clubs={hint} />
       ) : given && interactive && onHint ? (
-        <button type="button" className="hint-btn" onClick={() => onHint(index)}>Show clubs</button>
+        <button type="button" className="lobby-quiet lobby-small" onClick={() => onHint(index)}>Show clubs</button>
       ) : null}
     </div>
   );

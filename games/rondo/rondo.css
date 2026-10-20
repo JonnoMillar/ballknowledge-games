@@ -31,33 +31,8 @@
 }
 .rondo__loading { text-align: center; color: var(--muted); padding: 40px 0; }
 .rondo__foot { display: flex; justify-content: center; padding-top: 12px; }
-.rondo__abandon {
-  appearance: none; border: 0; background: none; padding: 8px 12px;
-  font: inherit; font-size: 13px; color: var(--muted); cursor: pointer; text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.rondo__abandon:hover { color: var(--ink); }
 
 /* ── THE BUTTON ─────────────────────────────────────────────────────── */
-.kick {
-  appearance: none;
-  border: 0;
-  border-radius: 3px;
-  background: var(--bib);
-  color: #fff;
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  line-height: 1;
-  padding: 14px 28px 15px;
-  cursor: pointer;
-  box-shadow: 0 2px 0 var(--bib-deep);
-  transition: transform var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out);
-}
-.kick:hover:not(:disabled) { background: #E0611A; }
-.kick:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 1px 0 var(--bib-deep); }
-.kick:disabled { background: var(--silhouette); box-shadow: none; cursor: not-allowed; }
 
 /* ── SETUP ──────────────────────────────────────────────────────────
    On the front page's lit orange ground (the kit in app/globals.css), so
@@ -66,6 +41,7 @@
 .setup__title { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.86; }
 .setup__names { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .setup__row { display: flex; align-items: center; gap: 10px; }
+.setup__add { align-self: flex-start; margin-left: 32px; }
 .setup__no { width: 22px; font-weight: 800; font-size: 20px; text-align: center; opacity: 0.8; }
 .setup__input {
   flex-grow: 1;
@@ -86,12 +62,6 @@
   color: #fff; opacity: 0.8; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
 }
 .setup__remove:hover { opacity: 1; background: rgba(255, 255, 255, 0.16); }
-.setup__add {
-  appearance: none; border: 1.5px dashed rgba(255, 255, 255, 0.6); background: none; border-radius: 12px;
-  padding: 9px 14px; font: inherit; font-size: 14px; font-weight: 600; color: #fff; cursor: pointer;
-  align-self: flex-start; margin-left: 32px;
-}
-.setup__add:hover { border-style: solid; border-color: #fff; }
 .setup__clock { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 0 4px; }
 .setup__label { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.86; }
 .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: rgba(0, 0, 0, 0.16); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
@@ -103,68 +73,46 @@
 .seg__opt:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ── THE FRONT PAGE'S CARDS ─────────────────────────────────────────── */
-/* How it goes: the demo beside the rules, on one clock. */
-.rondo-how { --loop: 10s; }
-.rondo-how__body { display: flex; flex-direction: column; gap: 18px; }
-.rondo-how__rules { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 16px; line-height: 1.4; }
-.rondo-how__rules li::marker { font-family: var(--font-display), Impact, sans-serif; font-weight: 800; color: var(--bib-deep); }
-@media (min-width: 760px) {
-  .rondo-how__body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 40px; }
-  .rondo-how__rules { font-size: 17px; gap: 14px; }
-}
-
-/* The demo: one ball, 10 s, looped. Every resting style is the last frame,
-   so reduced motion (no animation) shows the whole story still. */
-.rondo-demo { --sticker-w: 66px; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px 10px 14px; border-radius: 16px; background: var(--page); }
+/* How to play: one ball in three frames (HowItWorks). Every resting style
+   is the frame's last moment, so reduced motion shows each frame still. */
+.rondo-demo { --sticker-w: clamp(60px, 18cqw, 92px); display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .rondo-demo .sticker__name { font-size: 11px; }
 .rondo-demo .sticker__name--long { font-size: 9.5px; }
 .rondo-demo__row { display: flex; align-items: center; gap: 2px; }
 .rondo-demo__link { position: relative; display: inline-flex; padding: 2px; }
 .rondo-demo__link img { filter: grayscale(1); opacity: 0.45; }
-.rondo-demo__link::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; border-radius: 1px; background: var(--red); transform: rotate(-24deg); }
+.rondo-demo__link::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2.5px; border-radius: 1px; background: var(--ink); transform: rotate(-24deg); }
 .rondo-demo__bibs { display: flex; gap: 6px; }
 .rondo-demo__bib { position: relative; display: inline-flex; }
 .rondo-demo__earned { position: absolute; inset: 0; }
-@media (min-width: 760px) {
-  .rondo-demo { --sticker-w: 96px; padding: 20px 18px 16px; }
-  .rondo-demo__row { gap: 8px; }
-}
+@container (min-width: 420px) { .rondo-demo__row { gap: 8px; } }
 
+/* Frame 1: Ronaldo, through United. Madrid and Benzema not yet. */
+.rondo-demo[data-step='0'] :is(.rondo-demo__p--3, .rondo-demo__link--2) { opacity: 0; }
+.rondo-demo[data-step='0'] .rondo-demo__link img { filter: none; opacity: 1; }
+.rondo-demo[data-step='0'] .rondo-demo__link::after { transform: rotate(-24deg) scaleX(0); }
+.rondo-demo:not([data-step='2']) .rondo-demo__earned { opacity: 0; }
+/* Frame 3's resting state: Benzema stuck (greyed, no shake: never a shake on a miss), his bib on. */
+.rondo-demo[data-step='2'] .rondo-demo__p--3 .sticker { filter: grayscale(1); opacity: 0.55; }
 @media (prefers-reduced-motion: no-preference) {
-  .rondo-demo__p--1 { animation: rd-in var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__link--1 { animation: rd-link1 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__p--2 { animation: rd-p2 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__link--2 { animation: rd-link2 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__p--3 { animation: rd-p3 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__p--3 .sticker { animation: rd-stuck var(--loop) linear infinite; }
-  .rondo-demo__link--1 img { animation: rd-grey1 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__link--1::after { animation: rd-line1 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__link--2 img { animation: rd-grey2 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__link--2::after { animation: rd-line2 var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__bibs { animation: rd-in var(--loop) var(--ease-out) infinite; }
-  .rondo-demo__earned { animation: rd-bib var(--loop) var(--ease-out) infinite; }
-  .rondo-how__rules li:nth-child(1) { animation: rd-rule1 var(--loop) var(--ease-in-out) infinite; }
-  .rondo-how__rules li:nth-child(2) { animation: rd-rule2 var(--loop) var(--ease-in-out) infinite; }
-  .rondo-how__rules li:nth-child(3) { animation: rd-rule3 var(--loop) var(--ease-in-out) infinite; }
+  .rondo-demo[data-step='0'] .rondo-demo__link--1 { animation: rd-pop 400ms var(--ease-out) 300ms both; }
+  .rondo-demo[data-step='0'] .rondo-demo__p--2 { animation: rd-drop 450ms var(--ease-out) 900ms both; }
+  /* Frame 2: Benzema through Madrid, then both clubs are used up. */
+  .rondo-demo[data-step='1'] .rondo-demo__link--2 { animation: rd-pop 400ms var(--ease-out) 300ms both; }
+  .rondo-demo[data-step='1'] .rondo-demo__p--3 { animation: rd-drop 450ms var(--ease-out) 800ms both; }
+  .rondo-demo[data-step='1'] .rondo-demo__link--1 img { animation: rd-grey 320ms var(--ease-out) 1700ms both; }
+  .rondo-demo[data-step='1'] .rondo-demo__link--1::after { animation: rd-cross 320ms var(--ease-out) 1700ms both; }
+  .rondo-demo[data-step='1'] .rondo-demo__link--2 img { animation: rd-grey 320ms var(--ease-out) 2200ms both; }
+  .rondo-demo[data-step='1'] .rondo-demo__link--2::after { animation: rd-cross 320ms var(--ease-out) 2200ms both; }
+  /* Frame 3: Benzema is stuck and greys; a bib lands. */
+  .rondo-demo[data-step='2'] .rondo-demo__p--3 .sticker { animation: rd-grey 500ms var(--ease-out) 500ms both; }
+  .rondo-demo[data-step='2'] .rondo-demo__earned { animation: rd-bib 450ms var(--ease-out) 1300ms both; }
 }
-/* 0-4 s two passes, 4-6 s both clubs crossed out, 6-9 s stuck and a bib, then out. */
-@keyframes rd-in { 0% { opacity: 0; } 3%, 90% { opacity: 1; } 97%, 100% { opacity: 0; } }
-@keyframes rd-link1 { 0%, 7% { opacity: 0; transform: scale(0.4); } 11%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
-@keyframes rd-p2 { 0%, 13% { opacity: 0; transform: translateY(-12px) scale(1.12); } 18%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
-@keyframes rd-link2 { 0%, 24% { opacity: 0; transform: scale(0.4); } 28%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
-@keyframes rd-p3 { 0%, 30% { opacity: 0; transform: translateY(-12px) scale(1.12); } 35%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
-@keyframes rd-grey1 { 0%, 42% { filter: none; opacity: 1; } 46%, 100% { filter: grayscale(1); opacity: 0.45; } }
-@keyframes rd-line1 { 0%, 42% { transform: rotate(-24deg) scaleX(0); } 46%, 100% { transform: rotate(-24deg) scaleX(1); } }
-@keyframes rd-grey2 { 0%, 50% { filter: none; opacity: 1; } 54%, 100% { filter: grayscale(1); opacity: 0.45; } }
-@keyframes rd-line2 { 0%, 50% { transform: rotate(-24deg) scaleX(0); } 54%, 100% { transform: rotate(-24deg) scaleX(1); } }
-@keyframes rd-stuck { 0%, 63% { transform: none; } 64.5% { transform: translateX(-4px); } 66% { transform: translateX(4px); } 67.5% { transform: translateX(-3px); } 69%, 100% { transform: none; } }
-@keyframes rd-bib { 0%, 71% { opacity: 0; transform: scale(2.2) rotate(-8deg); } 76%, 100% { opacity: 1; transform: none; } }
-@keyframes rd-rule1 { 0%, 38% { opacity: 1; } 42%, 96% { opacity: 0.35; } 100% { opacity: 1; } }
-@keyframes rd-rule2 { 0%, 38% { opacity: 0.35; } 42%, 58% { opacity: 1; } 62%, 100% { opacity: 0.35; } }
-@keyframes rd-rule3 { 0%, 58% { opacity: 0.35; } 62%, 92% { opacity: 1; } 96%, 100% { opacity: 0.35; } }
-.how__note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
-
-.rondo-lobby__resume { align-self: center; color: #fff; font-size: 15px; font-weight: 600; text-underline-offset: 3px; }
+@keyframes rd-pop { from { opacity: 0; transform: scale(0.4); } }
+@keyframes rd-drop { from { opacity: 0; transform: translateY(-12px) scale(1.12); } }
+@keyframes rd-grey { from { filter: none; opacity: 1; } }
+@keyframes rd-cross { from { transform: rotate(-24deg) scaleX(0); } }
+@keyframes rd-bib { from { opacity: 0; transform: scale(2.2) rotate(-8deg); } }
 
 /* ── SCOREBOARD ─────────────────────────────────────────────────────── */
 .score {
@@ -303,7 +251,6 @@
 }
 .pass__unpick:hover { background: var(--page); color: var(--ink); }
 .pass__picked-name { flex-grow: 1; min-width: 0; font-size: 18px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.kick--pass { padding: 12px 22px 13px; font-size: 20px; }
 .pass__nothing {
   appearance: none; border: 0; background: none; align-self: center;
   padding: 6px 10px; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer;
@@ -342,13 +289,8 @@
 .lost__open-label b { color: var(--ink); font-weight: 600; }
 .lost__clubs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; }
 .lost__club { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; }
-.lost__actions { display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 6px; }
-.lost__actions .kick { align-self: stretch; }
-.lost__kickoff { font-size: 13px; color: var(--muted); }
-.lost__quiet {
-  appearance: none; border: 0; background: none; padding: 6px 10px;
-  font: inherit; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
-}
+.lost__actions { display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding-top: 6px; }
+.lost__kickoff { font-size: 13px; color: var(--muted); text-align: center; }
 .lost__final { display: flex; flex-direction: column; gap: 10px; padding-top: 10px; border-top: 1px dashed var(--rule); }
 .lost__ft { text-align: center; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
 .lost__winner { text-align: center; font-weight: 800; font-size: 30px; line-height: 1; text-transform: uppercase; letter-spacing: 0.02em; }

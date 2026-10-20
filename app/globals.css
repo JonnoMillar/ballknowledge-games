@@ -210,25 +210,6 @@ button { font-family: inherit; }
   .actions { position: static; background: none; padding-top: 4px; }
 }
 .actions__count { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.seal {
-  appearance: none;
-  border: 0;
-  border-radius: 3px;
-  background: var(--red);
-  color: #fff;
-  font-family: var(--font-display), Impact, sans-serif;
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 11px 26px 12px;
-  cursor: pointer;
-  transition: background var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
-}
-.seal:hover:not(:disabled) { background: var(--red-deep); }
-.seal:active:not(:disabled) { transform: translateY(1px); }
-.seal:disabled { background: var(--silhouette); cursor: not-allowed; }
-
 
 /* ── THE BOARD ─────────────────────────────────────────────────────────── */
 .chain { display: grid; justify-content: center; align-items: start; }
@@ -346,21 +327,6 @@ button { font-family: inherit; }
 .clue--missed { color: var(--red); }
 
 /* A hint: the answer's clubs as badges under the plate. */
-.hint-btn {
-  appearance: none;
-  border: 1.5px solid var(--rule-strong);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 11.5px;
-  font-weight: 600;
-  line-height: 1;
-  padding: 4px 9px 5px;
-  cursor: pointer;
-  transition: color var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
-}
-.hint-btn:hover { color: var(--ink); border-color: var(--ink); }
 .hint {
   display: flex;
   flex-wrap: wrap;
@@ -519,7 +485,6 @@ button { font-family: inherit; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-
 /* ── THE REVEAL ────────────────────────────────────────────────────────
    On the board, in place. See components/Reveal.tsx for the clock. */
 
@@ -641,8 +606,6 @@ button { font-family: inherit; }
 
 .actions--after { opacity: 0; transition: opacity var(--t-slow) var(--ease-out); }
 .actions--after.is-shown { opacity: 1; }
-.actions__link { font-size: 15px; font-weight: 600; color: var(--ink); }
-
 
 /* ── HOME ──────────────────────────────────────────────────────────────
    An album page with today's stickers on it. The page is a card on the
@@ -728,7 +691,6 @@ button { font-family: inherit; }
 .hero--held .hero__head { color: var(--green); }
 .hero--broke .hero__head { color: var(--red); }
 .hero__actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 18px; margin-top: 6px; }
-.seal--link { display: inline-block; text-decoration: none; }
 .hero__board {
   display: block;
   flex-shrink: 0;
@@ -801,63 +763,6 @@ button { font-family: inherit; }
   gap: 12px;
 }
 .home__head::after { content: ''; flex-grow: 1; height: 2px; background: var(--ink); opacity: 0.85; }
-
-/* How it works: three pictures with a line under each. */
-.how__steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  counter-reset: step;
-}
-@media (min-width: 760px) { .how__steps { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
-.how__step {
-  counter-increment: step;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 18px 16px 16px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-}
-.how__step::before {
-  content: counter(step);
-  position: absolute;
-  top: -12px;
-  left: 14px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--red);
-  color: #fff;
-  font-family: var(--font-display), Impact, sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.how__step p { margin: 0; font-size: 14.5px; line-height: 1.45; color: var(--muted); }
-.how__step p b { color: var(--ink); font-weight: 600; }
-.how__art {
-  --sticker-w: 64px;
-  --link-w: 26px;
-  --link-h: 26px;
-  height: 104px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-}
-.how__art .sticker__plate { padding: 4px 1px; min-height: 20px; }
-.how__art .sticker__name { font-size: 11px; }
-.how__art .sticker__hint { font-size: 9.5px; }
-.seal--art { font-size: 15px; padding: 8px 16px 9px; pointer-events: none; }
-.how__grid { margin-left: 12px; font-size: 18px; letter-spacing: 0.04em; }
 
 /* The ladder: a page per board. */
 .track__blurb { margin: -4px 0 16px; font-size: 15px; line-height: 1.45; color: var(--muted); max-width: 40em; }
@@ -933,7 +838,6 @@ button { font-family: inherit; }
 }
 .xi ::-webkit-scrollbar { width: 8px; }
 .xi ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
-
 
 /* ── THE SEARCH SHEET ──────────────────────────────────────────────────
    A bottom sheet on a phone, a panel on the right on a desk. See
@@ -1048,20 +952,6 @@ button { font-family: inherit; }
   font-size: 14px;
   color: var(--muted);
 }
-.finder__remove {
-  appearance: none;
-  border: 2px solid var(--ink);
-  border-radius: 4px;
-  background: transparent;
-  color: var(--ink);
-  font: inherit;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 8px 12px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.finder__remove:hover { background: var(--ink); color: var(--page); }
 
 @keyframes scrim-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes finder-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -1086,7 +976,6 @@ button { font-family: inherit; }
 /* The seal, while the server is judging, and if it could not. */
 .actions__note { font-size: 14px; color: var(--muted); }
 .actions__note--error { color: var(--red); }
-
 
 /* What the XI board's cards still use. */
 .xi .cond { font-family: 'Barlow Condensed', system-ui, sans-serif; }
@@ -1200,22 +1089,10 @@ button { font-family: inherit; }
 .hub__words { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .hub__name { font-size: 24px; font-weight: 800; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.02em; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25); }
 .hub__line { font-size: 14.5px; opacity: 0.88; }
-.hub__play {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 54px;
-  border-radius: 16px;
-  background: var(--red);
-  color: #fff;
-  font-size: 25px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  box-shadow: inset 0 -3px 0 var(--red-deep), 0 6px 16px rgba(0, 0, 0, 0.25);
-  transition: background var(--t-fast) var(--ease-out);
-}
-.hub__tile:hover .hub__play { background: var(--red-deep); }
+/* The tile is the link; its Play (a .lobby-play) is only drawn, so it
+   follows the tile's hover and never lifts on its own. */
+.hub__play { min-height: 54px; font-size: 25px; pointer-events: none; }
+.hub__tile:hover .hub__play { background: var(--btn-go-deep); }
 
 /* Square: the miniature fills the tile, the name sits under it. */
 .hub__tile--square { grid-template-rows: 1fr auto; padding-top: 30px; }
@@ -1262,7 +1139,6 @@ button { font-family: inherit; }
   .hub__tile--feature .hub__play { min-height: 60px; font-size: 28px; }
   .hub__name { font-size: 26px; }
 }
-
 
 /* ── FOOTER AND CREDITS ────────────────────────────────────────────────
    Every page links here: the Commons photos are licensed per file, and
@@ -1482,8 +1358,7 @@ button { font-family: inherit; }
 .key__list { list-style: none; margin: 0; padding: 0; }
 .key__row { display: grid; grid-template-columns: 136px 1fr; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 15px; line-height: 1.4; }
 .key__row .grade-chip { justify-self: start; }
-.key__links { display: flex; gap: 18px; margin: 16px 0 0; font-size: 15px; font-weight: 600; }
-.key__links a { color: var(--ink); }
+.key__links { display: flex; gap: 12px; margin: 16px 0 0; }
 
 .card-detail { max-width: min(640px, calc(100vw - 32px)); }
 .card-detail__sheet { display: flex; flex-direction: column; align-items: center; gap: 20px; }
@@ -1509,7 +1384,6 @@ button { font-family: inherit; }
 .cards__row { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
 .cards__item { opacity: 0; transform: translateY(10px) scale(0.97); transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out); transition-delay: calc(var(--i) * 220ms + 150ms); }
 .cards.is-shown .cards__item { opacity: 1; transform: none; }
-.cards__link { font-size: 15px; font-weight: 600; color: var(--ink); }
 
 /* ── DEEP CUTS INDEX AND HOME SECTION ──────────────────────────────── */
 .deep-intro { display: flex; flex-direction: column; gap: 10px; }
@@ -1571,7 +1445,8 @@ button { font-family: inherit; }
      out of the top corner. Question on the left, the go on the right, the
      page's one red button (.lobby-play).
    - .lobby-card: paper cards beneath, the same corners and ledge as the
-     hub's tiles. A pill tag (.lobby-tag) names each, never a rotated tab.
+     hub's tiles. An eyebrow (.lobby-tag) names each, never a pill or a
+     rotated tab.
    - LobbyLink: a big card to an archive or the collection.
    - .daytiles: an archive page's grid of days.
    Two columns from 760px; .lobby__wide spans both. */
@@ -1591,22 +1466,91 @@ button { font-family: inherit; }
   .lobby__wide { grid-column: 1 / -1; }
 }
 
+/* A card's name: an eyebrow (a short rule and small caps), never a pill
+   (Jonno, 2026-10-16, from Odd Man Out). White on a ground, ink on paper. */
 .lobby-tag {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  gap: 10px;
+  margin: 0;
   font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1;
+  opacity: 0.92;
 }
-.lobby-tag--paper { background: rgba(20, 18, 16, 0.06); box-shadow: inset 0 0 0 1px var(--rule); color: var(--ink); }
+.lobby-tag::before { content: ''; flex: none; width: 22px; height: 2px; border-radius: 2px; background: currentColor; }
+.lobby-tag--paper { color: var(--muted); opacity: 1; }
+.lobby-tag--paper::before { background: var(--ink); }
+
+/* ── HOW TO PLAY ───────────────────────────────────────────────────────
+   The same card on every front page (components/HowItWorks.tsx): a live
+   demo on the page's paper, three numbered rules beside it, the one being
+   shown lit (lightness and an ink edge, never hue alone). Side by side once
+   the card is wide enough, so it works full width or in half a page. */
+.how { container-type: inline-size; }
+.how__body { display: grid; gap: 18px; align-items: center; }
+.how__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  min-height: 200px;
+  container-type: inline-size;
+  padding: 16px 12px;
+  border-radius: 18px;
+  background: var(--page);
+  overflow: hidden;
+  animation: how-in var(--t-slow) var(--ease-out) both;
+}
+@keyframes how-in { from { opacity: 0; } }
+.how__side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.how__rules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.how__rule {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 14px 8px 10px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--rule);
+  color: var(--muted);
+  font: inherit;
+  font-size: 15.5px;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--t-base) var(--ease-out), background var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+}
+@media (hover: hover) { .how__rule:hover { color: var(--ink); } }
+.how__rule.is-on { color: var(--ink); background: var(--card-b); box-shadow: inset 0 0 0 2px var(--ink); }
+.how__rule:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.how__no {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--silhouette);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  transition: background var(--t-base) var(--ease-out);
+}
+.how__rule.is-on .how__no { background: var(--ink); }
+.how__note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+@container (min-width: 620px) {
+  .how__body { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 32px; }
+  .how__stage { min-height: 240px; }
+  .how__rule { font-size: 16.5px; }
+}
 
 /* Today. The ground's light comes from the same place as the hub's. */
 .lobby-hero {
@@ -1644,47 +1588,86 @@ button { font-family: inherit; }
 .lobby-hero__head { margin: 4px 0 0; max-width: 64%; font-size: 40px; font-weight: 800; line-height: 0.92; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
 .lobby-hero__sub { margin: 0; max-width: 34ch; font-size: 15.5px; line-height: 1.4; opacity: 0.86; }
 .lobby-hero__go { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+/* A match in progress on this phone: a quiet way back under the red button. */
+.lobby-resume { align-self: center; }
 
-/* The one red button on a front page: the same press as the hub's Play. */
-.lobby-play {
+/* ── BUTTONS ───────────────────────────────────────────────────────────
+   One system for every game and page (2026-10-19). Use nothing else.
+
+   - .lobby-play: the screen's one red button, the thing to do next. Never
+     two on a screen.
+   - .lobby-quiet: every other button, white paper with an ink edge (Odd
+     Man Out's end screen set the look). A way out, Share beside a red
+     Next, Change, Watch it: all of them. Never an underlined text link.
+   - .lobby-small: one size step down, for either, where a button sits
+     inside the game (under a sticker, beside a search, a "+ one more").
+   - Disabled is the same grey for both, whatever the size.
+   A restyle changes the --btn tokens, nothing else. The hub's Play
+   (.hub__play) and the demo's drawn buttons wear the same tokens.
+   Toggles (.chip, .seg__opt, switches) and tappable cards are controls,
+   not buttons, and keep their own looks. */
+:root {
+  --btn-font: var(--font-display), Impact, sans-serif;
+  --btn-radius: 16px;
+  --btn-go: var(--red);
+  --btn-go-deep: var(--red-deep);
+  --btn-quiet: var(--sticker);
+  --btn-edge: var(--rule-strong);
+  --btn-off: var(--silhouette);
+}
+.lobby-play,
+.lobby-quiet {
+  appearance: none;
+  border: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: 0 28px;
-  border-radius: 16px;
-  background: var(--red);
-  color: #fff;
-  text-decoration: none;
-  font-size: 24px;
+  gap: 8px;
+  border-radius: var(--btn-radius);
+  font-family: var(--btn-font);
   font-weight: 800;
+  line-height: 1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  box-shadow: inset 0 -3px 0 var(--red-deep), 0 6px 16px rgba(0, 0, 0, 0.25);
-  border: 0;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition: background var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
 }
-.lobby-play:hover { background: var(--red-deep); }
+.lobby-play {
+  min-height: 56px;
+  padding: 0 28px;
+  background: var(--btn-go);
+  color: #fff;
+  font-size: 24px;
+  box-shadow: inset 0 -3px 0 var(--btn-go-deep), 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+.lobby-quiet {
+  min-height: 50px;
+  padding: 0 24px;
+  background: var(--btn-quiet);
+  color: var(--ink);
+  font-size: 18px;
+  box-shadow: inset 0 0 0 1.5px var(--btn-edge), 0 3px 0 rgba(20, 18, 16, 0.08);
+}
+.lobby-small { min-height: 40px; padding: 0 16px; border-radius: 12px; font-size: 16px; letter-spacing: 0.04em; }
+.lobby-play.lobby-small { box-shadow: inset 0 -2px 0 var(--btn-go-deep), 0 3px 8px rgba(0, 0, 0, 0.2); }
+.lobby-play:hover:not(:disabled) { background: var(--btn-go-deep); }
 /* A small lift under the pointer, so the press reads as a press. Not on
    touch, where hover sticks. */
 @media (hover: hover) {
-  .lobby-play:hover { transform: translateY(-2px); box-shadow: inset 0 -3px 0 var(--red-deep), 0 10px 22px rgba(0, 0, 0, 0.3); }
+  .lobby-play:hover:not(:disabled) { transform: translateY(-2px); box-shadow: inset 0 -3px 0 var(--btn-go-deep), 0 10px 22px rgba(0, 0, 0, 0.3); }
+  .lobby-quiet:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--ink), 0 3px 0 rgba(20, 18, 16, 0.12); }
 }
-.lobby-play:active { transform: translateY(1px); box-shadow: inset 0 -3px 0 var(--red-deep), 0 4px 10px rgba(0, 0, 0, 0.25); }
-.lobby-play:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-/* The quiet partner to .lobby-play: the second choice on a screen (Odd Man
-   Out's end screen set the look). */
-.lobby-quiet {
-  appearance: none; border: 0; cursor: pointer; display: flex; text-decoration: none; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 16px;
-  background: var(--sticker); color: var(--ink); font-size: 18px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
-  box-shadow: inset 0 0 0 1.5px var(--rule-strong), 0 3px 0 rgba(20, 18, 16, 0.08);
-  transition: box-shadow var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
-}
-@media (hover: hover) { .lobby-quiet:hover { box-shadow: inset 0 0 0 1.5px var(--ink), 0 3px 0 rgba(20, 18, 16, 0.12); } }
-.lobby-quiet:active { transform: translateY(1px); }
+.lobby-play:active:not(:disabled) { transform: translateY(1px); box-shadow: inset 0 -3px 0 var(--btn-go-deep), 0 4px 10px rgba(0, 0, 0, 0.25); }
+.lobby-quiet:active:not(:disabled) { transform: translateY(1px); }
+.lobby-play:disabled,
+.lobby-quiet:disabled { background: var(--btn-off); color: #fff; box-shadow: none; transform: none; cursor: not-allowed; }
+.lobby-play:focus-visible,
 .lobby-quiet:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-.lobby-hero .lobby-play:focus-visible { outline-color: #fff; }
+.lobby-hero .lobby-play:focus-visible,
+.lobby-hero .lobby-quiet:focus-visible { outline-color: #fff; }
 
 @media (min-width: 760px) {
   .lobby-hero {
@@ -1767,6 +1750,61 @@ button { font-family: inherit; }
 .daytile__strip { display: flex; gap: 3px; }
 .daytile__strip i { display: block; width: 12px; height: 16px; border-radius: 2px; }
 
+/* Chain's two How to play demos (components/ChainHow.tsx). Every frame
+   rests on its last moment, so reduced motion shows it still. */
+.chow, .shw { --sticker-w: clamp(58px, 19cqw, 88px); }
+.chow .sticker, .shw .sticker { width: var(--sticker-w); flex: none; }
+.chow .sticker__name, .shw .sticker__name { font-size: 10.5px; }
+.chow { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.chow__row { display: flex; align-items: center; gap: 2px; }
+.chow__link { position: relative; display: inline-flex; padding: 4px; }
+.chow__tick { position: absolute; right: -4px; bottom: -6px; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: #fff; font-size: 11px; font-weight: 800; box-shadow: 0 0 0 2px var(--page); }
+.chow__gap { position: relative; display: inline-flex; }
+.chow__pick { position: absolute; inset: 0; }
+.chow__clue { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border-radius: 8px; background: var(--sticker); box-shadow: inset 0 0 0 1.5px var(--rule); font-size: 13px; font-weight: 700; }
+.chow__clue img { display: block; height: 14px; width: auto; box-shadow: 0 0 0 1px var(--rule); }
+.chow__seal { padding: 7px 18px 8px; border-radius: 12px; background: var(--btn-go); color: #fff; font-size: 17px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: inset 0 -2px 0 var(--btn-go-deep); }
+.chow[data-step='0'] .chow__pick { opacity: 0; }
+.chow:not([data-step='2']) :is(.chow__tick, .chow__seal) { opacity: 0; }
+.chow:not([data-step='2']) .chow__pick .sticker__half--a { opacity: 0; transform: translate(-22%, -22%); }
+.chow:not([data-step='2']) .chow__pick .sticker__half--b { opacity: 0; transform: translate(22%, 22%); }
+.chow:not([data-step='2']) .chow__pick .sticker__seam { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .chow[data-step='0'] .chow__link--1 { animation: how-pop 400ms var(--ease-out) 400ms both; }
+  .chow[data-step='0'] .chow__link--2 { animation: how-pop 400ms var(--ease-out) 900ms both; }
+  .chow[data-step='1'] .chow__clue { animation: how-nudge 600ms var(--ease-in-out) 300ms both; }
+  .chow[data-step='1'] .chow__pick { animation: how-drop 450ms var(--ease-out) 1100ms both; }
+  .chow[data-step='2'] .chow__seal { animation: how-press 300ms var(--ease-in-out) 300ms both; }
+  .chow[data-step='2'] .chow__pick .sticker__half--a { animation: how-half-a 600ms var(--ease-out) 900ms both; }
+  .chow[data-step='2'] .chow__pick .sticker__half--b { animation: how-half-b 600ms var(--ease-out) 1500ms both; }
+  .chow[data-step='2'] .chow__pick .sticker__seam { animation: how-fade 300ms var(--ease-out) 1900ms both; }
+  .chow[data-step='2'] .chow__link--1 .chow__tick { animation: how-pop 300ms var(--ease-out) 1200ms both; }
+  .chow[data-step='2'] .chow__link--2 .chow__tick { animation: how-pop 300ms var(--ease-out) 1800ms both; }
+}
+.shw { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.shw__gap { display: grid; place-items: center; }
+.shw__gap > * { grid-area: 1 / 1; }
+.shw .slab--sm { --sticker-w: clamp(58px, 19cqw, 88px); --slab-pad: 6px; }
+.shw__card { opacity: 0; }
+.shw[data-step='1'] .shw__card--1, .shw[data-step='2'] .shw__card--2 { opacity: 1; }
+.shw:not([data-step='0']) .shw__gap > .sticker { opacity: 0; }
+.shw__club { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.shw__clubname { font-size: 14px; font-weight: 800; text-transform: uppercase; }
+@media (prefers-reduced-motion: no-preference) {
+  .shw[data-step='0'] .shw__gap > .sticker { animation: how-nudge 700ms var(--ease-in-out) 500ms both; }
+  .shw[data-step='1'] .shw__card--1 { animation: how-drop 450ms var(--ease-out) 600ms both; }
+  .shw[data-step='2'] .shw__card--1 { animation: how-out 300ms var(--ease-in) 300ms both; }
+  .shw[data-step='2'] .shw__card--2 { animation: how-drop 450ms var(--ease-out) 800ms both; }
+}
+@keyframes how-pop { from { opacity: 0; transform: scale(0.4); } }
+@keyframes how-drop { from { opacity: 0; transform: translateY(-14px) scale(1.12); } }
+@keyframes how-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes how-fade { from { opacity: 0; } }
+@keyframes how-nudge { 50% { transform: scale(1.08); } }
+@keyframes how-press { 50% { transform: scale(0.94); background: var(--btn-go-deep); } }
+@keyframes how-half-a { from { opacity: 0; transform: translate(-22%, -22%); } to { opacity: 1; transform: none; } }
+@keyframes how-half-b { from { opacity: 0; transform: translate(22%, 22%); } to { opacity: 1; transform: none; } }
+
 /* ── CHAIN'S HUB ───────────────────────────────────────────────────────
    Two dailies on the front-page kit above: Steps on the dark ground, the
    puzzle on paper. One red button, on whichever daily is next. */
@@ -1787,34 +1825,10 @@ button { font-family: inherit; }
 .chub__clubname { font-size: 15px; font-weight: 700; text-transform: uppercase; text-align: center; line-height: 1; }
 .chub__after { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
 .chub__donemark { font-weight: 700; font-size: 16px; }
-.chub__link { color: #fff; font-weight: 600; text-underline-offset: 3px; }
 /* A daily that is not next: still a button, never red. */
-.chub__quiet {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 22px;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink);
-  font: inherit;
-  font-family: var(--font-display), Impact, sans-serif;
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-}
-.chub__quiet:hover { background: var(--ink); color: var(--page); }
+
 .chub__puzzle .hero { padding-top: 6px; }
 .chub__puzzle .lobby-play { min-height: 52px; font-size: 21px; }
-.chub__how { padding: 0 4px; color: var(--muted); }
-.chub__how summary { cursor: pointer; font-size: 20px; font-weight: 800; text-transform: uppercase; color: var(--ink); }
-.chub__how ol { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.45; }
-.chub__how b { color: var(--ink); font-weight: 600; }
 @media (min-width: 760px) {
   .chub__preview { --sticker-w: 96px; gap: 18px; padding: 16px 18px; }
 }

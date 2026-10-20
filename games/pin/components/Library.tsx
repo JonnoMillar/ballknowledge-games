@@ -10,6 +10,7 @@ import { points } from '../lib/score';
 import type { PackCard as Card, Shelf } from '../lib/types';
 import Back from '../../../components/Back';
 import Words from '../../../components/Words';
+import HowItWorks, { type HowRule } from '../../../components/HowItWorks';
 import { GAMES } from '../../../src/games';
 
 /** Pitch pin's ground: the same blue as its tile on the hub. */
@@ -23,8 +24,8 @@ const GROUND = GAMES.find((g) => g.id === 'pin')!.ground;
  *   (Start here on a first visit, Carry on with a pack in progress,
  *   otherwise Up next) and the page's one red button.
  * - Your record, once a pack is finished.
- * - How it works: the demo (first visit only), the steps, the scale. Up top
- *   on a first visit, beside the record after.
+ * - How to play (the shared card), with the scale. Up top on a first
+ *   visit, under the record after.
  * - The shelves, one wide card each, then the credit.
  *
  * The shelves come from the server; the pack, the record and every card's
@@ -68,7 +69,7 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
             ) : picked ? (
               <>
                 <PackLine card={picked} eyebrow={fresh ? 'Start here' : 'Up next'} sub={fresh ? `${picked.size} goals` : picked.subtitle} />
-                <a className="lobby-play display" href={`/pin/${picked.id}`}>Play</a>
+                <a className="lobby-play" href={`/pin/${picked.id}`}>Play</a>
               </>
             ) : (
               <div className="pin-lobby__pack">
@@ -81,10 +82,10 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
           </div>
         </section>
 
-        {fresh ? <How demo /> : null}
+        {fresh ? <How /> : null}
 
         {rec.packs ? (
-          <section className="lobby-card pin-lobby__record">
+          <section className="lobby-card lobby__wide pin-lobby__record">
             <span className="lobby-tag lobby-tag--paper">Your record</span>
             <div className="pin__record">
               <span><span>Packs</span><b className="display">{rec.packs}</b></span>
@@ -116,22 +117,21 @@ export default function Library({ shelves }: { shelves: Shelf[] }) {
   );
 }
 
-/** How it works. With the demo on a first visit, across the page; without, beside the record. */
-function How({ demo }: { demo?: boolean }) {
+/** How to play, on the shared card: the demo beside the three rules, the scale under them. */
+const RULES: HowRule[] = [
+  { text: 'A famous goal is named.', frames: [2400] },
+  { text: 'Tap the pitch where it was struck from.', frames: [2600] },
+  { text: 'Up to 100 points a goal. Inside 2 m is a bullseye.', frames: [4000] },
+];
+
+function How() {
   return (
-    <section className={`lobby-card pin-lobby__how${demo ? ' lobby__wide pin-lobby__how--demo' : ''}`} id="how">
-      <span className="lobby-tag lobby-tag--paper">How it works</span>
-      {demo ? <Demo /> : null}
-      <div className="pin-lobby__howbody">
-        <ol className="pin__steps">
-          <li><span className="display">1</span>A famous goal is named.</li>
-          <li><span className="display">2</span>Pin where it was struck from.</li>
-          <li><span className="display">3</span>Up to 100 a goal. Inside 2 m is a bullseye.</li>
-        </ol>
-        <Scale />
-        <p className="pin__packsub">Each pack lands on the scale, out of 100. Pinpoint is 90 and up.</p>
-      </div>
-    </section>
+    <HowItWorks
+      rules={RULES}
+      demo={(step) => <Demo step={step} />}
+      extra={<Scale />}
+      note="A pack scores the average of its goals, on this scale."
+    />
   );
 }
 
@@ -168,7 +168,7 @@ function Carry({ card, store }: { card: Card; store: Store }) {
       <ol className="pin-lobby__ticks" aria-hidden>
         {(play?.throws ?? []).map((t, i) => <li key={i} className={t ? 'is-done' : ''} />)}
       </ol>
-      <a className="lobby-play display" href={`/pin/${card.id}`}>Continue</a>
+      <a className="lobby-play" href={`/pin/${card.id}`}>Continue</a>
     </>
   );
 }

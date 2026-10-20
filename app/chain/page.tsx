@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import Home from '../../components/Home';
-import { isBoardId, listBoards } from '../../src/server/board';
+import { demoChain, isBoardId, listBoards } from '../../src/server/board';
+import { demoSteps } from '../../games/step/server';
 
 /**
  * The front door: today's chain, the streak, the ladder and the archive.
@@ -14,6 +15,6 @@ export default async function HomePage(
 ) {
   const { c } = await searchParams;
   if (isBoardId(c)) redirect(`/play/${c}`);
-  const boards = await listBoards();
-  return <Home boards={boards} />;
+  const [boards, chain, steps] = await Promise.all([listBoards(), demoChain(), demoSteps()]);
+  return <Home boards={boards} demos={{ chain, steps }} />;
 }

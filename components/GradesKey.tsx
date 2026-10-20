@@ -40,7 +40,7 @@ export default function GradesKey({ className = '' }: { className?: string }) {
             ))}
           </ul>
           <p className="key__links">
-            <a href="/collection">Your collection</a>
+            <a className="lobby-quiet lobby-small" href="/collection">Your collection</a>
           </p>
         </div>
       </dialog>

@@ -91,23 +91,7 @@
 /* ── Aiming and the result ──────────────────────────────────────────── */
 .pin__hint { margin: 0; font-size: 14px; color: var(--muted); text-align: center; }
 .pin__error { margin: 0; font-size: 14px; color: var(--red-deep); text-align: center; }
-.pin__throw, .pin__next, .pin__nextpack {
-  appearance: none;
-  border: 0;
-  border-radius: 6px;
-  background: var(--red);
-  color: #fff;
-  min-height: 52px;
-  padding: 0 20px;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.pin__throw:disabled { background: var(--silhouette); color: var(--muted); cursor: default; }
-.pin__next { flex-grow: 1; background: var(--sticker); color: var(--ink); border: 2px solid var(--ink); }
-.pin__nextpack { display: flex; align-items: center; justify-content: center; background: var(--sticker); color: var(--ink); border: 2px solid var(--ink); text-decoration: none; }
+.pin__next { flex-grow: 1; }
 
 .pin__result { display: flex; flex-direction: column; gap: 6px; }
 .pin__score { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
@@ -122,7 +106,6 @@
 .pin__ring--outer { background: var(--ring-outer); color: var(--ink); }
 .pin__ring--miss { background: var(--silhouette); color: var(--ink); }
 .pin__actions { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
-.pin__watch { font-weight: 600; color: var(--ink); padding: 14px 4px; }
 
 /* ── Tiers and kinds ────────────────────────────────────────────────── */
 .pin {
@@ -203,11 +186,6 @@
 .pin__record { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .pin__record > span { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--muted); }
 .pin__record b { display: flex; align-items: center; gap: 6px; font-size: 34px; font-weight: 800; line-height: 0.9; color: var(--ink); }
-.pin-lobby__how { scroll-margin-top: 16px; }
-.pin-lobby__howbody { display: flex; flex-direction: column; gap: 14px; }
-.pin__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.pin__steps li { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: rgba(20, 18, 16, 0.04); border-radius: 12px; font-size: 13px; line-height: 1.3; }
-.pin__steps .display { font-size: 28px; font-weight: 800; line-height: 0.8; color: var(--red); }
 
 /* A shelf scrolls sideways on a phone; it runs to the page edge so a card peeks. */
 /* In its card, a shelf runs to the card's edge so a pack peeks. */
@@ -234,45 +212,56 @@
 .pin__packscore { font-size: 24px; font-weight: 800; line-height: 0.9; }
 .pin__new { background: var(--red); color: #fff; border-radius: 3px; padding: 1px 6px 2px; font-size: 12px; font-weight: 800; text-transform: uppercase; }
 .pin__status { color: var(--muted); }
-.pin__back { align-self: center; font-size: 14px; color: var(--ink); }
+.pin__back { align-self: center; justify-self: center; }
 
-/* ── The demo: 8 s, looped ──────────────────────────────────────────── */
-.pin-demo { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--page); border-radius: 6px; }
+/* ── The demo: three frames (HowItWorks) ────────────────────────────
+   Resting styles are each frame's last moment. */
+.pin-demo { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 8px; }
 .pin-demo__card { display: flex; flex-direction: column; gap: 6px; padding: 9px 11px; background: var(--sticker); border-radius: 5px; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.1); }
 .pin-demo__bar { display: block; height: 8px; border-radius: 4px; background: var(--silhouette); }
-.pin-demo__bar--name { height: 16px; background: var(--silhouette-figure); }
+.pin-demo__bar--name { height: 16px; background: var(--ink); }
 .pin-demo .pitch { padding: 6px; box-shadow: none; }
 .pin-demo__foot { position: relative; height: 40px; }
 .pin-demo__ask, .pin-demo__res { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.pin-demo__ask { font-size: 13px; color: var(--muted); animation: demo-ask 8s var(--ease-in-out) infinite; }
-.pin-demo__throw { background: var(--red); color: #fff; border-radius: 5px; padding: 7px 14px 8px; font-size: 18px; font-weight: 800; text-transform: uppercase; animation: demo-press 8s var(--ease-in-out) infinite; }
-.pin-demo__res { animation: demo-res 8s var(--ease-out) infinite; }
+.pin-demo__ask { font-size: 13px; color: var(--muted); }
+.pin-demo__throw { background: var(--btn-go); color: #fff; border-radius: 12px; padding: 7px 14px 8px; font-size: 18px; font-weight: 800; text-transform: uppercase; box-shadow: inset 0 -2px 0 var(--btn-go-deep); }
 .pin-demo__m { font-size: 34px; font-weight: 800; line-height: 1; }
 .pin-demo__pts { display: flex; align-items: center; gap: 8px; }
 .pin-demo__pts .display:first-child { font-size: 26px; font-weight: 800; line-height: 1; }
 .pin-demo__pts .pin__ring { font-size: 16px; }
-.pin-demo__pin { transform-box: fill-box; transform-origin: center; animation: demo-pin 8s var(--ease-out) infinite; }
-.pin-demo__ripple { fill: none; stroke: var(--red); stroke-width: 1.4; vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: center; animation: demo-ripple 8s ease-out infinite; }
-.pin-demo__ball { transform-box: fill-box; transform-origin: center; animation: demo-ball 8s var(--ease-out) infinite; }
-.pitch__rings.pin-demo__rings { animation: demo-rings 8s var(--ease-in-out) infinite; }
-.pitch__trail.pin-demo__trail { animation: demo-trail 8s var(--ease-in-out) infinite; }
-@keyframes demo-pin {
-  0%, 8% { opacity: 0; transform: translate(3px, 2.2px) scale(1.8); }
-  12%, 16% { opacity: 1; transform: translate(3px, 2.2px) scale(1); }
-  28%, 92% { opacity: 1; transform: translate(0, 0) scale(1); }
-  100% { opacity: 0; transform: translate(0, 0) scale(1); }
+.pin-demo__pin, .pin-demo__ball, .pin-demo__ripple { transform-box: fill-box; transform-origin: center; }
+.pin-demo__ripple { fill: none; stroke: var(--ink); stroke-width: 1.4; vector-effect: non-scaling-stroke; opacity: 0; }
+
+/* Frame 1: the goal is named. Nothing on the pitch yet. */
+.pin-demo[data-step='0'] :is(.pin-demo__pin, .pin-demo__ball, .pitch__rings.pin-demo__rings, .pitch__trail.pin-demo__trail) { opacity: 0; animation: none; }
+/* Frames 1 and 2: the pin is placed, Throw waits. */
+.pin-demo[data-step='1'] :is(.pin-demo__ball, .pitch__rings.pin-demo__rings, .pitch__trail.pin-demo__trail) { opacity: 0; animation: none; }
+.pin-demo:not([data-step='2']) .pin-demo__res { opacity: 0; }
+.pin-demo[data-step='2'] .pin-demo__ask { opacity: 0; }
+.pin-demo:not([data-step='0']) .pin-demo__bar--name { background: var(--silhouette-figure); }
+@media (prefers-reduced-motion: no-preference) {
+  .pin-demo[data-step='0'] .pin-demo__bar--name { animation: pin-demo-name 900ms var(--ease-out) 300ms both; }
+  .pin-demo[data-step='1'] .pin-demo__pin { animation: pin-demo-pin 1600ms var(--ease-out) 300ms both; }
+  .pin-demo[data-step='1'] .pin-demo__ripple { animation: pin-demo-ripple 700ms ease-out 450ms both; }
+  .pin-demo[data-step='2'] .pin-demo__throw { animation: pin-demo-press 300ms var(--ease-in-out) 300ms both; }
+  .pin-demo[data-step='2'] .pin-demo__ask { animation: pin-demo-out 250ms var(--ease-in) 650ms both; }
+  .pin-demo[data-step='2'] .pin-demo__ball { animation: pin-demo-ball 450ms var(--ease-out) 800ms both; }
+  .pin-demo[data-step='2'] .pitch__rings.pin-demo__rings { animation: pin-demo-fade 450ms var(--ease-in-out) 1100ms both; }
+  .pin-demo[data-step='2'] .pitch__trail.pin-demo__trail { animation: pin-demo-fade 400ms var(--ease-in-out) 1400ms both; }
+  .pin-demo[data-step='2'] .pin-demo__res { animation: pin-demo-res 400ms var(--ease-out) 1600ms both; }
 }
-@keyframes demo-ripple { 0%, 8% { opacity: 0; transform: scale(1); } 9% { opacity: 0.5; transform: scale(1); } 18%, 100% { opacity: 0; transform: scale(5); } }
-@keyframes demo-ball { 0%, 40% { opacity: 0; transform: scale(1.8); } 44% { opacity: 1; transform: scale(0.92); } 46%, 92% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
-@keyframes demo-rings { 0%, 44% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes demo-trail { 0%, 50% { opacity: 0; } 55%, 92% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes demo-ask { 0%, 40% { opacity: 1; } 44%, 96% { opacity: 0; } 100% { opacity: 1; } }
-@keyframes demo-press { 0%, 30% { transform: scale(1); background: var(--red); } 33% { transform: scale(0.94); background: var(--red-deep); } 37%, 100% { transform: scale(1); background: var(--red); } }
-@keyframes demo-res { 0%, 54% { opacity: 0; transform: translateY(6px); } 58%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .pin-demo__pin, .pin-demo__ball, .pitch__rings.pin-demo__rings, .pitch__trail.pin-demo__trail, .pin-demo__throw, .pin-demo__res { animation: none; }
-  .pin-demo__ask, .pin-demo__ripple { animation: none; opacity: 0; }
+@keyframes pin-demo-name { from { background: var(--silhouette-figure); } }
+@keyframes pin-demo-pin {
+  0% { opacity: 0; transform: translate(3px, 2.2px) scale(1.8); }
+  20%, 40% { opacity: 1; transform: translate(3px, 2.2px) scale(1); }
+  100% { opacity: 1; transform: none; }
 }
+@keyframes pin-demo-ripple { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
+@keyframes pin-demo-press { 50% { transform: scale(0.94); background: var(--btn-go-deep); } }
+@keyframes pin-demo-out { to { opacity: 0; } }
+@keyframes pin-demo-ball { 0% { opacity: 0; transform: scale(1.8); } 70% { opacity: 1; transform: scale(0.92); } 100% { opacity: 1; transform: none; } }
+@keyframes pin-demo-fade { from { opacity: 0; } }
+@keyframes pin-demo-res { from { opacity: 0; transform: translateY(6px); } }
 
 /* ── Full time ──────────────────────────────────────────────────────── */
 .pin__full { display: flex; flex-direction: column; gap: 14px; }
@@ -300,7 +289,7 @@
 .pin__val { font-size: 22px; font-weight: 800; }
 .pin__fullshare { display: flex; flex-direction: column; gap: 10px; }
 .pin__fullactions { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-.pin__nextpack { flex-direction: column; line-height: 0.95; }
+.pin__nextpack { flex-direction: column; gap: 3px; line-height: 0.95; }
 .pin__nextpack small { font-family: var(--font-text), sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--muted); }
 .pin__share {
   margin: 0;
@@ -321,17 +310,13 @@
 .pin__controls { display: flex; flex-direction: column; gap: 10px; }
 .pin__gain { display: flex; align-items: center; gap: 10px; }
 
-/* The first visit's How it works: the demo beside the steps. */
 @media (min-width: 760px) {
-  .pin-lobby__how--demo { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 32px; row-gap: 14px; align-items: start; }
-  .pin-lobby__how--demo > .lobby-tag { grid-column: 1 / -1; justify-self: start; }
   .pin__shelf { margin: 0 -28px; padding-inline: 28px; scroll-padding-inline: 28px; }
 }
 
 /* ── Laptops ────────────────────────────────────────────────────────── */
 @media (min-width: 900px) {
   .pin__main { max-width: 1180px; padding: 24px 28px 40px; }
-  .pin-demo { padding: 14px; }
   .pin__shelf { margin: 0; padding: 2px 0 4px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; overflow: visible; }
   .pin__shelf > li { flex: none; }
   .pin__art { height: 96px; }

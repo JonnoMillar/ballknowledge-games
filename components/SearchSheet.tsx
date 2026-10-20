@@ -139,7 +139,7 @@ export default function SearchSheet({
         {current ? (
           <footer className="finder__foot">
             <span>{current.name} is here now.</span>
-            <button type="button" className="finder__remove" onClick={onRemove}>Take off the board</button>
+            <button type="button" className="lobby-quiet lobby-small" onClick={onRemove}>Take off the board</button>
           </footer>
         ) : null}
       </section>

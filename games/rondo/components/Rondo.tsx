@@ -165,8 +165,8 @@ export default function Rondo() {
       ) : null}
 
       <footer className="rondo__foot">
-        <button type="button" className="rondo__abandon" onClick={() => { if (confirm('Abandon this match?')) leave(); }}>
-          Abandon match
+        <button type="button" className="lobby-quiet lobby-small" onClick={() => { if (confirm('Leave this match?')) leave(); }}>
+          Leave match
         </button>
       </footer>
     </>
