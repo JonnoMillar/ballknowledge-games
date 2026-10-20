@@ -232,8 +232,15 @@ Two kinds of board, same rules:
 
 - **The daily** — a ring of three or four givens with a clue on every empty
   plate ("a German", "an Argentine"), built so each plate has exactly one
-  answer a fan can reach. Day 1 is 2026-09-19; each day takes the next board
-  from a fixed shuffle of the clued boards, so everyone gets the same one.
+  answer a fan can reach. Day 1 is 2026-09-19. Days 1-34 are pinned as
+  served (`PINNED` in `src/lib/daily.ts`); each later day is drawn from the
+  boards live that day, unserved ones first, so everyone gets the same one
+  and adding or retiring a board only moves days from that date on. A new
+  board needs `"from"` (the generators set it two days out); retire one
+  with `"until"` and leave the file, so its served days keep it. Before
+  2026-10-20 the schedule was a shuffle of the whole set, so any change
+  rewrote every past day. Repeats start on day 57 (14 Nov 2026) unless new
+  boards land first; they are a stable second cycle, never a reshuffle.
   The streak counts consecutive dailies held.
 - **The ladder** — 006 easy, 007 medium, 008 hard, and 009 the ring (hard,
   four clued plates with several answers each). No single right answer:
@@ -520,7 +527,8 @@ spells were closed. Nothing Wikidata had is removed. Rebuilding the pool
 means running both again — `build:pool` then `merge:careers --write` — or
 the stints come back missing. Five daily boards the corrected pool broke
 (a missing club made a second answer reachable) are in
-`content/chains/retired/`, which nothing reads.
+`content/chains/retired/`, which nothing reads; that was day 2, before the
+schedule was pinned. Retire with `until` now (see the daily, above).
 
 Three traps that produce silently wrong data, all guarded by
 `tests/pipeline/traps.test.ts`: the `mul` label migration (an `en`-only
@@ -574,6 +582,12 @@ and "Αrda Güler" with a Greek alpha. Run both after any pool rebuild.
   2026-10-10 that files van der Sar at FC Barcelona and broke daily 038.
   Delete a cache file to refresh it on purpose. Two vandalised labels
   found on the way are in `overrides.ts` (Andrei Prepeliță, Ayumu Seko).
+  The new answers broke four dailies (010, 015, 035, 055: a real
+  footballer became a second answer). They are retired with `until` and
+  listed in `tests/content/chains.test.ts`; 010, 015 and 035 keep the days
+  they were served. Slugger's deck re-banded five clubs that crossed a
+  `k` line, Steps' schedule was regenerated from 24 Oct, and 006's sealed
+  pair count is now 270.
 - **Zero of 12,939 players have an alias.** A player known by a name that is
   not part of his label cannot be found by it. `short-name.ts` is the
   stopgap for nameplates.
