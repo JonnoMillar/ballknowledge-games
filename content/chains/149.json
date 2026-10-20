@@ -1,0 +1,39 @@
+{
+  "id": "149",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q167790",
+    null,
+    "Q386876",
+    null,
+    "Q160206",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q298",
+      "label": "a Chilean"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q1028",
+      "label": "a Moroccan"
+    }
+  },
+  "referenceSolution": [
+    "Q167790",
+    "Q18817134",
+    "Q386876",
+    "Q180553",
+    "Q160206",
+    "Q26932598"
+  ],
+  "from": "2026-10-22"
+}

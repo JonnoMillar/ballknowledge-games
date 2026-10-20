@@ -1,0 +1,39 @@
+{
+  "id": "151",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q266613",
+    null,
+    "Q26069",
+    null,
+    "Q45901",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q29",
+      "label": "a Spaniard"
+    }
+  },
+  "referenceSolution": [
+    "Q266613",
+    "Q10520",
+    "Q26069",
+    "Q184177",
+    "Q45901",
+    "Q185572"
+  ],
+  "from": "2026-10-22"
+}

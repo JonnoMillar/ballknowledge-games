@@ -1,0 +1,34 @@
+{
+  "id": "135",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q188720",
+    null,
+    "Q19518278",
+    null,
+    "Q28967995",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    }
+  },
+  "referenceSolution": [
+    "Q188720",
+    "Q26704703",
+    "Q19518278",
+    "Q312157",
+    "Q28967995",
+    "Q701297"
+  ],
+  "from": "2026-10-22"
+}

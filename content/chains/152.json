@@ -1,0 +1,43 @@
+{
+  "id": "152",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q83488",
+    null,
+    "Q163564",
+    null,
+    "Q19518278",
+    null,
+    "Q110053",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q40",
+      "label": "an Austrian"
+    }
+  },
+  "referenceSolution": [
+    "Q83488",
+    "Q489039",
+    "Q163564",
+    "Q35831063",
+    "Q19518278",
+    "Q294980",
+    "Q110053",
+    "Q31981"
+  ],
+  "from": "2026-10-22"
+}

@@ -1,0 +1,39 @@
+{
+  "id": "150",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q615",
+    null,
+    "Q46347",
+    null,
+    "Q266613",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    }
+  },
+  "referenceSolution": [
+    "Q615",
+    "Q483145",
+    "Q46347",
+    "Q44788",
+    "Q266613",
+    "Q72648"
+  ],
+  "from": "2026-10-22"
+}

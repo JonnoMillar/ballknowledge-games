@@ -1,0 +1,39 @@
+{
+  "id": "137",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q102027",
+    null,
+    "Q142794",
+    null,
+    "Q169098",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q1009",
+      "label": "a Cameroonian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q43",
+      "label": "a Turk"
+    }
+  },
+  "referenceSolution": [
+    "Q102027",
+    "Q1255625",
+    "Q142794",
+    "Q26517",
+    "Q169098",
+    "Q763465"
+  ],
+  "from": "2026-10-22"
+}

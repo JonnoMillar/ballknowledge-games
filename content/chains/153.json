@@ -1,0 +1,39 @@
+{
+  "id": "153",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q1255625",
+    null,
+    "Q169098",
+    null,
+    "Q439722",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q35",
+      "label": "a Dane"
+    }
+  },
+  "referenceSolution": [
+    "Q1255625",
+    "Q27049064",
+    "Q169098",
+    "Q59108",
+    "Q439722",
+    "Q294951"
+  ],
+  "from": "2026-10-22"
+}

@@ -1,0 +1,43 @@
+{
+  "id": "133",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q168740",
+    null,
+    "Q151269",
+    null,
+    "Q8338725",
+    null,
+    "Q54094",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q35",
+      "label": "a Dane"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    }
+  },
+  "referenceSolution": [
+    "Q168740",
+    "Q16063229",
+    "Q151269",
+    "Q47778",
+    "Q8338725",
+    "Q50600",
+    "Q54094",
+    "Q239688"
+  ],
+  "from": "2026-10-22"
+}

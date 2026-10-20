@@ -1,0 +1,39 @@
+{
+  "id": "139",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q483417",
+    null,
+    "Q483577",
+    null,
+    "Q185389",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q34",
+      "label": "a Swede"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q35",
+      "label": "a Dane"
+    }
+  },
+  "referenceSolution": [
+    "Q483417",
+    "Q46896",
+    "Q483577",
+    "Q26517",
+    "Q185389",
+    "Q294951"
+  ],
+  "from": "2026-10-22"
+}
