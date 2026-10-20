@@ -7,6 +7,7 @@ import { runQuery } from '../src/pipeline/sparql';
 import { clubLeagueQuery } from '../src/pipeline/queries';
 import type { SparqlBinding, SparqlResponse } from '../src/pipeline/sparql';
 import type { Spell } from '../src/lib/chemistry/types';
+import type { Careers } from './fetch-careers';
 
 // Only batch files. `_ids.json` is a plain id array, not a SPARQL response.
 const files = (await readdir('data/raw')).filter((f) => f.startsWith('batch-'));
@@ -64,7 +65,34 @@ if (GENDER && existsSync('data/raw/_gender.json')) {
   raw = raw.filter((p) => g[p.id] === GENDER);
   console.log(`gender filter: ${before} -> ${raw.length}`);
 }
-const pool = applyPoolFilters(raw, DEFAULT_POOL_RULES);
+// Infobox stint years, from `npm run fetch:careers`. They place players
+// Wikidata records no dated spell for (phase 1b of fetch:pool).
+const careers: Careers['players'] = existsSync('data/careers.json')
+  ? (JSON.parse(await readFile('data/careers.json', 'utf8')) as Careers).players
+  : {};
+const infoboxYears = new Map(
+  Object.entries(careers).map(([id, c]) => [id, c.stints.flatMap((s) => (s.from === undefined ? [] : [s.from]))]),
+);
+// Fame for something else (`npx tsx scripts/fetch-elsewhere.ts`): Julio
+// Iglesias, Remco Evenepoel. See FAMOUS_ELSEWHERE in src/pipeline/queries.ts.
+if (existsSync('data/raw/_elsewhere.json')) {
+  const elsewhere = JSON.parse(await readFile('data/raw/_elsewhere.json', 'utf8')) as Record<string, boolean>;
+  const before = raw.length;
+  raw = raw.filter((p) => !elsewhere[p.id]);
+  console.log(`famous elsewhere: ${before} -> ${raw.length}`);
+}
+const pool = applyPoolFilters(raw, DEFAULT_POOL_RULES, infoboxYears);
+
+// Players dropped only because nothing dates them yet: no dated Wikidata
+// spell and no infobox read. `npm run fetch:careers` reads these next, and a
+// second build:pool then places the ones whose careers reach the era.
+const placed = new Set(pool.map((p) => p.id));
+const undated = raw
+  .filter((p) => !placed.has(p.id) && p.sitelinks >= DEFAULT_POOL_RULES.fameFloor)
+  .filter((p) => !(p.id in careers) && p.clubs.every((c) => c.from === null))
+  .map((p) => p.id);
+await writeFile('data/raw/_undated.json', JSON.stringify(undated));
+console.log(`${undated.length} undated players await an infobox read -> data/raw/_undated.json`);
 
 // Appearances per club, from `npm run fetch:apps`. Only clubs the player is
 // already recorded at are kept, so the side file cannot widen a career.

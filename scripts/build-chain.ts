@@ -1,3 +1,4 @@
+import { dateOfDay, dayNumber } from '../src/lib/daily';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { linkColour } from '../src/lib/chemistry/link';
 import type { Player } from '../src/lib/chemistry/types';
@@ -224,6 +225,8 @@ if (outId) {
   const puzzle = {
     id: outId,
     mode: MODE,
+    // Into the schedule two days out; see src/lib/daily.ts.
+    from: dateOfDay(dayNumber(new Date().toISOString().slice(0, 10)) + 2),
     slots: line.map((p, i) => (i % 2 === 0 ? p.id : null)),
     referenceSolution: line.map((p) => p.id),
   };

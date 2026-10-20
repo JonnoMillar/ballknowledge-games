@@ -111,6 +111,7 @@ export function listBoards(): Promise<BoardSummary[]> {
       out.push({
         id: p.id, daily: p.difficulty === undefined && !p.deep, deep: p.deep ?? false, difficulty: p.difficulty,
         closed: p.closed ?? false, slots, clues, images, ...(via ? { via } : {}),
+        ...(p.from ? { from: p.from } : {}), ...(p.until ? { until: p.until } : {}),
       });
     }
     return out;

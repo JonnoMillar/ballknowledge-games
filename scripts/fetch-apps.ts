@@ -1,6 +1,7 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { runQuery } from '../src/pipeline/sparql';
 import { clubAppsQuery } from '../src/pipeline/queries';
+import { pendingIds } from './pending-ids';
 import type { Spell } from '../src/lib/chemistry/types';
 
 /**
@@ -17,7 +18,7 @@ import type { Spell } from '../src/lib/chemistry/types';
  * player with two spells at one club (loan, then permanent) has apps and
  * years summed and the later end kept.
  */
-const ids = JSON.parse(await readFile('data/raw/_ids.json', 'utf8')) as string[];
+const { ids, done } = await pendingIds<Record<string, Spell>>('data/raw/_apps.json');
 const CHUNK = 400;
 const FETCH_YEAR = new Date().getFullYear();
 
@@ -47,7 +48,7 @@ for (let i = 0; i < ids.length; i += CHUNK) {
   if (i % 2400 === 0) console.log(`  apps ${Math.min(i + CHUNK, ids.length)}/${ids.length}`);
 }
 
-const out: Record<string, Record<string, Spell>> = {};
+const out: Record<string, Record<string, Spell>> = { ...done };
 let withApps = 0;
 let total = 0;
 for (const [p, clubs] of spells) {

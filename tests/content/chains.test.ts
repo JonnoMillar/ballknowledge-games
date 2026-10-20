@@ -4,6 +4,7 @@ import { chainFieldFor, chainLinks, chainProgress, clueMet, linked, neighboursOf
 import { factFame } from '../../src/lib/fame/spell';
 import { chainResult } from '../../src/lib/chain/result';
 import type { ChainPuzzle } from '../../src/lib/chain/types';
+import { dayNumber, PINNED } from '../../src/lib/daily';
 import type { Player } from '../../src/lib/chemistry/types';
 
 const hasPool = existsSync('data/pool.json');
@@ -176,6 +177,20 @@ describe.skipIf(!hasPool || files.length === 0)('graded chains', () => {
  * under 35 is one nobody reaches for — and the board has to clear both bars
  * on every plate, or it is a scored board with the score hidden.
  */
+/**
+ * Boards that broke the promise when the pool gained 1,198 players it had
+ * been dropping (2026-10-19): a real footballer became a second answer.
+ * Each is retired with `until` at the end of the pinned days, so none is
+ * drawn again, and 010, 015 and 035 keep the days they were served. Nothing
+ * else may be listed: a board that breaks now has to be fixed or retired.
+ */
+const BROKEN_BY_POOL_FIX: Record<string, string> = {
+  '010': 'slot 3 asks nothing and six fit (served 19 Oct)',
+  '015': 'Renato Veiga a second answer at 37 (served 2 Oct)',
+  '035': 'Noah Okafor a second answer at 41 (served 7 Oct)',
+  '055': 'Eric Cantona a second answer at 53 (never served)',
+};
+
 describe.skipIf(!hasPool || files.length === 0)('daily boards', () => {
   const REACH = 50;
   const CLIFF = 35;
@@ -187,6 +202,14 @@ describe.skipIf(!hasPool || files.length === 0)('daily boards', () => {
   for (const chain of boards) {
     const mode = chain.mode ?? 'clubs';
     const ref = chain.referenceSolution!;
+
+    if (BROKEN_BY_POOL_FIX[chain.id]) {
+      it(`${chain.id}: retired before the schedule can draw it again (${BROKEN_BY_POOL_FIX[chain.id]})`, () => {
+        expect(chain.until).toBeDefined();
+        expect(dayNumber(chain.until!)).toBeLessThanOrEqual(PINNED.length + 1);
+      });
+      continue;
+    }
 
     it(`${chain.id}: each plate has one answer in reach and a cliff behind it, or asks nothing and has a few`, () => {
       // A plate with a clue on it promises ONE answer in reach. A plate with
@@ -274,7 +297,9 @@ describe.skipIf(!hasPool || files.length === 0)('what the sealed sheet states', 
     const six = graded.find((c) => c.id === '006');
     if (!six) return;
     const result = chainResult(six.referenceSolution!, six, players, pool);
-    expect(result.pairs).toBe(254);
+    // 254 until 2026-10-19, when the pool gained 1,198 players it had been
+    // dropping. The grade (entry) did not move.
+    expect(result.pairs).toBe(270);
     expect(result.entry).toBe(90);
   });
 });

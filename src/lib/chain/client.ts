@@ -132,6 +132,9 @@ export interface BoardSummary {
   id: string;
   /** A board the daily draws from: generated, and ungraded. The ladder is the rest. */
   daily: boolean;
+  /** The daily's window, from the board file. See ChainPuzzle. */
+  from?: string;
+  until?: string;
   /** A Deep Cuts board: graded, and listed on /deep rather than the home page's ladder. */
   deep: boolean;
   difficulty?: string;

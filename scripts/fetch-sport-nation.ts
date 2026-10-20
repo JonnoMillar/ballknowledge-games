@@ -1,8 +1,9 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { runQuery } from '../src/pipeline/sparql';
 import { sportNationQuery, nationalTeamQuery } from '../src/pipeline/queries';
+import { pendingIds } from './pending-ids';
 
-const ids = JSON.parse(await readFile('data/raw/_ids.json', 'utf8')) as string[];
+const { ids, done } = await pendingIds<string>('data/raw/_sportnation.json');
 const CHUNK = 400;
 
 // Pass 1 — national teams, decided by APPEARANCES.
@@ -75,7 +76,7 @@ for (let i = 0; i < ids.length; i += CHUNK) {
   if (i % 2400 === 0) console.log(`  P1532 ${Math.min(i + CHUNK, ids.length)}/${ids.length}`);
 }
 
-const out: Record<string, string> = {};
+const out: Record<string, string> = { ...done };
 for (const id of ids) {
   const v = senior[id] ?? youth[id] ?? p1532[id];
   if (v) out[id] = v;

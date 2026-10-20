@@ -93,6 +93,15 @@ export interface ChainPuzzle {
    */
   deep?: boolean;
   /**
+   * A daily's window in the schedule, as YYYY-MM-DD (src/lib/daily.ts).
+   * `from`: the first date it may be drawn. Every board added after the
+   * schedule was pinned needs one, set after the day it ships, or it would
+   * rewrite days already served. `until`: the first date it may not; this is
+   * how a board is retired, and the file stays so its past days still show.
+   */
+  from?: string;
+  until?: string;
+  /**
    * One clue per blank, keyed by slot index. See `SlotClue`.
    */
   clues?: Readonly<Record<number, SlotClue>>;

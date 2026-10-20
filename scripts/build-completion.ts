@@ -1,3 +1,4 @@
+import { dateOfDay, dayNumber } from '../src/lib/daily';
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import type { Player } from '../src/lib/chemistry/types';
 import type { ChainPuzzle, SlotClue } from '../src/lib/chain/types';
@@ -219,6 +220,9 @@ let next = Math.max(0, ...existing) + 1;
 for (const b of boards) {
   const id = String(next++).padStart(3, '0');
   b.id = id;
+  // Into the schedule two days out, so shipping today rewrites no day
+  // already served anywhere (src/lib/daily.ts).
+  b.from = dateOfDay(dayNumber(new Date().toISOString().slice(0, 10)) + 2);
   const names = b.slots.map((s, i) => (s ? byId.get(s)!.name : `[${b.clues?.[i]?.label ?? 'anyone'} → ${byId.get(b.referenceSolution![i]!)!.name}]`));
   console.log(`${id}: ${names.join(' — ')}`);
   if (WRITE) await writeFile(`content/chains/${id}.json`, JSON.stringify(b, null, 2) + '\n');

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Chain from './Chain';
 import type { BoardProps } from '../src/lib/chain/client';
 import type { SealResponse } from '../src/lib/chain/client';
-import { dayNumber, dayOfBoard, localDate } from '../src/lib/daily';
+import { dayNumber, dayOfBoard, localDate, type DailyBoard } from '../src/lib/daily';
 import { readProgress, recordPlay, streakOf, type Play } from '../src/lib/progress';
 import { MARK_GLYPH, plateMarks } from '../src/lib/chain/share';
 import { neighboursOf } from '../src/lib/chain/score';
@@ -18,7 +18,7 @@ import type { PortraitImage } from '../src/lib/portraits';
  * date, reads the streak, and writes the play when the board is sealed.
  * The first seal of a board counts; playing it again changes nothing.
  */
-export default function PlayClient({ board, dailyIds }: { board: BoardProps; dailyIds: string[] }) {
+export default function PlayClient({ board, daily }: { board: BoardProps; daily: DailyBoard[] }) {
   const [day, setDay] = useState<number | null>(null);
   const [streak, setStreak] = useState<number | null>(null);
   const [played, setPlayed] = useState<Play | null>(null);
@@ -27,13 +27,13 @@ export default function PlayClient({ board, dailyIds }: { board: BoardProps; dai
 
   useEffect(() => {
     const today = dayNumber(localDate());
-    const d = dayOfBoard(board.puzzle.id, dailyIds, today);
+    const d = dayOfBoard(board.puzzle.id, daily, today);
     setDay(d);
     const progress = readProgress();
     setPlayed(progress.plays[board.puzzle.id] ?? null);
     setStreak(streakOf(progress, today).current);
     syncHub();
-  }, [board.puzzle.id, dailyIds]);
+  }, [board.puzzle.id, daily]);
 
   const isToday = day !== null && day === dayNumber(localDate());
   const title = deep ? `Deep Cuts ${board.puzzle.id}` : day !== null ? `Chain #${day}` : `Chain ${board.puzzle.id}`;

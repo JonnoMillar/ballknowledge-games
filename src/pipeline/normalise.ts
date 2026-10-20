@@ -64,6 +64,31 @@ const POSITION_CLASS: Record<string, PositionClass> = {
   Q114358158: 'FWD', // left winger
   Q3446915: 'FWD',   // attacker
   Q6037916: 'FWD',   // inside forward
+
+  // Added 2026-10-19, each resolved against the live endpoint that day.
+  Q172964: 'GK',     // goalkeeper (the generic sports position; Oblak)
+  Q12366105: 'DEF',  // defender (the generic sports position)
+  Q124650007: 'DEF', // left back
+  Q124355618: 'DEF', // right-back
+  Q16501245: 'MID',  // wide midfielder
+  Q114358125: 'MID', // left midfielder
+  Q1201458: 'MID',   // playmaker
+  Q1642283: 'FWD',   // second striker
+  Q21707087: 'FWD',  // inverted winger
+
+  // Deliberately NOT mapped, so the enwiki infobox position decides
+  // (scripts/fetch-careers.ts, merged by scripts/merge-careers.ts):
+  //  - Q904289 "stopper": dewiki reads it as Vorstopper (a defender), ptwiki
+  //    as volante (a holding midfielder), and the 29 players who carry it
+  //    are mostly volantes — Bentancur, Cuéllar, Cubas — with a few
+  //    centre-backs. One class would be wrong for one group or the other.
+  //  - Q1109563 "centerhalf" (dewiki Mittelläufer): the old 2-3-5 role, a
+  //    midfielder then and a centre-back in modern English. Pedri carries it.
+  //  - Positions from other sports that footballers have been filed under:
+  //    ice-hockey right winger (Zinchenko, a full-back), rugby winger,
+  //    ice-hockey forward and goaltender, handball back.
+  //  - Things that are not positions at all: coach, utility player, a
+  //    disambiguation page, "woman", the Home Office.
 };
 
 export function positionClassOf(positionQid: string): PositionClass | null {

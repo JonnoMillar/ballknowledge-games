@@ -5,7 +5,7 @@ import BoardPreview from './BoardPreview';
 import MastNav from './MastNav';
 import Back from './Back';
 import type { BoardSummary, Given } from '../src/lib/chain/client';
-import { boardForDay, dateOfDay, dayNumber, localDate, shortDate } from '../src/lib/daily';
+import { dateOfDay, dayNumber, localDate, schedule, shortDate, type DailyBoard } from '../src/lib/daily';
 import { readProgress, type Play, type Progress } from '../src/lib/progress';
 import { MARK_GLYPH } from '../src/lib/chain/share';
 import { plateName } from '../src/lib/short-name';
@@ -15,7 +15,7 @@ import { plateName } from '../src/lib/short-name';
  * of harder boards for anyone who wants one. Reached from Chain's hub.
  */
 export default function PuzzleArchive({ boards }: { boards: BoardSummary[] }) {
-  const dailyIds = boards.filter((b) => b.daily).map((b) => b.id);
+  const daily = boards.filter((b) => b.daily);
   const byId = new Map(boards.map((b) => [b.id, b]));
   const [today, setToday] = useState<number | null>(null);
   const [progress, setProgress] = useState<Progress>({ plays: {} });
@@ -25,7 +25,7 @@ export default function PuzzleArchive({ boards }: { boards: BoardSummary[] }) {
   }, []);
 
   const ladder = boards.filter((b) => !b.daily && !b.deep);
-  const past = pastPuzzles(today, dailyIds).filter(({ id }) => byId.has(id));
+  const past = pastPuzzles(today, daily).filter(({ id }) => byId.has(id));
 
   return (
     <div className="app">
@@ -96,13 +96,11 @@ export default function PuzzleArchive({ boards }: { boards: BoardSummary[] }) {
 }
 
 /** Every daily before today, newest first. */
-export function pastPuzzles(today: number | null, dailyIds: string[]): { day: number; id: string }[] {
-  if (today === null) return [];
-  return Array.from({ length: today - 1 }, (_, i) => today - 1 - i)
-    .flatMap((day) => {
-      const id = boardForDay(day, dailyIds);
-      return id ? [{ day, id }] : [];
-    });
+export function pastPuzzles(today: number | null, daily: readonly DailyBoard[]): { day: number; id: string }[] {
+  if (today === null || today < 2) return [];
+  return schedule(daily, today - 1)
+    .flatMap((id, i) => (id ? [{ day: i + 1, id }] : []))
+    .reverse();
 }
 
 /** The result as glyphs, the same ones the share line uses. */

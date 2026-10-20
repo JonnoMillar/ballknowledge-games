@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { clubRosterQuery } from '../../src/pipeline/queries';
+import { clubRosterQuery, famousElsewhereQuery } from '../../src/pipeline/queries';
 
 describe('clubRosterQuery', () => {
   const q = clubRosterQuery('Q8682');
@@ -36,5 +36,24 @@ describe('clubRosterQuery', () => {
 
   it('embeds the club id', () => {
     expect(q).toContain('wd:Q8682');
+  });
+});
+
+describe('famousElsewhereQuery', () => {
+  const q = famousElsewhereQuery(['Q122003']);
+
+  it('spares anyone with a recorded appearance for a football club', () => {
+    // Ronaldinho is a musician and Shane Williams has 129 rugby appearances:
+    // the club type is what tells them apart. Measured 2026-10-19.
+    expect(q).toContain('pq:P1350');
+    expect(q).toContain('wd:Q476028');
+  });
+
+  it('never lists actor, which would remove David Beckham', () => {
+    expect(q).not.toContain('wd:Q33999');
+  });
+
+  it('is the same rule the club roster query applies inline', () => {
+    expect(clubRosterQuery('Q8682')).toContain(q.slice(q.indexOf('?player wdt:P106 ?other'), q.lastIndexOf('}')).trim().slice(0, 200));
   });
 });

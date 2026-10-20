@@ -1,9 +1,10 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { runQuery } from '../src/pipeline/sparql';
 import { genderQuery } from '../src/pipeline/queries';
+import { pendingIds } from './pending-ids';
 
-const ids = JSON.parse(await readFile('data/raw/_ids.json', 'utf8')) as string[];
-const out: Record<string, string> = {};
+const { ids, done } = await pendingIds<string>('data/raw/_gender.json');
+const out: Record<string, string> = { ...done };
 const CHUNK = 500;
 for (let i = 0; i < ids.length; i += CHUNK) {
   const res = await runQuery(genderQuery(ids.slice(i, i + CHUNK)));

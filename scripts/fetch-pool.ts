@@ -1,11 +1,12 @@
 import { writeFile, readFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { runQuery } from '../src/pipeline/sparql';
-import { eligiblePlayersQuery, careersQuery } from '../src/pipeline/queries';
+import { eligiblePlayersQuery, undatedPlayersQuery, careersQuery } from '../src/pipeline/queries';
 import { DEFAULT_POOL_RULES } from '../src/pipeline/pool';
 
 const OUT = 'data/raw';
 const IDS = `${OUT}/_ids.json`;
+const UNDATED = `${OUT}/_ids-undated.json`;
 const BATCH = 250;
 
 await mkdir(OUT, { recursive: true });
@@ -24,26 +25,55 @@ if (existsSync(IDS)) {
   console.log(`phase 1: ${ids.length} eligible players`);
 }
 
+// ---- Phase 1b: players with no dated club spell (cached; ~50s) ----
+// Cached in its own file so an existing _ids.json gains them without a
+// phase-1 refetch. Their era comes from the enwiki infobox. See
+// undatedPlayersQuery.
+let undated: string[];
+if (existsSync(UNDATED)) {
+  undated = JSON.parse(await readFile(UNDATED, 'utf8')) as string[];
+  console.log(`phase 1b: reusing cached ${undated.length} undated ids`);
+} else {
+  console.log('phase 1b: fetching players with no dated club spell...');
+  const res = await runQuery(undatedPlayersQuery(DEFAULT_POOL_RULES.fameFloor));
+  undated = [...new Set(res.results.bindings.map((b) => b['player']!.value.split('/').pop()!))];
+  await writeFile(UNDATED, JSON.stringify(undated));
+  console.log(`phase 1b: ${undated.length} undated players`);
+}
+const before = ids.length;
+ids = [...new Set([...ids, ...undated])];
+// _ids.json is every candidate: the side-file fetchers read it.
+if (ids.length > before) await writeFile(IDS, JSON.stringify(ids));
+
 // ---- Phase 2: careers, in resumable batches ----
-const total = Math.ceil(ids.length / BATCH);
+// Resumes by coverage, not by batch index: any id no batch file has asked
+// for yet is fetched, so ids added to phase 1 (or dropped from an older
+// batch by a since-changed query) are picked up without refetching the rest.
+// Delete data/raw to refetch everything.
+const existing = (await readdir(OUT)).filter((f) => f.startsWith('batch-')).sort();
+const covered = new Set<string>();
+for (const f of existing) {
+  const b = JSON.parse(await readFile(`${OUT}/${f}`, 'utf8')) as { asked?: string[]; results: { bindings: { player?: { value: string } }[] } };
+  // Older batches record no `asked`; for them, only the players they returned.
+  for (const id of b.asked ?? b.results.bindings.map((r) => r.player!.value.split('/').pop()!)) covered.add(id);
+}
+const todo = ids.filter((id) => !covered.has(id));
+const next = existing.length ? Number(existing.at(-1)!.slice(6, 10)) + 1 : 0;
+const total = Math.ceil(todo.length / BATCH);
+console.log(`phase 2: ${covered.size} ids covered by ${existing.length} batch files, ${todo.length} to fetch`);
 let fetched = 0;
-let skipped = 0;
 
-for (let i = 0; i < ids.length; i += BATCH) {
-  const n = Math.floor(i / BATCH);
-  const file = `${OUT}/batch-${String(n).padStart(4, '0')}.json`;
-  if (existsSync(file)) { skipped++; continue; }
-
-  const chunk = ids.slice(i, i + BATCH);
+for (let i = 0; i < todo.length; i += BATCH) {
+  const n = i / BATCH;
+  const file = `${OUT}/batch-${String(next + n).padStart(4, '0')}.json`;
+  const chunk = todo.slice(i, i + BATCH);
   let attempt = 0;
   for (;;) {
     try {
       const res = await runQuery(careersQuery(chunk));
-      await writeFile(file, JSON.stringify(res));
+      await writeFile(file, JSON.stringify({ asked: chunk, ...res }));
       fetched++;
-      if (n % 5 === 0 || n === total - 1) {
-        console.log(`  batch ${n + 1}/${total}  ${res.results.bindings.length} rows`);
-      }
+      console.log(`  batch ${n + 1}/${total}  ${res.results.bindings.length} rows`);
       break;
     } catch (e) {
       attempt++;
@@ -56,4 +86,4 @@ for (let i = 0; i < ids.length; i += BATCH) {
 }
 
 const files = (await readdir(OUT)).filter((f) => f.startsWith('batch-'));
-console.log(`\nphase 2: ${fetched} fetched, ${skipped} already present, ${files.length} batch files total`);
+console.log(`\nphase 2: ${fetched} fetched, ${files.length} batch files total`);

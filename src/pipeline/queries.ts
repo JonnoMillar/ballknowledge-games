@@ -1,4 +1,74 @@
 /**
+ * Exclude people whose fame is for something other than football.
+ * Spec 8.1 trap 3.
+ *
+ * Julio Iglesias genuinely holds occupation "association football player" —
+ * he kept goal for Castilla — and his 87 sitelinks measure singing fame, not
+ * football fame. Remco Evenepoel (cyclist, PSV youth), Patrik Eliáš (ice
+ * hockey), Chad Johnson (NFL, a trial at Boca Raton FC) and Juri Knorr
+ * (handball) are the same case from other sports.
+ *
+ * But a bare occupation exclusion also removed footballers who sing:
+ * Ronaldinho (musician), Cantona, Dante, Balbo, Polster, Bilić. And Alex
+ * Iwobi, whose item carried "musician" from 2025-11-19 until someone removed
+ * it on 2026-09-10, six days after the pool was fetched.
+ *
+ * So one of these occupations only excludes a player with no recorded
+ * appearance (P1350) for an association football club (Q476028) that is not
+ * a national team. The club type matters: P54 is any sports team, and Shane
+ * Williams' 129 appearances are for rugby sides. MEASURED on the live
+ * endpoint on 2026-10-19: every singing footballer in the pool has one
+ * (Yano 13, the rest 18 or more); Iglesias and the five athletes above have
+ * none, and no other player in the pool loses his place.
+ *
+ * MEASURED: this list must NOT include actor (Q33999). David Beckham holds
+ * occupation actor, and excluding it removes him from the pool entirely.
+ * Verified against the live endpoint on 2026-09-03.
+ *
+ * Two routes apply it. clubRosterQuery filters inline. The pool build reads
+ * it as a side file (famousElsewhereQuery -> data/raw/_elsewhere.json,
+ * applied in build-pool) the way it reads gender, so changing the rule does
+ * not mean re-pulling every career, and the cached careers do not drift.
+ */
+const FAMOUS_ELSEWHERE = `
+    ?player wdt:P106 ?other .
+    VALUES ?other {
+      wd:Q177220    # singer
+      wd:Q639669    # musician
+      wd:Q36834     # composer
+      wd:Q753110    # songwriter
+      wd:Q488205    # singer-songwriter
+      wd:Q2309784   # sport cyclist
+      wd:Q11774891  # ice hockey player
+      wd:Q19204627  # American football player
+      wd:Q12840545  # handball player
+      wd:Q14089670  # rugby union player
+      wd:Q14373094  # rugby league player
+      wd:Q3665646   # basketball player
+      wd:Q10833314  # tennis player
+      wd:Q10871364  # baseball player
+      wd:Q11303721  # golfer
+    }
+    FILTER NOT EXISTS {
+      ?player p:P54 ?pro .
+      ?pro ps:P54 ?proClub ; pq:P1350 ?proApps .
+      FILTER(?proApps > 0)
+      ?proClub wdt:P31/wdt:P279* wd:Q476028 .
+      FILTER NOT EXISTS { ?proClub wdt:P31/wdt:P279* wd:Q6979593 }
+    }`;
+const FAMOUS_FOR_FOOTBALL = `FILTER NOT EXISTS {${FAMOUS_ELSEWHERE}
+  }`;
+
+/** The players in a batch whose fame is for something else. See FAMOUS_ELSEWHERE. */
+export function famousElsewhereQuery(playerQids: readonly string[]): string {
+  const values = playerQids.map((q) => `wd:${q}`).join(' ');
+  return `
+SELECT DISTINCT ?player WHERE {
+  VALUES ?player { ${values} }${FAMOUS_ELSEWHERE}
+}`.trim();
+}
+
+/**
  * Every club spell for every player who ever appeared for `clubQid`.
  *
  * Three non-obvious rules are load-bearing, and breaking any of them produces a
@@ -40,27 +110,9 @@ SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHE
   BIND(COALESCE(?en, ?mul) AS ?name)
   FILTER(BOUND(?name))
 
-  # Exclude people whose notability is musical rather than footballing.
-  # Spec 8.1 trap 3.
-  #
-  # Julio Iglesias genuinely holds occupation "association football player" —
-  # he kept goal for Castilla — so the occupation filter alone does not remove
-  # him, and his 87 sitelinks measure singing fame, not football fame.
-  #
-  # MEASURED: this list must NOT include actor (Q33999). David Beckham holds
-  # occupation actor, and excluding it removes him from the pool entirely.
-  # Verified against the live endpoint on 2026-09-03. Narrow this list rather
-  # than widening it.
-  FILTER NOT EXISTS {
-    ?player wdt:P106 ?other .
-    VALUES ?other {
-      wd:Q177220    # singer
-      wd:Q639669    # musician
-      wd:Q36834     # composer
-      wd:Q753110    # songwriter
-      wd:Q488205    # singer-songwriter
-    }
-  }
+  # Exclude people famous for something other than football.
+  # Spec 8.1 trap 3. See FAMOUS_FOR_FOOTBALL.
+  ${FAMOUS_FOR_FOOTBALL}
 }`.trim();
 }
 
@@ -95,6 +147,29 @@ SELECT DISTINCT ?player ?sitelinks WHERE {
 }`.trim();
 }
 
+/**
+ * Phase 1b: footballers above the fame floor with no dated club spell at all.
+ *
+ * Phase 1 finds players through a dated P54 spell, so a player whose
+ * Wikidata item has no clubs, or clubs with no dates, is never seen.
+ * Tyrique George (Chelsea, 25 sitelinks) has no P54 statement. MEASURED on
+ * 2026-10-19: 1,431 footballers at 20+ sitelinks with an English article and
+ * no dated spell. Their era is then read from the enwiki infobox
+ * (data/careers.json); the ones whose careers end before the era drop out in
+ * applyPoolFilters. Runs ~50s on the public endpoint.
+ */
+export function undatedPlayersQuery(minSitelinks: number): string {
+  return `
+SELECT DISTINCT ?player WHERE {
+  ?player wdt:P106 wd:Q937857 ;
+          wikibase:sitelinks ?sitelinks .
+  FILTER(?sitelinks >= ${minSitelinks})
+  ?article schema:about ?player ;
+           schema:isPartOf <https://en.wikipedia.org/> .
+  FILTER NOT EXISTS { ?player p:P54 ?spell . ?spell pq:P580 ?start }
+}`.trim();
+}
+
 /** Phase 2: full careers for a fixed batch of player ids. */
 export function careersQuery(playerQids: readonly string[]): string {
   const values = playerQids.map((q) => `wd:${q}`).join(' ');
@@ -103,12 +178,16 @@ SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHE
   VALUES ?player { ${values} }
   ?player wikibase:sitelinks ?sitelinks .
 
-  ?player p:P54 ?spell .
-  ?spell ps:P54 ?club .
-  OPTIONAL { ?spell pq:P580 ?start }
-  OPTIONAL { ?spell pq:P582 ?end }
-
-  FILTER NOT EXISTS { ?club wdt:P31/wdt:P279* wd:Q6979593 }
+  # OPTIONAL: a player Wikidata records no club for (Tyrique George has no
+  # P54 at all) still comes back with a name, nation and position, and gets
+  # his clubs from the enwiki infobox. See undatedPlayersQuery.
+  OPTIONAL {
+    ?player p:P54 ?spell .
+    ?spell ps:P54 ?club .
+    OPTIONAL { ?spell pq:P580 ?start }
+    OPTIONAL { ?spell pq:P582 ?end }
+    FILTER NOT EXISTS { ?club wdt:P31/wdt:P279* wd:Q6979593 }
+  }
 
   OPTIONAL { ?player wdt:P27 ?nation }
   OPTIONAL { ?player wdt:P413 ?position }
@@ -118,10 +197,6 @@ SELECT DISTINCT ?player ?name ?sitelinks ?club ?start ?end ?nation ?position WHE
   BIND(COALESCE(?en, ?mul) AS ?name)
   FILTER(BOUND(?name))
 
-  FILTER NOT EXISTS {
-    ?player wdt:P106 ?other .
-    VALUES ?other { wd:Q177220 wd:Q639669 wd:Q36834 wd:Q753110 wd:Q488205 }
-  }
 }`.trim();
 }
 

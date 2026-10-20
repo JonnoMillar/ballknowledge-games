@@ -35,11 +35,17 @@ async function main() {
   const careers = JSON.parse(await readFile('data/careers.json', 'utf8')) as Careers;
   const clubs = JSON.parse(await readFile('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
 
-  let playersTouched = 0, clubsAdded = 0, spellsClosed = 0, appsFilled = 0;
+  let playersTouched = 0, clubsAdded = 0, spellsClosed = 0, appsFilled = 0, positionsFilled = 0;
   const newClubs = new Map<string, string>();
 
-  const merged: Player[] = pool.map((p) => {
-    const career = careers.players[p.id];
+  const merged: Player[] = pool.map((p0) => {
+    const career = careers.players[p0.id];
+    // Positions only where Wikidata gave no class (no P413, or one that is
+    // ambiguous or from another sport; see POSITION_CLASS). Where it did, it
+    // stands: the infobox is not the better record of a position.
+    const p = p0.positions.length === 0 && career?.positions?.length
+      ? (positionsFilled++, { ...p0, positions: career.positions })
+      : p0;
     if (!career || career.stints.length === 0) return p;
 
     // One entry per club, summed over every stint there.
@@ -76,19 +82,22 @@ async function main() {
       if (last === FETCH_YEAR && e.to !== null && e.to < FETCH_YEAR) { last = e.to; yrs = years ?? yrs; spellsClosed++; touched = true; }
       spells[q] = [apps, yrs, last];
     }
-    if (touched) playersTouched++;
+    if (touched || p !== p0) playersTouched++;
     return { ...p, clubIds, spells };
   });
 
-  console.log(`${playersTouched} players touched: ${clubsAdded} clubs added, ${spellsClosed} open-ended spells closed, ${appsFilled} appearance counts filled, ${newClubs.size} clubs new to clubs.json.`);
+  console.log(`${playersTouched} players touched: ${clubsAdded} clubs added, ${spellsClosed} open-ended spells closed, ${appsFilled} appearance counts filled, ${positionsFilled} positions filled, ${newClubs.size} clubs new to clubs.json.`);
 
   // The daily boards' promise, re-run on the merged pool.
   const byId = new Map(merged.map((p) => [p.id, p]));
   const files = (await readdir('content/chains')).filter((f) => /^\d{3}\.json$/.test(f)).sort();
   const broken: string[] = [];
+  let dailies = 0;
   for (const f of files) {
     const chain = JSON.parse(await readFile(`content/chains/${f}`, 'utf8')) as ChainPuzzle;
-    if (chain.difficulty !== undefined) continue;
+    // Dailies only: not the ladder, not Deep Cuts, not a retired board.
+    if (chain.difficulty !== undefined || chain.deep || chain.until) continue;
+    dailies++;
     const mode = chain.mode ?? 'clubs';
     const ref = chain.referenceSolution!;
     const prescribed = chain.prescribedLinks ?? {};
@@ -107,7 +116,6 @@ async function main() {
     });
     if (problems.length) broken.push(`${chain.id}: ${problems.join('; ')}`);
   }
-  const dailies = files.length - 4;
   console.log(broken.length === 0
     ? `All ${dailies} daily boards keep their promise on the merged pool.`
     : `${broken.length} of ${dailies} daily boards would break:\n  ${broken.join('\n  ')}`);

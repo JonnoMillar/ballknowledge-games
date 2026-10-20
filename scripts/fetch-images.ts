@@ -1,9 +1,10 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { runQuery } from '../src/pipeline/sparql';
 import { imageQuery } from '../src/pipeline/queries';
+import { pendingIds } from './pending-ids';
 
-const ids = JSON.parse(await readFile('data/raw/_ids.json', 'utf8')) as string[];
-const out: Record<string, string> = {};
+const { ids, done } = await pendingIds<string>('data/images.json');
+const out: Record<string, string> = { ...done };
 const CHUNK = 400;
 for (let i = 0; i < ids.length; i += CHUNK) {
   const res = await runQuery(imageQuery(ids.slice(i, i + CHUNK)));
@@ -18,4 +19,4 @@ for (let i = 0; i < ids.length; i += CHUNK) {
   if (i % 2400 === 0) console.log(`  ${Math.min(i + CHUNK, ids.length)}/${ids.length}`);
 }
 await writeFile('data/images.json', JSON.stringify(out));
-console.log(`\n${Object.keys(out).length} of ${ids.length} players have a Commons photo`);
+console.log(`\n${Object.keys(out).length} players have a Commons photo`);

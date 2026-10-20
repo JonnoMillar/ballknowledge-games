@@ -46,7 +46,7 @@ type FirstStep = {
  * puzzle. Once both are done there is none.
  */
 export default function Home({ boards }: { boards: BoardSummary[] }) {
-  const dailyIds = boards.filter((b) => b.daily).map((b) => b.id);
+  const daily = boards.filter((b) => b.daily);
   const byId = new Map(boards.map((b) => [b.id, b]));
   const [today, setToday] = useState<number | null>(null);
   const [progress, setProgress] = useState<Progress>({ plays: {} });
@@ -66,12 +66,12 @@ export default function Home({ boards }: { boards: BoardSummary[] }) {
       }, () => {});
   }, []);
 
-  const todayId = today !== null ? boardForDay(today, dailyIds) : null;
+  const todayId = today !== null ? boardForDay(today, daily) : null;
   const board = todayId ? byId.get(todayId) : undefined;
   const play = todayId ? progress.plays[todayId] : undefined;
   const streak = today !== null ? streakOf(progress, today) : { current: 0, best: 0 };
   const stepsDone = done.has('step');
-  const toPlay = today === null ? null : pastPuzzles(today, dailyIds).filter(({ id }) => byId.has(id) && !progress.plays[id]).length;
+  const toPlay = today === null ? null : pastPuzzles(today, daily).filter(({ id }) => byId.has(id) && !progress.plays[id]).length;
 
   return (
     <div className="app">

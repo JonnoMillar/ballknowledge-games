@@ -290,7 +290,7 @@ clue is allowed only where at most five answers are in reach.
 **The ladder.** Graded by ENTRY: over every legal pair, the fame of the less
 famous of the two — is there an obvious way in? The test fails if a harder
 board is more findable than an easier one. 006 Messi–Courtois via Everton
-(entry 90, 254 pairs), 007 Iniesta–Lloris via Beşiktaş (65), 008
+(entry 90, 270 pairs; 254 before the 2026-10-19 pool fix), 007 Iniesta–Lloris via Beşiktaş (65), 008
 Griezmann–Pogba via Schalke (60: Rakitić and Höwedes, or Embolo). 008 was
 Werder Bremen (entry 45) and nobody got it; the pair count is not the
 difficulty, the famous pair is.
@@ -458,12 +458,15 @@ Criteria-driven, not club-crawled: the pool is defined by fame floor + era +
 occupation.
 
 ```bash
-npm run fetch:pool      # 2-phase: ids, then careers in batches of 250
-npm run build:pool      # -> data/pool.json
+npm run fetch:pool      # ids (dated spells, then undated), careers for any id no batch covers
+npx tsx scripts/fetch-gender.ts; npx tsx scripts/fetch-sport-nation.ts
+npm run fetch:apps; npx tsx scripts/fetch-elsewhere.ts; npx tsx scripts/fetch-images.ts
+npm run build:pool      # -> data/pool.json, + data/raw/_undated.json
 npm run review:names    # vandalism check, by heuristic
 npm run review:labels   # vandalism check, against live Wikipedia titles (~12 min)
 npm run fetch:badges    # crests -> public/badges (gitignored, ~95 MB)
-npm run fetch:careers   # en-wiki infobox careers -> data/careers.json (~15 min)
+npm run fetch:careers   # en-wiki infobox careers + positions -> data/careers.json
+npm run build:pool      # again, if _undated.json was not empty: places them by infobox era
 npm run merge:careers   # dry run: what the merge adds, which dailies break
 npm run merge:careers -- --write   # union into pool.json + clubs.json
 ```
@@ -496,23 +499,42 @@ and "Αrda Güler" with a Greek alpha. Run both after any pool rebuild.
 
 ## Known data problems
 
-- **Famous players are missing from the pool (found 2026-09-25).** Not an
-  alias problem: Ronaldinho is not in `pool.json` at all. Two causes, both
-  measured against `data/raw`:
-  1. The singer/musician exclusion in `clubRosterQuery` (there for Julio
-     Iglesias) drops footballers who also sing: Ronaldinho (musician),
-     Cantona, Dante, Balbo (singer), and more. 30 players found in phase 1
-     never reach the phase-2 batches; most for this reason. Alex Iwobi is
-     among the 30 with no music occupation, so something else drops him.
-  2. 102 players are dropped by `applyPoolFilters` for having no position
-     class: 59 use position items `POSITION_CLASS` does not map (Q904289
-     alone covers 25), 43 have no P413 at all. Mkhitaryan, Pedri
-     (position Q1109563), Oblak, Bentancur, Zinchenko, Adama Traoré, Nicolas Jackson.
-  Fixing either adds strong answers to existing fields, so rerun
-  `merge:careers` as a dry run and expect to retire or regenerate dailies,
-  as the careers merge did. Check each new position QID against the live
-  endpoint before mapping it. **This is the highest-value pipeline fix.**
-- **Zero of 11,741 players have an alias.** A player known by a name that is
+- **Famous players went missing from the pool (found 2026-09-25, fixed
+  2026-10-19).** The pool went from 11,741 to 12,939 players, none lost:
+  Ronaldinho, Cantona, Mkhitaryan, Pedri, Oblak, Bentancur, Zinchenko,
+  Iwobi, Adama Traoré, Nicolas Jackson, Tyrique George, Álex Baena, Filip
+  Kostić, Altay Bayındır, Nico O'Reilly, Lucas Bergvall, Bart Verbruggen.
+  Four causes, each fixed where it lived:
+  1. *Singers.* The music-occupation exclusion (for Julio Iglesias) also
+     dropped Ronaldinho, Cantona, Dante, Balbo, Polster, Bilić. It now
+     excludes only people with no recorded appearance for a football club
+     (`FAMOUS_ELSEWHERE` in `queries.ts`), and widens to other sports, which
+     the old position filter had been hiding by accident: Remco Evenepoel,
+     Patrik Eliáš, Chad Johnson, Juri Knorr. The pool route applies it as a
+     side file (`scripts/fetch-elsewhere.ts`) so the rule never forces a
+     re-pull of every career.
+  2. *Iwobi* was the same filter: his item carried "musician" from
+     2025-11-19 until 2026-09-10, and the pool was fetched on 09-04.
+  3. *Positions.* 102 players were dropped for having no position class.
+     Nine unambiguous items are now mapped; ambiguous ones ("stopper" is a
+     volante in Brazil, Pedri's "centerhalf"), other sports' positions and
+     no P413 at all fall through to the enwiki infobox `position`, which
+     `fetch:careers` now reads and `merge:careers` fills in where Wikidata
+     gave nothing (175 players). A player with no class at all is kept,
+     not dropped: one is left (Shinji Sarusawa).
+  4. *No dated club.* Tyrique George (25 sitelinks, well above the floor)
+     has no P54 on Wikidata, so phase 1 never saw him. Phase 1b
+     (`undatedPlayersQuery`) finds the 1,431 such footballers; their era
+     comes from the infobox. No recency allowance was needed for him.
+     Players just under the floor do exist (Odobert, Miley at 19); they
+     arrive as their sitelinks pass 20 on a later fetch.
+  Fetching is now incremental: `fetch:pool` fetches any id no batch covers,
+  and the side-file fetchers (`pending-ids.ts`) only new ids. That is
+  deliberate: re-pulling five old batches brought in a Wikidata edit of
+  2026-10-10 that files van der Sar at FC Barcelona and broke daily 038.
+  Delete a cache file to refresh it on purpose. Two vandalised labels
+  found on the way are in `overrides.ts` (Andrei Prepeliță, Ayumu Seko).
+- **Zero of 12,939 players have an alias.** A player known by a name that is
   not part of his label cannot be found by it. `short-name.ts` is the
   stopgap for nameplates.
 - **Wikidata has an error tail.** Rodrigo Riep is filed at Everton F.C. and

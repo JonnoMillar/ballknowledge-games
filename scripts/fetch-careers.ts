@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import type { Player } from '../src/lib/chemistry/types';
+import type { Player, PositionClass } from '../src/lib/chemistry/types';
 
 /**
  * Fetch senior careers from ENGLISH WIKIPEDIA's football infobox, as a
@@ -41,7 +41,15 @@ export interface Stint {
   goals?: number;
   loan: boolean;
 }
-export interface Career { title: string; stints: Stint[] }
+export interface Career {
+  title: string;
+  stints: Stint[];
+  /**
+   * The infobox `position`, as classes. Absent on careers fetched before
+   * 2026-10-19; merge-careers only reads it for players with no P413 class.
+   */
+  positions?: PositionClass[];
+}
 export interface Careers {
   fetched: string;
   /** Player QID -> career. Absent: no enwiki article, or no infobox rows. */
@@ -54,10 +62,13 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function get(base: string, params: Record<string, string>): Promise<any> {
   const url = `${base}?${new URLSearchParams({ format: 'json', ...params })}`;
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let attempt = 0; attempt < 8; attempt++) {
     const res = await fetch(url, { headers: { 'User-Agent': AGENT } });
     if (res.ok) return res.json();
-    await sleep(800 * 2 ** attempt);
+    // A 429 says how long to wait. Retrying sooner keeps the limit in force,
+    // which is how a resumed run used to give up on its first request.
+    const after = Number(res.headers.get('retry-after'));
+    await sleep(res.status === 429 && after > 0 ? (after + 1) * 1000 : 800 * 2 ** attempt);
   }
   throw new Error(`API failed: ${url.slice(0, 160)}`);
 }
@@ -80,6 +91,39 @@ function years(s: string): { from?: number; to?: number } {
   if (m) return { from: Number(m[1]), ...(m[2] ? { to: Number(m[2]) } : {}) };
   const one = /(\d{4})/.exec(s);
   return one ? { from: Number(one[1]), to: Number(one[1]) } : {};
+}
+
+/**
+ * An infobox `position` value as classes: `[[Midfielder#Attacking
+ * midfielder|Attacking midfielder]], [[Winger (association football)|winger]]`
+ * -> MID, FWD. Link labels are read, not targets, so a winger linked to the
+ * midfielder article is a winger. Order matters within a part: "defensive
+ * midfielder" and "half-back" are midfield before "back" reads as defence,
+ * and "attacking midfielder" before "attack" reads as forward.
+ */
+export function positionClasses(value: string): PositionClass[] {
+  const text = value
+    .replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1')
+    .replace(/\{\{[^{}|]*\|?|\}\}/g, ' ')
+    .toLowerCase();
+  const out: PositionClass[] = [];
+  for (const part of text.split(/,|\/|;|<br\s*\/?>|\band\b|\bor\b|\n|\*/)) {
+    const cls: PositionClass | null =
+      /goal ?keeper|goalie/.test(part) ? 'GK'
+      : /midfield|playmaker|half[- ]?back|wing[- ]?half|regista|volante/.test(part) ? 'MID'
+      : /defender|\bback\b|sweeper|libero|stopper|centre[- ]?half|center[- ]?half/.test(part) ? 'DEF'
+      : /forward|striker|winger|attacker/.test(part) ? 'FWD'
+      : null;
+    if (cls && !out.includes(cls)) out.push(cls);
+  }
+  return out;
+}
+
+/** The infobox's `position` row, as classes. Empty when there is none. */
+export function parseInfoboxPosition(wikitext: string): PositionClass[] {
+  const clean = wikitext.replace(/<!--[\s\S]*?-->/g, '').replace(/<ref[^>]*\/>|<ref[^>]*>[\s\S]*?<\/ref>/g, '');
+  const m = /\|\s*position\s*=\s*((?:\[\[[^\]]*\]\]|\{\{[^}]*\}\}|[^|\n\[{])*)/.exec(clean);
+  return m ? positionClasses(m[1]!) : [];
 }
 
 /** The infobox's clubsN / yearsN / capsN / goalsN rows, as stints. */
@@ -120,8 +164,13 @@ async function main() {
     .catch(() => ({ fetched: '', players: {}, clubs: {} }));
   const save = () => writeFile(OUT, JSON.stringify({ ...out, fetched: new Date().toISOString() }));
 
-  const todo = pool.filter((p) => !(p.id in out.players)).slice(0, LIMIT || undefined);
-  console.log(`${pool.length} in the pool, ${Object.keys(out.players).length} done, ${todo.length} to fetch`);
+  // Plus the players build:pool could not date: their era comes from here.
+  const undated = await readFile('data/raw/_undated.json', 'utf8')
+    .then((s) => JSON.parse(s) as string[])
+    .catch(() => [] as string[]);
+  const ids = [...new Set([...pool.map((p) => p.id), ...undated])];
+  const todo = ids.filter((id) => !(id in out.players)).slice(0, LIMIT || undefined).map((id) => ({ id }));
+  console.log(`${pool.length} in the pool + ${undated.length} undated, ${Object.keys(out.players).length} done, ${todo.length} to fetch`);
 
   // 1. Player QID -> enwiki title.
   const titles = new Map<string, string>();
@@ -162,7 +211,7 @@ async function main() {
         }
         const stints = parseInfobox(text);
         for (const s of stints) clubTitles.add(s.title);
-        out.players[id] = { title: page.title, stints };
+        out.players[id] = { title: page.title, stints, positions: parseInfoboxPosition(text) };
       }
       cont = j.continue ?? {};
       if (Object.keys(cont).length) await sleep(120);

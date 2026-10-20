@@ -31,9 +31,12 @@ export async function runQuery(query: string, attempts = 5): Promise<SparqlRespo
     } catch (e) {
       const msg = e instanceof Error ? e.message : '';
       const status = /^SPARQL (\d+)/.exec(msg)?.[1];
-      if (status && Number(status) < 500) throw e;   // our fault, do not retry
+      // 429 is the one 4xx that is not ours: the endpoint's per-minute
+      // query-time budget is spent, and it says when it refills.
+      if (status && Number(status) < 500 && status !== '429') throw e;   // our fault, do not retry
       lastError = e;
-      await new Promise((r) => setTimeout(r, 3000 * (i + 1)));
+      const after = Number(/retry after (\d+)s/.exec(msg)?.[1]);
+      await new Promise((r) => setTimeout(r, after > 0 ? (after + 1) * 1000 : 3000 * (i + 1)));
     }
   }
   throw lastError;
@@ -61,7 +64,9 @@ async function runQueryOnce(query: string): Promise<SparqlResponse> {
     // bound the query or shrink the batch. Spec 8.3.
     const hint = res.status === 431 || res.status === 414
       ? 'request too large — reduce the batch size'
-      : 'query too expensive — bound it more tightly or shrink the batch';
+      : res.status === 429
+        ? `rate limited, retry after ${Number(res.headers.get('retry-after')) || 60}s`
+        : 'query too expensive — bound it more tightly or shrink the batch';
     throw new Error(`SPARQL ${res.status}: ${hint}`);
   }
   return (await res.json()) as SparqlResponse;

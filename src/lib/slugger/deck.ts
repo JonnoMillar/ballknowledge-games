@@ -119,16 +119,16 @@ export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
     'Q19446', // Blackburn Rovers k20
     'Q2674', // Palermo k20
     'Q18736', // Stoke City k20
+    'Q73965', // Al Hilal k20 (k19 until the pool grew, 2026-10-19)
+    'Q8760', // Deportivo de A Coruña k20 (k19 until the pool grew, 2026-10-19)
+    'Q181216', // Hajduk Split k20 (k19 until the pool grew, 2026-10-19)
   ],
   slider: [
     'Q2714', // Watford k19
-    'Q8760', // Deportivo de A Coruña k19
     'Q187528', // Anderlecht k19
     'Q1893', // Bologna k19
-    'Q181216', // Hajduk Split k19
     'Q204357', // LA Galaxy k19
     'Q173009', // Red Star Belgrade k19
-    'Q73965', // Al Hilal k19
     'Q191264', // AZ Alkmaar k18
     'Q192641', // Trabzonspor k18
     'Q29112', // Spartak Moscow k18
@@ -180,12 +180,12 @@ export const DECK: Readonly<Record<PitchKind, readonly string[]>> = {
     'Q459090', // Club América k11
     'Q18232', // Gent k11
     'Q19477', // Hull City k11
+    'Q24711', // Groningen k11 (k10 until the pool grew, 2026-10-19)
+    'Q19513', // Montpellier k11 (k10 until the pool grew, 2026-10-19)
   ],
   knuckleball: [
-    'Q19513', // Montpellier k10
     'Q18723', // Queens Park Rangers k10
     'Q16844931', // Inter Miami k10
-    'Q24711', // Groningen k10
     'Q15786', // Nürnberg k10
     'Q8812', // Granada k10
     'Q188430', // Copenhagen k10
