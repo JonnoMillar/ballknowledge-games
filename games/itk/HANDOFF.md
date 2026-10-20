@@ -153,7 +153,7 @@ Git Origins); merged by hand instead.
   production 500s with ENOENT while local and `next start` work. Hit with
   `days.json` (live, broken ~2 h, 2026-10-13); a test now guards it. After any
   push that adds a runtime-read file, check the **deployed** API
-  (`https://football-chain.vercel.app/api/spoofed/day?date=<today>` → 200).
+  (`https://ballknowledge-games.vercel.app/api/spoofed/day?date=<today>` → 200).
 - `git mv` of a whole directory fails on Windows ("Permission denied") when a
   watcher holds it: move the files individually.
 - `next build` rewrites `tsconfig.json` (`.next-prod/types`): `git checkout
