@@ -239,7 +239,7 @@ Two kinds of board, same rules:
   board needs `"from"` (the generators set it two days out); retire one
   with `"until"` and leave the file, so its served days keep it. Before
   2026-10-20 the schedule was a shuffle of the whole set, so any change
-  rewrote every past day. Repeats start on day 57 (14 Nov 2026) unless new
+  rewrote every past day. Repeats start on day 91 (17 Dec 2026) since 33 boards (134-170, from 2026-10-22) were added, unless more
   boards land first; they are a stable second cycle, never a reshuffle.
   The streak counts consecutive dailies held.
 - **The ladder** — 006 easy, 007 medium, 008 hard, and 009 the ring (hard,
@@ -291,7 +291,7 @@ npm run typecheck
 | `src/lib/short-name.ts` | Nameplates. A stopgap for missing aliases. |
 | `src/lib/chain/demonyms.ts` | Nation QID → "a German", for the generator. |
 | `scripts/build-completion.ts` | The daily generator. `npm run build:completion -- --count 60 --write`. |
-| `content/chains/` | 006–009 the ladder (they carry a `difficulty`); 010–071 the boards the daily draws from (they do not). |
+| `content/chains/` | 006–009 the ladder (they carry a `difficulty`); 010–170 the boards the daily draws from (they do not). |
 | `data/pool.json` | 11,741 players. Committed snapshot. |
 | `data/portraits.json` | Resolved portraits for everyone a shipped board can show. |
 | `app/globals.css` | The whole album stylesheet. Light tokens at `:root`; the XI board's dark tokens scoped under `.xi`. |

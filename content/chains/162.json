@@ -1,0 +1,43 @@
+{
+  "id": "162",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q39444",
+    null,
+    "Q57079",
+    null,
+    "Q128725",
+    null,
+    "Q602525",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q1028",
+      "label": "a Moroccan"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q31",
+      "label": "a Belgian"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    }
+  },
+  "referenceSolution": [
+    "Q39444",
+    "Q26932598",
+    "Q57079",
+    "Q313316",
+    "Q128725",
+    "Q10526787",
+    "Q602525",
+    "Q161571"
+  ],
+  "from": "2026-10-22"
+}

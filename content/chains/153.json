@@ -1,0 +1,39 @@
+{
+  "id": "153",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q21621995",
+    null,
+    "Q196219",
+    null,
+    "Q487459",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q77",
+      "label": "a Uruguayan"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q43",
+      "label": "a Turk"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q45",
+      "label": "a Portuguese"
+    }
+  },
+  "referenceSolution": [
+    "Q21621995",
+    "Q167790",
+    "Q196219",
+    "Q202569",
+    "Q487459",
+    "Q483145"
+  ],
+  "from": "2026-10-22"
+}

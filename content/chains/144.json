@@ -1,0 +1,48 @@
+{
+  "id": "144",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q487459",
+    null,
+    "Q11576",
+    null,
+    "Q2339",
+    null,
+    "Q483583",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q43",
+      "label": "a Turk"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q25",
+      "label": "a Welshman"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q43",
+      "label": "a Turk"
+    }
+  },
+  "referenceSolution": [
+    "Q487459",
+    "Q44118",
+    "Q11576",
+    "Q45626",
+    "Q2339",
+    "Q214513",
+    "Q483583",
+    "Q202569"
+  ],
+  "from": "2026-10-22"
+}
