@@ -613,7 +613,15 @@ is not; club crests are in.
 
 ## Next up
 
-- **Play the dailies.** Sixty boards, a fixed order. Cull the givens a
+- **New Chain dailies before 14 Nov 2026.** 53 boards are live; day 57
+  (14 Nov) starts repeating them. Run `build-completion.ts --write` on the
+  current pool: it stamps `"from"` two days out, and `tests/daily.test.ts`
+  fails any new board without one. Accept: `npm test` green and
+  `schedule()` shows the new ids from their `from` date, days before it
+  unchanged.
+- **96 enwiki titles have no views** (`node scripts/fetch-views.mjs` failed
+  them on 2026-10-20; it resumes). Steps falls back on sitelinks for them.
+- **Play the dailies.** A fixed order since 2026-10-20 (see the daily). Cull the givens a
   British audience would not place and reseed. Does a plate with one
   answer feel like recall or like a lookup? Is a ring of four too long?
 - **Aliases.** Unblocks search and nameplates.
