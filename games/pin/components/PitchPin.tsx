@@ -111,13 +111,13 @@ export default function PitchPin({ board, order }: {
                   <p className="pin__hint">Where was it struck from? Tap the pitch, drag to adjust.</p>
                   {failed ? <p className="pin__error" role="alert">Could not reach the ref. Try again.</p> : null}
                   {pointsSoFar ? <p className="pin__hint">So far: <b>{pointsSoFar}</b> points</p> : null}
-                  <button type="button" className="pin__throw display" disabled={!pin || busy} onClick={throwPin}>Throw</button>
+                  <button type="button" className="lobby-play" disabled={!pin || busy} onClick={throwPin}>Throw</button>
                 </>
               )}
             </div>
           </>
         )}
-        <a className="pin__back" href="/pin">All packs</a>
+        <a className="lobby-quiet lobby-small pin__back" href="/pin">All packs</a>
         <p className="pin__credit">
           {board.goals.some((g) => g.credit === 'statsbomb') ? <img src="/credits/statsbomb.png" alt="StatsBomb" height={16} /> : null}
           Shot data: {credits}. Metres on a standard pitch.
@@ -188,8 +188,8 @@ function Result({ t, goal, pointsSoFar, last, onNext }: {
         <p className="pin__mirror">Wrong side? Mirrored, you were {t.answer.mirrored.toFixed(1)} m off.</p>
       ) : null}
       <div className="pin__actions">
-        <a className="pin__watch" href={watchUrl(goal)} target="_blank" rel="noreferrer">Watch it</a>
-        <button type="button" className="pin__next display" onClick={onNext}>{last ? 'Full time' : 'Next goal'}</button>
+        <a className="lobby-quiet" href={watchUrl(goal)} target="_blank" rel="noreferrer">Watch it</a>
+        <button type="button" className="lobby-play pin__next" onClick={onNext}>{last ? 'Full time' : 'Next goal'}</button>
       </div>
     </section>
   );

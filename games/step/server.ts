@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
-import { loadData } from '../../src/server/board';
+import { demoClub, demoSticker, loadData } from '../../src/server/board';
+import type { StepsDemo } from '../../src/lib/demo';
 import { clubColour, signatureClub } from '../../src/lib/club-colours';
 import { clubView } from '../../src/lib/clubs';
 import { sharedClubsByProminence } from '../../src/lib/chain/score';
@@ -91,4 +92,22 @@ export async function judgePick(date: string, step: number, pickId: string, earl
     obvious: j.obvious ? await card(j.obvious, sharedClubsByProminence(j.obvious, given)[0] ?? null) : null,
     elite: j.elite ? await card(j.elite, sharedClubsByProminence(j.elite, given)[0] ?? null) : null,
   };
+}
+
+/**
+ * The How to play demo on /chain: Rooney and Real Madrid, answered by
+ * Ronaldo (the obvious one) and Heinze (a rarer one), graded live by the
+ * game's own rule, so the demo can never show a grade the game would not.
+ */
+export async function demoSteps(): Promise<StepsDemo> {
+  const [rooney, madrid, united] = ['Q266613', 'Q8682', 'Q18656'];
+  const { byId } = await loadData();
+  const members = (await byClub()).get(madrid) ?? [];
+  const given = byId.get(rooney)!;
+  const picks = await Promise.all(['Q11571', 'Q63659'].map(async (id) => ({
+    player: await demoSticker(id, united, madrid),
+    grade: judge(byId.get(id)!, given, madrid, members).grade,
+  })));
+  // A pool change that stopped one holding drops it rather than showing a grade the game would not give.
+  return { given: await demoSticker(rooney, united), club: await demoClub(madrid), picks: picks.flatMap((p) => (p.grade ? [{ ...p, grade: p.grade }] : [])) };
 }

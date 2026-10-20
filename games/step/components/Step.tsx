@@ -170,12 +170,12 @@ function Game({ day }: { day: StepDay }) {
               />
               {revealing ? null : <After verdict={verdict} playerFirst={step.playerFirst} />}
             </div>
-            {revealing ? null : <button type="button" className="seal" onClick={next}>{view === STEPS - 1 ? 'Your run' : 'Next'}</button>}
+            {revealing ? null : <button type="button" className="lobby-play" onClick={next}>{view === STEPS - 1 ? 'Your run' : 'Next'}</button>}
           </>
         ) : chosen ? (
           <>
-            <button type="button" className="seal" onClick={lock} disabled={pending}>{pending ? 'Locking…' : 'Lock it in'}</button>
-            <button type="button" className="step-act__change" onClick={() => setSearching(true)}>Change</button>
+            <button type="button" className="lobby-play" onClick={lock} disabled={pending}>{pending ? 'Locking…' : 'Lock it in'}</button>
+            <button type="button" className="lobby-quiet lobby-small" onClick={() => setSearching(true)}>Change</button>
           </>
         ) : (
           <>
@@ -184,7 +184,7 @@ function Game({ day }: { day: StepDay }) {
                 ? <>Played for one of <b>{playerName}’s</b> clubs and for <b>{clubName}</b></>
                 : <>Played for <b>{clubName}</b> and one of <b>{playerName}’s</b> clubs</>}
             </p>
-            <button type="button" className="seal" onClick={() => setSearching(true)}>Name a player</button>
+            <button type="button" className="lobby-play" onClick={() => setSearching(true)}>Name a player</button>
           </>
         )}
       </section>
@@ -374,8 +374,8 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
         ))}
       </ol>
       <div className="step-end__actions">
-        <button type="button" className="lobby-play display" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-        <a className="lobby-quiet display" href="/collection">View collection</a>
+        <button type="button" className="lobby-play" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+        <a className="lobby-quiet" href="/collection">View collection</a>
       </div>
 
       <h2 className="step-end__sub display">Deepest answers</h2>
@@ -395,7 +395,7 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
         })}
       </ol>
       <p className="step-end__links">
-        <a href="/step/archive">Archive</a>
+        <a className="lobby-quiet lobby-small" href="/step/archive">Archive</a>
       </p>
     </section>
   );

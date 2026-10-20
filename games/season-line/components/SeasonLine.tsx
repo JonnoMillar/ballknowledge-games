@@ -142,13 +142,13 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
               <div className="sl-end__go">
                 {onNext ? (
                   <>
-                    <button type="button" className="lobby-play display" onClick={onNext}>Next season</button>
-                    <button type="button" className="sl-quiet" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+                    <button type="button" className="lobby-play" onClick={onNext}>Next season</button>
+                    <button type="button" className="lobby-quiet" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
                   </>
                 ) : (
                   <>
-                    <button type="button" className="lobby-play display" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-                    <a className="sl-quiet" href="/season-line#endless">Endless</a>
+                    <button type="button" className="lobby-play" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
+                    <a className="lobby-quiet" href="/season-line#endless">Endless</a>
                   </>
                 )}
               </div>
@@ -174,7 +174,7 @@ function Board({ start, title, onNext }: { start: { view: BoardView; guesses: Gu
                   {years.map((s) => <option key={s} value={s}>{seasonLabel(s)}</option>)}
                 </select>
               )}
-              <button type="submit" className="lobby-play display sl-form__go" disabled={!pick || !pickYear || pending || tried}>
+              <button type="submit" className="lobby-play sl-form__go" disabled={!pick || !pickYear || pending || tried}>
                 {tried ? 'Tried' : 'Guess'}
               </button>
             </form>

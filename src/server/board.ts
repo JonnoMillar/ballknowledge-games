@@ -5,6 +5,7 @@ import type { BoardProps, BoardSummary, Given } from '../lib/chain/client';
 import { clubView, type ClubRecord, type ClubView } from '../lib/clubs';
 import { clubColour, signatureClub } from '../lib/club-colours';
 import { portraitUrls, type PortraitImage, type PortraitRecord } from '../lib/portraits';
+import type { ChainDemo, DemoClub, DemoSticker } from '../lib/demo';
 
 /**
  * The data the server reads, read once and kept.
@@ -116,4 +117,32 @@ export function listBoards(): Promise<BoardSummary[]> {
     return out;
   })();
   return summaries;
+}
+
+/** A demo's sticker: the player, their photo, a ground of one club or two. */
+export async function demoSticker(id: string, a: string, b = a): Promise<DemoSticker> {
+  const { byId, images } = await loadData();
+  const p = byId.get(id)!;
+  return { id, name: p.name, ...(images[id] ? { image: images[id] } : {}), ground: { a: clubColour(a), b: clubColour(b) } };
+}
+
+/** A demo's club: its crest and colour. */
+export async function demoClub(id: string): Promise<DemoClub> {
+  const { clubs } = await loadData();
+  return { id, club: clubs[id] ? clubView(clubs[id]!) : { name: id }, colour: clubColour(id) };
+}
+
+/**
+ * Chain's How to play: Rooney, a Portuguese, Benzema, linked through United
+ * and Madrid. The answer is Ronaldo; no daily asks it.
+ */
+export async function demoChain(): Promise<ChainDemo> {
+  const [united, madrid] = ['Q18656', 'Q8682'];
+  return {
+    left: await demoSticker('Q266613', united),
+    gap: await demoSticker('Q11571', united, madrid),
+    right: await demoSticker('Q1912', madrid),
+    links: [await demoClub(united), await demoClub(madrid)],
+    clue: { flag: 'pt', label: 'a Portuguese' },
+  };
 }

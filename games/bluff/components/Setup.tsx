@@ -62,7 +62,7 @@ export default function Setup({
         ))}
       </ol>
       {names.length < MAX_PLAYERS ? (
-        <button type="button" className="bf-setup__add vt" onClick={add}>+ One more</button>
+        <button type="button" className="lobby-quiet lobby-small bf-setup__add vt" onClick={add}>+ One more</button>
       ) : null}
 
       <div className="bf-setup__opt vt">
@@ -105,7 +105,7 @@ export default function Setup({
         <div><p>The faker gets a few suggested players that make sense for each position.</p></div>
       </div>
 
-      <button type="submit" className="lobby-play display vt">Kick off</button>
+      <button type="submit" className="lobby-play vt">Kick off</button>
     </form>
   );
 }

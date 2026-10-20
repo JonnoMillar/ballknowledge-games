@@ -10,6 +10,7 @@ import { newMatch, type Clock, type Match } from '../lib/match';
 import { readMatch, readSaved, writeMatch, writeSaved, type Saved } from '../lib/store';
 import { smooth } from '../../../src/lib/motion';
 import Words from '../../../components/Words';
+import HowItWorks, { type HowRule } from '../../../components/HowItWorks';
 import type { DemoBall } from '../server';
 
 /** Rondo's ground: the same orange as its tile on the hub. */
@@ -23,8 +24,8 @@ const GROUND = GAMES.find((g) => g.id === 'rondo')!.ground;
  *   (the page's one red button) on the right. Rondo is not a daily, so no
  *   day tag.
  *   A match in progress on this phone gets a quiet way back under it.
- * - How it goes: a looping demo of one real ball beside the three rules in
- *   plain words, each rule lit while the demo shows it.
+ * - How to play: the shared card (components/HowItWorks.tsx), one real
+ *   ball beside three plain rules.
  */
 export default function Lobby({ demo }: { demo: DemoBall }) {
   // Read after mount: localStorage is the phone's, and the server render knows nothing of it.
@@ -62,7 +63,7 @@ export default function Lobby({ demo }: { demo: DemoBall }) {
           </div>
           <div className="lobby-hero__go">
             <Setup key={me ? 'saved' : 'blank'} initialNames={me?.saved.names ?? []} initialClock={me?.saved.clock ?? 30} onStart={start} />
-            {me?.match ? <a className="rondo-lobby__resume vt" href="/rondo/play">Match in progress · back to it</a> : null}
+            {me?.match ? <a className="lobby-quiet lobby-small lobby-resume vt" href="/rondo/play">Back to your match</a> : null}
           </div>
         </section>
 
@@ -73,11 +74,16 @@ export default function Lobby({ demo }: { demo: DemoBall }) {
 }
 
 /**
- * How it goes. The demo plays one ball on a 10 s loop (CSS only, in
- * rondo.css): Rooney; Ronaldo, through United; Benzema, through Madrid;
- * both crests are crossed out; Benzema is stuck and a bib lands. Each rule
- * lights up while the demo shows it. Reduced motion shows the last frame.
+ * How to play, on the shared card: one real ball, in three frames. Rooney;
+ * Ronaldo through United. Benzema through Madrid, and both crests are
+ * crossed out. Benzema is stuck and a bib lands. Data from `demoBall()`.
  */
+const RULES: HowRule[] = [
+  { text: 'Name a player who shared a club with the one on the ball.', frames: [3200] },
+  { text: 'A club that links two players can’t be used again.', frames: [3600] },
+  { text: 'Can’t name anyone? That’s a strike. Three and you’re out.', frames: [3400] },
+];
+
 function How({ demo }: { demo: DemoBall }) {
   const [a, b, c] = demo.players;
   const [united, madrid] = demo.clubs;
@@ -92,10 +98,11 @@ function How({ demo }: { demo: DemoBall }) {
     </span>
   );
   return (
-    <section className="lobby-card lobby__wide rondo-how vt">
-      <span className="lobby-tag lobby-tag--paper">How it goes</span>
-      <div className="rondo-how__body">
-        <div className="rondo-demo" aria-hidden>
+    <HowItWorks
+      rules={RULES}
+      note="The ref knows 11,741 players since 1992."
+      demo={(step) => (
+        <div className="rondo-demo" data-step={step}>
           <div className="rondo-demo__row">
             {player(a, 1)}{link(united, 1)}{player(b, 2)}{link(madrid, 2)}{player(c, 3)}
           </div>
@@ -105,13 +112,7 @@ function How({ demo }: { demo: DemoBall }) {
             <Bib earned={false} size={22} />
           </div>
         </div>
-        <ol className="rondo-how__rules">
-          <li>Name a player who played for one of the same clubs as the player on the ball.</li>
-          <li>A club that links two players can’t be used again.</li>
-          <li>Can’t name anyone? That’s a strike. Three strikes and you’re out.</li>
-        </ol>
-      </div>
-      <p className="how__note">The ref knows 11,741 players since 1992.</p>
-    </section>
+      )}
+    />
   );
 }

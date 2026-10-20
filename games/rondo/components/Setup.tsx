@@ -60,7 +60,7 @@ export default function Setup({
         ))}
       </ol>
       {names.length < MAX_PLAYERS ? (
-        <button type="button" className="setup__add vt" onClick={add}>+ One more</button>
+        <button type="button" className="lobby-quiet lobby-small setup__add vt" onClick={add}>+ One more</button>
       ) : null}
 
       <div className="setup__clock vt" role="radiogroup" aria-label="Shot clock">
@@ -81,7 +81,7 @@ export default function Setup({
         </div>
       </div>
 
-      <button type="submit" className="lobby-play display vt">Kick off</button>
+      <button type="submit" className="lobby-play vt">Kick off</button>
     </form>
   );
 }

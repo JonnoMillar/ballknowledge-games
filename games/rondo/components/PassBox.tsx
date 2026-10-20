@@ -76,7 +76,7 @@ export default function PassBox({
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M10 3L5 8l5 5" /></svg>
           </button>
           <span className="pass__picked-name">{picked.name}</span>
-          <button type="button" className="kick kick--pass display" disabled={busy} onClick={() => onPass(picked.id, picked.name)}>
+          <button type="button" className="lobby-play lobby-small" disabled={busy} onClick={() => onPass(picked.id, picked.name)}>
             {busy ? 'Ref…' : 'Pass'}
           </button>
         </div>
@@ -124,7 +124,7 @@ export default function PassBox({
         </>
       )}
 
-      <button type="button" className="pass__nothing" disabled={busy} onClick={onGiveUp}>
+      <button type="button" className="lobby-quiet lobby-small" disabled={busy} onClick={onGiveUp}>
         I've got nothing
       </button>
     </section>

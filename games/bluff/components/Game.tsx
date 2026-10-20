@@ -114,7 +114,7 @@ export default function Game() {
         {failed ? (
           <>
             <p>Couldn’t get a team sheet.</p>
-            <button type="button" className="lobby-play display" onClick={() => setMatch((m) => (m ? { ...m } : m))}>Try again</button>
+            <button type="button" className="lobby-play" onClick={() => setMatch((m) => (m ? { ...m } : m))}>Try again</button>
           </>
         ) : <p>Finding a team sheet…</p>}
       </div>
@@ -137,7 +137,7 @@ export default function Game() {
           {at ? (
             <Swap side={side} slot={slotAt(side, at)!} index={index} chosen={fake} onChoose={setFake} />
           ) : <p className="bf-hint vt">Tap the player to take out.</p>}
-          <button type="button" className="lobby-play display vt" disabled={!at || !fake} onClick={() => at && fake && go((m) => planted(m, at, fake))}>
+          <button type="button" className="lobby-play vt" disabled={!at || !fake} onClick={() => at && fake && go((m) => planted(m, at, fake))}>
             Pass the phone
           </button>
         </>
@@ -148,7 +148,7 @@ export default function Game() {
       <div className="bf-card bf-cover vt">
         <p className="bf-cover__to">Hand the phone to</p>
         <p className="bf-cover__name display">{guesser}</p>
-        <button type="button" className="lobby-play display" onClick={() => go(uncovered)}>I’m {guesser}</button>
+        <button type="button" className="lobby-play" onClick={() => go(uncovered)}>I’m {guesser}</button>
       </div>
     );
   } else {
@@ -185,15 +185,15 @@ export default function Game() {
         />
       ),
       controls: !done ? (
-        <button type="button" className="lobby-play display vt" disabled={!pick} onClick={guess}>That’s the fake</button>
+        <button type="button" className="lobby-play vt" disabled={!pick} onClick={guess}>That’s the fake</button>
       ) : match.winner !== null ? (
         <div className="bf-full vt">
           <p className="bf-full__head display">{players[match.winner]!.name} wins</p>
-          <button type="button" className="lobby-play display" onClick={() => go(rematch)}>Rematch</button>
-          <button type="button" className="lobby-quiet display" onClick={leave}>Back to main menu</button>
+          <button type="button" className="lobby-play" onClick={() => go(rematch)}>Rematch</button>
+          <button type="button" className="lobby-quiet" onClick={leave}>Back to main menu</button>
         </div>
       ) : (
-        <button type="button" className="lobby-play display vt" onClick={() => go(nextRound)}>Next round</button>
+        <button type="button" className="lobby-play vt" onClick={() => go(nextRound)}>Next round</button>
       ),
     };
   }
