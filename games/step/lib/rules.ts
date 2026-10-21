@@ -1,4 +1,4 @@
-import { ERA_FLOOR, ERA_FULL, ERA_HALF, eraOf } from '../../../src/lib/fame/era';
+import { ERA_FLOOR, ERA_FULL, ERA_HALF, eraOf, lastPlayed } from '../../../src/lib/fame/era';
 import { APPS_PER_YEAR, FLOOR, SATURATION_APPS } from '../../../src/lib/fame/spell';
 import { ELITE_MIN_FIELD, GRADES, GRADE_GLYPH, GRADE_WORD, gradeOf, gradeRank, type Grade } from '../../../src/lib/chain/grade';
 import { MARK_GLYPH } from '../../../src/lib/chain/share';
@@ -97,28 +97,25 @@ export const PLAIN: Lens = { year: 0, reach: {} };
 
 /**
  * Era fade (src/lib/fame/era.ts), tuned on Jonno's 59 verdicts
- * (scripts/step/tune.ts). A stint is dated both by its own end and by the
+ * (scripts/step/verdicts.ts). A stint is dated both by its own end and by the
  * player's last season anywhere (their geometric mean): Torres's Liverpool
  * years are remembered because Torres played on, Redknapp's Spurs years are not.
  */
-export { ERA_FLOOR, ERA_FULL, ERA_HALF, eraOf };
+export { ERA_FLOOR, ERA_FULL, ERA_HALF, eraOf, lastPlayed };
 /** A stint still going is news, however few games it has had (Durán at Benfica, round 1). */
 export const CURRENT_STINT = 0.6;
 
 /**
- * The last season a player was anywhere: the year itself if a spell is open
- * or undated. Unlike src/lib/fame/era.ts lastPlayed, an undated spell reads
- * as current, so 1,466 retired players never fade; the verdicts were tuned
- * with it (lastPlayed here: 46 of 59, and ruler.json goes stale).
+ * How known "p played for c" is: p's fame, the stint's length, its era, the
+ * club's reach. A stint with no end year ends with the player's last season,
+ * not this year: retired players' undated spells read as current until
+ * 2026-10-21 (Romário at Ajax).
  */
-export const lastSeen = (p: Player, year: number) => Math.max(0, ...Object.values(p.spells ?? {}).map((s) => s[2] ?? year));
-
-/** How known "p played for c" is: p's fame, the stint's length, its era, the club's reach. */
 export function atClub(p: Player, c: string, views: Views, lens: Lens = PLAIN): number {
   const spell = p.spells?.[c];
-  const end = spell?.[2] ?? lens.year;
+  const end = spell?.[2] ?? lastPlayed(p, lens.year);
   const weight = lens.year > 0 && end >= lens.year ? Math.max(stintWeight(spell), CURRENT_STINT) : stintWeight(spell);
-  const era = Math.sqrt(eraOf(end, lens.year) * eraOf(lastSeen(p, lens.year), lens.year));
+  const era = Math.sqrt(eraOf(end, lens.year) * eraOf(lastPlayed(p, lens.year), lens.year));
   return knownOf(p, views) * weight * era * (lens.reach[c] ?? 1);
 }
 

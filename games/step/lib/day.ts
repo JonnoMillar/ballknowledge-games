@@ -1,4 +1,4 @@
-import { STEPS, barOf, endsOf, factOf, fieldOf, stepsOf, CHECKABLE, ERA_FULL, eraOf, lastSeen, type Givens, type Lens, type Ruler, type Views } from './rules';
+import { STEPS, barOf, endsOf, factOf, fieldOf, stepsOf, CHECKABLE, ERA_FULL, eraOf, lastPlayed, type Givens, type Lens, type Ruler, type Views } from './rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 /**
@@ -127,7 +127,7 @@ export function buildWorld(pool: readonly Player[], views: Views, year = new Dat
     .slice(0, RULES.clubPool)
     .map(([id]) => id)
     .filter((id) => FOLLOWED_LEAGUES.has(league(id) ?? ''));
-  const givens = pool.filter((p) => (views[p.id] ?? 0) * eraOf(lastSeen(p, year), year) >= RULES.givenViews && !NOT_A_GIVEN.has(p.id)
+  const givens = pool.filter((p) => (views[p.id] ?? 0) * eraOf(lastPlayed(p, year), year) >= RULES.givenViews && !NOT_A_GIVEN.has(p.id)
     && p.clubIds.length >= RULES.givenMinClubs && p.clubIds.length <= RULES.givenMaxClubs
     && (p.leagueIds.includes(PREMIER_LEAGUE) || BRITISH.has(p.nation) || p.fame.value >= RULES.givenIcon));
 

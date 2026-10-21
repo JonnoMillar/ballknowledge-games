@@ -24,6 +24,9 @@ careers; pick, test and grade with recent players. Applies to every item below.
 - Rondo openers for a 16-26 audience: 292 to 193 (`audienceKnows` in
   games/rondo/server.ts, Steps' faded English views; careers ended before
   2016 need the 1.5M given bar). Era fade shared in src/lib/fame/era.ts.
+- Steps' era fade dates retired players by their real last season
+  (`lastPlayed`; an undated spell read as current for 1,072 of them). Verdicts
+  unchanged at 47 of 59; 3 of 116 upcoming deepest answers moved.
 
 ## In progress
 - Player photos: docs/photo-pipeline.md. Round 2 done; phase 2 (cutouts for
@@ -32,10 +35,6 @@ careers; pick, test and grade with recent players. Applies to every item below.
   ~395 fame-60+ cutouts, then merge.
 
 ## Needs Jonno, small
-- Steps' `lastSeen` reads 1,466 retired players as current (an undated
-  spell counts as open: Sol Campbell, Romário). The fix (`lastPlayed`,
-  src/lib/fame/era.ts) costs one verdict (46 of 59) and needs ruler.json
-  rebuilt; his call whether to adopt it and re-tune.
 - Odd Man Out solo mode (the model picks the odd man out; daily + archive):
   a short spec for his yes/no.
 - Spoofed's AI rank art clashes: proposal is the site's grade cases instead.

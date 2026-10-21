@@ -14,11 +14,11 @@ export const eraOf = (end: number, year: number) => (end >= year - ERA_FULL ? 1 
 
 /**
  * The last season a player played anywhere. A spell with no end year, or
- * dated but without a game, says nothing: 1,466 retired players have one
- * (Romário at Ajax, Ronaldinho's 0 games at Ravenna in 2026). The year
- * itself only when no spell is dated.
+ * dated with neither a game nor a length, says nothing: 1,072 retired
+ * players have one (Romário at Ajax, Ronaldinho's 0 games at Ravenna in
+ * 2026). The year itself only when no spell is dated.
  */
 export function lastPlayed(p: Player, year: number): number {
-  const ends = Object.values(p.spells ?? {}).filter((s) => s[2] !== null && s[0] !== 0).map((s) => s[2]!);
+  const ends = Object.values(p.spells ?? {}).filter((s) => s[2] !== null && (s[0] !== 0 || s[1] !== null)).map((s) => s[2]!);
   return ends.length > 0 ? Math.max(...ends) : year;
 }

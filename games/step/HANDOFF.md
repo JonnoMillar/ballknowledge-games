@@ -137,6 +137,12 @@ What changed (`lib/rules.ts`, `lib/day.ts`):
   (`data/enwiki-views.into.json`); a player's views are the larger of that
   and the old careers title. Renamed pages had lost their views: Rodri 34k
   (3.3M), Pepe 0 (2.5M), Raúl 5k (1.1M), Eduardo 0 (259k).
+- **Undated spells** (2026-10-21, after): the player's last season is
+  `lastPlayed` (src/lib/fame/era.ts, shared with Rondo), which skips spells
+  with no end year, or no games and no length; an undated stint ends there
+  too. Before, any such spell read as current, so 1,072 retired players
+  (Sol Campbell, Romário) never faded. Verdicts held at 47 of 59, 12 off;
+  ruler.json rebuilt; the 29 unplayed days still pass, 3 deepest answers moved.
 - **One ruler file**: `data/ruler.json` = `{ year, reach, bar }` (was
   `bar.json`), written by `npm run step:days`, read by the server, checked
   current by a test. The year rolls with the cron, so the fade moves on.
