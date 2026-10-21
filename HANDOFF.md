@@ -1,7 +1,8 @@
 # Chain — state of play
 
 **Updated:** 2026-10-15. Read this first in a new session; it is the shortest
-path back to full context. The design is in
+path back to full context. **The site-wide polish plan (what's done, what waits
+on Jonno, the big decisions in order) is `docs/roadmap.md`: read it next.** The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
 ## Games

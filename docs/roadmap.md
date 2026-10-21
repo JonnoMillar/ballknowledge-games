@@ -2,6 +2,9 @@
 
 Jonno's list of 2026-10-19, triaged. Update as items land.
 
+**Audience: 16-26** (Jonno, 2026-10-21). Players under 30 don't know pre-2010
+careers; pick, test and grade with recent players. Applies to every item below.
+
 ## Done (on main)
 - Chain: vertical link rules centred (were 1px right of the rail).
 - Puzzle brief cut to the ring and one rule line.
@@ -13,13 +16,22 @@ Jonno's list of 2026-10-19, triaged. Update as items land.
 - Steps grading on English Wikipedia views; feedback round 1 applied.
 - Missing players (Pedri, Iwobi, Tyrique George, Mkhitaryan, Ronaldinho and
   1,193 more); Chain's schedule pinned so past days never change.
+- Steps grades for a 16-26 audience (era fade, club reach, modern givens):
+  47 of Jonno's 59 round verdicts land, none more than one grade off.
+- Site is https://ballknowledge-games.vercel.app (Vercel project renamed
+  `ballknowledge-games`); football-chain.vercel.app 308-redirects. Auto-deploy
+  after the rename is untested until the next push to main.
 
 ## In progress
-- Player photos: docs/photo-pipeline.md. Round 2 with Jonno, then the build.
+- Player photos: docs/photo-pipeline.md. Round 2 done; phase 2 (cutouts for
+  893 players, kit card, credits) runs on branch `claude/photo-pipeline-1d882c`
+  in its own session, not merged. Next gate: Jonno's approval round on the
+  ~395 fame-60+ cutouts, then merge.
 
 ## Needs Jonno, small
 - Rondo opening players: a keep/cut round over ~290 starters (no data rule
-  separates Gyan from Rosický, Mertesacker, Gary Cahill).
+  separates Gyan from Rosický, Mertesacker, Gary Cahill). Bias it to players
+  a 16-26 audience knows; Steps' audience ruler (games/step) may cut most of it.
 - Odd Man Out solo mode (the model picks the odd man out; daily + archive):
   a short spec for his yes/no.
 - Spoofed's AI rank art clashes: proposal is the site's grade cases instead.
