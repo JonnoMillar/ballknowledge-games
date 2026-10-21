@@ -1,0 +1,457 @@
+[
+ {
+  "file": "File:Olivier Giroud 2018.jpg",
+  "p18": true,
+  "year": 2018,
+  "local": "cand/Q1911/0.jpg",
+  "score": 540.4,
+  "why": "face 257px, 27% of height, sharpness 1806",
+  "box": [
+   386,
+   92,
+   194,
+   257
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud 2015.jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/37.jpg",
+  "score": 530.7,
+  "why": "face 252px, 21% of height, sharpness 508",
+  "box": [
+   388,
+   410,
+   196,
+   252
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud 2012.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/9.jpg",
+  "score": 353.5,
+  "why": "face 208px, 14% of height, sharpness 127",
+  "box": [
+   435,
+   167,
+   158,
+   208
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud vs Liverpool - 2 November 2013 (cropped).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/20.jpg",
+  "score": 309.3,
+  "why": "face 145px, 21% of height, sharpness 451",
+  "box": [
+   184,
+   246,
+   115,
+   145
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/18.jpg",
+  "score": 307.5,
+  "why": "face 195px, 14% of height, sharpness 204",
+  "box": [
+   375,
+   149,
+   162,
+   195
+  ]
+ },
+ {
+  "file": "File:Giroud on the deck (16235420749) (cropped).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/34.jpg",
+  "score": 202.5,
+  "why": "face 171px, 27% of height, sharpness 87",
+  "box": [
+   171,
+   190,
+   193,
+   171
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud (16420710192).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/36.jpg",
+  "score": 182.1,
+  "why": "face 103px, 16% of height, sharpness 267",
+  "box": [
+   425,
+   117,
+   71,
+   103
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud Training 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/19.jpg",
+  "score": 179.1,
+  "why": "face 174px, 11% of height, sharpness 99",
+  "box": [
+   264,
+   116,
+   142,
+   174
+  ]
+ },
+ {
+  "file": "File:Giroud Arsenal.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/4.jpg",
+  "score": 167.4,
+  "why": "face 146px, 10% of height, sharpness 159",
+  "box": [
+   215,
+   76,
+   88,
+   146
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud 1 (cropped).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/17.jpg",
+  "score": 130.5,
+  "why": "face 147px, 8% of height, sharpness 366",
+  "box": [
+   408,
+   239,
+   119,
+   147
+  ]
+ },
+ {
+  "file": "File:Giroud.JPG",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/11.jpg",
+  "score": 116.9,
+  "why": "face 145px, 10% of height, sharpness 83",
+  "box": [
+   334,
+   207,
+   97,
+   145
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud (10438176944).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/12.jpg",
+  "score": 78.7,
+  "why": "face 104px, 7% of height, sharpness 1303",
+  "box": [
+   362,
+   351,
+   82,
+   104
+  ]
+ },
+ {
+  "file": "File:Olivier giroud.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q1911/2.jpg",
+  "score": 71.0,
+  "why": "face 129px, 10% of height, sharpness 59",
+  "box": [
+   382,
+   115,
+   76,
+   129
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud (11219302824).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/13.jpg",
+  "score": 67.1,
+  "why": "face 62px, 10% of height, sharpness 682",
+  "box": [
+   531,
+   44,
+   49,
+   62
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud 2012-10-01.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/8.jpg",
+  "score": 66.5,
+  "why": "face 91px, 6% of height, sharpness 756",
+  "box": [
+   430,
+   437,
+   67,
+   91
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud vs Liverpool - 2 November 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/21.jpg",
+  "score": 63.7,
+  "why": "face 59px, 9% of height, sharpness 4700",
+  "box": [
+   493,
+   101,
+   48,
+   59
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud (12142707116).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q1911/29.jpg",
+  "score": 61.4,
+  "why": "face 64px, 8% of height, sharpness 1234",
+  "box": [
+   294,
+   65,
+   49,
+   64
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud (8438723963).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/15.jpg",
+  "score": 58.9,
+  "why": "face 58px, 9% of height, sharpness 1619",
+  "box": [
+   327,
+   46,
+   40,
+   58
+  ]
+ },
+ {
+  "file": "File:Olivier Giroud (11563264645).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/14.jpg",
+  "score": 44.5,
+  "why": "face 53px, 8% of height, sharpness 2631",
+  "box": [
+   352,
+   78,
+   49,
+   53
+  ]
+ },
+ {
+  "file": "File:20231107 110824 Giroud.jpg",
+  "p18": false,
+  "year": 2023,
+  "local": "cand/Q1911/1.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Giroud and Ramsey.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/3.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:John O'Shea & Olivier Giroud.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/5.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud & Theo Walcott coming on at 75 minutes (8012694791).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud (cropped).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud en Ligue des Champions.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1911/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud 1 (8439810104).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/16.jpg",
+  "score": 0,
+  "why": "face 44px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud x Mesut \u00d6zil v Southampton - 23 Nov 2013 (cropped).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/22.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud x Mesut \u00d6zil v Southampton - 23 Nov 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q1911/23.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Community Shield 27 - Celebrating Giroud's goal (14862010666).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q1911/24.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Community Shield 28 - Celebrating Giroud's goal (14904862433).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q1911/25.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Community Shield 29 - Celebrating Giroud's goal (14904861873).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q1911/26.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Community Shield 30 - Celebrating Giroud's goal (14904861233).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q1911/27.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Community Shield 31 - Celebrating Giroud's goal (14862008386).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q1911/28.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Giroud celebrates his goal 1 (16235400319).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/30.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Giroud celebrates his goal 2 (16420691562).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/31.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Giroud celebrates his goal 3 (16419864151).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/32.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Giroud celebrates with Cazorla (15801576443).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/33.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Giroud on the deck (16235420749).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q1911/35.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud (51100321546) (cropped).jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q1911/38.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Olivier Giroud (51100321546).jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q1911/39.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

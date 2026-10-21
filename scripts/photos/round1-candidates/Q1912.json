@@ -1,0 +1,432 @@
+[
+ {
+  "file": "File:Karim Benzema Pick.jpg",
+  "p18": true,
+  "year": 2024,
+  "local": "cand/Q1912/0.jpg",
+  "score": 126.0,
+  "why": "face 326px, 34% of height, sharpness 26",
+  "box": [
+   337,
+   161,
+   222,
+   326
+  ]
+ },
+ {
+  "file": "File:Karim Benzema.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/31.jpg",
+  "score": 278.4,
+  "why": "face 174px, 14% of height, sharpness 300",
+  "box": [
+   300,
+   106,
+   125,
+   174
+  ]
+ },
+ {
+  "file": "File:K.Benzema.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/30.jpg",
+  "score": 177.3,
+  "why": "face 111px, 17% of height, sharpness 111",
+  "box": [
+   424,
+   153,
+   93,
+   111
+  ]
+ },
+ {
+  "file": "File:Karim Benzema Euro 2012 vs Sweden 02.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/35.jpg",
+  "score": 173.9,
+  "why": "face 99px, 15% of height, sharpness 598",
+  "box": [
+   223,
+   76,
+   77,
+   99
+  ]
+ },
+ {
+  "file": "File:Karim Benzema TOTS 2021.png",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q1912/4.jpg",
+  "score": 156.1,
+  "why": "face 117px, 12% of height, sharpness 612",
+  "box": [
+   452,
+   169,
+   86,
+   117
+  ]
+ },
+ {
+  "file": "File:Karim Benzema POTM jun2020.png",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q1912/1.jpg",
+  "score": 142.1,
+  "why": "face 112px, 11% of height, sharpness 537",
+  "box": [
+   455,
+   174,
+   87,
+   112
+  ]
+ },
+ {
+  "file": "File:Karim Benzema POTM mar2021.png",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q1912/2.jpg",
+  "score": 142.1,
+  "why": "face 112px, 11% of height, sharpness 537",
+  "box": [
+   455,
+   174,
+   87,
+   112
+  ]
+ },
+ {
+  "file": "File:Karim Benzema POTM sept2021.png",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q1912/3.jpg",
+  "score": 142.1,
+  "why": "face 112px, 11% of height, sharpness 537",
+  "box": [
+   455,
+   174,
+   87,
+   112
+  ]
+ },
+ {
+  "file": "File:Karim Benzema 2012.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/33.jpg",
+  "score": 139.2,
+  "why": "face 219px, 12% of height, sharpness 58",
+  "box": [
+   143,
+   91,
+   130,
+   219
+  ]
+ },
+ {
+  "file": "File:Benzema 48609.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/32.jpg",
+  "score": 128.4,
+  "why": "face 71px, 35% of height, sharpness 1297",
+  "box": [
+   76,
+   39,
+   55,
+   71
+  ]
+ },
+ {
+  "file": "File:KBenzema.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q1912/7.jpg",
+  "score": 93.0,
+  "why": "face 103px, 8% of height, sharpness 419",
+  "box": [
+   563,
+   199,
+   70,
+   103
+  ]
+ },
+ {
+  "file": "File:Karim Benzema Euro 2012 vs Sweden 01.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/34.jpg",
+  "score": 82.0,
+  "why": "face 68px, 10% of height, sharpness 1079",
+  "box": [
+   188,
+   86,
+   50,
+   68
+  ]
+ },
+ {
+  "file": "File:Real Madrid Karim Benzema.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/16.jpg",
+  "score": 49.7,
+  "why": "face 149px, 22% of height, sharpness 19",
+  "box": [
+   171,
+   142,
+   105,
+   149
+  ]
+ },
+ {
+  "file": "File:Regate de Benzema (5155866921).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q1912/19.jpg",
+  "score": 40.5,
+  "why": "face 50px, 8% of height, sharpness 518",
+  "box": [
+   302,
+   162,
+   37,
+   50
+  ]
+ },
+ {
+  "file": "File:Karim Benzema 17586 (cropped).jpg",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q1912/5.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Karim Benzema 17586.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q1912/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema (3970340974).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema (3970344442).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/9.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema - Rodriguez.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema al suelo (3868263641).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/11.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema Real.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/12.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema y Cristiano Ronaldo (3869046348).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/13.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema y Cristiano Ronaldo (4199914442).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/14.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Disparo de GOL de Benzema (4199160921).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/15.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema por arriba (5156470194).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q1912/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:La alegr\u00eda del gol, Benzema.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q1912/18.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Abdebayor Benzema.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema & Pellerano.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema (5496938216).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/22.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema al suelo (5496947050).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/23.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema dribbles.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/24.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema fait l'avion.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/25.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema Villarreal.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/26.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Benzema vs LA Galaxy.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/27.jpg",
+  "score": 0,
+  "why": "face 25px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Benzema, \u00d6zil vs LA Galaxy.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/28.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Cristiano y Benzema (5353778425).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q1912/29.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Karim Benzema Euro 2012.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/36.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.5 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:KarimBenzema.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/37.jpg",
+  "score": 0,
+  "why": "face 47px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Lass, Ozil, Benzema and Ronaldo line up.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q1912/38.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ocasion de Benzema.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q1912/39.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

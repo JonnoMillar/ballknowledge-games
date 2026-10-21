@@ -1,0 +1,372 @@
+[
+ {
+  "file": "File:NIG-ARG (5).jpg",
+  "p18": true,
+  "year": 2018,
+  "local": "cand/Q251683/0.jpg",
+  "score": 545.8,
+  "why": "face 289px, 38% of height, sharpness 824",
+  "box": [
+   130,
+   79,
+   202,
+   289
+  ]
+ },
+ {
+  "file": "File:Angel di Maria-Portugal vs. Argentina.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/25.jpg",
+  "score": 541.8,
+  "why": "face 385px, 36% of height, sharpness 7048",
+  "box": [
+   157,
+   150,
+   251,
+   385
+  ]
+ },
+ {
+  "file": "File:2017 FRIENDLY MATCH RUSSIA v ARGENTINA - \u00c1ngel Di Mar\u00eda.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q251683/31.jpg",
+  "score": 416.8,
+  "why": "face 317px, 15% of height, sharpness 97",
+  "box": [
+   184,
+   97,
+   209,
+   317
+  ]
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q251683/33.jpg",
+  "score": 290.4,
+  "why": "face 138px, 34% of height, sharpness 285",
+  "box": [
+   101,
+   34,
+   90,
+   138
+  ]
+ },
+ {
+  "file": "File:MariaAngel.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q251683/11.jpg",
+  "score": 192.0,
+  "why": "face 118px, 18% of height, sharpness 522",
+  "box": [
+   512,
+   252,
+   67,
+   118
+  ]
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda (cropped Benfica).jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q251683/15.jpg",
+  "score": 149.2,
+  "why": "face 76px, 17% of height, sharpness 865",
+  "box": [
+   140,
+   51,
+   55,
+   76
+  ]
+ },
+ {
+  "file": "File:Angel Di Maria \u2013 Portugal vs. Argentina, 9th February 2011 (cropped).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/24.jpg",
+  "score": 143.7,
+  "why": "face 127px, 10% of height, sharpness 2030",
+  "box": [
+   543,
+   205,
+   80,
+   127
+  ]
+ },
+ {
+  "file": "File:Angel Di Maria \u2013 Portugal vs. Argentina, 9th February 2011 (2).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/23.jpg",
+  "score": 98.8,
+  "why": "face 91px, 9% of height, sharpness 2488",
+  "box": [
+   531,
+   180,
+   69,
+   91
+  ]
+ },
+ {
+  "file": "File:Angel Di Maria \u2013 Portugal vs. Argentina, 9th February 2011 (1).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/22.jpg",
+  "score": 98.7,
+  "why": "face 90px, 9% of height, sharpness 2007",
+  "box": [
+   602,
+   156,
+   56,
+   90
+  ]
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q251683/19.jpg",
+  "score": 93.0,
+  "why": "face 80px, 10% of height, sharpness 931",
+  "box": [
+   142,
+   85,
+   57,
+   80
+  ]
+ },
+ {
+  "file": "File:Di maria - Milano.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/3.jpg",
+  "score": 45.5,
+  "why": "face 50px, 8% of height, sharpness 234",
+  "box": [
+   134,
+   81,
+   36,
+   50
+  ]
+ },
+ {
+  "file": "File:Angeldimaria.JPG",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/1.jpg",
+  "score": 0,
+  "why": "face 33px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Argentina 2-0 Per\u00fa - Copa Am\u00e9rica 2024 - Lautaro, Di Mar\u00eda y Garnacho celebrando.jpg",
+  "p18": false,
+  "year": 2024,
+  "local": "cand/Q251683/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Di Maria Benfica.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q251683/4.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Di Maria.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/5.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Di Mar\u00eda (5275359935).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/6.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Di Mar\u00eda (5275370633).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Di Mar\u00eda (5593111267).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Di Mar\u00eda cropped.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/9.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Di Mar\u00eda.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Messi Podolski Di Maria 2010.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/12.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ozil, di Maria and Diarra.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q251683/13.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Penalty A Di Maria... pues no, tarjeta amarilla (5275986008).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q251683/14.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda - ARG v CAN - 2024-07-09 (cropped).jpg",
+  "p18": false,
+  "year": 2024,
+  "local": "cand/Q251683/16.jpg",
+  "score": 0,
+  "why": "face 49px, too small",
+  "box": null
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda out, Nico Gonz\u00e1lez in - ARG v CAN - 2024-07-09.jpg",
+  "p18": false,
+  "year": 2024,
+  "local": "cand/Q251683/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda subbed off - ARG v CAN - 2024-07-09.jpg",
+  "p18": false,
+  "year": 2024,
+  "local": "cand/Q251683/18.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Angel di Maria (L), Raul Meireles (R), Portugal - Argentina, 9th February 2011.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Angel di Maria - 2011.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/21.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.2 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Angel Di Mar\u00eda vs Michael Dawson.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/26.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Di Maria al corner - Real Madrd vs Real Mallorca.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/27.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Fabio Coentrao (L), Angel Di Maria (R) \u2013 Portugal vs. Argentina, 9th February 2011 (1).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/28.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gol de D\u00ed Mar\u00eda (5593110865).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/29.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Marcos Rojo (L), Nicol\u00e1s Burdisso (M), Angel di Maria (R) \u2013 Portugal vs. Argentina, 9th February 2011.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q251683/30.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:\u00c1ngel Di Mar\u00eda 2017.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q251683/32.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.8 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Argentina vs mexico gallardo vs dimaria.jpg",
+  "p18": false,
+  "year": 2022,
+  "local": "cand/Q251683/34.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

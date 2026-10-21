@@ -1,0 +1,309 @@
+[
+ {
+  "file": "File:Edinson Cavani 2018 (cropped).jpg",
+  "p18": true,
+  "year": 2018,
+  "local": "cand/Q167790/0.jpg",
+  "score": 229.8,
+  "why": "face 110px, 19% of height, sharpness 2994",
+  "box": [
+   137,
+   60,
+   86,
+   110
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani 2021(cropped).jpg",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q167790/27.jpg",
+  "score": 430.5,
+  "why": "face 205px, 20% of height, sharpness 406",
+  "box": [
+   530,
+   94,
+   146,
+   205
+  ]
+ },
+ {
+  "file": "File:Cavani training.jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q167790/22.jpg",
+  "score": 327.9,
+  "why": "face 154px, 26% of height, sharpness 175",
+  "box": [
+   326,
+   12,
+   109,
+   154
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani, PSG (cropped).JPG",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q167790/15.jpg",
+  "score": 210.1,
+  "why": "face 279px, 29% of height, sharpness 43",
+  "box": [
+   187,
+   137,
+   210,
+   279
+  ]
+ },
+ {
+  "file": "File:Cavani saluda.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q167790/24.jpg",
+  "score": 196.7,
+  "why": "face 193px, 15% of height, sharpness 71",
+  "box": [
+   452,
+   196,
+   129,
+   193
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani, PSG.JPG",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q167790/16.jpg",
+  "score": 168.5,
+  "why": "face 161px, 9% of height, sharpness 307",
+  "box": [
+   451,
+   167,
+   122,
+   161
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani URU.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q167790/6.jpg",
+  "score": 137.4,
+  "why": "face 66px, 21% of height, sharpness 1123",
+  "box": [
+   55,
+   30,
+   47,
+   66
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q167790/25.jpg",
+  "score": 128.9,
+  "why": "face 112px, 10% of height, sharpness 2932",
+  "box": [
+   305,
+   73,
+   84,
+   112
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani 2011.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q167790/5.jpg",
+  "score": 78.7,
+  "why": "face 77px, 9% of height, sharpness 480",
+  "box": [
+   186,
+   91,
+   59,
+   77
+  ]
+ },
+ {
+  "file": "File:Cavani 2 v Chelsea 2014.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q167790/18.jpg",
+  "score": 62.7,
+  "why": "face 62px, 9% of height, sharpness 1639",
+  "box": [
+   440,
+   149,
+   48,
+   62
+  ]
+ },
+ {
+  "file": "File:Cavani v Chelsea 2014.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q167790/19.jpg",
+  "score": 54.0,
+  "why": "face 58px, 8% of height, sharpness 3028",
+  "box": [
+   199,
+   25,
+   44,
+   58
+  ]
+ },
+ {
+  "file": "File:Edinson Cavani (51100312646) (cropped).jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q167790/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Edinson Cavani (51100312646).jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q167790/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Edinson Cavani.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q167790/3.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.3 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Empreinte Golden Foot \u00e0 Monaco - Edinson Cavani.jpg",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q167790/4.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Schaars Cavani (cropped).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q167790/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Schaars Cavani.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q167790/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Edinson Cavani (AIK-Napoli) - Crop (1).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q167790/9.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Edinson Cavani (AIK-Napoli) - Crop (2).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q167790/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Edinson Cavani (vs. AIK in 2012, cropped).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q167790/11.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Edinson Cavani and Niklas Backman (AIK-Napoli).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q167790/12.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:EdinsonCavani.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q167790/13.jpg",
+  "score": 0,
+  "why": "face 45px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Cavani v Colombia.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q167790/14.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:1 edinson cavani 2014.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q167790/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Uruguay 2 - England 1 - Luis Suarez and Edinson Cavani.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q167790/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Cavani f\u00eate un but avec David Luiz.JPG",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q167790/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Cavani c\u00e9l\u00e8bre un but avec le Paris-SG.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q167790/23.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Hincha Uruguay con Cavani.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q167790/26.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]
