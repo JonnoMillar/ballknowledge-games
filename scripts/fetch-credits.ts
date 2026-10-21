@@ -26,10 +26,15 @@ const portraits = JSON.parse(await readFile('data/portraits.json', 'utf8')) as R
 
 const FILEPATH = 'Special:FilePath/';
 const files = new Set<string>();
-for (const { url } of Object.values(portraitUrls(images, portraits))) {
+for (const [id, { url }] of Object.entries(portraitUrls(images, portraits))) {
+  // Our own cutouts name the Commons file they came from; a raw photo is in its URL.
+  const processed = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
   const at = url.indexOf(FILEPATH);
-  if (at >= 0) files.add(decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!));
+  if (processed) files.add(processed);
+  else if (at >= 0) files.add(decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!));
 }
+// The kit card's figure (public/kit-figure.png) is a cutout of this photo.
+files.add('Robert Lewandowski 2018, JAP-POL (cropped).jpg');
 console.log(`${files.size} Commons files on public pages`);
 
 /** Commons puts markup in Artist; the page wants the words. */

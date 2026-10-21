@@ -47,9 +47,15 @@ export type NameRow = [id: string, name: string, aliases: readonly string[], pic
 const COMMONS = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 const CUTOUT = 'https://r2.thesportsdb.com/images/media/player/cutout/';
 
-/** `c:` a Commons file, cropped to the frame; `s:` a cutout, shown whole. */
+const PROCESSED = '/portraits/';
+
+/**
+ * `c:` a Commons file, cropped to the frame; `s:` a cutout, shown whole; `b:` one of ours, face in the
+ * box. No key at all is the kit card: the album only draws it on a neutral ground, where it has no crest.
+ */
 export function encodePicture(img: PortraitImage | undefined): string | null {
-  if (!img) return null;
+  if (!img || img.fit === 'kit') return null;
+  if (img.url.startsWith(PROCESSED)) return `b:${img.url.slice(PROCESSED.length)}`;
   if (img.url.startsWith(COMMONS)) return `c:${img.url.slice(COMMONS.length)}`;
   if (img.url.startsWith(CUTOUT)) return `s:${img.url.slice(CUTOUT.length)}`;
   return `${img.fit === 'contain' ? 'u' : 'v'}:${img.url}`;
@@ -61,6 +67,7 @@ export function decodePicture(key: string | null): PortraitImage | undefined {
   const rest = key.slice(2);
   if (kind === 'c:') return { url: COMMONS + rest, fit: 'cover' };
   if (kind === 's:') return { url: CUTOUT + rest, fit: 'contain' };
+  if (kind === 'b:') return { url: PROCESSED + rest, fit: 'box' };
   if (kind === 'u:') return { url: rest, fit: 'contain' };
   if (kind === 'v:') return { url: rest, fit: 'cover' };
   return undefined;

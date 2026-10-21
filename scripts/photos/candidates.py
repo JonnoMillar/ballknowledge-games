@@ -8,6 +8,7 @@ failing a gate has `gate` set to the reason and score 0; the rest have `score` a
 import json, re, sys, time, unicodedata, urllib.parse, urllib.request
 from pathlib import Path
 import cv2
+cv2.setNumThreads(1)   # many of these run side by side
 import numpy as np
 sys.path.insert(0, str(Path(__file__).parent))
 import rank
@@ -18,7 +19,9 @@ UA = {'User-Agent': 'ChainFootballGame/0.1 (jonno@m1llar.com) photo-pipeline'}
 API = 'https://commons.wikimedia.org/w/api.php'
 YUNET = str(D.parent / 'models' / 'yunet.onnx')
 MAX_FILES = 40
-MIN_FACE, MIN_ROOM = 50, 2.2   # px; face heights of photo from the face top down (else the cutout floats)
+MIN_FACE, MIN_ROOM = 50, 1.6   # px; face heights of photo below the face top. 1.6 not 2.2: Jonno picked photos
+# at 1.7-2.0 in round 2. They cannot become a cutout (it would float); rank.py scores them down and the
+# pipeline shows them as an uncut photo if nothing better exists.
 
 def get(url):
     for a in range(4):
@@ -62,6 +65,12 @@ def files_for(cat, span):
             for f in members(s.removeprefix('Category:'), 'file'):
                 found.setdefault(f, int(y.group()))
     return {f: y for f, y in found.items() if re.search(r'\.(jpe?g|png)$', f, re.I)}
+
+def search(name, surname):
+    """Commons full-text search for photos of a player the category route found nothing for."""
+    j = api(action='query', list='search', srnamespace=6, srlimit=50, srsearch=f'{name} filetype:bitmap')
+    return [h['title'] for h in j.get('query', {}).get('search', []) if surname in fold(h['title'])
+            and re.search(r'\.(jpe?g|png)$', h['title'], re.I)]
 
 def info(titles):
     out = {}
@@ -121,36 +130,53 @@ for p in players:
     cat, p18 = wikidata(p['id'])
     found = files_for(cat, span) if cat else {}
     surname = fold(p['name'].split()[-1])
-    files = [f for f in found if surname in fold(f)][:MAX_FILES * 2]
-    if p18:
-        files = [p18] + [f for f in files if f != p18]
-        found.setdefault(p18, None)
-    meta = info(files)
-    year = {}
-    for f in files:
-        m = re.search(r'\b(19[5-9]\d|20[0-3]\d)\b', f)
-        year[f] = meta.get(f, {}).get('exif') or found.get(f) or (int(m.group()) if m else None)
-    era = [f for f in files if year[f] and span[0] <= year[f] <= span[1] + 1 and meta.get(f, {}).get('thumb')][:MAX_FILES]
+
+    def pick_era(deep):
+        names = list(found) if deep else [f for f in found if surname in fold(f)]
+        files = names[:MAX_FILES * 2]
+        if deep:   # no surname in the filename needed, and the name search adds files outside the category
+            files += [f for f in search(p['name'], surname) if f not in files]
+        if p18:
+            files = [p18] + [f for f in files if f != p18]
+            found.setdefault(p18, None)
+        meta = info(files)
+        year = {}
+        for f in files:
+            m = re.search(r'(?<!\d)(19[5-9]\d|20[0-3]\d)(?!\d)', f)
+            year[f] = meta.get(f, {}).get('exif') or found.get(f) or (int(m.group()) if m else None)
+        era = [f for f in files if year[f] and span[0] <= year[f] <= span[1] + 1 and meta.get(f, {}).get('thumb')][:MAX_FILES]
+        return files, meta, year, era
+
+    files, meta, year, era = pick_era(False)
     folder = D / 'cand' / p['id']
     folder.mkdir(parents=True, exist_ok=True)
-    ranked = []
-    for n, f in enumerate(era):
-        raw = get(meta[f]['thumb'])
-        img = cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR) if raw else None
-        if img is None:
-            continue
-        gate, feats = judge(img)
-        (folder / f'{n}.jpg').write_bytes(raw)
-        c = {'file': f, 'p18': f == p18, 'year': year[f], 'local': f"cand/{p['id']}/{n}.jpg", 'gate': gate}
-        if feats:
-            c.update(feats)
-            c['why'] = gate or f"face {feats['face']}px, {round(feats['share'] * 100)}% of height, sharpness {feats['sharp']}"
-        else:
-            c['why'] = gate
-        c['score'] = 0 if gate else round(rank.score(c, prime), 3)
-        ranked.append(c)
-        time.sleep(0.3)
+
+    def rank_all(era, meta, year):
+        ranked = []
+        for n, f in enumerate(era):
+            raw = get(meta[f]['thumb'])
+            img = cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR) if raw else None
+            if img is None:
+                continue
+            gate, feats = judge(img)
+            (folder / f'{n}.jpg').write_bytes(raw)
+            c = {'file': f, 'p18': f == p18, 'year': year[f], 'local': f"cand/{p['id']}/{n}.jpg", 'gate': gate}
+            if feats:
+                c.update(feats)
+                c['why'] = gate or f"face {feats['face']}px, {round(feats['share'] * 100)}% of height, sharpness {feats['sharp']}"
+            else:
+                c['why'] = gate
+            c['score'] = 0 if gate else round(rank.score(c, prime), 3)
+            ranked.append(c)
+            time.sleep(0.1)
+        return ranked
+
+    ranked = rank_all(era, meta, year)
+    deep = False
+    if not any(r['score'] > 0 for r in ranked):
+        files, meta, year, era = pick_era(True)
+        ranked, deep = rank_all(era, meta, year), True
     ranked.sort(key=lambda r: -r['score'])
-    out.write_text(json.dumps({'span': span, 'prime': prime, 'cat': cat, 'files': len(files), 'cands': ranked}, indent=1), encoding='utf8')
+    out.write_text(json.dumps({'span': span, 'prime': prime, 'cat': cat, 'files': len(files), 'deep': deep, 'cands': ranked}, indent=1), encoding='utf8')
     print(f"{p['name']}: {cat!r}, {len(files)} files, {len(era)} in era, {sum(r['score'] > 0 for r in ranked)} usable, "
-          f"gate-rejected (not 'no face'): {sum(1 for r in ranked if r['gate'] and r['gate'] != 'no face')}", flush=True)
+          f"deep={deep}", flush=True)

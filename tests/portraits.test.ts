@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { commonsThumb, portraitUrls, type PortraitRecord } from '../src/lib/portraits';
+import { commonsThumb, kitCard, portraitUrls, type PortraitRecord } from '../src/lib/portraits';
 
 const cutout = (url: string, alt?: PortraitRecord['alt']): PortraitRecord => ({ source: 'cutout', url, alt });
 const commons = (url: string, year: number): PortraitRecord => ({ source: 'commons', url, year });
@@ -80,5 +80,19 @@ describe('portraitUrls in development', () => {
     expect(out['Q1']?.fit).toBe('contain');
     expect(out['Q2']?.fit).toBe('cover');
     expect(out['Q3']?.fit).toBe('cover');
+  });
+});
+
+describe('processed portraits', () => {
+  const processed = (id: string): PortraitRecord => ({ source: 'processed', url: `/portraits/${id}.webp`, file: 'Some photo.jpg', year: 2012 });
+
+  it('shows our own cutout in the box, in public as in development', () => {
+    expect(portraitUrls({ Q1: 'Old.jpg' }, { Q1: processed('Q1') })['Q1']).toEqual({ url: '/portraits/Q1.webp', fit: 'box' });
+    expect(portraitUrls({}, { Q1: processed('Q1') }, 200, true)['Q1']).toEqual({ url: '/portraits/Q1.webp', fit: 'box' });
+  });
+
+  it('builds the kit card with the club for the crest', () => {
+    expect(kitCard('Q9')).toEqual({ url: '', fit: 'kit', club: 'Q9' });
+    expect(kitCard(undefined)).toEqual({ url: '', fit: 'kit' });
   });
 });

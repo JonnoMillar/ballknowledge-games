@@ -426,6 +426,34 @@ button { font-family: inherit; }
    It gets the ground as a frame instead: the coloured border a sticker has
    always had, and the reveal still changes the card. */
 .sticker__photo--cover > img { inset: 7px; width: calc(100% - 14px); height: calc(100% - 14px); }
+.sticker__photo--box > img {
+  object-fit: cover;
+  object-position: 50% 100%;
+  filter: drop-shadow(0 2px 3px rgba(20, 18, 16, 0.25));
+}
+/* The kit card: the blacked-out figure on the ground, the club crest small in the top-right corner. */
+.sticker__kit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--fig);
+  -webkit-mask: url(/kit-figure.png) 50% 100% / 100% auto no-repeat;
+  mask: url(/kit-figure.png) 50% 100% / 100% auto no-repeat;
+}
+.sticker__crest {
+  position: absolute;
+  z-index: 2;
+  right: 5%;
+  top: 4%;
+  width: 24%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  padding: 4%;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 50%;
+  filter: drop-shadow(0 1px 1px rgba(20, 18, 16, 0.25));
+  pointer-events: none;
+}
 .sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 .sticker__plate {
   display: flex;

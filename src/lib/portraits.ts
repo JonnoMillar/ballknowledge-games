@@ -17,13 +17,25 @@
  */
 export interface PortraitImage {
   url: string;
-  fit: 'cover' | 'contain';
+  /**
+   * `box`: one of our processed cutouts, square, face in the same box every
+   * time, body running off the bottom edge, shown on the club's colour.
+   * `kit`: no photo; the kit card, with `club` for the crest (`url` is empty).
+   */
+  fit: 'cover' | 'contain' | 'box' | 'kit';
+  club?: string;
 }
+
+/** The kit card: shown where no good photo exists. */
+export const kitCard = (club: string | undefined): PortraitImage => ({ url: '', fit: 'kit', ...(club ? { club } : {}) });
 
 /** A portrait resolved by scripts/fetch-portraits.ts. */
 export interface PortraitRecord {
-  source: 'cutout' | 'commons' | 'none';
+  /** `processed`: our own cutout of a Commons photo, hosted under /portraits (scripts/photos). */
+  source: 'cutout' | 'commons' | 'processed' | 'none';
   url?: string;
+  /** Processed and commons: the Commons file it came from, credited in data/credits.json. */
+  file?: string;
   /** Commons only: the capture year the photo was accepted on. */
   year?: number;
   career?: [number, number];
@@ -53,6 +65,8 @@ export function commonsThumb(filename: string, width: number): string {
  *
  * Players the resolver has not reached yet keep their old photo, so the board
  * degrades to its previous behaviour rather than emptying out mid-migration.
+ * (A player left without any image gets the kit card from the caller, which
+ * knows the club: see `kitCard`.)
  *
  * TheSportsDB cutouts carry no `strCreativeCommons` flag, and its terms say
  * such artwork must not be used publicly, websites included. So they appear
@@ -75,7 +89,7 @@ export function portraitUrls(
       if (p.alt) out[id] = { url: p.alt.url, fit: 'cover' };
       else delete out[id];
     } else if (p.source !== 'none' && p.url) {
-      out[id] = { url: p.url, fit: p.source === 'cutout' ? 'contain' : 'cover' };
+      out[id] = { url: p.url, fit: p.source === 'cutout' ? 'contain' : p.source === 'processed' ? 'box' : 'cover' };
     } else {
       delete out[id];
     }

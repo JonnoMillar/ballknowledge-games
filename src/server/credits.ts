@@ -35,9 +35,11 @@ function allRows(): Promise<CreditRow[]> {
     const credits = JSON.parse(await readFile('data/credits.json', 'utf8').catch(() => '{}')) as Record<string, Credit | null>;
     const out: CreditRow[] = [];
     for (const [id, { url }] of Object.entries(portraitUrls(images, portraits))) {
+      // Our own cutouts name their source file; a raw Commons photo is in its URL.
+      const processed = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
       const at = url.indexOf(FILEPATH);
-      if (at < 0) continue;
-      const file = decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!);
+      if (!processed && at < 0) continue;
+      const file = processed ?? decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!);
       const c = credits[file];
       const player = byId.get(id)?.name;
       if (!c || !player) continue;
@@ -54,4 +56,13 @@ export async function creditsFor(letter: string): Promise<{ rows: CreditRow[]; c
   const counts: Record<string, number> = {};
   for (const r of all) counts[letterOf(r.player)] = (counts[letterOf(r.player)] ?? 0) + 1;
   return { rows: all.filter((r) => letterOf(r.player) === letter), counts, total: all.length };
+}
+
+/** The photo the kit card's figure (public/kit-figure.png) was cut from. */
+export const KIT_FIGURE_FILE = 'Robert Lewandowski 2018, JAP-POL (cropped).jpg';
+
+export async function kitFigureCredit(): Promise<(Credit & { file: string }) | null> {
+  const credits = JSON.parse(await readFile('data/credits.json', 'utf8').catch(() => '{}')) as Record<string, Credit | null>;
+  const c = credits[KIT_FIGURE_FILE];
+  return c ? { file: KIT_FIGURE_FILE, ...c } : null;
 }

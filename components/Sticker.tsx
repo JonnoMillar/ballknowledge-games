@@ -4,6 +4,7 @@ import { useDraggable } from '@dnd-kit/core';
 import type { Named } from '../src/lib/chain/client';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
+import { crestPath } from '../src/lib/clubs';
 
 /**
  * The ground behind a sticker's photo: two halves, split on the diagonal.
@@ -92,19 +93,45 @@ export function StickerFace({
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
   const name = plateName(player.id, player.name).toUpperCase();
   const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
+  const fit = !image ? 'kit' : image.fit;
   return (
     <div ref={ref} {...rest} className={`sticker ${className}`} title={player.name}>
-      <div className={`sticker__photo ${image?.fit === 'contain' ? 'sticker__photo--contain' : 'sticker__photo--cover'}`}>
+      <div className={`sticker__photo sticker__photo--${fit}`}>
         <span className={`sticker__half sticker__half--a ${ground.liveA ? 'is-live' : ''}`} style={{ background: ground.a }} aria-hidden />
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />
         <span className={`sticker__seam ${seam ? 'is-live' : ''}`} aria-hidden />
-        {image ? <img src={image.url} alt="" draggable={false} /> : <Figure tone="rgba(255,255,255,0.45)" />}
+        {!image || image.fit === 'kit' ? <KitCard club={image?.club} ground={ground} /> : <img src={image.url} alt="" draggable={false} />}
       </div>
       <div className="sticker__plate">
         <span className={`sticker__name ${name.length > 10 ? 'sticker__name--long' : ''}`}>{name}</span>
         {index !== undefined ? <span className="sticker__no">{index}</span> : null}
       </div>
     </div>
+  );
+}
+
+const isDark = (colour: string) => {
+  const m = /^#([0-9a-f]{6})$/i.exec(colour);
+  if (!m) return false;
+  const n = parseInt(m[1]!, 16);
+  return (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255 < 0.3;
+};
+
+/**
+ * The kit card, for a player with no good photo: one real cutout, blacked out
+ * (light on a dark ground), on the ground the sticker already wears. The club
+ * crest sits small in the top-right corner on a white disc, and only on a
+ * solid live ground: a pick's ground is neutral until the seal, and a crest
+ * there would name a club before the board has judged it.
+ */
+export function KitCard({ club, ground }: { club?: string; ground: Ground }) {
+  const crest = club && ground.liveA && ground.liveB && ground.a === ground.b;
+  const fig = isDark(ground.a) ? 'rgba(255,255,255,0.82)' : 'rgba(20,18,16,0.82)';
+  return (
+    <>
+      <span className="sticker__kit" style={{ '--fig': fig } as React.CSSProperties} aria-hidden />
+      {crest ? <img className="sticker__crest" src={crestPath(club)} alt="" draggable={false} /> : null}
+    </>
   );
 }
 
