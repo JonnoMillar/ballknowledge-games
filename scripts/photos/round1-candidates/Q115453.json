@@ -1,0 +1,265 @@
+[
+ {
+  "file": "File:Ivan Rakiti\u0107 2020 (cropped).jpg",
+  "p18": true,
+  "year": 2020,
+  "local": "cand/Q115453/0.jpg",
+  "score": 173.8,
+  "why": "face 83px, 20% of height, sharpness 460",
+  "box": [
+   109,
+   52,
+   62,
+   83
+  ]
+ },
+ {
+  "file": "File:Rakitic 2010.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q115453/17.jpg",
+  "score": 518.1,
+  "why": "face 252px, 21% of height, sharpness 288",
+  "box": [
+   190,
+   180,
+   173,
+   252
+  ]
+ },
+ {
+  "file": "File:Ivan Rakitic 2018 (cropped).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q115453/5.jpg",
+  "score": 466.6,
+  "why": "face 221px, 31% of height, sharpness 2114",
+  "box": [
+   219,
+   98,
+   157,
+   221
+  ]
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107 - Croatia vs. Portugal, 10th June 2013 (cropped).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q115453/10.jpg",
+  "score": 367.5,
+  "why": "face 193px, 33% of height, sharpness 842",
+  "box": [
+   77,
+   122,
+   139,
+   193
+  ]
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107 2010.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q115453/12.jpg",
+  "score": 349.9,
+  "why": "face 304px, 34% of height, sharpness 78",
+  "box": [
+   164,
+   153,
+   202,
+   304
+  ]
+ },
+ {
+  "file": "File:Ivan Rakitic 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q115453/6.jpg",
+  "score": 349.8,
+  "why": "face 165px, 23% of height, sharpness 4803",
+  "box": [
+   428,
+   76,
+   114,
+   165
+  ]
+ },
+ {
+  "file": "File:Ivan Rakitic.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q115453/7.jpg",
+  "score": 189.5,
+  "why": "face 147px, 11% of height, sharpness 986",
+  "box": [
+   475,
+   151,
+   103,
+   147
+  ]
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q115453/15.jpg",
+  "score": 152.7,
+  "why": "face 119px, 11% of height, sharpness 2266",
+  "box": [
+   307,
+   62,
+   86,
+   119
+  ]
+ },
+ {
+  "file": "File:Bar\u00e7a - Napoli - 20140806 - Ivan Rakitic.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q115453/2.jpg",
+  "score": 152.2,
+  "why": "face 138px, 10% of height, sharpness 303",
+  "box": [
+   468,
+   168,
+   98,
+   138
+  ]
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107 - Croatia vs. Portugal, 10th June 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q115453/11.jpg",
+  "score": 119.7,
+  "why": "face 121px, 9% of height, sharpness 1918",
+  "box": [
+   531,
+   276,
+   86,
+   121
+  ]
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107 2020.jpg",
+  "p18": false,
+  "year": 2020,
+  "local": "cand/Q115453/13.jpg",
+  "score": 113.3,
+  "why": "face 85px, 11% of height, sharpness 284",
+  "box": [
+   143,
+   51,
+   61,
+   85
+  ]
+ },
+ {
+  "file": "File:11Rakitic in Radkersburg.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q115453/1.jpg",
+  "score": 106.9,
+  "why": "face 110px, 9% of height, sharpness 2132",
+  "box": [
+   260,
+   95,
+   73,
+   110
+  ]
+ },
+ {
+  "file": "File:IvanRakitic.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q115453/16.jpg",
+  "score": 95.9,
+  "why": "face 89px, 10% of height, sharpness 1003",
+  "box": [
+   467,
+   165,
+   71,
+   89
+  ]
+ },
+ {
+  "file": "File:Ivan Rakitic (FC Barcelona), Mattias Ekstr\u00f6m (EKS) (33718294426).jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q115453/3.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ivan Rakitic (FC Barcelona), Mattias Ekstr\u00f6m (EKS) (33759151835).jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q115453/4.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ivan Rakitic4574.png",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q115453/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107 (cropped).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q115453/9.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.7 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Ivan Rakiti\u0107 and Dejan Lovren during a Croatia training session, in June 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q115453/14.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Rakitic 2019 03 17 (cropped).jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q115453/18.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Rakitic 2019 03 17.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q115453/19.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Rakitic Jones.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q115453/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Rakitic.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q115453/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

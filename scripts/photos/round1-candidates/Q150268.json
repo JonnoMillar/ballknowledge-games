@@ -1,0 +1,382 @@
+[
+ {
+  "file": "File:David de Gea 2017.jpg",
+  "p18": true,
+  "year": 2017,
+  "local": "cand/Q150268/0.jpg",
+  "score": 599.2,
+  "why": "face 333px, 35% of height, sharpness 1939",
+  "box": [
+   194,
+   127,
+   248,
+   333
+  ]
+ },
+ {
+  "file": "File:David De Gea 25072026 (8).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/28.jpg",
+  "score": 451.4,
+  "why": "face 247px, 16% of height, sharpness 209",
+  "box": [
+   252,
+   191,
+   151,
+   247
+  ]
+ },
+ {
+  "file": "File:David de Gea 2018.png",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q150268/14.jpg",
+  "score": 257.9,
+  "why": "face 127px, 29% of height, sharpness 1785",
+  "box": [
+   105,
+   74,
+   90,
+   127
+  ]
+ },
+ {
+  "file": "File:Moise Kean and David De Gea 25072026 (1).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/33.jpg",
+  "score": 242.9,
+  "why": "face 127px, 18% of height, sharpness 696",
+  "box": [
+   428,
+   124,
+   103,
+   127
+  ]
+ },
+ {
+  "file": "File:UEFA EURO qualifiers Sweden vs Spain 20191015 David de Gea.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q150268/18.jpg",
+  "score": 144.8,
+  "why": "face 114px, 11% of height, sharpness 1891",
+  "box": [
+   441,
+   96,
+   75,
+   114
+  ]
+ },
+ {
+  "file": "File:David De Gea Olympics 2012.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q150268/9.jpg",
+  "score": 144.7,
+  "why": "face 126px, 10% of height, sharpness 131",
+  "box": [
+   365,
+   67,
+   77,
+   126
+  ]
+ },
+ {
+  "file": "File:David De Gea ESPU21 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q150268/3.jpg",
+  "score": 134.9,
+  "why": "face 117px, 10% of height, sharpness 774",
+  "box": [
+   470,
+   94,
+   86,
+   117
+  ]
+ },
+ {
+  "file": "File:David De Gea 25072026 (9).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/29.jpg",
+  "score": 119.4,
+  "why": "face 87px, 12% of height, sharpness 270",
+  "box": [
+   586,
+   166,
+   62,
+   87
+  ]
+ },
+ {
+  "file": "File:Atletico Madrid B (de gea).JPG",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q150268/1.jpg",
+  "score": 117.7,
+  "why": "face 185px, 34% of height, sharpness 42",
+  "box": [
+   160,
+   122,
+   142,
+   185
+  ]
+ },
+ {
+  "file": "File:David De Gea 25072026 (7).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/27.jpg",
+  "score": 100.5,
+  "why": "face 98px, 14% of height, sharpness 81",
+  "box": [
+   570,
+   250,
+   67,
+   98
+  ]
+ },
+ {
+  "file": "File:UEFA EURO qualifiers Sweden vs Spain 20191015 David de Gea 3.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q150268/15.jpg",
+  "score": 90.6,
+  "why": "face 87px, 9% of height, sharpness 1632",
+  "box": [
+   444,
+   141,
+   60,
+   87
+  ]
+ },
+ {
+  "file": "File:De Gea SAFC vs MUFC (cropped).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q150268/10.jpg",
+  "score": 83.8,
+  "why": "face 63px, 12% of height, sharpness 217",
+  "box": [
+   129,
+   82,
+   50,
+   63
+  ]
+ },
+ {
+  "file": "File:David de Gea - La soledad del portero (cropped).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q150268/4.jpg",
+  "score": 70.0,
+  "why": "face 80px, 8% of height, sharpness 3586",
+  "box": [
+   398,
+   161,
+   53,
+   80
+  ]
+ },
+ {
+  "file": "File:David de Gea at the UEFA European Under-21 Football Championship - 20110622.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q150268/2.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.6 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David de Gea - La soledad del portero.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q150268/5.jpg",
+  "score": 0,
+  "why": "face 40px, too small",
+  "box": null
+ },
+ {
+  "file": "File:David de Gea.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q150268/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Saque de De Gea (5155851125).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q150268/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:David de Gea (ManU).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q150268/8.jpg",
+  "score": 0,
+  "why": "face 43px, too small",
+  "box": null
+ },
+ {
+  "file": "File:De Gea (ManUtd).jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q150268/11.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:David de Gea 2017 (cropped).jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q150268/12.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.7 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Boutaib goal against De Gea.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q150268/13.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:UEFA EURO qualifiers Sweden vs Spain 20191015 David de Gea 4.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q150268/16.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:UEFA EURO qualifiers Sweden vs Spain 20191015 David de Gea 7.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q150268/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Manchester United v Aston Villa, 25 September 2021 (24) (Varane, Hause, Watkins and De Gea).jpg",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q150268/19.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:De Gea Man United v Brighton (cropped).jpg",
+  "p18": false,
+  "year": 2022,
+  "local": "cand/Q150268/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea 25072026 (1).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/21.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.6 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea 25072026 (2).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/22.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.4 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea 25072026 (3).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/23.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea 25072026 (4).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/24.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.8 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea 25072026 (5).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/25.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.8 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea 25072026 (6).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/26.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.4 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David De Gea and Luca Ranieri 25072026 (1).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/30.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.7 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:David de Gea and Oliver Christensen 25072026 (1).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/31.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Luca Ranieri and David De Gea 25072026 (1).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/32.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Moise Kean and David De Gea 25072026 (2).jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q150268/34.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

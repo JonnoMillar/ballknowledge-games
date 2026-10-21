@@ -1,0 +1,432 @@
+[
+ {
+  "file": "File:Mario Balotelli (15440231808) (cropped) (cropped).jpg",
+  "p18": true,
+  "year": 2014,
+  "local": "cand/Q129700/0.jpg",
+  "score": 407.6,
+  "why": "face 263px, 27% of height, sharpness 88",
+  "box": [
+   259,
+   103,
+   192,
+   263
+  ]
+ },
+ {
+  "file": "File:Balotelli autografi.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/3.jpg",
+  "score": 597.2,
+  "why": "face 325px, 21% of height, sharpness 661",
+  "box": [
+   519,
+   112,
+   257,
+   325
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli OM (cropped).jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q129700/37.jpg",
+  "score": 396.8,
+  "why": "face 217px, 19% of height, sharpness 276",
+  "box": [
+   301,
+   99,
+   154,
+   217
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli OM.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q129700/38.jpg",
+  "score": 193.0,
+  "why": "face 208px, 10% of height, sharpness 228",
+  "box": [
+   343,
+   106,
+   147,
+   208
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli 2009.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q129700/26.jpg",
+  "score": 177.7,
+  "why": "face 105px, 15% of height, sharpness 1885",
+  "box": [
+   208,
+   93,
+   89,
+   105
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli - Inter Mailand (2).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q129700/25.jpg",
+  "score": 172.9,
+  "why": "face 148px, 10% of height, sharpness 501",
+  "box": [
+   445,
+   158,
+   118,
+   148
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli (15440231808) (cropped).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q129700/19.jpg",
+  "score": 150.2,
+  "why": "face 137px, 9% of height, sharpness 540",
+  "box": [
+   465,
+   95,
+   101,
+   137
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli - Inter Mailand (1).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q129700/24.jpg",
+  "score": 143.2,
+  "why": "face 133px, 9% of height, sharpness 408",
+  "box": [
+   472,
+   107,
+   100,
+   133
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli Nice (cropped).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q129700/35.jpg",
+  "score": 135.9,
+  "why": "face 74px, 17% of height, sharpness 1949",
+  "box": [
+   172,
+   39,
+   55,
+   74
+  ]
+ },
+ {
+  "file": "File:Balotelli playing for OGC Nice-8.jpg",
+  "p18": false,
+  "year": 2025,
+  "local": "cand/Q129700/9.jpg",
+  "score": 132.4,
+  "why": "face 80px, 14% of height, sharpness 392",
+  "box": [
+   402,
+   77,
+   60,
+   80
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli Euro 2012 Training.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/29.jpg",
+  "score": 89.0,
+  "why": "face 225px, 31% of height, sharpness 28",
+  "box": [
+   409,
+   210,
+   154,
+   225
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli Nice.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q129700/36.jpg",
+  "score": 85.3,
+  "why": "face 75px, 10% of height, sharpness 1983",
+  "box": [
+   169,
+   53,
+   56,
+   75
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli Euro 2012 vs England 02.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/31.jpg",
+  "score": 71.4,
+  "why": "face 64px, 10% of height, sharpness 1152",
+  "box": [
+   151,
+   57,
+   50,
+   64
+  ]
+ },
+ {
+  "file": "File:Mario Balotelli Euro 2012 vs England 01.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/30.jpg",
+  "score": 69.4,
+  "why": "face 64px, 10% of height, sharpness 1131",
+  "box": [
+   194,
+   54,
+   50,
+   64
+  ]
+ },
+ {
+  "file": "File:Ashley Cole and Mario Balotelli England-Italy Euro 2012.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli and Cassano.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/2.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli Inter-Milan february 2013 (cropped).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q129700/4.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli Inter-Milan february 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q129700/5.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli lying on the ground.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli playing for OGC Nice-1.jpg",
+  "p18": false,
+  "year": 2025,
+  "local": "cand/Q129700/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli playing for OGC Nice-2.jpg",
+  "p18": false,
+  "year": 2025,
+  "local": "cand/Q129700/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli playing for OGC Nice.jpg",
+  "p18": false,
+  "year": 2025,
+  "local": "cand/Q129700/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli Prandelli Napolitano.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q129700/11.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Balotelli Shirt.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/12.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Di Natale, Torres and Balotelli Euro 2012 final.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/13.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Funny Balotelli - Euro 2012.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/14.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gargano and Balotelli Inter-Milan february 2013.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q129700/15.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Honda e Balotelli.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q129700/16.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ibrabalotelli.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q129700/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Manchester City v Ajax 2012 Balotelli (8165095393).jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/18.jpg",
+  "score": 0,
+  "why": "face 36px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli (15440231808).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q129700/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli (2009).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q129700/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli - 140624-7121-jikatu (14318827317) (cropped).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q129700/22.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli - 140624-7121-jikatu (14318827317).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q129700/23.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli and John Terry England-Italy Euro 2012.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/27.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli cropped.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q129700/28.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli Euro 2012 vs England 03.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/32.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli Euro 2012.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/33.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli ITA-GER.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/34.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Mario Balotelli shot Euro 2012 final 01.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q129700/39.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

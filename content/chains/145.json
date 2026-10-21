@@ -1,0 +1,39 @@
+{
+  "id": "145",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q1939",
+    null,
+    "Q160472",
+    null,
+    "Q439722",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q1033",
+      "label": "a Nigerian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q39",
+      "label": "a Swiss"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q155",
+      "label": "a Brazilian"
+    }
+  },
+  "referenceSolution": [
+    "Q1939",
+    "Q599675",
+    "Q160472",
+    "Q514427",
+    "Q439722",
+    "Q312886"
+  ],
+  "from": "2026-10-22"
+}

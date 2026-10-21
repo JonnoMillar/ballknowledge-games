@@ -1,0 +1,154 @@
+[
+ {
+  "file": "File:Toni Kroos Real Madrid 2021.jpg",
+  "p18": true,
+  "year": 2021,
+  "local": "cand/Q131234/0.jpg",
+  "score": 58.1,
+  "why": "face 453px, 38% of height, sharpness 13",
+  "box": [
+   284,
+   188,
+   345,
+   453
+  ]
+ },
+ {
+  "file": "File:Toni Kroos, Germany national football team (01).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q131234/7.jpg",
+  "score": 594.2,
+  "why": "face 285px, 30% of height, sharpness 578",
+  "box": [
+   350,
+   215,
+   222,
+   285
+  ]
+ },
+ {
+  "file": "File:Toni Kroos, Germany national football team (02).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q131234/8.jpg",
+  "score": 510.9,
+  "why": "face 242px, 25% of height, sharpness 537",
+  "box": [
+   352,
+   109,
+   181,
+   242
+  ]
+ },
+ {
+  "file": "File:Toni Kroos, Germany national football team (05).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q131234/11.jpg",
+  "score": 178.7,
+  "why": "face 148px, 10% of height, sharpness 572",
+  "box": [
+   435,
+   146,
+   116,
+   148
+  ]
+ },
+ {
+  "file": "File:Toni Kroos, Germany national football team (04).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q131234/10.jpg",
+  "score": 160.4,
+  "why": "face 142px, 10% of height, sharpness 737",
+  "box": [
+   470,
+   103,
+   102,
+   142
+  ]
+ },
+ {
+  "file": "File:Toni Kroos - CdR - RM v ATL (cropped).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q131234/5.jpg",
+  "score": 104.7,
+  "why": "face 116px, 8% of height, sharpness 1428",
+  "box": [
+   386,
+   210,
+   86,
+   116
+  ]
+ },
+ {
+  "file": "File:Toni Kroos - CdR - RM v ATL.jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q131234/6.jpg",
+  "score": 44.9,
+  "why": "face 50px, 8% of height, sharpness 5354",
+  "box": [
+   364,
+   92,
+   40,
+   50
+  ]
+ },
+ {
+  "file": "File:FIFA WC-qualification 2014 - Austria vs. Germany 2012-09-11 - Toni Kroos.JPG",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q131234/1.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.5 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Lahm Kroos Schweinsteiger Jansen 2010.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q131234/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Ofrenda de la Liga y la Champions-57-L.Mill\u00e1n (52109310843) (Toni Kroos).jpg",
+  "p18": false,
+  "year": 2022,
+  "local": "cand/Q131234/3.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.9 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Toni Kroos (cropped).JPG",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q131234/4.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.8 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Toni Kroos, Germany national football team (03).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q131234/9.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Toni Kroos.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q131234/12.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

@@ -12,6 +12,17 @@ const config: NextConfig = {
   // data/pool.json is ~3 MB and read by the page. Fine for a prototype;
   // revisit before shipping (trim fields, or serve it as a static asset).
   experimental: { largePageDataBytes: 8 * 1024 * 1024 },
+  // The site was football-chain.vercel.app until 2026-10-19. That name stays
+  // on the project so nobody else can claim it and serve old links; every
+  // request to it moves permanently to the same path on the current name.
+  async redirects() {
+    return [{
+      source: '/:path*',
+      has: [{ type: 'host', value: 'football-chain.vercel.app' }],
+      destination: 'https://ballknowledge-games.vercel.app/:path*',
+      permanent: true,
+    }];
+  },
   // The server reads its data with readFile at runtime, which file tracing
   // cannot see. Without this a serverless deploy builds cleanly and then
   // fails every request with ENOENT.

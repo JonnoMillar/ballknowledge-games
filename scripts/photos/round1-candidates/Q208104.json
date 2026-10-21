@@ -1,0 +1,462 @@
+[
+ {
+  "file": "File:Xabi Alonso FCB.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q208104/20.jpg",
+  "score": 589.8,
+  "why": "face 275px, 32% of height, sharpness 205",
+  "box": [
+   171,
+   106,
+   206,
+   275
+  ]
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666777934) (cropped).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/10.jpg",
+  "score": 464.9,
+  "why": "face 241px, 35% of height, sharpness 210",
+  "box": [
+   139,
+   111,
+   183,
+   241
+  ]
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39480409675).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/9.jpg",
+  "score": 406.0,
+  "why": "face 190px, 35% of height, sharpness 1144",
+  "box": [
+   353,
+   23,
+   147,
+   190
+  ]
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666778464).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/14.jpg",
+  "score": 387.2,
+  "why": "face 195px, 36% of height, sharpness 808",
+  "box": [
+   307,
+   62,
+   158,
+   195
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso (Real Valladolid-Real Madrid) (cropped).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q208104/15.jpg",
+  "score": 313.9,
+  "why": "face 148px, 33% of height, sharpness 1022",
+  "box": [
+   95,
+   57,
+   116,
+   148
+  ]
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666777934).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/11.jpg",
+  "score": 301.4,
+  "why": "face 142px, 26% of height, sharpness 1070",
+  "box": [
+   493,
+   61,
+   103,
+   142
+  ]
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39480409165).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/7.jpg",
+  "score": 231.0,
+  "why": "face 111px, 21% of height, sharpness 2003",
+  "box": [
+   485,
+   168,
+   94,
+   111
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso (Real Valladolid-Real Madrid).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q208104/16.jpg",
+  "score": 194.4,
+  "why": "face 155px, 11% of height, sharpness 571",
+  "box": [
+   424,
+   67,
+   111,
+   155
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-2.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/24.jpg",
+  "score": 193.8,
+  "why": "face 165px, 10% of height, sharpness 511",
+  "box": [
+   404,
+   142,
+   90,
+   165
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-9.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/31.jpg",
+  "score": 170.7,
+  "why": "face 148px, 10% of height, sharpness 188",
+  "box": [
+   442,
+   113,
+   107,
+   148
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-4.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/26.jpg",
+  "score": 170.5,
+  "why": "face 151px, 9% of height, sharpness 450",
+  "box": [
+   348,
+   158,
+   93,
+   151
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-3.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/25.jpg",
+  "score": 170.3,
+  "why": "face 146px, 10% of height, sharpness 742",
+  "box": [
+   415,
+   123,
+   106,
+   146
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-5.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/27.jpg",
+  "score": 166.2,
+  "why": "face 155px, 9% of height, sharpness 353",
+  "box": [
+   429,
+   193,
+   115,
+   155
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-3.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/35.jpg",
+  "score": 161.2,
+  "why": "face 146px, 9% of height, sharpness 331",
+  "box": [
+   396,
+   144,
+   99,
+   146
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-6.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/28.jpg",
+  "score": 142.6,
+  "why": "face 132px, 9% of height, sharpness 565",
+  "box": [
+   271,
+   173,
+   87,
+   132
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-2.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/33.jpg",
+  "score": 117.2,
+  "why": "face 116px, 9% of height, sharpness 302",
+  "box": [
+   510,
+   183,
+   82,
+   116
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-05 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/37.jpg",
+  "score": 107.6,
+  "why": "face 104px, 9% of height, sharpness 903",
+  "box": [
+   456,
+   190,
+   75,
+   104
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-7.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/29.jpg",
+  "score": 102.7,
+  "why": "face 138px, 9% of height, sharpness 82",
+  "box": [
+   565,
+   133,
+   94,
+   138
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/32.jpg",
+  "score": 99.4,
+  "why": "face 105px, 8% of height, sharpness 907",
+  "box": [
+   481,
+   190,
+   72,
+   105
+  ]
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-05 FC Bayern Muenchen-2.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/38.jpg",
+  "score": 92.4,
+  "why": "face 98px, 8% of height, sharpness 1224",
+  "box": [
+   478,
+   328,
+   73,
+   98
+  ]
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666778464) (cropped).jpg",
+  "p18": true,
+  "year": 2018,
+  "local": "cand/Q208104/0.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.6 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Alonso Basque.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q208104/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Alonso playing for Spain.JPG",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q208104/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Clarence Seedorf & Xabi Alonso.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q208104/3.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Clarence Seedorf and Xabi Alonso.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q208104/4.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gattuso, Ronaldinho and Xabi Alonso.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q208104/5.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Kuyt Alonso Liverpool.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q208104/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39480409485).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666778144).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/12.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666778294).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q208104/13.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso 2007.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q208104/17.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso 2010.JPG",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q208104/18.jpg",
+  "score": 0,
+  "why": "face 19px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Arturo Vidal Training 2017-05 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/19.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Javi Martinez Training 2017-05 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Real Madrid-LA Galaxy 2011.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q208104/22.jpg",
+  "score": 0,
+  "why": "face 46px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/23.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-8.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q208104/30.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-3 (cropped).jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/34.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-4.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/36.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Xabi Alonso Training 2017-05 FC Bayern Muenchen-3.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q208104/39.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

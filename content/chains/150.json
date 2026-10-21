@@ -1,0 +1,48 @@
+{
+  "id": "150",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q47548",
+    null,
+    "Q133556",
+    null,
+    "Q531814",
+    null,
+    "Q161054",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q35",
+      "label": "a Dane"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    }
+  },
+  "referenceSolution": [
+    "Q47548",
+    "Q45901",
+    "Q133556",
+    "Q701297",
+    "Q531814",
+    "Q208638",
+    "Q161054",
+    "Q115453"
+  ],
+  "from": "2026-10-22"
+}
