@@ -1,8 +1,8 @@
-import { spellWeight } from '../../../src/lib/fame/spell';
+import { APPS_PER_YEAR, FLOOR, SATURATION_APPS } from '../../../src/lib/fame/spell';
 import { sharedClubsByProminence } from '../../../src/lib/chain/score';
 import { ELITE_MIN_FIELD, GRADES, GRADE_GLYPH, GRADE_WORD, gradeOf, gradeRank, type Grade } from '../../../src/lib/chain/grade';
 import { MARK_GLYPH } from '../../../src/lib/chain/share';
-import type { Player } from '../../../src/lib/chemistry/types';
+import type { Player, Spell } from '../../../src/lib/chemistry/types';
 
 /**
  * The rules of a step run, pure.
@@ -46,7 +46,7 @@ export type Views = Readonly<Record<string, number>>;
  * The ruler's tuning surface (measured 2026-10-19, games/step/HANDOFF.md).
  *
  * FAME_POWER: views span a thousandfold across a field, a stint's weight only
- * twentyfold (spellWeight, 0.05..1), so raw views let any household name's
+ * twentyfold (stintWeight, 0.05..1), so raw views let any household name's
  * loan spell rank as obvious (Ian Wright at Forest). Views ** FAME_POWER
  * balances the two: 1 is views alone, 0 is the stint alone.
  *
@@ -68,17 +68,33 @@ export function knownOf(p: Player, views: Views): number {
 }
 
 /**
+ * 0.05..1: how much of a stint it was, by its length alone: league games (or
+ * years at APPS_PER_YEAR) over SATURATION_APPS, as src/lib/fame/spell.ts.
+ *
+ * Unlike the site-wide spellWeight, a recent stint gets no credit for being
+ * recent: Jonno's round 1 (2026-10-20) found short recent spells far less
+ * known than "a transfer is news" assumes (Delap's two games for City,
+ * Mejbri's six at Sevilla, both graded Basic). Missing data stays neutral.
+ */
+export function stintWeight(spell: Spell | undefined): number {
+  if (!spell) return 1;
+  const [apps, years] = spell;
+  const estimate = apps ?? (years !== null ? years * APPS_PER_YEAR : null);
+  return estimate === null ? 1 : Math.min(1, Math.max(FLOOR, estimate / SATURATION_APPS));
+}
+
+/**
  * How well known the fact "x fits here" is: the less known of its two
  * halves, the link to the given and the stint at the club. Each half is a
  * fact about a player at a club, that player's fame times how much of a
- * stint it was (src/lib/fame/spell.ts). The link is as known as its best
+ * stint it was (stintWeight). The link is as known as its best
  * shared club, and a shared club as its less known end: Ferdinand's loan at
  * Bournemouth is obscure whoever played there with him, Henry's season at
  * Juventus is not, because Henry is famous enough that it is known. Kane at
  * Leicester is a deep answer whoever he links to.
  */
 export function factOf(x: Player, given: Player, club: string, views: Views): number {
-  const at = (p: Player, c: string) => knownOf(p, views) * spellWeight(p.spells?.[c]);
+  const at = (p: Player, c: string) => knownOf(p, views) * stintWeight(p.spells?.[c]);
   const link = Math.max(0, ...x.clubIds.filter((c) => given.clubIds.includes(c)).map((c) => Math.min(at(x, c), at(given, c))));
   return Math.min(link, at(x, club));
 }
@@ -95,6 +111,31 @@ export function endsOf(given: Player, club: string, field: readonly Player[], vi
   return { obvious: pick(field, (a, b) => a > b), elite: pick(checkable.length > 0 ? checkable : field, (a, b) => a < b) };
 }
 
+/**
+ * The absolute bar: the fact a pick must reach to be Basic, Decent or Solid
+ * whatever its own step looks like, as [basic, decent, solid].
+ *
+ * Grades rank a pick within its step, so about a tenth of every step was
+ * Basic however obscure the step: the best known of an old Sunderland or a
+ * Sevilla field was "the name everyone says first" though few of Jonno's
+ * players would know it (round 1, 2026-10-20: Yorke at Sunderland, Maresca
+ * at Sevilla). The bar measures a pick against every answer on every good
+ * step (lib/day.ts buildWorld, kept in data/bar.json): Basic is the best
+ * known BAR_CUTS[0] of all of them, and so on. A pick's grade is the deeper
+ * of the two readings, so the bar can only make a grade deeper.
+ */
+export type Bar = readonly [basic: number, decent: number, solid: number];
+export const BAR_CUTS = [0.03, 0.1, 0.25] as const;
+
+/** The bar for a population of facts: the fact at each of BAR_CUTS, best known first. */
+export function barOf(facts: readonly number[]): Bar {
+  const sorted = [...facts].sort((a, b) => b - a);
+  const at = (q: number) => sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))] ?? 0;
+  return [at(BAR_CUTS[0]), at(BAR_CUTS[1]), at(BAR_CUTS[2])];
+}
+
+const byBar = (fact: number, bar: Bar): Grade => (fact >= bar[0] ? 'basic' : fact >= bar[1] ? 'decent' : fact >= bar[2] ? 'solid' : 'sharp');
+
 export interface Judged {
   held: boolean;
   grade: Grade | null;
@@ -106,7 +147,7 @@ export interface Judged {
   elite: Player | null;
 }
 
-export function judge(pick: Player, given: Player, club: string, members: readonly Player[], views: Views): Judged {
+export function judge(pick: Player, given: Player, club: string, members: readonly Player[], views: Views, bar: Bar): Judged {
   const field = fieldOf(given, members);
   const fact = (p: Player) => factOf(p, given, club, views);
   const { obvious, elite } = endsOf(given, club, field, views);
@@ -116,9 +157,11 @@ export function judge(pick: Player, given: Player, club: string, members: readon
   const mine = fact(pick);
   const above = field.filter((p) => p.id !== pick.id && fact(p) > mine).length;
   const isElite = elite !== null && field.length >= ELITE_MIN_FIELD && mine <= fact(elite);
+  const inField = gradeOf(above, field.length, isElite);
+  const absolute = byBar(mine, bar);
   return {
     held,
-    grade: gradeOf(above, field.length, isElite),
+    grade: gradeRank(absolute) > gradeRank(inField) ? absolute : inField,
     via: sharedClubsByProminence(pick, given)[0] ?? null,
     obvious,
     elite,

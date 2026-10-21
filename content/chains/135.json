@@ -1,0 +1,39 @@
+{
+  "id": "135",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q1354960",
+    null,
+    "Q1912",
+    null,
+    "Q161054",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q38",
+      "label": "an Italian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q1041",
+      "label": "a Senegalese"
+    }
+  },
+  "referenceSolution": [
+    "Q1354960",
+    "Q168287",
+    "Q1912",
+    "Q102027",
+    "Q161054",
+    "Q209942"
+  ],
+  "from": "2026-10-22"
+}

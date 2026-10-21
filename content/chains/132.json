@@ -1,0 +1,43 @@
+{
+  "id": "132",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q214903",
+    null,
+    "Q483583",
+    null,
+    "Q11948",
+    null,
+    "Q184277",
+    null
+  ],
+  "clues": {
+    "3": {
+      "kind": "nation",
+      "value": "Q21",
+      "label": "an Englishman"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q142",
+      "label": "a Frenchman"
+    },
+    "7": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    }
+  },
+  "referenceSolution": [
+    "Q214903",
+    "Q1083432",
+    "Q483583",
+    "Q206677",
+    "Q11948",
+    "Q1939",
+    "Q184277",
+    "Q1894"
+  ],
+  "from": "2026-10-22"
+}

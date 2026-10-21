@@ -1,0 +1,210 @@
+[
+ {
+  "file": "File:Thibaut Courtois Belgium v USA 6 July 2026-076 (cropped).jpg",
+  "p18": true,
+  "year": 2026,
+  "local": "cand/Q73360/0.jpg",
+  "score": 635.0,
+  "why": "face 330px, 26% of height, sharpness 1426",
+  "box": [
+   346,
+   130,
+   248,
+   330
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois - 01.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q73360/3.jpg",
+  "score": 630.3,
+  "why": "face 363px, 25% of height, sharpness 491",
+  "box": [
+   371,
+   275,
+   238,
+   363
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois, August 2014.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q73360/15.jpg",
+  "score": 624.0,
+  "why": "face 351px, 28% of height, sharpness 2791",
+  "box": [
+   399,
+   198,
+   238,
+   351
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois at the 2018 World Cup (cropped).jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q73360/6.jpg",
+  "score": 402.5,
+  "why": "face 191px, 34% of height, sharpness 1415",
+  "box": [
+   172,
+   59,
+   133,
+   191
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois - 02.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q73360/5.jpg",
+  "score": 319.7,
+  "why": "face 198px, 14% of height, sharpness 501",
+  "box": [
+   385,
+   166,
+   149,
+   198
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois Belgium v USA 6 July 2026-077.jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q73360/9.jpg",
+  "score": 297.3,
+  "why": "face 191px, 13% of height, sharpness 1014",
+  "box": [
+   422,
+   145,
+   120,
+   191
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois WC2022.jpg",
+  "p18": false,
+  "year": 2022,
+  "local": "cand/Q73360/14.jpg",
+  "score": 266.1,
+  "why": "face 173px, 16% of height, sharpness 100",
+  "box": [
+   416,
+   53,
+   108,
+   173
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois POTM jan2020.png",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q73360/11.jpg",
+  "score": 160.5,
+  "why": "face 117px, 12% of height, sharpness 270",
+  "box": [
+   413,
+   159,
+   88,
+   117
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q73360/16.jpg",
+  "score": 152.4,
+  "why": "face 72px, 29% of height, sharpness 233",
+  "box": [
+   86,
+   41,
+   51,
+   72
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois TOTS 2021.png",
+  "p18": false,
+  "year": 2021,
+  "local": "cand/Q73360/13.jpg",
+  "score": 151.7,
+  "why": "face 114px, 11% of height, sharpness 270",
+  "box": [
+   412,
+   163,
+   87,
+   114
+  ]
+ },
+ {
+  "file": "File:Thibaut Courtois Belgium v USA 6 July 2026-076.jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q73360/8.jpg",
+  "score": 148.7,
+  "why": "face 90px, 14% of height, sharpness 2650",
+  "box": [
+   438,
+   61,
+   65,
+   90
+  ]
+ },
+ {
+  "file": "File:Belgium goalkeeper Thibaut Courtois making a save during the match against Brazil, 6 July 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q73360/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Courtois v lcfc.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q73360/2.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Thibaut Courtois - 02 (cropped).jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q73360/4.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.2 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Thibaut Courtois at the 2018 World Cup.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q73360/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Thibaut Courtois Belgium v USA 6 July 2026-081.jpg",
+  "p18": false,
+  "year": 2026,
+  "local": "cand/Q73360/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Thibaut Courtois Russia 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q73360/12.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

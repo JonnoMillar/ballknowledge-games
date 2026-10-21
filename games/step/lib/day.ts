@@ -1,4 +1,4 @@
-import { STEPS, endsOf, fieldOf, stepsOf, CHECKABLE, type Givens, type Views } from './rules';
+import { STEPS, barOf, endsOf, factOf, fieldOf, stepsOf, CHECKABLE, type Bar, type Givens, type Views } from './rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 /**
@@ -69,6 +69,8 @@ export interface World {
   english: Set<string>;
   /** English Wikipedia views, the grading ruler's fame. */
   views: Views;
+  /** The absolute bar, over every answer on every good step (rules.ts Bar); the server reads it from data/bar.json. */
+  bar: Bar;
 }
 
 const stepKey = (player: string, club: string) => `${player}|${club}`;
@@ -99,11 +101,14 @@ export function buildWorld(pool: readonly Player[], views: Views): World {
     byId, byClub, good: new Map(), givensAt: new Map(), fields: new Map(), shown: new Map(),
     english: new Set(clubs.filter((c) => league(c) === PREMIER_LEAGUE)),
     views,
+    bar: [0, 0, 0],
   };
+  const facts: number[] = [];
   for (const g of givens) for (const c of clubs) {
     if (!isGood(world, g, c)) continue;
     const field = fieldOf(g, byClub.get(c)!);
     const { obvious, elite } = endsOf(g, c, field, views);
+    for (const p of field) facts.push(factOf(p, g, c, views));
     world.fields.set(stepKey(g.id, c), new Set(field.map((p) => p.id)));
     world.shown.set(stepKey(g.id, c), [obvious!.id, elite!.id]);
     if (!world.good.has(g.id)) world.good.set(g.id, new Set());
@@ -111,6 +116,7 @@ export function buildWorld(pool: readonly Player[], views: Views): World {
     if (!world.givensAt.has(c)) world.givensAt.set(c, []);
     world.givensAt.get(c)!.push(g.id);
   }
+  world.bar = barOf(facts);
   return world;
 }
 

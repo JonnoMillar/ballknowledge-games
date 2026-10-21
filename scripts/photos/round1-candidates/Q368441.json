@@ -1,0 +1,255 @@
+[
+ {
+  "file": "File:Polic\u00eda de Infancia y Adolescencia - James Rodr\u00edguez (cropped).jpeg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q368441/10.jpg",
+  "score": 530.5,
+  "why": "face 280px, 37% of height, sharpness 146",
+  "box": [
+   170,
+   88,
+   215,
+   280
+  ]
+ },
+ {
+  "file": "File:James Rodriguez con Bayern M\u00fanich.jpg",
+  "p18": false,
+  "year": 2025,
+  "local": "cand/Q368441/12.jpg",
+  "score": 420.0,
+  "why": "face 199px, 26% of height, sharpness 948",
+  "box": [
+   390,
+   120,
+   137,
+   199
+  ]
+ },
+ {
+  "file": "File:James Rodriguez 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q368441/15.jpg",
+  "score": 270.6,
+  "why": "face 166px, 26% of height, sharpness 91",
+  "box": [
+   201,
+   71,
+   130,
+   166
+  ]
+ },
+ {
+  "file": "File:James Rodr\u00edguez (cropped).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q368441/5.jpg",
+  "score": 256.8,
+  "why": "face 213px, 10% of height, sharpness 253",
+  "box": [
+   447,
+   205,
+   158,
+   213
+  ]
+ },
+ {
+  "file": "File:James Rodriguez 2022.jpg",
+  "p18": false,
+  "year": 2022,
+  "local": "cand/Q368441/21.jpg",
+  "score": 213.6,
+  "why": "face 175px, 11% of height, sharpness 1280",
+  "box": [
+   352,
+   110,
+   117,
+   175
+  ]
+ },
+ {
+  "file": "File:Vive tu m\u00fasica, James Rodr\u00edguez.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q368441/16.jpg",
+  "score": 209.0,
+  "why": "face 98px, 20% of height, sharpness 239",
+  "box": [
+   146,
+   22,
+   72,
+   98
+  ]
+ },
+ {
+  "file": "File:James Rodr\u00edguez in 2019.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q368441/19.jpg",
+  "score": 149.0,
+  "why": "face 217px, 30% of height, sharpness 39",
+  "box": [
+   90,
+   96,
+   166,
+   217
+  ]
+ },
+ {
+  "file": "File:Bayern M\u00fcnchen training in Doha 2018 - James Rodriguez - A54J1197.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q368441/14.jpg",
+  "score": 133.0,
+  "why": "face 118px, 10% of height, sharpness 1379",
+  "box": [
+   419,
+   96,
+   84,
+   118
+  ]
+ },
+ {
+  "file": "File:James Rodr\u00edguez 1.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q368441/1.jpg",
+  "score": 128.5,
+  "why": "face 63px, 20% of height, sharpness 298",
+  "box": [
+   49,
+   31,
+   45,
+   63
+  ]
+ },
+ {
+  "file": "File:James Rodriguez Training 2019-04-10 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q368441/18.jpg",
+  "score": 103.2,
+  "why": "face 103px, 9% of height, sharpness 368",
+  "box": [
+   372,
+   146,
+   75,
+   103
+  ]
+ },
+ {
+  "file": "File:James Rodr\u00edguez.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q368441/6.jpg",
+  "score": 96.2,
+  "why": "face 91px, 9% of height, sharpness 1705",
+  "box": [
+   656,
+   209,
+   63,
+   91
+  ]
+ },
+ {
+  "file": "File:James al natural - Series, 02.jpg",
+  "p18": true,
+  "year": 2018,
+  "local": "cand/Q368441/0.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.3 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:1 James Rodr\u00edguez.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q368441/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:James Rodriguez - panoramio.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q368441/3.jpg",
+  "score": 0,
+  "why": "face 39px, too small",
+  "box": null
+ },
+ {
+  "file": "File:James Rodriguez.jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q368441/4.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:James Rodr\u00edguez 2016.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q368441/7.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:James Rodr\u00edguez in September 2016 - 01.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q368441/8.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.4 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:James Rodr\u00edguez in September 2016 - 02.jpg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q368441/9.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.4 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Polic\u00eda de Infancia y Adolescencia - James Rodr\u00edguez.jpeg",
+  "p18": false,
+  "year": 2016,
+  "local": "cand/Q368441/11.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:James Rodr\u00edguez in January 2017.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q368441/13.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:James Rodriguez 2019.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q368441/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Niklas Suele James Rodriguez Training 2019-04-10 FC Bayern Muenchen-1.jpg",
+  "p18": false,
+  "year": 2019,
+  "local": "cand/Q368441/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

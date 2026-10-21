@@ -1,0 +1,337 @@
+[
+ {
+  "file": "File:Gerard Piqu\u00e9 Euro 2012 vs France 01.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/14.jpg",
+  "score": 437.7,
+  "why": "face 208px, 32% of height, sharpness 157",
+  "box": [
+   176,
+   108,
+   150,
+   208
+  ]
+ },
+ {
+  "file": "File:Piqu\u00e9.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q17507/4.jpg",
+  "score": 408.2,
+  "why": "face 197px, 28% of height, sharpness 116",
+  "box": [
+   153,
+   132,
+   142,
+   197
+  ]
+ },
+ {
+  "file": "File:SalPIQU\u00c9 su chicle aqu\u00ed (letrero en Calle Venustiano Carranza).jpg",
+  "p18": false,
+  "year": 2023,
+  "local": "cand/Q17507/29.jpg",
+  "score": 389.2,
+  "why": "face 217px, 30% of height, sharpness 426",
+  "box": [
+   569,
+   228,
+   191,
+   217
+  ]
+ },
+ {
+  "file": "File:Pique.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q17507/3.jpg",
+  "score": 340.0,
+  "why": "face 166px, 26% of height, sharpness 244",
+  "box": [
+   402,
+   181,
+   108,
+   166
+  ]
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q17507/26.jpg",
+  "score": 230.6,
+  "why": "face 123px, 32% of height, sharpness 1246",
+  "box": [
+   114,
+   90,
+   89,
+   123
+  ]
+ },
+ {
+  "file": "File:Gerard piqu\u00e9 SPA-ITA Euro 2012.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/16.jpg",
+  "score": 204.9,
+  "why": "face 99px, 27% of height, sharpness 374",
+  "box": [
+   232,
+   74,
+   78,
+   99
+  ]
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 en La Moncloa.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q17507/9.jpg",
+  "score": 150.2,
+  "why": "face 79px, 26% of height, sharpness 110",
+  "box": [
+   73,
+   80,
+   63,
+   79
+  ]
+ },
+ {
+  "file": "File:Gerard Pique pase (edited).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q17507/7.jpg",
+  "score": 143.8,
+  "why": "face 129px, 10% of height, sharpness 498",
+  "box": [
+   368,
+   124,
+   92,
+   129
+  ]
+ },
+ {
+  "file": "File:2012 2013 - 03 Gerard Piqu\u00e9.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/10.jpg",
+  "score": 127.4,
+  "why": "face 118px, 9% of height, sharpness 276",
+  "box": [
+   441,
+   79,
+   86,
+   118
+  ]
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 Euro 2012 trophy.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/13.jpg",
+  "score": 124.1,
+  "why": "face 72px, 16% of height, sharpness 937",
+  "box": [
+   146,
+   264,
+   54,
+   72
+  ]
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q17507/28.jpg",
+  "score": 117.3,
+  "why": "face 109px, 10% of height, sharpness 2358",
+  "box": [
+   252,
+   69,
+   76,
+   109
+  ]
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 in 2018.jpg",
+  "p18": false,
+  "year": 2018,
+  "local": "cand/Q17507/27.jpg",
+  "score": 117.2,
+  "why": "face 97px, 10% of height, sharpness 1746",
+  "box": [
+   160,
+   63,
+   73,
+   97
+  ]
+ },
+ {
+  "file": "File:2015 UEFA Super Cup 70 (Gerard Piqu\u00e9).jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q17507/23.jpg",
+  "score": 67.7,
+  "why": "face 55px, 11% of height, sharpness 1144",
+  "box": [
+   93,
+   40,
+   42,
+   55
+  ]
+ },
+ {
+  "file": "File:GerardPique.jpg",
+  "p18": true,
+  "year": 2015,
+  "local": "cand/Q17507/0.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.1 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Pique-2.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q17507/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Pique.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q17507/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Diego Costa & Gerard Pique DSC 0201 (cropped).jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q17507/5.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Pique DSC 0201.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q17507/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Pique pase.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q17507/8.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gdansk PGE Arena ESP-IRE Euro 2012 07 Ramos Pique.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/11.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 before Euro 2012 match vs France.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/12.jpg",
+  "score": 0,
+  "why": "face 34px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 Euro 2012 vs France 02.jpg",
+  "p18": false,
+  "year": 2012,
+  "local": "cand/Q17507/15.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Pique 2013 Catalonia.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q17507/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Pique getting off plane.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q17507/18.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 (1-09-2013).JPG",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q17507/19.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Pique&neymar.jpg",
+  "p18": false,
+  "year": 2013,
+  "local": "cand/Q17507/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Bar\u00e7a - Napoli - 20140806 - Echauffement - Gerard Piqu\u00e9 (edited).jpg",
+  "p18": false,
+  "year": 2014,
+  "local": "cand/Q17507/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:2015 Gerard Pique.jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q17507/22.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.9 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Neymar & Gerard Piqu\u00e9 (2015) - F.jpg",
+  "p18": false,
+  "year": 2015,
+  "local": "cand/Q17507/24.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Gerard Piqu\u00e9 2017.jpg",
+  "p18": false,
+  "year": 2017,
+  "local": "cand/Q17507/25.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.9 face heights below)",
+  "box": null
+ }
+]

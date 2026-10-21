@@ -1,0 +1,39 @@
+{
+  "id": "137",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q20994118",
+    null,
+    "Q208050",
+    null,
+    "Q11584",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q34",
+      "label": "a Swede"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q224",
+      "label": "a Croatian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q414",
+      "label": "an Argentine"
+    }
+  },
+  "referenceSolution": [
+    "Q20994118",
+    "Q46896",
+    "Q208050",
+    "Q483837",
+    "Q11584",
+    "Q182063"
+  ],
+  "from": "2026-10-22"
+}

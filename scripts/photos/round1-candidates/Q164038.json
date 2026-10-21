@@ -1,0 +1,43 @@
+[
+ {
+  "file": "File:Pep-Guardiola-Barcelona-1992.jpg",
+  "p18": false,
+  "year": 1992,
+  "local": "cand/Q164038/0.jpg",
+  "score": 122.9,
+  "why": "face 59px, 25% of height, sharpness 759",
+  "box": [
+   52,
+   28,
+   43,
+   59
+  ]
+ },
+ {
+  "file": "File:AmorFerrerMussonsGuardiola.jpg",
+  "p18": false,
+  "year": 1992,
+  "local": "cand/Q164038/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Camiseta-Guardiola-4.JPG",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q164038/2.jpg",
+  "score": 0,
+  "why": "no face",
+  "box": null
+ },
+ {
+  "file": "File:Masia-AmorFerrerMussonsGuardiola.jpg",
+  "p18": false,
+  "year": 1992,
+  "local": "cand/Q164038/3.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

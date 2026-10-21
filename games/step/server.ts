@@ -7,7 +7,7 @@ import { sharedClubsByProminence } from '../../src/lib/chain/score';
 import { dayNumber } from '../../src/lib/daily';
 import type { Player } from '../../src/lib/chemistry/types';
 import { addDays, EPOCH, type StoredDay } from './lib/day';
-import { judge, stepsOf, STEPS, type Views } from './lib/rules';
+import { judge, stepsOf, STEPS, type Bar, type Views } from './lib/rules';
 import type { StepCard, StepClub, StepDay, Verdict } from './lib/types';
 
 /**
@@ -22,6 +22,9 @@ const readDays = () => (process.env.NODE_ENV === 'development' ? null : stored) 
 
 let viewIndex: Promise<Views> | null = null;
 const playerViews = () => viewIndex ??= readFile('data/player-views.json', 'utf8').then((s) => JSON.parse(s) as Views);
+
+let barRead: Promise<Bar> | null = null;
+const playerBar = () => barRead ??= readFile('games/step/data/bar.json', 'utf8').then((s) => JSON.parse(s) as Bar);
 
 let clubIndex: Promise<Map<string, Player[]>> | null = null;
 const byClub = () => clubIndex ??= loadData().then(({ players }) => {
@@ -79,7 +82,7 @@ export async function judgePick(date: string, step: number, pickId: string, earl
   const s = stepsOf(d)[step]!;
   if (d.players.includes(pickId)) return null;
   const given = byId.get(s.player)!;
-  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? [], await playerViews());
+  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? [], await playerViews(), await playerBar());
 
   const card = async (p: Player, via: string | null): Promise<StepCard> => ({
     id: p.id, name: p.name, image: images[p.id] ?? null,
@@ -106,7 +109,7 @@ export async function demoSteps(): Promise<StepsDemo> {
   const given = byId.get(rooney)!;
   const picks = await Promise.all(['Q11571', 'Q63659'].map(async (id) => ({
     player: await demoSticker(id, united, madrid),
-    grade: judge(byId.get(id)!, given, madrid, members, await playerViews()).grade,
+    grade: judge(byId.get(id)!, given, madrid, members, await playerViews(), await playerBar()).grade,
   })));
   // A pool change that stopped one holding drops it rather than showing a grade the game would not give.
   return { given: await demoSticker(rooney, united), club: await demoClub(madrid), picks: picks.flatMap((p) => (p.grade ? [{ ...p, grade: p.grade }] : [])) };

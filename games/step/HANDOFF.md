@@ -98,6 +98,38 @@ Sevilla player; Ian Wright); American readers (Matt Turner, USMNT keeper,
 Basic at Forest from 17 games); recency (a stint ended within two years counts
 as fully known, `spellWeight`, shared with Chain).
 
+### Round 1 answers, and changes 1 and 3 (2026-10-20)
+
+Jonno answered 24 of 30: 19 too low, 3 too high, 2 right. The grades were
+set for someone who knows everything; his players know the Premier League,
+the big clubs abroad, and recent players. Causes found: grades only rank a
+pick within its step, so a tenth of every step was Basic however obscure the
+step; old long spells never fade; a spell ended within two years counted as
+fully known whatever its length; non-PL clubs weigh as PL ones; 3.9% of
+pool memberships have no career spell (Luis Alberto at Barcelona, only B).
+
+He chose two changes (the others, below, wait for him):
+- **Absolute bar** (`Bar`, `BAR_CUTS` in `lib/rules.ts`): Basic, Decent and
+  Solid also need the best known 3%, 10% and 25% of every answer on every good
+  step (`buildWorld` computes it; `npm run step:days` writes
+  `data/bar.json`, the server reads it, a test checks it is current; the
+  cron commits it). The grade is the deeper of the two readings. At a full
+  stint, Basic needs about 1.6M English views, Decent 870k, Solid 290k.
+- **No credit for recency** (`stintWeight`, Steps only; Chain keeps
+  `spellWeight`): a stint weighs its length alone.
+
+Against his 24 verdicts: on target 2 to 10, the direction he asked 2 to 17,
+grades off 27 to 15. Still off: era (Maresca, Yorke, Sylvinho), famous short
+spells no rule sees (De Bruyne at Chelsea, De Gea at Atlético), and one
+overshoot from dropping recency: Durán's six current games at Benfica went
+Sharp (he wanted Decent to Solid); a big current transfer reads deep until
+the games pile up. Baggio at Fiorentina is now Decent (just under the bar).
+Days from 2026-10-21 were re-drawn (10-21's shown answer leaked into step 2).
+
+**Waiting on Jonno:** era fade, league weight, B-team and unbacked
+memberships (shared pool, so Chain too), and grading by real pick rates once
+there is traffic.
+
 ### Feedback round 1
 
 https://claude.ai/artifact/6yji2HfZKaBK5DiaHbr8hj (private to Jonno). 30

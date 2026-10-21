@@ -1,0 +1,407 @@
+[
+ {
+  "file": "File:Loco-Fener (10).jpg",
+  "p18": true,
+  "year": 2016,
+  "local": "cand/Q2339/0.jpg",
+  "score": 314.3,
+  "why": "face 150px, 34% of height, sharpness 1344",
+  "box": [
+   111,
+   51,
+   109,
+   150
+  ]
+ },
+ {
+  "file": "File:Robin Van Persie August 2007.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q2339/8.jpg",
+  "score": 324.5,
+  "why": "face 152px, 24% of height, sharpness 200",
+  "box": [
+   377,
+   75,
+   95,
+   152
+  ]
+ },
+ {
+  "file": "File:Robin Van Persie.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/24.jpg",
+  "score": 190.1,
+  "why": "face 177px, 10% of height, sharpness 105",
+  "box": [
+   362,
+   90,
+   135,
+   177
+  ]
+ },
+ {
+  "file": "File:Van Persie Oranje.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q2339/13.jpg",
+  "score": 128.4,
+  "why": "face 119px, 10% of height, sharpness 112",
+  "box": [
+   282,
+   35,
+   99,
+   119
+  ]
+ },
+ {
+  "file": "File:Robin Van Persie 2009.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/23.jpg",
+  "score": 125.9,
+  "why": "face 111px, 10% of height, sharpness 216",
+  "box": [
+   207,
+   73,
+   81,
+   111
+  ]
+ },
+ {
+  "file": "File:Robin van Persie.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/25.jpg",
+  "score": 119.3,
+  "why": "face 115px, 9% of height, sharpness 232",
+  "box": [
+   372,
+   133,
+   83,
+   115
+  ]
+ },
+ {
+  "file": "File:Robin Van Persie 2 (6141719397).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/36.jpg",
+  "score": 60.5,
+  "why": "face 58px, 9% of height, sharpness 292",
+  "box": [
+   374,
+   116,
+   42,
+   58
+  ]
+ },
+ {
+  "file": "File:Robin Van Persie & Leon Britton (6141652957).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/30.jpg",
+  "score": 52.5,
+  "why": "face 54px, 8% of height, sharpness 329",
+  "box": [
+   427,
+   66,
+   39,
+   54
+  ]
+ },
+ {
+  "file": "File:Robin Van Persie 3 (6141753031).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/37.jpg",
+  "score": 52.3,
+  "why": "face 54px, 8% of height, sharpness 778",
+  "box": [
+   305,
+   80,
+   41,
+   54
+  ]
+ },
+ {
+  "file": "File:File-Van persie henry crop.jpg",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/1.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Henry And Persie Bonding (289633666).jpg",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/2.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin van Persie cropped.jpg",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/3.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.4 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Robin van Persie.JPG",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/4.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (1.7 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:RobinVanPersie.JPG",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/5.jpg",
+  "score": 0,
+  "why": "face 34px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Van Persie free kick.jpg",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/6.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Van persie henry.jpg",
+  "p18": false,
+  "year": 2006,
+  "local": "cand/Q2339/7.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin van Persie free kick.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q2339/9.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin van Persie takes on Carlos Bocanegra.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q2339/10.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robinvanpersiepass.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q2339/11.jpg",
+  "score": 0,
+  "why": "face 27px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Van Persie Arsenal.jpg",
+  "p18": false,
+  "year": 2007,
+  "local": "cand/Q2339/12.jpg",
+  "score": 0,
+  "why": "face 44px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Huntelaar nistelrooy persie.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q2339/14.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Huntelaar v Persie.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q2339/15.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie - training.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q2339/16.jpg",
+  "score": 0,
+  "why": "face 47px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Van Persie Van Nistelrooy.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q2339/17.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Vanpersiedrogba.jpg",
+  "p18": false,
+  "year": 2008,
+  "local": "cand/Q2339/18.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Arsenal v Stoke City FC - Robin Van Persie penalty cropped.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/19.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Arsenal v Stoke City FC - Robin Van Persie penalty.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/20.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robben van Persie.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/21.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie (cropped).jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/22.jpg",
+  "score": 0,
+  "why": "photo ends at the chin (2.2 face heights below)",
+  "box": null
+ },
+ {
+  "file": "File:Van Persie Free Kick cropped.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/26.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Van Persie Free Kick.jpg",
+  "p18": false,
+  "year": 2009,
+  "local": "cand/Q2339/27.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Vanpersie with son shaqueel.jpg",
+  "p18": false,
+  "year": 2010,
+  "local": "cand/Q2339/28.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Busquets, F\u00e0bregas & Van Persie.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/29.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie & Neil Taylor 1 (6142310692).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/31.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie & Neil Taylor 2 (6142314866).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/32.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie & Scott Sinclair 1 (6142223274).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/33.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie & Scott Sinclair 2 (6142229018).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/34.jpg",
+  "score": 0,
+  "why": "face 41px, too small",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie 1 (6141702391).jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/35.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin van Persie and Theo Walcott celebrate 2011.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/38.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ },
+ {
+  "file": "File:Robin Van Persie Arsenal Borussia Dortmund.jpg",
+  "p18": false,
+  "year": 2011,
+  "local": "cand/Q2339/39.jpg",
+  "score": 0,
+  "why": "two people",
+  "box": null
+ }
+]

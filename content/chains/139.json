@@ -1,0 +1,39 @@
+{
+  "id": "139",
+  "mode": "clubs",
+  "closed": true,
+  "slots": [
+    "Q151260",
+    null,
+    "Q213427",
+    null,
+    "Q42731",
+    null
+  ],
+  "clues": {
+    "1": {
+      "kind": "nation",
+      "value": "Q55",
+      "label": "a Dutchman"
+    },
+    "3": {
+      "kind": "nation",
+      "value": "Q1008",
+      "label": "an Ivorian"
+    },
+    "5": {
+      "kind": "nation",
+      "value": "Q403",
+      "label": "a Serb"
+    }
+  },
+  "referenceSolution": [
+    "Q151260",
+    "Q26259982",
+    "Q213427",
+    "Q147589",
+    "Q42731",
+    "Q297603"
+  ],
+  "from": "2026-10-22"
+}

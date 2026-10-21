@@ -40,6 +40,12 @@ describe('the committed schedule', () => {
 
   it('is traced into the serverless build, or every request is an ENOENT', () => {
     expect(config.outputFileTracingIncludes?.['/**']).toContain('./games/step/data/days.json');
+    expect(config.outputFileTracingIncludes?.['/**']).toContain('./games/step/data/bar.json');
+    expect(config.outputFileTracingIncludes?.['/**']).toContain('./data/player-views.json');
+  });
+
+  it('the absolute bar is current for the pool (npm run step:days rewrites it)', () => {
+    expect(JSON.parse(readFileSync('games/step/data/bar.json', 'utf8'))).toEqual(world.bar);
   });
 });
 
