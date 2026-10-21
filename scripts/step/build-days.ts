@@ -14,7 +14,7 @@ import type { Player } from '../../src/lib/chemistry/types';
 import type { ClubRecord } from '../../src/lib/clubs';
 
 export const DAYS = 'games/step/data/days.json';
-export const BAR = 'games/step/data/bar.json';
+export const RULER = 'games/step/data/ruler.json';
 
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
 const clubs = JSON.parse(readFileSync('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
@@ -22,8 +22,8 @@ const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json',
 const today = new Date().toISOString().slice(0, 10);
 const days: StoredDay[] = existsSync(DAYS) ? (JSON.parse(readFileSync(DAYS, 'utf8')) as StoredDay[]) : [];
 
-// The absolute bar follows the pool: rewritten on every run (tests/server.test.ts checks it is current).
-writeFileSync(BAR, `${JSON.stringify(world.bar)}
+// The ruler (lens and bar) follows the pool and the year: rewritten on every run (tests/server.test.ts checks it is current).
+writeFileSync(RULER, `${JSON.stringify(world.ruler)}
 `);
 
 const last = days[days.length - 1]?.date;

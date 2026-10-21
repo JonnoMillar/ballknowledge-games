@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { barOf, factOf, fieldOf, judge, knownOf, runGrade, shareLine, stepsOf, stintWeight, STEPS, type Bar, type Views } from '../lib/rules';
+import { atClub, barOf, factOf, fieldOf, judge, knownOf, linkOf, runGrade, shareLine, stepsOf, stintWeight, CURRENT_STINT, ERA_FLOOR, ERA_FULL, PLAIN, STEPS, type Lens, type Ruler, type Views } from '../lib/rules';
 import type { Player, Spell } from '../../../src/lib/chemistry/types';
 
 const player = (id: string, clubIds: string[], fame: number, spells: Record<string, Spell> = {}): Player => ({
@@ -17,7 +17,8 @@ const members = [famous, middling, stranger, deep, given];
 // English Wikipedia views: the ruler's fame. Sitelinks above are only the fallback.
 const views: Views = { P: 5e6, famous: 2e6, middling: 2e5, stranger: 1e6, deep: 3e4 };
 // A bar every fact clears: grades by the field alone.
-const OPEN: Bar = [0, 0, 0];
+const OPEN: Ruler = { ...PLAIN, bar: [0, 0, 0, 0] };
+const barred = (bar: Ruler['bar']): Ruler => ({ ...PLAIN, bar });
 
 describe('stepsOf', () => {
   it('alternates player-first and club-first, carrying each club over', () => {
@@ -65,9 +66,45 @@ describe('factOf', () => {
     expect(factOf(legend, star, 'C', v)).toBeGreaterThan(factOf(local, star, 'C', v));
   });
 
+  it('links through the best known shared club, and names it', () => {
+    // Shared A (a cameo each) and B (long spells each): B is the link.
+    const x = player('x', ['A', 'B', 'C'], 60, { A: [2, 1, now - 3], B: [200, 6, now - 2] });
+    const g = player('g', ['A', 'B'], 90, { A: [1, 1, now - 1], B: [150, 5, now - 2] });
+    expect(linkOf(x, g, { x: 1e6, g: 4e6 }).club).toBe('B');
+  });
+
   it('a player with no English page falls back on sitelinks', () => {
     expect(knownOf(player('x', [], 80), {})).toBeGreaterThan(knownOf(player('y', [], 40), {}));
     expect(knownOf(player('z', [], 80), { z: 0 })).toBe(knownOf(player('x', [], 80), {}));
+  });
+});
+
+describe('the lens', () => {
+  const year = 2026;
+  const lens: Lens = { year, reach: { far: 0.2 } };
+  const v = { old: 2e6, now: 2e6 };
+
+  it('fades a stint and a career that ended long ago, never past the floor', () => {
+    const old = player('old', ['C'], 80, { C: [200, 8, year - 25] });
+    const now = player('now', ['C'], 80, { C: [200, 8, year - 2] });
+    expect(atClub(now, 'C', v, lens)).toBe(atClub(now, 'C', v, PLAIN));
+    expect(atClub(old, 'C', v, lens)).toBeLessThan(atClub(now, 'C', v, lens) * 0.5);
+    expect(atClub(player('ancient', ['C'], 80, { C: [200, 8, 1960] }), 'C', { ancient: 2e6 }, lens)).toBeCloseTo(knownOf(old, v) * ERA_FLOOR);
+  });
+
+  it(`keeps a stint ended within ${ERA_FULL} years whole`, () => {
+    const p = player('old', ['C'], 80, { C: [200, 8, year - ERA_FULL] });
+    expect(atClub(p, 'C', v, lens)).toBe(atClub(p, 'C', v, PLAIN));
+  });
+
+  it('a current stint is news however few games it has had; an ended one is not', () => {
+    expect(atClub(player('now', ['C'], 80, { C: [2, 1, year] }), 'C', v, lens)).toBeCloseTo(knownOf(player('now', [], 80), v) * CURRENT_STINT);
+    expect(atClub(player('now', ['C'], 80, { C: [2, 1, year - 1] }), 'C', v, lens)).toBeCloseTo(knownOf(player('now', [], 80), v) * stintWeight([2, 1, year - 1]));
+  });
+
+  it("weighs a stint by its club's reach", () => {
+    const p = player('now', ['C', 'far'], 80, { C: [200, 8, year], far: [200, 8, year] });
+    expect(atClub(p, 'far', v, lens)).toBeCloseTo(atClub(p, 'C', v, lens) * 0.2);
   });
 });
 
@@ -117,20 +154,22 @@ describe('stintWeight', () => {
 });
 
 describe('the absolute bar', () => {
-  it('sits at the best known 3%, 10% and 25% of a population of facts', () => {
+  it('sits at the best known 3%, 10%, 25% and 60% of a population of facts', () => {
     const facts = Array.from({ length: 100 }, (_, i) => 100 - i); // 100 .. 1
-    expect(barOf(facts)).toEqual([97, 90, 75]);
+    expect(barOf(facts)).toEqual([97, 90, 75, 40]);
+  });
+
+  it('under the last cut is Elite, whatever the field says', () => {
+    expect(judge(deep, given, 'C', members, views, barred([1e9, 1e9, 1e9, 1e9])).grade).toBe('elite');
   });
 
   it("deepens the best known answer of an obscure step: top of its field, short of the site's bar", () => {
-    const bar: Bar = [5e6, 1e6, 1e5];
     expect(judge(famous, given, 'C', members, views, OPEN).grade).toBe('basic');
-    expect(judge(famous, given, 'C', members, views, bar).grade).toBe('solid');
+    expect(judge(famous, given, 'C', members, views, barred([5e6, 1e6, 1e5, 0])).grade).toBe('solid');
   });
 
   it('never makes a grade shallower than the field gives', () => {
-    const lenient: Bar = [0, 0, 0];
-    expect(judge(deep, given, 'C', members, views, lenient).grade).toBe('sharp');
+    expect(judge(deep, given, 'C', members, views, OPEN).grade).toBe('sharp');
   });
 });
 

@@ -1,5 +1,5 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises';
-import { FIT_A, FIT_B, fieldOf, judge, stepsOf, type Views } from '../../games/step/lib/rules';
+import { FIT_A, FIT_B, fieldOf, judge, stepsOf, type Ruler, type Views } from '../../games/step/lib/rules';
 import { buildWorld, type StoredDay } from '../../games/step/lib/day';
 import { factFame, spellWeight } from '../../src/lib/fame/spell';
 import { ELITE_MIN_FIELD, GRADES, GRADE_WORD, gradeOf, type Grade } from '../../src/lib/chain/grade';
@@ -35,7 +35,7 @@ const views = await json<Views>('data/player-views.json');
 const days = (await json<StoredDay[]>('games/step/data/days.json')).filter((d) => d.date <= until);
 const byClub = new Map<string, Player[]>();
 for (const p of pool) for (const c of p.clubIds) { if (!byClub.has(c)) byClub.set(c, []); byClub.get(c)!.push(p); }
-const bar = await json<[number, number, number]>('games/step/data/bar.json');
+const ruler = await json<Ruler>('games/step/data/ruler.json');
 const english = buildWorld(pool, views).english;
 const asked = new Set<string>();
 for (const f of await readdir('tools/feedback-round/rounds')) {
@@ -68,7 +68,7 @@ for (const d of days) for (const s of stepsOf(d)) {
     const called = ['Viv Anderson'].includes(pick.name);
     if ((views[pick.id] ?? 0) < 150e3 && !called) continue; // nobody names a player nobody reads about
     if (asked.has(pick.id)) continue;
-    const j = judge(pick, given, s.club, members, views, bar);
+    const j = judge(pick, given, s.club, members, views, ruler);
     // A membership with no games behind it is its own open question (Luis Alberto at Barcelona, round 1).
     if (id !== 'steps-1' && (!apps(pick, s.club) || !apps(pick, j.via!) || !apps(given, j.via!))) continue;
     const old = oldGrade(field, pick, given, s.club);

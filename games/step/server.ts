@@ -3,11 +3,10 @@ import { demoClub, demoSticker, loadData } from '../../src/server/board';
 import type { StepsDemo } from '../../src/lib/demo';
 import { clubColour, signatureClub } from '../../src/lib/club-colours';
 import { clubView } from '../../src/lib/clubs';
-import { sharedClubsByProminence } from '../../src/lib/chain/score';
 import { dayNumber } from '../../src/lib/daily';
 import type { Player } from '../../src/lib/chemistry/types';
 import { addDays, EPOCH, type StoredDay } from './lib/day';
-import { judge, stepsOf, STEPS, type Bar, type Views } from './lib/rules';
+import { judge, linkOf, stepsOf, STEPS, type Ruler, type Views } from './lib/rules';
 import type { StepCard, StepClub, StepDay, Verdict } from './lib/types';
 
 /**
@@ -23,8 +22,8 @@ const readDays = () => (process.env.NODE_ENV === 'development' ? null : stored) 
 let viewIndex: Promise<Views> | null = null;
 const playerViews = () => viewIndex ??= readFile('data/player-views.json', 'utf8').then((s) => JSON.parse(s) as Views);
 
-let barRead: Promise<Bar> | null = null;
-const playerBar = () => barRead ??= readFile('games/step/data/bar.json', 'utf8').then((s) => JSON.parse(s) as Bar);
+let rulerRead: Promise<Ruler> | null = null;
+const playerRuler = () => rulerRead ??= readFile('games/step/data/ruler.json', 'utf8').then((s) => JSON.parse(s) as Ruler);
 
 let clubIndex: Promise<Map<string, Player[]>> | null = null;
 const byClub = () => clubIndex ??= loadData().then(({ players }) => {
@@ -82,7 +81,8 @@ export async function judgePick(date: string, step: number, pickId: string, earl
   const s = stepsOf(d)[step]!;
   if (d.players.includes(pickId)) return null;
   const given = byId.get(s.player)!;
-  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? [], await playerViews(), await playerBar());
+  const [views, ruler] = [await playerViews(), await playerRuler()];
+  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? [], views, ruler);
 
   const card = async (p: Player, via: string | null): Promise<StepCard> => ({
     id: p.id, name: p.name, image: images[p.id] ?? null,
@@ -92,8 +92,8 @@ export async function judgePick(date: string, step: number, pickId: string, earl
     held: j.held,
     grade: j.grade,
     pick: await card(pick, j.via),
-    obvious: j.obvious ? await card(j.obvious, sharedClubsByProminence(j.obvious, given)[0] ?? null) : null,
-    elite: j.elite ? await card(j.elite, sharedClubsByProminence(j.elite, given)[0] ?? null) : null,
+    obvious: j.obvious ? await card(j.obvious, linkOf(j.obvious, given, views, ruler).club) : null,
+    elite: j.elite ? await card(j.elite, linkOf(j.elite, given, views, ruler).club) : null,
   };
 }
 
@@ -109,7 +109,7 @@ export async function demoSteps(): Promise<StepsDemo> {
   const given = byId.get(rooney)!;
   const picks = await Promise.all(['Q11571', 'Q63659'].map(async (id) => ({
     player: await demoSticker(id, united, madrid),
-    grade: judge(byId.get(id)!, given, madrid, members, await playerViews(), await playerBar()).grade,
+    grade: judge(byId.get(id)!, given, madrid, members, await playerViews(), await playerRuler()).grade,
   })));
   // A pool change that stopped one holding drops it rather than showing a grade the game would not give.
   return { given: await demoSticker(rooney, united), club: await demoClub(madrid), picks: picks.flatMap((p) => (p.grade ? [{ ...p, grade: p.grade }] : [])) };

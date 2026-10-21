@@ -5,10 +5,10 @@ import { stepsOf } from '../lib/rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
-const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')));
+const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')), JSON.parse(readFileSync('games/step/data/ruler.json', 'utf8')).year);
 
 describe('the world', () => {
-  it('has enough good steps for a daily (1,254 measured 2026-10-14)', () => {
+  it('has enough good steps for a daily (1,166 measured 2026-10-21)', () => {
     const steps = [...world.good.values()].reduce((n, s) => n + s.size, 0);
     expect(steps).toBeGreaterThan(1000);
   });
@@ -28,7 +28,7 @@ describe('the schedule', () => {
   });
 
   it('every step of every day is good', () => {
-    for (const d of days) for (const s of stepsOf(d)) expect(isGood(world, world.byId.get(s.player)!, s.club)).toBe(true);
+    for (const d of days) for (const s of stepsOf(d)) expect(world.good.get(s.player)?.has(s.club)).toBe(true);
   });
 
   it('is the same on a rerun', () => {

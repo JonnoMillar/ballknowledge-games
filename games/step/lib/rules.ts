@@ -1,5 +1,4 @@
 import { APPS_PER_YEAR, FLOOR, SATURATION_APPS } from '../../../src/lib/fame/spell';
-import { sharedClubsByProminence } from '../../../src/lib/chain/score';
 import { ELITE_MIN_FIELD, GRADES, GRADE_GLYPH, GRADE_WORD, gradeOf, gradeRank, type Grade } from '../../../src/lib/chain/grade';
 import { MARK_GLYPH } from '../../../src/lib/chain/share';
 import type { Player, Spell } from '../../../src/lib/chemistry/types';
@@ -84,27 +83,74 @@ export function stintWeight(spell: Spell | undefined): number {
 }
 
 /**
+ * How the audience sees football: the year it is, and how known each club
+ * is (`reach`, 0..1, a club not in it counts as 1). Jonno's rounds 1 to 3
+ * (2026-10-20/21): the players are about 16 to 26. They rarely know anyone
+ * whose career ended before 2010, and clubs outside the Premier League and
+ * the biggest abroad (Sevilla, Valencia) are hard for them. Built by
+ * lib/day.ts lensOf, kept in data/ruler.json.
+ */
+export interface Lens { year: number; reach: Readonly<Record<string, number>> }
+/** No fading: every stint as known as its length, every club as known as any. */
+export const PLAIN: Lens = { year: 0, reach: {} };
+
+/**
+ * Era fade, tuned on Jonno's 59 verdicts (scripts/step/tune.ts): a stint
+ * that ended within ERA_FULL years is fully known; before that its weight
+ * halves every ERA_HALF years, never under ERA_FLOOR. A stint is dated both
+ * by its own end and by the player's last season anywhere (their geometric
+ * mean): Torres's Liverpool years are remembered because Torres played on,
+ * Redknapp's Spurs years are not.
+ */
+export const ERA_FULL = 10;
+export const ERA_HALF = 5;
+export const ERA_FLOOR = 0.2;
+/** A stint still going is news, however few games it has had (Durán at Benfica, round 1). */
+export const CURRENT_STINT = 0.6;
+
+export const eraOf = (end: number, year: number) => (end >= year - ERA_FULL ? 1 : Math.max(ERA_FLOOR, 0.5 ** ((year - ERA_FULL - end) / ERA_HALF)));
+/** The last season a player was anywhere: the year itself if a spell is open or undated. */
+export const lastSeen = (p: Player, year: number) => Math.max(0, ...Object.values(p.spells ?? {}).map((s) => s[2] ?? year));
+
+/** How known "p played for c" is: p's fame, the stint's length, its era, the club's reach. */
+export function atClub(p: Player, c: string, views: Views, lens: Lens = PLAIN): number {
+  const spell = p.spells?.[c];
+  const end = spell?.[2] ?? lens.year;
+  const weight = lens.year > 0 && end >= lens.year ? Math.max(stintWeight(spell), CURRENT_STINT) : stintWeight(spell);
+  const era = Math.sqrt(eraOf(end, lens.year) * eraOf(lastSeen(p, lens.year), lens.year));
+  return knownOf(p, views) * weight * era * (lens.reach[c] ?? 1);
+}
+
+/** The club that links x to the given best (each shared club as its less known end), and how known that is. */
+export function linkOf(x: Player, given: Player, views: Views, lens: Lens = PLAIN): { club: string | null; known: number } {
+  let best: { club: string | null; known: number } = { club: null, known: 0 };
+  for (const c of x.clubIds) {
+    if (!given.clubIds.includes(c)) continue;
+    const k = Math.min(atClub(x, c, views, lens), atClub(given, c, views, lens));
+    if (best.club === null || k > best.known) best = { club: c, known: k };
+  }
+  return best;
+}
+
+/**
  * How well known the fact "x fits here" is: the less known of its two
  * halves, the link to the given and the stint at the club. Each half is a
- * fact about a player at a club, that player's fame times how much of a
- * stint it was (stintWeight). The link is as known as its best
+ * fact about a player at a club (atClub). The link is as known as its best
  * shared club, and a shared club as its less known end: Ferdinand's loan at
  * Bournemouth is obscure whoever played there with him, Henry's season at
  * Juventus is not, because Henry is famous enough that it is known. Kane at
  * Leicester is a deep answer whoever he links to.
  */
-export function factOf(x: Player, given: Player, club: string, views: Views): number {
-  const at = (p: Player, c: string) => knownOf(p, views) * stintWeight(p.spells?.[c]);
-  const link = Math.max(0, ...x.clubIds.filter((c) => given.clubIds.includes(c)).map((c) => Math.min(at(x, c), at(given, c))));
-  return Math.min(link, at(x, club));
+export function factOf(x: Player, given: Player, club: string, views: Views, lens: Lens = PLAIN): number {
+  return Math.min(linkOf(x, given, views, lens).known, atClub(x, club, views, lens));
 }
 
 /**
  * The two answers a step shows once it is played: the obvious one (the best
  * known fact) and the deepest checkable one. Null on an empty field.
  */
-export function endsOf(given: Player, club: string, field: readonly Player[], views: Views): { obvious: Player | null; elite: Player | null } {
-  const fact = (p: Player) => factOf(p, given, club, views);
+export function endsOf(given: Player, club: string, field: readonly Player[], views: Views, lens: Lens = PLAIN): { obvious: Player | null; elite: Player | null } {
+  const fact = (p: Player) => factOf(p, given, club, views, lens);
   const checkable = field.filter((p) => p.fame.value >= CHECKABLE);
   const pick = (xs: readonly Player[], better: (a: number, b: number) => boolean) =>
     xs.reduce<Player | null>((best, p) => (best === null || better(fact(p), fact(best)) ? p : best), null);
@@ -112,34 +158,39 @@ export function endsOf(given: Player, club: string, field: readonly Player[], vi
 }
 
 /**
- * The absolute bar: the fact a pick must reach to be Basic, Decent or Solid
- * whatever its own step looks like, as [basic, decent, solid].
+ * The absolute bar: the fact a pick must reach to be Basic, Decent, Solid or
+ * Sharp whatever its own step looks like, as [basic, decent, solid, sharp].
  *
  * Grades rank a pick within its step, so about a tenth of every step was
  * Basic however obscure the step: the best known of an old Sunderland or a
  * Sevilla field was "the name everyone says first" though few of Jonno's
  * players would know it (round 1, 2026-10-20: Yorke at Sunderland, Maresca
  * at Sevilla). The bar measures a pick against every answer on every good
- * step (lib/day.ts buildWorld, kept in data/bar.json): Basic is the best
- * known BAR_CUTS[0] of all of them, and so on. A pick's grade is the deeper
- * of the two readings, so the bar can only make a grade deeper.
+ * step (lib/day.ts buildWorld, kept in data/ruler.json): Basic is the best
+ * known BAR_CUTS[0] of all of them, and so on; under the best known 60% is
+ * Elite (round 2: the picks Jonno could not name wanted Elite). A pick's
+ * grade is the deeper of the two readings, so the bar can only make a grade
+ * deeper.
  */
-export type Bar = readonly [basic: number, decent: number, solid: number];
-export const BAR_CUTS = [0.03, 0.1, 0.25] as const;
+export type Bar = readonly [basic: number, decent: number, solid: number, sharp: number];
+export const BAR_CUTS = [0.03, 0.1, 0.25, 0.6] as const;
 
 /** The bar for a population of facts: the fact at each of BAR_CUTS, best known first. */
 export function barOf(facts: readonly number[]): Bar {
   const sorted = [...facts].sort((a, b) => b - a);
   const at = (q: number) => sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))] ?? 0;
-  return [at(BAR_CUTS[0]), at(BAR_CUTS[1]), at(BAR_CUTS[2])];
+  return [at(BAR_CUTS[0]), at(BAR_CUTS[1]), at(BAR_CUTS[2]), at(BAR_CUTS[3])];
 }
 
-const byBar = (fact: number, bar: Bar): Grade => (fact >= bar[0] ? 'basic' : fact >= bar[1] ? 'decent' : fact >= bar[2] ? 'solid' : 'sharp');
+const byBar = (fact: number, bar: Bar): Grade => (fact >= bar[0] ? 'basic' : fact >= bar[1] ? 'decent' : fact >= bar[2] ? 'solid' : fact >= bar[3] ? 'sharp' : 'elite');
+
+/** Everything a pick is measured against: the bar and the lens (data/ruler.json). */
+export interface Ruler extends Lens { bar: Bar }
 
 export interface Judged {
   held: boolean;
   grade: Grade | null;
-  /** The club the pick shared with the given, the most prominent one. Null when it did not hold. */
+  /** The club that links the pick to the given, the best known one. Null when it did not hold. */
   via: string | null;
   /** The best known answer on the step, whatever was picked. */
   obvious: Player | null;
@@ -147,10 +198,10 @@ export interface Judged {
   elite: Player | null;
 }
 
-export function judge(pick: Player, given: Player, club: string, members: readonly Player[], views: Views, bar: Bar): Judged {
+export function judge(pick: Player, given: Player, club: string, members: readonly Player[], views: Views, ruler: Ruler): Judged {
   const field = fieldOf(given, members);
-  const fact = (p: Player) => factOf(p, given, club, views);
-  const { obvious, elite } = endsOf(given, club, field, views);
+  const fact = (p: Player) => factOf(p, given, club, views, ruler);
+  const { obvious, elite } = endsOf(given, club, field, views, ruler);
 
   const held = field.some((p) => p.id === pick.id);
   if (!held) return { held, grade: null, via: null, obvious, elite };
@@ -158,11 +209,11 @@ export function judge(pick: Player, given: Player, club: string, members: readon
   const above = field.filter((p) => p.id !== pick.id && fact(p) > mine).length;
   const isElite = elite !== null && field.length >= ELITE_MIN_FIELD && mine <= fact(elite);
   const inField = gradeOf(above, field.length, isElite);
-  const absolute = byBar(mine, bar);
+  const absolute = byBar(mine, ruler.bar);
   return {
     held,
     grade: gradeRank(absolute) > gradeRank(inField) ? absolute : inField,
-    via: sharedClubsByProminence(pick, given)[0] ?? null,
+    via: linkOf(pick, given, views, ruler).club,
     obvious,
     elite,
   };

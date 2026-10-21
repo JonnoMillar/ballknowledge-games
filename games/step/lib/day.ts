@@ -1,4 +1,4 @@
-import { STEPS, barOf, endsOf, factOf, fieldOf, stepsOf, CHECKABLE, type Bar, type Givens, type Views } from './rules';
+import { STEPS, barOf, endsOf, factOf, fieldOf, stepsOf, CHECKABLE, ERA_FULL, eraOf, lastSeen, type Givens, type Lens, type Ruler, type Views } from './rules';
 import type { Player } from '../../../src/lib/chemistry/types';
 
 /**
@@ -18,24 +18,37 @@ export const TOP_UP = 28;
 
 /**
  * What makes a step (a given player and a club) good enough for the daily.
- * Measured 2026-10-14: 1,643 steps pass over 102 givens and 35 clubs, median
- * field 37. Same given and club rules as Deep Cuts (scripts/build-deep-cuts.ts).
+ * Measured 2026-10-21: 1,166 steps pass over 102 givens and 33 clubs, and
+ * two years generate from scratch (tests/day.test.ts). A tighter minKnown
+ * or givenViews dead-ends the schedule within months.
  */
 export const RULES = {
-  /** Givens a British fan places at once (sitelink fame)... */
-  givenFame: 70,
+  /**
+   * Givens the audience places at once: English Wikipedia views over 24
+   * months, faded by when they last played (rules.ts eraOf), so Saka and
+   * Palmer qualify and a 1990s name does not. Was sitelinks 70, which
+   * favours older players (2026-10-21)...
+   */
+  givenViews: 1.5e6,
   /** ...who played in the Premier League, are British, or are this famous everywhere. */
   givenIcon: 90,
   givenMinClubs: 2,
   givenMaxClubs: 6,
   /** The club: one of the biggest this many in the pool, in a followed league. */
-  clubPool: 60,
+  clubPool: 100,
   /** Wide enough to dig... */
   minField: 25,
   /** ...with enough checkable names to make a deep answer something you can know... */
   minCheckable: 12,
   /** ...and an obvious way in: the most famous answer is a name people hold. */
   minEntry: 60,
+  /**
+   * ...and enough answers the audience knows: at least this many reach the
+   * Decent bar (of every candidate step), after the era fade and club reach.
+   * Rounds 2 and 3: Ronaldo · ? · Forest and Sevilla · ? · Piqué were steps
+   * Jonno could not fill at all.
+   */
+  minKnown: 3,
   /** A given player is not back within this many days, a club within clubGap, a step (given and club) within stepGap. */
   givenGap: 14,
   clubGap: 7,
@@ -69,13 +82,34 @@ export interface World {
   english: Set<string>;
   /** English Wikipedia views, the grading ruler's fame. */
   views: Views;
-  /** The absolute bar, over every answer on every good step (rules.ts Bar); the server reads it from data/bar.json. */
-  bar: Bar;
+  /** The lens and the absolute bar over every answer on every good step (rules.ts Ruler); the server reads it from data/ruler.json. */
+  ruler: Ruler;
 }
 
 const stepKey = (player: string, club: string) => `${player}|${club}`;
 
-export function buildWorld(pool: readonly Player[], views: Views): World {
+/**
+ * A club's reach: the English views of everyone who played there within
+ * ERA_FULL years, over REACH_FULL, raised to REACH_POWER, at most 1.
+ * Premier League clubs are 1: the audience follows the league. Real Madrid
+ * and Barcelona come out at 1, Sevilla near 0.4, Valencia near 0.2 (tuned on
+ * Jonno's verdicts, scripts/step/tune.ts; round 3: "smaller clubs like
+ * Sevilla and Valencia are really difficult for our majority").
+ */
+export const REACH_FULL = 60e6;
+export const REACH_POWER = 1.5;
+
+export function lensOf(clubs: readonly string[], byClub: ReadonlyMap<string, readonly Player[]>, english: ReadonlySet<string>, views: Views, year: number): Lens {
+  const reach: Record<string, number> = {};
+  for (const c of clubs) {
+    if (english.has(c)) continue;
+    const seen = (byClub.get(c) ?? []).filter((p) => (p.spells?.[c]?.[2] ?? year) >= year - ERA_FULL).reduce((s, p) => s + (views[p.id] ?? 0), 0);
+    if (seen < REACH_FULL) reach[c] = Math.round((seen / REACH_FULL) ** REACH_POWER * 1000) / 1000;
+  }
+  return { year, reach };
+}
+
+export function buildWorld(pool: readonly Player[], views: Views, year = new Date().getUTCFullYear()): World {
   const byId = new Map(pool.map((p) => [p.id, p]));
   const byClub = new Map<string, Player[]>();
   const votes = new Map<string, Map<string, number>>();
@@ -93,22 +127,31 @@ export function buildWorld(pool: readonly Player[], views: Views): World {
     .slice(0, RULES.clubPool)
     .map(([id]) => id)
     .filter((id) => FOLLOWED_LEAGUES.has(league(id) ?? ''));
-  const givens = pool.filter((p) => p.fame.value >= RULES.givenFame && !NOT_A_GIVEN.has(p.id)
+  const givens = pool.filter((p) => (views[p.id] ?? 0) * eraOf(lastSeen(p, year), year) >= RULES.givenViews && !NOT_A_GIVEN.has(p.id)
     && p.clubIds.length >= RULES.givenMinClubs && p.clubIds.length <= RULES.givenMaxClubs
     && (p.leagueIds.includes(PREMIER_LEAGUE) || BRITISH.has(p.nation) || p.fame.value >= RULES.givenIcon));
 
+  const english = new Set(clubs.filter((c) => league(c) === PREMIER_LEAGUE));
+  const lens = lensOf(clubs, byClub, english, views, year);
   const world: World = {
     byId, byClub, good: new Map(), givensAt: new Map(), fields: new Map(), shown: new Map(),
-    english: new Set(clubs.filter((c) => league(c) === PREMIER_LEAGUE)),
+    english,
     views,
-    bar: [0, 0, 0],
+    ruler: { ...lens, bar: [0, 0, 0, 0] },
   };
-  const facts: number[] = [];
+  // Every step that passes isGood, with its answers' facts; then only those the audience can do.
+  const candidates: { g: Player; c: string; field: Player[]; facts: number[] }[] = [];
   for (const g of givens) for (const c of clubs) {
     if (!isGood(world, g, c)) continue;
     const field = fieldOf(g, byClub.get(c)!);
-    const { obvious, elite } = endsOf(g, c, field, views);
-    for (const p of field) facts.push(factOf(p, g, c, views));
+    candidates.push({ g, c, field, facts: field.map((p) => factOf(p, g, c, views, lens)) });
+  }
+  const open = barOf(candidates.flatMap((s) => s.facts));
+  const facts: number[] = [];
+  for (const { g, c, field, facts: mine } of candidates) {
+    if (mine.filter((f) => f >= open[1]).length < RULES.minKnown) continue;
+    const { obvious, elite } = endsOf(g, c, field, views, lens);
+    facts.push(...mine);
     world.fields.set(stepKey(g.id, c), new Set(field.map((p) => p.id)));
     world.shown.set(stepKey(g.id, c), [obvious!.id, elite!.id]);
     if (!world.good.has(g.id)) world.good.set(g.id, new Set());
@@ -116,7 +159,7 @@ export function buildWorld(pool: readonly Player[], views: Views): World {
     if (!world.givensAt.has(c)) world.givensAt.set(c, []);
     world.givensAt.get(c)!.push(g.id);
   }
-  world.bar = barOf(facts);
+  world.ruler = { ...lens, bar: barOf(facts) };
   return world;
 }
 

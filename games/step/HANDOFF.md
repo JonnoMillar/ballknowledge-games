@@ -98,6 +98,43 @@ Sevilla player; Ian Wright); American readers (Matt Turner, USMNT keeper,
 Basic at Forest from 17 games); recency (a stint ended within two years counts
 as fully known, `spellWeight`, shared with Chain).
 
+## Graded for the audience (2026-10-21), the final ruler
+
+Jonno after three rounds: the players are about **16 to 26**. They rarely
+know anyone whose career ended before 2010, and clubs outside the Premier
+League and the biggest abroad (Sevilla, Valencia) are hard for them. He asked
+for it done as a final product: no more feedback rounds.
+
+What changed (`lib/rules.ts`, `lib/day.ts`):
+- **Era fade** (`ERA_FULL` 10, `ERA_HALF` 5, `ERA_FLOOR` 0.2): a player-at-
+  club fact fades once the stint ended more than 10 years ago, halving every
+  5 years, dated by the stint's end and by the player's last season anywhere
+  (geometric mean). Torres at Liverpool stays known (he played on), Redknapp
+  at Spurs does not.
+- **Club reach** (`lensOf`, `REACH_FULL` 60M, `REACH_POWER` 1.5): a non-PL
+  club weighs by the English views of everyone there in the last 10 years.
+  Real, Barça, PSG, Juve, Bayern, Atlético 1; Roma 0.98, Inter 0.79, Ajax
+  0.71, West Ham 0.68 (its pool league reads Championship), Monaco 0.6,
+  Benfica, Marseille, Sevilla about 0.5, Porto, Fiorentina 0.4, PSV, Valencia
+  under 0.3, Genoa 0.17.
+- **Current stint** (`CURRENT_STINT` 0.6): a spell still going counts as at
+  least 0.6 of a stint, however few games (Durán at Benfica).
+- **Elite by bar**: `BAR_CUTS` gained a 4th cut, under the best known 60% of
+  all answers is Elite (Zenden, Aquilani, Harewood wanted Elite).
+- **Linking club** (`linkOf`): "Linked by" is now the club the fact uses, the
+  best known shared club, not the most prominent (Depay for Rodri).
+- **Steps the audience can do** (`RULES.minKnown` 4): a good step needs four
+  answers at or above the Decent bar. Drops Ronaldo · Forest, Sevilla ·
+  Piqué-type steps and, with them, most oldhead givens.
+- **One ruler file**: `data/ruler.json` = `{ year, reach, bar }` (was
+  `bar.json`), written by `npm run step:days`, read by the server, checked
+  current by a test. The year rolls with the cron, so the fade moves on.
+
+Tuned on all three rounds' verdicts (`tools/feedback-round/answers/`, read
+back from the page; `scripts/step/verdicts.ts` scores the shipped game and
+lists misses; `tests/grades.test.ts` holds the line). The earlier pins were
+my fan guesses and are gone.
+
 ### Round 1 answers, and changes 1 and 3 (2026-10-20)
 
 Jonno answered 24 of 30: 19 too low, 3 too high, 2 right. The grades were
@@ -258,10 +295,13 @@ the Share sheet, the cron on GitHub (runs once merged).
 - **Givens' portraits:** Courtois shows a broken image on #26. many givens show a late-career photo (Bergkamp,
   Schweinsteiger in suits): `fetch:portraits` resolves only Chain board players.
   Add a `--step` target like `--itk` and run it before launch.
-- **Givens are still picked on sitelinks** (`RULES.givenFame`); English views
-  are now in `data/` and would place them better (Louis van Gaal is excluded
-  by hand, `NOT_A_GIVEN`).
-- **Read round 1's answers** and tune `FAME_POWER` or the stint rules from them.
+- **Givens are still picked on sitelinks** (`RULES.givenFame`); `minKnown`
+  now drops steps the audience cannot do, which drops most oldhead givens,
+  but a given who survives on one gettable step can still be an oldhead.
+- **Next tuning is real pick rates**, once there is traffic: no more feedback
+  rounds (Jonno, 2026-10-21).
+- **West Ham's league** reads Championship in the pool (most of its members
+  carry that league), so it is not counted as a Premier League club.
 - **Links ignore time:** Mbappé fits Sneijder via Real Madrid. Same as Chain.
 - Measured feasibility: 1,254 good steps over 73 givens and 35 clubs; two
   years generate with no rule broken (test).
