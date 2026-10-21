@@ -139,12 +139,10 @@ photos, not cutouts: it tests the choice of photo.
   So v2 is no better than the old ranking at first place and nowhere near
   22/27 (81%). The features are used up: refitting on all 50 groups gives
   28/50 in-sample, 24/50 leave-one-out, and the hand-set weights score the same 28.
-- By era it splits cleanly. Players with a 2026 photo (Neymar, Mbappé, Kane,
-  Yamal, Vinícius, Bellingham): 6/6 first. Photos from 2010-2015 (Lampard,
-  Rooney, Xavi, Kaká, Robben, Shevchenko): 6/6 first. Photos from 2006-2009
-  (Beckham, Henry, Del Piero, Carlos, Raúl, Son, Gerrard): 1/7 first. The
-  ranking is weak exactly where the pool is older, lower resolution and
-  stylistically mixed; the misses are rank 2-5, usually top 3 or so.
+- It is solid only where there is a fresh photo. The six players with a 2026
+  photo (Neymar, Mbappé, Kane, Yamal, Vinícius, Bellingham): 6/6 first. The other
+  17 gate-passing picks (photos from 1982-2019, mostly 2006-2013): 8/17 first.
+  The misses are rank 2-5; the old ones are lower resolution and mixed in style.
 - **Gates.** He picked a gate-rejected photo 6 times of 29 (shown 29 times,
   once per player): 5 "photo ends at the chin" (Maradona 1978, Baggio 1990,
   Bergkamp 1989, Casillas 2011, van Dijk 2016, face-heights below the face
