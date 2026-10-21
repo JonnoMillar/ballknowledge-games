@@ -125,5 +125,48 @@ features: an automatic first pick will agree with Jonno about half the time.
 Hence the plan for the long tail: ship the ranking's pick, and for the famous
 ~390 show him the top three to choose from.
 
+## Round 2 (2026-10-21): v2 on 30 fresh players
+
+`scripts/photos/round2/`: players, every candidate with its features and gate
+verdict (`candidates/`), what each page showed (`shown.json`: 5 ranked + 1
+gate-rejected, shuffled), and his picks (`picks.json`). Weights were fitted on
+round 1 only, so this is an out-of-sample test. The page showed raw Commons
+photos, not cutouts: it tests the choice of photo.
+
+- 29 picks, 1 "none good" (Zidane: only 3 candidates, all poor).
+- **First place: 14 of 29** (48%); of the 23 picks that had passed the gates,
+  14 (61%). **Top 3: 19 of 23.** Round 1 baseline was 15/27 first, 21/27 top 3.
+  So v2 is no better than the old ranking at first place and nowhere near
+  22/27 (81%). The features are used up: refitting on all 50 groups gives
+  28/50 in-sample, 24/50 leave-one-out, and the hand-set weights score the same 28.
+- By era it splits cleanly. Players with a 2026 photo (Neymar, Mbappé, Kane,
+  Yamal, Vinícius, Bellingham): 6/6 first. Photos from 2010-2015 (Lampard,
+  Rooney, Xavi, Kaká, Robben, Shevchenko): 6/6 first. Photos from 2006-2009
+  (Beckham, Henry, Del Piero, Carlos, Raúl, Son, Gerrard): 1/7 first. The
+  ranking is weak exactly where the pool is older, lower resolution and
+  stylistically mixed; the misses are rank 2-5, usually top 3 or so.
+- **Gates.** He picked a gate-rejected photo 6 times of 29 (shown 29 times,
+  once per player): 5 "photo ends at the chin" (Maradona 1978, Baggio 1990,
+  Bergkamp 1989, Casillas 2011, van Dijk 2016, face-heights below the face
+  1.7-2.0), 1 "two people" (Haaland), 0 sharpness, 0 too-small. So the
+  **chin gate is too strict** (floor 2.2 face heights; his picks sit at 1.7-2.0)
+  and the sharpness and too-small gates are fine. The catch: a cutout of a
+  photo that ends at the chin floats (decision 3), so these are photo picks, not
+  cutout picks; for them use the photo uncut on the club colour, or the kit card.
+  The "two people" gate cost one pick in nine shown; left alone (361 of 875
+  round-2 photos were rejected on it, so it does remove a lot, but one data
+  point is not enough to move it).
+- Few candidates for the oldest: Cantona 0 in-era files, Baggio 3, Bergkamp 5,
+  Zidane 12 (2 usable). Dating by year subcategory (added in `candidates.py`)
+  is what lets Maradona's 1970s-80s scans in at all.
+- Data quirk: an open-ended last spell is read as "still playing", but some
+  retired players have one (Ronaldinho's span now runs to 2026). Harmless
+  (it widens the span), worth a manual end year in `data/careers.json`.
+
+Where that leaves the plan: an automatic first pick will agree with Jonno about
+half the time and has him in its top three about four times in five. So the
+approval round for the famous ~390 shows the top three and he taps one;
+everyone else ships on the ranking or the kit card.
+
 Done means: the new ranking hits his pick at least ~22 of 27 on this file
 (a test), a round 2 on fresh players confirms it, then the full run.
