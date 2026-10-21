@@ -1,6 +1,6 @@
 # Step chain — state of play
 
-**Updated 2026-10-20** (grading ruler, below). Merged to `main` 2026-10-14;
+**Updated 2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
 the ruler work was branch `claude/steps-grading-555384`. Site-wide notes: root
 `HANDOFF.md`. Spec (the decision record): `games/step/SPEC.md`. Working name
 "Step" (`NAME` in `lib/rules.ts`, route `/step`) until Jonno names it.
@@ -123,9 +123,20 @@ What changed (`lib/rules.ts`, `lib/day.ts`):
   all answers is Elite (Zenden, Aquilani, Harewood wanted Elite).
 - **Linking club** (`linkOf`): "Linked by" is now the club the fact uses, the
   best known shared club, not the most prominent (Depay for Rodri).
-- **Steps the audience can do** (`RULES.minKnown` 4): a good step needs four
-  answers at or above the Decent bar. Drops Ronaldo · Forest, Sevilla ·
-  Piqué-type steps and, with them, most oldhead givens.
+- **Steps the audience can do** (`RULES.minKnown` 3): a good step needs
+  three answers at or above the Decent bar. Drops Ronaldo · Forest and
+  Sevilla · Piqué. 4 dead-ended the schedule within weeks.
+- **Givens by faded English views** (`RULES.givenViews` 1.5M, views ×
+  `eraOf(lastSeen)`), not sitelinks 70, which favoured older players; club
+  pool 60 to 100 for supply. 1,166 good steps, 102 givens, 33 clubs; two
+  years generate. The schedule now reads Palmer, Rice, Watkins, Garnacho,
+  Højlund, Yamal.
+- **Views data fixed** (`scripts/fetch-views.mjs`): titles from Wikidata
+  (`data/enwiki-titles.json`), and for players far under their sitelinks
+  estimate the views of every redirect into their page are added
+  (`data/enwiki-views.into.json`); a player's views are the larger of that
+  and the old careers title. Renamed pages had lost their views: Rodri 34k
+  (3.3M), Pepe 0 (2.5M), Raúl 5k (1.1M), Eduardo 0 (259k).
 - **One ruler file**: `data/ruler.json` = `{ year, reach, bar }` (was
   `bar.json`), written by `npm run step:days`, read by the server, checked
   current by a test. The year rolls with the cron, so the fade moves on.
@@ -133,7 +144,15 @@ What changed (`lib/rules.ts`, `lib/day.ts`):
 Tuned on all three rounds' verdicts (`tools/feedback-round/answers/`, read
 back from the page; `scripts/step/verdicts.ts` scores the shipped game and
 lists misses; `tests/grades.test.ts` holds the line). The earlier pins were
-my fan guesses and are gone.
+my fan guesses and are gone. Result: **47 of 59 on target** (was 30), 12
+grades off in all (was 30), none more than one. Still one off: De Bruyne at
+City for Shevchenko (a famous Chelsea cameo), Trippier and Petit a grade too
+deep, Zenden, Aquilani, Harewood, van Hooijdonk, Senesi a grade too shallow.
+
+Shipped to `main` 2026-10-21 (e89d2f8): 2,183 tests, typecheck and the prod
+build clean; `/step` played in the browser (Sterling for Núñez · City:
+Basic, linked by Liverpool). Days from 2026-10-21 re-drawn (today's shown
+answer leaked into another step under the new grades).
 
 ### Round 1 answers, and changes 1 and 3 (2026-10-20)
 
