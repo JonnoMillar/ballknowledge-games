@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { clubColour, signatureClub } from '../../src/lib/club-colours';
 import { clubView, type ClubView } from '../../src/lib/clubs';
 import { buildClubIndex, judgePass, type Ball, type ClubIndex } from './lib/rules';
@@ -5,6 +6,7 @@ import type { Carrier } from './lib/match';
 import type { PassResponse } from './lib/wire';
 import type { Player } from '../../src/lib/chemistry/types';
 import { loadData } from '../../src/server/board';
+import { ERA_FULL, eraOf, lastPlayed } from '../../src/lib/fame/era';
 
 /**
  * Rondo's referee.
@@ -28,6 +30,24 @@ const STARTER_FAME = 60;
 /** A club needs this many others on it before it counts as a way out of a starter. */
 const SHELF = 6;
 
+/**
+ * Whether the audience (16 to 26) knows a starter well enough to pass from
+ * them: English Wikipedia views over 24 months (data/player-views.json),
+ * faded by the last season they played (src/lib/fame/era.ts). A career that
+ * ended more than ERA_FULL years ago needs Steps' given bar, a name placed at
+ * once (Beckham, Henry); one since needs a third of it. Jonno's keep/cut
+ * round, 2026-10-21: Gyan, Rosický, Mertesacker and Gary Cahill go on the
+ * views, Vieira, Shevchenko and Rio Ferdinand on the era.
+ */
+const KNOWN_VIEWS = 5e5;
+const KNOWN_VIEWS_OLD = 1.5e6;
+
+export function audienceKnows(p: Player, views: Readonly<Record<string, number>>, year: number): boolean {
+  const last = lastPlayed(p, year);
+  const known = (views[p.id] ?? 0) * eraOf(last, year);
+  return known >= (last >= year - ERA_FULL ? KNOWN_VIEWS : KNOWN_VIEWS_OLD);
+}
+
 interface Ref {
   byId: Map<string, Player>;
   byClub: ClubIndex;
@@ -40,6 +60,8 @@ let ref: Promise<Ref> | null = null;
 function loadRef(): Promise<Ref> {
   ref ??= (async () => {
     const { players, byId, clubs } = await loadData();
+    const views = JSON.parse(await readFile('data/player-views.json', 'utf8')) as Record<string, number>;
+    const year = new Date().getUTCFullYear();
     const byClub = buildClubIndex(players);
     const shelf = (c: string) => (byClub.get(c)?.length ?? 0) - 1;
     const starters = players.filter((p) =>
@@ -47,7 +69,8 @@ function loadRef(): Promise<Ref> {
       && !NOT_A_STARTER.has(p.id)
       && p.clubIds.length >= 3
       && p.leagueIds.filter((l) => KNOWN_LEAGUES.has(l)).length >= 2
-      && p.clubIds.filter((c) => shelf(c) >= SHELF).length >= 2);
+      && p.clubIds.filter((c) => shelf(c) >= SHELF).length >= 2
+      && audienceKnows(p, views, year));
     return { byId, byClub, starters, clubs };
   })();
   return ref;

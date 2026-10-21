@@ -1,3 +1,4 @@
+import { ERA_FLOOR, ERA_FULL, ERA_HALF, eraOf } from '../../../src/lib/fame/era';
 import { APPS_PER_YEAR, FLOOR, SATURATION_APPS } from '../../../src/lib/fame/spell';
 import { ELITE_MIN_FIELD, GRADES, GRADE_GLYPH, GRADE_WORD, gradeOf, gradeRank, type Grade } from '../../../src/lib/chain/grade';
 import { MARK_GLYPH } from '../../../src/lib/chain/share';
@@ -95,21 +96,21 @@ export interface Lens { year: number; reach: Readonly<Record<string, number>> }
 export const PLAIN: Lens = { year: 0, reach: {} };
 
 /**
- * Era fade, tuned on Jonno's 59 verdicts (scripts/step/tune.ts): a stint
- * that ended within ERA_FULL years is fully known; before that its weight
- * halves every ERA_HALF years, never under ERA_FLOOR. A stint is dated both
- * by its own end and by the player's last season anywhere (their geometric
- * mean): Torres's Liverpool years are remembered because Torres played on,
- * Redknapp's Spurs years are not.
+ * Era fade (src/lib/fame/era.ts), tuned on Jonno's 59 verdicts
+ * (scripts/step/tune.ts). A stint is dated both by its own end and by the
+ * player's last season anywhere (their geometric mean): Torres's Liverpool
+ * years are remembered because Torres played on, Redknapp's Spurs years are not.
  */
-export const ERA_FULL = 10;
-export const ERA_HALF = 5;
-export const ERA_FLOOR = 0.2;
+export { ERA_FLOOR, ERA_FULL, ERA_HALF, eraOf };
 /** A stint still going is news, however few games it has had (Durán at Benfica, round 1). */
 export const CURRENT_STINT = 0.6;
 
-export const eraOf = (end: number, year: number) => (end >= year - ERA_FULL ? 1 : Math.max(ERA_FLOOR, 0.5 ** ((year - ERA_FULL - end) / ERA_HALF)));
-/** The last season a player was anywhere: the year itself if a spell is open or undated. */
+/**
+ * The last season a player was anywhere: the year itself if a spell is open
+ * or undated. Unlike src/lib/fame/era.ts lastPlayed, an undated spell reads
+ * as current, so 1,466 retired players never fade; the verdicts were tuned
+ * with it (lastPlayed here: 46 of 59, and ruler.json goes stale).
+ */
 export const lastSeen = (p: Player, year: number) => Math.max(0, ...Object.values(p.spells ?? {}).map((s) => s[2] ?? year));
 
 /** How known "p played for c" is: p's fame, the stint's length, its era, the club's reach. */

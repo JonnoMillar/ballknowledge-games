@@ -20,7 +20,10 @@ careers; pick, test and grade with recent players. Applies to every item below.
   47 of Jonno's 59 round verdicts land, none more than one grade off.
 - Site is https://ballknowledge-games.vercel.app (Vercel project renamed
   `ballknowledge-games`); football-chain.vercel.app 308-redirects. Auto-deploy
-  after the rename is untested until the next push to main.
+  after the rename verified on f621d17 (2026-10-21).
+- Rondo openers for a 16-26 audience: 292 to 193 (`audienceKnows` in
+  games/rondo/server.ts, Steps' faded English views; careers ended before
+  2016 need the 1.5M given bar). Era fade shared in src/lib/fame/era.ts.
 
 ## In progress
 - Player photos: docs/photo-pipeline.md. Round 2 done; phase 2 (cutouts for
@@ -29,9 +32,10 @@ careers; pick, test and grade with recent players. Applies to every item below.
   ~395 fame-60+ cutouts, then merge.
 
 ## Needs Jonno, small
-- Rondo opening players: a keep/cut round over ~290 starters (no data rule
-  separates Gyan from Rosický, Mertesacker, Gary Cahill). Bias it to players
-  a 16-26 audience knows; Steps' audience ruler (games/step) may cut most of it.
+- Steps' `lastSeen` reads 1,466 retired players as current (an undated
+  spell counts as open: Sol Campbell, Romário). The fix (`lastPlayed`,
+  src/lib/fame/era.ts) costs one verdict (46 of 59) and needs ruler.json
+  rebuilt; his call whether to adopt it and re-tune.
 - Odd Man Out solo mode (the model picks the odd man out; daily + archive):
   a short spec for his yes/no.
 - Spoofed's AI rank art clashes: proposal is the site's grade cases instead.
