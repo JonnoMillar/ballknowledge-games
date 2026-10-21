@@ -107,20 +107,29 @@ const CALLS: [string, string][] = [
   ['George Weah', 'Patrick Vieira'], ['David de Gea', 'Rodri'], ['Kevin De Bruyne', 'Andriy Shevchenko'],
   ['Enzo Maresca', 'David de Gea'],
 ];
-for (const [p, g] of CALLS) take((c) => c.pick.name === p && c.given.name === g, 1);
+/** Last season a player was anywhere, or now if a spell is open. */
+const lastSeen = (p: Player) => Math.max(...Object.values(p.spells ?? {}).map((x) => x[2] ?? NOW), 0);
+/** Inside the audience's memory (16 to 26 in 2026): the pick's spell at the club since 2016, the pick still around since 2020, the given since 2016. */
+const recent = (c: Cand) => (ended(c.pick, c.club) ?? NOW) >= 2016 && lastSeen(c.pick) >= 2020 && lastSeen(c.given) >= 2016;
 if (id === 'steps-1') {
+  for (const [p, g] of CALLS) take((c) => c.pick.name === p && c.given.name === g, 1);
   take((c) => c.tags.includes('moved'), 7);
   take((c) => c.tags.includes('given-short'), 4);
   take((c) => c.tags.includes('views-high'), 2);
-} else {
+  for (const g of GRADES) take((c) => c.grade === g, 2);
+  take(() => true, Math.max(0, 30 - chosen.length));
+} else if (id === 'steps-2') {
   take((c) => c.tags.includes('pre-2010'), 6);
   take((c) => c.tags.includes('non-pl') && !c.tags.includes('pre-2010'), 5);
   take((c) => c.tags.includes('new-short'), 3);
   take((c) => c.tags.includes('given-short'), 2);
+  for (const g of GRADES) take((c) => c.grade === g, 2);
+  for (const g of GRADES.slice(0, 3)) take((c) => c.grade === g, 1); // probes run deep; keep the shallow grades in view
+  take(() => true, Math.max(0, 30 - chosen.length));
+} else {
+  // Jonno after round 2: no more players his audience never saw. Ten recent picks, two per grade.
+  for (const g of GRADES) take((c) => recent(c) && c.grade === g, 2);
 }
-for (const g of GRADES) take((c) => c.grade === g, 2);
-if (id !== 'steps-1') for (const g of GRADES.slice(0, 3)) take((c) => c.grade === g, 1); // probes run deep; keep the shallow grades in view
-take(() => true, Math.max(0, 30 - chosen.length));
 
 const items = chosen
   .sort((a, b) => a.date.localeCompare(b.date))
@@ -153,7 +162,7 @@ const round = {
   title: 'Are these grades right?',
   intro: id === 'steps-1'
     ? `${items.length} real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`
-    : `${items.length} real picks from Steps days already played. Each step is shown as in the game: think who you would name, then tap the gap to see a pick and the grade the game gives it. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`,
+    : `${items.length} real picks from Steps days already played${id === 'steps-2' ? '' : ', recent players only'}. Each step is shown as in the game: think who you would name, then tap the gap to see a pick and the grade the game gives it. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`,
   reveal: id !== 'steps-1',
   valueLabel: 'Graded',
   scale: GRADES.map((g) => GRADE_WORD[g]),

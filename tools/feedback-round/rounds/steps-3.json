@@ -1,0 +1,296 @@
+{
+  "id": "steps-3",
+  "eyebrow": "Steps · grade check",
+  "title": "Are these grades right?",
+  "intro": "10 real picks from Steps days already played, recent players only. Each step is shown as in the game: think who you would name, then tap the gap to see a pick and the grade the game gives it. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.",
+  "reveal": true,
+  "valueLabel": "Graded",
+  "scale": [
+    "Basic",
+    "Decent",
+    "Solid",
+    "Sharp",
+    "Elite"
+  ],
+  "options": [
+    {
+      "id": "low",
+      "label": "Too low",
+      "hint": "Deeper than that: it deserves a higher grade"
+    },
+    {
+      "id": "right",
+      "label": "Right"
+    },
+    {
+      "id": "high",
+      "label": "Too high",
+      "hint": "More obvious than that: it deserves a lower grade"
+    }
+  ],
+  "items": [
+    {
+      "id": "2026-09-24-Q41533-Q1130849-Q129700",
+      "kicker": "Frank Lampard · ? · Liverpool",
+      "title": "Mario Balotelli",
+      "lines": [
+        "Linked by Manchester City: 54 games there, Lampard 32",
+        "At Liverpool: 16 league games, until 2016"
+      ],
+      "gap": [
+        "Lampard",
+        "Liverpool"
+      ],
+      "prompt": "Played for one of Lampard’s clubs and for Liverpool",
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-09-24",
+        "given": "Q41533",
+        "club": "Q1130849",
+        "pick": "Q129700",
+        "old": "solid",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-09-28-Q17507-Q10329-Q16236859",
+      "kicker": "Sevilla · ? · Gerard Piqué",
+      "title": "Clément Lenglet",
+      "lines": [
+        "Linked by Barcelona: 105 games there, Piqué 397",
+        "At Sevilla: 52 league games, until 2018"
+      ],
+      "gap": [
+        "Sevilla",
+        "Piqué"
+      ],
+      "prompt": "Played for Sevilla and one of Piqué’s clubs",
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-09-28",
+        "given": "Q17507",
+        "club": "Q10329",
+        "pick": "Q16236859",
+        "old": "decent",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-30-Q455462-Q10333-Q6298063",
+      "kicker": "Valencia · ? · Antoine Griezmann",
+      "title": "João Cancelo",
+      "lines": [
+        "Linked by Barcelona: 48 games there, Griezmann 74",
+        "At Valencia: 74 league games, until 2018"
+      ],
+      "gap": [
+        "Valencia",
+        "Griezmann"
+      ],
+      "prompt": "Played for Valencia and one of Griezmann’s clubs",
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-09-30",
+        "given": "Q455462",
+        "club": "Q10333",
+        "pick": "Q6298063",
+        "old": "basic",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-30-Q66241169-Q10333-Q246417",
+      "kicker": "Jude Bellingham · ? · Valencia",
+      "title": "Denis Cheryshev",
+      "lines": [
+        "Linked by Real Madrid: 2 games there, Bellingham 90",
+        "At Valencia: 96 league games, until 2022"
+      ],
+      "gap": [
+        "Bellingham",
+        "Valencia"
+      ],
+      "prompt": "Played for one of Bellingham’s clubs and for Valencia",
+      "value": "Elite",
+      "rank": 4,
+      "meta": {
+        "date": "2026-09-30",
+        "given": "Q66241169",
+        "club": "Q10333",
+        "pick": "Q246417",
+        "old": "sharp",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-01-Q43729-Q8701-Q455462",
+      "kicker": "Andrés Iniesta · ? · Atlético Madrid",
+      "title": "Antoine Griezmann",
+      "lines": [
+        "Linked by Barcelona: 74 games there, Iniesta 442",
+        "At Atlético Madrid: 349 league games, until 2026"
+      ],
+      "gap": [
+        "Iniesta",
+        "Atlético Madrid"
+      ],
+      "prompt": "Played for one of Iniesta’s clubs and for Atlético Madrid",
+      "value": "Basic",
+      "rank": 0,
+      "meta": {
+        "date": "2026-10-01",
+        "given": "Q43729",
+        "club": "Q8701",
+        "pick": "Q455462",
+        "old": "basic",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-03-Q312157-Q18741-Q59108",
+      "kicker": "Raheem Sterling · ? · Tottenham Hotspur",
+      "title": "Kyle Walker",
+      "lines": [
+        "Linked by Manchester City: 212 games there, Sterling 225",
+        "At Tottenham Hotspur: 183 league games, until 2017"
+      ],
+      "gap": [
+        "Sterling",
+        "Tottenham"
+      ],
+      "prompt": "Played for one of Sterling’s clubs and for Tottenham",
+      "value": "Basic",
+      "rank": 0,
+      "meta": {
+        "date": "2026-10-03",
+        "given": "Q312157",
+        "club": "Q18741",
+        "pick": "Q59108",
+        "old": "basic",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-10-03-Q312157-Q18741-Q23413053",
+      "kicker": "Raheem Sterling · ? · Tottenham Hotspur",
+      "title": "Marcos Senesi",
+      "lines": [
+        "Linked by Feyenoord Rotterdam: 82 games there, Sterling 8",
+        "At Tottenham Hotspur: 1 league games, until 2026"
+      ],
+      "gap": [
+        "Sterling",
+        "Tottenham"
+      ],
+      "prompt": "Played for one of Sterling’s clubs and for Tottenham",
+      "value": "Elite",
+      "rank": 4,
+      "meta": {
+        "date": "2026-10-03",
+        "given": "Q312157",
+        "club": "Q18741",
+        "pick": "Q23413053",
+        "old": "solid",
+        "tags": [
+          "moved",
+          "given-short",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-10-Q188997-Q1543-Q30123152",
+      "kicker": "Wojciech Szczęsny · ? · Milan",
+      "title": "Emerson Royal",
+      "lines": [
+        "Linked by Barcelona: 3 games there, Szczęsny 21",
+        "At Milan: 17 league games, until 2025"
+      ],
+      "gap": [
+        "Szczęsny",
+        "AC Milan"
+      ],
+      "prompt": "Played for one of Szczęsny’s clubs and for AC Milan",
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-10-10",
+        "given": "Q188997",
+        "club": "Q1543",
+        "pick": "Q30123152",
+        "old": "sharp",
+        "tags": [
+          "given-short",
+          "views-high",
+          "non-pl",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-14-Q129027-Q81888-Q26259982",
+      "kicker": "Paul Pogba · ? · Ajax",
+      "title": "Matthijs de Ligt",
+      "lines": [
+        "Linked by Juventus: 117 games there, Pogba 132",
+        "At Ajax: 117 league games, until 2019"
+      ],
+      "gap": [
+        "Pogba",
+        "Ajax"
+      ],
+      "prompt": "Played for one of Pogba’s clubs and for Ajax",
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-10-14",
+        "given": "Q129027",
+        "club": "Q81888",
+        "pick": "Q26259982",
+        "old": "decent",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-19-Q133556-Q10329-Q294806",
+      "kicker": "Sevilla · ? · Ashley Cole",
+      "title": "César Azpilicueta",
+      "lines": [
+        "Linked by Chelsea: 349 games there, Cole 229",
+        "At Sevilla: 17 league games, until 2026"
+      ],
+      "gap": [
+        "Sevilla",
+        "Cole"
+      ],
+      "prompt": "Played for Sevilla and one of Cole’s clubs",
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-10-19",
+        "given": "Q133556",
+        "club": "Q10329",
+        "pick": "Q294806",
+        "old": "basic",
+        "tags": [
+          "moved",
+          "non-pl",
+          "new-short"
+        ]
+      }
+    }
+  ]
+}

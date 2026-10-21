@@ -130,7 +130,7 @@ Days from 2026-10-21 were re-drawn (10-21's shown answer leaked into step 2).
 memberships (shared pool, so Chain too), and grading by real pick rates once
 there is traffic.
 
-### Feedback round 2 (2026-10-21), out with Jonno
+### Feedback round 2 (2026-10-21), answered
 
 Same artifact, `round.json` now `tools/feedback-round/rounds/steps-2.json`
 (`npx tsx scripts/step/feedback-round.ts steps-2`), answers at
@@ -149,6 +149,27 @@ At Jonno's ask the round hides each pick: an item shows the step as in the
 game (`gap`, `prompt`) and the pick, its lines and grade appear only once
 the gap is tapped (`reveal: true` on the round), so he judges before
 hindsight. Item ids unchanged.
+
+**Answers (25 of 30):** 13 too low, 9 right, 3 too high. Every pre-2010
+pick he rated came back too low or "never heard of him" (Redknapp,
+Leonardo, van Hooijdonk, Prosinečki, Ince, Harewood, Zenden). His words:
+the audience is roughly **16 to 26** and rarely names anyone whose career
+ended before 2010. So era fade is no longer open: old players must grade
+deeper. Too high: Torres at Liverpool for Terry (Decent, should be Basic),
+Andrey Santos (Elite), and Depay at Man Utd for Rodri: Rodri is now at
+Barcelona, where Depay also played, so the link should be Barcelona and
+one grade lower. That means a 0-game membership can be a real current
+transfer, not junk: do not drop unbacked memberships wholesale. Diomande
+at Forest for Ronaldo (Elite): "how many solutions are there, I didn't
+have one" (a step close to unfair).
+
+### Feedback round 3 (2026-10-21), out with Jonno, his last
+
+Ten picks, two per grade, recent only (`recent` in the script: the pick's
+spell at the club since 2016, the pick seen since 2020, the given since
+2016). Jonno said it is the last round he will do: no more rounds; use
+these three and, later, real pick rates. Answers at
+`rounds/steps-3/answers`.
 
 ### Feedback round 1
 
