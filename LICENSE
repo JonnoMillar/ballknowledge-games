@@ -1,28 +1,11 @@
-MIT License
+Copyright (c) 2026 Jonno Millar. All rights reserved.
 
-Copyright (c) 2026 Jonno Millar
+The source code in this repository is public so that you can see how it
+is built, and you are welcome to run it locally to look at it. Please
+don't copy, redistribute or reuse it, in whole or in part, without
+asking me first.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
----
-
-This licence covers the source code only. The data in data/ is not the
-author's to license: player and club facts come from Wikidata (CC0), careers
-are completed from English Wikipedia (CC BY-SA 4.0), and photos and crests
-belong to their authors and clubs. See the /credits page of the running app.
+The data in data/ is not the author's to license: player and club facts
+come from Wikidata (CC0), careers are completed from English Wikipedia
+(CC BY-SA 4.0), and photos and crests belong to their authors and clubs.
+See the /credits page of the running app.
