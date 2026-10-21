@@ -1,0 +1,492 @@
+{
+ "span": [
+  1976,
+  1997
+ ],
+ "prime": 1987.5,
+ "cat": "Diego Maradona",
+ "files": 81,
+ "cands": [
+  {
+   "file": "File:Maradona debut seleccion.jpg",
+   "p18": false,
+   "year": 1977,
+   "local": "cand/Q17515/14.jpg",
+   "gate": null,
+   "face": 240,
+   "share": 0.35,
+   "sharp": 452,
+   "room": 2.4,
+   "box": [
+    462,
+    100,
+    172,
+    240
+   ],
+   "yaw": 0.07,
+   "roll": -4.6,
+   "cx": 0.57,
+   "why": "face 240px, 35% of height, sharpness 452",
+   "score": 2.919
+  },
+  {
+   "file": "File:Maradona figurita crack.jpg",
+   "p18": false,
+   "year": 1978,
+   "local": "cand/Q17515/17.jpg",
+   "gate": null,
+   "face": 283,
+   "share": 0.31,
+   "sharp": 199,
+   "room": 2.5,
+   "box": [
+    225,
+    206,
+    190,
+    283
+   ],
+   "yaw": 0.02,
+   "roll": -10.6,
+   "cx": 0.5,
+   "why": "face 283px, 31% of height, sharpness 199",
+   "score": 2.681
+  },
+  {
+   "file": "File:El grafico 3173 maradona.jpg",
+   "p18": false,
+   "year": 1980,
+   "local": "cand/Q17515/37.jpg",
+   "gate": null,
+   "face": 120,
+   "share": 0.15,
+   "sharp": 385,
+   "room": 5.3,
+   "box": [
+    284,
+    170,
+    91,
+    120
+   ],
+   "yaw": -0.11,
+   "roll": 0.2,
+   "cx": 0.53,
+   "why": "face 120px, 15% of height, sharpness 385",
+   "score": 1.8
+  },
+  {
+   "file": "File:Maradona Gianni Di Marzio.jpg",
+   "p18": false,
+   "year": 1977,
+   "local": "cand/Q17515/9.jpg",
+   "gate": null,
+   "face": 178,
+   "share": 0.26,
+   "sharp": 641,
+   "room": 2.9,
+   "box": [
+    307,
+    169,
+    130,
+    178
+   ],
+   "yaw": -0.22,
+   "roll": 1.7,
+   "cx": 0.39,
+   "why": "face 178px, 26% of height, sharpness 641",
+   "score": 1.718
+  },
+  {
+   "file": "File:Maradona en el juvenil 1979.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/28.jpg",
+   "gate": null,
+   "face": 96,
+   "share": 0.14,
+   "sharp": 388,
+   "room": 6.1,
+   "box": [
+    245,
+    80,
+    71,
+    96
+   ],
+   "yaw": 0.01,
+   "roll": 1.1,
+   "cx": 0.49,
+   "why": "face 96px, 14% of height, sharpness 388",
+   "score": 1.598
+  },
+  {
+   "file": "File:Maradona gente 1979.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/30.jpg",
+   "gate": null,
+   "face": 343,
+   "share": 0.27,
+   "sharp": 402,
+   "room": 3.4,
+   "box": [
+    500,
+    120,
+    270,
+    343
+   ],
+   "yaw": -0.2,
+   "roll": -5.5,
+   "cx": 0.66,
+   "why": "face 343px, 27% of height, sharpness 402",
+   "score": 1.448
+  },
+  {
+   "file": "File:Beckenbauer maradona 1980.jpg",
+   "p18": false,
+   "year": 1980,
+   "local": "cand/Q17515/34.jpg",
+   "gate": null,
+   "face": 72,
+   "share": 0.16,
+   "sharp": 946,
+   "room": 5.9,
+   "box": [
+    147,
+    27,
+    53,
+    72
+   ],
+   "yaw": 0.57,
+   "roll": -1.0,
+   "cx": 0.47,
+   "why": "face 72px, 16% of height, sharpness 946",
+   "score": 1.019
+  },
+  {
+   "file": "File:Huracan v argentinos maradona 1979.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/25.jpg",
+   "gate": null,
+   "face": 82,
+   "share": 0.09,
+   "sharp": 1807,
+   "room": 8.4,
+   "box": [
+    378,
+    234,
+    66,
+    82
+   ],
+   "yaw": -0.45,
+   "roll": -0.4,
+   "cx": 0.43,
+   "why": "face 82px, 9% of height, sharpness 1807",
+   "score": 0.76
+  },
+  {
+   "file": "File:Maradona primer gol oficial zurdazo.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/4.jpg",
+   "gate": null,
+   "face": 53,
+   "share": 0.09,
+   "sharp": 2355,
+   "room": 6.2,
+   "box": [
+    402,
+    265,
+    42,
+    53
+   ],
+   "yaw": -0.48,
+   "roll": 0.3,
+   "cx": 0.44,
+   "why": "face 53px, 9% of height, sharpness 2355",
+   "score": 0.53
+  },
+  {
+   "file": "File:Maradona sivori.jpg",
+   "p18": false,
+   "year": 1978,
+   "local": "cand/Q17515/18.jpg",
+   "gate": null,
+   "face": 137,
+   "share": 0.22,
+   "sharp": 5121,
+   "room": 3.4,
+   "box": [
+    595,
+    171,
+    101,
+    137
+   ],
+   "yaw": -0.95,
+   "roll": 9.8,
+   "cx": 0.67,
+   "why": "face 137px, 22% of height, sharpness 5121",
+   "score": 0.525
+  },
+  {
+   "file": "File:Argentina celebrando copa (cropped).jpg",
+   "p18": true,
+   "year": 1986,
+   "local": "cand/Q17515/0.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona cano debut.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona corriendo debut (cropped).jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona corriendo debut.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona primer gol oficial.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona taquito cancha argentinos.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona vs talleres.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Valencia maradona.jpg",
+   "p18": false,
+   "year": 1976,
+   "local": "cand/Q17515/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Argentina substitutes maradona.jpg",
+   "p18": false,
+   "year": 1977,
+   "local": "cand/Q17515/10.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Diego y raul maradona.jpg",
+   "p18": false,
+   "year": 1977,
+   "local": "cand/Q17515/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona argentinos v quilmes 1977.jpg",
+   "p18": false,
+   "year": 1977,
+   "local": "cand/Q17515/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona debut seleccion (cropped).jpg",
+   "p18": false,
+   "year": 1977,
+   "local": "cand/Q17515/13.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Alonso y maradona seleccion 1978.jpg",
+   "p18": false,
+   "year": 1978,
+   "local": "cand/Q17515/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Beckenbauer and maradona 1978.jpg",
+   "p18": false,
+   "year": 1978,
+   "local": "cand/Q17515/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona v chacarita 1978.jpg",
+   "p18": false,
+   "year": 1978,
+   "local": "cand/Q17515/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Sivori maradona 1978.jpg",
+   "p18": false,
+   "year": 1978,
+   "local": "cand/Q17515/20.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona ruben paz.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Carlosalberto maradona.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Diego hugo lalo maradona.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Duchini maradona menotti.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona argentinos vs velez.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona durmiendo 1979.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/27.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Maradona festejo vs resto mundo.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Menotti y maradona sudamericano 1979.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Passarella maradona 1979.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Passarella maradona menotti.jpg",
+   "p18": false,
+   "year": 1979,
+   "local": "cand/Q17515/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Beckenbauer v maradona 1980.jpg",
+   "p18": false,
+   "year": 1980,
+   "local": "cand/Q17515/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:El grafico 3150 maradona.jpg",
+   "p18": false,
+   "year": 1980,
+   "local": "cand/Q17515/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Gol maradona argentinos vs cosmos.jpg",
+   "p18": false,
+   "year": 1980,
+   "local": "cand/Q17515/39.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

@@ -1,0 +1,566 @@
+{
+ "span": [
+  1998,
+  2016
+ ],
+ "prime": 2006.5,
+ "cat": "Steven Gerrard",
+ "files": 45,
+ "cands": [
+  {
+   "file": "File:Steven Gerrard 2006.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q459830/6.jpg",
+   "gate": null,
+   "face": 221,
+   "share": 0.31,
+   "sharp": 243,
+   "room": 2.7,
+   "box": [
+    97,
+    117,
+    162,
+    221
+   ],
+   "yaw": -0.02,
+   "roll": -1.2,
+   "cx": 0.42,
+   "why": "face 221px, 31% of height, sharpness 243",
+   "score": 6.123
+  },
+  {
+   "file": "File:Steven Gerrard cropped.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q459830/11.jpg",
+   "gate": null,
+   "face": 269,
+   "share": 0.34,
+   "sharp": 449,
+   "room": 2.5,
+   "box": [
+    171,
+    115,
+    204,
+    269
+   ],
+   "yaw": 0.03,
+   "roll": -8.3,
+   "cx": 0.46,
+   "why": "face 269px, 34% of height, sharpness 449",
+   "score": 5.487
+  },
+  {
+   "file": "File:SGerrard.JPG",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/32.jpg",
+   "gate": null,
+   "face": 116,
+   "share": 0.35,
+   "sharp": 460,
+   "room": 2.2,
+   "box": [
+    74,
+    75,
+    91,
+    116
+   ],
+   "yaw": -0.12,
+   "roll": -1.5,
+   "cx": 0.48,
+   "why": "face 116px, 35% of height, sharpness 460",
+   "score": 4.89
+  },
+  {
+   "file": "File:Steven Gerrard in Thailand (12775079374).jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q459830/14.jpg",
+   "gate": null,
+   "face": 368,
+   "share": 0.29,
+   "sharp": 102,
+   "room": 2.9,
+   "box": [
+    333,
+    238,
+    270,
+    368
+   ],
+   "yaw": -0.01,
+   "roll": 4.2,
+   "cx": 0.52,
+   "why": "face 368px, 29% of height, sharpness 102",
+   "score": 3.271
+  },
+  {
+   "file": "File:Steven Gerrard before Euro 2012 match vs Italy.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/39.jpg",
+   "gate": null,
+   "face": 103,
+   "share": 0.24,
+   "sharp": 513,
+   "room": 3.0,
+   "box": [
+    277,
+    129,
+    74,
+    103
+   ],
+   "yaw": -0.09,
+   "roll": -1.0,
+   "cx": 0.48,
+   "why": "face 103px, 24% of height, sharpness 513",
+   "score": 3.017
+  },
+  {
+   "file": "File:Steven Gerrard.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q459830/21.jpg",
+   "gate": null,
+   "face": 151,
+   "share": 0.25,
+   "sharp": 678,
+   "room": 3.0,
+   "box": [
+    163,
+    143,
+    118,
+    151
+   ],
+   "yaw": 0.32,
+   "roll": -7.0,
+   "cx": 0.37,
+   "why": "face 151px, 25% of height, sharpness 678",
+   "score": 2.6
+  },
+  {
+   "file": "File:Steven Gerrard in 2014.jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q459830/13.jpg",
+   "gate": null,
+   "face": 336,
+   "share": 0.24,
+   "sharp": 2893,
+   "room": 3.3,
+   "box": [
+    507,
+    268,
+    259,
+    336
+   ],
+   "yaw": 0.33,
+   "roll": 3.8,
+   "cx": 0.66,
+   "why": "face 336px, 24% of height, sharpness 2893",
+   "score": 1.605
+  },
+  {
+   "file": "File:Steven Gerrard on his testimonial.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q459830/15.jpg",
+   "gate": null,
+   "face": 131,
+   "share": 0.09,
+   "sharp": 363,
+   "room": 10.2,
+   "box": [
+    398,
+    145,
+    95,
+    131
+   ],
+   "yaw": 0.19,
+   "roll": -1.5,
+   "cx": 0.46,
+   "why": "face 131px, 9% of height, sharpness 363",
+   "score": 1.354
+  },
+  {
+   "file": "File:Steven Gerrard 2012.JPG",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/34.jpg",
+   "gate": null,
+   "face": 77,
+   "share": 0.13,
+   "sharp": 153,
+   "room": 6.7,
+   "box": [
+    181,
+    63,
+    66,
+    77
+   ],
+   "yaw": 0.16,
+   "roll": -0.1,
+   "cx": 0.46,
+   "why": "face 77px, 13% of height, sharpness 153",
+   "score": 1.305
+  },
+  {
+   "file": "File:Steven Gerrard, 2014.jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q459830/19.jpg",
+   "gate": null,
+   "face": 184,
+   "share": 0.19,
+   "sharp": 288,
+   "room": 4.7,
+   "box": [
+    319,
+    99,
+    144,
+    184
+   ],
+   "yaw": -0.4,
+   "roll": -3.7,
+   "cx": 0.41,
+   "why": "face 184px, 19% of height, sharpness 288",
+   "score": 1.283
+  },
+  {
+   "file": "File:Steven Gerrard, 2014 (cropped).jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q459830/18.jpg",
+   "gate": null,
+   "face": 252,
+   "share": 0.2,
+   "sharp": 285,
+   "room": 4.4,
+   "box": [
+    267,
+    123,
+    169,
+    252
+   ],
+   "yaw": -0.47,
+   "roll": 2.6,
+   "cx": 0.37,
+   "why": "face 252px, 20% of height, sharpness 285",
+   "score": 1.119
+  },
+  {
+   "file": "File:Steven Gerrard v Cardiff 2014.jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q459830/16.jpg",
+   "gate": null,
+   "face": 176,
+   "share": 0.1,
+   "sharp": 966,
+   "room": 9.0,
+   "box": [
+    408,
+    125,
+    117,
+    176
+   ],
+   "yaw": 0.73,
+   "roll": -1.8,
+   "cx": 0.49,
+   "why": "face 176px, 10% of height, sharpness 966",
+   "score": 1.087
+  },
+  {
+   "file": "File:Gerrard in Boston.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/29.jpg",
+   "gate": null,
+   "face": 123,
+   "share": 0.09,
+   "sharp": 254,
+   "room": 9.5,
+   "box": [
+    513,
+    176,
+    76,
+    123
+   ],
+   "yaw": 0.72,
+   "roll": -1.5,
+   "cx": 0.57,
+   "why": "face 123px, 9% of height, sharpness 254",
+   "score": 0.749
+  },
+  {
+   "file": "File:Steven Gerrard 2015.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q459830/8.jpg",
+   "gate": null,
+   "face": 132,
+   "share": 0.09,
+   "sharp": 589,
+   "room": 10.1,
+   "box": [
+    388,
+    116,
+    103,
+    132
+   ],
+   "yaw": -0.4,
+   "roll": -14.3,
+   "cx": 0.46,
+   "why": "face 132px, 9% of height, sharpness 589",
+   "score": 0.6
+  },
+  {
+   "file": "File:Gerrard liverpool0607.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q459830/0.jpg",
+   "gate": "face sharpness 54, soft",
+   "face": 139,
+   "share": 0.1,
+   "sharp": 54,
+   "room": 9.4,
+   "box": [
+    183,
+    57,
+    101,
+    139
+   ],
+   "yaw": -0.23,
+   "roll": 2.1,
+   "cx": 0.44,
+   "why": "face sharpness 54, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Gerrard- Angry.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q459830/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Henderson, Gerrard, Sturridge, Johnson.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q459830/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Liverpool footballer Steven Gerrard.jpg",
+   "p18": false,
+   "year": 2005,
+   "local": "cand/Q459830/3.jpg",
+   "gate": "face 39px, too small",
+   "why": "face 39px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Mavuba face \u00e0 Gerrard.png",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q459830/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard 2006 08 shirt.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q459830/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard 2010.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q459830/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard and Gary Neville.png",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q459830/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard corner.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q459830/10.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard faces.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q459830/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard v Chelsea 2015.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q459830/17.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard, Simon Mignolet, Jordan Henderson - Gerrards testimonial.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q459830/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven-Gerrard-profile.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q459830/22.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Borini and Gerrard.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Borini, Segura, Gerrard, Johnson, Carroll, Robinson, Henderson, Kelly, Downing.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Cole Diamanti and Gerrard England-Italy Euro 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/25.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Daniel Agger and Steven Gerrard.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Fabio Borini, Pep Segura, Steven Gerrard, Glen Johnson, Andy Carroll, Jack Robinson, Jordan Henderson, Martin Kelly, Stewart Downing.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/27.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Gerrard celebrates his second goal v Everton.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Gerrard's goal celebration v Everton.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kelly, Henderson, Gerrard.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard - Franck Rib\u00e9ry 20120611.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard and Daniele De Rossi England-Italy Euro 2012 01.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard and Daniele De Rossi England-Italy Euro 2012 02.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard and Federico Balzaretti England-Italy Euro 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/37.jpg",
+   "gate": "face 45px, too small",
+   "why": "face 45px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Steven Gerrard and Florenzi.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q459830/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

@@ -11,7 +11,10 @@
    103,
    192,
    263
-  ]
+  ],
+  "yaw": -0.06,
+  "roll": 6.5,
+  "cx": 0.51
  },
  {
   "file": "File:Balotelli autografi.JPG",
@@ -25,7 +28,10 @@
    112,
    257,
    325
-  ]
+  ],
+  "yaw": -0.44,
+  "roll": 12.0,
+  "cx": 0.68
  },
  {
   "file": "File:Mario Balotelli OM (cropped).jpg",
@@ -39,7 +45,10 @@
    99,
    154,
    217
-  ]
+  ],
+  "yaw": 0.05,
+  "roll": 5.2,
+  "cx": 0.51
  },
  {
   "file": "File:Mario Balotelli OM.jpg",
@@ -53,7 +62,10 @@
    106,
    147,
    208
-  ]
+  ],
+  "yaw": 0.03,
+  "roll": 2.4,
+  "cx": 0.53
  },
  {
   "file": "File:Mario Balotelli 2009.jpg",
@@ -67,7 +79,10 @@
    93,
    89,
    105
-  ]
+  ],
+  "yaw": -0.01,
+  "roll": 0.6,
+  "cx": 0.52
  },
  {
   "file": "File:Mario Balotelli - Inter Mailand (2).jpg",
@@ -81,7 +96,10 @@
    158,
    118,
    148
-  ]
+  ],
+  "yaw": 0.27,
+  "roll": 2.5,
+  "cx": 0.53
  },
  {
   "file": "File:Mario Balotelli (15440231808) (cropped).jpg",
@@ -95,7 +113,10 @@
    95,
    101,
    137
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": -0.0,
+  "cx": 0.54
  },
  {
   "file": "File:Mario Balotelli - Inter Mailand (1).jpg",
@@ -109,7 +130,10 @@
    107,
    100,
    133
-  ]
+  ],
+  "yaw": -0.22,
+  "roll": -4.3,
+  "cx": 0.54
  },
  {
   "file": "File:Mario Balotelli Nice (cropped).jpg",
@@ -123,7 +147,10 @@
    39,
    55,
    74
-  ]
+  ],
+  "yaw": -0.25,
+  "roll": -1.8,
+  "cx": 0.49
  },
  {
   "file": "File:Balotelli playing for OGC Nice-8.jpg",
@@ -137,7 +164,10 @@
    77,
    60,
    80
-  ]
+  ],
+  "yaw": 0.03,
+  "roll": 1.2,
+  "cx": 0.45
  },
  {
   "file": "File:Mario Balotelli Euro 2012 Training.jpg",
@@ -151,7 +181,10 @@
    210,
    154,
    225
-  ]
+  ],
+  "yaw": 0.62,
+  "roll": -4.9,
+  "cx": 0.51
  },
  {
   "file": "File:Mario Balotelli Nice.jpg",
@@ -165,7 +198,10 @@
    53,
    56,
    75
-  ]
+  ],
+  "yaw": -0.28,
+  "roll": -0.0,
+  "cx": 0.48
  },
  {
   "file": "File:Mario Balotelli Euro 2012 vs England 02.JPG",
@@ -179,7 +215,10 @@
    57,
    50,
    64
-  ]
+  ],
+  "yaw": -0.08,
+  "roll": -0.4,
+  "cx": 0.44
  },
  {
   "file": "File:Mario Balotelli Euro 2012 vs England 01.JPG",
@@ -193,7 +232,10 @@
    54,
    50,
    64
-  ]
+  ],
+  "yaw": -0.16,
+  "roll": 0.2,
+  "cx": 0.54
  },
  {
   "file": "File:Ashley Cole and Mario Balotelli England-Italy Euro 2012.JPG",

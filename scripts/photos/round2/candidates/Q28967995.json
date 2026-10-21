@@ -1,0 +1,426 @@
+{
+ "span": [
+  2015,
+  2026
+ ],
+ "prime": 2024.0,
+ "cat": "Erling Braut Haaland",
+ "files": 23,
+ "cands": [
+  {
+   "file": "File:Erling Haaland Morocco v Norway 7 June 2026-51.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/22.jpg",
+   "gate": null,
+   "face": 413,
+   "share": 0.29,
+   "sharp": 1599,
+   "room": 3.1,
+   "box": [
+    326,
+    165,
+    307,
+    413
+   ],
+   "yaw": 0.02,
+   "roll": -0.2,
+   "cx": 0.5,
+   "why": "face 413px, 29% of height, sharpness 1599",
+   "score": 8.582
+  },
+  {
+   "file": "File:Erling Haaland June 2025.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q28967995/15.jpg",
+   "gate": null,
+   "face": 324,
+   "share": 0.25,
+   "sharp": 1122,
+   "room": 3.6,
+   "box": [
+    322,
+    144,
+    241,
+    324
+   ],
+   "yaw": 0.12,
+   "roll": -1.7,
+   "cx": 0.46,
+   "why": "face 324px, 25% of height, sharpness 1122",
+   "score": 5.563
+  },
+  {
+   "file": "File:Erling Haaland 2023 (cropped).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/8.jpg",
+   "gate": null,
+   "face": 333,
+   "share": 0.3,
+   "sharp": 1156,
+   "room": 3.0,
+   "box": [
+    349,
+    126,
+    238,
+    333
+   ],
+   "yaw": 0.29,
+   "roll": 2.3,
+   "cx": 0.56,
+   "why": "face 333px, 30% of height, sharpness 1156",
+   "score": 5.347
+  },
+  {
+   "file": "File:Erling Braut Haaland France v Norway 26 June 26-001.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/17.jpg",
+   "gate": null,
+   "face": 338,
+   "share": 0.23,
+   "sharp": 1627,
+   "room": 3.7,
+   "box": [
+    347,
+    205,
+    254,
+    338
+   ],
+   "yaw": 0.22,
+   "roll": 3.3,
+   "cx": 0.49,
+   "why": "face 338px, 23% of height, sharpness 1627",
+   "score": 4.713
+  },
+  {
+   "file": "File:Erling Haaland 2023 (cropped-v2).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/9.jpg",
+   "gate": null,
+   "face": 164,
+   "share": 0.3,
+   "sharp": 234,
+   "room": 2.9,
+   "box": [
+    175,
+    70,
+    119,
+    164
+   ],
+   "yaw": 0.24,
+   "roll": 6.3,
+   "cx": 0.57,
+   "why": "face 164px, 30% of height, sharpness 234",
+   "score": 3.903
+  },
+  {
+   "file": "File:Erling-Haaland-2023.jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/13.jpg",
+   "gate": null,
+   "face": 174,
+   "share": 0.25,
+   "sharp": 89,
+   "room": 3.5,
+   "box": [
+    197,
+    88,
+    142,
+    174
+   ],
+   "yaw": -0.2,
+   "roll": 6.1,
+   "cx": 0.52,
+   "why": "face 174px, 25% of height, sharpness 89",
+   "score": 3.65
+  },
+  {
+   "file": "File:Erling Haaland Morocco v Norway 7 June 2026-128.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/19.jpg",
+   "gate": null,
+   "face": 174,
+   "share": 0.12,
+   "sharp": 1256,
+   "room": 7.4,
+   "box": [
+    420,
+    157,
+    136,
+    174
+   ],
+   "yaw": -0.21,
+   "roll": 4.8,
+   "cx": 0.51,
+   "why": "face 174px, 12% of height, sharpness 1256",
+   "score": 2.724
+  },
+  {
+   "file": "File:Erling Haaland 2023 (fullcropped-v2).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/11.jpg",
+   "gate": null,
+   "face": 121,
+   "share": 0.1,
+   "sharp": 795,
+   "room": 9.4,
+   "box": [
+    477,
+    120,
+    96,
+    121
+   ],
+   "yaw": 0.22,
+   "roll": 0.8,
+   "cx": 0.55,
+   "why": "face 121px, 10% of height, sharpness 795",
+   "score": 2.204
+  },
+  {
+   "file": "File:Erling Haaland 2023.jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/12.jpg",
+   "gate": null,
+   "face": 108,
+   "share": 0.09,
+   "sharp": 1250,
+   "room": 8.4,
+   "box": [
+    471,
+    292,
+    83,
+    108
+   ],
+   "yaw": 0.23,
+   "roll": 1.6,
+   "cx": 0.53,
+   "why": "face 108px, 9% of height, sharpness 1250",
+   "score": 2.143
+  },
+  {
+   "file": "File:Erling Haaland 2023 (fullcropped).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/10.jpg",
+   "gate": null,
+   "face": 169,
+   "share": 0.13,
+   "sharp": 284,
+   "room": 7.3,
+   "box": [
+    407,
+    55,
+    126,
+    169
+   ],
+   "yaw": 0.19,
+   "roll": 8.8,
+   "cx": 0.58,
+   "why": "face 169px, 13% of height, sharpness 284",
+   "score": 1.746
+  },
+  {
+   "file": "File:Erling Haaland Morocco v Norway 7 June 2026-103.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/18.jpg",
+   "gate": null,
+   "face": 222,
+   "share": 0.15,
+   "sharp": 764,
+   "room": 5.5,
+   "box": [
+    432,
+    213,
+    172,
+    222
+   ],
+   "yaw": 0.6,
+   "roll": -7.2,
+   "cx": 0.54,
+   "why": "face 222px, 15% of height, sharpness 764",
+   "score": 1.672
+  },
+  {
+   "file": "File:Erling Haaland Morocco v Norway 7 June 2026-164.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/20.jpg",
+   "gate": null,
+   "face": 103,
+   "share": 0.16,
+   "sharp": 1590,
+   "room": 5.2,
+   "box": [
+    482,
+    106,
+    71,
+    103
+   ],
+   "yaw": -0.91,
+   "roll": 4.6,
+   "cx": 0.54,
+   "why": "face 103px, 16% of height, sharpness 1590",
+   "score": 1.227
+  },
+  {
+   "file": "File:Erling Haaland 2020 (cropped).jpg",
+   "p18": false,
+   "year": 2020,
+   "local": "cand/Q28967995/1.jpg",
+   "gate": null,
+   "face": 98,
+   "share": 0.16,
+   "sharp": 121,
+   "room": 5.9,
+   "box": [
+    221,
+    54,
+    81,
+    98
+   ],
+   "yaw": 0.07,
+   "roll": 2.2,
+   "cx": 0.72,
+   "why": "face 98px, 16% of height, sharpness 121",
+   "score": 0.892
+  },
+  {
+   "file": "File:Erling Haaland 2020.jpg",
+   "p18": false,
+   "year": 2020,
+   "local": "cand/Q28967995/2.jpg",
+   "gate": null,
+   "face": 105,
+   "share": 0.1,
+   "sharp": 108,
+   "room": 9.1,
+   "box": [
+    251,
+    72,
+    87,
+    105
+   ],
+   "yaw": 0.18,
+   "roll": 3.7,
+   "cx": 0.64,
+   "why": "face 105px, 10% of height, sharpness 108",
+   "score": 0.831
+  },
+  {
+   "file": "File:Erling Haaland France v Norway 26 June 26-008.jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q28967995/0.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Haaland and Rodri warm up 2022.jpeg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q28967995/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Haaland Premier League first.jpeg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q28967995/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Haaland warm up 2022 (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q28967995/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2023-10-04 Fu\u00dfball, M\u00e4nner, UEFA Champions League, RB Leipzig - Manchester City FC IMG 6179 (Pep Guardiola, Erling Haaland, Julian \u00c1lvarez).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Erling Haaland 2023 (cropped square).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/7.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Yokohama F. Marinos - Manchester City (3-5) - 53075487875 (Haaland).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q28967995/14.jpg",
+   "gate": "face sharpness 68, soft",
+   "face": 117,
+   "share": 0.09,
+   "sharp": 68,
+   "room": 10.4,
+   "box": [
+    293,
+    94,
+    95,
+    117
+   ],
+   "yaw": 0.17,
+   "roll": 0.2,
+   "cx": 0.56,
+   "why": "face sharpness 68, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Alexander Sorloth Erling Haaland Morocco v Norway 7 June 2026-123.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Erling Haaland Morocco v Norway 7 June 2026-166.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28967995/21.jpg",
+   "gate": null,
+   "face": 128,
+   "share": 0.09,
+   "sharp": 385,
+   "room": 9.8,
+   "box": [
+    382,
+    189,
+    69,
+    128
+   ],
+   "yaw": -10.9,
+   "roll": 36.9,
+   "cx": 0.43,
+   "why": "face 128px, 9% of height, sharpness 385",
+   "score": 0.0
+  }
+ ]
+}

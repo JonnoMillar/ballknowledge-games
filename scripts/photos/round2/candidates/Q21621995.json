@@ -1,0 +1,514 @@
+{
+ "span": [
+  2015,
+  2026
+ ],
+ "prime": 2020.5,
+ "cat": "Kylian Mbapp\u00e9",
+ "files": 80,
+ "cands": [
+  {
+   "file": "File:Kylian Mbappe France v Senegal 16 June 2026-391 (cropped).jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q21621995/0.jpg",
+   "gate": null,
+   "face": 360,
+   "share": 0.25,
+   "sharp": 2677,
+   "room": 3.6,
+   "box": [
+    329,
+    148,
+    277,
+    360
+   ],
+   "yaw": -0.08,
+   "roll": 0.9,
+   "cx": 0.49,
+   "why": "face 360px, 25% of height, sharpness 2677",
+   "score": 13.683
+  },
+  {
+   "file": "File:Kylian Mbappe celebrating - March 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/11.jpg",
+   "gate": null,
+   "face": 134,
+   "share": 0.2,
+   "sharp": 2522,
+   "room": 4.7,
+   "box": [
+    411,
+    49,
+    94,
+    134
+   ],
+   "yaw": 0.38,
+   "roll": -0.7,
+   "cx": 0.48,
+   "why": "face 134px, 20% of height, sharpness 2522",
+   "score": 3.52
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/15.jpg",
+   "gate": null,
+   "face": 197,
+   "share": 0.21,
+   "sharp": 935,
+   "room": 4.1,
+   "box": [
+    204,
+    110,
+    156,
+    197
+   ],
+   "yaw": 0.41,
+   "roll": -1.5,
+   "cx": 0.53,
+   "why": "face 197px, 21% of height, sharpness 935",
+   "score": 3.282
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 (cropped).png",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q21621995/14.jpg",
+   "gate": null,
+   "face": 230,
+   "share": 0.19,
+   "sharp": 298,
+   "room": 4.3,
+   "box": [
+    319,
+    195,
+    179,
+    230
+   ],
+   "yaw": 0.1,
+   "roll": 4.6,
+   "cx": 0.58,
+   "why": "face 230px, 19% of height, sharpness 298",
+   "score": 2.569
+  },
+  {
+   "file": "File:Kylian Mbappe celebrating - March 2018 (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/10.jpg",
+   "gate": null,
+   "face": 176,
+   "share": 0.28,
+   "sharp": 561,
+   "room": 3.2,
+   "box": [
+    237,
+    55,
+    118,
+    176
+   ],
+   "yaw": 0.59,
+   "roll": -3.7,
+   "cx": 0.63,
+   "why": "face 176px, 28% of height, sharpness 561",
+   "score": 2.198
+  },
+  {
+   "file": "File:Mbappe Messi Neymar (cropped).jpg",
+   "p18": false,
+   "year": 2021,
+   "local": "cand/Q21621995/30.jpg",
+   "gate": null,
+   "face": 235,
+   "share": 0.16,
+   "sharp": 1116,
+   "room": 5.6,
+   "box": [
+    357,
+    117,
+    171,
+    235
+   ],
+   "yaw": -0.59,
+   "roll": -10.3,
+   "cx": 0.46,
+   "why": "face 235px, 16% of height, sharpness 1116",
+   "score": 1.831
+  },
+  {
+   "file": "File:Kylian Mbappe - March 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/9.jpg",
+   "gate": null,
+   "face": 89,
+   "share": 0.18,
+   "sharp": 4617,
+   "room": 5.2,
+   "box": [
+    67,
+    39,
+    72,
+    89
+   ],
+   "yaw": -0.06,
+   "roll": -2.2,
+   "cx": 0.31,
+   "why": "face 89px, 18% of height, sharpness 4617",
+   "score": 1.709
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 (2).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/12.jpg",
+   "gate": null,
+   "face": 203,
+   "share": 0.22,
+   "sharp": 650,
+   "room": 4.2,
+   "box": [
+    139,
+    75,
+    149,
+    203
+   ],
+   "yaw": 0.0,
+   "roll": -7.3,
+   "cx": 0.23,
+   "why": "face 203px, 22% of height, sharpness 650",
+   "score": 1.451
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/24.jpg",
+   "gate": null,
+   "face": 102,
+   "share": 0.12,
+   "sharp": 2990,
+   "room": 7.3,
+   "box": [
+    141,
+    86,
+    86,
+    102
+   ],
+   "yaw": 0.04,
+   "roll": -13.2,
+   "cx": 0.27,
+   "why": "face 102px, 12% of height, sharpness 2990",
+   "score": 0.762
+  },
+  {
+   "file": "File:Kylian Mbappe at Real Madrid's game versus Juventus Turin on 22 October 2025 (2).jpeg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q21621995/39.jpg",
+   "gate": null,
+   "face": 92,
+   "share": 0.1,
+   "sharp": 248,
+   "room": 9.2,
+   "box": [
+    216,
+    92,
+    66,
+    92
+   ],
+   "yaw": -1.38,
+   "roll": 6.3,
+   "cx": 0.49,
+   "why": "face 92px, 10% of height, sharpness 248",
+   "score": 0.416
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 against M\u00e1laga, match valid for the third round of La Liga on August 30, 2026.png",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q21621995/1.jpg",
+   "gate": "face sharpness 22, soft",
+   "face": 143,
+   "share": 0.1,
+   "sharp": 22,
+   "room": 8.7,
+   "box": [
+    417,
+    195,
+    108,
+    143
+   ],
+   "yaw": 0.28,
+   "roll": -3.5,
+   "cx": 0.49,
+   "why": "face sharpness 22, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Maillot domicile PSG 2017-2018 Mbapp\u00e9.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Maillot ext\u00e9rieur PSG 2017-2018 Mbapp\u00e9.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/3.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Maillot Mbapp\u00e9.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbappe 2017.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q21621995/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 - 2017-05-06.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q21621995/6.jpg",
+   "gate": "face 35px, too small",
+   "why": "face 35px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Mbappe.PNG",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q21621995/7.jpg",
+   "gate": "face 38px, too small",
+   "why": "face 38px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Mbapp\u00e9.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q21621995/8.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 (46369981091).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/13.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 and Luka Modri\u0107 receive the award for the best young player and best player in the 2018 World Cup respectively (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 and Luka Modri\u0107 receive the award for the best young player and best player in the 2018 World Cup respectively.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/17.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 France.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/18.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 receives the best young player award at the 2018 Football World Cup Russia.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 Russia 2018 (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/20.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 Russia 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/21.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 with the 2018 Soccer World Cup trophy.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 World Cup Trophy.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e91.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/25.jpg",
+   "gate": "face 26px, too small",
+   "why": "face 26px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e92.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q21621995/26.jpg",
+   "gate": "face 26px, too small",
+   "why": "face 26px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Tuchel & Mbapp\u00e9 PSG 2019.jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q21621995/27.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 (cropped).jpg",
+   "p18": false,
+   "year": 2021,
+   "local": "cand/Q21621995/28.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kylian Mbapp\u00e9 x Maxime Tabart.jpg",
+   "p18": false,
+   "year": 2021,
+   "local": "cand/Q21621995/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Mbappe Messi Neymar.jpg",
+   "p18": false,
+   "year": 2021,
+   "local": "cand/Q21621995/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Messi Neymar Mbapp\u00e9 PSG 2022 (cropped) (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Messi Neymar Mbapp\u00e9 PSG 2022 (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Messi Neymar Mbapp\u00e9 PSG 2022.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Picture with Mbapp\u00e9 (cropped and rotated).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/35.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Picture with Mbapp\u00e9 (cropped) (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/36.jpg",
+   "gate": "photo ends at the chin (1.3 face heights below)",
+   "why": "photo ends at the chin (1.3 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Picture with Mbapp\u00e9 (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/37.jpg",
+   "gate": "photo ends at the chin (1.8 face heights below)",
+   "why": "photo ends at the chin (1.8 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Picture with Mbapp\u00e9.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q21621995/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

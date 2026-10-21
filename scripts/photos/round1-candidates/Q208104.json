@@ -11,7 +11,10 @@
    106,
    206,
    275
-  ]
+  ],
+  "yaw": -0.14,
+  "roll": -2.2,
+  "cx": 0.45
  },
  {
   "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666777934) (cropped).jpg",
@@ -25,7 +28,10 @@
    111,
    183,
    241
-  ]
+  ],
+  "yaw": -0.14,
+  "roll": 6.4,
+  "cx": 0.5
  },
  {
   "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39480409675).jpg",
@@ -39,7 +45,10 @@
    23,
    147,
    190
-  ]
+  ],
+  "yaw": -0.1,
+  "roll": 1.1,
+  "cx": 0.45
  },
  {
   "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666778464).jpg",
@@ -53,7 +62,10 @@
    62,
    158,
    195
-  ]
+  ],
+  "yaw": -0.06,
+  "roll": 3.6,
+  "cx": 0.4
  },
  {
   "file": "File:Xabi Alonso (Real Valladolid-Real Madrid) (cropped).jpg",
@@ -67,7 +79,10 @@
    57,
    116,
    148
-  ]
+  ],
+  "yaw": -0.06,
+  "roll": -1.1,
+  "cx": 0.55
  },
  {
   "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666777934).jpg",
@@ -81,7 +96,10 @@
    61,
    103,
    142
-  ]
+  ],
+  "yaw": -0.13,
+  "roll": 0.5,
+  "cx": 0.57
  },
  {
   "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39480409165).jpg",
@@ -95,7 +113,10 @@
    168,
    94,
    111
-  ]
+  ],
+  "yaw": 0.04,
+  "roll": 1.9,
+  "cx": 0.55
  },
  {
   "file": "File:Xabi Alonso (Real Valladolid-Real Madrid).jpg",
@@ -109,7 +130,10 @@
    67,
    111,
    155
-  ]
+  ],
+  "yaw": -0.07,
+  "roll": 3.4,
+  "cx": 0.5
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-2.jpg",
@@ -123,7 +147,10 @@
    142,
    90,
    165
-  ]
+  ],
+  "yaw": -2.08,
+  "roll": -75.1,
+  "cx": 0.47
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-9.jpg",
@@ -137,7 +164,10 @@
    113,
    107,
    148
-  ]
+  ],
+  "yaw": -0.38,
+  "roll": 2.8,
+  "cx": 0.52
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-4.jpg",
@@ -151,7 +181,10 @@
    158,
    93,
    151
-  ]
+  ],
+  "yaw": -0.96,
+  "roll": 0.3,
+  "cx": 0.41
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-3.jpg",
@@ -165,7 +198,10 @@
    123,
    106,
    146
-  ]
+  ],
+  "yaw": 0.34,
+  "roll": -2.3,
+  "cx": 0.49
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-5.jpg",
@@ -179,7 +215,10 @@
    193,
    115,
    155
-  ]
+  ],
+  "yaw": 0.31,
+  "roll": -1.9,
+  "cx": 0.51
  },
  {
   "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-3.jpg",
@@ -193,7 +232,10 @@
    144,
    99,
    146
-  ]
+  ],
+  "yaw": 0.12,
+  "roll": 5.2,
+  "cx": 0.46
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-6.jpg",
@@ -207,7 +249,10 @@
    173,
    87,
    132
-  ]
+  ],
+  "yaw": -1.01,
+  "roll": 5.1,
+  "cx": 0.33
  },
  {
   "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-2.jpg",
@@ -221,7 +266,10 @@
    183,
    82,
    116
-  ]
+  ],
+  "yaw": 0.51,
+  "roll": -1.2,
+  "cx": 0.58
  },
  {
   "file": "File:Xabi Alonso Training 2017-05 FC Bayern Muenchen-1.jpg",
@@ -235,7 +283,10 @@
    190,
    75,
    104
-  ]
+  ],
+  "yaw": 0.21,
+  "roll": -0.1,
+  "cx": 0.52
  },
  {
   "file": "File:Xabi Alonso Training 2016-11 FC Bayern Muenchen-7.jpg",
@@ -249,7 +300,10 @@
    133,
    94,
    138
-  ]
+  ],
+  "yaw": 2.14,
+  "roll": -12.0,
+  "cx": 0.64
  },
  {
   "file": "File:Xabi Alonso Training 2017-03 FC Bayern Muenchen-1.jpg",
@@ -263,7 +317,10 @@
    190,
    72,
    105
-  ]
+  ],
+  "yaw": 0.6,
+  "roll": -4.4,
+  "cx": 0.54
  },
  {
   "file": "File:Xabi Alonso Training 2017-05 FC Bayern Muenchen-2.jpg",
@@ -277,7 +334,10 @@
    328,
    73,
    98
-  ]
+  ],
+  "yaw": 0.37,
+  "roll": -2.0,
+  "cx": 0.54
  },
  {
   "file": "File:Los Caminos del f\u00fatbol. Xabi Alonso (39666778464) (cropped).jpg",

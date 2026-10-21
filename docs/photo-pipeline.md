@@ -88,5 +88,42 @@ each in shuffled order, his pick (27; three had nothing usable).
   (1), Hugo Lloris (14, none passed the gates). Look further (more
   subcategories, files without the surname in the name) before the kit card.
 
+## Ranking v2: what the data said (2026-10-21)
+
+`scripts/photos/rank.py` (the score) and `scripts/photos/test_rank.py` (run it
+against round 1: `python -X utf8 -I scripts/photos/test_rank.py -v`). The
+stored round-1 features gained the face's pose (`yaw`, `roll`, `cx`) from
+YuNet's landmarks.
+
+Two of the lessons above did not survive a closer look at the six photos he
+saw per player (27 groups, his pick vs the five others):
+
+- **Sharpness does not separate his picks.** His pick beat the other photos on
+  Laplacian sharpness 50% of the time, i.e. chance. Picks are as soft as
+  anything else shown (Iniesta's is 198, Piqué's 157, Giroud's 127). The
+  medians (571 vs 407) are carried by a few very sharp outliers. Kept as a gate
+  (~80) and a feather-weight, not a driver.
+- **P18 is a good photo more often than the notes suggest.** When P18 was
+  among the six (16 players) he picked it 9 times, against 1-in-6 by chance.
+  It fails when it is a 2026 photo of an ageing player or an action shot. So
+  it carries a moderate weight, not "at most a small bonus" (weights 0.5-2.0
+  move the offline score by one pick, so this is not delicate).
+- **Prime-year helps only a little** (the pick is nearer the prime in the
+  fitted model, but univariately he picked slightly older, not nearer).
+- What his picks share, looking at the sheets: tight head-and-shoulders
+  framing (face share of the height: he beat 68% of the others), a face that
+  looks at the camera, centred, neutral expression, club or national shirt
+  visible. His rejects: action shots, full body, thumbs-up and pointing,
+  mid-celebration. The detector cannot see expression or gesture.
+
+Result of v2, scored on all candidates (not only the six he saw): **first
+13/27, top-3 21/27** (round 1 baseline: 15 and 21). Leave-one-out fit on the
+six-photo groups: 12-13/27. Chance is about 5. A kit-colour feature (torso
+pixels near the club colour) added nothing. So the ranking is no better than
+the old one at first place and the ~22 target is out of reach on these
+features: an automatic first pick will agree with Jonno about half the time.
+Hence the plan for the long tail: ship the ranking's pick, and for the famous
+~390 show him the top three to choose from.
+
 Done means: the new ranking hits his pick at least ~22 of 27 on this file
 (a test), a round 2 on fresh players confirms it, then the full run.

@@ -11,7 +11,10 @@
    200,
    281,
    356
-  ]
+  ],
+  "yaw": -0.23,
+  "roll": 2.3,
+  "cx": 0.47
  },
  {
   "file": "File:Marcus Rashford England v Ghana 23 June 2026-073.jpg",
@@ -25,7 +28,10 @@
    181,
    261,
    350
-  ]
+  ],
+  "yaw": -0.5,
+  "roll": 3.3,
+  "cx": 0.43
  },
  {
   "file": "File:Marcus Rashford.jpg",
@@ -39,7 +45,10 @@
    120,
    162,
    222
-  ]
+  ],
+  "yaw": -0.18,
+  "roll": 6.6,
+  "cx": 0.52
  },
  {
   "file": "File:Marcus Rashford England v Panama 27 June 26-087.jpg",
@@ -53,7 +62,10 @@
    142,
    176,
    239
-  ]
+  ],
+  "yaw": -0.44,
+  "roll": 3.5,
+  "cx": 0.47
  },
  {
   "file": "File:Marcus Rashford September 2016 (cropped).jpg",
@@ -67,7 +79,10 @@
    74,
    177,
    257
-  ]
+  ],
+  "yaw": 0.56,
+  "roll": -8.1,
+  "cx": 0.66
  },
  {
   "file": "File:Marcus Rashford Visits Shoreditch London.jpg",
@@ -81,7 +96,10 @@
    175,
    146,
    205
-  ]
+  ],
+  "yaw": -0.09,
+  "roll": -2.8,
+  "cx": 0.37
  },
  {
   "file": "File:Marcus Rashford England v Ghana 23 June 2026-072.jpg",
@@ -95,7 +113,10 @@
    179,
    147,
    220
-  ]
+  ],
+  "yaw": -1.0,
+  "roll": 18.9,
+  "cx": 0.43
  },
  {
   "file": "File:Marcus Rashford 2017-11-05 1.jpg",
@@ -109,7 +130,10 @@
    50,
    55,
    79
-  ]
+  ],
+  "yaw": 1.42,
+  "roll": 1.4,
+  "cx": 0.59
  },
  {
   "file": "File:Marcus Rashford, FWC 2018 - Round of 16 - COL v ENG - Photo 106 (cropped).jpg",
@@ -123,7 +147,10 @@
    153,
    290,
    408
-  ]
+  ],
+  "yaw": -0.32,
+  "roll": 2.0,
+  "cx": 0.44
  },
  {
   "file": "File:Marcus Rashford 2022-11-21 2.jpg",
@@ -137,7 +164,10 @@
    33,
    41,
    54
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": -2.4,
+  "cx": 0.46
  },
  {
   "file": "File:Marcus Rashford (2025).png",
@@ -151,7 +181,10 @@
    43,
    140,
    187
-  ]
+  ],
+  "yaw": -0.12,
+  "roll": 3.1,
+  "cx": 0.5
  },
  {
   "file": "File:Marcus Rashford 2022-11-21 1.jpg",
@@ -165,7 +198,10 @@
    34,
    39,
    53
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": -1.5,
+  "cx": 0.48
  },
  {
   "file": "File:Marcus Rashford England v Panama 27 June 26-047.jpg",

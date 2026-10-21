@@ -11,7 +11,10 @@
    60,
    86,
    110
-  ]
+  ],
+  "yaw": -0.12,
+  "roll": -0.5,
+  "cx": 0.45
  },
  {
   "file": "File:Edinson Cavani 2021(cropped).jpg",
@@ -25,7 +28,10 @@
    94,
    146,
    205
-  ]
+  ],
+  "yaw": -0.17,
+  "roll": -4.9,
+  "cx": 0.63
  },
  {
   "file": "File:Cavani training.jpg",
@@ -39,7 +45,10 @@
    12,
    109,
    154
-  ]
+  ],
+  "yaw": 0.26,
+  "roll": -1.7,
+  "cx": 0.42
  },
  {
   "file": "File:Edinson Cavani, PSG (cropped).JPG",
@@ -53,7 +62,10 @@
    137,
    210,
    279
-  ]
+  ],
+  "yaw": 0.08,
+  "roll": 6.2,
+  "cx": 0.5
  },
  {
   "file": "File:Cavani saluda.jpg",
@@ -67,7 +79,10 @@
    196,
    129,
    193
-  ]
+  ],
+  "yaw": 0.42,
+  "roll": 1.7,
+  "cx": 0.54
  },
  {
   "file": "File:Edinson Cavani, PSG.JPG",
@@ -81,7 +96,10 @@
    167,
    122,
    161
-  ]
+  ],
+  "yaw": 0.12,
+  "roll": 1.8,
+  "cx": 0.53
  },
  {
   "file": "File:Edinson Cavani URU.jpg",
@@ -95,7 +113,10 @@
    30,
    47,
    66
-  ]
+  ],
+  "yaw": -0.57,
+  "roll": -0.0,
+  "cx": 0.37
  },
  {
   "file": "File:Edinson Cavani 2018.jpg",
@@ -109,7 +130,10 @@
    73,
    84,
    112
-  ]
+  ],
+  "yaw": -0.11,
+  "roll": 0.9,
+  "cx": 0.48
  },
  {
   "file": "File:Edinson Cavani 2011.jpg",
@@ -123,7 +147,10 @@
    91,
    59,
    77
-  ]
+  ],
+  "yaw": 0.07,
+  "roll": -0.4,
+  "cx": 0.52
  },
  {
   "file": "File:Cavani 2 v Chelsea 2014.jpg",
@@ -137,7 +164,10 @@
    149,
    48,
    62
-  ]
+  ],
+  "yaw": 0.06,
+  "roll": 2.4,
+  "cx": 0.48
  },
  {
   "file": "File:Cavani v Chelsea 2014.jpg",
@@ -151,7 +181,10 @@
    25,
    44,
    58
-  ]
+  ],
+  "yaw": 0.37,
+  "roll": -0.9,
+  "cx": 0.23
  },
  {
   "file": "File:Edinson Cavani (51100312646) (cropped).jpg",

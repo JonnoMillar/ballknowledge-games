@@ -1,0 +1,477 @@
+{
+ "span": [
+  1997,
+  2019
+ ],
+ "prime": 2006.5,
+ "cat": "Xavi Hern\u00e1ndez",
+ "files": 33,
+ "cands": [
+  {
+   "file": "File:Xavi Hern\u00e1ndez Spain 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q17500/5.jpg",
+   "gate": null,
+   "face": 209,
+   "share": 0.17,
+   "sharp": 284,
+   "room": 5.4,
+   "box": [
+    301,
+    71,
+    148,
+    209
+   ],
+   "yaw": 0.12,
+   "roll": -3.0,
+   "cx": 0.5,
+   "why": "face 209px, 17% of height, sharpness 284",
+   "score": 3.384
+  },
+  {
+   "file": "File:Xavi Hern\u00e1ndez - 001.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q17500/1.jpg",
+   "gate": null,
+   "face": 159,
+   "share": 0.11,
+   "sharp": 122,
+   "room": 8.7,
+   "box": [
+    282,
+    122,
+    120,
+    159
+   ],
+   "yaw": -0.04,
+   "roll": 1.3,
+   "cx": 0.47,
+   "why": "face 159px, 11% of height, sharpness 122",
+   "score": 2.666
+  },
+  {
+   "file": "File:Xavi Hernandez (31521652051).jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q17500/23.jpg",
+   "gate": null,
+   "face": 490,
+   "share": 0.36,
+   "sharp": 365,
+   "room": 2.4,
+   "box": [
+    207,
+    213,
+    371,
+    490
+   ],
+   "yaw": -0.14,
+   "roll": -5.1,
+   "cx": 0.41,
+   "why": "face 490px, 36% of height, sharpness 365",
+   "score": 2.638
+  },
+  {
+   "file": "File:Xavi Hernandez (18090182763).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/16.jpg",
+   "gate": null,
+   "face": 214,
+   "share": 0.23,
+   "sharp": 757,
+   "room": 3.8,
+   "box": [
+    426,
+    108,
+    161,
+    214
+   ],
+   "yaw": -0.06,
+   "roll": 4.6,
+   "cx": 0.53,
+   "why": "face 214px, 23% of height, sharpness 757",
+   "score": 2.571
+  },
+  {
+   "file": "File:Xavi Hern\u00e1ndez - 002.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q17500/3.jpg",
+   "gate": null,
+   "face": 164,
+   "share": 0.11,
+   "sharp": 153,
+   "room": 8.2,
+   "box": [
+    345,
+    152,
+    123,
+    164
+   ],
+   "yaw": 0.21,
+   "roll": 3.0,
+   "cx": 0.5,
+   "why": "face 164px, 11% of height, sharpness 153",
+   "score": 2.465
+  },
+  {
+   "file": "File:Xavi Hernandez - 30827264903.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q17500/25.jpg",
+   "gate": null,
+   "face": 231,
+   "share": 0.29,
+   "sharp": 830,
+   "room": 3.0,
+   "box": [
+    319,
+    118,
+    158,
+    231
+   ],
+   "yaw": -0.03,
+   "roll": -6.9,
+   "cx": 0.41,
+   "why": "face 231px, 29% of height, sharpness 830",
+   "score": 2.275
+  },
+  {
+   "file": "File:Xavi Hernandez.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q17500/27.jpg",
+   "gate": null,
+   "face": 279,
+   "share": 0.3,
+   "sharp": 830,
+   "room": 2.8,
+   "box": [
+    251,
+    142,
+    189,
+    279
+   ],
+   "yaw": -0.15,
+   "roll": -8.0,
+   "cx": 0.36,
+   "why": "face 279px, 30% of height, sharpness 830",
+   "score": 1.67
+  },
+  {
+   "file": "File:Xavi Hernandez - 31637433045.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q17500/26.jpg",
+   "gate": null,
+   "face": 188,
+   "share": 0.25,
+   "sharp": 998,
+   "room": 3.3,
+   "box": [
+    277,
+    126,
+    137,
+    188
+   ],
+   "yaw": -0.17,
+   "roll": -3.3,
+   "cx": 0.36,
+   "why": "face 188px, 25% of height, sharpness 998",
+   "score": 1.628
+  },
+  {
+   "file": "File:Xavi Hernandez 2013 Catalonia.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q17500/13.jpg",
+   "gate": null,
+   "face": 125,
+   "share": 0.1,
+   "sharp": 6180,
+   "room": 8.7,
+   "box": [
+    601,
+    197,
+    99,
+    125
+   ],
+   "yaw": -0.06,
+   "roll": -4.3,
+   "cx": 0.68,
+   "why": "face 125px, 10% of height, sharpness 6180",
+   "score": 1.008
+  },
+  {
+   "file": "File:2012 2013 - 06 Xavi Hern\u00e1ndez.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q17500/9.jpg",
+   "gate": null,
+   "face": 132,
+   "share": 0.1,
+   "sharp": 308,
+   "room": 8.8,
+   "box": [
+    377,
+    125,
+    98,
+    132
+   ],
+   "yaw": -0.2,
+   "roll": -9.8,
+   "cx": 0.44,
+   "why": "face 132px, 10% of height, sharpness 308",
+   "score": 0.997
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez - Spain vs. Chile, 10th September 2013.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q17500/15.jpg",
+   "gate": null,
+   "face": 125,
+   "share": 0.09,
+   "sharp": 646,
+   "room": 9.1,
+   "box": [
+    498,
+    309,
+    89,
+    125
+   ],
+   "yaw": 0.33,
+   "roll": -3.8,
+   "cx": 0.57,
+   "why": "face 125px, 9% of height, sharpness 646",
+   "score": 0.991
+  },
+  {
+   "file": "File:Xavi Hernandez (18706029322).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/17.jpg",
+   "gate": null,
+   "face": 141,
+   "share": 0.18,
+   "sharp": 1008,
+   "room": 4.7,
+   "box": [
+    653,
+    127,
+    99,
+    141
+   ],
+   "yaw": 0.06,
+   "roll": -3.9,
+   "cx": 0.73,
+   "why": "face 141px, 18% of height, sharpness 1008",
+   "score": 0.94
+  },
+  {
+   "file": "File:Xavi Hernandez - 18523153820.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/19.jpg",
+   "gate": null,
+   "face": 76,
+   "share": 0.08,
+   "sharp": 1829,
+   "room": 9.4,
+   "box": [
+    693,
+    210,
+    59,
+    76
+   ],
+   "yaw": -0.11,
+   "roll": -1.4,
+   "cx": 0.75,
+   "why": "face 76px, 8% of height, sharpness 1829",
+   "score": 0.448
+  },
+  {
+   "file": "File:Xavi 13981129001173637176666027076571.jpg",
+   "p18": true,
+   "year": 2020,
+   "local": "cand/Q17500/0.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hern\u00e1ndez - 002 (cropped).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q17500/2.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hern\u00e1ndez Spain 2009 (cropped).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q17500/4.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Zlatan Ibrahimovic y Xavi Hernandez.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q17500/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hernandez Creus.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q17500/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez and Casey Stoner 2011 Catalunya.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q17500/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Spain - Chile - 10-09-2013 - Geneva - Xavier Hernandez, Javi Garcia and Gary Medel.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q17500/10.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Spain - Chile - 10-09-2013 - Geneva - Xavier Hernandez, Javi Garcia, Gary Medel and Raul Albiol.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q17500/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Spain - Chile - 10-09-2013 - Geneva - Xavier Hernandez, Marcos Gonzalez, Arturo Vidal and Pedro Rodriguez.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q17500/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez (L), David Pizzaro (R) - Spain vs. Chile, 10th September 2013.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q17500/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hernandez - 18455561010.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/18.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hernandez - 18523154320.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hernandez - 18616930766.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/21.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hernandez - 18713229501.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q17500/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavi Hernandez - 30827264903 (cropped).jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q17500/24.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez and Mehdi Rahmati- Esteghlal vs. Sadd, 7th February 2017.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q17500/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez and Omid Ebrahimi- Esteghlal vs. Sadd, 7th February 2017.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q17500/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez and Omid Noorafkan and Robson- Esteghlal vs. Sadd, 7th February 2017.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q17500/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez and Omid Noorafkan- Esteghlal vs. Sadd, 7th February 2017 01.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q17500/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Xavier Hern\u00e1ndez and Omid Noorafkan- Esteghlal vs. Sadd, 7th February 2017 02.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q17500/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

@@ -1,0 +1,505 @@
+{
+ "span": [
+  1994,
+  2014
+ ],
+ "prime": 2005.5,
+ "cat": "Thierry Henry",
+ "files": 52,
+ "cands": [
+  {
+   "file": "File:Thierry Henry portrait.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/9.jpg",
+   "gate": null,
+   "face": 54,
+   "share": 0.28,
+   "sharp": 141,
+   "room": 3.0,
+   "box": [
+    61,
+    32,
+    40,
+    54
+   ],
+   "yaw": -0.19,
+   "roll": -1.4,
+   "cx": 0.43,
+   "why": "face 54px, 28% of height, sharpness 141",
+   "score": 2.707
+  },
+  {
+   "file": "File:Thierry Henry (498018484).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45901/12.jpg",
+   "gate": null,
+   "face": 332,
+   "share": 0.23,
+   "sharp": 338,
+   "room": 3.3,
+   "box": [
+    340,
+    343,
+    224,
+    332
+   ],
+   "yaw": 0.36,
+   "roll": 9.7,
+   "cx": 0.47,
+   "why": "face 332px, 23% of height, sharpness 338",
+   "score": 2.645
+  },
+  {
+   "file": "File:Thierry Henry FC Barcelona cropped.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45901/15.jpg",
+   "gate": null,
+   "face": 53,
+   "share": 0.14,
+   "sharp": 141,
+   "room": 5.8,
+   "box": [
+    115,
+    67,
+    40,
+    53
+   ],
+   "yaw": 0.18,
+   "roll": -0.2,
+   "cx": 0.5,
+   "why": "face 53px, 14% of height, sharpness 141",
+   "score": 1.905
+  },
+  {
+   "file": "File:Thierry Henry.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/10.jpg",
+   "gate": null,
+   "face": 55,
+   "share": 0.09,
+   "sharp": 145,
+   "room": 9.8,
+   "box": [
+    84,
+    65,
+    41,
+    55
+   ],
+   "yaw": -0.17,
+   "roll": -4.2,
+   "cx": 0.46,
+   "why": "face 55px, 9% of height, sharpness 145",
+   "score": 1.241
+  },
+  {
+   "file": "File:Thierry Henry 2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q45901/19.jpg",
+   "gate": null,
+   "face": 83,
+   "share": 0.19,
+   "sharp": 654,
+   "room": 4.9,
+   "box": [
+    78,
+    30,
+    60,
+    83
+   ],
+   "yaw": -0.55,
+   "roll": -2.5,
+   "cx": 0.36,
+   "why": "face 83px, 19% of height, sharpness 654",
+   "score": 1.109
+  },
+  {
+   "file": "File:Thierry Henry - 001.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q45901/18.jpg",
+   "gate": null,
+   "face": 56,
+   "share": 0.05,
+   "sharp": 581,
+   "room": 13.3,
+   "box": [
+    465,
+    276,
+    45,
+    56
+   ],
+   "yaw": -0.49,
+   "roll": 0.1,
+   "cx": 0.51,
+   "why": "face 56px, 5% of height, sharpness 581",
+   "score": 1.018
+  },
+  {
+   "file": "File:Thierry Henry control cropped.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q45901/24.jpg",
+   "gate": null,
+   "face": 85,
+   "share": 0.1,
+   "sharp": 324,
+   "room": 8.4,
+   "box": [
+    374,
+    140,
+    67,
+    85
+   ],
+   "yaw": -0.28,
+   "roll": -3.5,
+   "cx": 0.59,
+   "why": "face 85px, 10% of height, sharpness 324",
+   "score": 0.828
+  },
+  {
+   "file": "File:Thierry Henry applauding 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/34.jpg",
+   "gate": null,
+   "face": 183,
+   "share": 0.12,
+   "sharp": 208,
+   "room": 8.1,
+   "box": [
+    308,
+    98,
+    139,
+    183
+   ],
+   "yaw": -0.68,
+   "roll": 8.8,
+   "cx": 0.47,
+   "why": "face 183px, 12% of height, sharpness 208",
+   "score": 0.806
+  },
+  {
+   "file": "File:Thierry Henry control New York Red Bulls 2010.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q45901/25.jpg",
+   "gate": null,
+   "face": 52,
+   "share": 0.07,
+   "sharp": 2494,
+   "room": 11.4,
+   "box": [
+    481,
+    125,
+    40,
+    52
+   ],
+   "yaw": -0.52,
+   "roll": 5.5,
+   "cx": 0.52,
+   "why": "face 52px, 7% of height, sharpness 2494",
+   "score": 0.801
+  },
+  {
+   "file": "File:Thierry Henry Montreal Impact vs NY Red Bulls 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/39.jpg",
+   "gate": null,
+   "face": 97,
+   "share": 0.07,
+   "sharp": 2551,
+   "room": 10.6,
+   "box": [
+    476,
+    416,
+    69,
+    97
+   ],
+   "yaw": -1.33,
+   "roll": -1.2,
+   "cx": 0.53,
+   "why": "face 97px, 7% of height, sharpness 2551",
+   "score": 0.476
+  },
+  {
+   "file": "File:Thierry Henry Montreal Impact vs NY Red Bulls 2012 2.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q45901/38.jpg",
+   "gate": null,
+   "face": 144,
+   "share": 0.1,
+   "sharp": 1878,
+   "room": 9.0,
+   "box": [
+    305,
+    98,
+    85,
+    144
+   ],
+   "yaw": -1.3,
+   "roll": -33.5,
+   "cx": 0.36,
+   "why": "face 144px, 10% of height, sharpness 1878",
+   "score": 0.113
+  },
+  {
+   "file": "File:Henry (32892987316).jpg",
+   "p18": false,
+   "year": 1998,
+   "local": "cand/Q45901/0.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry in Korea (2007) (2).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45901/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry in Korea (2007) (3).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45901/2.jpg",
+   "gate": "photo ends at the chin (2.2 face heights below)",
+   "why": "photo ends at the chin (2.2 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:File-Van persie henry crop.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Henry And Persie Bonding (289633666).jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Henry in world cup final 2006.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Italy vs France - FIFA World Cup 2006 final - Thierry Henry and Gennaro Gattuso.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Italy vs France - FIFA World Cup 2006 final - Thierry Henry.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Charlton.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Van persie henry.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45901/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry 2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45901/13.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Barcelone.jpeg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45901/14.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Chivas v. Barca Summer 2008 friendly in Chicago 09 (Thierry Henry).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q45901/17.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Euro 2008.JPG",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q45901/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Rubin Kazan.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q45901/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry sign.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q45901/22.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry vs John O'Shea, 2009 UEFA Champions League Final.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q45901/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry, Yoann Gourcuff & Sidney Govou (France 2010).jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q45901/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kenny Cooper points to Thierry Henry, New York Red Bulls vs San Jose Earthquakes.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q45901/27.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Phil Jones Thierry Henry Manchester United vs MLS All Stars.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q45901/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Manchester United vs MLS All Stars (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q45901/29.jpg",
+   "gate": "face 39px, too small",
+   "why": "face 39px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Manchester United vs MLS All Stars.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q45901/30.jpg",
+   "gate": "face 39px, too small",
+   "why": "face 39px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Davy Arnaud vs Thierry Henry 2012-07-28.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:L'ultima partita di Henry con l'Arsenal.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/32.jpg",
+   "gate": "face 48px, too small",
+   "why": "face 48px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry (6820443721).jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry Arsenal return 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry comes on (6824231705).jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Thierry Henry helps set up the wall.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q45901/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

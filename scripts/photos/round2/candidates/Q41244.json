@@ -1,0 +1,570 @@
+{
+ "span": [
+  1993,
+  2012
+ ],
+ "prime": 2004.0,
+ "cat": "Andriy Shevchenko",
+ "files": 45,
+ "cands": [
+  {
+   "file": "File:Andriy Shevchenko-ua2011.jpeg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q41244/32.jpg",
+   "gate": null,
+   "face": 154,
+   "share": 0.33,
+   "sharp": 479,
+   "room": 2.6,
+   "box": [
+    171,
+    64,
+    107,
+    154
+   ],
+   "yaw": -0.09,
+   "roll": 1.5,
+   "cx": 0.49,
+   "why": "face 154px, 33% of height, sharpness 479",
+   "score": 5.098
+  },
+  {
+   "file": "File:Andriy Shevchenko100.jpeg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q41244/25.jpg",
+   "gate": null,
+   "face": 131,
+   "share": 0.19,
+   "sharp": 658,
+   "room": 4.7,
+   "box": [
+    212,
+    90,
+    98,
+    131
+   ],
+   "yaw": -0.04,
+   "roll": -2.6,
+   "cx": 0.56,
+   "why": "face 131px, 19% of height, sharpness 658",
+   "score": 2.325
+  },
+  {
+   "file": "File:Shevchenko came back.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/23.jpg",
+   "gate": null,
+   "face": 119,
+   "share": 0.17,
+   "sharp": 245,
+   "room": 5.2,
+   "box": [
+    212,
+    83,
+    86,
+    119
+   ],
+   "yaw": 0.22,
+   "roll": -0.3,
+   "cx": 0.51,
+   "why": "face 119px, 17% of height, sharpness 245",
+   "score": 2.245
+  },
+  {
+   "file": "File:Andriy Shevchenko Dynamo.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q41244/24.jpg",
+   "gate": null,
+   "face": 172,
+   "share": 0.23,
+   "sharp": 627,
+   "room": 4.3,
+   "box": [
+    232,
+    19,
+    124,
+    172
+   ],
+   "yaw": -0.65,
+   "roll": -6.5,
+   "cx": 0.49,
+   "why": "face 172px, 23% of height, sharpness 627",
+   "score": 1.834
+  },
+  {
+   "file": "File:Andriy Shevchenko - 2004 - AC Milan (3).jpg",
+   "p18": false,
+   "year": 2004,
+   "local": "cand/Q41244/3.jpg",
+   "gate": null,
+   "face": 171,
+   "share": 0.23,
+   "sharp": 141,
+   "room": 3.8,
+   "box": [
+    396,
+    82,
+    124,
+    171
+   ],
+   "yaw": 0.24,
+   "roll": 5.2,
+   "cx": 0.72,
+   "why": "face 171px, 23% of height, sharpness 141",
+   "score": 1.713
+  },
+  {
+   "file": "File:Andriy Shevchenko, 2007-4.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41244/7.jpg",
+   "gate": null,
+   "face": 51,
+   "share": 0.09,
+   "sharp": 738,
+   "room": 10.7,
+   "box": [
+    119,
+    42,
+    43,
+    51
+   ],
+   "yaw": 0.03,
+   "roll": 0.9,
+   "cx": 0.51,
+   "why": "face 51px, 9% of height, sharpness 738",
+   "score": 1.694
+  },
+  {
+   "file": "File:Andriy Shevchenko - 2004 - AC Milan (1).jpg",
+   "p18": false,
+   "year": 2004,
+   "local": "cand/Q41244/1.jpg",
+   "gate": null,
+   "face": 69,
+   "share": 0.11,
+   "sharp": 1543,
+   "room": 8.3,
+   "box": [
+    528,
+    64,
+    51,
+    69
+   ],
+   "yaw": 0.29,
+   "roll": 1.6,
+   "cx": 0.58,
+   "why": "face 69px, 11% of height, sharpness 1543",
+   "score": 1.633
+  },
+  {
+   "file": "File:Andriy Shevchenko-ua.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/19.jpg",
+   "gate": null,
+   "face": 126,
+   "share": 0.19,
+   "sharp": 1359,
+   "room": 4.8,
+   "box": [
+    241,
+    49,
+    86,
+    126
+   ],
+   "yaw": 0.42,
+   "roll": -2.9,
+   "cx": 0.63,
+   "why": "face 126px, 19% of height, sharpness 1359",
+   "score": 1.403
+  },
+  {
+   "file": "File:Andriy Shevchenko 1.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q41244/30.jpg",
+   "gate": null,
+   "face": 66,
+   "share": 0.09,
+   "sharp": 1451,
+   "room": 9.0,
+   "box": [
+    212,
+    105,
+    50,
+    66
+   ],
+   "yaw": -0.07,
+   "roll": 1.0,
+   "cx": 0.51,
+   "why": "face 66px, 9% of height, sharpness 1451",
+   "score": 1.351
+  },
+  {
+   "file": "File:Andriy Shevchenko, 2007-2.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41244/5.jpg",
+   "gate": null,
+   "face": 72,
+   "share": 0.1,
+   "sharp": 122,
+   "room": 9.6,
+   "box": [
+    132,
+    30,
+    56,
+    72
+   ],
+   "yaw": 0.18,
+   "roll": 0.9,
+   "cx": 0.55,
+   "why": "face 72px, 10% of height, sharpness 122",
+   "score": 1.23
+  },
+  {
+   "file": "File:Andriy Shevchenko - 2004 - AC Milan (2).jpg",
+   "p18": false,
+   "year": 2004,
+   "local": "cand/Q41244/2.jpg",
+   "gate": null,
+   "face": 127,
+   "share": 0.11,
+   "sharp": 420,
+   "room": 8.3,
+   "box": [
+    639,
+    115,
+    93,
+    127
+   ],
+   "yaw": 0.35,
+   "roll": -1.0,
+   "cx": 0.71,
+   "why": "face 127px, 11% of height, sharpness 420",
+   "score": 1.127
+  },
+  {
+   "file": "File:A.Shevchenko.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q41244/29.jpg",
+   "gate": null,
+   "face": 120,
+   "share": 0.24,
+   "sharp": 479,
+   "room": 3.5,
+   "box": [
+    113,
+    76,
+    88,
+    120
+   ],
+   "yaw": 0.28,
+   "roll": -3.7,
+   "cx": 0.7,
+   "why": "face 120px, 24% of height, sharpness 479",
+   "score": 1.066
+  },
+  {
+   "file": "File:Andriy Shevchenko-en.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/17.jpg",
+   "gate": null,
+   "face": 105,
+   "share": 0.16,
+   "sharp": 1303,
+   "room": 5.2,
+   "box": [
+    485,
+    97,
+    71,
+    105
+   ],
+   "yaw": 0.09,
+   "roll": -0.3,
+   "cx": 0.74,
+   "why": "face 105px, 16% of height, sharpness 1303",
+   "score": 1.057
+  },
+  {
+   "file": "File:Andriy Shevchenko2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/20.jpg",
+   "gate": null,
+   "face": 66,
+   "share": 0.09,
+   "sharp": 645,
+   "room": 9.8,
+   "box": [
+    218,
+    50,
+    50,
+    66
+   ],
+   "yaw": -0.05,
+   "roll": 1.9,
+   "cx": 0.59,
+   "why": "face 66px, 9% of height, sharpness 645",
+   "score": 1.05
+  },
+  {
+   "file": "File:Cristiano Ronaldo and Andriy Shevchenko, 2007 (cropped).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41244/8.jpg",
+   "gate": null,
+   "face": 116,
+   "share": 0.1,
+   "sharp": 127,
+   "room": 8.9,
+   "box": [
+    313,
+    174,
+    83,
+    116
+   ],
+   "yaw": 0.42,
+   "roll": -5.5,
+   "cx": 0.37,
+   "why": "face 116px, 10% of height, sharpness 127",
+   "score": 0.76
+  },
+  {
+   "file": "File:Andriy Shevchenko Ukraine.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/16.jpg",
+   "gate": null,
+   "face": 71,
+   "share": 0.1,
+   "sharp": 1086,
+   "room": 9.1,
+   "box": [
+    237,
+    56,
+    48,
+    71
+   ],
+   "yaw": 1.24,
+   "roll": -4.1,
+   "cx": 0.57,
+   "why": "face 71px, 10% of height, sharpness 1086",
+   "score": 0.403
+  },
+  {
+   "file": "File:Andriy Shevchenko Golden Foot 2005.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q41244/0.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko, 2007-1.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41244/4.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko, 2007-3.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41244/6.jpg",
+   "gate": "face 25px, too small",
+   "why": "face 25px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Cristiano Ronaldo and Andriy Shevchenko, 2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41244/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:A. Shevchenko interviewed.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41244/10.jpg",
+   "gate": "photo ends at the chin (1.4 face heights below)",
+   "why": "photo ends at the chin (1.4 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko Portsmouth FC vs AC Milan 2008-2009 UEFA Cup.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41244/11.jpg",
+   "gate": "face 40px, too small",
+   "why": "face 40px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41244/12.jpg",
+   "gate": "face 41px, too small",
+   "why": "face 41px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Andrey Shevchenko.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/13.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/14.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko in 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/15.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko-gr.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/18.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko4.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/21.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Banner Andriy Shevchenko.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41244/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko3.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q41244/26.jpg",
+   "gate": "face 44px, too small",
+   "why": "face 44px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko6.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q41244/27.jpg",
+   "gate": "face 30px, too small",
+   "why": "face 30px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q41244/31.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Shevchenko 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q41244/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andreas Granqvist - Andriy Shevchenko 20120611 (1).jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41244/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andreas Granqvist - Andriy Shevchenko 20120611.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41244/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko Euro 2012 vs Sweden detail1.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41244/36.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko Euro 2012 vs Sweden.JPG",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41244/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko goal celebration Euro 2012 vs Sweden.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41244/38.jpg",
+   "gate": "face 48px, too small",
+   "why": "face 48px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Andriy Shevchenko goal Euro 2012 vs Sweden.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41244/39.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

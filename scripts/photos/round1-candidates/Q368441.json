@@ -11,7 +11,10 @@
    88,
    215,
    280
-  ]
+  ],
+  "yaw": 0.11,
+  "roll": -12.9,
+  "cx": 0.44
  },
  {
   "file": "File:James Rodriguez con Bayern M\u00fanich.jpg",
@@ -25,7 +28,10 @@
    120,
    137,
    199
-  ]
+  ],
+  "yaw": -0.16,
+  "roll": 0.5,
+  "cx": 0.48
  },
  {
   "file": "File:James Rodriguez 2018.jpg",
@@ -39,7 +45,10 @@
    71,
    130,
    166
-  ]
+  ],
+  "yaw": -0.15,
+  "roll": -1.1,
+  "cx": 0.49
  },
  {
   "file": "File:James Rodr\u00edguez (cropped).jpg",
@@ -53,7 +62,10 @@
    205,
    158,
    213
-  ]
+  ],
+  "yaw": -0.22,
+  "roll": 17.2,
+  "cx": 0.55
  },
  {
   "file": "File:James Rodriguez 2022.jpg",
@@ -67,7 +79,10 @@
    110,
    117,
    175
-  ]
+  ],
+  "yaw": -1.05,
+  "roll": -4.8,
+  "cx": 0.43
  },
  {
   "file": "File:Vive tu m\u00fasica, James Rodr\u00edguez.jpg",
@@ -81,7 +96,10 @@
    22,
    72,
    98
-  ]
+  ],
+  "yaw": 0.0,
+  "roll": -1.2,
+  "cx": 0.51
  },
  {
   "file": "File:James Rodr\u00edguez in 2019.jpg",
@@ -95,7 +113,10 @@
    96,
    166,
    217
-  ]
+  ],
+  "yaw": -0.18,
+  "roll": -5.5,
+  "cx": 0.32
  },
  {
   "file": "File:Bayern M\u00fcnchen training in Doha 2018 - James Rodriguez - A54J1197.jpg",
@@ -109,7 +130,10 @@
    96,
    84,
    118
-  ]
+  ],
+  "yaw": 0.29,
+  "roll": 1.1,
+  "cx": 0.48
  },
  {
   "file": "File:James Rodr\u00edguez 1.jpg",
@@ -123,7 +147,10 @@
    31,
    45,
    63
-  ]
+  ],
+  "yaw": -0.73,
+  "roll": 2.2,
+  "cx": 0.38
  },
  {
   "file": "File:James Rodriguez Training 2019-04-10 FC Bayern Muenchen-1.jpg",
@@ -137,7 +164,10 @@
    146,
    75,
    103
-  ]
+  ],
+  "yaw": 0.62,
+  "roll": 0.9,
+  "cx": 0.43
  },
  {
   "file": "File:James Rodr\u00edguez.jpg",
@@ -151,7 +181,10 @@
    209,
    63,
    91
-  ]
+  ],
+  "yaw": -0.08,
+  "roll": 1.9,
+  "cx": 0.72
  },
  {
   "file": "File:James al natural - Series, 02.jpg",

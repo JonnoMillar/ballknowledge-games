@@ -11,7 +11,10 @@
    143,
    167,
    227
-  ]
+  ],
+  "yaw": -0.01,
+  "roll": -3.5,
+  "cx": 0.31
  },
  {
   "file": "File:Sergio Ramos 10mar2007.jpg",
@@ -25,7 +28,10 @@
    153,
    131,
    173
-  ]
+  ],
+  "yaw": 0.33,
+  "roll": -8.3,
+  "cx": 0.48
  },
  {
   "file": "File:SergioRamos in 2010-11.jpg",
@@ -39,7 +45,10 @@
    125,
    111,
    160
-  ]
+  ],
+  "yaw": -0.38,
+  "roll": 1.3,
+  "cx": 0.5
  },
  {
   "file": "File:SergioRamos.jpg",
@@ -53,7 +62,10 @@
    191,
    105,
    152
-  ]
+  ],
+  "yaw": -0.3,
+  "roll": 3.1,
+  "cx": 0.49
  },
  {
   "file": "File:Sergio Ramos Euro 2012 vs France 02.jpg",
@@ -67,7 +79,10 @@
    81,
    77,
    106
-  ]
+  ],
+  "yaw": -0.07,
+  "roll": -2.5,
+  "cx": 0.57
  },
  {
   "file": "File:Sergio Ramos Espanyol 2010.png",
@@ -81,7 +96,10 @@
    119,
    75,
    96
-  ]
+  ],
+  "yaw": -0.3,
+  "roll": -1.0,
+  "cx": 0.5
  },
  {
   "file": "File:Sergio Ramos Euro 2012.jpg",
@@ -95,7 +113,10 @@
    63,
    64,
    79
-  ]
+  ],
+  "yaw": 0.4,
+  "roll": 4.2,
+  "cx": 0.7
  },
  {
   "file": "File:Control de Sergio Ramos.jpg",
@@ -109,7 +130,10 @@
    209,
    61,
    79
-  ]
+  ],
+  "yaw": 0.39,
+  "roll": 1.2,
+  "cx": 0.57
  },
  {
   "file": "File:Sergio Ramos (4980332829).jpg",
@@ -123,7 +147,10 @@
    141,
    53,
    56
-  ]
+  ],
+  "yaw": 0.21,
+  "roll": -0.0,
+  "cx": 0.42
  },
  {
   "file": "File:Gol de Sergio Ramos (5354396148).jpg",
@@ -137,7 +164,10 @@
    164,
    35,
    52
-  ]
+  ],
+  "yaw": 5.09,
+  "roll": -51.7,
+  "cx": 0.58
  },
  {
   "file": "File:Sergio Ramos Interview 2021 (cropped).jpg",

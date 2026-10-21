@@ -27,3 +27,7 @@ public/badges/
 
 # Vercel project link, written by `vercel link`.
 .vercel
+
+# Photo pipeline scratch: downloaded candidates, models, rembg output.
+.scratch/
+__pycache__/

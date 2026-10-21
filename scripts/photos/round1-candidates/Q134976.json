@@ -11,7 +11,10 @@
    167,
    217,
    304
-  ]
+  ],
+  "yaw": -0.17,
+  "roll": 5.4,
+  "cx": 0.65
  },
  {
   "file": "File:Lukas Podolski, Germany national football team (04).jpg",
@@ -25,7 +28,10 @@
    115,
    209,
    292
-  ]
+  ],
+  "yaw": -0.01,
+  "roll": -1.9,
+  "cx": 0.45
  },
  {
   "file": "File:Lukas Podolski, friendly match Germany vs South Africa - by Tsutomu Takasu.jpg",
@@ -39,7 +45,10 @@
    254,
    195,
    351
-  ]
+  ],
+  "yaw": -0.63,
+  "roll": -0.8,
+  "cx": 0.87
  },
  {
   "file": "File:Lukas Podolski, Germany national football team (02).jpg",
@@ -53,7 +62,10 @@
    74,
    159,
    217
-  ]
+  ],
+  "yaw": -0.26,
+  "roll": 6.1,
+  "cx": 0.53
  },
  {
   "file": "File:Lukas Podolski (Confed-Cup 2005)-2.JPG",
@@ -67,7 +79,10 @@
    52,
    138,
    219
-  ]
+  ],
+  "yaw": -1.46,
+  "roll": -8.2,
+  "cx": 0.29
  },
  {
   "file": "File:Lukas Podolski, Germany national football team (05).jpg",
@@ -81,7 +96,10 @@
    114,
    166,
    217
-  ]
+  ],
+  "yaw": -0.1,
+  "roll": -4.7,
+  "cx": 0.41
  },
  {
   "file": "File:Lukas Podolski, Germany national football team (08).jpg",
@@ -95,7 +113,10 @@
    77,
    75,
    99
-  ]
+  ],
+  "yaw": -0.39,
+  "roll": 0.2,
+  "cx": 0.65
  },
  {
   "file": "File:Lukas Podolski, Germany national football team (07).jpg",
@@ -109,7 +130,10 @@
    85,
    80,
    98
-  ]
+  ],
+  "yaw": -0.34,
+  "roll": -0.7,
+  "cx": 0.54
  },
  {
   "file": "File:Lukas Podolski Germany 2006.jpg",
@@ -123,7 +147,10 @@
    52,
    47,
    63
-  ]
+  ],
+  "yaw": 1.02,
+  "roll": 1.6,
+  "cx": 0.55
  },
  {
   "file": "File:Lukas Podolski 20120609.jpg",
@@ -137,7 +164,10 @@
    45,
    56,
    71
-  ]
+  ],
+  "yaw": -0.58,
+  "roll": 1.4,
+  "cx": 0.44
  },
  {
   "file": "File:Lukas Podolski.JPG",
@@ -151,7 +181,10 @@
    100,
    104,
    151
-  ]
+  ],
+  "yaw": 0.01,
+  "roll": 0.8,
+  "cx": 0.5
  },
  {
   "file": "File:Flickr - Ronnie Macdonald - Lukas Podolski.jpg",
@@ -165,7 +198,10 @@
    47,
    50,
    65
-  ]
+  ],
+  "yaw": 0.08,
+  "roll": -0.9,
+  "cx": 0.35
  },
  {
   "file": "File:Lukas Podolski.jpg",
@@ -179,7 +215,10 @@
    43,
    47,
    58
-  ]
+  ],
+  "yaw": 0.1,
+  "roll": -0.3,
+  "cx": 0.45
  },
  {
   "file": "File:Lukas Podolski 2.jpg",
@@ -193,7 +232,10 @@
    56,
    45,
    56
-  ]
+  ],
+  "yaw": -0.0,
+  "roll": -2.8,
+  "cx": 0.48
  },
  {
   "file": "File:Lukas Podolski 2019.jpg",
