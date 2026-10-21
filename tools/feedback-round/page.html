@@ -11,6 +11,9 @@
   so a new round is a new round.json on the same page. Claude reads answers
   back with ArtifactData. Item fields: id, kicker, title, lines[], value, rank
   (0-based on round.scale; omit for no ladder), image (asset url; optional).
+  With round.reveal, each item shows its gap first (gap: [left, right],
+  prompt) and keeps title, lines and verdict hidden until the gap is tapped,
+  so the answer is judged before hindsight.
 -->
 <style>
   /* Layout: one column of item cards under a short masthead; a progress bar sticks to the top. */
@@ -81,6 +84,15 @@
   .link { font: 500 14px/1 var(--body); color: var(--muted); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; justify-self: start; }
   textarea { width: 100%; min-height: 64px; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; resize: vertical; }
   .saved { font-size: 13px; color: var(--muted); min-height: 1em; }
+  .gap { display: grid; grid-template-columns: 1fr minmax(0, 1.3fr) 1fr; align-items: center; gap: 8px; }
+  .gap__end { font: 700 20px/1.05 var(--display); text-align: center; overflow-wrap: anywhere; }
+  .gap__slot { font: 700 22px/1.05 var(--display); color: var(--muted); background: transparent; border: 2px dashed var(--muted); border-radius: 10px; min-height: 64px; padding: 8px; cursor: pointer; display: grid; place-items: center; gap: 2px; }
+  .gap__slot:hover { border-color: var(--ink); color: var(--ink); }
+  .gap__slot small { font: 500 12px/1 var(--body); }
+  .gap__slot[data-open] { border-style: solid; border-color: var(--ink); color: var(--ink); cursor: default; }
+  .prompt { margin: 0; font-size: 14px; color: var(--muted); text-align: center; }
+  .item[data-hidden] .after { display: none; }
+  .after { display: grid; gap: 12px; }
   footer { display: grid; gap: 8px; }
   footer h3 { font: 700 20px/1 var(--display); margin: 0; }
   @media (prefers-reduced-motion: reduce) { .bar__fill { transition: none; } }
@@ -111,6 +123,7 @@
   let round = null;
   let db = null;
   const answers = {};          // item id -> { choice, note }
+  let seen = new Set();        // items whose pick has been revealed (round.reveal)
   const local = (k, v) => {   // per-browser fallback when the db is out of reach
     try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); localStorage.setItem(k, JSON.stringify(v)); } catch { return null; }
   };
@@ -149,13 +162,26 @@
   function card(it, i) {
     const n = round.options.length;
     const li = el('li', { class: 'item', id: `item-${it.id}` });
+    const hides = Boolean(round.reveal && it.gap);
+    // Shown or hidden as one: everything that gives the answer away.
+    const after = hides ? el('div', { class: 'after' }) : li;
+    let slot = null;
+    if (hides) {
+      slot = el('button', { type: 'button', class: 'gap__slot', 'aria-label': `Reveal the pick between ${it.gap[0]} and ${it.gap[1]}`, onclick: () => { seen.add(it.id); local(`fr:${round.id}:seen`, [...seen]); paint(); } },
+        document.createTextNode('?'), el('small', { text: 'Tap to reveal' }));
+      li.append(
+        el('div', { class: 'kicker' }, el('span', { class: 'num', text: `${i + 1}.` })),
+        el('div', { class: 'gap' }, el('div', { class: 'gap__end', text: it.gap[0] }), slot, el('div', { class: 'gap__end', text: it.gap[1] })),
+        it.prompt ? el('p', { class: 'prompt', text: it.prompt }) : null,
+        after);
+    }
     const head = el('div', { class: 'item__head' },
       it.image ? el('img', { src: it.image, alt: '' }) : null,
       el('div', { class: 'item__text' },
-        el('div', { class: 'kicker' }, el('span', { class: 'num', text: `${i + 1}. ` }), document.createTextNode(it.kicker || '')),
-        el('h2', { text: it.title }),
+        hides ? null : el('div', { class: 'kicker' }, el('span', { class: 'num', text: `${i + 1}. ` }), document.createTextNode(it.kicker || '')),
+        hides ? null : el('h2', { text: it.title }),
         it.lines?.length ? el('ul', { class: 'lines' }, ...it.lines.map((l) => el('li', { text: l }))) : null));
-    li.append(head);
+    after.append(head);
 
     if (it.value) {
       const v = el('div', { class: 'verdict' }, el('div', { class: 'verdict__label' }, document.createTextNode(`${round.valueLabel || 'Graded'} `), el('b', { text: it.value })));
@@ -164,7 +190,7 @@
           ...round.scale.map((_, k) => el('span', { 'data-on': k <= it.rank })));
         v.append(ladder, el('div', { class: 'ladder__ends', 'aria-hidden': 'true' }, el('span', { text: round.scale[0] }), el('span', { text: round.scale[round.scale.length - 1] })));
       }
-      li.append(v);
+      after.append(v);
     }
 
     const buttons = round.options.map((o) => el('button', {
@@ -177,18 +203,28 @@
         if (next && !answers[next.id.slice(5)]?.choice) next.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
       },
     }));
-    li.append(el('div', { class: 'choices', style: `--n:${n}`, role: 'group', 'aria-label': `Verdict on ${it.title}` }, ...buttons));
+    after.append(el('div', { class: 'choices', style: `--n:${n}`, role: 'group', 'aria-label': `Verdict on ${it.title}` }, ...buttons));
 
     const note = el('textarea', { id: `note-${it.id}`, placeholder: 'Why? (optional)', hidden: true });
     const toggle = el('button', { type: 'button', class: 'link', text: 'Add a note', onclick: () => { note.hidden = false; toggle.hidden = true; note.focus(); } });
     let t;
     note.addEventListener('input', () => { answers[it.id] = { ...(answers[it.id] || {}), note: note.value }; clearTimeout(t); t = setTimeout(() => save(it.id), 600); });
-    li.append(toggle, note);
+    after.append(toggle, note);
 
     function paint() {
       const a = answers[it.id] || {};
       buttons.forEach((b, k) => b.setAttribute('aria-pressed', String(a.choice === round.options[k].id)));
       li.toggleAttribute('data-done', Boolean(a.choice));
+      if (slot) {
+        const open = seen.has(it.id) || Boolean(a.choice);
+        li.toggleAttribute('data-hidden', !open);
+        if (open && !slot.hasAttribute('data-open')) {
+          slot.replaceChildren(document.createTextNode(it.title));
+          slot.setAttribute('data-open', '');
+          slot.removeAttribute('aria-label');
+          slot.disabled = true;
+        }
+      }
       if (a.note && note.hidden) { note.hidden = false; toggle.hidden = true; }
       if (document.activeElement !== note) note.value = a.note || '';
       progress();
@@ -203,6 +239,7 @@
     $('title').textContent = round.title;
     $('intro').textContent = round.intro || '';
     Object.assign(answers, local(`fr:${round.id}`) || {});
+    seen = new Set(local(`fr:${round.id}:seen`) || []);
     const list = $('items');
     round.items.forEach((it, i) => list.append(card(it, i)));
     const repaint = () => [...list.children].forEach((li) => li.paint());

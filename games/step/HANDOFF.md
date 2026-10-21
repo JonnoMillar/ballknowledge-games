@@ -145,6 +145,11 @@ left out: that is the unbacked-membership question, not grading. Each item's
 `meta.tags` says which probe it was. Read the answers back by tag to decide
 era fade and league weight.
 
+At Jonno's ask the round hides each pick: an item shows the step as in the
+game (`gap`, `prompt`) and the pick, its lines and grade appear only once
+the gap is tapped (`reveal: true` on the round), so he judges before
+hindsight. Item ids unchanged.
+
 ### Feedback round 1
 
 https://claude.ai/artifact/6yji2HfZKaBK5DiaHbr8hj (private to Jonno). 30

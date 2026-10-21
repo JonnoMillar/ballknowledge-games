@@ -2,7 +2,8 @@
   "id": "steps-2",
   "eyebrow": "Steps · grade check",
   "title": "Are these grades right?",
-  "intro": "30 real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.",
+  "intro": "30 real picks from Steps days already played. Each step is shown as in the game: think who you would name, then tap the gap to see a pick and the grade the game gives it. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.",
+  "reveal": true,
   "valueLabel": "Graded",
   "scale": [
     "Basic",
@@ -36,6 +37,11 @@
         "Linked by Liverpool: 237 games there, Torres 102",
         "At Tottenham Hotspur: 48 league games, until 2005"
       ],
+      "gap": [
+        "Tottenham",
+        "Torres"
+      ],
+      "prompt": "Played for Tottenham and one of Torres’s clubs",
       "value": "Decent",
       "rank": 1,
       "meta": {
@@ -58,6 +64,11 @@
         "Linked by Blackburn Rovers: 41 games there, Shearer 138",
         "At Aston Villa: 4 league games, until 2026"
       ],
+      "gap": [
+        "Aston Villa",
+        "Shearer"
+      ],
+      "prompt": "Played for Aston Villa and one of Shearer’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -80,6 +91,11 @@
         "Linked by Arsenal: 110 games there, Henry 381",
         "At Everton: 174 league games, until 2011"
       ],
+      "gap": [
+        "Everton",
+        "Henry"
+      ],
+      "prompt": "Played for Everton and one of Henry’s clubs",
       "value": "Basic",
       "rank": 0,
       "meta": {
@@ -99,6 +115,11 @@
         "Linked by Real Madrid: 370 games there, Hazard 54",
         "At Inter Milan: 30 league games, until 1996"
       ],
+      "gap": [
+        "Hazard",
+        "Inter Milan"
+      ],
+      "prompt": "Played for one of Hazard’s clubs and for Inter Milan",
       "value": "Solid",
       "rank": 2,
       "meta": {
@@ -120,6 +141,11 @@
         "Linked by Milan: 97 games there, Beckham 29",
         "At Valencia: 70 league games, until 1993"
       ],
+      "gap": [
+        "Valencia",
+        "Beckham"
+      ],
+      "prompt": "Played for Valencia and one of Beckham’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -144,6 +170,11 @@
         "Linked by Atlético Madrid: 73 games there, Rodri 34",
         "At Monaco: 49 league games, until 2015"
       ],
+      "gap": [
+        "Rodri",
+        "Monaco"
+      ],
+      "prompt": "Played for one of Rodri’s clubs and for Monaco",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -165,6 +196,11 @@
         "Linked by Swansea City: 26 games there, Lampard 9",
         "At Liverpool: 3 league games, until 2016"
       ],
+      "gap": [
+        "Lampard",
+        "Liverpool"
+      ],
+      "prompt": "Played for one of Lampard’s clubs and for Liverpool",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -187,6 +223,11 @@
         "Linked by Fenerbahçe Istanbul: 53 games there, Kanté 14",
         "At Nottingham Forest: 71 league games, until 1999"
       ],
+      "gap": [
+        "Nottingham Forest",
+        "Kanté"
+      ],
+      "prompt": "Played for Nottingham Forest and one of Kanté’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -210,6 +251,11 @@
         "Linked by Chelsea: 47 games there, Ballack 105",
         "At Milan: 16 league games, until 2026"
       ],
+      "gap": [
+        "Ballack",
+        "AC Milan"
+      ],
+      "prompt": "Played for one of Ballack’s clubs and for AC Milan",
       "value": "Solid",
       "rank": 2,
       "meta": {
@@ -233,6 +279,11 @@
         "Linked by Sporting CP: 87 games there, Ronaldo 25",
         "At Nottingham Forest: 2 league games, until 2026"
       ],
+      "gap": [
+        "Ronaldo",
+        "Nottingham Forest"
+      ],
+      "prompt": "Played for one of Ronaldo’s clubs and for Nottingham Forest",
       "value": "Elite",
       "rank": 4,
       "meta": {
@@ -256,6 +307,11 @@
         "Linked by Barcelona: 80 games there, Rashford 32",
         "At Juventus: 16 league games, until 1999"
       ],
+      "gap": [
+        "Rashford",
+        "Juventus"
+      ],
+      "prompt": "Played for one of Rashford’s clubs and for Juventus",
       "value": "Decent",
       "rank": 1,
       "meta": {
@@ -278,6 +334,11 @@
         "Linked by Manchester United: 83 games there, Pogba 157",
         "At Olympique de Marseille: 66 league games, until 2026"
       ],
+      "gap": [
+        "Marseille",
+        "Pogba"
+      ],
+      "prompt": "Played for Marseille and one of Pogba’s clubs",
       "value": "Basic",
       "rank": 0,
       "meta": {
@@ -300,6 +361,11 @@
         "Linked by Manchester United: 5 games there, Pogba 157",
         "At Olympique de Marseille: 18 league games, until 2026"
       ],
+      "gap": [
+        "Marseille",
+        "Pogba"
+      ],
+      "prompt": "Played for Marseille and one of Pogba’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -323,6 +389,11 @@
         "Linked by Real Madrid: 55 games there, Courtois 237",
         "At Sevilla: 19 league games, until 1997"
       ],
+      "gap": [
+        "Courtois",
+        "Sevilla"
+      ],
+      "prompt": "Played for one of Courtois’s clubs and for Sevilla",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -345,6 +416,11 @@
         "Linked by Barcelona: 23 games there, Neymar 123",
         "At Chelsea: 55 league games, until 2004"
       ],
+      "gap": [
+        "Neymar",
+        "Chelsea"
+      ],
+      "prompt": "Played for one of Neymar’s clubs and for Chelsea",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -366,6 +442,11 @@
         "Linked by Real Madrid: 54 games there, Bale 176",
         "At Chelsea: 245 league games, until 2019"
       ],
+      "gap": [
+        "Chelsea",
+        "Bale"
+      ],
+      "prompt": "Played for Chelsea and one of Bale’s clubs",
       "value": "Basic",
       "rank": 0,
       "meta": {
@@ -385,6 +466,11 @@
         "Linked by Barcelona: 64 games there, Neymar 123",
         "At Chelsea: 43 league games, until 2003"
       ],
+      "gap": [
+        "Neymar",
+        "Chelsea"
+      ],
+      "prompt": "Played for one of Neymar’s clubs and for Chelsea",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -404,6 +490,11 @@
         "Linked by Manchester United: 265 games there, Casemiro 111",
         "At Milan: 29 league games, until 2010"
       ],
+      "gap": [
+        "Casemiro",
+        "AC Milan"
+      ],
+      "prompt": "Played for one of Casemiro’s clubs and for AC Milan",
       "value": "Basic",
       "rank": 0,
       "meta": {
@@ -425,6 +516,11 @@
         "Linked by Liverpool: 18 games there, Mané 196",
         "At Juventus: 33 league games, until 2011"
       ],
+      "gap": [
+        "Juventus",
+        "Mané"
+      ],
+      "prompt": "Played for Juventus and one of Mané’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -446,6 +542,11 @@
         "Linked by Real Sociedad: 105 games there, Silva 74",
         "At Liverpool: 17 league games, until 2026"
       ],
+      "gap": [
+        "Silva",
+        "Liverpool"
+      ],
+      "prompt": "Played for one of Silva’s clubs and for Liverpool",
       "value": "Decent",
       "rank": 1,
       "meta": {
@@ -468,6 +569,11 @@
         "Linked by Chelsea: 110 games there, Terry 492",
         "At Liverpool: 102 league games, until 2011"
       ],
+      "gap": [
+        "Liverpool",
+        "Terry"
+      ],
+      "prompt": "Played for Liverpool and one of Terry’s clubs",
       "value": "Decent",
       "rank": 1,
       "meta": {
@@ -487,6 +593,11 @@
         "Linked by Arsenal: 42 games there, Bergkamp 315",
         "At Barcelona: 210 league games, until 2007"
       ],
+      "gap": [
+        "Barcelona",
+        "Bergkamp"
+      ],
+      "prompt": "Played for Barcelona and one of Bergkamp’s clubs",
       "value": "Solid",
       "rank": 2,
       "meta": {
@@ -508,6 +619,11 @@
         "Linked by West Ham United: 142 games there, Lampard 148",
         "At Nottingham Forest: 185 league games, until 2012"
       ],
+      "gap": [
+        "Nottingham Forest",
+        "Lampard"
+      ],
+      "prompt": "Played for Nottingham Forest and one of Lampard’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -530,6 +646,11 @@
         "Linked by Manchester United: 206 games there, Beckham 265",
         "At Liverpool: 65 league games, until 1999"
       ],
+      "gap": [
+        "Beckham",
+        "Liverpool"
+      ],
+      "prompt": "Played for one of Beckham’s clubs and for Liverpool",
       "value": "Solid",
       "rank": 2,
       "meta": {
@@ -552,6 +673,11 @@
         "Linked by West Ham United: 148 games there, Ferdinand 127",
         "At Manchester City: 32 league games, until 2015"
       ],
+      "gap": [
+        "Manchester City",
+        "Ferdinand"
+      ],
+      "prompt": "Played for Manchester City and one of Ferdinand’s clubs",
       "value": "Decent",
       "rank": 1,
       "meta": {
@@ -571,6 +697,11 @@
         "Linked by West Ham United: 42 games there, Ferdinand 127",
         "At Manchester City: 38 league games, until 2002"
       ],
+      "gap": [
+        "Manchester City",
+        "Ferdinand"
+      ],
+      "prompt": "Played for Manchester City and one of Ferdinand’s clubs",
       "value": "Solid",
       "rank": 2,
       "meta": {
@@ -592,6 +723,11 @@
         "Linked by Atlético Madrid: 31 games there, Rodri 34",
         "At Manchester United: 33 league games, until 2017"
       ],
+      "gap": [
+        "Manchester United",
+        "Rodri"
+      ],
+      "prompt": "Played for Manchester United and one of Rodri’s clubs",
       "value": "Sharp",
       "rank": 3,
       "meta": {
@@ -613,6 +749,11 @@
         "Linked by Chelsea: 27 games there, Deschamps 27",
         "At Manchester United: 3 league games, until 2026"
       ],
+      "gap": [
+        "Deschamps",
+        "Manchester United"
+      ],
+      "prompt": "Played for one of Deschamps’s clubs and for Manchester United",
       "value": "Elite",
       "rank": 4,
       "meta": {
@@ -636,6 +777,11 @@
         "Linked by Milan: 91 games there, Modrić 37",
         "At Sevilla: 46 league games, until 2020"
       ],
+      "gap": [
+        "Modrić",
+        "Sevilla"
+      ],
+      "prompt": "Played for one of Modrić’s clubs and for Sevilla",
       "value": "Solid",
       "rank": 2,
       "meta": {
@@ -657,6 +803,11 @@
         "Linked by Metz: 47 games there, Mané 22",
         "At Sunderland: 11 league games, until 2013"
       ],
+      "gap": [
+        "Mané",
+        "Sunderland"
+      ],
+      "prompt": "Played for one of Mané’s clubs and for Sunderland",
       "value": "Sharp",
       "rank": 3,
       "meta": {

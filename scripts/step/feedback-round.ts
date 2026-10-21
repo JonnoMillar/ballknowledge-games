@@ -5,6 +5,8 @@ import { factFame, spellWeight } from '../../src/lib/fame/spell';
 import { ELITE_MIN_FIELD, GRADES, GRADE_WORD, gradeOf, type Grade } from '../../src/lib/chain/grade';
 import { CHECKABLE } from '../../games/step/lib/rules';
 import type { Player } from '../../src/lib/chemistry/types';
+import { plateName } from '../../src/lib/short-name';
+import { shortClubName } from '../../components/ClubBadge';
 
 /**
  * A feedback round for Steps' grades: ~30 picks from days already played (no
@@ -126,6 +128,8 @@ const items = chosen
     const g = c.given.name, cl = short(c.club), v = short(c.via);
     const here = apps(c.pick, c.club);
     const last = ended(c.pick, c.club);
+    // The step as the game shows it, so the pick can stay hidden until tapped.
+    const pn = plateName(c.given.id, g), cn = shortClubName(clubs[c.club]?.name ?? c.club);
     return {
       id: c.key.replace(/[^A-Za-z0-9]+/g, '-'),
       kicker: c.playerFirst ? `${g} · ? · ${cl}` : `${cl} · ? · ${g}`,
@@ -134,6 +138,8 @@ const items = chosen
         `Linked by ${v}: ${apps(c.pick, c.via) ?? '?'} games there, ${g.split(' ').at(-1)} ${apps(c.given, c.via) ?? '?'}`,
         `At ${cl}: ${here ?? '?'} league games${last ? `, until ${last}` : ''}`,
       ],
+      gap: c.playerFirst ? [pn, cn] : [cn, pn],
+      prompt: c.playerFirst ? `Played for one of ${pn}’s clubs and for ${cn}` : `Played for ${cn} and one of ${pn}’s clubs`,
       value: GRADE_WORD[c.grade],
       rank: GRADES.indexOf(c.grade),
       // For reading answers back; the page ignores it.
@@ -145,7 +151,10 @@ const round = {
   id,
   eyebrow: 'Steps · grade check',
   title: 'Are these grades right?',
-  intro: `${items.length} real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`,
+  intro: id === 'steps-1'
+    ? `${items.length} real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`
+    : `${items.length} real picks from Steps days already played. Each step is shown as in the game: think who you would name, then tap the gap to see a pick and the grade the game gives it. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`,
+  reveal: id !== 'steps-1',
   valueLabel: 'Graded',
   scale: GRADES.map((g) => GRADE_WORD[g]),
   options: [
