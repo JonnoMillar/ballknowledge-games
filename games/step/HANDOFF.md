@@ -130,6 +130,21 @@ Days from 2026-10-21 were re-drawn (10-21's shown answer leaked into step 2).
 memberships (shared pool, so Chain too), and grading by real pick rates once
 there is traffic.
 
+### Feedback round 2 (2026-10-21), out with Jonno
+
+Same artifact, `round.json` now `tools/feedback-round/rounds/steps-2.json`
+(`npx tsx scripts/step/feedback-round.ts steps-2`), answers at
+`rounds/steps-2/answers` (round 1's stay at `rounds/steps-1/answers`). 30
+picks from days 09-19 to 10-20 under the new ruler (bar + no recency), none
+asked in round 1. It probes the open questions: 6 careers ended before 2010
+(era fade), 5 non-PL clubs (league weight), 3 short current spells (the Durán
+overshoot), 2 links through the given's short spell, then a spread over the
+grades (Basic 4, Decent 5, Solid 6, Sharp 13, Elite 2). Picks with no games
+behind the club or the link (Darlow at Man Utd, Rodri's 0 at Barcelona) are
+left out: that is the unbacked-membership question, not grading. Each item's
+`meta.tags` says which probe it was. Read the answers back by tag to decide
+era fade and league weight.
+
 ### Feedback round 1
 
 https://claude.ai/artifact/6yji2HfZKaBK5DiaHbr8hj (private to Jonno). 30

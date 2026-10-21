@@ -1,0 +1,674 @@
+{
+  "id": "steps-2",
+  "eyebrow": "Steps · grade check",
+  "title": "Are these grades right?",
+  "intro": "30 real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.",
+  "valueLabel": "Graded",
+  "scale": [
+    "Basic",
+    "Decent",
+    "Solid",
+    "Sharp",
+    "Elite"
+  ],
+  "options": [
+    {
+      "id": "low",
+      "label": "Too low",
+      "hint": "Deeper than that: it deserves a higher grade"
+    },
+    {
+      "id": "right",
+      "label": "Right"
+    },
+    {
+      "id": "high",
+      "label": "Too high",
+      "hint": "More obvious than that: it deserves a lower grade"
+    }
+  ],
+  "items": [
+    {
+      "id": "2026-09-19-Q42731-Q18741-Q317810",
+      "kicker": "Tottenham Hotspur · ? · Fernando Torres",
+      "title": "Jamie Redknapp",
+      "lines": [
+        "Linked by Liverpool: 237 games there, Torres 102",
+        "At Tottenham Hotspur: 48 league games, until 2005"
+      ],
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-09-19",
+        "given": "Q42731",
+        "club": "Q18741",
+        "pick": "Q317810",
+        "old": "solid",
+        "tags": [
+          "views-high",
+          "pre-2010"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-19-Q483583-Q18711-Q56752774",
+      "kicker": "Aston Villa · ? · Alan Shearer",
+      "title": "Harvey Elliott",
+      "lines": [
+        "Linked by Blackburn Rovers: 41 games there, Shearer 138",
+        "At Aston Villa: 4 league games, until 2026"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-19",
+        "given": "Q483583",
+        "club": "Q18711",
+        "pick": "Q56752774",
+        "old": "solid",
+        "tags": [
+          "views-high",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-20-Q45901-Q5794-Q185572",
+      "kicker": "Everton · ? · Thierry Henry",
+      "title": "Mikel Arteta",
+      "lines": [
+        "Linked by Arsenal: 110 games there, Henry 381",
+        "At Everton: 174 league games, until 2011"
+      ],
+      "value": "Basic",
+      "rank": 0,
+      "meta": {
+        "date": "2026-09-20",
+        "given": "Q45901",
+        "club": "Q5794",
+        "pick": "Q185572",
+        "old": "basic",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-09-21-Q214204-Q631-Q429039",
+      "kicker": "Eden Hazard · ? · Inter Milan",
+      "title": "Roberto Carlos",
+      "lines": [
+        "Linked by Real Madrid: 370 games there, Hazard 54",
+        "At Inter Milan: 30 league games, until 1996"
+      ],
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-09-21",
+        "given": "Q214204",
+        "club": "Q631",
+        "pick": "Q429039",
+        "old": "solid",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-22-Q10520-Q10333-Q46741",
+      "kicker": "Valencia · ? · David Beckham",
+      "title": "Leonardo Araújo",
+      "lines": [
+        "Linked by Milan: 97 games there, Beckham 29",
+        "At Valencia: 70 league games, until 1993"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-22",
+        "given": "Q10520",
+        "club": "Q10333",
+        "pick": "Q46741",
+        "old": "decent",
+        "tags": [
+          "moved",
+          "given-short",
+          "pre-2010",
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-23-Q20994118-Q180305-Q724147",
+      "kicker": "Rodri · ? · Monaco",
+      "title": "Geoffrey Kondogbia",
+      "lines": [
+        "Linked by Atlético Madrid: 73 games there, Rodri 34",
+        "At Monaco: 49 league games, until 2015"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-23",
+        "given": "Q20994118",
+        "club": "Q180305",
+        "pick": "Q724147",
+        "old": "sharp",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-24-Q41533-Q1130849-Q26192",
+      "kicker": "Frank Lampard · ? · Liverpool",
+      "title": "Steven Caulker",
+      "lines": [
+        "Linked by Swansea City: 26 games there, Lampard 9",
+        "At Liverpool: 3 league games, until 2016"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-24",
+        "given": "Q41533",
+        "club": "Q1130849",
+        "pick": "Q26192",
+        "old": "sharp",
+        "tags": [
+          "given-short",
+          "views-high"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-25-Q16665941-Q19490-Q312659",
+      "kicker": "Nottingham Forest · ? · N'Golo Kanté",
+      "title": "Pierre van Hooijdonk",
+      "lines": [
+        "Linked by Fenerbahçe Istanbul: 53 games there, Kanté 14",
+        "At Nottingham Forest: 71 league games, until 1999"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-25",
+        "given": "Q16665941",
+        "club": "Q19490",
+        "pick": "Q312659",
+        "old": "basic",
+        "tags": [
+          "moved",
+          "given-short",
+          "pre-2010"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-25-Q11948-Q1543-Q48770",
+      "kicker": "Michael Ballack · ? · Milan",
+      "title": "Álvaro Morata",
+      "lines": [
+        "Linked by Chelsea: 47 games there, Ballack 105",
+        "At Milan: 16 league games, until 2026"
+      ],
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-09-25",
+        "given": "Q11948",
+        "club": "Q1543",
+        "pick": "Q48770",
+        "old": "basic",
+        "tags": [
+          "moved",
+          "non-pl",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-25-Q11571-Q19490-Q116753805",
+      "kicker": "Cristiano Ronaldo · ? · Nottingham Forest",
+      "title": "Ousmane Diomande",
+      "lines": [
+        "Linked by Sporting CP: 87 games there, Ronaldo 25",
+        "At Nottingham Forest: 2 league games, until 2026"
+      ],
+      "value": "Elite",
+      "rank": 4,
+      "meta": {
+        "date": "2026-09-25",
+        "given": "Q11571",
+        "club": "Q19490",
+        "pick": "Q116753805",
+        "old": "sharp",
+        "tags": [
+          "given-short",
+          "views-high",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-26-Q22951255-Q1422-Q45901",
+      "kicker": "Marcus Rashford · ? · Juventus",
+      "title": "Thierry Henry",
+      "lines": [
+        "Linked by Barcelona: 80 games there, Rashford 32",
+        "At Juventus: 16 league games, until 1999"
+      ],
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-09-26",
+        "given": "Q22951255",
+        "club": "Q1422",
+        "pick": "Q45901",
+        "old": "sharp",
+        "tags": [
+          "moved",
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-27-Q129027-Q132885-Q61986758",
+      "kicker": "Olympique de Marseille · ? · Paul Pogba",
+      "title": "Mason Greenwood",
+      "lines": [
+        "Linked by Manchester United: 83 games there, Pogba 157",
+        "At Olympique de Marseille: 66 league games, until 2026"
+      ],
+      "value": "Basic",
+      "rank": 0,
+      "meta": {
+        "date": "2026-09-27",
+        "given": "Q129027",
+        "club": "Q132885",
+        "pick": "Q61986758",
+        "old": "decent",
+        "tags": [
+          "views-high",
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-27-Q129027-Q132885-Q29988852",
+      "kicker": "Olympique de Marseille · ? · Paul Pogba",
+      "title": "Angel Gomes",
+      "lines": [
+        "Linked by Manchester United: 5 games there, Pogba 157",
+        "At Olympique de Marseille: 18 league games, until 2026"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-27",
+        "given": "Q129027",
+        "club": "Q132885",
+        "pick": "Q29988852",
+        "old": "sharp",
+        "tags": [
+          "views-high",
+          "non-pl",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-28-Q73360-Q10329-Q298190",
+      "kicker": "Thibaut Courtois · ? · Sevilla",
+      "title": "Robert Prosinečki",
+      "lines": [
+        "Linked by Real Madrid: 55 games there, Courtois 237",
+        "At Sevilla: 19 league games, until 1997"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-28",
+        "given": "Q73360",
+        "club": "Q10329",
+        "pick": "Q298190",
+        "old": "sharp",
+        "tags": [
+          "pre-2010",
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-29-Q142794-Q9616-Q269883",
+      "kicker": "Neymar · ? · Chelsea",
+      "title": "Emmanuel Petit",
+      "lines": [
+        "Linked by Barcelona: 23 games there, Neymar 123",
+        "At Chelsea: 55 league games, until 2004"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-29",
+        "given": "Q142794",
+        "club": "Q9616",
+        "pick": "Q269883",
+        "old": "sharp",
+        "tags": [
+          "pre-2010"
+        ]
+      }
+    },
+    {
+      "id": "2026-09-29-Q184586-Q9616-Q214204",
+      "kicker": "Chelsea · ? · Gareth Bale",
+      "title": "Eden Hazard",
+      "lines": [
+        "Linked by Real Madrid: 54 games there, Bale 176",
+        "At Chelsea: 245 league games, until 2019"
+      ],
+      "value": "Basic",
+      "rank": 0,
+      "meta": {
+        "date": "2026-09-29",
+        "given": "Q184586",
+        "club": "Q9616",
+        "pick": "Q214204",
+        "old": "basic",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-09-29-Q142794-Q9616-Q271615",
+      "kicker": "Neymar · ? · Chelsea",
+      "title": "Boudewijn Zenden",
+      "lines": [
+        "Linked by Barcelona: 64 games there, Neymar 123",
+        "At Chelsea: 43 league games, until 2003"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-09-29",
+        "given": "Q142794",
+        "club": "Q9616",
+        "pick": "Q271615",
+        "old": "sharp",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-10-03-Q616664-Q1543-Q10520",
+      "kicker": "Casemiro · ? · Milan",
+      "title": "David Beckham",
+      "lines": [
+        "Linked by Manchester United: 265 games there, Casemiro 111",
+        "At Milan: 29 league games, until 2010"
+      ],
+      "value": "Basic",
+      "rank": 0,
+      "meta": {
+        "date": "2026-10-03",
+        "given": "Q616664",
+        "club": "Q1543",
+        "pick": "Q10520",
+        "old": "basic",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-05-Q209942-Q1422-Q191151",
+      "kicker": "Juventus · ? · Sadio Mané",
+      "title": "Alberto Aquilani",
+      "lines": [
+        "Linked by Liverpool: 18 games there, Mané 196",
+        "At Juventus: 33 league games, until 2011"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-10-05",
+        "given": "Q209942",
+        "club": "Q1422",
+        "pick": "Q191151",
+        "old": "sharp",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-06-Q161069-Q1130849-Q23759917",
+      "kicker": "David Silva · ? · Liverpool",
+      "title": "Alexander Isak",
+      "lines": [
+        "Linked by Real Sociedad: 105 games there, Silva 74",
+        "At Liverpool: 17 league games, until 2026"
+      ],
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-10-06",
+        "given": "Q161069",
+        "club": "Q1130849",
+        "pick": "Q23759917",
+        "old": "decent",
+        "tags": [
+          "views-high",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-06-Q83456-Q1130849-Q42731",
+      "kicker": "Liverpool · ? · John Terry",
+      "title": "Fernando Torres",
+      "lines": [
+        "Linked by Chelsea: 110 games there, Terry 492",
+        "At Liverpool: 102 league games, until 2011"
+      ],
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-10-06",
+        "given": "Q83456",
+        "club": "Q1130849",
+        "pick": "Q42731",
+        "old": "basic",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-10-09-Q185389-Q7156-Q173360",
+      "kicker": "Barcelona · ? · Dennis Bergkamp",
+      "title": "Giovanni van Bronckhorst",
+      "lines": [
+        "Linked by Arsenal: 42 games there, Bergkamp 315",
+        "At Barcelona: 210 league games, until 2007"
+      ],
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-10-09",
+        "given": "Q185389",
+        "club": "Q7156",
+        "pick": "Q173360",
+        "old": "solid",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-12-Q41533-Q19490-Q226125",
+      "kicker": "Nottingham Forest · ? · Frank Lampard",
+      "title": "Marlon Harewood",
+      "lines": [
+        "Linked by West Ham United: 142 games there, Lampard 148",
+        "At Nottingham Forest: 185 league games, until 2012"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-10-12",
+        "given": "Q41533",
+        "club": "Q19490",
+        "pick": "Q226125",
+        "old": "decent",
+        "tags": [
+          "moved",
+          "views-high"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-13-Q10520-Q1130849-Q311171",
+      "kicker": "David Beckham · ? · Liverpool",
+      "title": "Paul Ince",
+      "lines": [
+        "Linked by Manchester United: 206 games there, Beckham 265",
+        "At Liverpool: 65 league games, until 1999"
+      ],
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-10-13",
+        "given": "Q10520",
+        "club": "Q1130849",
+        "pick": "Q311171",
+        "old": "decent",
+        "tags": [
+          "views-high",
+          "pre-2010"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-14-Q483417-Q50602-Q41533",
+      "kicker": "Manchester City · ? · Rio Ferdinand",
+      "title": "Frank Lampard",
+      "lines": [
+        "Linked by West Ham United: 148 games there, Ferdinand 127",
+        "At Manchester City: 32 league games, until 2015"
+      ],
+      "value": "Decent",
+      "rank": 1,
+      "meta": {
+        "date": "2026-10-14",
+        "given": "Q483417",
+        "club": "Q50602",
+        "pick": "Q41533",
+        "old": "basic",
+        "tags": []
+      }
+    },
+    {
+      "id": "2026-10-14-Q483417-Q50602-Q356418",
+      "kicker": "Manchester City · ? · Rio Ferdinand",
+      "title": "Stuart Pearce",
+      "lines": [
+        "Linked by West Ham United: 42 games there, Ferdinand 127",
+        "At Manchester City: 38 league games, until 2002"
+      ],
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-10-14",
+        "given": "Q483417",
+        "club": "Q50602",
+        "pick": "Q356418",
+        "old": "decent",
+        "tags": [
+          "views-high"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-17-Q20994118-Q18656-Q1894",
+      "kicker": "Manchester United · ? · Rodri",
+      "title": "Memphis Depay",
+      "lines": [
+        "Linked by Atlético Madrid: 31 games there, Rodri 34",
+        "At Manchester United: 33 league games, until 2017"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-10-17",
+        "given": "Q20994118",
+        "club": "Q18656",
+        "pick": "Q1894",
+        "old": "decent",
+        "tags": [
+          "moved"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-17-Q508711-Q18656-Q106171073",
+      "kicker": "Didier Deschamps · ? · Manchester United",
+      "title": "Andrey Santos",
+      "lines": [
+        "Linked by Chelsea: 27 games there, Deschamps 27",
+        "At Manchester United: 3 league games, until 2026"
+      ],
+      "value": "Elite",
+      "rank": 4,
+      "meta": {
+        "date": "2026-10-17",
+        "given": "Q508711",
+        "club": "Q18656",
+        "pick": "Q106171073",
+        "old": "sharp",
+        "tags": [
+          "given-short",
+          "views-high",
+          "new-short"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-19-Q483837-Q10329-Q208638",
+      "kicker": "Luka Modrić · ? · Sevilla",
+      "title": "Simon Kjær",
+      "lines": [
+        "Linked by Milan: 91 games there, Modrić 37",
+        "At Sevilla: 46 league games, until 2020"
+      ],
+      "value": "Solid",
+      "rank": 2,
+      "meta": {
+        "date": "2026-10-19",
+        "given": "Q483837",
+        "club": "Q10329",
+        "pick": "Q208638",
+        "old": "decent",
+        "tags": [
+          "non-pl"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-20-Q209942-Q18739-Q484968",
+      "kicker": "Sadio Mané · ? · Sunderland",
+      "title": "Louis Saha",
+      "lines": [
+        "Linked by Metz: 47 games there, Mané 22",
+        "At Sunderland: 11 league games, until 2013"
+      ],
+      "value": "Sharp",
+      "rank": 3,
+      "meta": {
+        "date": "2026-10-20",
+        "given": "Q209942",
+        "club": "Q18739",
+        "pick": "Q484968",
+        "old": "sharp",
+        "tags": [
+          "given-short"
+        ]
+      }
+    }
+  ]
+}

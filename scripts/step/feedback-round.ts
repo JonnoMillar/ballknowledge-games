@@ -1,6 +1,6 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, readdir, writeFile } from 'node:fs/promises';
 import { FIT_A, FIT_B, fieldOf, judge, stepsOf, type Views } from '../../games/step/lib/rules';
-import type { StoredDay } from '../../games/step/lib/day';
+import { buildWorld, type StoredDay } from '../../games/step/lib/day';
 import { factFame, spellWeight } from '../../src/lib/fame/spell';
 import { ELITE_MIN_FIELD, GRADES, GRADE_WORD, gradeOf, type Grade } from '../../src/lib/chain/grade';
 import { CHECKABLE } from '../../games/step/lib/rules';
@@ -17,6 +17,10 @@ import type { Player } from '../../src/lib/chemistry/types';
  * English views run far past their sitelinks (managers, pundits), and an
  * even spread over the five grades.
  *
+ * Later rounds skip every pick an earlier round asked about, and probe what
+ * round 1 left open: players whose careers ended before 2010, clubs outside
+ * the Premier League, and short current spells.
+ *
  * Usage: tsx scripts/step/feedback-round.ts <round id> [until=yesterday]
  */
 const id = process.argv[2] ?? 'steps-1';
@@ -29,6 +33,14 @@ const views = await json<Views>('data/player-views.json');
 const days = (await json<StoredDay[]>('games/step/data/days.json')).filter((d) => d.date <= until);
 const byClub = new Map<string, Player[]>();
 for (const p of pool) for (const c of p.clubIds) { if (!byClub.has(c)) byClub.set(c, []); byClub.get(c)!.push(p); }
+const bar = await json<[number, number, number]>('games/step/data/bar.json');
+const english = buildWorld(pool, views).english;
+const asked = new Set<string>();
+for (const f of await readdir('tools/feedback-round/rounds')) {
+  if (!f.startsWith('steps-') || f === `${id}.json`) continue;
+  for (const it of (await json<{ items: { meta: { pick: string } }[] }>(`tools/feedback-round/rounds/${f}`)).items) asked.add(it.meta.pick);
+}
+const NOW = new Date(until).getFullYear();
 
 const short = (c: string) => (clubs[c]?.name ?? c).replace(/ (F\.C\.|A\.F\.C\.|FC|CF|C\.F\.)$/, '').replace(/^(AS|ACF|SS|AC|FC|RCD|SL|S\.L\.|AFC) /, '').replace('Club de Fútbol', '').trim();
 const apps = (p: Player, c: string) => { const s = p.spells?.[c]; return s?.[0] ?? null; };
@@ -53,7 +65,10 @@ for (const d of days) for (const s of stepsOf(d)) {
   for (const pick of field) {
     const called = ['Viv Anderson'].includes(pick.name);
     if ((views[pick.id] ?? 0) < 150e3 && !called) continue; // nobody names a player nobody reads about
-    const j = judge(pick, given, s.club, members, views, JSON.parse(await readFile('games/step/data/bar.json', 'utf8')));
+    if (asked.has(pick.id)) continue;
+    const j = judge(pick, given, s.club, members, views, bar);
+    // A membership with no games behind it is its own open question (Luis Alberto at Barcelona, round 1).
+    if (id !== 'steps-1' && (!apps(pick, s.club) || !apps(pick, j.via!) || !apps(given, j.via!))) continue;
     const old = oldGrade(field, pick, given, s.club);
     const shared = pick.clubIds.filter((c) => given.clubIds.includes(c));
     const via = j.via!;
@@ -61,6 +76,10 @@ for (const d of days) for (const s of stepsOf(d)) {
     if (Math.abs(GRADES.indexOf(j.grade!) - GRADES.indexOf(old)) >= 2) tags.push('moved');
     if (shared.every((c) => (apps(given, c) ?? 99) < 30)) tags.push('given-short');
     if ((views[pick.id] ?? 0) > 10 ** (FIT_A + FIT_B * pick.fame.value) * 8) tags.push('views-high');
+    const lasts = Object.values(pick.spells ?? {}).map((x) => x[2]);
+    if (lasts.length && lasts.every((y) => y !== null && y < 2010)) tags.push('pre-2010');
+    if (!english.has(s.club)) tags.push('non-pl');
+    if ((ended(pick, s.club) ?? NOW) >= NOW - 1 && (apps(pick, s.club) ?? 99) < 20) tags.push('new-short');
     cands.push({ key: `${d.date}|${s.player}|${s.club}|${pick.id}`, date: d.date, given, club: s.club, playerFirst: s.playerFirst, pick, grade: j.grade!, old, via, tags });
   }
 }
@@ -87,10 +106,18 @@ const CALLS: [string, string][] = [
   ['Enzo Maresca', 'David de Gea'],
 ];
 for (const [p, g] of CALLS) take((c) => c.pick.name === p && c.given.name === g, 1);
-take((c) => c.tags.includes('moved'), 7);
-take((c) => c.tags.includes('given-short'), 4);
-take((c) => c.tags.includes('views-high'), 2);
+if (id === 'steps-1') {
+  take((c) => c.tags.includes('moved'), 7);
+  take((c) => c.tags.includes('given-short'), 4);
+  take((c) => c.tags.includes('views-high'), 2);
+} else {
+  take((c) => c.tags.includes('pre-2010'), 6);
+  take((c) => c.tags.includes('non-pl') && !c.tags.includes('pre-2010'), 5);
+  take((c) => c.tags.includes('new-short'), 3);
+  take((c) => c.tags.includes('given-short'), 2);
+}
 for (const g of GRADES) take((c) => c.grade === g, 2);
+if (id !== 'steps-1') for (const g of GRADES.slice(0, 3)) take((c) => c.grade === g, 1); // probes run deep; keep the shallow grades in view
 take(() => true, Math.max(0, 30 - chosen.length));
 
 const items = chosen
