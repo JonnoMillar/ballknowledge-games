@@ -13,11 +13,31 @@ type Dials = {
   shade: string; shadeA: number; light: string; lightA: number;
   depth: number; soft: number; tile: number;
 };
-type Tune = { on: boolean; style: Style } & Record<Style, Dials>;
+type Mast = 'current' | 'scarf' | 'sash' | 'ticket';
+type Tune = { on: boolean; style: Style; mast?: Mast } & Record<Style, Dials>;
 
 const PRESETS: Record<Style, Dials> = {
   pressed: { page: '#F2EEE6', face: '#FFFFFF', faceA: 80, shade: '#141210', shadeA: 11, light: '#FFFFFF', lightA: 0, depth: 1, soft: 0, tile: 360 },
   raised: { page: '#F2EEE6', face: '#FAF8F3', faceA: 100, shade: '#141210', shadeA: 24, light: '#FFFFFF', lightA: 100, depth: 1.5, soft: 0.75, tile: 360 },
+};
+
+/** Grounds to try, each with glyph dials that suit it (raised). The first
+ *  seven are from a "colour combos" carousel Jonno sent: bold ground, cream type. */
+const c = (page: string, face: string, faceA: number, shade: string, shadeA: number, lightA: number): Dials =>
+  ({ page, face, faceA, shade, shadeA, light: '#FFFFFF', lightA, depth: 1.5, soft: 0.75, tile: 360 });
+const PALETTES: Record<string, Dials> = {
+  'Cream (now)': PRESETS.raised,
+  'Midnight indigo': c('#28284A', '#F2E6CF', 14, '#000000', 45, 12),
+  Plum: c('#381932', '#F2E6CF', 13, '#000000', 45, 10),
+  Forest: c('#064734', '#DFF5B8', 14, '#000000', 40, 10),
+  'Wine red': c('#7F011F', '#F2E6CF', 14, '#000000', 40, 12),
+  Cherry: c('#890149', '#F2E6CF', 14, '#000000', 40, 12),
+  'Royal blue': c('#014BAA', '#FFFFFF', 16, '#001A40', 45, 18),
+  Orange: c('#EC5E27', '#F2E6CF', 22, '#5A1A00', 40, 25),
+  'Sticker yellow': c('#F2C230', '#F7D25A', 100, '#6B4A00', 35, 90),
+  'Programme ink': c('#EFE6D2', '#141210', 9, '#141210', 14, 90),
+  'Tactics board': c('#1E2024', '#FFFFFF', 12, '#000000', 50, 8),
+  Concrete: c('#D5D7DA', '#E6E8EA', 100, '#20242A', 28, 100),
 };
 const KEY = 'hub-tune';
 
@@ -56,6 +76,7 @@ export default function HubTuner() {
     if (!hub) return;
     for (const [k, v] of Object.entries(tokens(t[t.style]))) hub.style.setProperty(k, v);
     hub.classList.toggle('hub--plain', !t.on);
+    hub.dataset.mast = t.mast ?? 'current';
     try { localStorage.setItem(KEY, JSON.stringify(t)); } catch { /* not kept, still applied */ }
   }, [t]);
 
@@ -94,6 +115,24 @@ export default function HubTuner() {
         <button type="button" aria-pressed={t.on && t.style === 'pressed'} onClick={() => setT({ ...t, on: true, style: 'pressed' })}>Pressed</button>
         <button type="button" aria-pressed={t.on && t.style === 'raised'} onClick={() => setT({ ...t, on: true, style: 'raised' })}>Raised</button>
       </div>
+      <label>
+        Top strip
+        <select value={t.mast ?? 'current'} onChange={(e) => setT({ ...t, mast: e.target.value as Mast })}>
+          <option value="current">Current</option>
+          <option value="scarf">Scarf</option>
+          <option value="sash">Sash</option>
+          <option value="ticket">Ticket</option>
+        </select>
+        <output />
+      </label>
+      <label>
+        Palette
+        <select value="" onChange={(e) => { const p = PALETTES[e.target.value]; if (p) setT({ ...t, on: true, style: 'raised', raised: p }); }}>
+          <option value="">Pick one…</option>
+          {Object.keys(PALETTES).map((n) => <option key={n}>{n}</option>)}
+        </select>
+        <output />
+      </label>
       {colour('Background', 'page')}
       {colour('Shapes', 'face')}
       {range('Shape fill', 'faceA', 0, 100, 1, '%')}
