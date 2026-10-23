@@ -990,6 +990,21 @@ button { font-family: inherit; }
    from above, so the art and the page share one light. The suggestion is
    the big tile and carries the page's only red button; the pub game runs
    along the bottom. No blurbs: each game's front page explains itself. */
+/* The table top: every game's glyph moulded into the page in place of the
+   dots (public/hub/pattern.svg, from scripts/build-hub-pattern.ts), a shade
+   below each and a light face above, so it shows only up close. */
+.hub { position: relative; isolation: isolate; background: var(--page); }
+.hub::before, .hub::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-mask: url(/hub/pattern.svg) 0 0 / 360px 360px repeat;
+  mask: url(/hub/pattern.svg) 0 0 / 360px 360px repeat;
+}
+.hub::before { background: rgba(20, 18, 16, 0.11); -webkit-mask-position: 0 1px; mask-position: 0 1px; }
+.hub::after { background: rgba(255, 255, 255, 0.8); }
 .hub__main { width: 100%; max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
 .hub__board {
   list-style: none;
