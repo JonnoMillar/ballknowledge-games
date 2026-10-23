@@ -3,6 +3,7 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import { GAMES, type GameCard } from '../src/games';
 import { hubStatus, syncHub, type HubStatus } from '../src/lib/today';
 import { smooth } from '../src/lib/motion';
+import HubTuner from './HubTuner';
 
 type Status = { done: Set<string>; streak: number };
 
@@ -39,6 +40,8 @@ export default function Hub({ initial }: { initial: HubStatus }) {
 
   return (
     <div className="app hub">
+      <div className="hub__table" aria-hidden />
+      {process.env.NODE_ENV === 'development' ? <HubTuner /> : null}
       <header className="masthead">
         <span className="masthead__brand display">Football games</span>
       </header>

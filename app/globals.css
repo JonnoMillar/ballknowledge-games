@@ -990,21 +990,66 @@ button { font-family: inherit; }
    from above, so the art and the page share one light. The suggestion is
    the big tile and carries the page's only red button; the pub game runs
    along the bottom. No blurbs: each game's front page explains itself. */
-/* The table top: every game's glyph moulded into the page in place of the
-   dots (public/hub/pattern.svg, from scripts/build-hub-pattern.ts), a shade
-   below each and a light face above, so it shows only up close. */
-.hub { position: relative; isolation: isolate; background: var(--page); }
-.hub::before, .hub::after {
-  content: '';
+/* The table top: every game's glyph printed on the page in place of the
+   dots (public/hub/pattern.svg, from scripts/build-hub-pattern.ts). The
+   glyphs are one masked face; the layer's two drop-shadows make them stand
+   up, a shade below and a light edge above, so they show only up close.
+   Every value is a token so components/HubTuner.tsx can dial it in. */
+.hub {
+  --hub-page: var(--page);
+  --glyph-face: rgba(255, 255, 255, 0.8);
+  --glyph-shade: rgba(20, 18, 16, 0.11);
+  --glyph-light: rgba(255, 255, 255, 0);
+  --glyph-depth: 1px;
+  --glyph-soft: 0px;
+  --glyph-tile: 360px;
+  position: relative;
+  isolation: isolate;
+  background: var(--hub-page);
+}
+.hub__table {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  -webkit-mask: url(/hub/pattern.svg) 0 0 / 360px 360px repeat;
-  mask: url(/hub/pattern.svg) 0 0 / 360px 360px repeat;
+  filter:
+    drop-shadow(0 var(--glyph-depth) var(--glyph-soft) var(--glyph-shade))
+    drop-shadow(0 calc(var(--glyph-depth) * -0.5) 0 var(--glyph-light));
 }
-.hub::before { background: rgba(20, 18, 16, 0.11); -webkit-mask-position: 0 1px; mask-position: 0 1px; }
-.hub::after { background: rgba(255, 255, 255, 0.8); }
+.hub__table::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glyph-face);
+  -webkit-mask: url(/hub/pattern.svg) 0 0 / var(--glyph-tile) var(--glyph-tile) repeat;
+  mask: url(/hub/pattern.svg) 0 0 / var(--glyph-tile) var(--glyph-tile) repeat;
+}
+.hub--plain .hub__table { display: none; }
+
+/* Dev only: the pattern's dials (components/HubTuner.tsx). */
+.tuner {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 50;
+  width: 250px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 8px 30px rgba(20, 18, 16, 0.25);
+  font-size: 13px;
+}
+.tuner[data-closed] > :not(.tuner__head) { display: none; }
+.tuner__head { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.tuner__modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 10px 0; }
+.tuner__modes button, .tuner__foot button { padding: 5px 0; border: 1px solid var(--rule-strong); border-radius: 6px; background: #fff; font-size: 12px; cursor: pointer; }
+.tuner__modes button[aria-pressed='true'] { background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 700; }
+.tuner label { display: grid; grid-template-columns: 82px 1fr 38px; align-items: center; gap: 6px; margin: 4px 0; }
+.tuner input[type='range'] { width: 100%; }
+.tuner input[type='color'] { width: 100%; height: 22px; padding: 0; border: 0; background: none; }
+.tuner output { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.tuner__foot { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 10px; }
 .hub__main { width: 100%; max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
 .hub__board {
   list-style: none;
