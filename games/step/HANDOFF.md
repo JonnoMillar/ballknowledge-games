@@ -45,6 +45,27 @@ run, Opened card (tilt). Real players from the server, the real components.
 The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
 `Summary` is exported from `Step.tsx`.
 
+**Next (Jonno, 2026-10-25, after previewing):**
+1. *The case breaking in half "looks terrible": cut it.* The stack of cases
+   stays (more cases = deeper, it carries the grade). Instead of the crack and
+   the falling halves, the top case's empty well develops into the player
+   (silhouette to photo, a short bright flash on the case), then the show
+   pushes in. No second object appears.
+2. *The duplicate photo:* while the verdict shows, the pick is both in the
+   strip's gap and in the card below. Recommended: one sticker that travels.
+   On Lock it lifts out of the gap and drops into the top case (the gap keeps
+   an outline with the grade chip); on Next the card shrinks back into the
+   gap as the sticker, so the strip reads as a chain again. Fits the
+   no-teleports rule. Confirm with Jonno before building if unsure.
+Build both in `Slam.tsx` / `Step.tsx` / `step.css`, update `/step/preview`
+to show them (it must keep every grade and the miss), check frames.
+
+**How to check frames:** the Browser pane is usually hidden, which throttles
+its animation; screenshots also lag a frame. Use headless Chromium instead
+(Python `playwright` 1.60 is installed): open `/step/preview` at 390×844
+and 1280×800, click each grade, screenshot during and after, pose the show
+with the scrubber, tile the shots into a contact sheet with PIL and read it.
+
 **Verified:** typecheck, `npm test` (2,189), prod build. Frames read as
 contact sheets from headless Chromium at 390×844 ×2 (`/step` with the pick
 API faked to each grade, stills posed at fixed u, then live): timings exact
