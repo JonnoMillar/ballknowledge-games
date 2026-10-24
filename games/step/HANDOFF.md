@@ -11,6 +11,41 @@ reverted the British grade words (keep Basic … Elite) and asked for the merge
 to `main`, same day. He took every recommendation in the spec: 4 steps, five grades site-wide, one
 shot, run = average rounded down, automatic daily.
 
+## Card motion (2026-10-25, branch `worktree-card-motion`, not merged)
+
+Jonno liked a Claude Opus 5.5 card animation (Instagram, ashokreddyai,
+slide 5): the camera pushes in on the card, it sways, light runs round the
+foil edge, a spotlight on a dark stage. Read frame by frame; we took the
+camera and the light, not the ticket back, the tear-off, the rainbow foil or
+the dark stage. Jonno's calls: cream stage with a light pool, the sheen in
+each grade's own material, all three places below.
+
+- **Reveal** (`components/Slam.tsx`, `lib/show.ts`): the case slam stays
+  (it says how deep). 250 ms into the break the show starts: push in, one
+  sway with the light orbiting the case, settle. One template, numbers by
+  grade in `SHOW` (Basic 0.5 s no push; Elite 1.2 s, 1.35×, light pool and
+  a shadow under the card). `showAt(u)` is pure (the motion-design skill's
+  seek(t) rule): every frame computed from one clock, so skip and reduced
+  motion land on rest. Tests in `tests/show.test.ts`.
+- **End of run** (`Summary` in `Step.tsx`): the four cards deal in 100 ms
+  apart; the deepest catches the light once. No push.
+- **Collection** (shared `components/Collection.tsx`): an opened card turns
+  towards the pointer (mouse hover, finger drag), light on the near edge,
+  eases back flat on release. The grid stays still.
+- **Shared** (`components/Slab.tsx`, `app/globals.css`): every case has a
+  `.slab__sheen`, unlit at rest, under the well so it never crosses the
+  photo. Registered properties `--rx --ry --lx --ly --lit` turn and light it
+  inside a `.tilt`; `slab-pass` is the one-pass keyframe. Chain's reveal and
+  Spoofed render the case unchanged.
+
+**Verified:** typecheck, `npm test` (2,189), prod build. Frames read as
+contact sheets from headless Chromium at 390×844 ×2 (`/step` with the pick
+API faked to each grade, stills posed at fixed u, then live): timings exact
+(Elite show 1,201 ms, Basic 499 ms), push, sway, sheen per material, pool
+and shadow, summary deal-in, collection tilt and release. Not covered: a
+real phone (touch drag, frame rate), the built-in Browser pane (hidden, so
+its timing is throttled).
+
 ### Feedback round 1 (2026-10-14), applied
 
 - **Reveal:** `components/Slam.tsx`. Empty cases slam down one on another,

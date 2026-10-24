@@ -73,6 +73,11 @@
 .step-end__none { font-size: 28px; color: var(--muted); }
 .step-end__cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, auto); gap: 14px; justify-content: center; }
 @media (min-width: 760px) { .step-end__cards { grid-template-columns: repeat(4, auto); } }
+/* The four cards arrive one after another; the deepest catches the light once
+   when the last has landed. Already seen one by one, so no push, no sway. */
+.step-end__cards > li { animation: step-deal 460ms calc(var(--i) * 100ms) var(--ease-out) both; }
+@keyframes step-deal { from { opacity: 0; transform: translateY(18px) rotate(-3deg) scale(0.96); } to { opacity: 1; transform: none; } }
+.step-end__cards .is-deepest .slab { animation: slab-pass 900ms 620ms var(--ease-in-out) backwards; }
 .step-end__cards .slab--sm { --sticker-w: 118px; }
 @media (max-width: 380px) { .step-end__cards .slab--sm { --sticker-w: 112px; } }
 .step-end__miss { position: relative; display: flex; align-items: center; justify-content: center; min-width: 118px; min-height: 150px; }
@@ -113,9 +118,26 @@
 .step-slam--sharp.is-break::before, .step-slam--elite.is-break::before { animation-duration: 1400ms; }
 @keyframes step-burst { 0% { opacity: 0; transform: scale(0.4); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.5); } }
 
-.step-slam__card { visibility: hidden; }
-.step-slam.is-break .step-slam__card, .step-slam.is-done .step-slam__card { visibility: visible; }
-.step-slam.is-break .step-slam__card { animation: step-unveil 620ms var(--ease-out) both; }
+.step-slam__card { position: relative; visibility: hidden; }
+.step-slam.is-break .step-slam__card, .step-slam.is-show .step-slam__card, .step-slam.is-done .step-slam__card { visibility: visible; }
+.step-slam.is-break .step-slam__card, .step-slam.is-show .step-slam__card { animation: step-unveil 620ms var(--ease-out) both; }
+/* The show (Slam.tsx SHOW): the push is the camera, the tilt and sheen are
+   on the case (globals.css). The stage stays cream: a pool of light behind
+   the card, and for Elite a shadow beneath it that tightens as it lifts. */
+.step-slam .tilt { transform: scale(var(--push, 1)); transform-origin: 50% 0; }
+.step-slam__pool, .step-slam__shadow { position: absolute; left: 50%; pointer-events: none; }
+.step-slam__pool {
+  top: 58%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 254, 250, 1) 0%, rgba(255, 252, 242, 0.8) 26%, rgba(255, 250, 238, 0) 44%,
+    rgba(90, 66, 30, 0.09) 58%, rgba(90, 66, 30, 0) 72%);
+  opacity: var(--pool, 0);
+}
+.step-slam__shadow {
+  /* Under the pushed card: it scales from its top, so its foot drops by (push - 1) of its height. */
+  bottom: calc(-18px - (var(--push, 1) - 1) * 100%); width: 150px; height: 22px; margin-left: -75px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(20, 18, 16, 0.32) 0%, transparent 70%);
+  opacity: var(--pool, 0); transform: scaleX(calc(1.25 - var(--pool, 0) * 0.35));
+}
 @keyframes step-unveil { 0% { transform: scale(0.9); filter: brightness(1.7); } 100% { transform: none; filter: none; } }
 
 .step-slam__case {
@@ -167,5 +189,6 @@
 .step-obvious__via { font-size: 13px; color: var(--muted); }
 
 @media (prefers-reduced-motion: reduce) {
-  .step-slam__case, .step-slam__half, .step-slam.is-break .step-slam__card, .step-slam.is-break::before, .step-after { animation: none; }
+  .step-slam__case, .step-slam__half, .step-slam.is-break .step-slam__card, .step-slam.is-break::before, .step-after,
+  .step-end__cards > li, .step-end__cards .is-deepest .slab { animation: none; }
 }

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import { Mark } from './Chain';
 import MastNav from './MastNav';
 import Slab, { GradeChip } from './Slab';
@@ -124,7 +124,9 @@ export default function Collection() {
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
-            <Slab grade={open.grade} player={open} image={open.image} ground={groundOf(open)} size="lg" />
+            <div className="tilt card-detail__tilt" onPointerDown={tiltStart} onPointerMove={tiltMove} onPointerUp={tiltEnd} onPointerCancel={tiltEnd} onPointerLeave={tiltEnd}>
+              <Slab grade={open.grade} player={open} image={open.image} ground={groundOf(open)} size="lg" />
+            </div>
             <div className="card-detail__copy">
               <h2 className="key__head display">{open.name}</h2>
               <p>Found on <a href={open.source?.href ?? `/play/${open.board}`}>{open.source?.label ?? `Deep Cuts ${open.board}`}</a>, {longDate(open.date)}.</p>
@@ -143,6 +145,35 @@ const groundOf = (c: Card): Ground => {
   const ca = a ? clubColour(a) : 'var(--ground-neutral)';
   return { a: ca, b: b ? clubColour(b) : ca, liveA: true, liveB: true };
 };
+
+/**
+ * An opened card turns towards the pointer: a mouse just moves over it, a
+ * finger drags it. The light sits on the edge turned towards you; let go and
+ * it eases back flat (the registered properties transition, globals.css).
+ */
+const TILT = 12;
+function tiltStart(e: PointerEvent<HTMLDivElement>) {
+  if (e.pointerType !== 'mouse') e.currentTarget.setPointerCapture(e.pointerId);
+  tiltMove(e);
+}
+function tiltMove(e: PointerEvent<HTMLDivElement>) {
+  if (e.pointerType !== 'mouse' && !e.currentTarget.hasPointerCapture(e.pointerId)) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  const x = Math.min(1, Math.max(-1, ((e.clientX - r.left) / r.width) * 2 - 1));
+  const y = Math.min(1, Math.max(-1, ((e.clientY - r.top) / r.height) * 2 - 1));
+  const st = e.currentTarget.style;
+  st.setProperty('--ry', `${(x * TILT).toFixed(2)}deg`);
+  st.setProperty('--rx', `${(-y * TILT).toFixed(2)}deg`);
+  st.setProperty('--lx', `${(50 + x * 60).toFixed(1)}%`);
+  st.setProperty('--ly', `${(50 + y * 60).toFixed(1)}%`);
+  st.setProperty('--lit', String(0.35 + (0.65 * Math.hypot(x, y)) / Math.SQRT2));
+  e.currentTarget.classList.add('is-held');
+}
+function tiltEnd(e: PointerEvent<HTMLDivElement>) {
+  const el = e.currentTarget;
+  el.classList.remove('is-held');
+  ['--rx', '--ry', '--lx', '--ly', '--lit'].forEach((p) => el.style.removeProperty(p));
+}
 
 function joinAnd(xs: readonly string[]): string {
   return xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`;

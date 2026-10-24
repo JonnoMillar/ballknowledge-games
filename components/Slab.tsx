@@ -12,6 +12,11 @@ import type { CardNews } from '../src/lib/collection';
  * photographic textures (public/grades). The case is the only thing that
  * ever catches the light: the glint runs behind the sticker, never across
  * the player's photo. The label says the grade and nothing else.
+ *
+ * The sheen is a light held still on the case, at rest unlit. Inside a
+ * `.tilt` the case turns by --rx/--ry, and --lx/--ly/--lit place and light
+ * the sheen in the grade's own colour: the reveal drives them on a timeline,
+ * an opened card by the pointer.
  */
 export default function Slab({ grade, player, image, ground, news, size = 'md' }: {
   grade: Grade;
@@ -26,6 +31,7 @@ export default function Slab({ grade, player, image, ground, news, size = 'md' }
       <span className="slab__face" aria-hidden>
         <span className="slab__inlay" />
         <span className="slab__glint" />
+        <span className="slab__sheen" />
       </span>
       <span className="slab__label display">{GRADE_WORD[grade]}</span>
       <span className="slab__well">

@@ -10,6 +10,7 @@ import { buildIndex, type SearchIndex } from '../../../src/lib/search/index';
 import { decodeNames, type NameEntry, type NameRow } from '../../../src/lib/chain/client';
 import { recordCards, type CardNews } from '../../../src/lib/collection';
 import { localDate } from '../../../src/lib/daily';
+import { gradeRank } from '../../../src/lib/chain/grade';
 import { plateName } from '../../../src/lib/short-name';
 import { NAME, STEPS, runGrade, shareLine } from '../lib/rules';
 import Slam from './Slam';
@@ -347,6 +348,9 @@ function cardGround(card: StepCard, playerFirst: boolean): Ground {
 function Summary({ day, run }: { day: StepDay; run: Run }) {
   const grades = run.map((v) => v?.grade ?? null);
   const word = runGrade(grades);
+  // The first card at the run's deepest grade, the one that catches the light.
+  const ranks = grades.map((g) => (g ? gradeRank(g) : -1));
+  const deepest = Math.max(...ranks) >= 0 ? ranks.indexOf(Math.max(...ranks)) : -1;
   const [copied, setCopied] = useState(false);
   async function share() {
     await navigator.clipboard?.writeText(shareLine(day.day, grades)).catch(() => {});
@@ -361,7 +365,7 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
       </div>
       <ol className="step-end__cards">
         {run.map((v, i) => (
-          <li key={i}>
+          <li key={i} className={i === deepest ? 'is-deepest' : undefined} style={{ ['--i' as string]: i }}>
             {v && v.held && v.grade
               ? <Slab grade={v.grade} player={v.pick} image={v.pick.image ?? undefined} ground={cardGround(v.pick, day.steps[i]!.playerFirst)} size="sm" />
               : (
