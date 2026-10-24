@@ -345,7 +345,7 @@ function cardGround(card: StepCard, playerFirst: boolean): Ground {
 }
 
 /** The end of the run: the word, the cards, the share, then the deepest answers. */
-function Summary({ day, run }: { day: StepDay; run: Run }) {
+export function Summary({ day, run }: { day: StepDay; run: Run }) {
   const grades = run.map((v) => v?.grade ?? null);
   const word = runGrade(grades);
   // The first card at the run's deepest grade, the one that catches the light.

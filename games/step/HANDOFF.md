@@ -38,6 +38,13 @@ each grade's own material, all three places below.
   inside a `.tilt`; `slab-pass` is the one-pass keyframe. Chain's reveal and
   Spoofed render the case unchanged.
 
+**Preview (dev only): `/step/preview`** (`components/MotionPreview.tsx`,
+404 in production). Jonno reviews design here, not by playing: Getting a
+card (each grade and a miss, Replay, a scrubber through the show), End of
+run, Opened card (tilt). Real players from the server, the real components.
+The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
+`Summary` is exported from `Step.tsx`.
+
 **Verified:** typecheck, `npm test` (2,189), prod build. Frames read as
 contact sheets from headless Chromium at 390×844 ×2 (`/step` with the pick
 API faked to each grade, stills posed at fixed u, then live): timings exact
