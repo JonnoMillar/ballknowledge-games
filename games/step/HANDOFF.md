@@ -1,6 +1,6 @@
 # Step chain — state of play
 
-**Updated 2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
+**Updated 2026-10-25** (card motion round 2, branch `worktree-card-motion`). Before: **2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
 the ruler work was branch `claude/steps-grading-555384`. Site-wide notes: root
 `HANDOFF.md`. Spec (the decision record): `games/step/SPEC.md`. Working name
 "Step" (`NAME` in `lib/rules.ts`, route `/step`) until Jonno names it.
@@ -10,6 +10,88 @@ gave a first round of feedback (below, applied the same day). He then
 reverted the British grade words (keep Basic … Elite) and asked for the merge
 to `main`, same day. He took every recommendation in the spec: 4 steps, five grades site-wide, one
 shot, run = average rounded down, automatic daily.
+
+## Card motion (2026-10-25, branch `worktree-card-motion`, not merged)
+
+Jonno liked a Claude Opus 5.5 card animation (Instagram, ashokreddyai,
+slide 5): the camera pushes in on the card, it sways, light runs round the
+foil edge, a spotlight on a dark stage. Read frame by frame; we took the
+camera and the light, not the ticket back, the tear-off, the rainbow foil or
+the dark stage. Jonno's calls: cream stage with a light pool, the sheen in
+each grade's own material, all three places below.
+
+- **Reveal** (`components/Slam.tsx`, `lib/show.ts`): the case slam stays
+  (it says how deep), in the strip's gap (round 2 below). After the develop the show starts: push in, one
+  sway with the light orbiting the case, settle. One template, numbers by
+  grade in `SHOW` (Basic 0.5 s no push; Elite 1.2 s, 1.35×, light pool and
+  a shadow under the card). `showAt(u)` is pure (the motion-design skill's
+  seek(t) rule): every frame computed from one clock, so skip and reduced
+  motion land on rest. Tests in `tests/show.test.ts`.
+- **End of run** (`Summary` in `Step.tsx`): the four cards deal in 100 ms
+  apart; the deepest catches the light once. No push.
+- **Collection** (shared `components/Collection.tsx`): an opened card turns
+  towards the pointer (mouse hover, finger drag), light on the near edge,
+  eases back flat on release. The grid stays still.
+- **Shared** (`components/Slab.tsx`, `app/globals.css`): every case has a
+  `.slab__sheen`, unlit at rest, under the well so it never crosses the
+  photo. Registered properties `--rx --ry --lx --ly --lit` turn and light it
+  inside a `.tilt`; `slab-pass` is the one-pass keyframe. Chain's reveal and
+  Spoofed render the case unchanged.
+
+**Preview (dev only): `/step/preview`** (`components/MotionPreview.tsx`,
+404 in production). Jonno reviews design here, not by playing: Getting a
+card (each grade and a miss, Replay, a scrubber through the show), End of
+run, Opened card (tilt). Real players from the server, the real components.
+The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
+`Summary` is exported from `Step.tsx`.
+
+**Round 2 (Jonno, 2026-10-25, after previewing), built and merged:**
+1. *The crack is cut.* The stack of cases stays (more cases = deeper). Then
+   the top case's well develops into the player: the silhouette lifts off
+   the sticker (`.step-slam__veil`, laid over it through Slab's new
+   `children`), the club colours come in from the corners, the case flashes
+   once (a miss: no flash, the pick greys, the ✕ stamps), and that case is
+   the card. The lower cases fade under it. Then the show pushes in.
+2. *No duplicate photo: the reveal plays in the gap.* A first build flew the
+   sticker from the gap down to a stage and back on Next; Jonno: "why does
+   it drop down, it should just do what it does in the gap". So `Gap` renders
+   `Slam` over the pick (`.step-gap--reveal`, absolutely placed so the
+   case's well sits on the gap's sticker; strip-sized case, slimmer edge and
+   label; `.step-track` is `overflow-x: clip` so the case can rise above the
+   strip). Cases slam on the gap, it develops and pushes there, then the
+   case fades off (`settle`) and the gap is the sticker with its grade chip.
+   Linked-by and the obvious answer come in below; Next just slides the
+   strip. The hidden placeholder sticker is drawn on the pick's final ground
+   so React reuses it after without re-developing the halves.
+   Elite ~4.1 s Lock to rest, Basic ~2.0 s, a miss ~1.5 s.
+3. *Preview:* Getting a card runs in a real strip (`Track` exported): each
+   grade and the miss, Replay, Next (slides on), and the scrubber (poses the
+   show on the card held in its case in the gap, `play` false).
+
+Known: during the reveal the case rises about 17 px over the pips at 390
+wide, and Elite's light pool washes the neighbouring stickers for a second.
+Fixed on the way: a tap to skip left the stack timers running.
+
+**How to check frames:** the Browser pane is usually hidden, which throttles
+its animation; screenshots also lag a frame. Use headless Chromium instead
+(Python `playwright` 1.60 is installed): open `/step/preview` at 390×844
+and 1280×800, click each grade, screenshot during and after, pose the show
+with the scrubber, tile the shots into a contact sheet with PIL and read it.
+
+**Verified round 2:** typecheck, `npm test` (2,189), prod build. Contact
+sheets from headless Chromium of `/step/preview`, 390×844 and 1280×800,
+every grade and the miss, live through Lock, rest and Next: cases land on
+the gap, develop, show, case fades to sticker + chip, slide; no console
+errors. Not covered: a real phone, a played run on `/step` (same Track,
+Gap and Slam; not clicked through).
+
+**Verified round 1:** typecheck, `npm test` (2,189), prod build. Frames read as
+contact sheets from headless Chromium at 390×844 ×2 (`/step` with the pick
+API faked to each grade, stills posed at fixed u, then live): timings exact
+(Elite show 1,201 ms, Basic 499 ms), push, sway, sheen per material, pool
+and shadow, summary deal-in, collection tilt and release. Not covered: a
+real phone (touch drag, frame rate), the built-in Browser pane (hidden, so
+its timing is throttled).
 
 ### Feedback round 1 (2026-10-14), applied
 

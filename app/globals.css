@@ -1376,6 +1376,40 @@ button { font-family: inherit; }
 .slab--decent .slab__glint, .slab--solid .slab__glint, .slab--sharp .slab__glint,
 .slab--elite .slab__glint { animation: slab-glint 9s ease-in-out infinite; }
 
+/* The sheen: a soft light on the case, in the grade's colour, unlit at rest.
+   Registered so keyframes and transitions can move it. It sits in the face,
+   so the well covers it and it reads round the edge of the case. */
+@property --lx { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+@property --ly { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
+@property --lit { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --rx { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+@property --ry { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+.slab__sheen {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--lx) var(--ly), var(--sheen, rgba(255, 255, 255, 0.7)) 0%, transparent 28%),
+    radial-gradient(circle at var(--lx) var(--ly), var(--sheen, rgba(255, 255, 255, 0.7)) 0%, transparent 62%);
+  mix-blend-mode: screen;
+  opacity: var(--lit);
+  pointer-events: none;
+}
+.slab--basic { --sheen: rgba(255, 196, 150, 0.6); }
+.slab--decent { --sheen: rgba(255, 255, 255, 0.9); }
+.slab--solid { --sheen: rgba(255, 234, 160, 0.85); }
+.slab--sharp { --sheen: rgba(150, 190, 255, 0.85); }
+.slab--elite { --sheen: rgba(240, 204, 120, 0.85); }
+/* Inside a .tilt the case turns with --rx/--ry; elsewhere it lies flat. */
+.tilt { perspective: 900px; }
+.tilt .slab { transform: rotateX(var(--rx)) rotateY(var(--ry)); }
+/* The light passing once across a card as it arrives (an opened card, the
+   deepest of a run's four). */
+@keyframes slab-pass {
+  0% { --lit: 0; --lx: -10%; --ly: 10%; }
+  40% { --lit: 1; }
+  100% { --lit: 0; --lx: 110%; --ly: 90%; }
+}
+
 /* Basic: bronze, matte and still. */
 .slab--basic .slab__face { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
 .slab--basic .slab__label { background: rgba(38, 21, 8, 0.5); color: #ecd2b6; }
@@ -1486,6 +1520,16 @@ button { font-family: inherit; }
 .card-detail__copy { display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.5; color: var(--soft); min-width: 0; }
 .card-detail__copy p { margin: 0; }
 .card-detail__copy a { color: var(--ink); font-weight: 600; }
+/* The opened card: it arrives with one pass of light, then turns towards the
+   pointer (Collection.tsx), and eases back flat when let go. */
+.card-detail__tilt { touch-action: none; cursor: grab; }
+.card-detail__tilt.is-held { cursor: grabbing; }
+.card-detail__tilt .slab {
+  animation: slab-pass 900ms 120ms var(--ease-in-out) backwards;
+  transition: --rx 420ms var(--ease-out), --ry 420ms var(--ease-out), --lx 420ms var(--ease-out), --ly 420ms var(--ease-out), --lit 420ms var(--ease-out);
+}
+.card-detail__tilt.is-held .slab { transition: none; }
+@media (prefers-reduced-motion: reduce) { .card-detail__tilt .slab { animation: none; transition: none; } }
 .card-detail__grade { padding-top: 10px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
 
 /* ── THE REVEAL ON A DEEP CUTS BOARD ───────────────────────────────── */
