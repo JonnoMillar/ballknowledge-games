@@ -114,7 +114,7 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
             ) : <p className="mprev__note">Replay to see it again.</p>}
           </div>
         ) : view === 'end' ? (
-          <Summary key={`${pick}-${take}`} day={day} run={run} />
+          <Summary key={`${pick}-${take}`} day={day} run={run} fresh />
         ) : (
           <CardTilt key={pick}>
             <Slab grade={pick === 'miss' ? 'elite' : pick} player={players[0]!} image={players[0]!.image} ground={ground(players[0]!)} size="lg" />

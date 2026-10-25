@@ -24,7 +24,7 @@
 .step-pip.is-held { background: var(--green); border-color: var(--green); color: #fff; }
 .step-pip.is-missed { background: var(--red); border-color: var(--red); color: #fff; }
 
-.step-track { width: 100%; overflow-x: clip; overflow-y: visible; }
+.step-track { width: 100%; padding-top: 24px; overflow-x: clip; overflow-y: visible; }
 .step-track__strip {
   display: flex;
   align-items: flex-start;
@@ -45,16 +45,18 @@
 .step-gap--chosen { appearance: none; border: 0; padding: 0; background: none; cursor: pointer; }
 .step-gap--missed { opacity: 0.55; filter: grayscale(1); }
 .step-gap--later { opacity: 0.6; }
-/* The reveal plays in the gap: the case sits round the pick, its well over
-   the sticker (the hidden copy keeps the gap's room). Strip-sized: the
-   sticker keeps the strip's width, the case a slimmer edge and label. */
-.step-gap--reveal { position: relative; z-index: 2; --slab-pad: 7px; }
+/* The reveal plays in the gap and a card that held stays there in its case:
+   the case sits round the pick, its well over the sticker (the hidden copy
+   keeps the gap's room), rising above the strip into the track's top room.
+   Strip-sized: the sticker keeps the strip's width, the case a slimmer edge
+   and label. */
+.step-gap--card { position: relative; z-index: 2; --slab-pad: 7px; }
 .step-gap__room { visibility: hidden; }
-.step-gap--reveal .step-slam { position: absolute; left: calc(-1 * (var(--slab-pad) + 5px)); top: calc(-1 * (var(--slab-pad) + 20px + 5px + 5px)); }
-.step-gap--reveal .slab { --sticker-w: inherit; --slab-pad: inherit; gap: 5px; border-radius: 10px; }
-.step-gap--reveal .slab__label { height: 20px; font-size: 10px; letter-spacing: 0.24em; padding-left: 0.24em; border-radius: 4px; }
-.step-gap--reveal .step-miss { width: 36px; height: 36px; font-size: 20px; }
-.step-gap > .grade-chip, .step-gap > .step-miss { animation: step-fade 360ms var(--ease-out) both; }
+.step-gap--card .step-slam { position: absolute; left: calc(-1 * (var(--slab-pad) + 5px)); top: calc(-1 * (var(--slab-pad) + 20px + 5px + 5px)); }
+.step-gap--card .slab { --sticker-w: inherit; --slab-pad: inherit; gap: 5px; border-radius: 10px; }
+.step-gap--card .slab__label { height: 20px; font-size: 10px; letter-spacing: 0.24em; padding-left: 0.24em; border-radius: 4px; }
+.step-gap--card .step-miss { width: 36px; height: 36px; font-size: 20px; }
+.step-gap > .step-miss { animation: step-fade 360ms var(--ease-out) both; }
 
 .step-club .sticker__photo { display: flex; align-items: center; justify-content: center; }
 .step-club__crest {
@@ -90,6 +92,8 @@
 .step-end__cards .is-deepest .slab { animation: slab-pass 900ms 620ms var(--ease-in-out) backwards; }
 .step-end__cards .slab--sm { --sticker-w: 118px; }
 @media (max-width: 380px) { .step-end__cards .slab--sm { --sticker-w: 112px; } }
+/* A card's copy on its way into View collection (Summary, fresh runs only). */
+.step-end__flying { position: fixed; z-index: 50; margin: 0; pointer-events: none; transform-origin: 0 0; animation: none; }
 .step-end__miss { position: relative; display: flex; align-items: center; justify-content: center; min-width: 118px; min-height: 150px; }
 .step-end__miss .step-miss { position: absolute; }
 .step-end__sub { margin: 18px 0 0; font-size: 22px; }
@@ -125,8 +129,9 @@
   background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
   opacity: 0; pointer-events: none;
 }
-.step-slam.is-develop::before { animation: step-burst 900ms var(--ease-out) both; }
-.step-slam--sharp.is-develop::before, .step-slam--elite.is-develop::before { animation-duration: 1400ms; }
+/* The burst starts with the develop and runs on into the show (same animation, so it is not cut). */
+.step-slam:is(.is-develop, .is-show)::before { animation: step-burst 900ms var(--ease-out) both; }
+.step-slam--sharp:is(.is-develop, .is-show)::before, .step-slam--elite:is(.is-develop, .is-show)::before { animation-duration: 1400ms; }
 @keyframes step-burst { 0% { opacity: 0; transform: scale(0.4); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.5); } }
 
 /* The card is there from Lock, but only its sticker shows (under the stack)
@@ -134,11 +139,9 @@
 .step-slam__card { position: relative; }
 .step-slam__card .tilt { display: flex; }
 .step-slam__card .slab { transition: box-shadow 500ms var(--ease-out); }
-.step-slam__card .slab__face, .step-slam__card .slab__label, .step-slam__card .slab__news, .step-slam__card .step-miss { transition: opacity 220ms var(--ease-out); }
-.step-slam__card .slab__well { transition: background-color 220ms var(--ease-out); }
 .step-slam.is-stack .step-slam__card .slab { box-shadow: none; }
-.step-slam.is-stack .step-slam__card :is(.slab__face, .slab__label, .slab__news, .step-miss) { opacity: 0; transition: none; }
-.step-slam.is-stack .step-slam__card .slab__well { background: transparent; transition: none; }
+.step-slam.is-stack .step-slam__card :is(.slab__face, .slab__label, .slab__news, .step-miss) { opacity: 0; }
+.step-slam.is-stack .step-slam__card .slab__well { background: transparent; }
 /* Developing: the card over the cases still fading under it, its silhouette
    lifting off, the case flashing once; then the shadow eases to rest. */
 .step-slam.is-develop .step-slam__card { z-index: 1; }
@@ -152,7 +155,9 @@
 .step-slam--missed.is-develop .step-slam__card .slab__face { animation: none; }
 .step-slam--missed.is-develop .step-slam__veil { animation-name: step-fade-out; }
 @keyframes step-fade-out { from { opacity: 1; } to { opacity: 0; } }
-.step-slam.is-develop .step-slam__case { opacity: 0; transition: opacity 360ms var(--ease-out); }
+/* The cases under it fade as it develops. An animation, not a transition: the landing's fill holds opacity. */
+.step-slam.is-develop .step-slam__case { animation: step-case-off 380ms var(--ease-out) both; }
+@keyframes step-case-off { from { opacity: 1; transform: rotate(var(--tilt)); } to { opacity: 0; transform: rotate(var(--tilt)) scale(0.97); } }
 
 /* The show (Slam.tsx SHOW): the push is the camera, the tilt and sheen are
    on the case (globals.css). The stage stays cream: a pool of light behind
@@ -172,10 +177,10 @@
   opacity: var(--pool, 0); transform: scaleX(calc(1.25 - var(--pool, 0) * 0.35));
 }
 
-/* Settling: the case fades off the sticker, which is the gap's again. */
+/* A miss settling: its grey case fades off the greyed pick, which is the gap's again. */
 .step-slam.is-settle .step-slam__card .slab { box-shadow: none; }
-.step-slam.is-settle .step-slam__card :is(.slab__face, .slab__label, .slab__news, .step-miss) { opacity: 0; transition-duration: 300ms; }
-.step-slam.is-settle .step-slam__card .slab__well { background: transparent; transition-duration: 300ms; }
+.step-slam.is-settle .step-slam__card :is(.slab__face, .slab__label, .step-miss) { opacity: 0; transition: opacity 300ms var(--ease-out); }
+.step-slam.is-settle .step-slam__card .slab__well { background: transparent; transition: background-color 300ms var(--ease-out); }
 
 .step-slam__case {
   transform: rotate(var(--tilt));
@@ -224,7 +229,7 @@
 .step-obvious__via { font-size: 13px; color: var(--muted); }
 
 @media (prefers-reduced-motion: reduce) {
-  .step-slam__case, .step-slam.is-develop .step-slam__card .slab__face, .step-slam__veil, .step-slam.is-develop::before, .step-miss, .step-after,
+  .step-slam__case, .step-slam.is-develop .step-slam__card .slab__face, .step-slam__veil, .step-slam:is(.is-develop, .is-show)::before, .step-miss, .step-after,
   .step-end__cards > li, .step-end__cards .is-deepest .slab { animation: none; }
 }
 

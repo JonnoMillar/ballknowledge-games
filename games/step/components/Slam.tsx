@@ -7,7 +7,7 @@ import type { CardNews } from '../../../src/lib/collection';
 import type { Verdict } from '../lib/types';
 import { SHOW, showAt } from '../lib/show';
 
-/** Between one case landing and the next, a case's fall, the pause, the develop, the case fading off at the end. */
+/** Between one case landing and the next, a case's fall, the pause, the develop, a miss's case fading off at the end. */
 const EVERY = 360;
 const LAND = 300;
 const HOLD = 320;
@@ -26,10 +26,11 @@ type Phase = 'stack' | 'develop' | 'show' | 'settle' | 'done';
  * the pick, greyed, with a ✕.
  *
  * Then the show (SHOW): the camera pushes in, the card sways with the light
- * running round its case, and settles; the case fades off and the gap is the
- * sticker again (onDone). Every beat is a state, the show one clock, so
- * reduced motion or a tap to skip land on the end. `play` false holds the
- * card in its case at rest (the preview poses the show on it).
+ * running round its case, and settles, and the card stays in the gap in its
+ * case. A miss's grey case fades off, leaving the greyed pick (onDone either
+ * way). Every beat is a state, the show one clock, so reduced motion or a
+ * tap to skip land on the end. `play` false is the card at rest in its case
+ * (a verdict already judged; the preview poses the show on it).
  */
 export default function Slam({ verdict, ground, news, play, onDone }: {
   verdict: Verdict;
@@ -50,6 +51,8 @@ export default function Slam({ verdict, ground, news, play, onDone }: {
   const finish = () => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
+    STAGE.forEach((p) => root.current?.style.removeProperty(p));
+    setLanded(tiers.length); setPhase('done');
     done.current();
   };
 
@@ -62,11 +65,7 @@ export default function Slam({ verdict, ground, news, play, onDone }: {
     const frame = (now: number) => {
       const u = (now - t0) / s.ms;
       const st = root.current?.style;
-      if (u >= 1) {
-        STAGE.forEach((p) => st?.removeProperty(p));
-        setPhase('settle');
-        return;
-      }
+      if (u >= 1) { finish(); return; }
       const f = showAt(s, u);
       st?.setProperty('--push', f.push.toFixed(4));
       st?.setProperty('--rx', `${f.rx.toFixed(2)}deg`);
@@ -106,7 +105,7 @@ export default function Slam({ verdict, ground, news, play, onDone }: {
     <div
       ref={root}
       className={`step-slam is-${phase} ${held ? `step-slam--${verdict.grade}` : 'step-slam--missed'}`}
-      onClick={play ? finish : undefined}
+      onClick={play && phase !== 'done' ? finish : undefined}
     >
       {held ? <span className="step-slam__pool" aria-hidden /> : null}
       {held && SHOW[verdict.grade!].shadow ? <span className="step-slam__shadow" aria-hidden /> : null}

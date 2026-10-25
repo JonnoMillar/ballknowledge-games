@@ -59,7 +59,8 @@ The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
    case's well sits on the gap's sticker; strip-sized case, slimmer edge and
    label; `.step-track` is `overflow-x: clip` so the case can rise above the
    strip). Cases slam on the gap, it develops and pushes there, then the
-   case fades off (`settle`) and the gap is the sticker with its grade chip.
+   case fades off (`settle`) and the gap is the sticker with its grade chip
+   (round 3: the card now stays in its case).
    Linked-by and the obvious answer come in below; Next just slides the
    strip. The hidden placeholder sticker is drawn on the pick's final ground
    so React reuses it after without re-developing the halves.
@@ -68,8 +69,25 @@ The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
    grade and the miss, Replay, Next (slides on), and the scrubber (poses the
    show on the card held in its case in the gap, `play` false).
 
-Known: during the reveal the case rises about 17 px over the pips at 390
-wide, and Elite's light pool washes the neighbouring stickers for a second.
+**Round 3 (Jonno, 2026-10-25), built and merged:**
+- *The card stays in the slot.* A held pick ends in its case in the gap
+  (`Gap` renders `Slam` at rest, `play` false, for every held verdict, on
+  reload too); only a miss's grey case fades off (`settle`). No grade chip
+  under the gap now, the case says it. `.step-track` has 24 px top room so
+  the case clears the pips.
+- *End of run into the collection* (`Summary`, `fresh` only: the run just
+  ended on this page, not a finished run reloaded): after the deal-in, a
+  copy of each card that held flies one after another into View collection
+  (380 ms apart, an arc, shrinking), and the button pulses as each lands.
+  The cards stay put. A short screen scrolls the button into view first.
+- *The Elite glitch before the show:* the cases under the top card never
+  faded (the landing animation's fill held their opacity at 1), so they
+  vanished in one frame as the show started. They now fade by an animation
+  (`step-case-off`). Also: the card's case no longer fades in over the
+  stack as it develops, and the burst runs on into the show instead of
+  being cut.
+
+Known: Elite's light pool washes the neighbouring stickers for a second.
 Fixed on the way: a tap to skip left the stack timers running.
 
 **How to check frames:** the Browser pane is usually hidden, which throttles
@@ -77,6 +95,13 @@ its animation; screenshots also lag a frame. Use headless Chromium instead
 (Python `playwright` 1.60 is installed): open `/step/preview` at 390×844
 and 1280×800, click each grade, screenshot during and after, pose the show
 with the scrubber, tile the shots into a contact sheet with PIL and read it.
+
+**Verified round 3:** typecheck, `npm test` (2,189), prod build. Headless
+Chromium sheets of `/step/preview` at 390×844 and 1280×800: Elite and the
+miss through Lock, rest and Next (card stays cased and slides with the
+strip), Elite develop to show at ~50 ms a frame (stack fades, no pop), End
+of run (button scrolled into view, four flights, four pulses); no console
+errors. Not covered: a real phone, a played run on `/step`.
 
 **Verified round 2:** typecheck, `npm test` (2,189), prod build. Contact
 sheets from headless Chromium of `/step/preview`, 390×844 and 1280×800,
