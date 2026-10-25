@@ -93,6 +93,8 @@ function Game({ day }: { day: StepDay }) {
   const [news, setNews] = useState<CardNews>(null);
   // A verdict just judged plays its reveal; until it ends the strip and pips keep the result back.
   const [revealing, setRevealing] = useState(false);
+  // Next was pressed: the pick is flying back into its gap; the step moves on when it lands.
+  const [leaving, setLeaving] = useState(false);
   const index = useAlbum();
   // Tells the hubs. Keyed by the run's own date, so an archive run never counts as today.
   useEffect(() => { if (done) markDone('step', day.date); }, [done, day.date]);
@@ -133,8 +135,14 @@ function Game({ day }: { day: StepDay }) {
   }
 
   function next() {
-    setNews(null);
+    if (leaving) return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setLeaving(true);
+  }
+
+  function moveOn() {
+    setLeaving(false);
+    setNews(null);
     if (view === STEPS - 1) setFinished(true);
     else setView(view + 1);
   }
@@ -154,9 +162,9 @@ function Game({ day }: { day: StepDay }) {
         ))}
       </ol>
 
-      <Track day={day} run={run} view={view} chosen={chosen} hidden={revealing ? view : -1} onOpen={() => !verdict && setSearching(true)} />
+      <Track day={day} run={run} view={view} chosen={chosen} hidden={revealing ? view : -1} out={verdict ? view : -1} onOpen={() => !verdict && setSearching(true)} />
 
-      <section className="step-act" aria-live="polite">
+      <section className={`step-act ${leaving ? 'is-leaving' : ''}`} aria-live="polite">
         {verdict ? (
           <>
             <div className="step-verdict">
@@ -167,7 +175,10 @@ function Game({ day }: { day: StepDay }) {
                 ground={cardGround(verdict.pick, step.playerFirst)}
                 news={news ?? undefined}
                 play={revealing}
+                hole={() => holeOf(view)}
+                leave={leaving}
                 onDone={() => setRevealing(false)}
+                onLeft={moveOn}
               />
               {revealing ? null : <After verdict={verdict} playerFirst={step.playerFirst} />}
             </div>
@@ -205,12 +216,17 @@ function Game({ day }: { day: StepDay }) {
   );
 }
 
+/** Where a gap's pick sits in the strip: the reveal flies the sticker from it and back. */
+export const holeOf = (gap: number) => document.querySelector(`.step-track [data-hole="${gap}"]`);
+
 /**
  * The whole run as one strip, P1 ? C1 ? P2 ? C2 ? P3, slid so the step on
  * screen is in the middle. Moving on is the strip sliding one club along.
+ * `hidden` is the gap whose verdict is still being revealed, `out` the gap
+ * whose pick is down in the card (its outline stays).
  */
-function Track({ day, run, view, chosen, hidden, onOpen }: {
-  day: StepDay; run: Run; view: number; chosen: NameEntry | null; hidden: number; onOpen: () => void;
+export function Track({ day, run, view, chosen, hidden, out, onOpen }: {
+  day: StepDay; run: Run; view: number; chosen: NameEntry | null; hidden: number; out: number; onOpen: () => void;
 }) {
   const items: ({ kind: 'player'; p: StepGiven } | { kind: 'club'; c: StepClub } | { kind: 'gap'; i: number })[] = [];
   day.steps.forEach((s, i) => {
@@ -233,31 +249,41 @@ function Track({ day, run, view, chosen, hidden, onOpen }: {
             ? <StickerFace player={it.p} image={it.p.image ?? undefined} ground={solid(it.p.ground)} className="sticker--still" />
             : it.kind === 'club'
               ? <ClubSticker c={it.c} />
-              : <Gap index={it.i} verdict={run[it.i] ?? null} hidden={it.i === hidden} live={it.i === view} chosen={it.i === view ? chosen : null} playerFirst={day.steps[it.i]!.playerFirst} onOpen={onOpen} />;
-          const out = [<div key={`c${k}`} className={`step-track__cell ${near(k) ? 'is-near' : ''}`}>{cell}</div>];
+              : <Gap index={it.i} verdict={run[it.i] ?? null} hidden={it.i === hidden} out={it.i === out} live={it.i === view} chosen={it.i === view ? chosen : null} playerFirst={day.steps[it.i]!.playerFirst} onOpen={onOpen} />;
+          const els = [<div key={`c${k}`} className={`step-track__cell ${near(k) ? 'is-near' : ''}`}>{cell}</div>];
           // The link after cell k joins it to cell k + 1; both touch gap floor(k / 2).
           if (k < items.length - 1) {
-            out.push(
+            els.push(
               <span key={`l${k}`} className={`link link--h step-track__link ${near(k) && near(k + 1) ? 'is-near' : ''} ${linkState(Math.floor(k / 2))}`} aria-hidden>
                 <span className="link__rule" />
               </span>,
             );
           }
-          return out;
+          return els;
         })}
       </div>
     </div>
   );
 }
 
-/** The gap: a silhouette to tap, the name you chose, or the pick once judged. */
-function Gap({ index, verdict, hidden, live, chosen, playerFirst, onOpen }: {
-  index: number; verdict: Verdict | null; hidden: boolean; live: boolean; chosen: NameEntry | null; playerFirst: boolean; onOpen: () => void;
+/**
+ * The gap: a silhouette to tap, the name you chose, or the pick once judged.
+ * While the pick is down in the card the gap keeps its outline, and the
+ * grade under it once the reveal is over.
+ */
+function Gap({ index, verdict, hidden, out, live, chosen, playerFirst, onOpen }: {
+  index: number; verdict: Verdict | null; hidden: boolean; out: boolean; live: boolean; chosen: NameEntry | null; playerFirst: boolean; onOpen: () => void;
 }) {
-  if (verdict && hidden) {
+  const mark = verdict && !hidden
+    ? (verdict.held && verdict.grade ? <GradeChip grade={verdict.grade} /> : <span className="step-miss step-miss--sm" aria-label="Doesn’t fit">✕</span>)
+    : null;
+  if (verdict && out) {
     return (
       <div className="step-gap">
-        <StickerFace player={verdict.pick} image={verdict.pick.image ?? undefined} ground={neutral()} className="sticker--still" />
+        <div className="step-gap__hole" data-hole={index}>
+          <StickerFace player={verdict.pick} image={verdict.pick.image ?? undefined} ground={neutral()} className="sticker--still" aria-hidden />
+        </div>
+        {mark}
       </div>
     );
   }
@@ -270,7 +296,7 @@ function Gap({ index, verdict, hidden, live, chosen, playerFirst, onOpen }: {
           ground={verdict.held ? cardGround(verdict.pick, playerFirst) : neutral()}
           className={`sticker--still ${verdict.held ? '' : 'step-gap--missed'}`}
         />
-        {verdict.held && verdict.grade ? <GradeChip grade={verdict.grade} /> : <span className="step-miss step-miss--sm" aria-label="Doesn’t fit">✕</span>}
+        {mark}
       </div>
     );
   }
@@ -336,7 +362,7 @@ function ClubSticker({ c }: { c: StepClub }) {
 }
 
 /** A pick's ground: the club it shared with the given on that side, the step's club on the other. */
-function cardGround(card: StepCard, playerFirst: boolean): Ground {
+export function cardGround(card: StepCard, playerFirst: boolean): Ground {
   if (!card.clubs) return neutral();
   const [via, club] = card.clubs;
   return playerFirst

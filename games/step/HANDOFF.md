@@ -1,6 +1,6 @@
 # Step chain — state of play
 
-**Updated 2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
+**Updated 2026-10-25** (card motion round 2, branch `worktree-card-motion`). Before: **2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
 the ruler work was branch `claude/steps-grading-555384`. Site-wide notes: root
 `HANDOFF.md`. Spec (the decision record): `games/step/SPEC.md`. Working name
 "Step" (`NAME` in `lib/rules.ts`, route `/step`) until Jonno names it.
@@ -21,7 +21,7 @@ the dark stage. Jonno's calls: cream stage with a light pool, the sheen in
 each grade's own material, all three places below.
 
 - **Reveal** (`components/Slam.tsx`, `lib/show.ts`): the case slam stays
-  (it says how deep). 250 ms into the break the show starts: push in, one
+  (it says how deep). After the develop (round 2 below) the show starts: push in, one
   sway with the light orbiting the case, settle. One template, numbers by
   grade in `SHOW` (Basic 0.5 s no push; Elite 1.2 s, 1.35×, light pool and
   a shadow under the card). `showAt(u)` is pure (the motion-design skill's
@@ -45,20 +45,28 @@ run, Opened card (tilt). Real players from the server, the real components.
 The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
 `Summary` is exported from `Step.tsx`.
 
-**Next (Jonno, 2026-10-25, after previewing):**
-1. *The case breaking in half "looks terrible": cut it.* The stack of cases
-   stays (more cases = deeper, it carries the grade). Instead of the crack and
-   the falling halves, the top case's empty well develops into the player
-   (silhouette to photo, a short bright flash on the case), then the show
-   pushes in. No second object appears.
-2. *The duplicate photo:* while the verdict shows, the pick is both in the
-   strip's gap and in the card below. Recommended: one sticker that travels.
-   On Lock it lifts out of the gap and drops into the top case (the gap keeps
-   an outline with the grade chip); on Next the card shrinks back into the
-   gap as the sticker, so the strip reads as a chain again. Fits the
-   no-teleports rule. Confirm with Jonno before building if unsure.
-Build both in `Slam.tsx` / `Step.tsx` / `step.css`, update `/step/preview`
-to show them (it must keep every grade and the miss), check frames.
+**Round 2 (Jonno, 2026-10-25, after previewing), built, waiting on his look:**
+1. *The crack is cut.* The stack of cases stays (more cases = deeper). Then
+   the top case's well develops into the player: the silhouette lifts off
+   the sticker (`.step-slam__veil`, laid over it through Slab's new
+   `children`), the club colours come in from the corners, the case flashes
+   once (a miss: no flash, the pick greys, the ✕ stamps), and that case is
+   the card. The lower cases fade under it. Then the show pushes in.
+2. *One travelling sticker.* On Lock the pick flies from the gap to the stage
+   (WAAPI, `between` in `Slam.tsx`) and the cases slam down on it; the gap
+   keeps a dashed outline (`.step-gap__hole`, `data-hole`), the grade chip
+   fades in under it when the reveal ends. On Next (`leave`) the case fades,
+   the sticker flies back into the gap, then the step moves on (`moveOn` in
+   `Step.tsx`) and the strip slides. Reduced motion skips both flights.
+   Timings: flight 420 ms, back 440 ms, develop 460 ms; Elite ~4.2 s Lock to
+   rest (was ~3.7 s), Basic ~2.0 s, a miss ~1.6 s.
+3. *Preview:* Getting a card now runs in a real strip (`Track` exported):
+   each grade and the miss, Replay, the scrubber, and Next to watch the
+   flight home and the slide.
+
+Fixed on the way: a tap to skip left the stack timers running (the reveal
+could restart); strict mode ran the flight twice (the second measured the
+moving sticker), so the flight is cancelled on cleanup.
 
 **How to check frames:** the Browser pane is usually hidden, which throttles
 its animation; screenshots also lag a frame. Use headless Chromium instead
@@ -66,7 +74,14 @@ its animation; screenshots also lag a frame. Use headless Chromium instead
 and 1280×800, click each grade, screenshot during and after, pose the show
 with the scrubber, tile the shots into a contact sheet with PIL and read it.
 
-**Verified:** typecheck, `npm test` (2,189), prod build. Frames read as
+**Verified round 2:** typecheck, `npm test` (2,189), prod build. Contact
+sheets from headless Chromium of `/step/preview`, 390×844 and 1280×800,
+every grade and the miss, live through Lock, rest and Next: flight starts on
+the gap (rects checked), cases land, develop, show, flight home, slide; no
+console errors. Not covered: a real phone, a played run on `/step` (same
+components, not clicked through).
+
+**Verified round 1:** typecheck, `npm test` (2,189), prod build. Frames read as
 contact sheets from headless Chromium at 390×844 ×2 (`/step` with the pick
 API faked to each grade, stills posed at fixed u, then live): timings exact
 (Elite show 1,201 ms, Basic 499 ms), push, sway, sheen per material, pool

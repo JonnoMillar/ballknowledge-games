@@ -1,4 +1,5 @@
 'use client';
+import type { ReactNode } from 'react';
 import { StickerFace, type Ground } from './Sticker';
 import { GRADE_WORD, type Grade } from '../src/lib/chain/grade';
 import type { Named } from '../src/lib/chain/client';
@@ -18,13 +19,15 @@ import type { CardNews } from '../src/lib/collection';
  * the sheen in the grade's own colour: the reveal drives them on a timeline,
  * an opened card by the pointer.
  */
-export default function Slab({ grade, player, image, ground, news, size = 'md' }: {
+export default function Slab({ grade, player, image, ground, news, size = 'md', children }: {
   grade: Grade;
   player: Named;
   image: PortraitImage | undefined;
   ground: Ground;
   news?: CardNews;
   size?: 'sm' | 'md' | 'lg';
+  /** Laid over the sticker in its well (Steps' reveal develops a silhouette off it). */
+  children?: ReactNode;
 }) {
   return (
     <div className={`slab slab--${grade} slab--${size}`}>
@@ -36,6 +39,7 @@ export default function Slab({ grade, player, image, ground, news, size = 'md' }
       <span className="slab__label display">{GRADE_WORD[grade]}</span>
       <span className="slab__well">
         <StickerFace player={player} image={image} ground={ground} />
+        {children}
       </span>
       {news ? <span className="slab__news">{news === 'new' ? 'New' : 'Upgraded'}</span> : null}
     </div>
