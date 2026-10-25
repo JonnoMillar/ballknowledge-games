@@ -21,7 +21,7 @@ the dark stage. Jonno's calls: cream stage with a light pool, the sheen in
 each grade's own material, all three places below.
 
 - **Reveal** (`components/Slam.tsx`, `lib/show.ts`): the case slam stays
-  (it says how deep). After the develop (round 2 below) the show starts: push in, one
+  (it says how deep), in the strip's gap (round 2 below). After the develop the show starts: push in, one
   sway with the light orbiting the case, settle. One template, numbers by
   grade in `SHOW` (Basic 0.5 s no push; Elite 1.2 s, 1.35×, light pool and
   a shadow under the card). `showAt(u)` is pure (the motion-design skill's
@@ -45,28 +45,32 @@ run, Opened card (tilt). Real players from the server, the real components.
 The collection's tilt moved to the shared `components/CardTilt.tsx` for it;
 `Summary` is exported from `Step.tsx`.
 
-**Round 2 (Jonno, 2026-10-25, after previewing), built, waiting on his look:**
+**Round 2 (Jonno, 2026-10-25, after previewing), built and merged:**
 1. *The crack is cut.* The stack of cases stays (more cases = deeper). Then
    the top case's well develops into the player: the silhouette lifts off
    the sticker (`.step-slam__veil`, laid over it through Slab's new
    `children`), the club colours come in from the corners, the case flashes
    once (a miss: no flash, the pick greys, the ✕ stamps), and that case is
    the card. The lower cases fade under it. Then the show pushes in.
-2. *One travelling sticker.* On Lock the pick flies from the gap to the stage
-   (WAAPI, `between` in `Slam.tsx`) and the cases slam down on it; the gap
-   keeps a dashed outline (`.step-gap__hole`, `data-hole`), the grade chip
-   fades in under it when the reveal ends. On Next (`leave`) the case fades,
-   the sticker flies back into the gap, then the step moves on (`moveOn` in
-   `Step.tsx`) and the strip slides. Reduced motion skips both flights.
-   Timings: flight 420 ms, back 440 ms, develop 460 ms; Elite ~4.2 s Lock to
-   rest (was ~3.7 s), Basic ~2.0 s, a miss ~1.6 s.
-3. *Preview:* Getting a card now runs in a real strip (`Track` exported):
-   each grade and the miss, Replay, the scrubber, and Next to watch the
-   flight home and the slide.
+2. *No duplicate photo: the reveal plays in the gap.* A first build flew the
+   sticker from the gap down to a stage and back on Next; Jonno: "why does
+   it drop down, it should just do what it does in the gap". So `Gap` renders
+   `Slam` over the pick (`.step-gap--reveal`, absolutely placed so the
+   case's well sits on the gap's sticker; strip-sized case, slimmer edge and
+   label; `.step-track` is `overflow-x: clip` so the case can rise above the
+   strip). Cases slam on the gap, it develops and pushes there, then the
+   case fades off (`settle`) and the gap is the sticker with its grade chip.
+   Linked-by and the obvious answer come in below; Next just slides the
+   strip. The hidden placeholder sticker is drawn on the pick's final ground
+   so React reuses it after without re-developing the halves.
+   Elite ~4.1 s Lock to rest, Basic ~2.0 s, a miss ~1.5 s.
+3. *Preview:* Getting a card runs in a real strip (`Track` exported): each
+   grade and the miss, Replay, Next (slides on), and the scrubber (poses the
+   show on the card held in its case in the gap, `play` false).
 
-Fixed on the way: a tap to skip left the stack timers running (the reveal
-could restart); strict mode ran the flight twice (the second measured the
-moving sticker), so the flight is cancelled on cleanup.
+Known: during the reveal the case rises about 17 px over the pips at 390
+wide, and Elite's light pool washes the neighbouring stickers for a second.
+Fixed on the way: a tap to skip left the stack timers running.
 
 **How to check frames:** the Browser pane is usually hidden, which throttles
 its animation; screenshots also lag a frame. Use headless Chromium instead
@@ -76,10 +80,10 @@ with the scrubber, tile the shots into a contact sheet with PIL and read it.
 
 **Verified round 2:** typecheck, `npm test` (2,189), prod build. Contact
 sheets from headless Chromium of `/step/preview`, 390×844 and 1280×800,
-every grade and the miss, live through Lock, rest and Next: flight starts on
-the gap (rects checked), cases land, develop, show, flight home, slide; no
-console errors. Not covered: a real phone, a played run on `/step` (same
-components, not clicked through).
+every grade and the miss, live through Lock, rest and Next: cases land on
+the gap, develop, show, case fades to sticker + chip, slide; no console
+errors. Not covered: a real phone, a played run on `/step` (same Track,
+Gap and Slam; not clicked through).
 
 **Verified round 1:** typecheck, `npm test` (2,189), prod build. Frames read as
 contact sheets from headless Chromium at 390×844 ×2 (`/step` with the pick

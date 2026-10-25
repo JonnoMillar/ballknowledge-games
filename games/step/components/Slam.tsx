@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { StickerFace, Figure, neutral, type Ground } from '../../../components/Sticker';
 import Slab from '../../../components/Slab';
 import { GRADES, GRADE_WORD, gradeRank, type Grade } from '../../../src/lib/chain/grade';
@@ -7,94 +7,51 @@ import type { CardNews } from '../../../src/lib/collection';
 import type { Verdict } from '../lib/types';
 import { SHOW, showAt } from '../lib/show';
 
-/** The pick's flight from the gap, one case landing after another, a case's fall, the pause, the develop. */
-const FLY = 420;
+/** Between one case landing and the next, a case's fall, the pause, the develop, the case fading off at the end. */
 const EVERY = 360;
 const LAND = 300;
 const HOLD = 320;
 const DEVELOP = 460;
-/** The flight back into the gap on Next. */
-const BACK = 440;
+const SETTLE = 320;
 
-type Phase = 'stack' | 'develop' | 'show' | 'done';
+type Phase = 'stack' | 'develop' | 'show' | 'settle' | 'done';
 
 /**
- * The verdict as a pack opening, with one sticker throughout. On Lock the
- * pick lifts out of the strip's gap and drops to the stage; empty cases
- * slam down on it, Basic first and climbing a grade a time, stopping at the
- * grade earned (more cases, deeper pick). Then the top case's empty well
- * develops into the player: the silhouette fades off the sticker, its club
- * colours come in, the case flashes once, and that case is the card. A miss
- * is one blank case that develops into the pick, greyed, with a ✕.
+ * The verdict as a pack opening, in the strip's gap: the pick stays where it
+ * was chosen and everything happens round it. Empty cases slam down on it,
+ * Basic first and climbing a grade a time, stopping at the grade earned
+ * (more cases, deeper pick). Then the top case's empty well develops into
+ * the player: the silhouette lifts off the sticker, its club colours come
+ * in, the case flashes once. A miss is one blank case that develops into
+ * the pick, greyed, with a ✕.
  *
  * Then the show (SHOW): the camera pushes in, the card sways with the light
- * running round its case, and settles. On Next (`leave`) the case fades and
- * the sticker shrinks back into the gap, so the strip reads as a chain.
- * Every beat is a state, the show one clock, so reduced motion, a tap to
- * skip, or a verdict that was already there on load all land on the end.
+ * running round its case, and settles; the case fades off and the gap is the
+ * sticker again (onDone). Every beat is a state, the show one clock, so
+ * reduced motion or a tap to skip land on the end. `play` false holds the
+ * card in its case at rest (the preview poses the show on it).
  */
-export default function Slam({ verdict, ground, news, play, hole, leave = false, onDone, onLeft }: {
+export default function Slam({ verdict, ground, news, play, onDone }: {
   verdict: Verdict;
   ground: Ground;
   news?: CardNews;
-  /** False for a verdict that was there on load: show the card, no ceremony. */
   play: boolean;
-  /** The gap the pick flies from and back to (the strip keeps its outline). */
-  hole?: () => Element | null;
-  /** Next was pressed: fly the sticker back into the gap, then onLeft. */
-  leave?: boolean;
   onDone: () => void;
-  onLeft?: () => void;
 }) {
   const held = verdict.held && verdict.grade !== null;
   const tiers: (Grade | null)[] = held ? GRADES.slice(0, gradeRank(verdict.grade!) + 1) : [null];
-  const [landed, setLanded] = useState(play ? 0 : tiers.length);
+  const [landed, setLanded] = useState(play ? 1 : tiers.length);
   const [phase, setPhase] = useState<Phase>(play ? 'stack' : 'done');
   const done = useRef(onDone);
   done.current = onDone;
-  const left = useRef(onLeft);
-  left.current = onLeft;
   const root = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
-  const flight = useRef<Animation | null>(null);
-
-  const sticker = () => root.current?.querySelector<HTMLElement>('.step-slam__card .slab__well > .sticker') ?? null;
 
   const finish = () => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
-    flight.current?.cancel();
-    STAGE.forEach((p) => root.current?.style.removeProperty(p));
-    setLanded(tiers.length); setPhase('done'); done.current();
+    done.current();
   };
-
-  // On Lock: the sticker starts over the gap and lands in the card's well, before the first case.
-  useLayoutEffect(() => {
-    if (!play || reduced()) return;
-    const el = sticker();
-    const from = hole?.()?.getBoundingClientRect();
-    if (!el || !from) return;
-    flight.current = el.animate(
-      [{ transform: between(el.getBoundingClientRect(), from) }, { transform: 'translateY(-14px)', boxShadow: LIFTED, offset: 0.75 }, { transform: 'none' }],
-      { duration: FLY, easing: 'cubic-bezier(0.45, 0, 0.3, 1)' },
-    );
-    // Strict mode runs this twice: measure the second time untransformed.
-    return () => flight.current?.cancel();
-  }, []);
-
-  // On Next: the case fades and the sticker shrinks back into the gap.
-  useEffect(() => {
-    if (!leave) return;
-    const el = sticker();
-    const to = hole?.()?.getBoundingClientRect();
-    if (!el || !to || reduced()) { left.current?.(); return; }
-    const end = between(el.getBoundingClientRect(), to);
-    const a = el.animate([{ transform: 'none' }, { transform: 'translateY(-14px)', boxShadow: LIFTED, offset: 0.2 }, { transform: end }], {
-      duration: BACK, easing: 'cubic-bezier(0.45, 0, 0.25, 1)', fill: 'forwards',
-    });
-    a.onfinish = () => left.current?.();
-    return () => a.cancel();
-  }, [leave]);
 
   // The show: one clock, every frame computed from it (showAt), nothing kept between frames.
   useEffect(() => {
@@ -104,9 +61,13 @@ export default function Slam({ verdict, ground, news, play, hole, leave = false,
     let raf = 0;
     const frame = (now: number) => {
       const u = (now - t0) / s.ms;
-      if (u >= 1) { finish(); return; }
-      const f = showAt(s, u);
       const st = root.current?.style;
+      if (u >= 1) {
+        STAGE.forEach((p) => st?.removeProperty(p));
+        setPhase('settle');
+        return;
+      }
+      const f = showAt(s, u);
       st?.setProperty('--push', f.push.toFixed(4));
       st?.setProperty('--rx', `${f.rx.toFixed(2)}deg`);
       st?.setProperty('--ry', `${f.ry.toFixed(2)}deg`);
@@ -121,13 +82,20 @@ export default function Slam({ verdict, ground, news, play, hole, leave = false,
   }, [phase]);
 
   useEffect(() => {
+    if (phase !== 'settle') return;
+    const t = window.setTimeout(finish, SETTLE);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  useEffect(() => {
     if (!play) return;
-    if (reduced()) { finish(); return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); return; }
     const at = (ms: number, fn: () => void) => { timers.current.push(window.setTimeout(fn, ms)); };
-    for (let i = 0; i < tiers.length; i++) at(FLY + i * EVERY, () => { setLanded(i + 1); navigator.vibrate?.(i === tiers.length - 1 ? 28 : 12); });
-    const developAt = FLY + (tiers.length - 1) * EVERY + LAND + HOLD;
+    navigator.vibrate?.(12);
+    for (let i = 1; i < tiers.length; i++) at(i * EVERY, () => { setLanded(i + 1); navigator.vibrate?.(i === tiers.length - 1 ? 28 : 12); });
+    const developAt = (tiers.length - 1) * EVERY + LAND + HOLD;
     at(developAt, () => setPhase('develop'));
-    at(developAt + DEVELOP, held ? () => setPhase('show') : finish);
+    at(developAt + DEVELOP, () => setPhase(held ? 'show' : 'settle'));
     return () => timers.current.forEach(clearTimeout);
     // One ceremony per verdict: `play` only ever goes from true to false.
   }, [play]);
@@ -137,8 +105,8 @@ export default function Slam({ verdict, ground, news, play, hole, leave = false,
   return (
     <div
       ref={root}
-      className={`step-slam is-${phase} ${leave ? 'is-leaving' : ''} ${held ? `step-slam--${verdict.grade}` : 'step-slam--missed'}`}
-      onClick={phase === 'done' ? undefined : finish}
+      className={`step-slam is-${phase} ${held ? `step-slam--${verdict.grade}` : 'step-slam--missed'}`}
+      onClick={play ? finish : undefined}
     >
       {held ? <span className="step-slam__pool" aria-hidden /> : null}
       {held && SHOW[verdict.grade!].shadow ? <span className="step-slam__shadow" aria-hidden /> : null}
@@ -172,20 +140,11 @@ export default function Slam({ verdict, ground, news, play, hole, leave = false,
   );
 }
 
-/** What the show writes on the root, cleared when it ends or is skipped. */
+/** What the show writes on the root, cleared when it ends. */
 const STAGE = ['--push', '--rx', '--ry', '--lx', '--ly', '--lit', '--pool'];
 
 /** The stack is untidy on purpose: each case lands a little off the one under it. */
 const TILTS = [-4, 3, -2, 4];
-
-const LIFTED = '0 14px 28px rgba(20, 18, 16, 0.3)';
-
-const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/** The transform that puts an element laid out at `at` over `to` instead (origin top left). */
-function between(at: DOMRect, to: DOMRect) {
-  return `translate(${to.left - at.left}px, ${to.top - at.top}px) scale(${to.width / at.width})`;
-}
 
 /** The empty sticker an unopened case holds. */
 function Silhouette({ className = '' }: { className?: string }) {

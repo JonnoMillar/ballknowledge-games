@@ -6,17 +6,16 @@ import { GRADES, GRADE_WORD, type Grade } from '../../../src/lib/chain/grade';
 import type { DemoClub, DemoSticker } from '../../../src/lib/demo';
 import type { StepCard, StepClub, StepDay, Verdict } from '../lib/types';
 import { SHOW, showAt } from '../lib/show';
-import Slam from './Slam';
-import { Summary, Track, cardGround, holeOf } from './Step';
+import { Summary, Track } from './Step';
 
 type View = 'reveal' | 'end' | 'open';
 type Pick = Grade | 'miss';
 
 /**
  * Dev only (/step/preview): every card motion on demand, nothing to play.
- * The reveal per grade (and a miss) in a real strip: the pick flies from
- * the gap into the cases, the well develops, Next flies it back and the
- * strip moves on. Replay, and a scrubber through the show. Then the end of
+ * The reveal per grade (and a miss) in a real strip, in the gap as in the
+ * game, then Next slides the strip on. Replay, and a scrubber that poses
+ * the show on the card held in its case. Then the end of
  * a run, and an opened card to tilt. Real players and
  * crests from the server, the real components, so what shows here is what
  * ships.
@@ -26,10 +25,9 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
   const [pick, setPick] = useState<Pick>('elite');
   const [take, setTake] = useState(0);
   const [scrub, setScrub] = useState<number | null>(null);
-  // The strip's step: 0 while the card is on the stage, 1 once Next has flown it home.
+  // The strip's step: 0 for the reveal, 1 once Next has slid it on.
   const [at, setAt] = useState(0);
   const [revealing, setRevealing] = useState(true);
-  const [leaving, setLeaving] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
 
   const stepClub: StepClub = { id: club.id, club: club.club, colour: club.colour };
@@ -57,7 +55,7 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
     root.style.setProperty('--pool', String(f.pool));
   }, [scrub, pick, take]);
 
-  const replay = () => { setScrub(null); setTake((t) => t + 1); setAt(0); setRevealing(true); setLeaving(false); };
+  const replay = () => { setScrub(null); setTake((t) => t + 1); setAt(0); setRevealing(true); };
   const choose = (g: Pick) => { setPick(g); replay(); };
 
   // A run of four: the chosen grade first, then down the grades, so the deepest is the first card.
@@ -94,7 +92,7 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
         {view === 'reveal' && pick !== 'miss' ? (
           <label className="mprev__scrub">
             <span>Scrub the show {scrub === null ? '' : `· ${Math.round(scrub * SHOW[pick].ms)} of ${SHOW[pick].ms} ms`}</span>
-            <input type="range" min={0} max={1} step={0.01} value={scrub ?? 0} onChange={(e) => { setAt(0); setRevealing(false); setLeaving(false); setScrub(Number(e.target.value)); }} />
+            <input type="range" min={0} max={1} step={0.01} value={scrub ?? 0} onChange={(e) => { setAt(0); setScrub(Number(e.target.value)); }} />
           </label>
         ) : null}
         {view === 'open' ? <p className="mprev__note">Move over the card, or drag it on a phone.</p> : null}
@@ -103,23 +101,15 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
       <section className="mprev__stage" ref={stage}>
         {view === 'reveal' ? (
           <div className="mprev__game" key={`${pick}-${take}-${scrub === null}`}>
-            <Track day={day} run={strip} view={at} chosen={null} hidden={revealing ? 0 : -1} out={at === 0 ? 0 : -1} onOpen={() => {}} />
+            <Track
+              day={day} run={strip} view={at} chosen={null}
+              hidden={at === 0 && (revealing || scrub !== null) ? 0 : -1}
+              reveal={{ play: scrub === null, news: pick === 'miss' ? undefined : 'new', onDone: () => setRevealing(false) }}
+              onOpen={() => {}}
+            />
             {at === 0 ? (
-              <section className={`step-act ${leaving ? 'is-leaving' : ''}`}>
-                <div className="step-verdict">
-                  <span className="step-verdict__kicker">Ball knowledge</span>
-                  <Slam
-                    verdict={shown}
-                    ground={cardGround(shown.pick, true)}
-                    news={pick === 'miss' ? undefined : 'new'}
-                    play={scrub === null}
-                    hole={() => holeOf(0)}
-                    leave={leaving}
-                    onDone={() => setRevealing(false)}
-                    onLeft={() => { setLeaving(false); setAt(1); }}
-                  />
-                </div>
-                {revealing ? null : <button type="button" className="lobby-play" onClick={() => setLeaving(true)}>Next</button>}
+              <section className="step-act">
+                {revealing || scrub !== null ? null : <button type="button" className="lobby-play" onClick={() => setAt(1)}>Next</button>}
               </section>
             ) : <p className="mprev__note">Replay to see it again.</p>}
           </div>
