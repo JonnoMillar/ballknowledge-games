@@ -1,6 +1,6 @@
 # Step chain — state of play
 
-**Updated 2026-10-25** (card motion round 2, branch `worktree-card-motion`). Before: **2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
+**Updated 2026-10-25** (card motion rounds 2 and 3, merged to `main` and pushed, 08d3a57). Before: **2026-10-21** (graded for a 16-26 audience, below; shipped to main). Merged to `main` 2026-10-14;
 the ruler work was branch `claude/steps-grading-555384`. Site-wide notes: root
 `HANDOFF.md`. Spec (the decision record): `games/step/SPEC.md`. Working name
 "Step" (`NAME` in `lib/rules.ts`, route `/step`) until Jonno names it.
@@ -11,7 +11,7 @@ reverted the British grade words (keep Basic … Elite) and asked for the merge
 to `main`, same day. He took every recommendation in the spec: 4 steps, five grades site-wide, one
 shot, run = average rounded down, automatic daily.
 
-## Card motion (2026-10-25, branch `worktree-card-motion`, not merged)
+## Card motion (2026-10-25, merged to `main`, live)
 
 Jonno liked a Claude Opus 5.5 card animation (Instagram, ashokreddyai,
 slide 5): the camera pushes in on the card, it sways, light runs round the
@@ -91,10 +91,14 @@ Known: Elite's light pool washes the neighbouring stickers for a second.
 Fixed on the way: a tap to skip left the stack timers running.
 
 **How to check frames:** the Browser pane is usually hidden, which throttles
-its animation; screenshots also lag a frame. Use headless Chromium instead
-(Python `playwright` 1.60 is installed): open `/step/preview` at 390×844
-and 1280×800, click each grade, screenshot during and after, pose the show
-with the scrubber, tile the shots into a contact sheet with PIL and read it.
+its animation; screenshots also lag a frame. Use headless Chromium:
+`STEP_PREVIEW=http://localhost:<port>/step/preview python
+scripts/step/motion-sheets.py <out> [Elite Miss ...]` tiles live frames
+(390×844 and 1280×800, through Lock, rest and Next) into contact sheets to
+read. For a glitch at one moment, clip to the gap and loop screenshots
+(~50 ms a frame), labelling each with the `.step-slam` phase class.
+Gotcha: from a worktree, `preview_start recall-xi` reuses the main
+checkout's server (old code); run `npx next dev -p <port>` in the worktree.
 
 **Verified round 3:** typecheck, `npm test` (2,189), prod build. Headless
 Chromium sheets of `/step/preview` at 390×844 and 1280×800: Elite and the
@@ -450,12 +454,13 @@ the Share sheet, the cron on GitHub (runs once merged).
 
 ## Resume prompt
 
-> Step chain game, branch `feat/step-chain`, worktree
-> `.claude/worktrees/kind-tharp-12c680`. Read CLAUDE.md, then
-> `games/step/HANDOFF.md` and `games/step/SPEC.md`. Jonno is playing `/step`
-> (run `npm run dev`, preview config `recall-xi`). Apply his feedback; next
-> concrete task if none: add a `--step` target to `scripts/fetch-portraits.ts`
-> (like `--itk`) so every given in `games/step/data/days.json` has an in-era
-> portrait, then `npm run fetch:credits`. Done when every given resolves, `npm
-> test` and typecheck pass. Do not merge to `main` until Jonno says he has
-> played it; then merge, run checks + prod build, push (auto-allowed).
+> Step chain game (`/step`, live). Read CLAUDE.md, then `games/step/HANDOFF.md`
+> (section "Card motion" first). Card motion rounds 1 to 3 are merged and
+> pushed (08d3a57). If Jonno has feedback on the reveal or the end-of-run
+> flight, apply it, view it on `/step/preview` (dev only), check frames with
+> `scripts/step/motion-sheets.py`, and merge when he says. Otherwise the next
+> concrete task: add a `--step` target to `scripts/fetch-portraits.ts` (like
+> `--itk`) so every given in `games/step/data/days.json` has an in-era
+> portrait, then `npm run fetch:credits`. Done when every given resolves,
+> `npm test` and typecheck pass; merge, run checks + prod build, push
+> (auto-allowed).
