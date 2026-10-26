@@ -166,7 +166,10 @@ for p in players:
                 c['why'] = gate or f"face {feats['face']}px, {round(feats['share'] * 100)}% of height, sharpness {feats['sharp']}"
             else:
                 c['why'] = gate
-            c['score'] = 0 if gate else round(rank.score(c, prime), 3)
+            s = None if gate else rank.score(c, prime)
+            if s is None and not gate:   # rank.py's own gates: a profile (nose far off the eye line)
+                c['gate'] = c['why'] = 'profile, seen from the side'
+            c['score'] = round(s, 3) if s else 0
             ranked.append(c)
             time.sleep(0.1)
         return ranked
