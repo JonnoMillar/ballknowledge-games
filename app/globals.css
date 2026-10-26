@@ -78,12 +78,12 @@
 }
 
 * { box-sizing: border-box; }
+/* The page colour is on <html> only: a body background would paint over the
+   table-top glyphs (`.table`, z-index -1), which sit between the two. */
+html { background-color: var(--page); }
 html, body {
   margin: 0;
   padding: 0;
-  background-color: var(--page);
-  background-image: radial-gradient(circle at 1px 1px, rgba(20, 18, 16, 0.075) 1px, transparent 1.5px);
-  background-size: 18px 18px;
   color: var(--ink);
   font-family: var(--font-text), system-ui, sans-serif;
   font-size: 16px;
@@ -426,6 +426,18 @@ button { font-family: inherit; }
    It gets the ground as a frame instead: the coloured border a sticker has
    always had, and the reveal still changes the card. */
 .sticker__photo--cover > img { inset: 7px; width: calc(100% - 14px); height: calc(100% - 14px); }
+/* Clean cards (a draft, dev preview only for now: `.cards-clean` on an
+   ancestor): a player with a picture stands on a plain studio backdrop, with
+   no club ground, no seam and no club-coloured frame. A player with no
+   picture keeps the ground and the silhouette, and a club's own card (crest
+   on its colour) is not a sticker, so neither changes. */
+.cards-clean .sticker--shot .sticker__half,
+.cards-clean .sticker--shot .sticker__seam,
+.cards-clean .sticker--shot .sticker__photo::after { display: none; }
+.cards-clean .sticker--shot .sticker__photo {
+  background: radial-gradient(120% 90% at 50% 22%, #FFFFFF 0%, #EEEAE1 62%, #DDD8CB 100%);
+}
+.cards-clean .sticker--shot .sticker__photo--cover > img { inset: 0; width: 100%; height: 100%; }
 .sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 .sticker__plate {
   display: flex;
@@ -990,25 +1002,22 @@ button { font-family: inherit; }
    from above, so the art and the page share one light. The suggestion is
    the big tile and carries the page's only red button; the pub game runs
    along the bottom. No blurbs: each game's front page explains itself. */
-/* The table top: every game's glyph printed on the page in place of the
-   dots (public/hub/pattern.svg, from scripts/build-hub-pattern.ts). The
+/* The table top, on every page: every game's glyph printed on the page
+   (public/hub/pattern.svg, from scripts/build-hub-pattern.ts), one fixed
+   layer behind everything (`<div className="table">` in app/layout.tsx). The
    glyphs are one masked face; the layer's two drop-shadows make them stand
    up, a shade below and a light edge above, so they show only up close.
    Every value is a token so components/HubTuner.tsx can dial it in. */
-.hub {
-  --hub-page: var(--page);
-  --glyph-face: rgba(255, 255, 255, 0.8);
-  --glyph-shade: rgba(20, 18, 16, 0.11);
-  --glyph-light: rgba(255, 255, 255, 0);
-  --glyph-depth: 1px;
-  --glyph-soft: 0px;
+:root {
+  --glyph-face: #FAF8F3;
+  --glyph-shade: rgba(20, 18, 16, 0.24);
+  --glyph-light: rgba(255, 255, 255, 1);
+  --glyph-depth: 1.5px;
+  --glyph-soft: 0.75px;
   --glyph-tile: 360px;
-  position: relative;
-  isolation: isolate;
-  background: var(--hub-page);
 }
-.hub__table {
-  position: absolute;
+.table {
+  position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
@@ -1016,7 +1025,7 @@ button { font-family: inherit; }
     drop-shadow(0 var(--glyph-depth) var(--glyph-soft) var(--glyph-shade))
     drop-shadow(0 calc(var(--glyph-depth) * -0.5) 0 var(--glyph-light));
 }
-.hub__table::before {
+.table::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -1024,7 +1033,7 @@ button { font-family: inherit; }
   -webkit-mask: url(/hub/pattern.svg) 0 0 / var(--glyph-tile) var(--glyph-tile) repeat;
   mask: url(/hub/pattern.svg) 0 0 / var(--glyph-tile) var(--glyph-tile) repeat;
 }
-.hub--plain .hub__table { display: none; }
+html.table-off .table { display: none; }
 
 /* Dev only: the pattern's dials (components/HubTuner.tsx). */
 .tuner {
@@ -1124,7 +1133,7 @@ button { font-family: inherit; }
 .hub__cell--feature, .hub__cell--big { grid-column: span 2; }
 
 .hub__tile {
-  --lit: color-mix(in srgb, var(--ground) 62%, #fff);
+  --ground-lit: color-mix(in srgb, var(--ground) 62%, #fff);
   --deep: color-mix(in srgb, var(--ground) 72%, #000);
   position: relative;
   flex: 1;
@@ -1143,7 +1152,7 @@ button { font-family: inherit; }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(110% 85% at 50% 28%, var(--lit) 0%, var(--ground) 52%, var(--deep) 100%);
+  background: radial-gradient(110% 85% at 50% 28%, var(--ground-lit) 0%, var(--ground) 52%, var(--deep) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 16px 30px rgba(20, 18, 16, 0.2);
   transition: box-shadow var(--t-base) var(--ease-out);
 }
@@ -1718,7 +1727,7 @@ button { font-family: inherit; }
 
 /* Today. The ground's light comes from the same place as the hub's. */
 .lobby-hero {
-  --lit: color-mix(in srgb, var(--ground) 76%, #fff);
+  --ground-lit: color-mix(in srgb, var(--ground) 76%, #fff);
   --deep: color-mix(in srgb, var(--ground) 62%, #000);
   position: relative;
   display: flex;
@@ -1736,7 +1745,7 @@ button { font-family: inherit; }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(110% 85% at 72% 16%, var(--lit) 0%, var(--ground) 55%, var(--deep) 100%);
+  background: radial-gradient(110% 85% at 72% 16%, var(--ground-lit) 0%, var(--ground) 55%, var(--deep) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 0 var(--deep), 0 18px 36px rgba(20, 18, 16, 0.22);
 }
 .lobby-hero__mini {

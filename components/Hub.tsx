@@ -40,7 +40,6 @@ export default function Hub({ initial }: { initial: HubStatus }) {
 
   return (
     <div className="app hub">
-      <div className="hub__table" aria-hidden />
       {process.env.NODE_ENV === 'development' ? <HubTuner /> : null}
       <header className="masthead">
         <span className="masthead__brand display">Football games</span>

@@ -48,7 +48,7 @@ const rgba = (hex: string, pct: number) => {
 
 function tokens(d: Dials): Record<string, string> {
   return {
-    '--hub-page': d.page,
+    '--page': d.page,
     '--glyph-face': rgba(d.face, d.faceA),
     '--glyph-shade': rgba(d.shade, d.shadeA),
     '--glyph-light': rgba(d.light, d.lightA),
@@ -72,11 +72,11 @@ export default function HubTuner() {
   }, []);
 
   useEffect(() => {
+    const root = document.documentElement;
+    for (const [k, v] of Object.entries(tokens(t[t.style]))) root.style.setProperty(k, v);
+    root.classList.toggle('table-off', !t.on);
     const hub = document.querySelector<HTMLElement>('.hub');
-    if (!hub) return;
-    for (const [k, v] of Object.entries(tokens(t[t.style]))) hub.style.setProperty(k, v);
-    hub.classList.toggle('hub--plain', !t.on);
-    hub.dataset.mast = t.mast ?? 'current';
+    if (hub) hub.dataset.mast = t.mast ?? 'current';
     try { localStorage.setItem(KEY, JSON.stringify(t)); } catch { /* not kept, still applied */ }
   }, [t]);
 

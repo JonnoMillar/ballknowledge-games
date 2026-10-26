@@ -20,8 +20,9 @@ type Pick = Grade | 'miss';
  * crests from the server, the real components, so what shows here is what
  * ships.
  */
-export default function MotionPreview({ players, club }: { players: DemoSticker[]; club: DemoClub }) {
+export default function MotionPreview({ players, club, deep }: { players: DemoSticker[]; club: DemoClub; deep: (StepCard | null)[] }) {
   const [view, setView] = useState<View>('reveal');
+  const [clean, setClean] = useState(true);
   const [pick, setPick] = useState<Pick>('elite');
   const [take, setTake] = useState(0);
   const [scrub, setScrub] = useState<number | null>(null);
@@ -61,7 +62,7 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
   // A run of four: the chosen grade first, then down the grades, so the deepest is the first card.
   const run: Verdict[] = [0, 1, 2, 3].map((i) => {
     const g = pick === 'miss' ? (i === 1 ? 'miss' : GRADES[3 - i]!) : (GRADES[Math.max(0, GRADES.indexOf(pick) - i)]!);
-    return verdict(g, i);
+    return { ...verdict(g, i), elite: deep[i] ?? null };
   });
   const day: StepDay = {
     date: '2026-01-01', day: 0,
@@ -88,6 +89,13 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
             </button>
           ))}
         </div>
+        <div className="mprev__group" role="group" aria-label="Card style">
+          {[true, false].map((c) => (
+            <button key={String(c)} type="button" className={`mprev__btn ${clean === c ? 'is-on' : ''}`} aria-pressed={clean === c} onClick={() => setClean(c)}>
+              {c ? 'Clean cutout' : 'Club ground'}
+            </button>
+          ))}
+        </div>
         {view !== 'open' ? <button type="button" className="lobby-play" onClick={replay}>Replay</button> : null}
         {view === 'reveal' && pick !== 'miss' ? (
           <label className="mprev__scrub">
@@ -98,7 +106,7 @@ export default function MotionPreview({ players, club }: { players: DemoSticker[
         {view === 'open' ? <p className="mprev__note">Move over the card, or drag it on a phone.</p> : null}
       </aside>
 
-      <section className="mprev__stage" ref={stage}>
+      <section className={`mprev__stage${clean ? ' cards-clean' : ''}`} ref={stage}>
         {view === 'reveal' ? (
           <div className="mprev__game" key={`${pick}-${take}-${scrub === null}`}>
             <Track

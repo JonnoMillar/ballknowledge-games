@@ -93,7 +93,7 @@ export function StickerFace({
   const name = plateName(player.id, player.name).toUpperCase();
   const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
   return (
-    <div ref={ref} {...rest} className={`sticker ${className}`} title={player.name}>
+    <div ref={ref} {...rest} className={`sticker${image ? ' sticker--shot' : ''} ${className}`} title={player.name}>
       <div className={`sticker__photo ${image?.fit === 'contain' ? 'sticker__photo--contain' : 'sticker__photo--cover'}`}>
         <span className={`sticker__half sticker__half--a ${ground.liveA ? 'is-live' : ''}`} style={{ background: ground.a }} aria-hidden />
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />

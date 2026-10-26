@@ -4,11 +4,13 @@ import type { ChainPuzzle } from '../src/lib/chain/types';
 import type { Player } from '../src/lib/chemistry/types';
 import { buildWorld } from '../games/itk/lib/world';
 import { readInputs } from './itk/inputs';
+import { endsOf, fieldOf, stepsOf, type Ruler, type Views } from '../games/step/lib/rules';
+import type { StoredDay } from '../games/step/lib/day';
 
 /**
  * Resolve a PORTRAIT for every player a shipped board can put on screen.
  *
- * Usage: tsx scripts/fetch-portraits.ts [--all | --itk]
+ * Usage: tsx scripts/fetch-portraits.ts [--all | --itk | --step]
  *
  * The problem this exists to solve: 31% of the Commons photos in
  * data/images.json were taken AFTER the player retired, so the frame shows a
@@ -284,7 +286,30 @@ async function commonsPortrait(id: string, span: [number, number] | undefined): 
 
 // --itk: every career ITK could deal (its generator only deals players resolved here).
 const itk = () => new Set(buildWorld(readInputs()).candidates.map((c) => c.id));
-const want = ALL ? new Set(pool.map((p) => p.id)) : process.argv.includes('--itk') ? itk() : await required();
+
+// --step: every given and the two answers a step shows once played (the obvious
+// and the deepest), over the whole schedule. The deepest is by design a name
+// few know, and it is shown as a card, so it needs a picture as much as a given.
+async function step() {
+  const [views, ruler, days] = await Promise.all([
+    readFile('data/player-views.json', 'utf8').then((t) => JSON.parse(t) as Views),
+    readFile('games/step/data/ruler.json', 'utf8').then((t) => JSON.parse(t) as Ruler),
+    readFile('games/step/data/days.json', 'utf8').then((t) => JSON.parse(t) as StoredDay[]),
+  ]);
+  const members = new Map<string, Player[]>();
+  for (const p of pool) for (const c of p.clubIds) { if (!members.has(c)) members.set(c, []); members.get(c)!.push(p); }
+  const ids = new Set<string>();
+  for (const d of days) {
+    for (const s of stepsOf(d)) {
+      const given = byId.get(s.player)!;
+      ids.add(given.id);
+      const { obvious, elite } = endsOf(given, s.club, fieldOf(given, members.get(s.club) ?? []), views, ruler);
+      for (const p of [obvious, elite]) if (p) ids.add(p.id);
+    }
+  }
+  return ids;
+}
+const want = ALL ? new Set(pool.map((p) => p.id)) : process.argv.includes('--itk') ? itk() : process.argv.includes('--step') ? await step() : await required();
 const spans = await careers();
 const done: Record<string, Portrait> = await readFile(OUT, 'utf8')
   .then((s) => JSON.parse(s) as Record<string, Portrait>)
