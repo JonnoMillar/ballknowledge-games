@@ -168,3 +168,63 @@ everyone else ships on the ranking or the kit card.
 
 Done means: the new ranking hits his pick at least ~22 of 27 on this file
 (a test), a round 2 on fresh players confirms it, then the full run.
+
+## Phase 2 status and how to resume (2026-10-26)
+
+Jonno approved the plan after round 2: loosen the chin gate, search harder for
+no-candidate players, cut out the ranking's pick for everyone, then an approval
+round on the famous players, then publish, merge to `main`, push.
+
+**Built and committed** (branch `claude/photo-pipeline-1d882c`):
+
+- `scripts/photos/rank.py` (score; `NOT_A_PHOTO` filename blocklist: wax
+  figures, statues, cards, FIFA renders, TOTS; profile gate `MAX_YAW` 0.8),
+  `candidates.py` (gates, features, deep search when nothing usable, chin gate 1.6),
+  `cutout.py` (rembg birefnet-portrait, crop, 440 px WebP, `--alts N`),
+  `publish.py` (copies the chosen cutouts into `public/portraits/`, rewrites
+  `data/portraits.json` as `source: "processed"`), `fit.py`, `pick-all.ts`.
+- Site: `PortraitImage.fit` gained `box` (our cutout, cover, bottom-anchored) and
+  `kit` (kit card with the club for the crest); `components/Sticker.tsx`
+  `KitCard` (no image at all also draws it); `src/server/board.ts` gives every
+  pool player without a photo a kit entry; `public/kit-figure.png`; the credits
+  page and `scripts/fetch-credits.ts` read `source: "processed"` records and the
+  kit figure's photo. Tests: `tests/portraits.test.ts`, `tests/chain/client.test.ts`.
+  `tsc` clean and those two test files pass; the full suite and a prod build
+  have NOT been run, and the kit card has not yet been looked at in the running app.
+
+**Data in `.scratch/photo-all/`** (gitignored, regenerable but slow; the YuNet
+model is `.scratch/models/yunet.onnx`): `players.json` (893 = fame 60+ plus every
+board player, famous first), `cand/` (candidates, 120 done), `out/` (cutouts, 24
+done). Background jobs die with the Claude session; restart them with:
+
+```
+cd .scratch/photo-all
+for i in 0 1 2 3 4 5; do python -X utf8 ../../scripts/photos/candidates.py "$(pwd)" players.json $i/6 > run$i.log 2>&1 & done
+./drive.sh > drive.log 2>&1 &     # loops cutout.py x2 until every player has out/<id>.json
+```
+
+Both skip finished players. Expect hours: the machine is RAM-starved (rembg needs
+about 1.5 GB a process; keep it to 2) and a cutout takes 25-60 s.
+
+**Still to do, in order:**
+
+1. Finish candidates and cutouts for all 893 (famous first). Run `candidates.py`
+   again for players with 0 usable (Torres, Lineker, Lloris, Cantona): its deep
+   search runs automatically when nothing passes, so just check them after.
+2. Look at the kit card and a cutout sticker in the running app (`npm run dev`).
+3. **Approval round on the famous players** (Jonno): a grid of the 395 cutouts as
+   stickers on the club colour; he marks the wrong ones; for those, cut out
+   `--alts 3` and show three to pick from or "kit card". Save his answers as
+   `choices.json` ({id: k | "photo" | "kit"}).
+4. `python scripts/photos/publish.py .scratch/photo-all choices.json`, then
+   `npm run fetch:credits` (needs Commons network), then `npx tsc --noEmit`,
+   `npm test`, `npm run build`, check `/credits`.
+5. Merge `main` into the branch, re-run the checks, merge into `main`, push
+   (CLAUDE.md allows this once checks are clean). One line in the root
+   `HANDOFF.md` games index is not needed (this is not a game); add a short
+   "Portraits" update there at merge.
+
+Caveats to tell Jonno: processed files add roughly 15-25 KB each to the repo
+(`public/portraits/`); `fetch-portraits.ts` must not be rerun with `--recheck`
+over processed records; players outside the 893 still fall back to the unjudged
+`images.json` photo, else the kit card.
