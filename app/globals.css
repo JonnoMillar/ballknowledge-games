@@ -2165,13 +2165,22 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 }
 
 /* Grade material: the case's own material carries on behind the player,
-   dimmed and darker towards the edges so the face stays the brightest thing. */
-.grounds--grade .sticker--shot .sticker__photo::after { background: radial-gradient(90% 75% at 50% 32%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.32) 100%); }
-.grounds--grade .slab--basic .sticker--shot .sticker__photo { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
-.grounds--grade .slab--decent .sticker--shot .sticker__photo { background: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
-.grounds--grade .slab--solid .sticker--shot .sticker__photo { background: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
-.grounds--grade .slab--sharp .sticker--shot .sticker__photo { background: url('/grades/sharp.jpg') center / cover; }
-.grounds--grade .slab--elite .sticker--shot .sticker__photo { background: url('/grades/elite.jpg') center / cover; }
+   dimmed and darker towards the edges so the face stays the brightest thing.
+   A bare sticker (no case: not judged yet) keeps the grey. In Steps
+   (`.cards-grade`, dev preview for now) the material rides the ground's two
+   halves, so at the develop it comes in from the corners as the club
+   colours did; a kit card (no photo) keeps its club ground. */
+:is(.grounds--grade, .cards-grade) .slab--basic { --material: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
+:is(.grounds--grade, .cards-grade) .slab--decent { --material: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
+:is(.grounds--grade, .cards-grade) .slab--solid { --material: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
+:is(.grounds--grade, .cards-grade) .slab--sharp { --material: url('/grades/sharp.jpg') center / cover; }
+:is(.grounds--grade, .cards-grade) .slab--elite { --material: url('/grades/elite.jpg') center / cover; }
+:is(.grounds--grade, .cards-grade) .sticker--shot .sticker__photo::after { background: radial-gradient(90% 75% at 50% 32%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.32) 100%); }
+.grounds--grade .slab .sticker--shot .sticker__photo { background: var(--material); }
+.cards-grade .sticker--shot .sticker__seam,
+.cards-grade .sticker--shot:not(.slab .sticker) .sticker__half { display: none; }
+.cards-grade .sticker--shot .sticker__photo::after { border: 0; opacity: 1; z-index: 0; }
+.cards-grade .slab .sticker--shot .sticker__half { background: var(--material) !important; }
 
 /* Stadium: one floodlit night ground for every card, drawn (a placeholder
    for one real photo or generated image): sky, two floodlights, the stands
