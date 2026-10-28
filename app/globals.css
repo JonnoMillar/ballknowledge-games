@@ -440,12 +440,12 @@ button { font-family: inherit; }
   -webkit-mask: url(/kit-figure.png) 50% 100% / 100% auto no-repeat;
   mask: url(/kit-figure.png) 50% 100% / 100% auto no-repeat;
 }
-.sticker__crest {
+.sticker__photo > .sticker__crest {
   position: absolute;
   z-index: 2;
-  right: 5%;
-  top: 4%;
+  inset: 4% 5% auto auto;
   width: 24%;
+  height: auto;
   aspect-ratio: 1;
   object-fit: contain;
   padding: 4%;
@@ -2133,3 +2133,58 @@ html.is-smoothing::view-transition-old(*), html.is-smoothing::view-transition-ne
 html.is-smoothing::view-transition-old(.game), html.is-smoothing::view-transition-new(.game) { object-fit: fill; }
 html.is-smoothing::view-transition-old(*):only-child { animation: vt-leave 180ms var(--ease-in) both; }
 html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260ms var(--ease-out) 90ms both; }
+
+/* ── DEV ONLY: /grounds, what stands behind a player's photo ────────────
+   Candidate grounds for a card with a photo (`.sticker--shot`). Each drops
+   the club halves, the seam and the club-coloured frame; a kit card (no
+   photo) keeps its club ground on every one. The winner moves into the
+   sticker's own rules; the rest go. */
+.gprev { display: flex; flex-direction: column; gap: 20px; padding: 20px 16px 40px; max-width: 1100px; margin: 0 auto; }
+.gprev__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.gprev__bar .hero__eyebrow { margin: 0 8px 0 0; }
+.gprev__btn {
+  appearance: none; border: 0; min-height: 40px; padding: 0 12px; border-radius: 8px;
+  background: var(--panel); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--rule-strong);
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.gprev__btn.is-on { background: var(--ink); color: #fff; box-shadow: none; }
+.gprev__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 14px; justify-items: center; }
+.gprev__grid .slab--sm { --sticker-w: 124px; }
+@media (min-width: 1100px) { .gprev__grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+
+:is(.grounds--house, .grounds--grade, .grounds--stadium) .sticker--shot :is(.sticker__half, .sticker__seam) { display: none; }
+:is(.grounds--house, .grounds--grade, .grounds--stadium) .sticker--shot .sticker__photo::after { border: 0; opacity: 1; z-index: 0; }
+
+/* House paper: the sticker's own cream, the site's glyphs printed faintly on it. */
+.grounds--house .sticker--shot .sticker__photo { background: radial-gradient(110% 80% at 50% 30%, #FBF8F1 0%, #EFE9DC 100%); }
+.grounds--house .sticker--shot .sticker__photo::after {
+  background: rgba(20, 18, 16, 0.07);
+  -webkit-mask: url(/hub/pattern.svg) 0 0 / 200px 200px repeat;
+  mask: url(/hub/pattern.svg) 0 0 / 200px 200px repeat;
+}
+
+/* Grade material: the case's own material carries on behind the player,
+   dimmed and darker towards the edges so the face stays the brightest thing. */
+.grounds--grade .sticker--shot .sticker__photo::after { background: radial-gradient(90% 75% at 50% 32%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.32) 100%); }
+.grounds--grade .slab--basic .sticker--shot .sticker__photo { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
+.grounds--grade .slab--decent .sticker--shot .sticker__photo { background: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
+.grounds--grade .slab--solid .sticker--shot .sticker__photo { background: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
+.grounds--grade .slab--sharp .sticker--shot .sticker__photo { background: url('/grades/sharp.jpg') center / cover; }
+.grounds--grade .slab--elite .sticker--shot .sticker__photo { background: url('/grades/elite.jpg') center / cover; }
+
+/* Stadium: one floodlit night ground for every card, drawn (a placeholder
+   for one real photo or generated image): sky, two floodlights, the stands
+   as a band of soft crowd lights, the pitch at the feet. */
+.grounds--stadium .sticker--shot .sticker__photo {
+  background:
+    radial-gradient(22% 16% at 10% 8%, rgba(255, 249, 222, 0.95), rgba(255, 249, 222, 0) 70%),
+    radial-gradient(22% 16% at 90% 8%, rgba(255, 249, 222, 0.95), rgba(255, 249, 222, 0) 70%),
+    radial-gradient(80% 40% at 50% 0%, rgba(190, 210, 255, 0.35), rgba(190, 210, 255, 0) 70%),
+    linear-gradient(to bottom, #0c1430 0%, #17213f 30%, #262c47 50%, #23402a 68%, #2f6a35 100%);
+}
+.grounds--stadium .sticker--shot .sticker__photo::after {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0.8px, transparent 1.6px) 0 0 / 6px 5px;
+  -webkit-mask: linear-gradient(to bottom, transparent 22%, #000 32%, #000 52%, transparent 64%);
+  mask: linear-gradient(to bottom, transparent 22%, #000 32%, #000 52%, transparent 64%);
+  filter: blur(0.6px);
+}
