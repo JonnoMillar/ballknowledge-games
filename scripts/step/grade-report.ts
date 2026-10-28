@@ -20,7 +20,7 @@ const redirects = JSON.parse(await readFile('data/enwiki-views.redirects.json', 
 const byIdViews = JSON.parse(await readFile('data/player-views.json', 'utf8')) as Record<string, number>;
 const viewsOf = (p: Player) => { const t = careers[p.id]?.title; return t ? views[redirects[t] ?? t] : undefined; };
 
-const bar = JSON.parse(await readFile('games/step/data/bar.json', 'utf8'));
+const ruler = JSON.parse(await readFile('games/step/data/ruler.json', 'utf8'));
 const byClub = new Map<string, Player[]>();
 for (const p of pool) for (const c of p.clubIds) { if (!byClub.has(c)) byClub.set(c, []); byClub.get(c)!.push(p); }
 
@@ -33,7 +33,7 @@ for (const d of days.slice(first - 1, first - 1 + count)) {
   for (const s of stepsOf(d)) {
     const given = byId.get(s.player)!;
     const field = fieldOf(given, byClub.get(s.club) ?? []);
-    const rows = field.map((p) => ({ p, j: judge(p, given, s.club, byClub.get(s.club) ?? [], byIdViews, bar) }));
+    const rows = field.map((p) => ({ p, j: judge(p, given, s.club, byClub.get(s.club) ?? [], byIdViews, ruler) }));
     const rank = { basic: 0, decent: 1, solid: 2, sharp: 3, elite: 4 } as const;
     rows.sort((a, b) => rank[a.j.grade!] - rank[b.j.grade!] || b.p.fame.value - a.p.fame.value);
     console.log(`\n${d.date}  ${given.name} — ${clubs[s.club]?.name}  (field ${field.length})`);

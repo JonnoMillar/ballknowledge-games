@@ -95,7 +95,7 @@ export function StickerFace({
   const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
   const fit = !image ? 'kit' : image.fit;
   return (
-    <div ref={ref} {...rest} className={`sticker ${className}`} title={player.name}>
+    <div ref={ref} {...rest} className={`sticker${fit !== 'kit' ? ' sticker--shot' : ''} ${className}`} title={player.name}>
       <div className={`sticker__photo sticker__photo--${fit}`}>
         <span className={`sticker__half sticker__half--a ${ground.liveA ? 'is-live' : ''}`} style={{ background: ground.a }} aria-hidden />
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />

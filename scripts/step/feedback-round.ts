@@ -1,10 +1,12 @@
-import { readFile, writeFile } from 'node:fs/promises';
-import { FIT_A, FIT_B, fieldOf, judge, stepsOf, type Views } from '../../games/step/lib/rules';
-import type { StoredDay } from '../../games/step/lib/day';
+import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { FIT_A, FIT_B, fieldOf, judge, stepsOf, type Ruler, type Views } from '../../games/step/lib/rules';
+import { buildWorld, type StoredDay } from '../../games/step/lib/day';
 import { factFame, spellWeight } from '../../src/lib/fame/spell';
 import { ELITE_MIN_FIELD, GRADES, GRADE_WORD, gradeOf, type Grade } from '../../src/lib/chain/grade';
 import { CHECKABLE } from '../../games/step/lib/rules';
 import type { Player } from '../../src/lib/chemistry/types';
+import { plateName } from '../../src/lib/short-name';
+import { shortClubName } from '../../components/ClubBadge';
 
 /**
  * A feedback round for Steps' grades: ~30 picks from days already played (no
@@ -16,6 +18,10 @@ import type { Player } from '../../src/lib/chemistry/types';
  * moved most, links through the given's own short spell, players whose
  * English views run far past their sitelinks (managers, pundits), and an
  * even spread over the five grades.
+ *
+ * Later rounds skip every pick an earlier round asked about, and probe what
+ * round 1 left open: players whose careers ended before 2010, clubs outside
+ * the Premier League, and short current spells.
  *
  * Usage: tsx scripts/step/feedback-round.ts <round id> [until=yesterday]
  */
@@ -29,6 +35,14 @@ const views = await json<Views>('data/player-views.json');
 const days = (await json<StoredDay[]>('games/step/data/days.json')).filter((d) => d.date <= until);
 const byClub = new Map<string, Player[]>();
 for (const p of pool) for (const c of p.clubIds) { if (!byClub.has(c)) byClub.set(c, []); byClub.get(c)!.push(p); }
+const ruler = await json<Ruler>('games/step/data/ruler.json');
+const english = buildWorld(pool, views).english;
+const asked = new Set<string>();
+for (const f of await readdir('tools/feedback-round/rounds')) {
+  if (!f.startsWith('steps-') || f === `${id}.json`) continue;
+  for (const it of (await json<{ items: { meta: { pick: string } }[] }>(`tools/feedback-round/rounds/${f}`)).items) asked.add(it.meta.pick);
+}
+const NOW = new Date(until).getFullYear();
 
 const short = (c: string) => (clubs[c]?.name ?? c).replace(/ (F\.C\.|A\.F\.C\.|FC|CF|C\.F\.)$/, '').replace(/^(AS|ACF|SS|AC|FC|RCD|SL|S\.L\.|AFC) /, '').replace('Club de Fútbol', '').trim();
 const apps = (p: Player, c: string) => { const s = p.spells?.[c]; return s?.[0] ?? null; };
@@ -53,7 +67,10 @@ for (const d of days) for (const s of stepsOf(d)) {
   for (const pick of field) {
     const called = ['Viv Anderson'].includes(pick.name);
     if ((views[pick.id] ?? 0) < 150e3 && !called) continue; // nobody names a player nobody reads about
-    const j = judge(pick, given, s.club, members, views, JSON.parse(await readFile('games/step/data/bar.json', 'utf8')));
+    if (asked.has(pick.id)) continue;
+    const j = judge(pick, given, s.club, members, views, ruler);
+    // A membership with no games behind it is its own open question (Luis Alberto at Barcelona, round 1).
+    if (id !== 'steps-1' && (!apps(pick, s.club) || !apps(pick, j.via!) || !apps(given, j.via!))) continue;
     const old = oldGrade(field, pick, given, s.club);
     const shared = pick.clubIds.filter((c) => given.clubIds.includes(c));
     const via = j.via!;
@@ -61,6 +78,10 @@ for (const d of days) for (const s of stepsOf(d)) {
     if (Math.abs(GRADES.indexOf(j.grade!) - GRADES.indexOf(old)) >= 2) tags.push('moved');
     if (shared.every((c) => (apps(given, c) ?? 99) < 30)) tags.push('given-short');
     if ((views[pick.id] ?? 0) > 10 ** (FIT_A + FIT_B * pick.fame.value) * 8) tags.push('views-high');
+    const lasts = Object.values(pick.spells ?? {}).map((x) => x[2]);
+    if (lasts.length && lasts.every((y) => y !== null && y < 2010)) tags.push('pre-2010');
+    if (!english.has(s.club)) tags.push('non-pl');
+    if ((ended(pick, s.club) ?? NOW) >= NOW - 1 && (apps(pick, s.club) ?? 99) < 20) tags.push('new-short');
     cands.push({ key: `${d.date}|${s.player}|${s.club}|${pick.id}`, date: d.date, given, club: s.club, playerFirst: s.playerFirst, pick, grade: j.grade!, old, via, tags });
   }
 }
@@ -86,12 +107,29 @@ const CALLS: [string, string][] = [
   ['George Weah', 'Patrick Vieira'], ['David de Gea', 'Rodri'], ['Kevin De Bruyne', 'Andriy Shevchenko'],
   ['Enzo Maresca', 'David de Gea'],
 ];
-for (const [p, g] of CALLS) take((c) => c.pick.name === p && c.given.name === g, 1);
-take((c) => c.tags.includes('moved'), 7);
-take((c) => c.tags.includes('given-short'), 4);
-take((c) => c.tags.includes('views-high'), 2);
-for (const g of GRADES) take((c) => c.grade === g, 2);
-take(() => true, Math.max(0, 30 - chosen.length));
+/** Last season a player was anywhere, or now if a spell is open. */
+const lastSeen = (p: Player) => Math.max(...Object.values(p.spells ?? {}).map((x) => x[2] ?? NOW), 0);
+/** Inside the audience's memory (16 to 26 in 2026): the pick's spell at the club since 2016, the pick still around since 2020, the given since 2016. */
+const recent = (c: Cand) => (ended(c.pick, c.club) ?? NOW) >= 2016 && lastSeen(c.pick) >= 2020 && lastSeen(c.given) >= 2016;
+if (id === 'steps-1') {
+  for (const [p, g] of CALLS) take((c) => c.pick.name === p && c.given.name === g, 1);
+  take((c) => c.tags.includes('moved'), 7);
+  take((c) => c.tags.includes('given-short'), 4);
+  take((c) => c.tags.includes('views-high'), 2);
+  for (const g of GRADES) take((c) => c.grade === g, 2);
+  take(() => true, Math.max(0, 30 - chosen.length));
+} else if (id === 'steps-2') {
+  take((c) => c.tags.includes('pre-2010'), 6);
+  take((c) => c.tags.includes('non-pl') && !c.tags.includes('pre-2010'), 5);
+  take((c) => c.tags.includes('new-short'), 3);
+  take((c) => c.tags.includes('given-short'), 2);
+  for (const g of GRADES) take((c) => c.grade === g, 2);
+  for (const g of GRADES.slice(0, 3)) take((c) => c.grade === g, 1); // probes run deep; keep the shallow grades in view
+  take(() => true, Math.max(0, 30 - chosen.length));
+} else {
+  // Jonno after round 2: no more players his audience never saw. Ten recent picks, two per grade.
+  for (const g of GRADES) take((c) => recent(c) && c.grade === g, 2);
+}
 
 const items = chosen
   .sort((a, b) => a.date.localeCompare(b.date))
@@ -99,6 +137,8 @@ const items = chosen
     const g = c.given.name, cl = short(c.club), v = short(c.via);
     const here = apps(c.pick, c.club);
     const last = ended(c.pick, c.club);
+    // The step as the game shows it, so the pick can stay hidden until tapped.
+    const pn = plateName(c.given.id, g), cn = shortClubName(clubs[c.club]?.name ?? c.club);
     return {
       id: c.key.replace(/[^A-Za-z0-9]+/g, '-'),
       kicker: c.playerFirst ? `${g} · ? · ${cl}` : `${cl} · ? · ${g}`,
@@ -107,6 +147,8 @@ const items = chosen
         `Linked by ${v}: ${apps(c.pick, c.via) ?? '?'} games there, ${g.split(' ').at(-1)} ${apps(c.given, c.via) ?? '?'}`,
         `At ${cl}: ${here ?? '?'} league games${last ? `, until ${last}` : ''}`,
       ],
+      gap: c.playerFirst ? [pn, cn] : [cn, pn],
+      prompt: c.playerFirst ? `Played for one of ${pn}’s clubs and for ${cn}` : `Played for ${cn} and one of ${pn}’s clubs`,
       value: GRADE_WORD[c.grade],
       rank: GRADES.indexOf(c.grade),
       // For reading answers back; the page ignores it.
@@ -118,7 +160,10 @@ const round = {
   id,
   eyebrow: 'Steps · grade check',
   title: 'Are these grades right?',
-  intro: `${items.length} real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`,
+  intro: id === 'steps-1'
+    ? `${items.length} real picks from Steps days already played. Each one shows the grade the game gives it today. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`
+    : `${items.length} real picks from Steps days already played${id === 'steps-2' ? '' : ', recent players only'}. Each step is shown as in the game: think who you would name, then tap the gap to see a pick and the grade the game gives it. Say whether it should be higher (a deeper cut than that), lower (more obvious than that), or is right. A note is optional.`,
+  reveal: id !== 'steps-1',
   valueLabel: 'Graded',
   scale: GRADES.map((g) => GRADE_WORD[g]),
   options: [

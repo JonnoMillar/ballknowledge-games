@@ -82,4 +82,4 @@ The data is committed, so the app runs without fetching anything. The pipeline s
 
 ## Credits and licence
 
-Code is MIT licensed (see `LICENSE`). The data belongs to its sources: Wikidata (CC0), English Wikipedia (CC BY-SA 4.0), and the photographers and clubs listed on the app's `/credits` page. This is an unofficial fan project, not affiliated with any club, league or player.
+Code is © 2026 Jonno Millar, all rights reserved: public to read, not to reuse (see `LICENSE`). The data belongs to its sources: Wikidata (CC0), English Wikipedia (CC BY-SA 4.0), and the photographers and clubs listed on the app's `/credits` page. This is an unofficial fan project, not affiliated with any club, league or player.

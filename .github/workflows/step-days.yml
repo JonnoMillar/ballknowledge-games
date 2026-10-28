@@ -31,13 +31,13 @@ jobs:
       - run: npm test
       - name: Commit new days
         run: |
-          if [ -z "$(git status --porcelain games/step/data/days.json games/step/data/bar.json)" ]; then
+          if [ -z "$(git status --porcelain games/step/data/days.json games/step/data/ruler.json)" ]; then
             echo "No new days."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add games/step/data/days.json games/step/data/bar.json
+          git add games/step/data/days.json games/step/data/ruler.json
           git commit -m "chore(step): new days"
           git pull --rebase
           git push

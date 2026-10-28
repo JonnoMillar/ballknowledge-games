@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Back from '../../../components/Back';
 import { markDone } from '../../../src/lib/today';
 import Sticker, { EmptySticker, Figure, StickerFace, neutral, solid, type Ground } from '../../../components/Sticker';
@@ -10,6 +10,7 @@ import { buildIndex, type SearchIndex } from '../../../src/lib/search/index';
 import { decodeNames, type NameEntry, type NameRow } from '../../../src/lib/chain/client';
 import { recordCards, type CardNews } from '../../../src/lib/collection';
 import { localDate } from '../../../src/lib/daily';
+import { GRADE_WORD, gradeRank } from '../../../src/lib/chain/grade';
 import { plateName } from '../../../src/lib/short-name';
 import { NAME, STEPS, runGrade, shareLine } from '../lib/rules';
 import Slam from './Slam';
@@ -86,6 +87,8 @@ function Game({ day }: { day: StepDay }) {
   // The step on screen: the first open one, or the last one locked until Next is pressed.
   const [view, setView] = useState(done ? STEPS - 1 : open);
   const [finished, setFinished] = useState(done);
+  // A run finished before this page loaded opens on its summary without the cards flying to the collection.
+  const [doneOnLoad] = useState(done);
   const [chosen, setChosen] = useState<NameEntry | null>(null);
   const [searching, setSearching] = useState(false);
   const [pending, setPending] = useState(false);
@@ -138,7 +141,7 @@ function Game({ day }: { day: StepDay }) {
     else setView(view + 1);
   }
 
-  if (finished && done) return <Summary day={day} run={run} />;
+  if (finished && done) return <Summary day={day} run={run} fresh={!doneOnLoad} />;
 
   const clubName = shortClubName(step.club.club.name);
   const playerName = plateName(step.player.id, step.player.name);
@@ -153,25 +156,23 @@ function Game({ day }: { day: StepDay }) {
         ))}
       </ol>
 
-      <Track day={day} run={run} view={view} chosen={chosen} hidden={revealing ? view : -1} onOpen={() => !verdict && setSearching(true)} />
+      <Track
+        day={day} run={run} view={view} chosen={chosen} hidden={revealing ? view : -1}
+        reveal={{ play: true, news: news ?? undefined, onDone: () => setRevealing(false) }}
+        onOpen={() => !verdict && setSearching(true)}
+      />
 
       <section className="step-act" aria-live="polite">
         {verdict ? (
-          <>
-            <div className="step-verdict">
-              {revealing || verdict.held ? <span className="step-verdict__kicker">Ball knowledge</span> : null}
-              <Slam
-                key={view}
-                verdict={verdict}
-                ground={cardGround(verdict.pick, step.playerFirst)}
-                news={news ?? undefined}
-                play={revealing}
-                onDone={() => setRevealing(false)}
-              />
-              {revealing ? null : <After verdict={verdict} playerFirst={step.playerFirst} />}
-            </div>
-            {revealing ? null : <button type="button" className="lobby-play" onClick={next}>{view === STEPS - 1 ? 'Your run' : 'Next'}</button>}
-          </>
+          revealing ? null : (
+            <>
+              <div className="step-verdict">
+                {verdict.held ? <span className="step-verdict__kicker">Ball knowledge</span> : null}
+                <After verdict={verdict} playerFirst={step.playerFirst} />
+              </div>
+              <button type="button" className="lobby-play" onClick={next}>{view === STEPS - 1 ? 'Your run' : 'Next'}</button>
+            </>
+          )
         ) : chosen ? (
           <>
             <button type="button" className="lobby-play" onClick={lock} disabled={pending}>{pending ? 'Locking…' : 'Lock it in'}</button>
@@ -207,9 +208,11 @@ function Game({ day }: { day: StepDay }) {
 /**
  * The whole run as one strip, P1 ? C1 ? P2 ? C2 ? P3, slid so the step on
  * screen is in the middle. Moving on is the strip sliding one club along.
+ * `hidden` is the gap whose verdict is being revealed: the reveal plays in it.
+ * `reveal` is for the step on screen (its card's New tag, the end of its reveal).
  */
-function Track({ day, run, view, chosen, hidden, onOpen }: {
-  day: StepDay; run: Run; view: number; chosen: NameEntry | null; hidden: number; onOpen: () => void;
+export function Track({ day, run, view, chosen, hidden, reveal, onOpen }: {
+  day: StepDay; run: Run; view: number; chosen: NameEntry | null; hidden: number; reveal: Reveal; onOpen: () => void;
 }) {
   const items: ({ kind: 'player'; p: StepGiven } | { kind: 'club'; c: StepClub } | { kind: 'gap'; i: number })[] = [];
   day.steps.forEach((s, i) => {
@@ -232,31 +235,39 @@ function Track({ day, run, view, chosen, hidden, onOpen }: {
             ? <StickerFace player={it.p} image={it.p.image ?? undefined} ground={solid(it.p.ground)} className="sticker--still" />
             : it.kind === 'club'
               ? <ClubSticker c={it.c} />
-              : <Gap index={it.i} verdict={run[it.i] ?? null} hidden={it.i === hidden} live={it.i === view} chosen={it.i === view ? chosen : null} playerFirst={day.steps[it.i]!.playerFirst} onOpen={onOpen} />;
-          const out = [<div key={`c${k}`} className={`step-track__cell ${near(k) ? 'is-near' : ''}`}>{cell}</div>];
+              : <Gap index={it.i} verdict={run[it.i] ?? null} reveal={it.i === view ? { ...reveal, play: reveal.play && it.i === hidden } : null} live={it.i === view} chosen={it.i === view ? chosen : null} playerFirst={day.steps[it.i]!.playerFirst} onOpen={onOpen} />;
+          const els = [<div key={`c${k}`} className={`step-track__cell ${near(k) ? 'is-near' : ''}`}>{cell}</div>];
           // The link after cell k joins it to cell k + 1; both touch gap floor(k / 2).
           if (k < items.length - 1) {
-            out.push(
+            els.push(
               <span key={`l${k}`} className={`link link--h step-track__link ${near(k) && near(k + 1) ? 'is-near' : ''} ${linkState(Math.floor(k / 2))}`} aria-hidden>
                 <span className="link__rule" />
               </span>,
             );
           }
-          return out;
+          return els;
         })}
       </div>
     </div>
   );
 }
 
-/** The gap: a silhouette to tap, the name you chose, or the pick once judged. */
-function Gap({ index, verdict, hidden, live, chosen, playerFirst, onOpen }: {
-  index: number; verdict: Verdict | null; hidden: boolean; live: boolean; chosen: NameEntry | null; playerFirst: boolean; onOpen: () => void;
+type Reveal = { play: boolean; news?: CardNews; onDone: () => void };
+
+/**
+ * The gap: a silhouette to tap, the name you chose, or the pick once judged.
+ * A verdict opens here (Slam over the pick) and a card that held stays here
+ * in its case; a miss is the greyed pick with a ✕.
+ */
+function Gap({ index, verdict, reveal, live, chosen, playerFirst, onOpen }: {
+  index: number; verdict: Verdict | null; reveal: Reveal | null; live: boolean; chosen: NameEntry | null; playerFirst: boolean; onOpen: () => void;
 }) {
-  if (verdict && hidden) {
+  // The hidden copy keeps the gap's room, on the pick's final ground: after a miss React keeps it as the gap's sticker, so nothing re-develops.
+  if (verdict && (reveal?.play || verdict.held)) {
     return (
-      <div className="step-gap">
-        <StickerFace player={verdict.pick} image={verdict.pick.image ?? undefined} ground={neutral()} className="sticker--still" />
+      <div className="step-gap step-gap--card" aria-label={verdict.held && verdict.grade ? `${verdict.pick.name}, ${GRADE_WORD[verdict.grade]}` : undefined}>
+        <StickerFace player={verdict.pick} image={verdict.pick.image ?? undefined} ground={verdict.held ? cardGround(verdict.pick, playerFirst) : neutral()} className="sticker--still step-gap__room" aria-hidden />
+        <Slam key={index} verdict={verdict} ground={cardGround(verdict.pick, playerFirst)} news={reveal?.news} play={reveal?.play ?? false} onDone={reveal?.onDone ?? (() => {})} />
       </div>
     );
   }
@@ -266,10 +277,10 @@ function Gap({ index, verdict, hidden, live, chosen, playerFirst, onOpen }: {
         <StickerFace
           player={verdict.pick}
           image={verdict.pick.image ?? undefined}
-          ground={verdict.held ? cardGround(verdict.pick, playerFirst) : neutral()}
-          className={`sticker--still ${verdict.held ? '' : 'step-gap--missed'}`}
+          ground={neutral()}
+          className="sticker--still step-gap--missed"
         />
-        {verdict.held && verdict.grade ? <GradeChip grade={verdict.grade} /> : <span className="step-miss step-miss--sm" aria-label="Doesn’t fit">✕</span>}
+        <span className="step-miss step-miss--sm" aria-label="Doesn’t fit">✕</span>
       </div>
     );
   }
@@ -335,7 +346,7 @@ function ClubSticker({ c }: { c: StepClub }) {
 }
 
 /** A pick's ground: the club it shared with the given on that side, the step's club on the other. */
-function cardGround(card: StepCard, playerFirst: boolean): Ground {
+export function cardGround(card: StepCard, playerFirst: boolean): Ground {
   if (!card.clubs) return neutral();
   const [via, club] = card.clubs;
   return playerFirst
@@ -343,10 +354,66 @@ function cardGround(card: StepCard, playerFirst: boolean): Ground {
     : { a: club.colour, b: via.colour, liveA: true, liveB: true };
 }
 
-/** The end of the run: the word, the cards, the share, then the deepest answers. */
-function Summary({ day, run }: { day: StepDay; run: Run }) {
+/** Once the cards have dealt in, each that held flies into View collection, one after another, and the button pulses as it lands. */
+const COLLECT_AT = 1100;
+const COLLECT_EVERY = 380;
+const COLLECT_MS = 560;
+
+/**
+ * The end of the run: the word, the cards, the share, then the deepest
+ * answers. `fresh` (the run just ended here) sends a copy of each card that
+ * held into View collection; the cards stay put, the run still reads.
+ */
+export function Summary({ day, run, fresh = false }: { day: StepDay; run: Run; fresh?: boolean }) {
+  const cards = useRef<HTMLOListElement>(null);
+  const collect = useRef<HTMLAnchorElement>(null);
+  useEffect(() => {
+    if (!fresh || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timers: number[] = [];
+    const flying: HTMLElement[] = [];
+    // On a short screen bring the button up first, so the cards land somewhere you can see.
+    timers.push(window.setTimeout(() => {
+      const b = collect.current?.getBoundingClientRect();
+      if (b && b.bottom > window.innerHeight - 16) collect.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, COLLECT_AT - 500));
+    cards.current?.querySelectorAll<HTMLElement>(':scope > li > .slab').forEach((el, i) => {
+      timers.push(window.setTimeout(() => {
+        const btn = collect.current;
+        if (!btn) return;
+        const r = el.getBoundingClientRect();
+        const b = btn.getBoundingClientRect();
+        const copy = el.cloneNode(true) as HTMLElement;
+        copy.setAttribute('aria-hidden', 'true');
+        copy.classList.add('step-end__flying');
+        Object.assign(copy.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px` });
+        copy.style.setProperty('--sticker-w', getComputedStyle(el).getPropertyValue('--sticker-w'));
+        document.body.append(copy);
+        flying.push(copy);
+        const s = 0.16;
+        const tx = b.left + b.width / 2 - (r.left + (r.width * s) / 2);
+        const ty = b.top + b.height / 2 - (r.top + (r.height * s) / 2);
+        copy.animate([
+          { transform: 'none', opacity: 1 },
+          { transform: `translate(${tx * 0.45}px, ${ty * 0.45 - 36}px) scale(0.55)`, opacity: 1, offset: 0.5 },
+          { transform: `translate(${tx}px, ${ty}px) scale(${s})`, opacity: 0.4 },
+        ], { duration: COLLECT_MS, easing: 'cubic-bezier(0.5, 0, 0.6, 1)' }).onfinish = () => {
+          copy.remove();
+          btn.animate([
+            { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(20, 18, 16, 0.35)' },
+            { transform: 'scale(1.12)', boxShadow: '0 0 0 6px rgba(20, 18, 16, 0.12)', offset: 0.35 },
+            { transform: 'scale(1)', boxShadow: '0 0 0 12px rgba(20, 18, 16, 0)' },
+          ], { duration: 380, easing: 'ease-out' });
+          navigator.vibrate?.(10);
+        };
+      }, COLLECT_AT + i * COLLECT_EVERY));
+    });
+    return () => { timers.forEach(clearTimeout); flying.forEach((c) => c.remove()); };
+  }, [fresh]);
   const grades = run.map((v) => v?.grade ?? null);
   const word = runGrade(grades);
+  // The first card at the run's deepest grade, the one that catches the light.
+  const ranks = grades.map((g) => (g ? gradeRank(g) : -1));
+  const deepest = Math.max(...ranks) >= 0 ? ranks.indexOf(Math.max(...ranks)) : -1;
   const [copied, setCopied] = useState(false);
   async function share() {
     await navigator.clipboard?.writeText(shareLine(day.day, grades)).catch(() => {});
@@ -359,9 +426,9 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
         <span className="step-verdict__kicker">Ball knowledge</span>
         {word ? <GradeChip grade={word} /> : <span className="step-end__none display">None</span>}
       </div>
-      <ol className="step-end__cards">
+      <ol className="step-end__cards" ref={cards}>
         {run.map((v, i) => (
-          <li key={i}>
+          <li key={i} className={i === deepest ? 'is-deepest' : undefined} style={{ ['--i' as string]: i }}>
             {v && v.held && v.grade
               ? <Slab grade={v.grade} player={v.pick} image={v.pick.image ?? undefined} ground={cardGround(v.pick, day.steps[i]!.playerFirst)} size="sm" />
               : (
@@ -375,7 +442,7 @@ function Summary({ day, run }: { day: StepDay; run: Run }) {
       </ol>
       <div className="step-end__actions">
         <button type="button" className="lobby-play" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-        <a className="lobby-quiet" href="/collection">View collection</a>
+        <a className="lobby-quiet" href="/collection" ref={collect}>View collection</a>
       </div>
 
       <h2 className="step-end__sub display">Deepest answers</h2>

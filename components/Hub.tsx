@@ -3,6 +3,7 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import { GAMES, type GameCard } from '../src/games';
 import { hubStatus, syncHub, type HubStatus } from '../src/lib/today';
 import { smooth } from '../src/lib/motion';
+import HubTuner from './HubTuner';
 
 type Status = { done: Set<string>; streak: number };
 
@@ -39,8 +40,10 @@ export default function Hub({ initial }: { initial: HubStatus }) {
 
   return (
     <div className="app hub">
+      {process.env.NODE_ENV === 'development' ? <HubTuner /> : null}
       <header className="masthead">
         <span className="masthead__brand display">Football games</span>
+        {process.env.NODE_ENV === 'development' ? <Stub /> : null}
       </header>
       <main className="hub__main">
         <Board status={status} />
@@ -94,6 +97,17 @@ function Tile({ game: g, status, size, play }: { game: GameCard; status: Status;
       </span>
       {play ? <span className="lobby-play hub__play">Play</span> : null}
     </a>
+  );
+}
+
+/** Draft (dev only): the ticket strip's stub, today's date. */
+function Stub() {
+  const d = new Date();
+  return (
+    <span className="masthead__stub display" suppressHydrationWarning>
+      <small>{d.toLocaleDateString('en-GB', { weekday: 'short' })}</small>
+      {d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+    </span>
   );
 }
 

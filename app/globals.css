@@ -78,12 +78,12 @@
 }
 
 * { box-sizing: border-box; }
+/* The page colour is on <html> only: a body background would paint over the
+   table-top glyphs (`.table`, z-index -1), which sit between the two. */
+html { background-color: var(--page); }
 html, body {
   margin: 0;
   padding: 0;
-  background-color: var(--page);
-  background-image: radial-gradient(circle at 1px 1px, rgba(20, 18, 16, 0.075) 1px, transparent 1.5px);
-  background-size: 18px 18px;
   color: var(--ink);
   font-family: var(--font-text), system-ui, sans-serif;
   font-size: 16px;
@@ -454,6 +454,18 @@ button { font-family: inherit; }
   filter: drop-shadow(0 1px 1px rgba(20, 18, 16, 0.25));
   pointer-events: none;
 }
+/* Clean cards (a draft, dev preview only for now: `.cards-clean` on an
+   ancestor): a player with a picture stands on a plain studio backdrop, with
+   no club ground, no seam and no club-coloured frame. A player with no
+   picture keeps the ground and the silhouette, and a club's own card (crest
+   on its colour) is not a sticker, so neither changes. */
+.cards-clean .sticker--shot .sticker__half,
+.cards-clean .sticker--shot .sticker__seam,
+.cards-clean .sticker--shot .sticker__photo::after { display: none; }
+.cards-clean .sticker--shot .sticker__photo {
+  background: radial-gradient(120% 90% at 50% 22%, #FFFFFF 0%, #EEEAE1 62%, #DDD8CB 100%);
+}
+.cards-clean .sticker--shot .sticker__photo--cover > img { inset: 0; width: 100%; height: 100%; }
 .sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 .sticker__plate {
   display: flex;
@@ -1018,6 +1030,120 @@ button { font-family: inherit; }
    from above, so the art and the page share one light. The suggestion is
    the big tile and carries the page's only red button; the pub game runs
    along the bottom. No blurbs: each game's front page explains itself. */
+/* The table top, on every page: every game's glyph printed on the page
+   (public/hub/pattern.svg, from scripts/build-hub-pattern.ts), one fixed
+   layer behind everything (`<div className="table">` in app/layout.tsx). The
+   glyphs are one masked face; the layer's two drop-shadows make them stand
+   up, a shade below and a light edge above, so they show only up close.
+   Every value is a token so components/HubTuner.tsx can dial it in. */
+:root {
+  --glyph-face: #FAF8F3;
+  --glyph-shade: rgba(20, 18, 16, 0.24);
+  --glyph-light: rgba(255, 255, 255, 1);
+  --glyph-depth: 1.5px;
+  --glyph-soft: 0.75px;
+  --glyph-tile: 360px;
+}
+.table {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 var(--glyph-depth) var(--glyph-soft) var(--glyph-shade))
+    drop-shadow(0 calc(var(--glyph-depth) * -0.5) 0 var(--glyph-light));
+}
+.table::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glyph-face);
+  -webkit-mask: url(/hub/pattern.svg) 0 0 / var(--glyph-tile) var(--glyph-tile) repeat;
+  mask: url(/hub/pattern.svg) 0 0 / var(--glyph-tile) var(--glyph-tile) repeat;
+}
+html.table-off .table { display: none; }
+
+/* Dev only: the pattern's dials (components/HubTuner.tsx). */
+.tuner {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 50;
+  width: 250px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 8px 30px rgba(20, 18, 16, 0.25);
+  font-size: 13px;
+}
+.tuner[data-closed] > :not(.tuner__head) { display: none; }
+.tuner__head { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.tuner__modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 10px 0; }
+.tuner__modes button, .tuner__foot button { padding: 5px 0; border: 1px solid var(--rule-strong); border-radius: 6px; background: #fff; font-size: 12px; cursor: pointer; }
+.tuner__modes button[aria-pressed='true'] { background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 700; }
+.tuner label { display: grid; grid-template-columns: 82px 1fr 38px; align-items: center; gap: 6px; margin: 4px 0; }
+.tuner input[type='range'], .tuner select { width: 100%; }
+.tuner select { padding: 3px; font-size: 12px; }
+
+/* Dev only: three drafts for the hub's top strip, picked in the dials
+   (`data-mast` on .hub). The winner moves into .masthead; the rest go. */
+.masthead__stub { display: none; }
+.hub[data-mast='scarf'] .masthead {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  padding: 24px 16px 26px;
+  background:
+    linear-gradient(#F4EBDD 0 0) 0 8px / 100% 5px no-repeat,
+    linear-gradient(#F4EBDD 0 0) 0 calc(100% - 8px) / 100% 5px no-repeat,
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 4px),
+    var(--red);
+}
+.hub[data-mast='scarf'] .masthead::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 9px;
+  background: repeating-linear-gradient(90deg, var(--red-deep) 0 3px, transparent 3px 7px);
+}
+.hub[data-mast='scarf'] .masthead__brand { margin: 0; letter-spacing: 0.12em; font-size: 34px; }
+.hub[data-mast='sash'] .masthead {
+  padding: 16px 16px 18px;
+  background:
+    linear-gradient(112deg, transparent 0 62%, #fff 62% 62.6%, var(--red-deep) 62.6% 76%, #fff 76% 76.6%, transparent 76.6%),
+    var(--red);
+}
+.hub[data-mast='sash'] .masthead__brand {
+  font-size: 42px;
+  color: #FFF6E6;
+  text-shadow: 1px 1px 0 #7D1520, 2px 2px 0 #7D1520, 3px 3px 0 #7D1520, 4px 4px 0 #7D1520, 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.hub[data-mast='ticket'] .masthead {
+  width: calc(100% - 32px);
+  max-width: 928px;
+  margin: 16px auto 0;
+  padding: 14px 20px 14px 26px;
+  border-radius: 10px;
+  -webkit-mask: radial-gradient(circle at 0 50%, transparent 11px, #000 11.5px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 50%, transparent 11px, #000 11.5px) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle at 0 50%, transparent 11px, #000 11.5px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 50%, transparent 11px, #000 11.5px) right / 51% 100% no-repeat;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+.hub[data-mast='ticket'] .masthead__stub {
+  display: grid;
+  justify-items: center;
+  padding: 2px 6px 2px 20px;
+  border-left: 2px dashed rgba(255, 255, 255, 0.6);
+  font-size: 22px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.hub[data-mast='ticket'] .masthead__stub small { font-size: 12px; letter-spacing: 0.14em; opacity: 0.8; }
+.tuner input[type='color'] { width: 100%; height: 22px; padding: 0; border: 0; background: none; }
+.tuner output { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.tuner__foot { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 10px; }
 .hub__main { width: 100%; max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
 .hub__board {
   list-style: none;
@@ -1035,7 +1161,7 @@ button { font-family: inherit; }
 .hub__cell--feature, .hub__cell--big { grid-column: span 2; }
 
 .hub__tile {
-  --lit: color-mix(in srgb, var(--ground) 62%, #fff);
+  --ground-lit: color-mix(in srgb, var(--ground) 62%, #fff);
   --deep: color-mix(in srgb, var(--ground) 72%, #000);
   position: relative;
   flex: 1;
@@ -1054,7 +1180,7 @@ button { font-family: inherit; }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(110% 85% at 50% 28%, var(--lit) 0%, var(--ground) 52%, var(--deep) 100%);
+  background: radial-gradient(110% 85% at 50% 28%, var(--ground-lit) 0%, var(--ground) 52%, var(--deep) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 0 var(--deep), 0 16px 30px rgba(20, 18, 16, 0.2);
   transition: box-shadow var(--t-base) var(--ease-out);
 }
@@ -1287,6 +1413,40 @@ button { font-family: inherit; }
 .slab--decent .slab__glint, .slab--solid .slab__glint, .slab--sharp .slab__glint,
 .slab--elite .slab__glint { animation: slab-glint 9s ease-in-out infinite; }
 
+/* The sheen: a soft light on the case, in the grade's colour, unlit at rest.
+   Registered so keyframes and transitions can move it. It sits in the face,
+   so the well covers it and it reads round the edge of the case. */
+@property --lx { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+@property --ly { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
+@property --lit { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --rx { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+@property --ry { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+.slab__sheen {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--lx) var(--ly), var(--sheen, rgba(255, 255, 255, 0.7)) 0%, transparent 28%),
+    radial-gradient(circle at var(--lx) var(--ly), var(--sheen, rgba(255, 255, 255, 0.7)) 0%, transparent 62%);
+  mix-blend-mode: screen;
+  opacity: var(--lit);
+  pointer-events: none;
+}
+.slab--basic { --sheen: rgba(255, 196, 150, 0.6); }
+.slab--decent { --sheen: rgba(255, 255, 255, 0.9); }
+.slab--solid { --sheen: rgba(255, 234, 160, 0.85); }
+.slab--sharp { --sheen: rgba(150, 190, 255, 0.85); }
+.slab--elite { --sheen: rgba(240, 204, 120, 0.85); }
+/* Inside a .tilt the case turns with --rx/--ry; elsewhere it lies flat. */
+.tilt { perspective: 900px; }
+.tilt .slab { transform: rotateX(var(--rx)) rotateY(var(--ry)); }
+/* The light passing once across a card as it arrives (an opened card, the
+   deepest of a run's four). */
+@keyframes slab-pass {
+  0% { --lit: 0; --lx: -10%; --ly: 10%; }
+  40% { --lit: 1; }
+  100% { --lit: 0; --lx: 110%; --ly: 90%; }
+}
+
 /* Basic: bronze, matte and still. */
 .slab--basic .slab__face { background: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
 .slab--basic .slab__label { background: rgba(38, 21, 8, 0.5); color: #ecd2b6; }
@@ -1397,6 +1557,16 @@ button { font-family: inherit; }
 .card-detail__copy { display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; line-height: 1.5; color: var(--soft); min-width: 0; }
 .card-detail__copy p { margin: 0; }
 .card-detail__copy a { color: var(--ink); font-weight: 600; }
+/* The opened card: it arrives with one pass of light, then turns towards the
+   pointer (Collection.tsx), and eases back flat when let go. */
+.card-detail__tilt { touch-action: none; cursor: grab; }
+.card-detail__tilt.is-held { cursor: grabbing; }
+.card-detail__tilt .slab {
+  animation: slab-pass 900ms 120ms var(--ease-in-out) backwards;
+  transition: --rx 420ms var(--ease-out), --ry 420ms var(--ease-out), --lx 420ms var(--ease-out), --ly 420ms var(--ease-out), --lit 420ms var(--ease-out);
+}
+.card-detail__tilt.is-held .slab { transition: none; }
+@media (prefers-reduced-motion: reduce) { .card-detail__tilt .slab { animation: none; transition: none; } }
 .card-detail__grade { padding-top: 10px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
 
 /* ── THE REVEAL ON A DEEP CUTS BOARD ───────────────────────────────── */
@@ -1585,7 +1755,7 @@ button { font-family: inherit; }
 
 /* Today. The ground's light comes from the same place as the hub's. */
 .lobby-hero {
-  --lit: color-mix(in srgb, var(--ground) 76%, #fff);
+  --ground-lit: color-mix(in srgb, var(--ground) 76%, #fff);
   --deep: color-mix(in srgb, var(--ground) 62%, #000);
   position: relative;
   display: flex;
@@ -1603,7 +1773,7 @@ button { font-family: inherit; }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(110% 85% at 72% 16%, var(--lit) 0%, var(--ground) 55%, var(--deep) 100%);
+  background: radial-gradient(110% 85% at 72% 16%, var(--ground-lit) 0%, var(--ground) 55%, var(--deep) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 0 var(--deep), 0 18px 36px rgba(20, 18, 16, 0.22);
 }
 .lobby-hero__mini {

@@ -1,7 +1,8 @@
 # Chain — state of play
 
 **Updated:** 2026-10-15. Read this first in a new session; it is the shortest
-path back to full context. The design is in
+path back to full context. **The site-wide polish plan (what's done, what waits
+on Jonno, the big decisions in order) is `docs/roadmap.md`: read it next.** The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
 ## Games
@@ -405,7 +406,7 @@ sit under `app/`. Two to four players, pass the phone. Design and rules:
 |---|---|
 | `games/rondo/lib/rules.ts` | `judgePass`: the rule, pure. The dead-end check is the bust. |
 | `games/rondo/lib/match.ts` | The match reducer: bibs, turn order, the loser kicks off. |
-| `games/rondo/server.ts` | Club index over the pool, the deal (288 starters at fame ≥ 60), the judged pass. |
+| `games/rondo/server.ts` | Club index over the pool, the deal (193 starters: fame ≥ 60 and known to a 16-26 audience, `audienceKnows`), the judged pass. |
 | `app/rondo/page.tsx`, `app/rondo/play/page.tsx`, `app/api/rondo/{deal,pass}/route.ts` | The routes: thin, they import from `games/rondo/`. |
 | `games/rondo/components/` | `Lobby.tsx` (the front page, holds Setup), Scoreboard, BallView, PassBox, LossCard, and `Rondo.tsx` holding the match. |
 | `games/rondo/lib/store.ts` | The phone's memory, shared by both pages: `rondo.match.v1`, `rondo.names.v1`. |

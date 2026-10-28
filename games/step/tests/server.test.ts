@@ -8,7 +8,7 @@ import config from '../../../next.config';
 
 const days = JSON.parse(readFileSync('games/step/data/days.json', 'utf8')) as StoredDay[];
 const pool = JSON.parse(readFileSync('data/pool.json', 'utf8')) as Player[];
-const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')));
+const world = buildWorld(pool, JSON.parse(readFileSync('data/player-views.json', 'utf8')), JSON.parse(readFileSync('games/step/data/ruler.json', 'utf8')).year);
 
 describe('playable', () => {
   const now = new Date(`${EPOCH}T23:00:00Z`);
@@ -40,12 +40,12 @@ describe('the committed schedule', () => {
 
   it('is traced into the serverless build, or every request is an ENOENT', () => {
     expect(config.outputFileTracingIncludes?.['/**']).toContain('./games/step/data/days.json');
-    expect(config.outputFileTracingIncludes?.['/**']).toContain('./games/step/data/bar.json');
+    expect(config.outputFileTracingIncludes?.['/**']).toContain('./games/step/data/ruler.json');
     expect(config.outputFileTracingIncludes?.['/**']).toContain('./data/player-views.json');
   });
 
-  it('the absolute bar is current for the pool (npm run step:days rewrites it)', () => {
-    expect(JSON.parse(readFileSync('games/step/data/bar.json', 'utf8'))).toEqual(world.bar);
+  it('the ruler is current for the pool and the year (npm run step:days rewrites it)', () => {
+    expect(JSON.parse(readFileSync('games/step/data/ruler.json', 'utf8'))).toEqual(world.ruler);
   });
 });
 

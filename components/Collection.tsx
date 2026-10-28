@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Mark } from './Chain';
 import MastNav from './MastNav';
 import Slab, { GradeChip } from './Slab';
+import CardTilt from './CardTilt';
 import type { Ground } from './Sticker';
 import { clubColour } from '../src/lib/club-colours';
 import { GRADES, GRADE_LINE, GRADE_WORD, type Grade } from '../src/lib/chain/grade';
@@ -124,7 +125,9 @@ export default function Collection() {
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
-            <Slab grade={open.grade} player={open} image={open.image} ground={groundOf(open)} size="lg" />
+            <CardTilt>
+              <Slab grade={open.grade} player={open} image={open.image} ground={groundOf(open)} size="lg" />
+            </CardTilt>
             <div className="card-detail__copy">
               <h2 className="key__head display">{open.name}</h2>
               <p>Found on <a href={open.source?.href ?? `/play/${open.board}`}>{open.source?.label ?? `Deep Cuts ${open.board}`}</a>, {longDate(open.date)}.</p>
