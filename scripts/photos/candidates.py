@@ -158,7 +158,10 @@ for p in players:
             img = cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR) if raw else None
             if img is None:
                 continue
-            gate, feats = judge(img)
+            try:
+                gate, feats = judge(img)
+            except cv2.error:   # out of memory while the machine is busy: skip this photo, keep the run alive
+                continue
             (folder / f'{n}.jpg').write_bytes(raw)
             c = {'file': f, 'p18': f == p18, 'year': year[f], 'local': f"cand/{p['id']}/{n}.jpg", 'gate': gate}
             if feats:
