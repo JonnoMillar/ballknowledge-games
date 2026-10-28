@@ -2156,9 +2156,11 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 :is(.grounds--house, .grounds--grade, .grounds--stadium) .sticker--shot :is(.sticker__half, .sticker__seam) { display: none; }
 :is(.grounds--house, .grounds--grade, .grounds--stadium) .sticker--shot .sticker__photo::after { border: 0; opacity: 1; z-index: 0; }
 
-/* House paper: the sticker's own cream, the site's glyphs printed faintly on it. */
-.grounds--house .sticker--shot .sticker__photo { background: radial-gradient(110% 80% at 50% 30%, #FBF8F1 0%, #EFE9DC 100%); }
-.grounds--house .sticker--shot .sticker__photo::after {
+/* House paper: the sticker's own cream, the site's glyphs printed faintly on it.
+   Under grade material it is also the bare sticker before the reveal: no grade
+   yet, so no material (it would give the verdict away). */
+:is(.grounds--house .sticker--shot, .grounds--grade > li > .sticker--shot) .sticker__photo { background: radial-gradient(110% 80% at 50% 30%, #FBF8F1 0%, #EFE9DC 100%); }
+:is(.grounds--house .sticker--shot, .grounds--grade > li > .sticker--shot) .sticker__photo::after {
   background: rgba(20, 18, 16, 0.07);
   -webkit-mask: url(/hub/pattern.svg) 0 0 / 200px 200px repeat;
   mask: url(/hub/pattern.svg) 0 0 / 200px 200px repeat;
