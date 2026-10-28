@@ -2149,7 +2149,8 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 }
 .gprev__btn.is-on { background: var(--ink); color: #fff; box-shadow: none; }
 .gprev__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 14px; justify-items: center; }
-.gprev__grid .slab--sm { --sticker-w: 124px; }
+.gprev__grid, .gprev__grid .slab--sm { --sticker-w: 124px; }
+.gprev__bar .gprev__gap { margin-left: 16px; }
 @media (min-width: 1100px) { .gprev__grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
 
 :is(.grounds--house, .grounds--grade, .grounds--stadium) .sticker--shot :is(.sticker__half, .sticker__seam) { display: none; }
