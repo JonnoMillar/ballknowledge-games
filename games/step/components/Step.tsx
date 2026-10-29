@@ -41,7 +41,7 @@ export default function Step() {
   }, []);
 
   return (
-    <div className="app step">
+    <div className="app step cards-grade">
       <header className="masthead">
         <Back href="/chain" label="Chain" />
         <a className="masthead__brand display" href="/step">

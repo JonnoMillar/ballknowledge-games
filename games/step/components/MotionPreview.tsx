@@ -20,7 +20,7 @@ type Pick = Grade | 'miss';
  * crests from the server, the real components, so what shows here is what
  * ships.
  */
-/** Drafts for what stands behind a player's photo (globals.css: `.cards-grade`, `.cards-clean`). */
+/** What stands behind a player's photo: Grade material is live (Step.tsx); the others are drafts (globals.css). */
 const CARD_STYLES = [['grade', 'Grade material'], ['clean', 'Clean cutout'], ['club', 'Club ground']] as const;
 type CardStyle = (typeof CARD_STYLES)[number][0];
 

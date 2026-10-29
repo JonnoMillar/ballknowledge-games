@@ -3256,5 +3256,113 @@
       "y": 5.8
     },
     "xg": 0.13
+  },
+  "u-700846": {
+    "scorer": "Mathys Tel",
+    "match": "Chelsea v Tottenham",
+    "date": "2026-10-24",
+    "competition": "Premier League 2026/27",
+    "line": "A shot after a dribble, in the 86th minute, to make it 0–2.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31255,
+      "shotId": "700846"
+    },
+    "at": {
+      "x": 27.7,
+      "y": 27.3
+    },
+    "xg": 0.03
+  },
+  "u-700648": {
+    "scorer": "Oscar Bobb",
+    "match": "Coventry v Fulham",
+    "date": "2026-10-24",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a corner, in the 79th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31253,
+      "shotId": "700648"
+    },
+    "at": {
+      "x": 45.2,
+      "y": 8.7
+    },
+    "xg": 0.05
+  },
+  "u-700405": {
+    "scorer": "Nicolas Jackson",
+    "match": "Aston Villa v Manchester City",
+    "date": "2026-10-24",
+    "competition": "Premier League 2026/27",
+    "line": "A shot, in the 59th minute, to make it 2–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31251,
+      "shotId": "700405"
+    },
+    "at": {
+      "x": 36.9,
+      "y": 16.3
+    },
+    "xg": 0.08
+  },
+  "u-701149": {
+    "scorer": "Rayan",
+    "match": "Manchester United v Bournemouth",
+    "date": "2026-10-25",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a set piece, in the 37th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31256,
+      "shotId": "701149"
+    },
+    "at": {
+      "x": 24.9,
+      "y": 7.9
+    },
+    "xg": 0.18
+  },
+  "u-700340": {
+    "scorer": "Julio Enciso",
+    "match": "Ipswich v Nottingham Forest",
+    "date": "2026-10-23",
+    "competition": "Premier League 2026/27",
+    "line": "A shot after winning the ball back, in the 40th minute, to make it 1–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31250,
+      "shotId": "700340"
+    },
+    "at": {
+      "x": 30.5,
+      "y": 18.1
+    },
+    "xg": 0.27
+  },
+  "u-701305": {
+    "scorer": "William Osula",
+    "match": "Crystal Palace v Newcastle United",
+    "date": "2026-10-25",
+    "competition": "Premier League 2026/27",
+    "line": "A shot from a cross, in the 46th minute, to make it 0–1.",
+    "kind": "recent",
+    "source": {
+      "from": "understat",
+      "matchId": 31257,
+      "shotId": "701305"
+    },
+    "at": {
+      "x": 36.6,
+      "y": 6
+    },
+    "xg": 0.51
   }
 }
