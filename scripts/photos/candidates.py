@@ -52,18 +52,31 @@ def members(cat, kind):
     j = api(action='query', list='categorymembers', cmtype=kind, cmlimit=200, cmtitle=f'Category:{cat}')
     return [m['title'] for m in j.get('query', {}).get('categorymembers', [])]
 
+SKIP_SUB = re.compile(r'video|audio|signature|autograph|logo|kit|shirt|jersey|card|panini|trading|statue|wax|mural|fans?\b|stadium|stamp|coin|graffiti|caricature', re.I)
+
 def files_for(cat, span):
-    """{file: year of the subcategory it was found in, or None}: the player's own category plus the
-    year subcategories inside the career. A year subcategory dates a scan that has no EXIF."""
+    """{file: year of the subcategory it was found in, or None}: the player's own category and its
+    subcategories two levels down (up to 30; Commons files a player's photos under "playing for X",
+    "with Y", by year...). A year in a subcategory's name dates a scan that has no EXIF, and a year
+    outside the career drops the subcategory."""
     found = {f: None for f in members(cat, 'file')}
-    subs = members(cat, 'subcat')
-    for s in [x for x in subs if re.search('by year', x, re.I)]:
-        subs += members(s.removeprefix('Category:'), 'subcat')
-    for s in subs:
-        y = re.search(r'\b(19|20)\d\d\b', s)
-        if y and span[0] <= int(y.group()) <= span[1] + 1:
-            for f in members(s.removeprefix('Category:'), 'file'):
-                found.setdefault(f, int(y.group()))
+    frontier, seen = [cat], {cat}
+    for _ in range(2):
+        nxt = []
+        for c in frontier:
+            for s in members(c, 'subcat'):
+                name = s.removeprefix('Category:')
+                if name in seen or len(seen) > 30 or (SKIP_SUB.search(name) and not re.search('by year', name, re.I)):
+                    continue
+                seen.add(name)
+                y = re.search(r'\b(19|20)\d\d\b', name)
+                year = int(y.group()) if y else None
+                if year and not span[0] <= year <= span[1] + 1:
+                    continue
+                for f in members(name, 'file'):
+                    found.setdefault(f, year)
+                nxt.append(name)
+        frontier = nxt
     return {f: y for f, y in found.items() if re.search(r'\.(jpe?g|png)$', f, re.I)}
 
 def search(name, surname):
@@ -95,7 +108,8 @@ def judge(img):
     faces = sorted(faces, key=lambda f: -f[3])
     r = faces[0]
     x, y, fw, fh = (int(v) for v in r[:4])
-    if len(faces) > 1 and faces[1][3] > 0.5 * fh:
+    second = faces[1][3] / fh if len(faces) > 1 else 0.0
+    if second > 0.85:   # a true two-shot; a neighbour behind him is a score penalty and a cutout check
         return 'two people', None
     if fh < MIN_FACE:
         return f'face {fh}px, too small', None
@@ -109,7 +123,7 @@ def judge(img):
     f = {'face': fh, 'share': round(fh / h, 2), 'sharp': sharp, 'room': round(room, 1), 'box': [x, y, fw, fh],
          'yaw': round(float((nose[0] - (re_[0] + le[0]) / 2) / ed), 2),
          'roll': round(float(np.degrees(np.arctan2(le[1] - re_[1], le[0] - re_[0]))), 1),
-         'cx': round((x + fw / 2) / w, 2)}
+         'cx': round((x + fw / 2) / w, 2), 'second': round(float(second), 2)}
     if sharp < rank.MIN_SHARP:
         return f'face sharpness {sharp}, soft', f
     return None, f
@@ -132,7 +146,9 @@ for p in players:
     surname = fold(p['name'].split()[-1])
 
     def pick_era(deep):
-        names = list(found) if deep else [f for f in found if surname in fold(f)]
+        # Files found by category need no surname in the name (match photos rarely have one); named
+        # files go first, and rank.py scores the unnamed down.
+        names = sorted(found, key=lambda f: surname not in fold(f))
         files = names[:MAX_FILES * 2]
         if deep:   # no surname in the filename needed, and the name search adds files outside the category
             files += [f for f in search(p['name'], surname) if f not in files]
@@ -144,7 +160,11 @@ for p in players:
         for f in files:
             m = re.search(r'(?<!\d)(19[5-9]\d|20[0-3]\d)(?!\d)', f)
             year[f] = meta.get(f, {}).get('exif') or found.get(f) or (int(m.group()) if m else None)
-        era = [f for f in files if year[f] and span[0] <= year[f] <= span[1] + 1 and meta.get(f, {}).get('thumb')][:MAX_FILES]
+        # Undated files count for anyone who played into the 2010s (Commons is mostly recent). The deep
+        # pass also takes photos up to 30 years after the career: a suit or a studio shot is caught by
+        # the cutout checks, and for a retired legend that is often all Commons has.
+        late = span[1] + (30 if deep else 1)
+        era = [f for f in files if meta.get(f, {}).get('thumb') and (span[0] <= year[f] <= late if year[f] else span[1] >= 2012)][:MAX_FILES]
         return files, meta, year, era
 
     files, meta, year, era = pick_era(False)
@@ -163,7 +183,7 @@ for p in players:
             except cv2.error:   # out of memory while the machine is busy: skip this photo, keep the run alive
                 continue
             (folder / f'{n}.jpg').write_bytes(raw)
-            c = {'file': f, 'p18': f == p18, 'year': year[f], 'local': f"cand/{p['id']}/{n}.jpg", 'gate': gate}
+            c = {'file': f, 'p18': f == p18, 'year': year[f], 'named': surname in fold(f), 'local': f"cand/{p['id']}/{n}.jpg", 'gate': gate}
             if feats:
                 c.update(feats)
                 c['why'] = gate or f"face {feats['face']}px, {round(feats['share'] * 100)}% of height, sharpness {feats['sharp']}"

@@ -56,9 +56,12 @@ def score(f, prime):
     x = dict(face=min(f['face'], FACE_CAP) / FACE_CAP,
              share=min(f['share'], 0.35) / 0.35,
              p18=float(f['p18']),
-             dy=min(abs(f['year'] - prime), 12) / 12 if prime else 0,
+             dy=min(abs(f['year'] - prime), 12) / 12 if prime and f.get('year') else 0.5 if prime else 0,   # undated: middling
              yaw=abs(f['yaw']), roll=abs(f['roll']) / 10, cx=abs(f['cx'] - 0.5) * 2,
              sharp=min(math.log(f['sharp'] / MIN_SHARP), 4))
     # A photo that ends near the chin cannot become a cutout without floating: score it down.
     low_room = 0.6 if f.get('room', 9) < 2.4 else 1.0
-    return low_room * math.exp(sum(W[k] * v for k, v in x.items()))
+    # Photos found by category alone (no surname in the file name) and a second person in the frame
+    # are riskier, not impossible: score them down and let the cutout checks (checks.py) catch the bad ones.
+    risk = (0.85 if f.get('named') is False else 1.0) * (0.7 if f.get('second', 0) > 0.5 else 1.0)
+    return low_room * risk * math.exp(sum(W[k] * v for k, v in x.items()))

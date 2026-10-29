@@ -9,7 +9,8 @@ where `photo` is always null now: a player with no cutout gets the kit card, nev
 Every finished crop goes through checks.py (CLIP "footballer in a shirt", other people or a limb
 beside him, a second face, and the Commons description); a crop that fails is dropped, the next
 candidate tried, and the reason kept in `rejected`. `bad/<id>.json` lists files an earlier pass
-rejected (recheck.py), which are skipped.
+rejected (recheck.py, redo_marked.py), which are skipped. Players in `marked.json` (Jonno marked their
+photo wrong) get three alternatives instead of one.
 
 The crop (docs/photo-pipeline.md, decision 3): square, head about a third of the frame, starting
 0.55 face heights above the face; the frame's bottom is pulled up to where the body still fills a
@@ -29,7 +30,7 @@ D = Path(sys.argv[1])
 OUT = D / 'out'
 OUT.mkdir(exist_ok=True)
 SIDE = 440        # px: 2.7x the widest sticker (164 px)
-MIN_HEADS = 2.3
+MIN_HEADS = 2.0
 TRIES = 8
 args = [a for a in sys.argv[2:] if not a.startswith('--')]
 ALTS = int(sys.argv[sys.argv.index('--alts') + 1]) if '--alts' in sys.argv else 1
@@ -69,6 +70,7 @@ def crop(cut: Image.Image, box):
     left = int(min(max(cx - side / 2, 0), W - side))
     return cut.crop((left, top, left + side, top + side)).resize((SIDE, SIDE), Image.LANCZOS)
 
+marked = set(json.loads((D / 'marked.json').read_text(encoding='utf8'))) if (D / 'marked.json').exists() else set()   # redo_marked.py
 players = json.loads((D / (args[0] if args else 'players.json')).read_text(encoding='utf8'))
 if len(args) > 1:
     i, n = (int(v) for v in args[1].split('/'))
@@ -92,7 +94,7 @@ for p in players:
     for c in cands:
         if c['file'] in skip:
             continue
-        if len(results) >= ALTS or tried >= TRIES:
+        if len(results) >= (3 if p['id'] in marked else ALTS) or tried >= TRIES:
             break
         if c['room'] < MIN_HEADS:   # cheap check: the photo ends too close to the face to fill the frame
             continue

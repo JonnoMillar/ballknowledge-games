@@ -322,3 +322,23 @@ grade's material (light on sapphire and onyx), with the club crest top-right whe
 - Next: for every id in `wrong`/`flagged`, cut three alternatives (`cutout.py --alts 3`, a way to
   redo a finished player is still to be written), a second page to pick one or the kit card, then
   `choices.json` for `publish.py`.
+
+### Why Palmer, Trent and Lloris had no photo, and the fix (2026-10-29)
+
+Jonno: "no way players like Palmer, Trent, Lloris don't have a picture". In the top 500, 45 of the 256
+done had ended on the kit card. Causes, in order of weight: (1) the search read only files with the
+surname in the file name from the player's own category and its year-named subcategories, so
+Trent had 6 candidate files (now 37) and Lloris 14 (now 32); (2) "two people" rejected any photo with
+a second face over half the main one's size (Lloris: 8 of 14); (3) in-era only: managers and old
+legends have no photos from their playing years on Commons; (4) the crop floor of 2.3 face heights.
+Changes: subcategories two levels down (up to 30; skips video, kit, cards, statues, fans...), no
+surname needed in the file name (unnamed files score x0.85), the two-person gate only for a second
+face over 0.85 of the main one's height (a neighbour over 0.5 scores x0.7; the cutout checks catch
+leftovers), undated files allowed for anyone who played into the 2010s, the deep pass takes photos up
+to 30 years after the career (CLIP rejects suits), and the crop floor is 2.0 face heights (the face
+fills a bit more of the frame). The 55 players who had ended on the kit card were redone. On a test of
+three: Trent 4 -> 11 usable photos, Lloris 1 -> 8; Palmer stays at 1 (11 of his 43 files have no
+detectable face, 15 are two-shots, 8 are soft), cut at the new floor.
+
+`redo_marked.py` queues the players Jonno marked wrong: his rejected photo is banned (`bad/<id>.json`)
+and `cutout.py` cuts three alternatives for them (`marked.json`). The pick page for those is next.
