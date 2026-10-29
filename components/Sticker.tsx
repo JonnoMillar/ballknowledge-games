@@ -110,26 +110,20 @@ export function StickerFace({
   );
 }
 
-const isDark = (colour: string) => {
-  const m = /^#([0-9a-f]{6})$/i.exec(colour);
-  if (!m) return false;
-  const n = parseInt(m[1]!, 16);
-  return (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255 < 0.3;
-};
-
 /**
- * The kit card, for a player with no good photo: one real cutout, blacked out
- * (light on a dark ground), on the ground the sticker already wears. The club
- * crest sits small in the top-right corner on a white disc, and only on a
- * solid live ground: a pick's ground is neutral until the seal, and a crest
- * there would name a club before the board has judged it.
+ * The kit card, for a player with no good photo: an anonymous head and
+ * shoulders, framed like a real cutout (face in the same box, body off the
+ * bottom edge), on whatever the sticker stands on: grey, or the grade's
+ * material once a case seals it. The club crest sits small in the top-right
+ * corner on a white disc, and only on a solid live ground: a pick's ground is
+ * neutral until the seal, and a crest there would name a club before the board
+ * has judged it.
  */
 export function KitCard({ club, ground }: { club?: string; ground: Ground }) {
   const crest = club && ground.liveA && ground.liveB && ground.a === ground.b;
-  const fig = isDark(ground.a) ? 'rgba(255,255,255,0.82)' : 'rgba(20,18,16,0.82)';
   return (
     <>
-      <span className="sticker__kit" style={{ '--fig': fig } as React.CSSProperties} aria-hidden />
+      <span className="sticker__kit" aria-hidden />
       {crest ? <img className="sticker__crest" src={crestPath(club)} alt="" draggable={false} /> : null}
     </>
   );
