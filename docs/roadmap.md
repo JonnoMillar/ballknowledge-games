@@ -31,8 +31,12 @@ careers; pick, test and grade with recent players. Applies to every item below.
 ## In progress
 - Player photos: docs/photo-pipeline.md. Round 2 done; phase 2 (cutouts for
   893 players, kit card, credits) runs on branch `claude/photo-pipeline-1d882c`
-  in its own session, not merged. Next gate: Jonno's approval round on the
-  ~395 fame-60+ cutouts, then merge.
+  in its own session, not merged. Rescoped 2026-10-29 (niche cards are the
+  prize): every pool player with a usable photo (~9,000), most viewed first;
+  Jonno checks the top 500, the rest ship on the ranking with extra automatic
+  rejects and a dev-only "wrong photo" flag. Grade material behind every
+  player (grey before a grade), no club-colour ground; kit card for no photo,
+  with a new silhouette (his pick from options).
 
 ## Needs Jonno, small
 - Odd Man Out solo mode (the model picks the odd man out; daily + archive):
