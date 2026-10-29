@@ -68,6 +68,7 @@ export default function Lobby({ demo }: { demo: DemoBall }) {
         </section>
 
         <How demo={demo} />
+        <Careful stuck={demo.stuck} />
       </main>
     </div>
   );
@@ -81,8 +82,47 @@ export default function Lobby({ demo }: { demo: DemoBall }) {
 const RULES: HowRule[] = [
   { text: 'Name a player who shared a club with the one on the ball.', frames: [3200] },
   { text: 'A club that links two players can’t be used again.', frames: [3600] },
-  { text: 'Can’t name anyone, or name someone with no club left to pass on from? That’s a strike. Three and you’re out.', frames: [3400] },
+  { text: 'Can’t name anyone? That’s a strike. Three and you’re out.', frames: [3400] },
 ];
+
+/**
+ * The one thing the rules don't make obvious: a player with a single club is
+ * a dead end the moment that club burns. Shown as the pass that does it, the
+ * last frame of a ball: Rice, Arsenal crossed out, Saka greyed, a bib.
+ */
+function Careful({ stuck }: { stuck: DemoBall['stuck'] }) {
+  const [rice, saka] = stuck.players;
+  const face = (p: typeof rice) => (
+    <StickerFace player={p!} image={p!.image} ground={solid(p!.ground)} className="sticker--still" />
+  );
+  return (
+    <section className="lobby-card lobby__wide careful vt">
+      <h2 className="lobby-tag lobby-tag--paper">Watch out</h2>
+      <div className="careful__body">
+        <div className="careful__stage" aria-hidden>
+          <div className="rondo-demo">
+            <div className="rondo-demo__row">
+              <span className="rondo-demo__p">{face(rice)}</span>
+              <span className="rondo-demo__link">
+                <ClubBadge clubId={stuck.club.id} club={stuck.club.club} size={26} />
+              </span>
+              <span className="rondo-demo__p careful__stuck">{face(saka)}</span>
+            </div>
+            <Bib earned size={22} />
+          </div>
+        </div>
+        <div className="careful__text">
+          <h3 className="careful__head display">Don’t name a one-club player.</h3>
+          <p>
+            <b>{rice!.name}</b> to <b>{saka!.name}</b> goes through Arsenal. But Saka has only ever played for Arsenal,
+            and Arsenal is now burnt, so he has nobody to pass to. That’s a dead end, and the strike is yours.
+          </p>
+          <p className="careful__ask">Before you name someone, ask where else they’ve played.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function How({ demo }: { demo: DemoBall }) {
   const [a, b, c] = demo.players;

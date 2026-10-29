@@ -298,3 +298,22 @@
 .lost__tally { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .lost__tally li { display: flex; justify-content: space-between; align-items: center; font-size: 16px; text-transform: uppercase; letter-spacing: 0.02em; }
 .lost__tally-bibs { display: inline-flex; gap: 3px; }
+
+/* Watch out: the one-club dead end, as the pass that does it. Saka greyed
+   (no shake on a miss), Arsenal crossed out by the demo's own resting style. */
+.careful { container-type: inline-size; }
+.careful__body { display: grid; gap: 18px; align-items: center; }
+.careful__stage {
+  display: grid; place-items: center; min-height: 200px; padding: 16px 12px; border-radius: 18px;
+  background: var(--page); container-type: inline-size;
+}
+.careful__stuck .sticker { filter: grayscale(1); opacity: 0.55; }
+.careful__text { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.careful__text p { margin: 0; font-size: 15px; line-height: 1.5; }
+.careful__head { margin: 0; font-size: clamp(24px, 6.4cqw, 32px); line-height: 1.05; }
+.careful__ask { font-weight: 700; }
+@container (min-width: 620px) {
+  .careful__body { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 32px; }
+  .careful__stage { min-height: 240px; }
+  .careful__text p { font-size: 16.5px; }
+}

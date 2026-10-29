@@ -91,11 +91,26 @@ async function carrierOf(p: Player): Promise<Carrier> {
  */
 const DEMO = { players: ['Q266613', 'Q11571', 'Q1912'], clubs: ['Q18656', 'Q8682'], grounds: ['Q18656', 'Q8682', 'Q8682'] } as const;
 
-export interface DemoBall { players: Carrier[]; clubs: { id: string; club: ClubView }[] }
+/**
+ * The warning card's pass: Declan Rice to Bukayo Saka through Arsenal. Saka
+ * has only ever played for Arsenal, so once it burns he has nobody to pass
+ * to: a dead end. Both stand on Arsenal's ground, as in the demo above.
+ */
+export const STUCK = { players: ['Q30007142', 'Q59306386'], club: 'Q9617' } as const;
+
+export interface DemoBall {
+  players: Carrier[];
+  clubs: { id: string; club: ClubView }[];
+  stuck: { players: Carrier[]; club: { id: string; club: ClubView } };
+}
 
 export async function demoBall(): Promise<DemoBall> {
   const { byId, clubs } = await loadRef();
   return {
+    stuck: {
+      players: await Promise.all(STUCK.players.map(async (id) => ({ ...await carrierOf(byId.get(id)!), ground: clubColour(STUCK.club) }))),
+      club: { id: STUCK.club, club: clubView(clubs[STUCK.club] ?? { name: STUCK.club }) },
+    },
     players: await Promise.all(DEMO.players.map(async (id, i) => ({ ...await carrierOf(byId.get(id)!), ground: clubColour(DEMO.grounds[i]!) }))),
     clubs: DEMO.clubs.map((id) => ({ id, club: clubView(clubs[id] ?? { name: id }) })),
   };
