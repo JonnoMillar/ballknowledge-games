@@ -106,18 +106,14 @@ function Careful({ stuck }: { stuck: DemoBall['stuck'] }) {
               <span className="rondo-demo__link">
                 <ClubBadge clubId={stuck.club.id} club={stuck.club.club} size={26} />
               </span>
-              <span className="rondo-demo__p careful__stuck">{face(saka)}</span>
+              <span className="rondo-demo__p careful__stuck">{face(saka)}<span className="careful__stamp display">Dead end</span></span>
             </div>
             <Bib earned size={22} />
           </div>
         </div>
         <div className="careful__text">
-          <h3 className="careful__head display">Don’t name a one-club player.</h3>
-          <p>
-            <b>{rice!.name}</b> to <b>{saka!.name}</b> goes through Arsenal. But Saka has only ever played for Arsenal,
-            and Arsenal is now burnt, so he has nobody to pass to. That’s a dead end, and the strike is yours.
-          </p>
-          <p className="careful__ask">Before you name someone, ask where else they’ve played.</p>
+          <h3 className="careful__head display">One club? Dead end.</h3>
+          <p><b>{rice!.name}</b> to <b>{saka!.name}</b> burns Arsenal. Saka has no other club. Strike.</p>
         </div>
       </div>
     </section>

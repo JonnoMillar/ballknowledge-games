@@ -299,21 +299,33 @@
 .lost__tally li { display: flex; justify-content: space-between; align-items: center; font-size: 16px; text-transform: uppercase; letter-spacing: 0.02em; }
 .lost__tally-bibs { display: inline-flex; gap: 3px; }
 
-/* Watch out: the one-club dead end, as the pass that does it. Saka greyed
-   (no shake on a miss), Arsenal crossed out by the demo's own resting style. */
-.careful { container-type: inline-size; }
+/* Watch out: the one-club dead end, as the pass that does it. Hazard stripes
+   (ink on paper, so lightness and shape carry it, not hue), Saka greyed under a
+   DEAD END stamp (no shake on a miss), Arsenal crossed out by the demo's own
+   resting style. */
+.careful { container-type: inline-size; position: relative; overflow: hidden; padding-top: 34px; }
+.careful::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px;
+  background: repeating-linear-gradient(-45deg, var(--ink) 0 10px, var(--bib) 10px 20px);
+}
+.careful .lobby-tag { color: var(--ink); font-weight: 800; }
 .careful__body { display: grid; gap: 18px; align-items: center; }
 .careful__stage {
   display: grid; place-items: center; min-height: 200px; padding: 16px 12px; border-radius: 18px;
   background: var(--page); container-type: inline-size;
 }
+.careful__stuck { position: relative; display: inline-flex; }
 .careful__stuck .sticker { filter: grayscale(1); opacity: 0.55; }
-.careful__text { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.careful__text p { margin: 0; font-size: 15px; line-height: 1.5; }
-.careful__head { margin: 0; font-size: clamp(24px, 6.4cqw, 32px); line-height: 1.05; }
-.careful__ask { font-weight: 700; }
+.careful__stamp {
+  position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%) rotate(-12deg);
+  padding: 2px 8px; border: 3px solid var(--bib-deep); border-radius: 6px; background: var(--card-b, #fff);
+  color: var(--bib-deep); font-size: 15px; line-height: 1.1; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap;
+}
+.careful__text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.careful__text p { margin: 0; font-size: 16px; line-height: 1.4; }
+.careful__head { margin: 0; font-size: clamp(34px, 9cqw, 52px); line-height: 0.95; text-transform: uppercase; }
 @container (min-width: 620px) {
   .careful__body { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 32px; }
   .careful__stage { min-height: 240px; }
-  .careful__text p { font-size: 16.5px; }
+  .careful__text p { font-size: 17px; }
 }
