@@ -10,7 +10,7 @@ import { BIBS_OUT, type Loss, type Side } from '../lib/match';
  * time.
  */
 export default function LossCard({
-  loss, players, clubs, over, winnerIndex, onNext, onRematch, onNewGame,
+  loss, players, clubs, over, winnerIndex, onNext, onMenu, onHub,
 }: {
   loss: Loss;
   players: Side[];
@@ -18,8 +18,8 @@ export default function LossCard({
   over: boolean;
   winnerIndex: number | null;
   onNext: () => void;
-  onRematch: () => void;
-  onNewGame: () => void;
+  onMenu: () => void;
+  onHub: () => void;
 }) {
   const loser = players[loss.by]!;
   const name = (c: string) => shortClubName(clubs[c]?.name ?? c);
@@ -83,8 +83,8 @@ export default function LossCard({
               ))}
             </ul>
             <div className="lost__actions">
-              <button type="button" className="lobby-play" onClick={onRematch}>Rematch</button>
-              <button type="button" className="lobby-quiet" onClick={onNewGame}>Change players</button>
+              <button type="button" className="lobby-play" onClick={onMenu}>Rondo menu</button>
+              <button type="button" className="lobby-quiet" onClick={onHub}>Main menu</button>
             </div>
           </div>
         ) : (

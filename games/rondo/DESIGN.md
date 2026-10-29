@@ -97,7 +97,7 @@ One column, phone first. Masthead; scoreboard (names, bibs, whose pass);
 the ball (trail, carrier sticker, burnt row); the pass box (whose turn, the
 clock ring, a search field, results, the confirm button, "I've got
 nothing"). A loss is a card over the ball with the reveal and "Next ball".
-Full time is the same card with the result and "Rematch".
+Full time is the same card with the result and two ways out: "Rondo menu" (the lobby, with the names and clock kept) and "Main menu" (the hub).
 
 ## Files
 
