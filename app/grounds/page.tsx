@@ -17,12 +17,7 @@ const CUTOUTS: [string, string][] = [
   ['Q16665941', 'Q9616'], ['Q17515', 'Q2641'], ['Q184586', 'Q8682'], ['Q178649', 'Q7156'],
 ];
 const KIT_CLUB = 'Q7156';
-const KIT_OPTIONS = [
-  { id: 'avg-hard', label: 'A. Average footballer, solid (made from 49 of our own front-facing cutouts)', url: '/kit/avg-hard.png' },
-  { id: 'avg-soft', label: 'B. Average footballer, soft edge', url: '/kit/avg-soft.png' },
-  { id: 'one', label: 'C. One real cutout blacked out (the most typical of the 49)', url: '/kit/one.png' },
-  { id: 'now', label: 'D. What it is now (Lewandowski 2018, blacked out)', url: '/kit-figure.png' },
-];
+const KIT_OPTIONS = [{ id: 'chosen', label: 'The kit card: one real cutout (Thiago Silva, most typical of 49 front-facing ones) blacked out. Jonno picked it, 2026-10-29', url: '/kit-figure.png' }];
 
 export default async function GroundsPage() {
   if (process.env.NODE_ENV !== 'development') notFound();

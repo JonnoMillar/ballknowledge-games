@@ -55,7 +55,7 @@ export async function creditsFor(letter: string): Promise<{ rows: CreditRow[]; c
 }
 
 /** The photo the kit card's figure (public/kit-figure.png) was cut from. */
-export const KIT_FIGURE_FILE = 'Robert Lewandowski 2018, JAP-POL (cropped).jpg';
+export const KIT_FIGURE_FILE = 'Thiago Silva (cropped).jpg';
 
 export async function kitFigureCredit(): Promise<(Credit & { file: string }) | null> {
   const credits = JSON.parse(await readFile('data/credits.json', 'utf8').catch(() => '{}')) as Record<string, Credit | null>;

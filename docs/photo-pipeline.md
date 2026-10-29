@@ -303,3 +303,10 @@ timed out twice. So the model stays, and the fix is memory, not a faster model: 
 plus one candidates process holds ~1 GB free; a second cutout process pushed free RAM to ~370 MB
 (crash territory), so run one unless the other apps are closed. At ~15-20 s a cutout, 12,000 players
 is ~60 hours of an idle machine; the top 2,000 by views (~81% of what players see) is ~10 hours.
+
+### Kit card figure: decided (2026-10-29)
+
+Jonno picked option C: one real cutout blacked out, the most typical of the 49 front-facing ones
+(`scripts/photos/kit_figure.py`): Thiago Silva (cropped).jpg, Commons, credited on /credits
+(`KIT_FIGURE_FILE`). It replaces the Lewandowski figure in `public/kit-figure.png`, on grey or on the
+grade's material (light on sapphire and onyx), with the club crest top-right when the ground is live.

@@ -30,7 +30,7 @@ for (const id of Object.keys(portraitUrls(portraits))) {
   if (file) files.add(file);
 }
 // The kit card's figure (public/kit-figure.png) is a cutout of this photo.
-files.add('Robert Lewandowski 2018, JAP-POL (cropped).jpg');
+files.add('Thiago Silva (cropped).jpg');
 console.log(`${files.size} Commons files on public pages`);
 
 /** Commons puts markup in Artist; the page wants the words. */
