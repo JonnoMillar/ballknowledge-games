@@ -453,7 +453,7 @@ export function Summary({ day, run, fresh = false }: { day: StepDay; run: Run; f
           const s = day.steps[i]!;
           return (
             <li key={i} className="step-end__deepitem">
-              <StickerFace player={e} image={e.image ?? undefined} ground={cardGround(e, s.playerFirst)} className="sticker--still" />
+              <span className="step-end__name">{plateName(e.id, e.name)}</span>
               <span className="step-end__tag">
                 {v?.pick.id === e.id ? 'You found it' : v?.grade === 'elite' ? 'Yours went deeper' : `${plateName(s.player.id, s.player.name)} · ${shortClubName(s.club.club.name)}`}
               </span>
