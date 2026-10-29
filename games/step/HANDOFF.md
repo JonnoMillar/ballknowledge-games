@@ -11,6 +11,21 @@ reverted the British grade words (keep Basic … Elite) and asked for the merge
 to `main`, same day. He took every recommendation in the spec: 4 steps, five grades site-wide, one
 shot, run = average rounded down, automatic daily.
 
+## Card ground: grade material (2026-10-28, live)
+
+Jonno picked it on `/grounds` (photo-pipeline branch, dev only). A player
+with a picture stands on grey, with no club ground, seam or club-coloured
+frame, until the verdict. At the develop the case's own material comes in
+from the corners (it rides the ground's two halves, where the club colours
+used to) and stays behind the player. Givens, a pick not yet judged and a
+miss stay grey, so the ground never names a grade early. Kit cards and
+club cards keep their club colour. CSS: `.cards-grade` in `app/globals.css`,
+on the root of `Step.tsx` and `Archive.tsx`; `/step/preview` has Grade
+material (default) / Clean cutout / Club ground. With Commons photos (the
+public build) the material shows as the 7 px band round the photo; behind
+the player only once the photo pipeline's cutouts ship. Chain still uses
+club grounds (its ground is the link verdict).
+
 ## Card motion (2026-10-25, merged to `main`, live)
 
 Jonno liked a Claude Opus 5.5 card animation (Instagram, ashokreddyai,

@@ -20,9 +20,13 @@ type Pick = Grade | 'miss';
  * crests from the server, the real components, so what shows here is what
  * ships.
  */
+/** What stands behind a player's photo: Grade material is live (Step.tsx); the others are drafts (globals.css). */
+const CARD_STYLES = [['grade', 'Grade material'], ['clean', 'Clean cutout'], ['club', 'Club ground']] as const;
+type CardStyle = (typeof CARD_STYLES)[number][0];
+
 export default function MotionPreview({ players, club, deep }: { players: DemoSticker[]; club: DemoClub; deep: (StepCard | null)[] }) {
   const [view, setView] = useState<View>('reveal');
-  const [clean, setClean] = useState(true);
+  const [style, setStyle] = useState<CardStyle>('grade');
   const [pick, setPick] = useState<Pick>('elite');
   const [take, setTake] = useState(0);
   const [scrub, setScrub] = useState<number | null>(null);
@@ -90,9 +94,9 @@ export default function MotionPreview({ players, club, deep }: { players: DemoSt
           ))}
         </div>
         <div className="mprev__group" role="group" aria-label="Card style">
-          {[true, false].map((c) => (
-            <button key={String(c)} type="button" className={`mprev__btn ${clean === c ? 'is-on' : ''}`} aria-pressed={clean === c} onClick={() => setClean(c)}>
-              {c ? 'Clean cutout' : 'Club ground'}
+          {CARD_STYLES.map(([c, label]) => (
+            <button key={c} type="button" className={`mprev__btn ${style === c ? 'is-on' : ''}`} aria-pressed={style === c} onClick={() => setStyle(c)}>
+              {label}
             </button>
           ))}
         </div>
@@ -106,7 +110,7 @@ export default function MotionPreview({ players, club, deep }: { players: DemoSt
         {view === 'open' ? <p className="mprev__note">Move over the card, or drag it on a phone.</p> : null}
       </aside>
 
-      <section className={`mprev__stage${clean ? ' cards-clean' : ''}`} ref={stage}>
+      <section className={`mprev__stage${style === 'club' ? '' : ` cards-${style}`}`} ref={stage}>
         {view === 'reveal' ? (
           <div className="mprev__game" key={`${pick}-${take}-${scrub === null}`}>
             <Track

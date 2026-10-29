@@ -438,6 +438,23 @@ button { font-family: inherit; }
   background: radial-gradient(120% 90% at 50% 22%, #FFFFFF 0%, #EEEAE1 62%, #DDD8CB 100%);
 }
 .cards-clean .sticker--shot .sticker__photo--cover > img { inset: 0; width: 100%; height: 100%; }
+/* Grade material (Steps, `.cards-grade` on its root): a player with a picture
+   stands on grey, with no club ground, seam or club-coloured frame, until
+   the verdict; then the case's own material rides the ground's two halves
+   in from the corners (the develop) and carries on behind the player,
+   darker towards the edges so the face stays the brightest thing. A bare
+   sticker (a given, a pick not judged yet, a miss) keeps the grey, so the
+   ground never names a grade early. A kit card (no picture) keeps its club
+   ground. */
+.cards-grade .slab--basic { --material: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
+.cards-grade .slab--decent { --material: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
+.cards-grade .slab--solid { --material: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
+.cards-grade .slab--sharp { --material: url('/grades/sharp.jpg') center / cover; }
+.cards-grade .slab--elite { --material: url('/grades/elite.jpg') center / cover; }
+.cards-grade .sticker--shot .sticker__seam,
+.cards-grade .sticker--shot:not(.slab .sticker) .sticker__half { display: none; }
+.cards-grade .sticker--shot .sticker__photo::after { border: 0; opacity: 1; z-index: 0; background: radial-gradient(90% 75% at 50% 32%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.32) 100%); }
+.cards-grade .slab .sticker--shot .sticker__half { background: var(--material) !important; }
 .sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 .sticker__plate {
   display: flex;

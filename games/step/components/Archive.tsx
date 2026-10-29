@@ -23,7 +23,7 @@ export default function Archive({ epoch }: { epoch: string }) {
   const days = today ? Array.from({ length: Math.max(0, dayNumber(today, epoch)) }, (_, i) => dateOfDay(i + 1, epoch)).reverse() : [];
 
   return (
-    <div className="app step">
+    <div className="app step cards-grade">
       <header className="masthead">
         <Back href="/chain" label="Chain" />
         <a className="masthead__brand display" href="/step">
