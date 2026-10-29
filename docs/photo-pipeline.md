@@ -281,3 +281,16 @@ edge check rejects him.
 `bad/<id>.json` tells `cutout.py` to skip that file. `clipcheck.py` is the batch version used to
 calibrate. The driver is now `.scratch/photo-all/drive.py` (one cutout process: rembg already uses
 every core; run `candidates.py` as 2 processes beside it).
+
+### Speed, and a crash (2026-10-29)
+
+Measured with the checks on: about 50 s a cutout (rembg birefnet-portrait on CPU plus CLIP and the
+Commons lookup), one process, so ~12,000 players would take ~170 hours, not 2-3 days. Options, in order:
+close other apps and run two cutout processes (RAM is the limit: ~2.8 GB a process with CLIP loaded);
+a lighter rembg model (`birefnet-general-lite`, `isnet-general-use`; not yet compared on quality, the
+benchmark is `.scratch/bench_models.py`); or cut the scope to the top N by views and kit-card the rest.
+DirectML on the RTX 4050 (`onnxruntime-directml`, installed to `.scratch/ortdml` only) failed with
+"not enough memory resources" on both adapters while the machine was at ~1 GB free; worth one more
+try on an idle machine. **Do not benchmark beside the running jobs:** doing so (four models loaded
+at once, on ~1 GB free) crashed the laptop. After a crash, validate `cand/*.json`, `out/*.json` and
+the webps (a half-written file), then restart; `candidates.py` and `cutout.py` skip finished players.
