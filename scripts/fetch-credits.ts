@@ -21,17 +21,13 @@ export interface Credit {
   licenceUrl?: string;
 }
 
-const images = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
 const portraits = JSON.parse(await readFile('data/portraits.json', 'utf8')) as Record<string, PortraitRecord>;
 
-const FILEPATH = 'Special:FilePath/';
 const files = new Set<string>();
-for (const [id, { url }] of Object.entries(portraitUrls(images, portraits))) {
-  // Our own cutouts name the Commons file they came from; a raw photo is in its URL.
-  const processed = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
-  const at = url.indexOf(FILEPATH);
-  if (processed) files.add(processed);
-  else if (at >= 0) files.add(decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!));
+for (const id of Object.keys(portraitUrls(portraits))) {
+  // Our own cutouts name the Commons file they came from.
+  const file = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
+  if (file) files.add(file);
 }
 // The kit card's figure (public/kit-figure.png) is a cutout of this photo.
 files.add('Robert Lewandowski 2018, JAP-POL (cropped).jpg');

@@ -29,12 +29,11 @@ let data: Promise<Data> | null = null;
 export function loadData(): Promise<Data> {
   data ??= (async () => {
     const players = JSON.parse(await readFile('data/pool.json', 'utf8')) as Player[];
-    const files = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
     const resolved = await readFile('data/portraits.json', 'utf8')
       .then((s) => JSON.parse(s) as Record<string, PortraitRecord>)
       .catch(() => ({}));
     const clubs = JSON.parse(await readFile('data/clubs.json', 'utf8')) as Record<string, ClubRecord>;
-    const images = portraitUrls(files, resolved, 200, process.env.NODE_ENV === 'development');
+    const images = portraitUrls(resolved, process.env.NODE_ENV === 'development');
     // Nobody is left with the grey silhouette: no photo means the kit card, in the player's signature club.
     for (const p of players) images[p.id] ??= kitCard(signatureClub(p));
     return { players, byId: new Map(players.map((p) => [p.id, p])), images, clubs };

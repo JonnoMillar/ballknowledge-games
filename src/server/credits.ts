@@ -12,7 +12,6 @@ export interface CreditRow {
 
 interface Credit { artist: string; licence: string; licenceUrl?: string }
 
-const FILEPATH = 'Special:FilePath/';
 
 /** A–Z by the name's first letter, accents folded; anything else under '#'. */
 export const letterOf = (name: string) => {
@@ -30,16 +29,13 @@ let rows: Promise<CreditRow[]> | null = null;
 function allRows(): Promise<CreditRow[]> {
   rows ??= (async () => {
     const { byId } = await loadData();
-    const images = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
     const portraits = JSON.parse(await readFile('data/portraits.json', 'utf8')) as Record<string, PortraitRecord>;
     const credits = JSON.parse(await readFile('data/credits.json', 'utf8').catch(() => '{}')) as Record<string, Credit | null>;
     const out: CreditRow[] = [];
-    for (const [id, { url }] of Object.entries(portraitUrls(images, portraits))) {
-      // Our own cutouts name their source file; a raw Commons photo is in its URL.
-      const processed = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
-      const at = url.indexOf(FILEPATH);
-      if (!processed && at < 0) continue;
-      const file = processed ?? decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!);
+    for (const id of Object.keys(portraitUrls(portraits))) {
+      // Our own cutouts name the Commons file they came from.
+      const file = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
+      if (!file) continue;
       const c = credits[file];
       const player = byId.get(id)?.name;
       if (!c || !player) continue;
