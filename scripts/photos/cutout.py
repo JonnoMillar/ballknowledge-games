@@ -4,18 +4,24 @@ Usage: python cutout.py <dir> [players.json] [part/of] [--alts N]
 Reads <dir>/cand/<id>.json (candidates.py). For each player tries candidates best first until N
 (default 1) give a cutout whose crop passes the floating rule; writes <dir>/out/<id>.<k>.webp
 (k = 0 best) and <dir>/out/<id>.json: {ok, results: [{file, k, score, year}]} or {ok: false, why, photo}
-where `photo` is the best gate-passing candidate to show uncut when no cutout works.
+where `photo` is always null now: a player with no cutout gets the kit card, never an uncut photo.
+
+Every finished crop goes through checks.py (CLIP "footballer in a shirt", other people or a limb
+beside him, a second face, and the Commons description); a crop that fails is dropped, the next
+candidate tried, and the reason kept in `rejected`. `bad/<id>.json` lists files an earlier pass
+rejected (recheck.py), which are skipped.
 
 The crop (docs/photo-pipeline.md, decision 3): square, head about a third of the frame, starting
 0.55 face heights above the face; the frame's bottom is pulled up to where the body still fills a
 quarter of its width, so the body runs off the bottom edge; kept inside the photo's sides; rejected
 below 2.3 face heights.
 """
-import json, sys, time
+import json, re, sys, time, urllib.parse, urllib.request
 from pathlib import Path
+import cv2
 import numpy as np
 sys.path.insert(0, str(Path(__file__).parent))
-import rank
+import rank, checks
 from PIL import Image
 from rembg import new_session, remove
 
@@ -30,6 +36,22 @@ ALTS = int(sys.argv[sys.argv.index('--alts') + 1]) if '--alts' in sys.argv else 
 if '--alts' in sys.argv:
     args = [a for a in args if a != str(ALTS)]
 session = new_session('birefnet-portrait')
+det = cv2.FaceDetectorYN.create(str(D.parent / 'models' / 'yunet.onnx'), '', (SIDE, SIDE), 0.6)
+clip = checks.Clip()
+UA = {'User-Agent': 'ChainFootballGame/0.1 (jonno@m1llar.com) photo-pipeline'}
+
+def commons_text(file):
+    """The file's description and categories as one string; '' if Commons does not answer."""
+    q = urllib.parse.urlencode(dict(action='query', format='json', titles=file, prop='categories|imageinfo', cllimit=60, iiprop='extmetadata'))
+    for a in range(3):
+        try:
+            with urllib.request.urlopen(urllib.request.Request('https://commons.wikimedia.org/w/api.php?' + q, headers=UA), timeout=30) as r:
+                pg = next(iter(json.loads(r.read())['query']['pages'].values()))
+            desc = (pg.get('imageinfo') or [{}])[0].get('extmetadata', {}).get('ImageDescription', {}).get('value', '')
+            return re.sub('<[^>]+>', ' ', desc) + ' ' + ' '.join(c['title'][9:] for c in pg.get('categories', []))
+        except Exception:
+            time.sleep(2 * (a + 1))
+    return ''
 
 def crop(cut: Image.Image, box):
     x, y, w, h = box
@@ -64,13 +86,21 @@ for p in players:
             s = rank.score(c, data['prime'])
             c['gate'], c['score'] = (None, round(s, 3)) if s is not None else ('profile or soft', 0)
     cands = sorted((c for c in data['cands'] if not c['gate']), key=lambda c: -c['score'])
-    results, tried = [], 0
+    bad_file = D / 'bad' / f"{p['id']}.json"
+    skip = set(json.loads(bad_file.read_text(encoding='utf8'))) if bad_file.exists() else set()
+    results, tried, rejected = [], 0, []
     for c in cands:
+        if c['file'] in skip:
+            continue
         if len(results) >= ALTS or tried >= TRIES:
             break
         if c['room'] < MIN_HEADS:   # cheap check: the photo ends too close to the face to fill the frame
             continue
         tried += 1
+        word = checks.bad_metadata(commons_text(c['file']))
+        if word:
+            rejected.append({'file': c['file'], 'why': f'description says {word}'})
+            continue
         im = Image.open(D / c['local']).convert('RGB')
         try:
             head = crop(remove(im, session=session), c['box'])
@@ -79,14 +109,17 @@ for p in players:
             continue
         if head is None:
             continue
+        why, measures = checks.crop_verdict(head, det, clip)
+        if why:
+            rejected.append({'file': c['file'], 'why': why, **measures})
+            continue
         k = len(results)
         head.save(OUT / f"{p['id']}.{k}.webp", 'WEBP', quality=82, method=6)
-        results.append({'file': c['file'], 'k': k, 'score': c['score'], 'year': c['year'], 'source': [im.width, im.height], 'face': c['face']})
+        results.append({'file': c['file'], 'k': k, 'score': c['score'], 'year': c['year'], 'source': [im.width, im.height], 'face': c['face'], **measures})
     if results:
-        status.write_text(json.dumps({'ok': True, 'results': results}))
+        status.write_text(json.dumps({'ok': True, 'results': results, 'rejected': rejected}))
         print(f"{p['name']}: {len(results)} cutout(s), best {results[0]['file']}", flush=True)
     else:
-        photo = next((c for c in sorted(cands, key=lambda c: -c['score'])), None)
         why = f'{tried} cut, none fit' if tried else ('no gate-passing candidate' if not cands else 'every candidate cut too near the face')
-        status.write_text(json.dumps({'ok': False, 'why': why, 'photo': photo['file'] if photo else None}))
+        status.write_text(json.dumps({'ok': False, 'why': why, 'photo': None, 'rejected': rejected}))
         print(f"{p['name']}: no cutout ({why})", flush=True)

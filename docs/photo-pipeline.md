@@ -228,3 +228,56 @@ Caveats to tell Jonno: processed files add roughly 15-25 KB each to the repo
 (`public/portraits/`); `fetch-portraits.ts` must not be rerun with `--recheck`
 over processed records; players outside the 893 still fall back to the unjudged
 `images.json` photo, else the kit card.
+
+## Rescope (2026-10-29): niche cards, grade material, a new kit card
+
+Jonno, through the hub session: "The name of the game is getting niche cards, so you probably
+want to see a picture of them. The kit card silhouette is a bad one. I don't like the coloured
+kit background, just put the grade material there as well." His choices, which replace the
+matching parts above:
+
+1. **Scope: every pool player with a usable photo** (about 9,000, not the 893). Work in order of
+   English Wikipedia views (`data/player-views.json`, most viewed first): the 893 picked on fame
+   cover ~48% of what players see by views, the top 2,000 by views ~81%. `scripts/photos/pick-all.ts`
+   writes the list (`.scratch/photo-all/players.json`; the old 893 are in `players-893.json`).
+   Candidates and cutouts are keyed by player id, so earlier work carries over.
+2. **Checking: top 500 by hand, the rest on the ranking.** He checks the 500 most viewed in a grid
+   (mark wrong, then pick from 3 alternatives or the kit card). Everyone else ships on the automatic
+   pick, plus automatic rejects (below), else the next candidate, else the kit card. A dev-only
+   "wrong photo" button on a card lets him flag any he meets while playing.
+3. **Background: no club colour anywhere.** The grade material goes behind every player (as Steps
+   does since a81efba); a card with no grade yet gets plain grey, the same as Steps before the verdict.
+   One rule site-wide. This replaces decision 2's "on the club's colour" and the kit card's club ground.
+4. **Kit card: redo the silhouette.** The blacked-out Lewandowski 2018 is out. Options go on the dev
+   preview page (`/grounds`), on grade material and on grey, for him to pick. The crest stays (from
+   `public/badges`, never drawn).
+5. **Long tail:** no usable photo means the kit card, not the old unchecked `images.json` photo.
+   `cutout.py` no longer keeps an uncut `photo` fallback either.
+
+### Automatic rejects (`scripts/photos/checks.py`)
+
+About 1 in 4 of a random sheet of done cutouts was wrong, in a few repeating ways. Each finished
+crop is now checked, a failing one is dropped and the next candidate tried (`rejected` in the
+player's `out/<id>.json` says why):
+
+- **CLIP ViT-B/32 zero-shot** (free, local; `Clip` in checks.py): probability that the crop is a
+  footballer in a shirt, against suit / casual clothes / mural / wax figure / podium / sign / manager
+  in a coat / cartoon prompts. Reject under 0.7. Catches suits, casual clothes, murals, podiums.
+- **Edge mass:** alpha in the outer 8% columns of the upper 45% of the frame over 0.05: another
+  person or a stray limb beside the head. **Second face** in the cutout over a quarter of the main one.
+- **Commons description and categories** with words that cannot be a match photo (mural, statue,
+  press conference, ceremony, interview...). Words that can ("visit", "conference") are left out.
+
+Calibrated on the 193 cutouts done by 2026-10-29: 27 rejected (14%). All 18 CLIP rejects in the
+sheet I looked at were genuinely wrong (Rashford's mural, Ronaldo at a podium, Romario, Crespo, Villa,
+Xabi Alonso, Rijkaard, Gullit, Drogba, Owen, Borissov the politician...); the edge check added Suarez,
+Bruno Fernandes, Shearer, Khedira, Hakimi, Depay, Xavi, Laudrup, Bonucci, Dzeko (the last two
+borderline, accepted). Not caught: Pogba and Van Dijk (a neighbour's sleeve or head at the frame's
+edge below the head level), so the top 500 still need his eyes. A "ghosted" matte (Shearer) is not
+a transparency problem: his alpha is solid; it is a washed-out source photo plus an arm, and the
+edge check rejects him.
+
+`recheck.py` applies the checks to cutouts made before they existed: failures move to `rej/` and
+`bad/<id>.json` tells `cutout.py` to skip that file. `clipcheck.py` is the batch version used to
+calibrate. The driver is now `.scratch/photo-all/drive.py` (one cutout process: rembg already uses
+every core; run `candidates.py` as 2 processes beside it).
