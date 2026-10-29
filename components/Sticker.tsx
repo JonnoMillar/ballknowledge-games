@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import type React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import type { Named } from '../src/lib/chain/client';
@@ -101,12 +102,34 @@ export function StickerFace({
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />
         <span className={`sticker__seam ${seam ? 'is-live' : ''}`} aria-hidden />
         {!image || image.fit === 'kit' ? <KitCard club={image?.club} ground={ground} /> : <img src={image.url} alt="" draggable={false} />}
+        {process.env.NODE_ENV === 'development' && image?.fit === 'box' ? <FlagPhoto id={player.id} /> : null}
       </div>
       <div className="sticker__plate">
         <span className={`sticker__name ${name.length > 10 ? 'sticker__name--long' : ''}`}>{name}</span>
         {index !== undefined ? <span className="sticker__no">{index}</span> : null}
       </div>
     </div>
+  );
+}
+
+/**
+ * Dev only: "Wrong photo", on hover over a card with one of our cutouts. Writes the player to
+ * .scratch/photo-all/marks.json (`flagged`) for the next check round (docs/photo-pipeline.md).
+ */
+function FlagPhoto({ id }: { id: string }) {
+  const [sent, setSent] = useState(false);
+  return (
+    <button
+      type="button"
+      className="sticker__flag"
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+        fetch('/api/photo-check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ flag: id }) }).then((r) => setSent(r.ok)).catch(() => {});
+      }}
+    >
+      {sent ? 'Flagged' : 'Wrong photo'}
+    </button>
   );
 }
 

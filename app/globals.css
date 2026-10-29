@@ -431,6 +431,9 @@ button { font-family: inherit; }
   object-position: 50% 100%;
   filter: drop-shadow(0 2px 3px rgba(20, 18, 16, 0.25));
 }
+/* Dev only: the "wrong photo" button (Sticker.tsx FlagPhoto), on hover. */
+.sticker__flag { display: none; position: absolute; z-index: 4; inset: 4px auto auto 4px; padding: 3px 7px; border: 0; border-radius: 3px; background: var(--ink); color: #fff; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.sticker:hover .sticker__flag, .sticker__flag:focus-visible { display: block; }
 /* The kit card: an anonymous figure on the ground (grey, or the grade's material). The figure
    is a mask (--kit-url, set by a preview to try another; /kit-figure.png is the one that ships). */
 .sticker__kit {
@@ -2175,3 +2178,17 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 .gprev__opt h2 { margin: 0; font-size: 15px; font-weight: 600; }
 .gprev__row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
 .gprev__row > li { --sticker-w: 124px; }
+
+/* ── DEV ONLY: /photo-check, marking the wrong cutouts ──────────────────── */
+.pc { display: flex; flex-direction: column; gap: 14px; padding: 16px; max-width: 1200px; margin: 0 auto; --sticker-w: 124px; }
+.pc__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; position: sticky; top: 0; z-index: 5; padding: 10px 0; background: var(--page); border-bottom: 1.5px solid var(--rule-strong); }
+.pc__group { display: flex; gap: 8px; margin-left: auto; }
+.pc__help { margin: 0; font-size: 14px; }
+.pc__h { margin: 12px 0 0; font-size: 16px; }
+.pc__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px 10px; justify-items: center; }
+.pc__card { appearance: none; position: relative; border: 0; padding: 6px; background: transparent; cursor: pointer; border-radius: 4px; font: inherit; }
+.pc__card:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.pc__card.is-wrong { box-shadow: 0 0 0 4px var(--ink); background: rgba(20, 18, 16, 0.1); }
+.pc__card.is-wrong .sticker { opacity: 0.55; }
+.pc__flag { position: absolute; top: 6px; left: 6px; z-index: 3; padding: 1px 6px; font-size: 12px; font-weight: 700; color: var(--ink); background: rgba(255, 255, 255, 0.85); border-radius: 2px; }
+.pc__card.is-wrong .pc__flag { color: #fff; background: var(--ink); font-size: 14px; padding: 3px 8px; }

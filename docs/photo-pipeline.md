@@ -310,3 +310,15 @@ Jonno picked option C: one real cutout blacked out, the most typical of the 49 f
 (`scripts/photos/kit_figure.py`): Thiago Silva (cropped).jpg, Commons, credited on /credits
 (`KIT_FIGURE_FILE`). It replaces the Lewandowski figure in `public/kit-figure.png`, on grey or on the
 grade's material (light on sapphire and onyx), with the club crest top-right when the ground is live.
+
+### Check tools (dev only, built 2026-10-29)
+
+- `/photo-check`: the top 500 by views with the pipeline's cutout, on grey; click a card to mark it
+  wrong (ink frame + the word WRONG). Marks save to `.scratch/photo-all/marks.json` (`wrong`).
+  Players without a cutout yet are skipped until the pipeline reaches them; ones it gave up on are
+  listed at the end as kit cards. Reload to see newly finished ones.
+- A "Wrong photo" button on hover over any card that shows one of our cutouts, in `npm run dev` only
+  (`FlagPhoto` in components/Sticker.tsx). Writes `flagged` in the same marks file.
+- Next: for every id in `wrong`/`flagged`, cut three alternatives (`cutout.py --alts 3`, a way to
+  redo a finished player is still to be written), a second page to pick one or the kit card, then
+  `choices.json` for `publish.py`.
