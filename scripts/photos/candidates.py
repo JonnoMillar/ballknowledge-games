@@ -124,8 +124,8 @@ def judge(img):
          'yaw': round(float((nose[0] - (re_[0] + le[0]) / 2) / ed), 2),
          'roll': round(float(np.degrees(np.arctan2(le[1] - re_[1], le[0] - re_[0]))), 1),
          'cx': round((x + fw / 2) / w, 2), 'second': round(float(second), 2)}
-    if sharp < rank.MIN_SHARP:
-        return f'face sharpness {sharp}, soft', f
+    if sharp < rank.HARD_SHARP:
+        return f'face sharpness {sharp}, mush', f
     return None, f
 
 careers = json.loads((ROOT / 'data' / 'careers.json').read_text(encoding='utf8'))['players']

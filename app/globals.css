@@ -2192,3 +2192,6 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 .pc__card.is-wrong .sticker { opacity: 0.55; }
 .pc__flag { position: absolute; top: 6px; left: 6px; z-index: 3; padding: 1px 6px; font-size: 12px; font-weight: 700; color: var(--ink); background: rgba(255, 255, 255, 0.85); border-radius: 2px; }
 .pc__card.is-wrong .pc__flag { color: #fff; background: var(--ink); font-size: 14px; padding: 3px 8px; }
+.pp__row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--rule-strong); }
+.pp__name { margin: 0; font-size: 16px; }
+.pp__opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }

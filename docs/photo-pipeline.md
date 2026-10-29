@@ -342,3 +342,10 @@ detectable face, 15 are two-shots, 8 are soft), cut at the new floor.
 
 `redo_marked.py` queues the players Jonno marked wrong: his rejected photo is banned (`bad/<id>.json`)
 and `cutout.py` cuts three alternatives for them (`marked.json`). The pick page for those is next.
+
+Palmer's remaining problem was softness: most of his Commons photos have face sharpness 14-64 against
+a gate of 80. The gate is now two: under 35 is mush and rejected, 35-80 is allowed but scored down by
+(sharp / 80) squared, so a sharp photo always wins and a soft one still beats a kit card. (Rank test
+against Jonno's round 1: 14/27 first, 22/27 top three, up from 13 and 21.) Palmer now has a cutout
+from "COLE PALMER.jpg" (City era, soft, looking down): the best Commons has, and not a good photo.
+`/photo-pick` is the page for the alternatives of the players marked wrong (`choices.json`).

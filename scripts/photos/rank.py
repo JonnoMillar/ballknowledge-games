@@ -7,7 +7,8 @@ in eye distances), roll (degrees), cx (face centre across the frame, 0-1).
 import math, re, time
 
 THIS_YEAR = time.gmtime().tm_year
-MIN_SHARP = 80      # gate: blurrier than this is soft, not just "less sharp"
+MIN_SHARP = 80      # below this a face is soft: scored down by (sharp / 80) squared, not rejected
+HARD_SHARP = 35     # gate: blurrier than this is mush (Palmer's best Commons photos sit at 36-64; a soft cutout beats a kit card)
 FACE_CAP = 150      # px: face size stops earning past this
 MAX_YAW = 0.8       # nose this far off the eye line (in eye distances) = a profile; Zidane 2006 from behind
 PRIME_SIGMA = 7.0   # years
@@ -51,17 +52,17 @@ def span_and_prime(stints, signature=None, fallback=None):
 
 def score(f, prime):
     """Higher is better; None when the sharpness gate fails."""
-    if f['sharp'] < MIN_SHARP or abs(f.get('yaw', 0)) > MAX_YAW:   # soft, or seen from the side or behind
+    if f['sharp'] < HARD_SHARP or abs(f.get('yaw', 0)) > MAX_YAW:   # mush, or seen from the side or behind
         return None
     x = dict(face=min(f['face'], FACE_CAP) / FACE_CAP,
              share=min(f['share'], 0.35) / 0.35,
              p18=float(f['p18']),
              dy=min(abs(f['year'] - prime), 12) / 12 if prime and f.get('year') else 0.5 if prime else 0,   # undated: middling
              yaw=abs(f['yaw']), roll=abs(f['roll']) / 10, cx=abs(f['cx'] - 0.5) * 2,
-             sharp=min(math.log(f['sharp'] / MIN_SHARP), 4))
+             sharp=min(math.log(max(f['sharp'], 1) / MIN_SHARP), 4))
     # A photo that ends near the chin cannot become a cutout without floating: score it down.
     low_room = 0.6 if f.get('room', 9) < 2.4 else 1.0
     # Photos found by category alone (no surname in the file name) and a second person in the frame
     # are riskier, not impossible: score them down and let the cutout checks (checks.py) catch the bad ones.
-    risk = (0.85 if f.get('named') is False else 1.0) * (0.7 if f.get('second', 0) > 0.5 else 1.0)
+    risk = (0.85 if f.get('named') is False else 1.0) * (0.7 if f.get('second', 0) > 0.5 else 1.0) * min(1.0, (f['sharp'] / MIN_SHARP) ** 2)
     return low_room * risk * math.exp(sum(W[k] * v for k, v in x.items()))
