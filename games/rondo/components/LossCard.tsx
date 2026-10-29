@@ -83,7 +83,7 @@ export default function LossCard({
               ))}
             </ul>
             <div className="lost__actions">
-              <button type="button" className="lobby-play" onClick={onMenu}>Rondo menu</button>
+              <button type="button" className="lobby-play" onClick={onMenu}>New game</button>
               <button type="button" className="lobby-quiet" onClick={onHub}>Main menu</button>
             </div>
           </div>
