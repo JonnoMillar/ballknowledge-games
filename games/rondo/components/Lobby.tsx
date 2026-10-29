@@ -81,7 +81,7 @@ export default function Lobby({ demo }: { demo: DemoBall }) {
 const RULES: HowRule[] = [
   { text: 'Name a player who shared a club with the one on the ball.', frames: [3200] },
   { text: 'A club that links two players can’t be used again.', frames: [3600] },
-  { text: 'Can’t name anyone? That’s a strike. Three and you’re out.', frames: [3400] },
+  { text: 'Can’t name anyone, or name someone with no club left to pass on from? That’s a strike. Three and you’re out.', frames: [3400] },
 ];
 
 function How({ demo }: { demo: DemoBall }) {

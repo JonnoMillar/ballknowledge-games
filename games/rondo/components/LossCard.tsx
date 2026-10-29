@@ -34,7 +34,7 @@ export default function LossCard({
         <>
           Dead end. <b>{loss.target?.name}</b>
           {loss.via && loss.via.length > 0 ? <> through {loss.via.map(name).join(' and ')}</> : null}
-          {' '}— and nobody in the album can take it on from there.
+          {' '}leaves nobody to pass to. Don’t name someone whose clubs are all burnt.
         </>
       );
       default: return <>The ref didn't know them.</>;
