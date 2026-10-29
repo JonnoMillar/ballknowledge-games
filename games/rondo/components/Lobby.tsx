@@ -86,35 +86,22 @@ const RULES: HowRule[] = [
 ];
 
 /**
- * The one thing the rules don't make obvious: a player with a single club is
- * a dead end the moment that club burns. Shown as the pass that does it, the
- * last frame of a ball: Rice, Arsenal crossed out, Saka greyed, a bib.
+ * The one rule the three above don't make obvious: a player with a single
+ * club is a dead end the moment that club burns. Saka's card, struck out.
  */
 function Careful({ stuck }: { stuck: DemoBall['stuck'] }) {
-  const [rice, saka] = stuck.players;
-  const face = (p: typeof rice) => (
-    <StickerFace player={p!} image={p!.image} ground={solid(p!.ground)} className="sticker--still" />
-  );
   return (
     <section className="lobby-card lobby__wide careful vt">
-      <h2 className="lobby-tag lobby-tag--paper">Watch out</h2>
+      <h2 className="lobby-tag lobby-tag--paper">One rule</h2>
       <div className="careful__body">
-        <div className="careful__stage" aria-hidden>
-          <div className="rondo-demo">
-            <div className="rondo-demo__row">
-              <span className="rondo-demo__p">{face(rice)}</span>
-              <span className="rondo-demo__link">
-                <ClubBadge clubId={stuck.club.id} club={stuck.club.club} size={26} />
-              </span>
-              <span className="rondo-demo__p careful__stuck">{face(saka)}<span className="careful__stamp display">Dead end</span></span>
-            </div>
-            <Bib earned size={22} />
-          </div>
+        <div className="careful__card" aria-hidden>
+          <StickerFace player={stuck} image={stuck.image} ground={solid(stuck.ground)} className="sticker--still" />
+          <svg className="careful__no" viewBox="0 0 100 100" aria-hidden>
+            <circle cx="50" cy="50" r="42" fill="none" strokeWidth="8" />
+            <path d="M20 80L80 20" strokeWidth="8" strokeLinecap="round" />
+          </svg>
         </div>
-        <div className="careful__text">
-          <h3 className="careful__head display">One club? Dead end.</h3>
-          <p><b>{rice!.name}</b> to <b>{saka!.name}</b> burns Arsenal. Saka has no other club. Strike.</p>
-        </div>
+        <p className="careful__head display">You cannot pick a player who has only played for one club</p>
       </div>
     </section>
   );
