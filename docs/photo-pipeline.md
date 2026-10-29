@@ -294,3 +294,12 @@ DirectML on the RTX 4050 (`onnxruntime-directml`, installed to `.scratch/ortdml`
 try on an idle machine. **Do not benchmark beside the running jobs:** doing so (four models loaded
 at once, on ~1 GB free) crashed the laptop. After a crash, validate `cand/*.json`, `out/*.json` and
 the webps (a half-written file), then restart; `candidates.py` and `cutout.py` skip finished players.
+
+**Benchmark result (same day, machine otherwise idle):** birefnet-portrait alone takes 11-17 s a
+photo on CPU (3 photos: 10.8, 16.8, 12.9 s). The ~50 s above was contention (cutouts, candidates,
+CLIP, a dev server, Chrome, ChatGPT sharing ~1 GB of free RAM). The lighter models
+(`birefnet-general-lite`, `isnet-general-use`) could not be compared: their downloads from GitHub
+timed out twice. So the model stays, and the fix is memory, not a faster model: one cutout process
+plus one candidates process holds ~1 GB free; a second cutout process pushed free RAM to ~370 MB
+(crash territory), so run one unless the other apps are closed. At ~15-20 s a cutout, 12,000 players
+is ~60 hours of an idle machine; the top 2,000 by views (~81% of what players see) is ~10 hours.
