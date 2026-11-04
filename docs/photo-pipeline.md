@@ -349,3 +349,23 @@ a gate of 80. The gate is now two: under 35 is mush and rejected, 35-80 is allow
 against Jonno's round 1: 14/27 first, 22/27 top three, up from 13 and 21.) Palmer now has a cutout
 from "COLE PALMER.jpg" (City era, soft, looking down): the best Commons has, and not a good photo.
 `/photo-pick` is the page for the alternatives of the players marked wrong (`choices.json`).
+
+### Starting and watching the jobs (2026-11-04)
+
+The jobs died with the laptop's reboot on 2026-11-04 (nothing written since 2026-10-29 03:30), and a
+status line saying "still running" had not been re-checked: always read `heartbeat.log` before saying so.
+
+`scripts/photos/ops/` holds the three runners (copy them into `.scratch/photo-all/`): `watchdog.py`
+starts `cand_drive.py` (candidates: the redo list, then everyone by views) and `drive.py 1` (one cutout
+process), restarts either if it dies, and appends a line a minute to `.scratch/photo-all/heartbeat.log`
+(counts, cutouts written in the last hour, top-500 progress, free RAM, which children are alive).
+Launch it detached from the Claude app, as a child of WMI rather than of the session:
+
+```
+$d = "<repo>\.scratch\photo-all"
+Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "C:\Python314\python.exe -X utf8 `"$d\watchdog.py`""; CurrentDirectory = $d }
+```
+
+It survives the app closing; it does not survive a reboot (no scheduled task: that is a standing
+change to the machine, ask first). After a reboot, validate the files (see the crash note above) and
+launch it again. Do not start a second watchdog: check `heartbeat.log` is not already advancing.
