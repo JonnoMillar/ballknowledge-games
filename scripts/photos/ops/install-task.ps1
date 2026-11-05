@@ -10,7 +10,7 @@ param([switch]$Remove)
 $name = 'BallKnowledgePhotoPipeline'
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $name -Confirm:$false
-    "removed $name"
+    "removed ${name}"
     return
 }
 
@@ -23,4 +23,4 @@ $action = New-ScheduledTaskAction -Execute $python -Argument "-X utf8 `"$dir\wat
 $trigger = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -Hidden
 Register-ScheduledTask -TaskName $name -Action $action -Trigger $trigger -Settings $settings -Description 'Photo pipeline watchdog (candidates and cutouts), see docs/photo-pipeline.md' -RunLevel Limited | Out-Null
-"installed $name: runs at logon for $env:USERNAME"
+"installed ${name}, runs at logon for $env:USERNAME"

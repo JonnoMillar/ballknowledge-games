@@ -432,3 +432,10 @@ hour for both and `slept=Ns` when the clock jumped. It still dies at a reboot; s
 that runs the watchdog at logon (`-Remove` deletes it). It is a standing change to the machine, so it
 is installed only when Jonno says yes. The watchdog writes `watchdog.pid` and a second copy exits at once,
 so the task firing while one is running does no harm.
+
+**Installed 2026-11-05 on Jonno's yes:** Task Scheduler task "BallKnowledgePhotoPipeline" (state Ready, trigger
+at logon, current user, hidden, no time limit). Tested by starting it by hand: it launched one watchdog and
+its two jobs, and a second watchdog started afterwards exited at once (`watchdog.pid`). Remove it with
+`powershell -ExecutionPolicy Bypass -File scripts\photos\ops\install-task.ps1 -Remove`. If the repo or worktree
+moves, run the install script again from the new place (the task stores the absolute path). It needs the
+runners copied into `.scratch/photo-all/` (they are, from `scripts/photos/ops/`).
