@@ -22,6 +22,11 @@ def load(name, empty):
     f = D / name
     return json.loads(f.read_text(encoding='utf8')) if f.exists() else empty
 
+def pretty_licence(s):
+    """Openverse's 'by-sa 2.0' -> 'CC BY-SA 2.0'; 'cc0 1.0' -> 'CC0 1.0'; 'pdm 1.0' -> 'Public domain'."""
+    kind, _, version = s.partition(' ')
+    return {'cc0': 'CC0 1.0', 'pdm': 'Public domain'}.get(kind) or f"CC {kind.upper()} {version}".strip()
+
 approved = set(load('approved.json', []))
 choices = load('choices.json', {})
 marks = load('marks.json', {'wrong': [], 'flagged': []})
@@ -52,8 +57,10 @@ for p in players:
     r = results[k]
     shutil.copyfile(D / 'out' / f"{pid}.{r['k']}.webp", PUB / f'{pid}.webp')
     rec = {'source': 'processed', 'url': f'/portraits/{pid}.webp', 'file': r['file'].removeprefix('File:'), 'year': r.get('year'), **keep}
-    if r.get('origin'):   # a photo from outside Commons (Openverse): where it came from
-        rec['origin'] = r['origin']
+    if r.get('origin'):   # a photo from outside Commons (Openverse): the record carries its own credit
+        o = r['origin']
+        rec['origin'] = {'source': o.get('source'), 'title': o.get('title'), 'creator': o.get('creator'), 'creatorUrl': o.get('creatorUrl'),
+                         'licence': pretty_licence(o.get('licence', '')), 'licenceUrl': o.get('licenceUrl'), 'url': o.get('url')}
     portraits[pid] = rec
     counts['processed'] += 1
 

@@ -37,6 +37,8 @@ export interface PortraitRecord {
   file?: string;
   /** Commons only: the capture year the photo was accepted on. */
   year?: number;
+  /** A processed photo found outside Commons (Openverse, mostly Flickr): what its credit needs. `file` is `openverse:<id>`. */
+  origin?: { source?: string; title?: string; creator?: string; creatorUrl?: string; licence: string; licenceUrl?: string; url?: string };
   career?: [number, number];
   reason?: string;
   /** Cutouts only: the in-era Commons photo to show where the cutout may not be. */

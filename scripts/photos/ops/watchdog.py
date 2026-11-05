@@ -31,6 +31,20 @@ def free_mb():
     ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(m))
     return int(m.avail / 2**20)
 
+def pid_alive(pid):
+    h = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)   # PROCESS_QUERY_LIMITED_INFORMATION
+    if not h:
+        return False
+    code = ctypes.c_ulong()
+    ctypes.windll.kernel32.GetExitCodeProcess(h, ctypes.byref(code))
+    ctypes.windll.kernel32.CloseHandle(h)
+    return code.value == 259   # STILL_ACTIVE
+
+LOCK = D / 'watchdog.pid'   # a second watchdog (a logon task firing while one runs) exits at once
+if LOCK.exists() and LOCK.read_text().strip().isdigit() and pid_alive(int(LOCK.read_text())):
+    sys.exit(0)
+LOCK.write_text(str(__import__('os').getpid()))
+
 CHILDREN = {'cand': ['cand_drive.py'], 'cut': ['drive.py', '1']}
 procs, started, done_clean = {}, {}, set()
 last_progress = {n: time.time() for n in CHILDREN}

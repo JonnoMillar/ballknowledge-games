@@ -19,12 +19,18 @@ NOT_FOOTBALL = re.compile(
     r'premiere|red carpet|ceremony|interview|entrevista|elkarrizketa\w*|lecture|congress|'
     r'parliament|politician|tuxedo|concert|wedding|runway)\b', re.I)
 
+# For a player now known as a manager (Wikidata occupation), a photo from his managing years in a suit
+# or a tracksuit is wanted, so these press and event words are allowed for him.
+MANAGER_OK = re.compile(r'press conference|rueda de prensa|interview|entrevista|elkarrizketa\w*|ceremony', re.I)
+
 MIN_KIT = 0.7     # CLIP's probability that the crop is a footballer in a shirt
 MAX_EDGE = 0.05   # alpha in the outer columns beside the head: another person or a limb
 
-def bad_metadata(text: str) -> str | None:
-    m = NOT_FOOTBALL.search(text)
-    return m.group(0).lower() if m else None
+def bad_metadata(text: str, manager: bool = False) -> str | None:
+    for m in NOT_FOOTBALL.finditer(text):
+        if not (manager and MANAGER_OK.fullmatch(m.group(0))):
+            return m.group(0).lower()
+    return None
 
 def edge_mass(alpha: np.ndarray) -> float:
     """Alpha in the outer 8% columns of the upper 45% of the frame, as a share of that strip:
@@ -49,9 +55,10 @@ def second_faces(rgba: np.ndarray, detector) -> int:
 class Clip:
     """CLIP ViT-B/32 zero-shot: how likely a crop is a footballer in a shirt rather than a suit, a mural, a podium."""
     KIT = ['a footballer in a football shirt', 'a footballer in a team jersey with a badge', 'a soccer player in kit']
-    OTHER = ['a man in a suit and tie', 'a man in a jacket and casual clothes', 'a painting or mural of a person',
-             'a wax figure or statue', 'a person speaking on stage at a podium with a microphone',
-             'a man in a t-shirt holding a sign', 'a football manager in a coat', 'a drawing or cartoon']
+    # Smart or casual clothes: a reject for a player, accepted for a manager in his managing years.
+    DRESS = ['a man in a suit and tie', 'a man in a jacket and casual clothes', 'a football manager in a coat']
+    OTHER = ['a painting or mural of a person', 'a wax figure or statue', 'a person speaking on stage at a podium with a microphone',
+             'a man in a t-shirt holding a sign', 'a drawing or cartoon']
 
     def __init__(self):
         import torch
@@ -60,14 +67,14 @@ class Clip:
         self.model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32').eval()
         self.proc = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
         with torch.no_grad():
-            self.text = self._unit(self.model.get_text_features(**self.proc(text=self.KIT + self.OTHER, return_tensors='pt', padding=True)))
+            self.text = self._unit(self.model.get_text_features(**self.proc(text=self.KIT + self.DRESS + self.OTHER, return_tensors='pt', padding=True)))
 
     def _unit(self, out):
         t = out if self.torch.is_tensor(out) else out.pooler_output   # transformers 5 returns an object
         return t / t.norm(dim=-1, keepdim=True)
 
-    def kit(self, rgba_images) -> list[tuple[float, str]]:
-        """(probability of the kit prompts, best prompt) per PIL RGBA image."""
+    def kit(self, rgba_images) -> list[tuple[float, float, str]]:
+        """(probability of the kit prompts, of the dress prompts, best prompt) per PIL RGBA image."""
         from PIL import Image
         ims = []
         for im in rgba_images:
@@ -76,17 +83,18 @@ class Clip:
         with self.torch.no_grad():
             v = self._unit(self.model.get_image_features(**self.proc(images=ims, return_tensors='pt')))
             p = (100 * v @ self.text.T).softmax(-1)
-        names = self.KIT + self.OTHER
-        return [(float(r[:len(self.KIT)].sum()), names[int(r.argmax())]) for r in p]
+        names = self.KIT + self.DRESS + self.OTHER
+        k, d = len(self.KIT), len(self.KIT) + len(self.DRESS)
+        return [(float(r[:k].sum()), float(r[k:d].sum()), names[int(r.argmax())]) for r in p]
 
-def crop_verdict(rgba_img, detector, clip: 'Clip') -> tuple[str | None, dict]:
-    """(reason to reject or None, measures) for a PIL RGBA crop."""
+def crop_verdict(rgba_img, detector, clip: 'Clip', manager: bool = False) -> tuple[str | None, dict]:
+    """(reason to reject or None, measures) for a PIL RGBA crop. A manager passes in a suit or tracksuit too."""
     rgba = np.array(rgba_img.convert('RGBA'))
     edge = edge_mass(rgba[..., 3])
     faces = second_faces(rgba, detector)
-    kit, top = clip.kit([rgba_img])[0]
+    kit, dress, top = clip.kit([rgba_img])[0]
     m = {'edge': round(edge, 3), 'faces': faces, 'kit': round(kit, 3)}
-    if kit < MIN_KIT:
+    if kit + (dress if manager else 0) < MIN_KIT:
         return f'not a footballer in kit ({top})', m
     if edge > MAX_EDGE:
         return 'someone or a limb beside him', m

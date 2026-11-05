@@ -106,7 +106,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             <tbody>
               {rows.map((r) => (
                 <tr key={`${r.player}|${r.file}`}>
-                  <td><a href={commonsPage(r.file)}>{r.player}</a></td>
+                  <td><a href={r.url ?? commonsPage(r.file)}>{r.player}</a></td>
                   <td>{r.artist}</td>
                   <td>{r.licenceUrl ? <a href={r.licenceUrl}>{r.licence}</a> : r.licence}</td>
                 </tr>

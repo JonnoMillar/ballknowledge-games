@@ -5,7 +5,7 @@ Reads <dir>/players.json ([{id, name, club}]) and <dir>/../models/yunet.onnx.
 Writes <dir>/cand/<id>/*.jpg and <dir>/cand/<id>.json: every candidate, best first. A candidate
 failing a gate has `gate` set to the reason and score 0; the rest have `score` and their features.
 """
-import json, re, sys, time, unicodedata, urllib.parse, urllib.request
+import json, os, re, sys, time, unicodedata, urllib.parse, urllib.request
 from pathlib import Path
 import cv2
 cv2.setNumThreads(1)   # many of these run side by side
@@ -15,7 +15,7 @@ import rank
 
 D = Path(sys.argv[1])
 ROOT = Path(__file__).resolve().parents[2]
-UA = {'User-Agent': 'ChainFootballGame/0.1 (jonno@m1llar.com) photo-pipeline'}
+UA = {'User-Agent': 'BallKnowledgePhotoPipeline/0.1 (football games site, photo research)'}
 API = 'https://commons.wikimedia.org/w/api.php'
 YUNET = str(D.parent / 'models' / 'yunet.onnx')
 MAX_FILES = 40
@@ -41,12 +41,13 @@ def fold(s):
     return unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode().lower()
 
 def wikidata(qid):
-    """(Commons category, Wikidata's chosen image) for a player."""
+    """(Commons category, Wikidata's chosen image, is he also an association football manager) for a player."""
     raw = get(f'https://www.wikidata.org/wiki/Special:EntityData/{qid}.json')
     claims = json.loads(raw)['entities'][qid]['claims'] if raw else {}
     val = lambda p: claims.get(p, [{}])[0].get('mainsnak', {}).get('datavalue', {}).get('value')
     p18 = val('P18')
-    return val('P373'), (f'File:{p18}' if p18 else None)
+    jobs = {c.get('mainsnak', {}).get('datavalue', {}).get('value', {}).get('id') for c in claims.get('P106', [])}
+    return val('P373'), (f'File:{p18}' if p18 else None), 'Q628099' in jobs
 
 def members(cat, kind):
     j = api(action='query', list='categorymembers', cmtype=kind, cmlimit=200, cmtitle=f'Category:{cat}')
@@ -128,6 +129,56 @@ def judge(img):
         return f'face sharpness {sharp}, mush', f
     return None, f
 
+OPENVERSE = 'https://api.openverse.org/v1/images/'
+# Licences that let us adapt (cut out) and show the photo with credit: BY, BY-SA, CC0, public domain mark.
+OV_LICENCES = 'by,by-sa,cc0,pdm'
+
+def from_openverse(p, surname, folder, first_n, prime):
+    """Candidates from Openverse outside Wikimedia (mostly Flickr): the same gates and score as a
+    Commons photo, found by name. The API is slow (5-15 s) and sometimes 504s: retried, then skipped.
+    Only results with his surname in the title or tags count; the check Jonno does on /photo-check is
+    the guard against the wrong person. `origin` carries what the credit needs."""
+    q = urllib.parse.urlencode({'q': f'"{p["name"]}"', 'license': OV_LICENCES, 'excluded_source': 'wikimedia,wikimedia_audio', 'category': 'photograph', 'page_size': 20})
+    j = None
+    for a in range(3):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(f'{OPENVERSE}?{q}', headers=UA), timeout=90) as r:
+                j = json.loads(r.read())
+            break
+        except Exception:
+            time.sleep(5 * (a + 1))
+    ranked = []
+    for k, r in enumerate((j or {}).get('results', [])):
+        tags = ' '.join(t.get('name', '') for t in r.get('tags') or [])
+        if surname not in fold(f"{r.get('title') or ''} {tags}") or not r.get('url'):
+            continue
+        raw = get(r['url'])
+        img = cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR) if raw else None
+        if img is None:
+            continue
+        if img.shape[1] > 1400:   # Flickr originals are huge: judge and cut a 900-wide copy, as for Commons thumbs
+            img = cv2.resize(img, (900, int(img.shape[0] * 900 / img.shape[1])), interpolation=cv2.INTER_AREA)
+            raw = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, 92])[1].tobytes()
+        try:
+            gate, feats = judge(img)
+        except cv2.error:
+            continue
+        n = first_n + k
+        (folder / f'{n}.jpg').write_bytes(raw)
+        c = {'file': f"openverse:{r['id']}", 'p18': False, 'year': None, 'named': True, 'local': f"cand/{p['id']}/{n}.jpg", 'gate': gate,
+             'origin': {'source': r.get('source'), 'id': r['id'], 'title': r.get('title'), 'creator': r.get('creator'), 'creatorUrl': r.get('creator_url'),
+                        'licence': f"{r.get('license')} {r.get('license_version')}", 'licenceUrl': r.get('license_url'), 'url': r.get('foreign_landing_url')}}
+        if feats:
+            c.update(feats)
+        c['why'] = gate or f"openverse, face {feats['face']}px, sharpness {feats['sharp']}"
+        s = None if gate else rank.score(c, prime)
+        if s is None and not gate:
+            c['gate'] = c['why'] = 'profile, seen from the side'
+        c['score'] = round(s, 3) if s else 0
+        ranked.append(c)
+        time.sleep(0.2)
+    return ranked
+
 careers = json.loads((ROOT / 'data' / 'careers.json').read_text(encoding='utf8'))['players']
 players = json.loads((D / (sys.argv[2] if len(sys.argv) > 2 else 'players.json')).read_text(encoding='utf8'))
 if len(sys.argv) > 3:
@@ -141,7 +192,7 @@ for p in players:
     if not span:
         print(f"{p['name']}: no career", flush=True)
         continue
-    cat, p18 = wikidata(p['id'])
+    cat, p18, manager = wikidata(p['id'])
     found = files_for(cat, span) if cat else {}
     surname = fold(p['name'].split()[-1])
 
@@ -163,7 +214,8 @@ for p in players:
         # Undated files count for anyone who played into the 2010s (Commons is mostly recent). The deep
         # pass also takes photos up to 30 years after the career: a suit or a studio shot is caught by
         # the cutout checks, and for a retired legend that is often all Commons has.
-        late = span[1] + (30 if deep else 1)
+        # A manager's photos from his managing years count too (tracksuit or suit; checks.py allows them).
+        late = rank.THIS_YEAR + 1 if manager else span[1] + (30 if deep else 1)
         era = [f for f in files if meta.get(f, {}).get('thumb') and (span[0] <= year[f] <= late if year[f] else span[1] >= 2012)][:MAX_FILES]
         return files, meta, year, era
 
@@ -202,7 +254,9 @@ for p in players:
     if not any(r['score'] > 0 for r in ranked):
         files, meta, year, era = pick_era(True)
         ranked, deep = rank_all(era, meta, year), True
+    if sum(r['score'] > 0 for r in ranked) < 3 or os.environ.get('OV_ALWAYS'):   # Commons is thin for him: look at Flickr and the rest of Openverse
+        ranked += from_openverse(p, surname, folder, len(ranked), prime)
     ranked.sort(key=lambda r: -r['score'])
-    out.write_text(json.dumps({'span': span, 'prime': prime, 'cat': cat, 'files': len(files), 'deep': deep, 'cands': ranked}, indent=1), encoding='utf8')
+    out.write_text(json.dumps({'span': span, 'prime': prime, 'cat': cat, 'manager': manager, 'files': len(files), 'deep': deep, 'cands': ranked}, indent=1), encoding='utf8')
     print(f"{p['name']}: {cat!r}, {len(files)} files, {len(era)} in era, {sum(r['score'] > 0 for r in ranked)} usable, "
           f"deep={deep}", flush=True)

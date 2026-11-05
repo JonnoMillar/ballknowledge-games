@@ -8,6 +8,8 @@ export interface CreditRow {
   artist: string;
   licence: string;
   licenceUrl?: string;
+  /** Where the photo lives, for a photo from outside Commons (its Flickr page); a Commons file is linked by name. */
+  url?: string;
 }
 
 interface Credit { artist: string; licence: string; licenceUrl?: string }
@@ -34,11 +36,18 @@ function allRows(): Promise<CreditRow[]> {
     const out: CreditRow[] = [];
     for (const id of Object.keys(portraitUrls(portraits))) {
       // Our own cutouts name the Commons file they came from.
-      const file = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
+      const rec = portraits[id];
+      const file = rec?.source === 'processed' ? rec.file : undefined;
       if (!file) continue;
-      const c = credits[file];
       const player = byId.get(id)?.name;
-      if (!c || !player) continue;
+      if (!player) continue;
+      if (rec?.origin) {   // outside Commons: the record carries its own credit
+        const o = rec.origin;
+        out.push({ player, file: o.title || file, artist: o.creator || 'Unknown', licence: o.licence, ...(o.licenceUrl ? { licenceUrl: o.licenceUrl } : {}), ...(o.url ? { url: o.url } : {}) });
+        continue;
+      }
+      const c = credits[file];
+      if (!c) continue;
       out.push({ player, file, ...c });
     }
     return out.sort((a, b) => a.player.localeCompare(b.player, 'en'));

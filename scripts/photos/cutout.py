@@ -39,7 +39,7 @@ if '--alts' in sys.argv:
 session = new_session('birefnet-portrait')
 det = cv2.FaceDetectorYN.create(str(D.parent / 'models' / 'yunet.onnx'), '', (SIDE, SIDE), 0.6)
 clip = checks.Clip()
-UA = {'User-Agent': 'ChainFootballGame/0.1 (jonno@m1llar.com) photo-pipeline'}
+UA = {'User-Agent': 'BallKnowledgePhotoPipeline/0.1 (football games site, photo research)'}
 
 def commons_text(file):
     """The file's description and categories as one string; '' if Commons does not answer."""
@@ -99,7 +99,8 @@ for p in players:
         if c['room'] < MIN_HEADS:   # cheap check: the photo ends too close to the face to fill the frame
             continue
         tried += 1
-        word = checks.bad_metadata(commons_text(c['file']))
+        text = (c['origin'].get('title') or '') if c.get('origin') else commons_text(c['file'])   # Openverse: its own title
+        word = checks.bad_metadata(text, data.get('manager', False))
         if word:
             rejected.append({'file': c['file'], 'why': f'description says {word}'})
             continue
@@ -111,13 +112,13 @@ for p in players:
             continue
         if head is None:
             continue
-        why, measures = checks.crop_verdict(head, det, clip)
+        why, measures = checks.crop_verdict(head, det, clip, data.get('manager', False))
         if why:
             rejected.append({'file': c['file'], 'why': why, **measures})
             continue
         k = len(results)
         head.save(OUT / f"{p['id']}.{k}.webp", 'WEBP', quality=82, method=6)
-        results.append({'file': c['file'], 'k': k, 'score': c['score'], 'year': c['year'], 'source': [im.width, im.height], 'face': c['face'], **measures})
+        results.append({'file': c['file'], 'k': k, 'score': c['score'], 'year': c['year'], 'source': [im.width, im.height], 'face': c['face'], **({'origin': c['origin']} if c.get('origin') else {}), **measures})
     if results:
         status.write_text(json.dumps({'ok': True, 'results': results, 'rejected': rejected}))
         print(f"{p['name']}: {len(results)} cutout(s), best {results[0]['file']}", flush=True)

@@ -11,7 +11,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { portraitUrls, type PortraitRecord } from '../src/lib/portraits';
 
-const AGENT = 'RecallXI/0.1 (https://github.com/; jonno@m1llar.com)';
+const AGENT = 'BallKnowledgePhotoPipeline/0.1 (football games site, photo credits)';
 const OUT = 'data/credits.json';
 const API = 'https://commons.wikimedia.org/w/api.php';
 
@@ -27,7 +27,7 @@ const files = new Set<string>();
 for (const id of Object.keys(portraitUrls(portraits))) {
   // Our own cutouts name the Commons file they came from.
   const file = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
-  if (file) files.add(file);
+  if (file && !file.startsWith('openverse:')) files.add(file);   // those carry their own credit (portraits.json `origin`)
 }
 // The kit card's figure (public/kit-figure.png) is a cutout of this photo.
 files.add('Thiago Silva (cropped).jpg');

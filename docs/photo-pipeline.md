@@ -400,3 +400,35 @@ watchdog and the jobs. Fixes: the watchdog now asks Windows to stay awake (`SetT
 ES_SYSTEM_REQUIRED; a closed lid still sleeps the laptop), kills and restarts a job that makes no
 progress for 20 min (candidates) or 30 min (cutouts) while there is work for it, and logs players per
 hour for both and `slept=Ns` when the clock jumped. It still dies at a reboot; see the task note below.
+
+### Filling the gaps (2026-11-05)
+
+- **(a) Alternatives from Commons:** `redo_marked.py` bans the photo he rejected and `cutout.py` cuts the
+  next three that pass the checks (`/photo-pick`). 11 of the first 28 marked had none left to offer, which
+  is what (b) and (c) are for.
+- **(b) Openverse** (`from_openverse` in candidates.py): when Commons gives fewer than 3 usable candidates,
+  query `api.openverse.org` for `"Full Name"`, licences BY, BY-SA, CC0, PDM, excluding Wikimedia (that is
+  Commons again), photographs only, with his surname in the title or tags. Each hit is judged and ranked
+  like a Commons photo and carries an `origin` (creator, licence, link) that `publish.py` writes into
+  `portraits.json` and the credits page reads (no Commons lookup). The API takes 5-15 s a query and
+  504s now and then (retried 3 times). **Yield is low for modern players:** sampled with the licence
+  filter, Foden 3 results (a mural and two 1024 px photos with no usable face), Garnacho 0, Palmer 0,
+  Camavinga 0, Hojlund 0; Owen 30. Flickr's Creative Commons matchday photos of the 2020s are mostly
+  not licensed for reuse. It will help the 2000s and 2010s more than this season's squads.
+- **(c) Managers as managers:** a player whose Wikidata occupation includes association football
+  manager (Q628099) gets photos from his managing years (up to this year) in the candidate list, the
+  CLIP check accepts a suit, jacket or tracksuit for him (a mural, wax figure, podium or sign still
+  fail), and press conference, interview and ceremony in a file's description no longer reject it.
+  Arne Slot went from 0 usable candidates to 10. Others it flags: anyone with that occupation, not
+  only the famous managers, so an ex-player who coached for a season gets managing-era candidates too;
+  the ranking's distance-from-prime term still prefers his playing years.
+- `scripts/photos/ops/requeue_gaps.py` sends the players on the kit card, and marked ones with fewer than
+  three alternatives, back through the candidate search with the current rules (184 on 2026-11-05).
+  Run it after changing what `candidates.py` looks for; stop the watchdog first.
+
+### Staying alive across a reboot
+
+`scripts/photos/ops/install-task.ps1` registers one Task Scheduler task, "BallKnowledgePhotoPipeline",
+that runs the watchdog at logon (`-Remove` deletes it). It is a standing change to the machine, so it
+is installed only when Jonno says yes. The watchdog writes `watchdog.pid` and a second copy exits at once,
+so the task firing while one is running does no harm.
