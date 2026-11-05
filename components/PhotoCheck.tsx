@@ -1,26 +1,30 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { StickerFace, neutral } from './Sticker';
-import { kitCard } from '../src/lib/portraits';
 
 export interface CheckItem { id: string; name: string; rank: number; club?: string; cutout: boolean; file?: string; year?: number }
+export interface CheckStats { approved: number; wrong: number; left: number; kit: number }
 
 const FILTERS = [['all', 'All'], ['wrong', 'Marked wrong'], ['right', 'Not marked']] as const;
 type Filter = (typeof FILTERS)[number][0];
 
 /**
- * Dev only (/photo-check): click a card whose photo is wrong. Marked cards carry an ink frame and
- * the word WRONG (no colour to tell them apart). Marks save as you go to .scratch/photo-all/marks.json;
- * the pipeline then cuts three alternatives for each marked player to pick from, or the kit card.
+ * Dev only (/photo-check): the next batch of cutouts to check. Click a card whose photo is wrong
+ * (not him, a suit, hands over the face, other people, a bad crop). Marked cards carry an ink frame
+ * and the word WRONG (no colour to tell them apart). Marks save as you go. "Approve the rest" records
+ * every unmarked card in the batch as checked (only checked photos ship) and loads the next batch;
+ * the marked ones go on to /photo-pick, where the pipeline offers alternatives.
  */
-export default function PhotoCheck({ items, waiting }: { items: CheckItem[]; waiting: number }) {
+export default function PhotoCheck({ items, stats }: { items: CheckItem[]; stats: CheckStats }) {
   const [wrong, setWrong] = useState<Set<string>>(new Set());
   const [filter, setFilter] = useState<Filter>('all');
   const [saved, setSaved] = useState(true);
+  const [busy, setBusy] = useState(false);
   const ready = useRef(false);
+  const inBatch = new Set(items.map((i) => i.id));
 
   useEffect(() => {
-    fetch('/api/photo-check').then((r) => r.json()).then((m: { wrong: string[] }) => { setWrong(new Set(m.wrong)); ready.current = true; }).catch(() => {});
+    fetch('/api/photo-check').then((r) => r.json()).then((m: { wrong: string[]; flagged: string[] }) => { setWrong(new Set([...m.wrong, ...m.flagged])); ready.current = true; }).catch(() => {});
   }, []);
 
   const toggle = (id: string) => {
@@ -33,26 +37,37 @@ export default function PhotoCheck({ items, waiting }: { items: CheckItem[]; wai
       .then((r) => setSaved(r.ok)).catch(() => setSaved(false));
   };
 
-  const cutouts = items.filter((i) => i.cutout);
-  const shown = cutouts.filter((i) => filter === 'all' || (filter === 'wrong') === wrong.has(i.id));
-  const kits = items.filter((i) => !i.cutout);
+  const approveRest = () => {
+    if (!ready.current || !saved || busy) return;
+    setBusy(true);
+    const ok = items.filter((i) => !wrong.has(i.id)).map((i) => i.id);
+    fetch('/api/photo-check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ approve: ok }) })
+      .then((r) => { if (r.ok) location.reload(); else setBusy(false); }).catch(() => setBusy(false));
+  };
+
+  const marked = items.filter((i) => wrong.has(i.id)).length;
+  const shown = items.filter((i) => filter === 'all' || (filter === 'wrong') === wrong.has(i.id));
 
   return (
     <main className="pc">
       <div className="pc__bar">
-        <strong>{cutouts.length} photos to check</strong>
-        <span>{wrong.size} marked wrong</span>
-        <span>{waiting} not cut out yet</span>
+        <strong>Batch of {items.length}</strong>
+        <span>{marked} marked wrong</span>
         <span>{saved ? 'Saved' : 'Not saved'}</span>
+        <span>{stats.left} left to check, {stats.approved} approved, {stats.wrong} wrong so far</span>
         <span className="pc__group" role="group" aria-label="Show">
           {FILTERS.map(([id, label]) => (
             <button key={id} type="button" className={`gprev__btn ${filter === id ? 'is-on' : ''}`} aria-pressed={filter === id} onClick={() => setFilter(id)}>{label}</button>
           ))}
+          <button type="button" className="gprev__btn is-on" disabled={!items.length || busy} onClick={approveRest}>
+            {busy ? 'Saving...' : `Approve the other ${items.length - marked}, next batch`}
+          </button>
         </span>
       </div>
-      <p className="pc__help">Most viewed first. Click a card if the photo is wrong: not him, a suit, other people in the frame, a mural, a bad crop. Click again to undo.</p>
+      <p className="pc__help">Most viewed first. Click a card if the photo is wrong: not him, a suit, hands over the face, other people in the frame, a mural, a bad crop. Click again to undo. Only photos you approve go on the site; the ones you mark get alternatives on the pick page, or the kit card. {stats.kit ? `${stats.kit} more players have no usable photo yet and show the kit card.` : ''}</p>
+      {!items.length ? <p className="pc__help"><strong>Nothing left to check right now.</strong> The pipeline is still cutting; come back later.</p> : null}
       <ul className="pc__grid">
-        {shown.map((i) => (
+        {shown.filter((i) => inBatch.has(i.id)).map((i) => (
           <li key={i.id}>
             <button type="button" className={`pc__card ${wrong.has(i.id) ? 'is-wrong' : ''}`} aria-pressed={wrong.has(i.id)} onClick={() => toggle(i.id)} title={`${i.rank}. ${i.name}: ${i.file ?? ''} (${i.year ?? '?'})`}>
               <StickerFace player={{ id: i.id, name: i.name }} image={{ url: `/api/photo-check/img/${i.id}.0.webp`, fit: 'box' }} ground={neutral()} className="sticker--still" />
@@ -61,16 +76,6 @@ export default function PhotoCheck({ items, waiting }: { items: CheckItem[]; wai
           </li>
         ))}
       </ul>
-      {kits.length ? (
-        <>
-          <h2 className="pc__h">No usable photo: these get the kit card ({kits.length})</h2>
-          <ul className="pc__grid">
-            {kits.map((i) => (
-              <li key={i.id}><StickerFace player={{ id: i.id, name: i.name }} image={kitCard(i.club)} ground={neutral()} className="sticker--still" /></li>
-            ))}
-          </ul>
-        </>
-      ) : null}
     </main>
   );
 }

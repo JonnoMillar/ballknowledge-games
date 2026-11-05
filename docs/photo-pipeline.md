@@ -369,3 +369,34 @@ Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ Comma
 It survives the app closing; it does not survive a reboot (no scheduled task: that is a standing
 change to the machine, ask first). After a reboot, validate the files (see the crash note above) and
 launch it again. Do not start a second watchdog: check `heartbeat.log` is not already advancing.
+
+## New rules (2026-11-05): only checked photos ship, as many pictures as possible
+
+Jonno, after reviewing the top 500: "I'd rather we only use good photos in the game. Because having no
+picture for someone decently well known looks bad." On the long tail: "I can scan through pretty quickly
+with low effort, and I want there to be as many pictures as possible." His review: 64 of 419 top-500
+cutouts wrong (15%) and 81 of the top 500 on the kit card, so 145 of the top 500 had no good photo
+(Zidane, Garnacho, Hojlund, Owen, Foden, Arteta, Grealish, Drogba, Kvaratskhelia, Mahrez, Ian Wright,
+Camavinga...). His choices:
+
+1. **Only photos he has checked ship.** `/photo-check` now pages through every finished cutout, most
+   viewed first, 100 at a time. Marks save as before; "Approve the rest" records every unmarked card
+   of the batch in `approved.json` and loads the next batch. `publish.py` ships a cutout only if it is
+   in `approved.json` (and not marked wrong) or he picked it on `/photo-pick` (`choices.json`); everyone
+   else gets the kit card. The 366 top-500 cutouts he did not mark wrong were approved from his review.
+2. **Ranking:** the normal automatic ranking for everyone, no strict bar: his check is the filter.
+3. **Fill the gaps** (marked wrong, or on the kit card) three ways: (a) the next three best Commons
+   photos, to pick from on `/photo-pick`; (b) Flickr Creative Commons photos through Openverse
+   (licences that allow adaptation: BY, BY-SA, CC0, PDM; credited in `data/credits.json`); (c) managers
+   as managers: for players now known as managers, photos from their managing years (tracksuit or
+   suit) are allowed.
+
+### Why the jobs seemed to stall (2026-11-04/05)
+
+Not a slow search. The heartbeat has no lines from 21:10 to 10:13 and from 10:21 to 14:36, and Windows
+logged "entering Modern Standby" at each of those times: the laptop was asleep and every process frozen.
+The "2 players in 4 hours" was the first beat after a resume. At 14:38 a requested restart killed the
+watchdog and the jobs. Fixes: the watchdog now asks Windows to stay awake (`SetThreadExecutionState`
+ES_SYSTEM_REQUIRED; a closed lid still sleeps the laptop), kills and restarts a job that makes no
+progress for 20 min (candidates) or 30 min (cutouts) while there is work for it, and logs players per
+hour for both and `slept=Ns` when the clock jumped. It still dies at a reboot; see the task note below.

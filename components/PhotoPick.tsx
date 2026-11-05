@@ -8,9 +8,9 @@ type Choice = number | 'kit';
 
 /**
  * Dev only (/photo-pick): one row per player marked wrong, with the alternatives the pipeline cut
- * and the kit card. Click one; the picked card carries an ink frame and the word PICKED. A player left
- * unpicked ships with the first alternative (or the kit card if there is none). Saves as you go to
- * .scratch/photo-all/choices.json, which publish.py reads.
+ * and the kit card. Click one; the picked card carries an ink frame and the word PICKED. Only a picked
+ * photo ships: a player left unpicked gets the kit card (only checked photos go on the site). Saves as
+ * you go to .scratch/photo-all/choices.json, which publish.py reads.
  */
 export default function PhotoPick({ items, waiting }: { items: PickItem[]; waiting: number }) {
   const [choices, setChoices] = useState<Record<string, Choice>>({});
@@ -38,7 +38,7 @@ export default function PhotoPick({ items, waiting }: { items: PickItem[]; waiti
         <span>{Object.keys(choices).length} picked</span>
         <span>{waiting} still being cut</span>
       </div>
-      <p className="pc__help">Click the photo you want, or the kit card. Click again to undo. Leave a player alone to ship the first photo. Reload to see more as they finish.</p>
+      <p className="pc__help">Click the photo you want, or the kit card. Click again to undo. A player you leave alone gets the kit card. Reload to see more as they finish.</p>
       {items.map((it) => {
         const options: { k: Choice; file?: string; year?: number }[] = [...it.alts.map((a, k) => ({ k: k as Choice, file: a.file, year: a.year })), { k: 'kit' }];
         return (
