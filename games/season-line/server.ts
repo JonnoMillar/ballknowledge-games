@@ -73,7 +73,9 @@ async function resolve(id: string): Promise<{ board: StoredBoard; range: [number
   return b && b.start >= range[0] && b.start <= range[1] ? { board: b, range, day: null, date: null } : null;
 }
 
-const plain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const plain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  // letters with no accent to strip: type them as the plain letter ("Sanli" for \u015eanl\u0131)
+  .replace(/\u0131/g, 'i').replace(/\u00f8/g, 'o').replace(/\u0142/g, 'l').replace(/\u0111/g, 'd').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 /** A bonus guess is right when it is a top scorer's full name or surname, ignoring accents and case. */
 export function scorerMatches(names: readonly string[], guess: string): boolean {

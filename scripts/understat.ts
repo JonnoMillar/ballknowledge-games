@@ -28,14 +28,17 @@ export interface Shot {
 export const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function get<T>(url: string): Promise<T> {
+  let why = '';
   for (let i = 0; i < 4; i++) {
     try {
       const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(30_000) });
       if (res.ok) return (await res.json()) as T;
-    } catch { /* slow or refused */ }
+      why = `HTTP ${res.status} ${(await res.text()).slice(0, 120).replace(/\s+/g, ' ')}`;
+    } catch (e) { why = e instanceof Error ? `${e.name}: ${e.message}` : String(e); }
+    console.warn(`Understat try ${i + 1}/4 failed (${why})`);
     await pause(3000 * (i + 1));
   }
-  throw new Error(`Understat did not answer: ${url}`);
+  throw new Error(`Understat did not answer: ${url} (last: ${why})`);
 }
 
 /** Every Premier League fixture of a season, played or not. */

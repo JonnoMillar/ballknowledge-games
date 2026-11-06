@@ -185,6 +185,16 @@ describe('the server', () => {
     expect(scorerMatches(['Wu'], 'wu')).toBe(false);
   });
 
+  it('matches letters with no accent to strip, typed plain or in capitals', () => {
+    expect(scorerMatches(['Tuncay Şanlı'], 'Sanli')).toBe(true);
+    expect(scorerMatches(['Tuncay Şanlı'], 'TUNCAY ŞANLI')).toBe(true);
+    expect(scorerMatches(['Ole Gunnar Solskjær', 'Martin Ødegaard'], 'odegaard')).toBe(true);
+  });
+
+  it('matches every top scorer on every board by their own name, in capitals', () => {
+    for (const b of data.boards) for (const n of b.top.names) expect(scorerMatches(b.top.names, n.toUpperCase()), n).toBe(true);
+  });
+
   it('refuses what is not on the list, and dates it should not show', async () => {
     expect(await view(today, [{ club: 'Barcelona', start: 2010 }])).toBeNull();
     expect(await view(today, [{ club: 'Arsenal', start: 1995 }])).toBeNull(); // before the daily's years
