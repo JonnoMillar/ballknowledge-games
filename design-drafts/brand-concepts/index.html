@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brand concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800;900&family=Libre+Franklin:wght@400;600;800;900&family=DM+Serif+Display:ital@0;1&family=Courier+Prime:wght@700&family=Roboto+Slab:wght@800;900&display=swap" rel="stylesheet">
+<style>
+/* Brand concepts board. Every photo is a real, checked cutout run through an
+   effect (build.py). Boxes marked HIGGSFIELD are where a generated photo goes. */
+:root {
+  --page: #EDEAE3; --ink: #141210; --muted: #5E574C; --rule: rgba(20,18,16,.16);
+  --red: #D62839;
+  --display: 'Big Shoulders', Impact, sans-serif;
+  --text: 'Libre Franklin', system-ui, sans-serif;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --slab: 'Roboto Slab', Georgia, serif;
+  --mono: 'Courier Prime', monospace;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink); font: 15px/1.45 var(--text); padding: 28px 16px 80px; }
+.wrap { max-width: 1240px; margin: 0 auto; }
+header h1 { font: 900 clamp(40px, 7vw, 76px)/.9 var(--display); text-transform: uppercase; letter-spacing: -.01em; }
+header p { color: var(--muted); max-width: 64ch; margin-top: 10px; }
+nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 30px; }
+nav a { font: 700 13px/1 var(--text); color: var(--ink); text-decoration: none; border: 1.5px solid var(--ink); border-radius: 4px; padding: 8px 10px; background: #fff; }
+nav a:hover, nav a:focus-visible { background: var(--ink); color: #fff; outline: none; }
+.group { font: 900 13px/1 var(--text); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 46px 0 14px; border-top: 1.5px solid var(--ink); padding-top: 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 560px), 1fr)); gap: 28px; }
+.concept { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 0 var(--rule), 0 10px 30px -18px rgba(0,0,0,.35); scroll-margin-top: 20px; }
+.cap { padding: 16px 18px 18px; display: grid; gap: 8px; }
+.cap h2 { font: 900 26px/1 var(--display); text-transform: uppercase; display: flex; gap: 10px; align-items: baseline; }
+.cap h2 b { font: 800 14px/1 var(--text); color: var(--muted); }
+.cap .refs { font: 600 12px/1.3 var(--text); color: var(--muted); }
+.cap p { margin: 0; }
+.cap .gen { font-size: 13.5px; border-left: 3px solid var(--ink); padding: 2px 0 2px 10px; }
+.cap .gen strong { font-weight: 800; }
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2px; }
+.sw { display: flex; align-items: center; gap: 6px; font: 600 12px/1 var(--text); color: var(--muted); }
+.sw i { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--rule); }
+.mock { position: relative; aspect-ratio: 16 / 10; overflow: hidden; isolation: isolate; container-type: inline-size; }
+.mock img { position: absolute; display: block; user-select: none; pointer-events: none; }
+.grainy::after { content: ''; position: absolute; inset: 0; background: var(--grain); mix-blend-mode: multiply; opacity: .5; pointer-events: none; z-index: 20; }
+.higgs { position: absolute; inset: 0; display: grid; place-items: start end; padding: 10px; }
+.higgs span { font: 800 10.5px/1 var(--text); letter-spacing: .1em; text-transform: uppercase; background: rgba(0,0,0,.72); color: #fff; padding: 6px 8px; border-radius: 3px; z-index: 30; }
+
+/* 01 Breakthrough type */
+.m01 { background: #F2EEE6; }
+.m01 .word { position: absolute; left: -2%; right: -2%; top: 3%; font: 900 36cqw/.8 var(--display); color: var(--red); text-transform: uppercase; letter-spacing: -.035em; text-align: center; }
+.m01 img { height: 82%; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 2; }
+.m01 .tag { position: absolute; left: 22px; top: 20px; font: 800 13px/1.2 var(--text); text-transform: uppercase; letter-spacing: .08em; z-index: 3; }
+.m01 .tag em { display: block; font: 400 12px/1.3 var(--text); letter-spacing: 0; text-transform: none; color: var(--muted); font-style: normal; }
+.m01 .play { position: absolute; right: 22px; bottom: 22px; z-index: 3; background: var(--ink); color: #fff; font: 800 18px/1 var(--display); text-transform: uppercase; padding: 12px 22px; border-radius: 6px; }
+
+/* 02 Pop halftone */
+.m02 { background: #FFC93C; }
+.m02 .burst { position: absolute; width: 78%; aspect-ratio: 1; left: 34%; top: -12%; background: #fff; clip-path: polygon(50% 0,57% 30%,79% 6%,69% 36%,98% 27%,76% 49%,100% 62%,71% 64%,84% 92%,60% 74%,50% 100%,41% 74%,16% 92%,30% 64%,0 62%,24% 49%,2% 27%,32% 36%,21% 6%,43% 30%); }
+.m02 img { height: 104%; right: 2%; bottom: 0; z-index: 2; }
+.m02 .stack { position: absolute; left: 22px; top: 22px; z-index: 3; display: grid; gap: 6px; justify-items: start; }
+.m02 .stack span { font: 900 10.5cqw/.86 var(--display); text-transform: uppercase; padding: 4px 10px 2px; }
+.m02 .stack .a { background: #14213D; color: #FFC93C; }
+.m02 .stack .b { background: #fff; color: #14213D; transform: rotate(-2deg); }
+.m02 .stack .c { background: #14213D; color: #fff; }
+.m02 .stack small { font: 800 13px/1.2 var(--text); color: #14213D; margin-top: 6px; max-width: 24ch; }
+
+/* 03 Matchday programme */
+.m03 { background: #E9DCC0; }
+.m03::before { content: ''; position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(80,50,20,.35)); z-index: 1; }
+.m03 .sheet { position: absolute; inset: 18px; border: 2px solid #2A1B12; display: grid; grid-template-columns: 1fr 1.05fr; z-index: 2; }
+.m03 .left { padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; border-right: 2px solid #2A1B12; color: #2A1B12; }
+.m03 .issue { font: 700 12px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; display: flex; justify-content: space-between; border-bottom: 1.5px solid #2A1B12; padding-bottom: 8px; }
+.m03 h3 { font: 900 9cqw/.9 var(--slab); text-transform: uppercase; color: #B4321F; letter-spacing: -.02em; }
+.m03 .sub { font: italic 400 3.6cqw/1.1 var(--serif); }
+.m03 .stub { align-self: flex-start; font: 700 12px/1 var(--mono); text-transform: uppercase; background: #2A1B12; color: #E9DCC0; padding: 9px 12px; position: relative; }
+.m03 .stub::after { content: ''; position: absolute; right: -6px; top: 0; bottom: 0; width: 6px; background: radial-gradient(circle at 0 50%, transparent 3px, #2A1B12 3.5px) 0 0/6px 9px; }
+.m03 .photo { position: relative; overflow: hidden; background: #F3E6CC; }
+.m03 .photo img { height: 100%; left: 50%; bottom: 0; transform: translateX(-50%); }
+
+/* 04 Fly-poster */
+.m04 { background: #5B5650; }
+.m04 .p1 { position: absolute; left: -4%; top: -6%; width: 62%; height: 80%; background: #E8E2D2; clip-path: polygon(0 0,100% 0,97% 12%,100% 25%,96% 40%,99% 58%,95% 74%,98% 88%,94% 100%,0 100%); transform: rotate(-3deg); }
+.m04 .p2 { position: absolute; right: -3%; top: 8%; width: 56%; height: 100%; background: #F4F0E6; clip-path: polygon(4% 2%,100% 0,100% 100%,2% 100%,5% 86%,0 70%,4% 52%,1% 36%,5% 20%); }
+.m04 .p3 { position: absolute; left: 8%; bottom: -8%; width: 46%; height: 34%; background: #FFC93C; clip-path: polygon(0 8%,30% 0,55% 6%,100% 0,98% 100%,0 100%); transform: rotate(2deg); }
+.m04 img { height: 98%; right: 4%; bottom: 0; z-index: 3; mix-blend-mode: multiply; }
+.m04 .ransom { position: absolute; left: 6%; top: 12%; z-index: 4; display: flex; flex-wrap: wrap; width: 46%; gap: 4px 3px; transform: rotate(-4deg); }
+.m04 .ransom .w { display: inline-flex; white-space: nowrap; margin-right: 10px; }
+.m04 .ransom .w > span { display: inline-block; padding: 2px 6px; line-height: 1; font-size: 7.4cqw; }
+.m04 .r1 { font-family: var(--display); font-weight: 900; background: #141210; color: #fff; }
+.m04 .r2 { font-family: var(--serif); background: #fff; color: #141210; transform: rotate(4deg); }
+.m04 .r3 { font-family: var(--mono); font-weight: 700; background: #FFC93C; color: #141210; transform: rotate(-3deg); }
+.m04 .r4 { font-family: var(--slab); font-weight: 900; background: #1E4FD8; color: #fff; transform: rotate(2deg); }
+.m04 .r5 { font-family: var(--text); font-weight: 900; background: #E8E2D2; color: #141210; border: 2px solid #141210; }
+.m04 .tape { position: absolute; width: 90px; height: 26px; background: rgba(240,232,200,.75); z-index: 5; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+.m04 .note { position: absolute; left: 7%; bottom: 9%; z-index: 4; font: 700 14px/1.2 var(--mono); max-width: 26ch; transform: rotate(2deg); }
+
+/* 05 Scouting file */
+.m05 { background: #0D1117; color: #DDE3EA; }
+.m05::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px); z-index: 10; pointer-events: none; }
+.m05 .frame { position: absolute; top: 0; bottom: 0; width: 46%; overflow: hidden; }
+.m05 .frame img { height: 100%; left: 50%; bottom: 0; transform: translateX(-50%); filter: grayscale(.35) contrast(1.05); }
+.m05 .f1 { left: 4%; } .m05 .f2 { right: 4%; }
+.m05 .box { position: absolute; border: 1.5px solid #fff; z-index: 4; }
+.m05 .box::before { content: attr(data-l); position: absolute; left: -1.5px; bottom: 100%; margin-bottom: 4px; white-space: nowrap; font: 700 11px/1 var(--mono); background: #fff; color: #0D1117; padding: 4px 6px; }
+.m05 .box.warn { border-color: #FF9F1C; border-style: dashed; }
+.m05 .box.warn::before { background: #FF9F1C; }
+.m05 .hud { position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%); z-index: 11; text-align: center; }
+.m05 .hud h3 { font: 900 7.4cqw/.9 var(--display); text-transform: uppercase; }
+.m05 .hud small { font: 700 11px/1 var(--mono); letter-spacing: .14em; color: #8B96A3; }
+.m05::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 45%; background: linear-gradient(transparent, rgba(13,17,23,.92)); z-index: 9; }
+.m05 .readout { position: absolute; left: 14px; top: 12px; right: 14px; z-index: 11; display: flex; justify-content: space-between; font: 700 11px/1.3 var(--mono); color: #8B96A3; }
+
+/* 06 Floodlit */
+.m06 { background: radial-gradient(120% 80% at 50% 110%, #2B2363 0%, #120E2E 45%, #07061A 100%); color: #fff; }
+.m06 .beam { position: absolute; top: -30%; width: 40%; height: 150%; background: linear-gradient(180deg, rgba(255,255,240,.55), rgba(255,255,240,0) 70%); filter: blur(18px); z-index: 1; }
+.m06 .leak { position: absolute; inset: 0; background: radial-gradient(40% 60% at 92% 20%, rgba(255,120,60,.45), transparent 70%), radial-gradient(30% 40% at 5% 80%, rgba(80,140,255,.35), transparent 70%); mix-blend-mode: screen; z-index: 6; }
+.m06 .ghost { height: 104%; left: 50%; bottom: -14%; transform: translateX(-50%); z-index: 3; }
+.m06 .side { height: 78%; bottom: 0; z-index: 2; opacity: .95; }
+.m06 .s1 { left: 2%; } .m06 .s2 { right: 2%; }
+.m06 h3 { position: absolute; left: 22px; top: 20px; max-width: 34%; text-align: left; z-index: 7; font: italic 400 8.4cqw/1 var(--serif); text-shadow: 0 0 24px rgba(255,255,255,.5); }
+.m06 h3 small { display: block; font: 800 11px/1 var(--text); letter-spacing: .24em; text-transform: uppercase; font-style: normal; margin-bottom: 8px; opacity: .8; }
+
+/* 07 Chalk tactics */
+.m07 { background: #24302A; color: #F2F2EA; }
+.m07::before { content: ''; position: absolute; inset: 0; background: radial-gradient(70% 60% at 40% 40%, rgba(255,255,255,.07), transparent 70%); }
+.m07 svg.chalk { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; }
+.m07 .p { position: absolute; width: 23%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #3A4A40; z-index: 2; border: 3px solid rgba(242,242,234,.85); }
+.m07 .p img { width: 100%; left: 0; bottom: 0; }
+.m07 h3 { position: absolute; right: 22px; bottom: 18px; z-index: 4; font: 900 9.5cqw/.85 var(--display); text-transform: uppercase; text-align: right; filter: url(#rough); opacity: .92; }
+
+/* 08 Kit fabric */
+.m08 { background-color: #1E3A8A; background-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,.38) 1.4px, transparent 1.9px), radial-gradient(circle at 50% 50%, rgba(255,255,255,.10) 1.4px, transparent 2.2px); background-size: 7px 7px, 7px 7px; background-position: 0 0, 3.5px 3.5px; color: #fff; }
+.m08::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.14), transparent 40%, rgba(0,0,0,.25)); z-index: 1; }
+.m08 .stripe { position: absolute; top: 0; bottom: 0; left: 62%; width: 7%; background: #fff; z-index: 1; }
+.m08 .vert { position: absolute; left: 18px; top: 0; bottom: 0; writing-mode: vertical-rl; transform: rotate(180deg); font: 400 13cqw/1 var(--serif); z-index: 3; display: flex; align-items: center; justify-content: center; }
+.m08 img { height: 100%; left: 50%; bottom: 0; transform: translateX(-38%); z-index: 2; }
+.m08 .tagset { position: absolute; right: 18px; top: 18px; display: grid; gap: 8px; z-index: 3; justify-items: end; }
+.m08 .pricetag { position: relative; background: #fff; color: #1E3A8A; font: 900 15px/1 var(--display); text-transform: uppercase; padding: 8px 12px 8px 22px; clip-path: polygon(12px 0,100% 0,100% 100%,12px 100%,0 50%); }
+.m08 .pricetag::before { content: ''; position: absolute; left: 9px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: #1E3A8A; }
+.m08 .pricetag.big { font-size: 26px; background: #D62839; color: #fff; }
+.m08 .pricetag.big::before { background: #fff; }
+
+/* 09 Sticker album */
+.m09 { background: #F6F1E4; }
+.m09 .slots { position: absolute; inset: 22px 22px 22px 40%; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 12px; }
+.m09 .slot { border: 1.5px dashed #B9AE96; border-radius: 6px; position: relative; display: grid; place-items: center; font: 900 22px/1 var(--display); color: #B9AE96; background: #EFE8D6; }
+.m09 .stk { position: absolute; inset: -4px; background: #fff; border-radius: 7px; overflow: hidden; box-shadow: 0 0 0 4px #fff, 0 8px 14px -6px rgba(0,0,0,.45); }
+.m09 .stk img { width: 100%; bottom: 0; left: 0; }
+.m09 .stk .nm { position: absolute; left: 0; right: 0; bottom: 0; background: #141210; color: #fff; font: 900 12px/1 var(--display); text-transform: uppercase; padding: 5px 6px 4px; letter-spacing: .02em; }
+.m09 .stk.gold { background: linear-gradient(135deg, #8A6A1F, #F2D27A 35%, #A8842C 55%, #F6DE96 75%, #7A5A14); }
+.m09 .stk.gold .nm { background: linear-gradient(90deg, #6B4E10, #C9A243, #6B4E10); color: #141210; }
+.m09 .peel { position: absolute; left: 22px; top: 22px; bottom: 22px; width: calc(40% - 44px); display: flex; flex-direction: column; justify-content: space-between; }
+.m09 .peel h3 { font: 900 11cqw/.86 var(--display); text-transform: uppercase; }
+.m09 .peel small { font: 700 12px/1.3 var(--text); color: var(--muted); }
+.m09 .peel .count { font: 900 40px/1 var(--display); }
+.m09 .peel .count span { font-size: 18px; color: var(--muted); }
+
+/* 10 Face covers */
+.m10 { aspect-ratio: auto; background: #E7E2D8; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.fc { position: relative; aspect-ratio: 1; overflow: hidden; }
+.fc img { width: 100%; left: 0; bottom: 0; }
+.fc .lab { position: absolute; left: 8px; bottom: 8px; z-index: 9; font: 800 11px/1 var(--text); background: #fff; color: #141210; padding: 5px 7px; border-radius: 3px; }
+.fc .slab { position: absolute; z-index: 5; background: #141210; color: #fff; font: 900 26px/1 var(--display); text-transform: uppercase; display: grid; place-items: center; letter-spacing: .04em; }
+.fc .sticker { position: absolute; z-index: 5; border-radius: 50%; background: #FFC93C; color: #141210; display: grid; place-items: center; font: 900 54px/1 var(--display); box-shadow: 0 0 0 5px #fff, 0 6px 10px rgba(0,0,0,.35); transform: rotate(-10deg); }
+.fc .strip { position: absolute; z-index: 5; background: #F4F0E6; clip-path: polygon(0 18%,8% 0,22% 14%,37% 2%,51% 16%,66% 0,80% 12%,100% 4%,96% 84%,84% 100%,70% 86%,55% 100%,40% 88%,24% 100%,10% 86%,2% 100%); display: grid; place-items: center; font: 700 15px/1 var(--mono); color: #141210; }
+.fc .smear { position: absolute; z-index: 5; backdrop-filter: blur(9px) saturate(1.4); -webkit-backdrop-filter: blur(9px) saturate(1.4); }
+
+/* 11 Photo-object icons */
+.m11 { aspect-ratio: auto; background: #141210; padding: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.obj { aspect-ratio: 1; border: 1.5px dashed rgba(255,255,255,.35); border-radius: 8px; display: grid; place-items: center; text-align: center; color: rgba(255,255,255,.85); font: 800 13px/1.2 var(--text); padding: 8px; }
+.obj small { display: block; font: 600 11px/1.3 var(--text); color: rgba(255,255,255,.55); margin-top: 4px; }
+
+@media (max-width: 600px) {
+  .m03 .sheet { grid-template-columns: 1fr 1fr; inset: 10px; }
+  .m03 .left { padding: 10px; }
+  .m11 { grid-template-columns: repeat(2, 1fr); }
+  .m10 { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+  <filter id="chalk" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4" result="d"/><feComposite in="d" in2="n" operator="in"/></filter>
+</svg>
+<div class="wrap">
+<header>
+  <h1>Brand concepts</h1>
+  <p>Eleven directions for backgrounds, photo effects and the brand kit. Every photo is a checked cutout from the photo pipeline, run through a real effect (halftone, duotone, photocopy, glow, mosaic). Corners marked <strong>Higgsfield</strong> are where a generated photo replaces the stand-in background. Pick the ones worth taking further; nothing is generated yet.</p>
+</header>
+<nav aria-label="Concepts">
+  <a href="#c01">01 Big type</a><a href="#c02">02 Pop halftone</a><a href="#c03">03 Programme</a><a href="#c04">04 Fly-poster</a><a href="#c05">05 Scouting file</a><a href="#c06">06 Floodlit</a><a href="#c07">07 Chalk</a><a href="#c08">08 Kit fabric</a><a href="#c09">09 Sticker album</a><a href="#c10">10 Face covers</a><a href="#c11">11 Photo icons</a>
+</nav>
+
+<div class="group">Worlds: a background and a photo effect together</div>
+<div class="grid">
+
+<article class="concept" id="c01">
+  <div class="mock m01 grainy">
+    <div class="word">Chain</div>
+    <img src="img/yamal.png" alt="Lamine Yamal cutout">
+    <div class="tag">Daily #49<em>Steps, then the puzzle</em></div>
+    <div class="play">Play</div>
+  </div>
+  <div class="cap">
+    <h2><b>01</b>Big type</h2>
+    <div class="refs">From R0042, R0039 · shown on Chain</div>
+    <p>The game's name, huge and cropped, with a real player standing in front of it. No icon needed: the word and the face carry the tile. Cheapest of all, works with any cutout we have.</p>
+    <div class="gen"><strong>Higgsfield:</strong> none needed.</div>
+    <div class="swatches"><span class="sw"><i style="background:#F2EEE6"></i>Paper</span><span class="sw"><i style="background:#D62839"></i>Red</span><span class="sw"><i style="background:#141210"></i>Ink</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c02">
+  <div class="mock m02 grainy">
+    <div class="burst"></div>
+    <img src="img/saka-ht-navy.png" alt="Bukayo Saka, navy halftone">
+    <div class="stack"><span class="a">Spot</span><span class="b">the</span><span class="c">spoof</span><small>One of these moves never happened.</small></div>
+  </div>
+  <div class="cap">
+    <h2><b>02</b>Pop halftone</h2>
+    <div class="refs">From R0046, R0013 · shown on Spoofed</div>
+    <p>Comic-print halftone players in one ink on a loud ground, a starburst, and stacked words in boxes. Blue and yellow, so it never leans on red against green. Loud and young; the halftone hides the cutouts' low resolution.</p>
+    <div class="gen"><strong>Higgsfield:</strong> none needed. Optional: halftone action shots of made-up players for hero banners.</div>
+    <div class="swatches"><span class="sw"><i style="background:#FFC93C"></i>Yellow</span><span class="sw"><i style="background:#14213D"></i>Navy</span><span class="sw"><i style="background:#fff"></i>White</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c03">
+  <div class="mock m03 grainy">
+    <div class="sheet">
+      <div class="left">
+        <div class="issue"><span>No. 49</span><span>10 Nov 2026</span></div>
+        <div><h3>Season line</h3><div class="sub">Who scored, and when?</div></div>
+        <div class="stub">Admit one · Play</div>
+      </div>
+      <div class="photo"><img src="img/mbappe-duo-sepia.png" alt="Kylian Mbappé, sepia duotone"></div>
+    </div>
+    <div class="higgs"><span>Higgsfield: paper</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>03</b>Matchday programme</h2>
+    <div class="refs">From R0044 · shown on Season line</div>
+    <p>Each front page is an old matchday programme: aged paper, a sepia photo, a slab-serif title in faded red, an issue number that is the daily's number, a ticket stub for the Play button. Nostalgic, but the faces are this season's.</p>
+    <div class="gen"><strong>Higgsfield:</strong> one scanned-paper texture (aged programme cover, foxing, fold line, no text). About 2 credits.</div>
+    <div class="swatches"><span class="sw"><i style="background:#E9DCC0"></i>Paper</span><span class="sw"><i style="background:#2A1B12"></i>Brown ink</span><span class="sw"><i style="background:#B4321F"></i>Faded red</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c04">
+  <div class="mock m04 grainy">
+    <div class="p1"></div><div class="p2"></div><div class="p3"></div>
+    <img src="img/bellingham-copy.png" alt="Jude Bellingham, photocopy">
+    <div class="ransom"><span class="w"><span class="r1">C</span><span class="r2">a</span><span class="r3">n</span></span><span class="w"><span class="r4">y</span><span class="r5">o</span><span class="r1">u</span></span><span class="w"><span class="r2">n</span><span class="r3">a</span><span class="r4">m</span><span class="r5">e</span></span><span class="w"><span class="r1">h</span><span class="r3">i</span><span class="r2">m</span><span class="r4">?</span></span></div>
+    <div class="tape" style="left:44%;top:6%;transform:rotate(-8deg)"></div>
+    <div class="tape" style="right:6%;bottom:12%;transform:rotate(12deg)"></div>
+    <div class="note">Daily · 6 clues</div>
+    <div class="higgs"><span>Higgsfield: wall</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>04</b>Fly-poster</h2>
+    <div class="refs">From R0037, R0040 · shown on a "name the player" screen</div>
+    <p>Torn posters on a wall, photocopied players, ransom-note headlines, tape. Street and fanzine, not app store. Every screen can be re-torn, so it never feels like a template.</p>
+    <div class="gen"><strong>Higgsfield:</strong> a brick or hoarding wall with layers of torn, blank posters, overcast light. About 2 credits; tile it.</div>
+    <div class="swatches"><span class="sw"><i style="background:#5B5650"></i>Wall</span><span class="sw"><i style="background:#E8E2D2"></i>Poster</span><span class="sw"><i style="background:#FFC93C"></i>Yellow</span><span class="sw"><i style="background:#1E4FD8"></i>Blue</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c05">
+  <div class="mock m05">
+    <div class="frame f1"><img src="img/vinicius.png" alt="Vinícius Júnior"></div>
+    <div class="frame f2"><img src="img/nico-pixel.png" alt="Nico Williams, face pixelated"></div>
+    <div class="box" data-l="SUBJECT 07 · MATCH 98%" style="left:13.3%;top:17%;width:23.7%;height:47%"></div>
+    <div class="box warn" data-l="UNKNOWN · 41%" style="left:62.9%;top:17%;width:22%;height:47%"></div>
+    <div class="hud"><h3>Find the mole</h3><small>Odd man out · file 049</small></div>
+    <div class="readout"><span>4 players · 1 never played there</span><span>REC ●</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>05</b>Scouting file</h2>
+    <div class="refs">From R0040 · shown on Odd Man Out</div>
+    <p>Surveillance screens: detection boxes on faces, scan lines, readouts, a pixelated suspect. Fits the games about finding the fake (Spoofed, Odd Man Out) better than anything else here. Boxes sit on each face from the detector, so it works on every cutout automatically.</p>
+    <div class="gen"><strong>Higgsfield:</strong> none needed. Optional: blurred CCTV-style stadium concourse as a backdrop.</div>
+    <div class="swatches"><span class="sw"><i style="background:#0D1117"></i>Screen</span><span class="sw"><i style="background:#fff"></i>Box</span><span class="sw"><i style="background:#FF9F1C"></i>Warning orange</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c06">
+  <div class="mock m06 grainy">
+    <div class="beam" style="left:4%;transform:rotate(14deg)"></div>
+    <div class="beam" style="right:4%;transform:rotate(-14deg)"></div>
+    <img class="side s1" src="img/musiala-duo-night.png" alt="Jamal Musiala, night duotone">
+    <img class="side s2" src="img/salah-duo-night.png" alt="Mohamed Salah, night duotone">
+    <img class="ghost" src="img/haaland-glow.png" alt="A glowing silhouette">
+    <div class="leak"></div>
+    <h3><small>Tonight's mystery player</small>Who's the ghost?</h3>
+    <div class="higgs"><span>Higgsfield: stadium</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>06</b>Floodlit</h2>
+    <div class="refs">From R0041 · shown as a "guess who" reveal</div>
+    <p>Night match: floodlight beams, haze, light leaks. Known players in a cold duotone; the unknown one is pure light until you guess. The glow is also how a made-up Higgsfield player hides their face.</p>
+    <div class="gen"><strong>Higgsfield:</strong> an empty stadium at night from pitch level, floodlights on, light mist, no crowd faces, no logos. About 2 credits.</div>
+    <div class="swatches"><span class="sw"><i style="background:#07061A"></i>Night</span><span class="sw"><i style="background:#2B2363"></i>Indigo</span><span class="sw"><i style="background:#B9A4FF"></i>Lilac</span><span class="sw"><i style="background:#FF7A3C"></i>Flare</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c07">
+  <div class="mock m07 grainy">
+    <div class="p" style="left:8%;top:12%"><img src="img/olise.png" alt="Michael Olise"></div>
+    <div class="p" style="left:40%;top:54%"><img src="img/son.png" alt="Son Heung-min"></div>
+    <div class="p" style="left:10%;top:60%"><img src="img/mbappe.png" alt="Kylian Mbappé"></div>
+    <div class="p" style="left:42%;top:7%"><img src="img/wirtz.png" alt="Florian Wirtz"></div>
+    <svg class="chalk" viewBox="0 0 160 100" preserveAspectRatio="none" fill="none" stroke="#F2F2EA" stroke-width="1.1" stroke-linecap="round" filter="url(#chalk)">
+      <path d="M30 20 C 45 10, 60 8, 72 14"/><path d="M68 11 L72 14 L67 17"/>
+      <path d="M78 28 C 80 45, 76 56, 68 64"/><path d="M71 60 L68 64 L66 59"/>
+      <path d="M58 72 C 48 78, 40 78, 34 74"/><path d="M38 71 L34 74 L39 77"/>
+      <path d="M22 60 C 18 48, 18 40, 22 32"/>
+      <path d="M112 16 l7 7 M119 16 l-7 7"/><path d="M132 26 l7 7 M139 26 l-7 7"/>
+      <ellipse cx="25" cy="22" rx="16" ry="12" stroke-dasharray="2 2"/>
+    </svg>
+    <h3>Rondo</h3>
+    <div class="higgs"><span>Higgsfield: chalkboard</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>07</b>Chalk tactics</h2>
+    <div class="refs">From R0038 · shown on Rondo</div>
+    <p>A manager's tactics board: players as round counters, chalk arrows for the passes, crosses for the ones who dropped it. Pure football language, and it explains the game in the picture. The chalk here is a drawn stand-in; real chalk strokes would come from a photographed board.</p>
+    <div class="gen"><strong>Higgsfield:</strong> a used green chalkboard, smudged, with faint rubbed-out arrows, flat front-on light. About 2 credits. Chalk strokes as a second image.</div>
+    <div class="swatches"><span class="sw"><i style="background:#24302A"></i>Board</span><span class="sw"><i style="background:#F2F2EA"></i>Chalk</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c08">
+  <div class="mock m08">
+    <div class="stripe"></div>
+    <div class="vert">Pitch pin</div>
+    <img src="img/wirtz.png" alt="Florian Wirtz">
+    <div class="tagset"><span class="pricetag">Pack 06</span><span class="pricetag big">Play</span><span class="pricetag">12 goals</span></div>
+    <div class="higgs" style="place-items:end end"><span>Higgsfield: fabric</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>08</b>Kit fabric</h2>
+    <div class="refs">From R0049 · shown on Pitch pin</div>
+    <p>Every tile is shirt fabric in the game's colour: real mesh, a kit stripe, a vertical serif wordmark down the side, labels cut like swing tags instead of pills. Each game gets its own "kit"; together they look like a kit launch.</p>
+    <div class="gen"><strong>Higgsfield:</strong> macro photos of football shirt mesh, one per game colour, no badges or logos. About 2 credits each, 7 games.</div>
+    <div class="swatches"><span class="sw"><i style="background:#1E3A8A"></i>Kit blue</span><span class="sw"><i style="background:#fff"></i>Stripe</span><span class="sw"><i style="background:#D62839"></i>Red tag</span></div>
+  </div>
+</article>
+
+<article class="concept" id="c09">
+  <div class="mock m09 grainy">
+    <div class="peel"><h3>Steps</h3><div><div class="count">4<span> / 6 today</span></div><small>Rarer answer, better card.</small></div></div>
+    <div class="slots">
+      <div class="slot"><div class="stk"><img src="img/bellingham.png" alt=""><div class="nm">Bellingham</div></div></div>
+      <div class="slot"><div class="stk"><img src="img/musiala.png" alt=""><div class="nm">Musiala</div></div></div>
+      <div class="slot"><div class="stk gold"><img src="img/olise.png" alt=""><div class="nm">Olise</div></div></div>
+      <div class="slot">04</div>
+      <div class="slot"><div class="stk"><img src="img/saka.png" alt=""><div class="nm">Saka</div></div></div>
+      <div class="slot">06</div>
+    </div>
+  </div>
+  <div class="cap">
+    <h2><b>09</b>Sticker album, done properly</h2>
+    <div class="refs">Our own direction from September, which the hub drifted away from · shown on Steps</div>
+    <p>The album page is the world: printed numbered slots, die-cut stickers with a thick white edge, the grade materials (gold here) as the reward. Uses what we already built (grades, collection) instead of starting again.</p>
+    <div class="gen"><strong>Higgsfield:</strong> an album page photographed on a table, empty slots, soft daylight, as the hub background. About 2 credits.</div>
+    <div class="swatches"><span class="sw"><i style="background:#F6F1E4"></i>Album</span><span class="sw"><i style="background:#EFE8D6"></i>Slot</span><span class="sw"><i style="background:#C9A243"></i>Gold grade</span></div>
+  </div>
+</article>
+</div>
+
+<div class="group">Made-up players: Higgsfield action shots with the face covered</div>
+<div class="grid">
+<article class="concept" id="c10" style="grid-column:1/-1">
+  <div class="mock m10">
+    <div class="fc" style="background:#FFC93C"><img src="img/yamal.png" alt=""><div class="slab" style="left:0;right:0;top:22%;height:16%">Who?</div><span class="lab">Slab with a word</span></div>
+    <div class="fc" style="background:#1E3A8A"><img src="img/mbappe.png" alt=""><div class="sticker" style="left:30%;top:9%;width:40%;aspect-ratio:1">?</div><span class="lab">Sticker slapped on</span></div>
+    <div class="fc" style="background:#D9D3C7"><img src="img/vinicius-pixel.png" alt=""><span class="lab">Mosaic</span></div>
+    <div class="fc" style="background:#120E2E"><img src="img/saka-glow.png" alt="" style="width:127%;left:-13.5%;bottom:-13.5%"><span class="lab">Glow-out</span></div>
+    <div class="fc" style="background:#F2EEE6"><img src="img/haaland-ht-ink.png" alt=""><span class="lab">Halftone (hides little)</span></div>
+    <div class="fc" style="background:#5B5650"><img src="img/bellingham-copy.png" alt=""><div class="strip" style="left:-4%;right:-4%;top:26%;height:15%">NAME WITHHELD</div><span class="lab">Torn strip</span></div>
+  </div>
+  <div class="cap">
+    <h2><b>10</b>Face covers</h2>
+    <div class="refs">From R0040, R0041, R0046 · stand-in photos</div>
+    <p>Six ways to cover a face. The stand-ins here are real players; the real use is Higgsfield action shots of players who don't exist (sprinting, sliding, celebrating), for banners and backgrounds where no real player is named. A covered face reads as a design choice, not a dodge, and it hides AI faces' weak spot.</p>
+    <div class="gen"><strong>Higgsfield:</strong> full-body action shots of made-up players, about 2 credits each. I'd use kits in the game's colours rather than real club kits: real kits bring the club's crest and sponsor (trademarks), and a fake player in a real Arsenal shirt still reads as "some Arsenal player". Real kits only if you want that risk.</div>
+  </div>
+</article>
+</div>
+
+<div class="group">Brand kit: icons</div>
+<div class="grid">
+<article class="concept" id="c11" style="grid-column:1/-1">
+  <div class="mock m11">
+    <div class="obj">Whistle<small>Spoofed: the ref calls it</small></div>
+    <div class="obj">Captain's armband<small>Chain: links two players</small></div>
+    <div class="obj">Corner flag<small>Pitch pin</small></div>
+    <div class="obj">Training bibs<small>Rondo</small></div>
+    <div class="obj">Programme<small>Season line</small></div>
+    <div class="obj">Ticket stub<small>Archive</small></div>
+    <div class="obj">Boot, studs up<small>Steps</small></div>
+    <div class="obj">Linesman's flag<small>Odd Man Out: flag the fake</small></div>
+  </div>
+  <div class="cap">
+    <h2><b>11</b>Photo icons</h2>
+    <div class="refs">Replaces the clay miniatures</div>
+    <p>Icons as real objects: a photographed whistle, armband, corner flag, cut out and run through whichever effect the world uses (halftone for Pop, sepia for Programme, chalk outline for Tactics). Real things from a football ground, so they make sense on sight, and none of them is computer-drawn. Boxes are placeholders: nothing is generated.</p>
+    <div class="gen"><strong>Higgsfield:</strong> one studio product shot per object on plain grey, no brand marks. About 2 credits each, 8 objects, so about 16 credits. Cut out with the photo pipeline's rembg.</div>
+  </div>
+</article>
+</div>
+</div>
+</body>
+</html>
