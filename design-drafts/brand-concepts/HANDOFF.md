@@ -82,6 +82,16 @@ this is dev-only design work.
 - **Scene bible:** `bible.html` lists all 23 objects with job, content, click,
   why it belongs, and what is wrong now, plus the open calls. It is the spec for
   designing each item. Binoculars go on the window sill (Jonno).
+- **Bible v2 (2026-11-12):** board holds only playable things, 8 slots in three
+  columns: daily run dossier in the centre (new idea: all dailies shortened,
+  one overall result, then individual dailies), Spoofed, Chain, Odd Man Out,
+  Pitch Pin, The Tunnel, Season Line, Rondo (bib below the frame). Collection
+  moves to a card binder on the shelf. Room adds a crumpled shirt (generated
+  per player: a crumpled name cannot be laid on), static Brighton and
+  Fenerbahçe pennants, a Jabulani without maker or tournament marks,
+  binoculars on the sill, a pass on the window handle. Cut: sticky note,
+  fixture list, train ticket, calendar, Olise print. Everything clickable sits
+  inside the area shown from 16:10 to 1920x900 (x 5 to 95%, y 0 to 83%).
 - **Chain item is the weakest:** generated faces, and the baked string is cut
   by the masks on hover. Fix: cut out both Polaroids and the string as one
   piece; motion, if any, comes from a generated video loop, not code.
