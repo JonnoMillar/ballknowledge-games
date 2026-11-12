@@ -75,8 +75,16 @@ this is dev-only design work.
   lifts into a factfile (grain portrait + club stats from `data/pool.json`
   spells), club badges on the pennants (Brighton, Fenerbahçe), and a live,
   moving string for Chain that other games can reuse.
+- **No objects drawn in code (Jonno, 2026-11-12).** Code-drawn string or props
+  will not match the scene and look cheap. Everything visible in the room is
+  generated in the room's light. Real type stays only where already accepted
+  (title, label tape, chrome) until Jonno judges a type-in-scene test.
+- **Scene bible:** `bible.html` lists all 23 objects with job, content, click,
+  why it belongs, and what is wrong now, plus the open calls. It is the spec for
+  designing each item. Binoculars go on the window sill (Jonno).
 - **Chain item is the weakest:** generated faces, and the baked string is cut
-  by the masks on hover. Fix is a live string layer, not a better mask.
+  by the masks on hover. Fix: cut out both Polaroids and the string as one
+  piece; motion, if any, comes from a generated video loop, not code.
 - **Grain illustrations** (inspo R0022): photo reference + style prompt in GPT
   Image 2.6 works (the source post says GPT Image 2). Jonno prefers test A's
   rich colour and contrast over the flatter B. Test subject is Olise (not Sané).
@@ -122,7 +130,7 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Next
 
-1. Jonno's verdict on the Daylight lobby (does it fix the washed feel?).
+1. Jonno's sign-off on `bible.html` (objects, and the four open calls).
 2. **Single-item control test** on the Spoofed clipping, about 0.75 credits:
    design the item alone until approved; bake it in using it as a reference
    image; if the bake drifts, transfer the baked lighting onto the approved
