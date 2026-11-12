@@ -16,7 +16,7 @@
 * { box-sizing: border-box; margin: 0; }
 html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4 'Libre Franklin', system-ui, sans-serif; }
 .stage { position: fixed; inset: 0; overflow: hidden; }
-.plate { position: absolute; left: 50%; top: 50%; width: max(100vw, 177.8vh); aspect-ratio: 16 / 9; transform: translate(-50%, -50%); }
+.plate { position: absolute; left: 50%; top: 0; width: max(100vw, 177.8vh); aspect-ratio: 16 / 9; transform: translateX(-50%); }
 .scene { position: absolute; inset: 0; transition: transform 950ms var(--ease), filter 950ms var(--ease); }
 .layer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none; }
 .room { transform: translate(var(--px, 0), var(--py, 0)) scale(1.02); transition: transform 700ms ease-out; }
@@ -87,7 +87,7 @@ html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4
 <div class="stage" id="stage">
   <div class="plate"><div class="scene" id="scene">
     <div class="layer room" id="room">
-      <img class="layer" id="base" src="img/gen/sunny-baked-low.png" alt="">
+      <img class="layer" id="base" alt="">
       <div class="sun"></div>
       <div id="items"></div>
       <div class="title"><h1>Ball Knowledge</h1><p>Daily football games · working name</p></div>
@@ -98,7 +98,7 @@ html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4
 
   <nav class="chrome" aria-label="Account"><button>Log in</button><button class="menu"><i><b></b><b></b><b></b></i>Menu</button></nav>
   <div class="hint">Hover a pinned item, click to open.</div>
-  <div class="grades" role="group" aria-label="Colour grade"><span>Grade</span><button data-g="">Original</button><button data-g="grade-cool/">Cool</button><button data-g="grade-neutral/">Neutral</button></div>
+  <div class="grades" role="group" aria-label="Colour grade"><span>Light</span><button data-g="day/">Daylight</button><button data-g="sunny/">Golden</button><button data-g="grade-cool/">Golden, cool</button></div>
 
   <div class="game" id="game" aria-hidden="true">
     <button class="back" id="back">Back to the board</button>
@@ -136,9 +136,9 @@ for (const [id, it] of Object.entries(ITEMS)) {
   root.appendChild(hit);
 }
 let BASE = 'img/gen/';
-function setGrade(g) { BASE = 'img/gen/' + g; document.getElementById('base').src = BASE + 'sunny-baked-low.png'; document.querySelectorAll('[data-src]').forEach(i => i.src = BASE + i.dataset.src); document.querySelectorAll('.grades button').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === g)); try { localStorage.setItem('lobby-grade', g); } catch (e) {} }
+function setGrade(g) { BASE = 'img/gen/' + g; document.getElementById('base').src = BASE + 'baked.png'; document.querySelectorAll('[data-src]').forEach(i => i.src = BASE + i.dataset.src); document.querySelectorAll('.grades button').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === g)); try { localStorage.setItem('lobby-light', g); } catch (e) {} }
 document.querySelectorAll('.grades button').forEach(b => b.addEventListener('click', () => setGrade(b.dataset.g)));
-let saved = 'grade-cool/'; try { saved = localStorage.getItem('lobby-grade') ?? saved; } catch (e) {}
+let saved = 'day/'; try { saved = localStorage.getItem('lobby-light') ?? saved; } catch (e) {}
 setGrade(saved);
 const stage = document.getElementById('stage'), scene = document.getElementById('scene'), room = document.getElementById('room');
 function open(id) {

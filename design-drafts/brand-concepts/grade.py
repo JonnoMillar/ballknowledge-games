@@ -14,7 +14,6 @@ G = os.path.join(HERE, 'img', 'gen')
 GRADES = {
     # name: (shift yellow b*, shift red a*, keep this much orange chroma, lift paper highlights)
     'cool':    (-9, -3, 0.78, 0.10),
-    'neutral': (-16, -5, 0.62, 0.18),
 }
 
 def grade(rgb, b_shift, a_shift, orange_keep, lift):
@@ -34,12 +33,13 @@ def grade(rgb, b_shift, a_shift, orange_keep, lift):
     out = np.dstack([np.clip(L, 0, 255), np.clip(a + 128, 0, 255), np.clip(b + 128, 0, 255)]).astype(np.uint8)
     return cv2.cvtColor(out, cv2.COLOR_LAB2RGB)
 
-files = [os.path.join(G, 'sunny-baked-low.png')] + sorted(glob.glob(os.path.join(G, 'items', '*.png')))
+SRC = os.path.join(G, 'sunny')
+files = [os.path.join(SRC, 'baked.png')] + sorted(glob.glob(os.path.join(SRC, 'items', '*.png')))
 for name, p in GRADES.items():
     for f in files:
         im = Image.open(f); arr = np.asarray(im.convert('RGBA'))
         out = grade(np.ascontiguousarray(arr[..., :3]), *p)
-        rel = os.path.relpath(f, G); dst = os.path.join(G, f'grade-{name}', rel)
+        rel = os.path.relpath(f, SRC); dst = os.path.join(G, f'grade-{name}', rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         if im.mode == 'RGBA': Image.fromarray(np.dstack([out, arr[..., 3]]), 'RGBA').save(dst)
         else: Image.fromarray(out).save(dst)

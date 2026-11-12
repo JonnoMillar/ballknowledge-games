@@ -2,18 +2,22 @@
 
 Both images come from the same generation (the empty one is an edit of the
 baked one), so outside the items they line up and the difference is the item.
-Writes img/gen/items/<name>.png (RGBA, full-frame size so CSS can stack them at
-0,0) and items.json with each item's box in percent.
-Run: python -X utf8 design-drafts/brand-concepts/cutout.py
+Writes img/gen/<prefix>/baked.png plus items/<name>.png and <name>-patch.png
+(RGBA, full-frame so CSS can stack them at 0,0) and items/items.json.
+Run: python -X utf8 design-drafts/brand-concepts/cutout.py <prefix>   (sunny, day)
 """
-import json, os
+import json, os, shutil, sys
 import numpy as np, cv2
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 G = os.path.join(HERE, 'img', 'gen')
-baked = np.asarray(Image.open(os.path.join(G, 'sunny-baked-low.png')).convert('RGB'), np.float32)
-empty = np.asarray(Image.open(os.path.join(G, 'sunny-empty-low.png')).convert('RGB'), np.float32)
+PRE = sys.argv[1] if len(sys.argv) > 1 else 'sunny'
+OUT = os.path.join(G, PRE)
+os.makedirs(OUT, exist_ok=True)
+shutil.copy(os.path.join(G, f'{PRE}-baked-low.png'), os.path.join(OUT, 'baked.png'))
+baked = np.asarray(Image.open(os.path.join(G, f'{PRE}-baked-low.png')).convert('RGB'), np.float32)
+empty = np.asarray(Image.open(os.path.join(G, f'{PRE}-empty-low.png')).convert('RGB'), np.float32)
 H, W = baked.shape[:2]
 
 # Rough boxes (x0, y0, x1, y1) in the 1344x752 frame; the mask finds the real edge.
@@ -42,7 +46,7 @@ maha = np.sqrt(np.einsum('...i,ij,...j->...', X, icov, X))
 changed = np.abs(baked - empty).max(2) > 18
 diff = np.where(changed, maha, 0)
 diff = cv2.GaussianBlur(diff, (0, 0), 0.8)
-os.makedirs(os.path.join(G, 'items'), exist_ok=True)
+os.makedirs(os.path.join(OUT, 'items'), exist_ok=True)
 meta = {}
 for name, (x0, y0, x1, y1) in BOXES.items():
     m = np.zeros((H, W), np.uint8)
@@ -61,15 +65,15 @@ for name, (x0, y0, x1, y1) in BOXES.items():
     keep = cv2.erode(keep, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)))
     alpha = cv2.GaussianBlur(keep, (0, 0), 0.8)
     rgba = np.dstack([baked.astype(np.uint8), alpha])
-    Image.fromarray(rgba, 'RGBA').save(os.path.join(G, 'items', f'{name}.png'))
+    Image.fromarray(rgba, 'RGBA').save(os.path.join(OUT, 'items', f'{name}.png'))
     # Patch: the empty plate under the item (mask grown a little), shown on
     # hover so the lifted item leaves bare cork behind it.
     grow = cv2.dilate(keep, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)))
     patch = np.dstack([empty.astype(np.uint8), cv2.GaussianBlur(grow, (0, 0), 1.5)])
-    Image.fromarray(patch, 'RGBA').save(os.path.join(G, 'items', f'{name}-patch.png'))
+    Image.fromarray(patch, 'RGBA').save(os.path.join(OUT, 'items', f'{name}-patch.png'))
     ys, xs = np.where(keep > 0)
     bx = (xs.min(), ys.min(), xs.max(), ys.max())
     meta[name] = {'box': [float(round(bx[0] / W * 100, 2)), float(round(bx[1] / H * 100, 2)), float(round((bx[2] - bx[0]) / W * 100, 2)), float(round((bx[3] - bx[1]) / H * 100, 2))],
                   'fill': round(float((keep[y0:y1, x0:x1] > 0).mean()), 2)}
     print(name, meta[name])
-json.dump(meta, open(os.path.join(G, 'items', 'items.json'), 'w'), indent=1)
+json.dump(meta, open(os.path.join(OUT, 'items', 'items.json'), 'w'), indent=1)
