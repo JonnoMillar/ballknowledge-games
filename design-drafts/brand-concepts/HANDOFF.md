@@ -65,7 +65,18 @@ this is dev-only design work.
 - **Cheerful, not gloomy.** Night/rain read as depressing; players outside
   looked like mannequins. Now: daylight, empty sunny pitch, no people.
 - **Golden light was too orange** (killed contrast between paper, grass, kit).
-  Daylight edit is waiting on Jonno's verdict.
+- **Golden cool is the light (2026-11-12).** Daylight read "too white" and lost
+  the feeling of being in the room. Rebakes should aim for Golden cool natively.
+- **Bar for the hub (Jonno, 2026-11-12):** every detail deliberate and
+  readable; nobody should be able to say "that doesn't make sense", "that looks
+  off" or "that's AI". Wants easter eggs and small wins (spotting a badge),
+  nudges to niche players, and a click-to-game zoom where the camera never
+  blinks. Ideas raised: a shirt over the chair with today's niche player that
+  lifts into a factfile (grain portrait + club stats from `data/pool.json`
+  spells), club badges on the pennants (Brighton, Fenerbahçe), and a live,
+  moving string for Chain that other games can reuse.
+- **Chain item is the weakest:** generated faces, and the baked string is cut
+  by the masks on hover. Fix is a live string layer, not a better mask.
 - **Grain illustrations** (inspo R0022): photo reference + style prompt in GPT
   Image 2.6 works (the source post says GPT Image 2). Jonno prefers test A's
   rich colour and contrast over the flatter B. Test subject is Olise (not Sané).
