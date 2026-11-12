@@ -1,34 +1,36 @@
 # Daily run: spec
 
-Written 2026-11-12. Part 2 of Jonno's daily-run brief; the research it
-stands on is `docs/daily-run-research.md` (Part 1). **Nothing here is built.**
-This records proposals and the decisions Jonno needs to make; the open
-questions are at the end.
+Written 2026-11-12; revised the same day with Jonno's answers (section 9).
+Part 2 of Jonno's daily-run brief; the research it stands on is
+`docs/daily-run-research.md` (Part 1). **Nothing here is built.**
 
 **The idea (Jonno, 2026-11-12):** every daily game played in one go, each
 shortened and framed as a scout's task, one overall result at the end. The
 individual dailies stay playable afterwards. It opens from the centre slot
 of the new hub, "Today's assignment", a manila dossier on the cork board
-(`design-drafts/brand-concepts/bible.html`). Only that slot is locked; the
-rules below can change after the lobby rebake.
+(`design-drafts/brand-concepts/bible.html`). Only that slot is locked.
 
 ## At a glance
 
-- **Six tasks, about 6 to 7 minutes**, in a fixed order: Check the rumours
-  (Spoofed), Trace the link (Steps), Log the shot (Pitch pin), Find the mole
-  (Odd Man Out), Line them up (Sorted), Read the season (Season line).
-- **Phase 1 ships four** (the four that already have the content): about 5
-  minutes. Find the mole needs a solo mode; Sorted needs to merge first.
-- **Result:** one word on the site's existing scale ("Ball knowledge:
-  Sharp"), one mark per task, then the player's best moment of the run, named
-  with its fact. No numbers on screen, never "N of M".
-- **Comparison with today's players** comes later (it needs a result store),
-  overall only, from 100 plays, with a number only for the top half.
-- **Streak:** days with a finished run, with an earned rest day.
-- **Content:** where a daily is a sequence (Spoofed, Steps, Sorted), the run
-  plays its first part and the daily carries on from there. Where a daily is
-  one puzzle (Season line) or there is no daily (Pitch pin, Odd Man Out), the
-  run has its own.
+- **Six tasks, about 6 minutes, never more than 8** (the clocks cap it), in a fixed order: Check the
+  rumours (Spoofed), Trace the link (Steps), Log the shot (Pitch pin), Find
+  the mole (Odd Man Out), Line them up (The Tunnel), Read the season (Season
+  line).
+- **Timed in the run, untimed alone.** Each task has a clock that caps it;
+  time never scores. Played individually, every game stays untimed.
+- **Phase 1 ships four** (the four that already have the content). Find the
+  mole needs a solo mode; The Tunnel needs to merge first.
+- **Result: an exact score with its band word.** Proposed as a match rating,
+  "Sharp · 7.4" (still to confirm; Jonno picked 0 to 100, and 7.4 is the same
+  number shown the football way). One mark per task, then the player's best
+  moment of the run, named with its fact.
+- **"Top X%"** from day one, on our own scale's curve (a normal distribution),
+  switching to today's real players at 100 plays. Shown to the top half only.
+- **Streak:** days with a finished run, with earned rest days.
+- **Content:** where a daily is a sequence (Spoofed, Steps, The Tunnel), the
+  run plays its first part and the daily carries on. Where it is one puzzle
+  (Season line) or there is no daily (Pitch pin, Odd Man Out), the run has its
+  own.
 
 ---
 
@@ -40,127 +42,157 @@ rules below can change after the lobby rebake.
 | 2 | Trace the link | Steps | recall a set | type and search |
 | 3 | Log the shot | Pitch pin | place | pin and throw |
 | 4 | Find the mole | Odd Man Out (solo) | spot the liar | tap |
-| 5 | Line them up | Sorted (The Tunnel) | order | drag or tap to swap |
-| 6 | Read the season | Season line | identify a shape | choose club and season |
+| 5 | Line them up | The Tunnel | order | drag or tap to swap |
+| 6 | Read the season | Season line | identify a shape | choose |
 
 **In:** every game with a daily or daily-able content. **Out:** Rondo
-(multiplayer), Chain's own puzzle (see open question 2: it is a 2-minute
-held-or-not board; Steps carries Chain's verb in a fraction of the time).
+(multiplayer) and Chain's own puzzle (Jonno, 2026-11-12: Steps is "Trace the
+link"; the puzzle stays its own daily).
 
 **Why this order:**
 1. **Open on the quickest win.** Spoofed is tap only and understood in a
-   glance: competence in the first 30 seconds, no typing.
-2. **Hardest recall second,** while the player is fresh: Steps is the only
-   task that needs a name from memory.
-3. **A breather third.** Pitch pin is physical, needs no recall, and always
-   scores something.
-4. **The second spot-the-liar fourth,** two tasks away from the first, on
-   different content (a team sheet, not a career).
-5. **Ordering fifth,** a different hand action (drag).
-6. **A story to close.** Season line's line draws in and the reveal names
-   the season and its champion: a narrative close. It has partial credit
-   (the club right, the season wrong), so a miss is rarely total.
+   glance.
+2. **Hardest recall second,** while fresh: Steps is the only task that needs
+   a name from memory.
+3. **A breather third.** Pitch pin needs no recall and always scores.
+4. **The second spot-the-liar fourth,** two tasks from the first, on a team
+   sheet, not a career.
+5. **Ordering fifth,** a different hand action.
+6. **A story to close.** Season line's reveal names the club, the season
+   and its champion.
 
-Inputs alternate (tap, type, place, tap, drag, choose), so no two tasks in a
-row feel the same. The order is fixed every day: ritual needs sameness
-(research Q4).
+Inputs alternate, so no two tasks in a row feel the same. The order is fixed
+every day (ritual needs sameness, research Q4). The peak-end rule is handled
+by the end screen: the report ends on the player's best moment.
 
-The peak-end rule (research Q4) is handled by the end screen, not the task
-order: the report ends on the player's best moment, whatever the last task
-was.
+**Phase 1 order:** Check the rumours, Trace the link, Log the shot, Read the
+season.
 
-**Phase 1 order** (four tasks): Check the rumours, Trace the link, Log the
-shot, Read the season.
+**Task names are config, not content** (Jonno: easy to edit, baked in
+nowhere). They live in one constant (`RUN_TASKS` in `src/lib/run/tasks.ts`:
+id, name, rule line, clock) and every screen and the share line read it.
+**Flag for the hub art:** `bible.html` has the dossier showing "a typed
+checklist of the day's tasks". It must not be generated into the image;
+generate the dossier blank and set the checklist in real type, or the names
+are baked in.
 
 ---
 
 ## 2. The cut-down round for each game
 
-Every task header is the task name as an eyebrow and one plain rule line,
-on the live task (no separate intro screen). Untimed, as every solo game
-here is.
+Each task's header is its name as an eyebrow and one plain rule line, on the
+live task (no separate intro screen).
 
-| Task | Full daily today | Run round | Rule line | Time |
-|---|---|---|---|---|
-| Check the rumours | 5 careers, 2 picks each | Careers 1 and 2 of today's Spoofed daily (the ramp's easier end), 2 picks each, same peel reveal | "One move in each career never happened. Find it." | ~50 s |
-| Trace the link | 4 steps, one shot each | Steps 1 and 2 of today's Steps daily, one shot each, a shorter reveal (below) | "Name a player who fits the gap." | ~70 s |
-| Log the shot | No daily; packs of 6 to 9 | 3 goals from the run's own daily set, one throw each, 0 to 100 a goal as now | "Pin where each goal was struck from." | ~45 s |
-| Find the mole | Pub game, no solo mode | One real XI from a real match with one player planted by the generator; up to 2 taps | "One name in this XI didn't start. Find it." | ~40 s |
-| Line them up | 6 categories on 5 players | Categories 1 and 2 (age, height) of today's Sorted daily | "Put them in order." (category as the headline) | ~60 s |
-| Read the season | 5 guesses, line grows by fifths | The run's own board: line starts at 15 games, 3 guesses (15, 23, 30 games), club and season guessed together, hints as now (nearest rival after miss 1, a squad player after miss 2) | "Name the club and the season." | ~75 s |
+### Clocks (Jonno, 2026-11-12: time limits in the run, none alone)
 
-**Total:** tasks ~340 s, moves between tasks ~5 s each (30 s), the report
-~30 s: **about 6 m 40 s.** Phase 1: ~240 s + 20 s + 30 s, **about 4 m 50 s.**
-Estimates are from the games' current shapes, not measured: time a real run
-at the playable-draft gate and cut first where it runs long (Steps or Season
-line).
+- A clock per item, shown as a draining ink bar under the header (not red:
+  red is the brand and the action). When it runs out the item locks with what
+  the player has (nothing entered is a miss for that item).
+- **Time never scores.** No speed points, no bonus for time left. Speed
+  points would reward fast typing over knowing players; the clock's jobs are
+  tension and a hard cap on the run's length.
+- Archive runs are timed too. Each game played on its own is untimed, as now.
+- Clock values are named constants in `RUN_TASKS`; the numbers below are
+  first guesses, tuned at the playtest. The playbook's "solo is untimed" rule
+  still holds for every game outside the run.
 
-**Notes per task**
-- **Season line, 3 guesses:** this also fixes the game's open risk (up/down
-  arrows bisect 26 seasons in five guesses). Three arrows split 26 seasons
-  only to about 3, so the line has to be read.
-- **Steps' reveal:** the full show is ~4.1 s at Elite. In the run, cap it
-  (`RUN_REVEAL_MS`, proposed 2 s) by dropping the push-in and keeping the
-  cases and the develop. Jonno's call: he tuned that motion.
-- **Find the mole:** the fake must follow Spoofed's fairness rules (same
-  era, plausible club or nation, never famous enough to be a tell) and Odd
-  Man Out's leak rules (names only: no number, flag, portrait or captain
-  mark).
-- **Line them up:** age and height are complete in the data (1,545 and
-  1,560 of 1,562 candidates); the FIFA and Instagram categories, the supply
-  problem on the Sorted branch, are not needed for the run.
-- Between tasks, the finished task sheet slides into the dossier and the
-  next slides out (no teleports; staged, ~800 ms). The reveal of each task
-  ends with the one red button, "Next: Log the shot", so the player reads the
-  truth at their own pace.
+| Task | Run round | Rule line | Clock | Typical | Max |
+|---|---|---|---|---|---|
+| Check the rumours | Careers 1 and 2 of today's Spoofed daily, 2 picks each, same peel reveal | "One move in each career never happened. Find it." | 30 s a career | ~50 s | 60 s |
+| Trace the link | Steps 1 and 2 of today's Steps daily, one shot each, reveal capped at `RUN_REVEAL_MS` (2 s) | "Name a player who fits the gap." | 45 s a step | ~70 s | 90 s |
+| Log the shot | 3 goals from the run's own daily set, one throw each | "Pin where each goal was struck from." | 20 s a goal | ~45 s | 60 s |
+| Find the mole | One real XI with one name planted by the generator; up to 2 taps | "One name in this XI didn't start. Find it." | 40 s | ~35 s | 40 s |
+| Line them up | Categories 1 and 2 (age, height) of today's Tunnel daily | "Put them in order." | 30 s a category | ~55 s | 60 s |
+| Read the season | The run's own board, reshaped (below) | "Name the club. Then the season." | 30 s a guess, 20 s for the season | ~60 s | 110 s |
+
+**Length:** typical ~5 m 15 s of tasks, plus ~30 s of moves and ~30 s of
+report: **about 6 m 15 s.** The clocks cap the tasks at 7 m 00 s, so the
+whole run is **never more than about 8 minutes.** Phase 1: typical ~3 m 45 s
+of tasks plus moves and report, about 4 m 35 s. Time a real run at the
+playable-draft gate.
+
+### Read the season, reshaped (Jonno, 2026-11-12)
+
+Jonno's note: show the whole line, add hints, and maybe a year range instead
+of guessing the exact year. Spec:
+
+1. The **whole 38-game line** is drawn from the start, with a **five-season
+   window** stated ("2005/06 to 2009/10"). The answer's place in the window is
+   random, so the middle is not a tell.
+2. **Guess the club,** up to 3 guesses. After miss 1, a squad player; after
+   miss 2, the top scorer with their tally (the daily's own hints).
+3. Once the club is right (or after the third miss, when the club is shown),
+   **one pick of the season** inside the window.
+4. Score: club on guess 1, 2, 3 = 80, 55, 30; season exact +20, one off +10.
+
+The run's boards must be mid-fame stories, not the iconic ones: with the
+whole line showing, Leicester 15/16 is a giveaway. The selection uses the
+daily's story score but caps club and story fame (a run-board filter, named
+and tested). The full daily keeps its own design (the line by fifths, five
+guesses).
+
+### Other notes per task
+
+- **Find the mole:** the fake follows Spoofed's fairness rules (same era,
+  plausible club or nation, never famous enough to be a tell) and Odd Man
+  Out's leak rules (names only).
+- **Line them up:** age and height are complete in the data; the FIFA and
+  Instagram categories (the Tunnel branch's supply problem) are not needed.
+- Between tasks the finished sheet slides into the dossier and the next slides
+  out (staged, ~800 ms). Each task's reveal ends with the one red button,
+  "Next: Log the shot", so the player reads the truth at their own pace (the
+  next clock starts only then).
 
 ---
 
 ## 3. The scoring model
 
-### Task score, 0 to 100
+### Task score, 0 to 100, as fine-grained as the data allows
 
-Each game's result maps to one task score *s*. The mapping lives in that
-game's run module, since only it knows its result.
+Jonno wants exact scores with fine margins, so mates rarely tie. Each task
+score *s* uses the continuous measure where the game has one and keeps one
+decimal internally.
 
-| Task | Mapping | Laziest play, expected |
+| Task | Mapping | Continuous? | Laziest play |
+|---|---|---|---|
+| Check the rumours | *s* = 25 × points, points 0 to 4 (Spoofed's 2/1/0 a career) | No: 5 values | ≈ 25 |
+| Trace the link | Per step, by grade, then placed inside the grade by the pick's ruler value (`factOf`) between that grade's cuts: Basic 40–54, Decent 55–69, Solid 70–84, Sharp 85–94, Elite 95–100; miss 0. *s* = mean of the two | Yes | ≈ 42 |
+| Log the shot | *s* = mean of the three goals' points (0 to 100 each) | Yes | ≈ 37 |
+| Find the mole | First tap 100, second 50, else 0 | No: 3 values | ≈ 14 |
+| Line them up | Per category: *c* = max(0, pairs right − 5) × 20, pairs out of 10; *s* = mean | Partly: 11 values a category | ≈ 0 |
+| Read the season | Club guess 1/2/3: 80/55/30, plus season exact +20 or one off +10 | Partly: 13 values | ≈ 10 |
+
+Chance is subtracted where random play would score (The Tunnel's pairs).
+Spoofed and the mole stay coarse; the continuous tasks give the margins.
+
+### Run score
+
+*R* = mean of *s* over the tasks in today's run, to one decimal. Equal
+weights: calibration (below) makes each task worth the same to a decent fan.
+
+**How it shows (to confirm, section 9):** as a **match rating**, *R* ÷ 10 to
+one decimal: "Sharp · 7.4". It is the same number as 74 out of 100.
+Why a rating: every fan already reads it (a 6 is an ordinary game, a 7 a good
+one, a 9 outstanding), so a 6.8 does not feel like failing an exam, and there
+is no "/100" to read as "N of M". The other option is "Sharp · 74".
+
+| Band | Rating | *R* |
 |---|---|---|
-| Check the rumours | *s* = 25 × points, points 0 to 4 (2/1/0 a career, Spoofed's own) | Random taps on ~6 stops: 0.5 a career, *s* ≈ 25 |
-| Trace the link | Per step: miss 0, Basic 40, Decent 55, Solid 70, Sharp 85, Elite 100; *s* = mean of the two | The most famous answer, usually Basic: *s* ≈ 40 |
-| Log the shot | *s* = floor(mean of the three goals' points) | Pin on the spot: ~37 (Pitch pin's measured lazy median) |
-| Find the mole | First tap 100, second tap 50, else 0 | Random: 1/11 × 100 + 10/11 × 1/10 × 50 ≈ 14 |
-| Line them up | Per category: *c* = max(0, pairs right − 5) × 20, pairs out of 10; *s* = mean | Random order averages 5 pairs: *s* ≈ 0 (a little above, from spread) |
-| Read the season | Solved on guess 1, 2, 3: 100, 75, 50; club right but season not: 25; else 0 | A guess at a famous champion: low, ~10 |
+| Basic | under 4.0 | 0 to 39.9 |
+| Decent | 4.0 to 5.4 | 40 to 54.9 |
+| Solid | 5.5 to 6.9 | 55 to 69.9 |
+| Sharp | 7.0 to 8.4 | 70 to 84.9 |
+| Elite | 8.5 and up | 85 to 100 |
 
-Why these: a hold in Steps is the achievement, so any held pick is worth
-most of the task and depth adds the rest. Sorted's raw pairs reward random
-order with half marks, so chance is subtracted. Spoofed and Pitch pin keep
-their own numbers.
-
-### Run score and verdict
-
-The run score *R* = floor(mean of *s* over the tasks in today's run). Equal
-weights: simple to explain, and calibration (below) makes each task worth the
-same to a decent fan.
-
-| Verdict | *R* (proposed; set by simulation) |
-|---|---|
-| Basic | 0 to 39 |
-| Decent | 40 to 54 |
-| Solid | 55 to 69 |
-| Sharp | 70 to 84 |
-| Elite | 85 to 100 |
-
-The words are the site's existing scale (Steps, the grades key), so no new
-scale and no rename (open question 1 has the alternatives). The laziest run
-above averages about 22 (Basic).
+The band words are the site's scale (Jonno, 2026-11-12), shown beside the
+number; new words may come later with a new name for the whole site (an
+agent or scout theme). The laziest run averages about 2.2 (Basic).
 
 **Calibration, before launch** (the Pitch pin method): a script plays every
 upcoming day as lazy, casual, decent and expert strategies, 200 runs each.
-Accept when the laziest median is under 40 and its maximum under 55 (floored
-*R*, so lazy play never reaches Solid), and a decent fan lands Solid on most
-days. Every number above is a named constant (`TASK_MAP`, `BANDS`,
-`RUN_REVEAL_MS`) so a playtest moves one number.
+Accept when the laziest median is under 4.0 and its maximum under 5.5, and a
+decent fan lands Solid on most days. Every number is a named constant
+(`TASK_MAP`, `BANDS`, `SCALE_MEAN`, `SCALE_SD`, `RUN_REVEAL_MS`, the clocks).
 
 ### Task marks
 
@@ -170,74 +202,69 @@ days. Every number above is a named constant (`TASK_MAP`, `BANDS`,
 | Partial | 40 to 79 | half-filled disc | 🔸 |
 | Miss | 0 to 39 | hollow ring, cross | ❌ |
 
-Each mark differs by shape and lightness, never by hue alone (Jonno is
-colour-blind). The marks are not counted anywhere: no "4 of 6".
+Shape and lightness differ, never hue alone. Marks are never counted on
+screen. Each task's own number is one tap away on the report.
 
-### Comparison with today's players (phase 3)
+### "Top X%" (Jonno, 2026-11-12)
 
-Only overall, never per task. Shown as a second layer under the verdict.
+Two sources, one line, overall only (never per task), top half only.
 
-- **Curve:** a smoothed histogram of today's real *R* values (21 bins,
-  kernel-smoothed), the player's mark on it, no y-axis numbers. Never a
-  fitted normal curve.
-- **Open when** today has at least `CURVE_MIN` = 100 reports. Under that,
-  the last 7 days pooled, labelled "this week", if they reach 100. Under
-  that, nothing.
-- **The number,** only for the top half: "Ahead of X% of today's scouts",
-  X = 100 × (count below *R* + ½ count equal to *R*) / *n*, rounded down,
-  shown only when X ≥ 50. Anyone on today's top score sees "Joint best
-  today" instead.
-- **Below the top half:** the curve and the mark with no number, plus the
-  player's own record ("Your best this month: Sharp").
-- **Per task, later:** facts, not ranks. "12% of today's scouts spotted this
-  spoof first time." "4% named Bogarde."
+**Before real data** (fewer than `CURVE_MIN` = 100 reports today, and fewer
+than 100 over the last 7 days):
+- The curve is **our scale's normal distribution**, mean `SCALE_MEAN` 6.0
+  and spread `SCALE_SD` 1.5 (an ordinary match rating as the middle).
+- X = 100 × (1 − Φ((rating − 6.0) / 1.5)), rounded up to a whole number.
+  7.4 is top 18%; 8.5 is top 5%; 6.0 is top 50%.
+- **The words say it is the scale:** "Top 18% on our scale". Until real
+  players exist, "of scores" or "of players" would be a claim that is not
+  true (research Q2).
+- The calibration simulation checks the bell is roughly right (a decent fan
+  near the middle); `SCALE_MEAN` and `SCALE_SD` move if not.
 
-Why: research Q2 (rank feedback lowers effort for low performers; a
-percentile under 100 plays is off by 10+ points; ties at the top read as a
-loss).
+**With real data** (100+ reports today, or 100+ over the last 7 days, labelled
+"this week"):
+- The curve is a smoothed histogram of the real ratings, never a fitted bell.
+- X = 100 × (count at or above the rating) / *n*, rounded up: "Top 18% today".
+- Anyone on today's top score sees "Joint best today".
+- Needs the result store (section 8, still to confirm).
+
+**For everyone below the top half** (X > 50): the curve with their mark on it
+and their own record ("Your best this month: Sharp · 7.9"), no percentage
+(Jonno, 2026-11-12).
+
+**Per task, later:** facts, not ranks. "12% of today's scouts spotted this
+spoof first time."
 
 ---
 
 ## 4. The end screen, and the peak
 
-The report runs in stages, one at a time (lessons 1.7), on one laptop
-screen at 1366×768.
+The report runs in stages, one at a time, on one laptop screen at 1366×768.
 
-1. **The dossier closes** (~800 ms): the last task sheet slides in on top of
-   the others.
-2. **The marks** tick in down the task list, 100 ms apart, each with its
-   task name: the report card.
-3. **The verdict** lands alone and large: eyebrow "Ball knowledge", the word
-   in Big Shoulders, in its grade's material (the Steps case textures, Basic
-   to Elite), so it reads as the same scale.
-4. **The find (the peak):** one card, the player's best moment today, said
-   in one line with its fact. Then everything else fades in beneath.
-5. **The rest:** the curve (when open), the streak, the countdown to
-   tomorrow's assignment, **Share** (the one red button), Back to the board
-   (plain).
+1. **The dossier closes** (~800 ms).
+2. **The marks** tick in down the task list, 100 ms apart.
+3. **The result** lands alone and large: eyebrow "Ball knowledge", the band
+   word and the rating ("Sharp · 7.4") in Big Shoulders, in the band's
+   material (the Steps case textures). The rating counts up as it lands.
+4. **The find (the peak):** one card, the player's best moment today, in one
+   line with its fact.
+5. **The rest:** the curve and "Top X%" line (top half), the streak, the
+   countdown, **Share** (the one red button), Back to the board (plain).
 
-**The find.** The candidate with the highest task score, ties broken by this
-order:
-1. A Steps pick graded Sharp or Elite: "Elite find: Bogarde at Chelsea".
-2. Read the season on guess 1: "Read it from 15 games: Leicester 15/16".
-3. A bullseye (2 m): "Bullseye: Saka v Spurs, 1.4 m".
-4. A spoof spotted first time, on the longer career: "Spotted first time"
-   with the fake club's crest.
-5. The mole on the first tap; a perfect line in Sorted.
+**The find:** the candidate with the highest task score, ties broken in this
+order: a Steps pick graded Sharp or Elite ("Elite find: Bogarde at Chelsea");
+the club on the first guess and the exact season; a bullseye ("Bullseye,
+1.4 m"); a spoof spotted first time on the longer career; the mole on the
+first tap; a perfect line. With no find, the best task is named plainly.
+Every find is checkable from data the game already holds.
 
-With no find, the best task is named plainly ("Best work: Log the shot").
-Every find is checkable from data the game already holds. Once the store
-exists, the find adds its rarity among today's players.
+**Why the find comes after the result:** the peak-end rule. The result can be
+low; the find is the best thing that happened, so every run ends on its high
+point, truthfully.
 
-**Why the find comes after the verdict:** the peak-end rule. The verdict can
-be low; the find is always the best thing that happened. Ending there means
-every run ends on its high point, truthfully (research Q4).
-
-**Hub dossier states** (lessons 1.1): never played (the dossier, "Today's
-assignment", red Open); not started (date stamped); part played (tasks
-ticked so far, Continue); done (the verdict word and marks on the dossier,
-the countdown, no red; the hub's suggestion moves to the unfinished
-dailies).
+**Hub dossier states:** never played (red Open); not started; part played
+(tasks ticked, Continue); done (the result on the dossier, the countdown, no
+red; the hub's suggestion moves to the unfinished dailies).
 
 ---
 
@@ -245,154 +272,125 @@ dailies).
 
 ```
 Today's assignment #55
-Ball knowledge: Sharp
+Ball knowledge: Sharp · 7.4
 ✅✅🔸✅❌✅
+Top 18% on our scale
 🔥 12
 ballknowledge-games.vercel.app
 ```
 
-- No names, no clubs, no positions: spoiler-free (research Q1).
-- One glyph per task in the fixed order, so mates read it the same way.
-- "· ahead of 81%" is added to the verdict line only when the player is shown
-  that number (top half, curve open). Nobody's share carries a low rank.
-- The day number is the shared one from `EPOCH` 2026-09-19 (lessons 2.6), so
-  the run's number matches every game's.
-- The streak only when it is 2 or more.
-- An archive run shares as "Assignment #41".
-- The glyphs differ by shape (tick, diamond, cross), not hue. **Flag,
-  separate from this branch:** Spoofed's and Chain's share lines use 🟩🟨🟥,
-  which differ by hue alone; worth fixing site-wide.
+- No names, clubs or positions: spoiler-free.
+- One glyph per task in the fixed order.
+- The "Top X%" line only when the player is shown it (top half), worded as on
+  screen ("on our scale" or "today").
+- The day number is the shared one from `EPOCH` 2026-09-19.
+- The streak only when it is 2 or more. An archive run shares as
+  "Assignment #41".
+- Glyphs differ by shape (tick, diamond, cross). **Flag, separate from this
+  branch:** Spoofed's and Chain's share lines use 🟩🟨🟥, which differ by hue
+  alone.
 
 ---
 
-## 6. Streaks
+## 6. Streaks (Jonno, 2026-11-12: as recommended)
 
-- **The run streak counts days with a finished run** on the player's own
-  date, whatever the verdict. A bad day never breaks it: research Q4, a
-  performance streak punishes, a completion streak builds the ritual.
-- **Rest days:** one is banked for every 7 days in a row played, at most 2
-  banked, spent automatically on a missed day. Earned, never bought. A day
-  covered shows as a hollow mark in the streak row. (Duolingo's freezes raised
-  daily learners without more days off; one missed day does not break a
-  habit.)
-- **Best streak beside current**, so a lost streak does not erase the record.
-- **Archive runs** never count, and never feed the curve.
-- **No notifications.** Nothing reminds, nags or guilts.
-- **The hub's streak** becomes the run streak once the run ships. Chain's
-  own streak (consecutive dailies held) stays on `/chain` unchanged.
+- Counts days with a finished run on the player's own date, whatever the
+  score.
+- One rest day banked for every 7 days in a row played, at most 2 banked,
+  spent automatically on a missed day. Earned, never bought. Shown as a hollow
+  mark in the streak row.
+- Best streak beside current. Archive runs never count. No notifications.
+- The hub's streak becomes the run streak. Chain's own streak stays on
+  `/chain`.
 
 ---
 
-## 7. How the run touches each game's daily
+## 7. How the run touches each game's daily (Jonno: hybrid)
 
 | Game | Run uses | Effect on that game's daily |
 |---|---|---|
-| Spoofed | Careers 1 and 2 of today's daily | Picks are written to `spoofed.progress.v1`; the daily resumes at career 3 ("3 careers left"). Done only when all 5 are. |
-| Steps | Steps 1 and 2 of today's daily | Written to `step.progress.v2`; the daily resumes at step 3. |
-| Sorted | Categories 1 and 2 of today's daily | Written to its progress; resumes at category 3. |
-| Season line | Its own board (a different club-season from today's daily) | None: today's daily stays unspoiled. |
+| Spoofed | Careers 1 and 2 of today's daily | Written to `spoofed.progress.v1`; the daily resumes at career 3. Done only when all 5 are. |
+| Steps | Steps 1 and 2 of today's daily | Written to `step.progress.v2`; resumes at step 3. |
+| The Tunnel | Categories 1 and 2 of today's daily | Written to its progress; resumes at category 3. |
+| Season line | Its own board | None: today's daily stays unspoiled. |
 | Pitch pin | Its own 3 goals a day | None (no daily). |
 | Odd Man Out | Its own XI a day, solo | None (the pub game is separate). |
 
-- **Already played the slice?** If the player did Spoofed's careers 1 and 2
-  before the run, the run shows that task as filed with its marks and moves
-  on. Same content, same result: nothing to replay.
-- **Done state:** the run marks `run` done in `src/lib/today.ts`. A game's
-  own daily is marked done only when it is finished in full.
-- **Why this hybrid:** one pipeline per game where the daily is a sequence
-  (no duplicate generation, no spoiled daily, the run is a fast lane into
-  each daily); own content only where sharing would spoil a single puzzle or
-  there is no daily to share. Options in open question 3.
+- **Clock difference:** a slice played in the run was timed; finished in the
+  daily, the rest is untimed. The daily's result counts the run's picks as
+  they were made.
+- **Already played the slice?** The run shows that task as filed with its
+  marks and moves on.
+- **Done state:** the run marks `run` done in `src/lib/today.ts`; a game's
+  daily is done only when finished in full.
 
 ---
 
 ## 8. What each game needs built
 
-**Architecture.** The run composes games, and `CLAUDE.md` says games never
-import each other and shared code never imports a game. So:
-- `src/lib/run/` (shared): the task result type (`TaskResult`: task, *s*,
-  mark, find, detail), the run score, bands, marks, the share line, the
-  streak, `run.progress.v1`. Pure, tested.
-- `games/<name>/run/` (each game): a `RunTask` component and its mapping to
-  `TaskResult`, importing only shared code.
-- `app/run/page.tsx` and `app/api/run/day`: the route assembles the tasks
-  and each game's server slice. A route is neither a game nor shared code,
-  so the rule holds. The run is a page, not a game folder.
+**Architecture.** Games never import each other and shared code never
+imports a game (`CLAUDE.md`), so:
+- `src/lib/run/` (shared): `RUN_TASKS` (names, rule lines, clocks), the task
+  result type, the run score, bands, the rating, the scale curve and "Top
+  X%", marks, the share line, the streak, `run.progress.v1`. Pure, tested.
+- `games/<name>/run/` (each game): a `RunTask` component and its mapping to a
+  task score, importing only shared code.
+- `app/run/page.tsx` and `app/api/run/day`: the route assembles the tasks and
+  each game's server slice. A route is neither a game nor shared code.
 
 | Piece | Work | Size |
 |---|---|---|
-| **Shared run shell** | `/run` route, dossier frame, task header, staged moves between tasks, resume at the first open task on reload, the report (marks, verdict, find, streak, share, countdown), archive (`/run?date=`), hub dossier states, `markDone('run')`, `syncHub` | Large |
-| **Scoring and calibration** | `src/lib/run` maths with tests; a simulation script per task (lazy, casual, decent, expert) that sets `BANDS`; a test that the laziest run stays under 40 | Medium |
-| Spoofed | `RunTask` over careers 1 and 2 (the trail and peel exist); write picks to its progress | Small |
-| Steps | `RunTask` over steps 1 and 2; the capped reveal; write to its progress | Small to medium |
-| Pitch pin | A run schedule (3 goals a day from the library: round packs and classics, never three from one match, the fairness test the round packs use), its cron, `RunTask` on the existing throw | Medium |
-| Season line | A run schedule (a board a day, never today's daily club-season, no repeat within a gap), its cron, `RunTask` with 3 guesses from 15 games; reset `EPOCH` before launch (already on its list) | Medium |
-| Odd Man Out | **A solo mode:** a generator that plants a believable fake in a real XI (era, club or nation, position; Spoofed's fairness guards), a schedule and cron, a `problems()` check, `RunTask` with up to 2 taps; a playtest | Large |
-| Sorted | Merge first (draft branch); then `RunTask` over categories 1 and 2 | Medium, blocked |
-| **Result store** (phase 3) | `POST /api/run/report` (date, *R*, marks, a random device id kept locally; first finished run per device per day; never archive runs), `GET /api/run/curve` (binned, *n*); free-tier store from the Vercel Marketplace. **Needs Jonno's OK before adding** (a new service, even on a free tier). No personal data. Accept some noise from cleared browsers. | Medium |
+| **Shared run shell** | `/run` route, dossier frame, task header and clock, staged moves, resume at the first open task (with the clock restarted for that item), the report, archive (`/run?date=`), hub dossier states, `markDone('run')`, `syncHub` | Large |
+| **Scoring and calibration** | `src/lib/run` maths with tests; the simulation that sets `BANDS`, `SCALE_MEAN`, `SCALE_SD`; a test that the laziest run stays under 4.0 | Medium |
+| Spoofed | `RunTask` over careers 1 and 2 with the clock; write picks to its progress | Small |
+| Steps | `RunTask` over steps 1 and 2; continuous score from `factOf` inside the grade; capped reveal; write to its progress | Small to medium |
+| Pitch pin | A run schedule (3 goals a day: round packs and classics, never three from one match, the round packs' fairness test), its cron, `RunTask` on the existing throw | Medium |
+| Season line | A run schedule (mid-fame boards, never today's daily, a five-season window placed at random), its cron, `RunTask` (whole line, club guesses with hints, season pick in the window); reset `EPOCH` before launch | Medium |
+| Odd Man Out | **Solo mode:** a generator that plants a believable fake in a real XI, a schedule and cron, a `problems()` check, `RunTask` with up to 2 taps; a playtest | Large |
+| The Tunnel | Merge first; then `RunTask` over categories 1 and 2 | Medium, blocked |
+| **Result store** | To show real players' curve, each finished run's rating is sent to a small online database (today every score stays on the phone). `POST /api/run/report` (date, rating, marks, a random id kept on the phone; first finished run per phone per day; never archive runs); `GET /api/run/curve` (binned, *n*). Free tier from the Vercel Marketplace: costs nothing at our size, but it is a new outside service. **Waits on Jonno's yes.** No personal data. | Medium |
 
 **Phases**
-1. **Run v1:** shell, scoring, Spoofed, Steps, Pitch pin, Season line. No
-   server store. About 5 minutes.
-2. **Six tasks:** Odd Man Out solo, Sorted once merged.
-3. **The curve:** the store, "Ahead of X%", per-task facts and rarity in the
-   find.
+1. **Run v1:** shell, scoring (with the scale curve for "Top X%"), Spoofed,
+   Steps, Pitch pin, Season line. No server.
+2. **Six tasks:** Odd Man Out solo, The Tunnel once merged.
+3. **Real curve:** the result store, "Top X% today", per-task facts.
 
 Gate per phase as for a new game: data check, playable draft (time a real
-run), a review of generated days; HANDOFF, commit, check in with Jonno.
+run, try the clocks), review of generated days; HANDOFF, commit, check in.
 
 ---
 
-## 9. Open questions for Jonno
+## 9. Decisions and what is still open
 
-1. **The result's words.**
-   - (a) **The site scale:** Basic, Decent, Solid, Sharp, Elite, shown as
-     "Ball knowledge: Sharp". One scale site-wide, no rename, the grade
-     materials already exist. *Recommended.*
-   - (b) Scout's recommendation words: Monitor, Track, Shortlist, Recommend,
-     Sign. Strong scout flavour, but a second five-word scale on the same
-     ruler (lessons 2.3: two scales confuse), and "Sign" reads oddly about
-     yourself.
-   - (c) Scout ranks: Trialist, Scout, Senior, Chief, Director. Clashes with
-     Spoofed's "Scout" rank.
-2. **Chain's puzzle in the run?**
-   - (a) No: Steps is "Trace the link"; the puzzle stays its own daily.
-     *Recommended.*
-   - (b) The puzzle replaces Steps: Chain's own board, held or not, ~2 min.
-   - (c) Both: over 8 minutes.
-3. **Does the run share content with the dailies?**
-   - (a) **Hybrid** (section 7). *Recommended.*
-   - (b) Own content for every task: run and dailies fully apart; more
-     generation, and players who do both see more of the same game.
-   - (c) The run *is* the day's slice and marks each daily done: the full
-     dailies stop being worth playing after it.
-4. **Comparison with today's players.**
-   - (a) Phase 3: grade first; curve from 100 plays; number for the top half
-     only. *Recommended.*
-   - (b) Never: grade and own record only, no store.
-   - (c) Krillion's way: a number for everyone, from day one.
-5. **Streak.**
-   - (a) Completion streak with earned rest days (one per 7, at most 2).
-     *Recommended.*
-   - (b) Strict: miss a day, back to zero.
-   - (c) No streak: best verdicts and the record only.
-6. **Find the mole.**
-   - (a) Build the solo planted-XI mode in phase 2. *Recommended.*
-   - (b) Leave it out of the run (five tasks).
-   - (c) Put a different short task in its slot.
-7. **Read the season's round.**
-   - (a) 3 guesses from 15 games. *Recommended.*
-   - (b) 2 guesses from 23 games: shorter, harder to read the shape wrong.
-   - (c) One guess at the club, the season shown after: quickest, least
-     satisfying.
-8. **The result store (phase 3):** a free-tier store from the Vercel
-   Marketplace: (a) yes, when phase 3 starts; (b) not until the run has
-   traffic to justify it; (c) never (same as 4b).
-9. **Task names:** keep the working names (Check the rumours, Trace the
-   link, Log the shot, Find the mole, Line them up, Read the season)? They
-   fit the scout frame and avoid Krillion's words. (a) Keep. (b) Shorter,
-   one word each (Rumours, Link, Shot, Mole, Lineup, Season). (c) Rename
-   later with the brand.
+**Decided by Jonno, 2026-11-12**
 
-Also needs a ruling before phase 2: The Tunnel or Sorted on the board's
-label (already open in `bible.html`).
+| # | Question | Decision |
+|---|---|---|
+| 1 | Score display | An exact number with the band word. Picked 0 to 100; the match rating (same number ÷ 10) is proposed below, to confirm. |
+| 2 | Fine margins | Continuous task scores where the data allows. Plus Jonno's addition: time limits in the run only, none when a game is played on its own. Spec: clocks cap, never score. |
+| 3 | Band words | The site scale: Basic, Decent, Solid, Sharp, Elite. New words maybe later, with a new name for the whole site. |
+| 4 | Curve before real data | "Top X%" from our scale's normal distribution from day one, worded "on our scale". |
+| 5 | Percentage once real | Top half only. |
+| 6 | Chain's puzzle | Not in the run; Steps is "Trace the link". |
+| 7 | Shared content | Hybrid. |
+| 8 | Streak | Finished runs, earned rest days. |
+| 9 | Find the mole | Build the solo planted-XI mode in phase 2. |
+| 10 | Read the season | The whole line, hints (squad player, top scorer), the club guessed, the season picked inside a five-season window (section 2). |
+| 12 | Task names | Keep the working names, held in one config constant, baked into no art. |
+| 13 | Board label | The Tunnel (for now; see below). |
+
+**Still open**
+
+1. **Rating or 0 to 100?** Recommended: the match rating, "Sharp · 7.4". The
+   alternative is "Sharp · 74".
+2. **The result store** (explained in section 8): yes when phase 3 starts,
+   later, or never.
+3. **Clocks:** confirm they cap and never score (recommended), or score speed
+   as well.
+4. **The Tunnel's name.** Jonno: it does not quite fit beside Spoofed, Chain,
+   Odd Man Out, Pitch Pin, Season Line. Candidates: **Pecking Order** (the
+   football phrase for a squad's ranking: fits the ordering verb and a fan's
+   vocabulary), The Tunnel (keep), Line-Up (clashes with Odd Man Out's XI). Its
+   draft branch calls it Sorted; whichever wins, the label, route and storage
+   key change together, after Jonno says.

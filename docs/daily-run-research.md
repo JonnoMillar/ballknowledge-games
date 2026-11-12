@@ -29,6 +29,21 @@ could not be read, it says so.
 - **Academic papers:** abstracts, publisher records and university summaries;
   full texts were not read unless stated.
 
+## After Jonno's answers (2026-11-12)
+
+Jonno read this and decided differently on three points; the spec follows
+him. Recorded here so the research and the decisions stay side by side.
+- **An exact score is shown** (Q1 recommended none). His reason: comparison
+  with mates needs fine margins, and the top and bottom of one band reading
+  the same is unfair. That is a fair point the research underweighted: the
+  rivalry row in Q4 needs a number to compare. The spec keeps "never N of M"
+  by showing the score as a match rating (to confirm) with no "/100".
+- **"Top X%" from day one, on our scale's normal distribution** (Q2
+  recommended nothing until real data). The spec words it "on our scale"
+  until 100 real plays, so it makes no claim about players that is not true.
+- **The run is timed; each game alone is not** (Q3 and the playbook say solo
+  untimed). The spec uses the clock as a cap that never scores.
+
 ---
 
 ## The short answers
