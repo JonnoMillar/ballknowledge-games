@@ -59,6 +59,11 @@ html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4
 .chrome button:hover, .chrome button:focus-visible { background: rgba(30,20,12,.8); outline: none; }
 .chrome .menu { display: inline-flex; gap: 8px; align-items: center; }
 .chrome .menu i { display: grid; gap: 3px; } .chrome .menu i b { display: block; width: 14px; height: 2px; background: currentColor; }
+.grades { position: fixed; right: 18px; bottom: 14px; z-index: 6; display: flex; gap: 6px; align-items: center; background: rgba(30,20,12,.55); padding: 6px; border-radius: 8px; backdrop-filter: blur(6px); font: 700 12px/1 'Libre Franklin'; color: #FFF8EE; }
+.grades span { padding: 0 6px; letter-spacing: .08em; text-transform: uppercase; }
+.grades button { font: 700 13px/1 'Libre Franklin'; color: #FFF8EE; background: transparent; border: 1px solid rgba(255,240,220,.35); border-radius: 5px; padding: 7px 10px; cursor: pointer; }
+.grades button[aria-pressed=true] { background: #FFF8EE; color: #2A1A0E; }
+.zoomed .grades { opacity: 0; pointer-events: none; }
 .hint { position: fixed; left: 18px; bottom: 14px; z-index: 6; font: 700 13px/1.3 'Libre Franklin'; color: #FFF8EE; background: rgba(30,20,12,.5); padding: 7px 10px; border-radius: 6px; backdrop-filter: blur(6px); }
 
 /* Zoom into a game. */
@@ -82,7 +87,7 @@ html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4
 <div class="stage" id="stage">
   <div class="plate"><div class="scene" id="scene">
     <div class="layer room" id="room">
-      <img class="layer" src="img/gen/sunny-baked-low.png" alt="">
+      <img class="layer" id="base" src="img/gen/sunny-baked-low.png" alt="">
       <div class="sun"></div>
       <div id="items"></div>
       <div class="title"><h1>Ball Knowledge</h1><p>Daily football games · working name</p></div>
@@ -93,6 +98,7 @@ html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4
 
   <nav class="chrome" aria-label="Account"><button>Log in</button><button class="menu"><i><b></b><b></b><b></b></i>Menu</button></nav>
   <div class="hint">Hover a pinned item, click to open.</div>
+  <div class="grades" role="group" aria-label="Colour grade"><span>Grade</span><button data-g="">Original</button><button data-g="grade-cool/">Cool</button><button data-g="grade-neutral/">Neutral</button></div>
 
   <div class="game" id="game" aria-hidden="true">
     <button class="back" id="back">Back to the board</button>
@@ -116,7 +122,7 @@ for (const [id, it] of Object.entries(ITEMS)) {
   const [x, y, w, h] = it.box;
   const g = document.createElement('div'); g.className = 'item'; g.dataset.id = id;
   g.style.setProperty('--ox', (x + w / 2) + '%'); g.style.setProperty('--oy', (y + h / 2) + '%');
-  g.innerHTML = `<img class="layer patch" src="img/gen/items/${id}-patch.png" alt=""><img class="layer cut" src="img/gen/items/${id}.png" alt="">`;
+  g.innerHTML = `<img class="layer patch" data-src="items/${id}-patch.png" alt=""><img class="layer cut" data-src="items/${id}.png" alt="">`;
   root.appendChild(g);
   const t = document.createElement('div'); t.className = 'tape' + (it.next ? ' next' : '') + (it.done ? ' done' : '');
   t.style.left = (x + w * .05) + '%'; t.style.top = (y + h - 3.4) + '%'; t.style.setProperty('--r', it.r);
@@ -129,12 +135,17 @@ for (const [id, it] of Object.entries(ITEMS)) {
   hit.addEventListener('click', () => open(id)); hit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(id); } });
   root.appendChild(hit);
 }
+let BASE = 'img/gen/';
+function setGrade(g) { BASE = 'img/gen/' + g; document.getElementById('base').src = BASE + 'sunny-baked-low.png'; document.querySelectorAll('[data-src]').forEach(i => i.src = BASE + i.dataset.src); document.querySelectorAll('.grades button').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === g)); try { localStorage.setItem('lobby-grade', g); } catch (e) {} }
+document.querySelectorAll('.grades button').forEach(b => b.addEventListener('click', () => setGrade(b.dataset.g)));
+let saved = 'grade-cool/'; try { saved = localStorage.getItem('lobby-grade') ?? saved; } catch (e) {}
+setGrade(saved);
 const stage = document.getElementById('stage'), scene = document.getElementById('scene'), room = document.getElementById('room');
 function open(id) {
   const it = ITEMS[id], [x, y, w, h] = it.box, ar = (w * 16) / (h * 9);
   scene.style.transformOrigin = (x + w / 2) + '% ' + (y + h / 2) + '%';
   const art = document.getElementById('art'), img = document.getElementById('artimg');
-  art.style.setProperty('--ar', ar); img.src = `img/gen/items/${id}.png`;
+  art.style.setProperty('--ar', ar); img.src = BASE + `items/${id}.png`;
   img.style.setProperty('--iw', (100 / w * 100) + '%'); img.style.setProperty('--il', (-x / w * 100) + '%'); img.style.setProperty('--it', (-y / h * 100) + '%');
   document.getElementById('gt').textContent = it.title; document.getElementById('gp').textContent = it.blurb; document.getElementById('gplay').textContent = it.play;
   stage.classList.add('zoomed');
