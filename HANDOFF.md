@@ -28,6 +28,7 @@ are in `CLAUDE.md`.
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
 | Odd Man Out | `/odd-man-out` (front page), `/odd-man-out/play` | `games/bluff` (internal id `bluff`) | Merged to `main` 2026-10-16; headline "Can you find the mole?". Mole miniature on the hub (2026-10-16; direction approved, not final art). `games/bluff/HANDOFF.md`. |
 | Season line (working name) | `/season-line` (front page), `/season-line/play` | `games/season-line` | Merged to `main` 2026-10-16; on the hub with a cord-and-shield miniature (2026-10-16) and a credits line. Still needs `EPOCH` reset at launch, a name, and a decision on the Premier League lion. `games/season-line/HANDOFF.md`. |
+| Today's assignment (the daily run) | `/run` (`?date=` for a past day) | `src/lib/run`, `components/run`, each game's `run/` | Merged to `main` 2026-11-13 with all six tasks and a bare hub tile (first on the board). UI is due the scout's-office redesign. `docs/daily-run.md` (sections 11 to 15). |
 
 ## The site hub and Chain's hub (2026-10-14)
 

@@ -711,9 +711,16 @@ boards), or switch the run to the daily's first two categories (the hybrid)
 and retire `games/tunnel/data/run.json`. Its rename to Pecking Order should
 keep `/api/pecking-order/run` as is.
 
-**Next:** ship the run (Jonno plays one full run, then merge to `main` with
-a way in from the hub), then the redesign, then calibration.
+**Shipped 2026-11-13:** merged to `main` and pushed (29f4901) with a bare
+hub tile, "Today's assignment", first in `src/games.ts` (no miniature; the
+redesign gives it the dossier). The hub at 1366x768 already scrolled (956 px)
+and the tile adds a row (1,212 px): left for the redesign. The run-days and
+transfers crons now fire from `main`. **The live site was "Deployment
+Paused" (HTTP 402) on Vercel when this shipped**: nothing shows until Jonno
+unpauses the project.
 
-**Resume prompt:** "Daily run, branch `claude/daily-run-spec-e6d716`. Read
-CLAUDE.md, then docs/daily-run.md sections 11 to 15. All six tasks are in.
-Next: ship it to main with a hub entry, then the redesign."
+**Next:** the redesign (scout's-office dossier), then calibration.
+
+**Resume prompt:** "Daily run, on `main` (branch `claude/daily-run-spec-e6d716`
+merged). Read CLAUDE.md, then docs/daily-run.md sections 11 to 15. Next: the
+run's redesign to the scout's-office design."
