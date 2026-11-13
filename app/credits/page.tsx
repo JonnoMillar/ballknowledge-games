@@ -61,6 +61,12 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             lion is the league&rsquo;s trademark, shown only to identify the competition.
           </p>
 
+          <p>
+            The transfer set beside the daily run&rsquo;s report value is read from the English Wikipedia&rsquo;s
+            {' '}<a href="https://en.wikipedia.org/wiki/List_of_English_football_transfers_summer_2023">lists of English football transfers</a>,
+            under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Only stated fees are used.
+          </p>
+
           <h2 className="credits__head display">Card cases</h2>
           <p>
             The sapphire and onyx textures on graded cards were generated for Chain with

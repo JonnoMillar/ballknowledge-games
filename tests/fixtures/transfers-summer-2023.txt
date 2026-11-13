@@ -1,0 +1,166 @@
+{| class="wikitable sortable"
+|-
+!Date
+!Player
+!Moving from
+!Moving to
+!Fee
+|-
+| rowspan=1| '''2 February 2023'''
+| {{flagicon|GHA}} {{sortname|André|Ayew||Ayew, Andre}}
+| Unattached
+| [[Nottingham Forest F.C.|Nottingham Forest]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Andre Ayew: Nottingham Forest sign free agent Ghana forward on deal until the end of the season |url=https://www.skysports.com/football/news/11095/12801723/andre-ayew-nottingham-forest-sign-free-agent-ghana-forward-on-deal-until-the-end-of-the-season |work=Sky Sports |date=2 February 2023 |access-date=12 April 2023}}</ref>
+|-
+| rowspan=1| '''3 February 2023'''
+| {{flagicon|SCO}} {{sortname|Owen|Gallacher}}
+| Unattached
+| [[Grimsby Town F.C.|Grimsby Town]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Owen Gallacher: Grimsby Town sign free-agent full-back after Crawley Town release |url=https://www.bbc.co.uk/sport/football/64514556 |work=BBC Sport |date=3 February 2023 |access-date=12 April 2023}}</ref>
+|-
+| rowspan=2| '''6 February 2023'''
+| {{flagicon|SCO}} {{sortname|Chris|Martin|dab=footballer, born 1988}}
+| Unattached
+| [[Queens Park Rangers F.C.|Queens Park Rangers]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Chris Martin: QPR sign ex-Bristol City striker until end of season |url=https://www.bbc.co.uk/sport/football/64543522 |work=BBC Sport |date=6 February 2023 |access-date=12 April 2023}}</ref>
+|-
+| {{flagicon|WAL}} {{sortname|Adam|Przybek}}
+| Unattached
+| [[Stevenage F.C.|Stevenage]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Adam Przybek: Stevenage sign Wales Under-21 goalkeeper on free transfer |url=https://www.bbc.co.uk/sport/football/64548622 |work=BBC Sport |date=6 February 2023 |access-date=12 April 2023}}</ref>
+|-
+| rowspan=1| '''11 February 2023'''
+| {{sortname|Jordan|Willis|dab=footballer}}
+| Unattached
+| [[Wycombe Wanderers F.C.|Wycombe Wanderers]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Jordan Willis: Wycombe sign former Coventry City and Sunderland defender |url=https://www.bbc.co.uk/sport/football/64609688 |work=BBC Sport |date=11 February 2023 |access-date=12 April 2023}}</ref>
+|-
+| rowspan=2| '''8 March 2023'''
+| {{sortname|Tyler|Blackett}}
+| Unattached
+| [[Rotherham United F.C.|Rotherham United]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Tyler Blackett: Rotherham United sign former FC Cincinnati defender |url=https://www.bbc.co.uk/sport/football/64850821 |work=BBC Sport |date=8 March 2023 |access-date=12 April 2023}}</ref>
+|-
+| {{flagicon|ITA}} {{sortname|Moise|Kean}}
+| [[Everton F.C.|Everton]]
+| {{flagicon|ITA}} [[Juventus F.C.|Juventus]]
+| {{ntsh|25000000}}£25m<ref>{{#invoke:Cite|news|title=Moise Kean: Everton forward joins Juventus on permanent deal |url=https://www.bbc.co.uk/sport/football/64895570 |work=BBC Sport |date=8 March 2023 |access-date=12 April 2023}}</ref>
+|-
+| rowspan=1| '''17 March 2023'''
+| {{flagicon|SEN}} {{sortname|Pape|Souaré||Souare, Pape}}
+| Unattached
+| [[Morecambe F.C.|Morecambe]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|title=Pape Souare: Morecambe sign ex-Crystal Palace defender |url=https://www.bbc.co.uk/sport/football/64993961 |work=BBC Sport |date=17 March 2023 |access-date=12 April 2023}}</ref>
+|-
+| {{sortname|Robert|Dickie|dab=footballer}}
+| [[Queens Park Rangers F.C.|Queens Park Rangers]]
+| [[Bristol City F.C.|Bristol City]]
+| {{ntsh|1}}Undisclosed<ref>{{#invoke:Cite|news|title=Rob Dickie: Bristol City sign QPR defender on a deal until 2026 |url=https://www.bbc.co.uk/sport/football/65819475 |work=BBC Sport |date=6 June 2023 |access-date=6 June 2023}}</ref>
+|-
+| {{flagicon|NED}} {{sortname|Mark|Flekken}}
+| {{flagicon|GER}} [[SC Freiburg]]
+| [[Brentford F.C.|Brentford]]
+| {{ntsh|11000000}}£11m<ref>{{#invoke:Cite|news|title=Brentford sign keeper Mark Flekken from Freiburg |url=https://www.bbc.co.uk/sport/football/65763042 |work=BBC Sport |date=31 May 2023 |access-date=31 May 2023}}</ref>
+|-
+| {{sortname|Matty|Foulds}}
+| [[Bradford City A.F.C.|Bradford City]]
+| [[Harrogate Town A.F.C.|Harrogate Town]]
+| {{ntsh|1}}Undisclosed<ref name=":4">{{#invoke:Cite|news|title=Harrogate Town sign Bradford City left-back Matty Foulds and Crewe Alexandra's Rod McDonald |url=https://www.bbc.co.uk/sport/football/65861391 |work=BBC Sport |date=9 June 2023 |access-date=10 June 2023}}</ref>
+|-
+| {{flagicon|LCA}} {{sortname|Reeco|Hackett-Fairchild}}
+| [[Portsmouth F.C.|Portsmouth]]
+| [[Lincoln City F.C.|Lincoln City]]
+| {{ntsh|1}}Undisclosed<ref>{{#invoke:Cite|news|title=Reeco Hackett-Fairchild: Lincoln City sign Portsmouth winger on three-year deal |url=https://www.bbc.co.uk/sport/football/65903230 |work=BBC Sport |date=14 June 2023 |access-date=14 June 2023}}</ref>
+|-
+| {{flagicon|ARG}} {{sortname|Alexis|Mac Allister}}
+| [[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]
+| [[Liverpool F.C.|Liverpool]]
+| {{ntsh|35000000}}£35m<ref>{{#invoke:Cite|news|title=Alexis Mac Allister: Liverpool sign Brighton & Argentina midfielder for £35m |url=https://www.bbc.co.uk/sport/football/65842033 |work=BBC Sport |date=8 June 2023 |access-date=8 June 2023}}</ref>
+|-
+| {{flagicon|SCO}} {{sortname|Ross|McCrorie}}
+| {{flagicon|SCO}} [[Aberdeen F.C.|Aberdeen]]
+| [[Bristol City F.C.|Bristol City]]
+| {{ntsh|1}}Undisclosed<ref>{{#invoke:Cite|news|title=Ross McCrorie: Bristol City sign defender from Aberdeen for undisclosed fee |url=https://www.bbc.co.uk/sport/football/65829101 |work=BBC Sport |date=6 June 2023 |access-date=6 June 2023}}</ref>
+|-
+| rowspan="5" |'''15 July 2023'''
+| {{sortname|Adrian|Blake}}
+| [[Watford F.C.|Watford]]
+| {{flagicon|NED}} [[FC Utrecht|Utrecht]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|url=https://www.fcutrecht.nl/nieuws/2023/juni/engels-talent-adrian-blake-naar-fc-utrecht|title=Engels talent Adrian Blake naar FC Utrecht|publisher=[[FC Utrecht]]|date=12 June 2023|accessdate=12 June 2023|language=Dutch}}</ref>
+|-
+| {{flagicon|GRE}} {{sortname|Klaidi|Lolos}}
+| [[Oxford City F.C.|Oxford City]]
+| [[Crawley Town F.C.|Crawley Town]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|url=https://www.bbc.co.uk/sport/football/66211391 |title=Kaidi Lolos: Crawley Town sign forward on two-year deal |website=BBC Sport |date=15 July 2023 |access-date=15 July 2023}}</ref>
+|-
+| {{flagicon|WAL}} {{sortname|Aaron|Ramsey}}
+| {{flagicon|FRA}} [[OGC Nice|Nice]]
+| {{flagicon|WAL}} [[Cardiff City F.C.|Cardiff City]]
+| {{ntsh|0}}Free<ref>{{#invoke:Cite|news|url=https://www.bbc.co.uk/sport/football/66175343 |title=Aaron Ramsey: Wales captain completes Cardiff City after Nice confirm exit |website=BBC Sport |date=15 July 2023 |access-date=15 July 2023}}</ref>
+|-
+| {{sortname|Declan|Rice}}
+| [[West Ham United F.C.|West Ham United]]
+| [[Arsenal F.C.|Arsenal]]
+| {{ntsh|105000000}}£105m<ref>{{#invoke:Cite|news|url=https://www.bbc.co.uk/sport/football/65982835 |title=Declan Rice: Arsenal sign England midfielder from West Ham for £105m |website=BBC Sport |date=15 July 2023 |access-date=15 July 2023}}</ref>
+|-
+| {{sortname|Dion|Sanderson}}
+| [[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]
+| [[Birmingham City F.C.|Birmingham City]]
+| {{ntsh|1}}Undisclosed<ref>{{#invoke:Cite|news|url=https://www.bbc.co.uk/sport/football/66211489 |title=Dion Sanderson: Birmingham City sign Wolves defender for undisclosed fee |website=BBC Sport |date=15 July 2023 |access-date=15 July 2023}}</ref>
+|-
+| rowspan="1" |'''16 July 2023'''
+| {{flagicon|BRA}} {{sortname|Ângelo|Gabriel||Gabriel, Angelo}}
+| {{flagicon|BRA}} [[Santos FC|Santos]]
+| [[Chelsea F.C.|Chelsea]]
+| {{ntsh|13000000}}£13m<ref>{{#invoke:Cite|news|url=https://www.espn.com/soccer/story/_/id/38021911/chelsea-signs-brazilian-teen-angelo-gabriel-santos|title=Chelsea sign Brazilian teen Angelo Gabriel from Santos|publisher=ESPN|date=16 July 2023|accessdate=16 July 2023}}</ref>
+|}
+
+{| class="wikitable sortable"
+|-
+!Start date
+!End date
+!Player
+!Moving from
+!Moving to
+|-
+| rowspan=1| '''2 February 2023'''
+| 31 May 2023<ref>{{#invoke:Cite|news|title=Ross County: Gwion Edwards signs on loan from Wigan |url=https://www.bbc.co.uk/sport/football/64498758 |work=BBC Sport |date=2 February 2023 |access-date=12 April 2023}}</ref>
+| {{flagicon|WAL}} {{sortname|Gwion|Edwards}}
+| [[Wigan Athletic F.C.|Wigan Athletic]]
+| {{flagicon|SCO}} [[Ross County F.C.|Ross County]]
+|-
+| rowspan=1| '''16 February 2023'''
+| 23 February 2023<ref>{{#invoke:Cite|news|title=Toby Savin: Stevenage sign goalkeeper on emergency loan deal from Accrington Stanley |url=https://www.bbc.co.uk/sport/football/64671537 |work=BBC Sport |date=16 February 2023 |access-date=12 April 2023}}</ref>
+| {{sortname|Toby|Savin}}
+| [[Accrington Stanley F.C.|Accrington Stanley]]
+| [[Stevenage F.C.|Stevenage]]
+|-
+| rowspan=1| '''20 March 2023'''
+| 1 July 2023<ref>{{#invoke:Cite|news|title=Lewis O'Brien: Nottingham Forest midfielder joins Wayne Rooney's MLS club |url=https://www.bbc.co.uk/sport/football/65018920 |work=BBC Sport |date=20 March 2023 |access-date=12 April 2023}}</ref>
+| {{sortname|Lewis|O'Brien|dab=footballer}}
+| [[Nottingham Forest F.C.|Nottingham Forest]]
+| {{flagicon|USA}} [[D.C. United]]
+|-
+| rowspan=2| '''14 June 2023'''
+| 31 May 2024<ref>{{#invoke:Cite|news|title=Crewe Alexandra: Liverpool keeper Harvey Davies signs on season-long loan |url=https://www.bbc.com/sport/football/65906658 |work=BBC Sport |date=14 June 2023 |access-date=14 June 2023}}</ref>
+| {{sortname|Harvey|Davies}}
+| [[Liverpool F.C.|Liverpool]]
+| [[Crewe Alexandra F.C.|Crewe Alexandra]]
+|-
+| 31 May 2024<ref>{{#invoke:Cite|news|title=Calvin Ramsay: Liverpool defender to join Preston North End on season-long loan |url=https://www.bbc.co.uk/sport/football/65893619 |work=BBC Sport |date=13 June 2023 |access-date=13 June 2023}}</ref>
+| {{flagicon|SCO}} {{sortname|Calvin|Ramsay}}
+| [[Liverpool F.C.|Liverpool]]
+| [[Preston North End F.C.|Preston North End]]
+|-
+| rowspan=1| '''16 June 2023'''
+| 31 May 2024<ref>{{#invoke:Cite|news|title=Tyler Roberts: Doncaster Rovers sign Wolves forward on season-long loan |url=https://www.bbc.co.uk/sport/football/65935738 |work=BBC Sport |date=16 June 2023 |access-date=17 June 2023}}</ref>
+| {{flagicon|JAM}} {{sortname|Tyler|Roberts|dab=footballer, born 2003}}
+| [[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]
+| [[Doncaster Rovers F.C.|Doncaster Rovers]]
+|-
+| rowspan=2| '''26 June 2023'''
+| 31 May 2024<ref>{{#invoke:Cite|news|url=https://www.arsenal.com/catalin-cirjan-loan-deal-fc-rapid-bucuresti |title=Catalin Cirjan joins FC Rapid Bucuresti on loan |date=26 June 2023 |publisher=Arsenal F.C. |access-date=26 June 2023}}</ref>
+| {{flagicon|ROM}} {{sortname|Cătălin|Cîrjan||Cirjan, Catalin}}
+| [[Arsenal F.C.|Arsenal]]
+| {{flagicon|ROM}} [[FC Rapid București|Rapid București]]
+|}

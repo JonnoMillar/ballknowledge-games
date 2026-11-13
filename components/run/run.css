@@ -88,6 +88,9 @@ button.run-list__row { cursor: pointer; }
 .run-band.slab--decent, .run-band.slab--solid { -webkit-text-stroke: 1.5px rgba(20, 18, 16, 0.45); }
 .run-value { font-size: 20px; color: var(--muted); }
 .run-value b { color: var(--ink); font-variant-numeric: tabular-nums; }
+/* The real deal lands once the fee has stopped counting (result + 300 ms + 1300 ms). */
+.run-deal { padding: 0; border: 0; background: none; font: inherit; font-size: 15px; color: var(--muted); text-align: left; cursor: pointer; animation: run-land 420ms var(--ease-out) both; animation-delay: calc(var(--at) + 1700ms); }
+.run-deal span { color: var(--ink); }
 
 .run-find { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; background: var(--sticker); border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 8px 24px rgba(20, 18, 16, 0.08); }
 .run-find__line { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.05; text-transform: uppercase; }
@@ -111,7 +114,7 @@ button.run-list__row { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   /* The clock still drains: it is information, not decoration. */
-  .run-sheet, .run-sheet.is-leaving, .run-list--report li, .run-result, .run-stage { animation: none; }
+  .run-sheet, .run-sheet.is-leaving, .run-list--report li, .run-result, .run-stage, .run-deal { animation: none; }
 }
 
 /* Log the shot: the goal and the button beside the pitch on a laptop; the pitch takes the height left. */

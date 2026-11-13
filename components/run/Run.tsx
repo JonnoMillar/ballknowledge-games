@@ -139,12 +139,23 @@ function useCountUp(to: number, delay: number, ms = 1300): number {
   return x;
 }
 
+/** A real transfer of about the report's value (section 4a), from /api/run/deal. */
+function useDeal(m: number): { line: string; fee: number; year: number; from: string } | null {
+  const [deal, setDeal] = useState<{ line: string; fee: number; year: number; from: string } | null>(null);
+  useEffect(() => {
+    fetch(`/api/run/deal?m=${m}`).then((r) => (r.ok ? r.json() : null)).then(setDeal, () => setDeal(null));
+  }, [m]);
+  return deal;
+}
+
 /** Report stages (ms): marks tick in, the result lands, the find, then the rest. */
 const AT = { marks: 200, result: 900, find: 2400, rest: 3000 };
 
 function Report({ day, archive, list, run }: { day: number; archive: boolean; list: RunTaskDef[]; run: RunDay }) {
   const r = run.score ?? runScore(list.map((t) => run.results[t.id]?.score ?? 0));
   const shown = useCountUp(r, AT.result + 300);
+  const deal = useDeal(Math.round(reportValue(r) * 10) / 10);
+  const [dealOpen, setDealOpen] = useState(false);
   const runs = allRuns();
   const today = localDate();
   const streak = streakOf(streakDates(runs), today);
@@ -169,6 +180,11 @@ function Report({ day, archive, list, run }: { day: number; archive: boolean; li
           <span className="run-eyebrow">Ball knowledge</span>
           <span className={`run-band display slab--${bandOf(r)}`}>{bandWord(r)}</span>
           <span className="run-value">Report valued at <b>{money(reportValue(shown))}</b></span>
+          {deal ? (
+            <button type="button" className="run-deal" onClick={() => setDealOpen(!dealOpen)} aria-expanded={dealOpen}>
+              {deal.line}{dealOpen ? <span>, {money(deal.fee / 1e6)} from {deal.from}, {deal.year}</span> : null}
+            </button>
+          ) : null}
         </div>
       </div>
       <div className="run-report__col">

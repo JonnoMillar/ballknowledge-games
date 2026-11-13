@@ -1,0 +1,43 @@
+# The transfer fees beside the daily run's report value (data/transfers.json),
+# re-read from Wikipedia's transfer lists once each window has shut: early
+# February and early September, and again a week later for late edits.
+# Tests, then commits to the default branch; the push deploys. See docs/daily-run.md.
+name: Transfers
+
+on:
+  schedule:
+    - cron: '0 7 3,10 2,9 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: transfers
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run transfers
+      - run: npm test
+      - name: Commit the fees
+        run: |
+          if [ -z "$(git status --porcelain data/transfers.json)" ]; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/transfers.json
+          git commit -m "chore(run): transfer fees"
+          git pull --rebase
+          git push
