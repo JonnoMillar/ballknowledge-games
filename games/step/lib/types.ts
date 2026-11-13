@@ -14,4 +14,9 @@ export interface StepDay { date: string; day: number; steps: StepOf[] }
 
 /** A player as a card: who, and the two clubs that made the step (link to the given, then the club). */
 export interface StepCard { id: string; name: string; image: PortraitImage | null; clubs: [StepClub, StepClub] | null }
-export interface Verdict { held: boolean; grade: Grade | null; pick: StepCard; obvious: StepCard | null; elite: StepCard | null }
+/**
+ * `depth` (0 to 1 inside the grade) feeds the daily run's score; verdicts
+ * stored before 2026-11-13 have none. A pick with id '' is the run's clock
+ * running out: no answer, a miss.
+ */
+export interface Verdict { held: boolean; grade: Grade | null; depth?: number; pick: StepCard; obvious: StepCard | null; elite: StepCard | null }

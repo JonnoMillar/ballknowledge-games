@@ -32,11 +32,13 @@ type Phase = 'stack' | 'develop' | 'show' | 'settle' | 'done';
  * tap to skip land on the end. `play` false is the card at rest in its case
  * (a verdict already judged; the preview poses the show on it).
  */
-export default function Slam({ verdict, ground, news, play, onDone }: {
+export default function Slam({ verdict, ground, news, play, cap, onDone }: {
   verdict: Verdict;
   ground: Ground;
   news?: CardNews;
   play: boolean;
+  /** The daily run cuts the ceremony here (ms) and lands on the rest state. */
+  cap?: number;
   onDone: () => void;
 }) {
   const held = verdict.held && verdict.grade !== null;
@@ -95,6 +97,7 @@ export default function Slam({ verdict, ground, news, play, onDone }: {
     const developAt = (tiers.length - 1) * EVERY + LAND + HOLD;
     at(developAt, () => setPhase('develop'));
     at(developAt + DEVELOP, () => setPhase(held ? 'show' : 'settle'));
+    if (cap) at(cap, finish);
     return () => timers.current.forEach(clearTimeout);
     // One ceremony per verdict: `play` only ever goes from true to false.
   }, [play]);

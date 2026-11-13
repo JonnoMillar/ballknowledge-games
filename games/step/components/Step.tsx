@@ -67,7 +67,7 @@ export default function Step() {
   );
 }
 
-function useAlbum(): SearchIndex<NameEntry> | null {
+export function useAlbum(): SearchIndex<NameEntry> | null {
   const [index, setIndex] = useState<SearchIndex<NameEntry> | null>(null);
   useEffect(() => {
     let live = true;
@@ -252,7 +252,7 @@ export function Track({ day, run, view, chosen, hidden, reveal, onOpen }: {
   );
 }
 
-type Reveal = { play: boolean; news?: CardNews; onDone: () => void };
+type Reveal = { play: boolean; news?: CardNews; cap?: number; onDone: () => void };
 
 /**
  * The gap: a silhouette to tap, the name you chose, or the pick once judged.
@@ -267,7 +267,7 @@ function Gap({ index, verdict, reveal, live, chosen, playerFirst, onOpen }: {
     return (
       <div className="step-gap step-gap--card" aria-label={verdict.held && verdict.grade ? `${verdict.pick.name}, ${GRADE_WORD[verdict.grade]}` : undefined}>
         <StickerFace player={verdict.pick} image={verdict.pick.image ?? undefined} ground={verdict.held ? cardGround(verdict.pick, playerFirst) : neutral()} className="sticker--still step-gap__room" aria-hidden />
-        <Slam key={index} verdict={verdict} ground={cardGround(verdict.pick, playerFirst)} news={reveal?.news} play={reveal?.play ?? false} onDone={reveal?.onDone ?? (() => {})} />
+        <Slam key={index} verdict={verdict} ground={cardGround(verdict.pick, playerFirst)} news={reveal?.news} play={reveal?.play ?? false} cap={reveal?.cap} onDone={reveal?.onDone ?? (() => {})} />
       </div>
     );
   }
@@ -304,7 +304,7 @@ function Gap({ index, verdict, reveal, live, chosen, playerFirst, onOpen }: {
  * After the reveal: the club that linked the pick to the given (or that it
  * does not fit), then the obvious answer unless that was the pick.
  */
-function After({ verdict, playerFirst }: { verdict: Verdict; playerFirst: boolean }) {
+export function After({ verdict, playerFirst }: { verdict: Verdict; playerFirst: boolean }) {
   const via = verdict.held ? verdict.pick.clubs?.[0] : undefined;
   const o = verdict.obvious;
   return (
@@ -315,7 +315,7 @@ function After({ verdict, playerFirst }: { verdict: Verdict; playerFirst: boolea
           <ClubBadge clubId={via.id} club={via.club} size={22} />
           <b>{shortClubName(via.club.name)}</b>
         </p>
-      ) : <p className="step-verdict__head display">Doesn’t fit</p>}
+      ) : <p className="step-verdict__head display">{verdict.pick.id === '' ? 'Out of time' : 'Doesn’t fit'}</p>}
       {o && o.id !== verdict.pick.id ? (
         <div className="step-obvious">
           <StickerFace player={o} image={o.image ?? undefined} ground={cardGround(o, playerFirst)} className="sticker--still" />

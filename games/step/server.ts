@@ -6,7 +6,7 @@ import { clubView } from '../../src/lib/clubs';
 import { dayNumber } from '../../src/lib/daily';
 import type { Player } from '../../src/lib/chemistry/types';
 import { addDays, EPOCH, type StoredDay } from './lib/day';
-import { judge, linkOf, stepsOf, STEPS, type Ruler, type Views } from './lib/rules';
+import { endsOf, fieldOf, judge, linkOf, stepsOf, STEPS, type Ruler, type Views } from './lib/rules';
 import type { StepCard, StepClub, StepDay, Verdict } from './lib/types';
 
 /**
@@ -76,13 +76,18 @@ export async function judgePick(date: string, step: number, pickId: string, earl
   if (!playable(date) || !Number.isInteger(step) || step < 0 || step >= STEPS) return null;
   const d = (await readDays()).get(date);
   const { byId, images } = await loadData();
+  // '' is the daily run's clock running out: no pick, a miss, with the step's answers.
+  const timeout = pickId === '';
   const pick = byId.get(pickId);
-  if (!d || !pick || earlier.includes(pickId)) return null;
+  if (!d || (!pick && !timeout) || (!timeout && earlier.includes(pickId))) return null;
   const s = stepsOf(d)[step]!;
   if (d.players.includes(pickId)) return null;
   const given = byId.get(s.player)!;
   const [views, ruler] = [await playerViews(), await playerRuler()];
-  const j = judge(pick, given, s.club, (await byClub()).get(s.club) ?? [], views, ruler);
+  const members = (await byClub()).get(s.club) ?? [];
+  const j = pick
+    ? judge(pick, given, s.club, members, views, ruler)
+    : { held: false, grade: null, depth: 0, via: null, ...endsOf(given, s.club, fieldOf(given, members), views, ruler) };
 
   const card = async (p: Player, via: string | null): Promise<StepCard> => ({
     id: p.id, name: p.name, image: images[p.id] ?? null,
@@ -91,7 +96,8 @@ export async function judgePick(date: string, step: number, pickId: string, earl
   return {
     held: j.held,
     grade: j.grade,
-    pick: await card(pick, j.via),
+    depth: j.depth,
+    pick: pick ? await card(pick, j.via) : { id: '', name: 'No answer', image: null, clubs: null },
     obvious: j.obvious ? await card(j.obvious, linkOf(j.obvious, given, views, ruler).club) : null,
     elite: j.elite ? await card(j.elite, linkOf(j.elite, given, views, ruler).club) : null,
   };

@@ -1,0 +1,113 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   THE DAILY RUN — every daily as a scout's task, then one report.
+   The album page, ink and one red button. Marks differ by shape and
+   lightness (solid tick, half disc, hollow cross), never by hue.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* The footer (66px) sits outside .app: budget for it, or the footer alone scrolls. */
+.app.run { min-height: calc(100vh - 66px); }
+
+.run__main {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 14px 16px 32px;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 760px) { .run__main { padding: 18px 28px 32px; } }
+
+/* ── THE SHEET: one task, sliding out of the dossier and back in ─────── */
+.run-sheet { display: flex; flex-direction: column; gap: 10px; animation: run-arrive 560ms var(--ease-out) both; }
+.run-sheet.is-leaving { animation: run-leave 420ms var(--ease-in) both; }
+@keyframes run-arrive { from { opacity: 0; transform: translateY(28px); } }
+@keyframes run-leave { to { opacity: 0; transform: translateY(-22px) scale(0.98); } }
+
+.run-head { display: flex; flex-direction: column; gap: 2px; }
+.run-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+}
+.run-eyebrow::before { content: ''; flex: none; width: 22px; height: 2px; border-radius: 2px; background: var(--ink); }
+.run-head__rule { margin: 0; font-size: 18px; font-weight: 600; color: var(--ink); }
+
+/* ── THE CLOCK: an ink bar that drains. Not red: red is the brand and the action. */
+.run-clock { height: 5px; border-radius: 3px; background: var(--rule); overflow: hidden; }
+.run-clock__ink { display: block; height: 100%; background: var(--ink); transform-origin: left center; animation-name: run-drain; animation-timing-function: linear; animation-fill-mode: forwards; }
+@keyframes run-drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* ── THE CHECKLIST: every task, a mark once filed ─────────────────────── */
+.run-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.run-list__row { display: inline-flex; align-items: center; gap: 8px; padding: 2px 0; font: inherit; font-size: 14px; color: var(--muted); background: none; border: 0; }
+button.run-list__row { cursor: pointer; }
+.run-list .is-current .run-list__row { color: var(--ink); font-weight: 700; }
+.run-list__score { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); }
+
+.run-mark { flex: none; width: 22px; height: 22px; border-radius: 50%; display: inline-block; box-sizing: border-box; }
+.run-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.run-mark--clean { background: var(--ink); }
+.run-mark--clean svg { stroke: #fff; }
+.run-mark--partial { border: 2px solid var(--ink); background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); }
+.run-mark--miss { border: 2px solid var(--ink); }
+.run-mark--miss svg { stroke: var(--ink); stroke-width: 2.2; transform: translate(-2px, -2px); }
+.run-mark--open { border: 1.5px dashed var(--rule-strong); }
+
+/* ── TASKS inside the sheet ───────────────────────────────────────────── */
+.run-task { display: flex; flex-direction: column; gap: 12px; }
+.run-task--missing { align-items: center; padding: 40px 0; color: var(--muted); }
+/* Spoofed: the player beside the career on a laptop, so the whole task fits one screen. */
+.run .itk-stage { gap: 14px; padding: 20px 12px 16px; }
+@media (min-width: 900px) {
+  .run-spoofed { flex-direction: row; align-items: center; justify-content: center; gap: 28px; padding: 18px 24px; }
+  .run-spoofed .itk-stage__who { flex: none; }
+  .run-spoofed > :last-child { flex: 1; min-width: 0; }
+}
+.run-steps { align-items: center; max-width: 760px; width: 100%; margin: 0 auto; }
+.run-steps .step-track { padding-top: 32px; }
+.run-steps .run-clock { align-self: stretch; }
+
+/* ── THE REPORT ───────────────────────────────────────────────────────── */
+.run-report { display: grid; gap: 22px; padding: 8px 0; }
+@media (min-width: 900px) { .run-report { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; min-height: calc(100dvh - 64px - 66px - 50px); } }
+.run-report__col { display: flex; flex-direction: column; gap: 22px; }
+
+.run-list--report { flex-direction: column; gap: 6px; }
+.run-list--report li { animation: run-tick 320ms var(--ease-out) both; animation-delay: calc(var(--at, 0ms) + var(--i) * 100ms); }
+.run-list--report .run-list__row { font-size: 16px; color: var(--ink); }
+@keyframes run-tick { from { opacity: 0; transform: translateX(-10px); } }
+
+.run-result, .run-stage { animation: run-land 520ms var(--ease-out) both; animation-delay: var(--at); }
+@keyframes run-land { from { opacity: 0; transform: translateY(14px); } }
+.run-result { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.run-band {
+  font-size: clamp(72px, 12vw, 120px); font-weight: 800; line-height: 0.92; text-transform: uppercase; letter-spacing: 0.01em;
+  background: var(--material, var(--ink)); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(20, 18, 16, 0.18));
+}
+.run-value { font-size: 20px; color: var(--muted); }
+.run-value b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.run-find { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; background: var(--sticker); border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 8px 24px rgba(20, 18, 16, 0.08); }
+.run-find__line { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.05; text-transform: uppercase; }
+
+.run-standing { display: flex; flex-direction: column; gap: 10px; }
+.run-curve { width: 100%; max-width: 360px; height: auto; display: block; }
+.run-curve__fill { fill: rgba(20, 18, 16, 0.07); }
+.run-curve__line { fill: none; stroke: var(--rule-strong); stroke-width: 1.5; }
+.run-curve__mark { stroke: var(--ink); stroke-width: 2; }
+.run-curve__dot { fill: var(--ink); }
+.run-curve__label { font-size: 12px; font-weight: 700; fill: var(--ink); }
+.run-standing__line { margin: 0; font-size: 18px; font-weight: 700; }
+.run-standing__line span { font-weight: 400; color: var(--muted); }
+.run-streak { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.run-streak b { font-size: 20px; }
+.run-streak__rest { display: inline-flex; gap: 4px; }
+.run-streak__rest i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink); }
+.run-streak__best { color: var(--muted); }
+.run-next { margin: 0; font-size: 14px; color: var(--muted); }
+.run-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The clock still drains: it is information, not decoration. */
+  .run-sheet, .run-sheet.is-leaving, .run-list--report li, .run-result, .run-stage { animation: none; }
+}

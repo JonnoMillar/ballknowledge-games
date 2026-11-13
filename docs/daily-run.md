@@ -511,3 +511,56 @@ scratch scripts are not committed; the numbers are.
 **Gate 1 verdict:** every phase 1 task has the data it needs. Next is gate
 2, the playable draft: shared shell and scoring first, then Spoofed and
 Steps (no new data), then Pitch pin and Season line (new schedules).
+
+---
+
+## 11. Gate 2: playable draft, first slice (2026-11-13)
+
+Built: the shared run (scoring, shell, clocks, report) and the first two
+tasks, Check the rumours and Trace the link. Pitch pin, Season line and the
+transfer line come next. Play it at `/run` (`?date=` for a past day).
+
+| Path | What |
+|---|---|
+| `src/lib/run/tasks.ts` | `RUN_TASKS` (all six: id, name, rule, items, `clockMs`), `RUN_REVEAL_MS`, `FIND_ORDER`, the `TaskResult` and `RunTaskProps` types. |
+| `src/lib/run/score.ts` | `gradeScore` (grade range placed by depth), `runScore`, `reportValue`/`money`, `BANDS`, `topPercent` (our scale's normal curve), `bell`, `markOf` and glyphs, `bestMoment`, `shareLine`. |
+| `src/lib/run/progress.ts` | `run.progress.v1` (results per task, `finishedOn`, frozen `score`), `streakOf` (rest days, `REST_EVERY` 7, `REST_MAX` 2), `bestThisMonth`. |
+| `tests/run/score.test.ts` | The spec's fee table, bands, Top X%, marks, find tie-break, share card, streak and rest days. |
+| `components/run/Run.tsx`, `RunClock.tsx`, `run.css` | The shell: checklist, header (eyebrow + rule), staged sheet moves, resume at the first open task, the report (marks tick in, band word in its grade material, the fee counting up, the find, the curve and Top X% or your best this month, streak, countdown, Share, Back to the board). `markDone('run')` on finishing. |
+| `app/run/page.tsx`, `RunRoute.tsx` | The route; `RunRoute` (client) hands each game's RunTask to the shell, so shared code imports no game. |
+| `games/itk/run/RunTask.tsx` | Careers 1 and 2 of today's Spoofed, 30 s each. Writes `spoofed.progress.v1`; a timeout pads the picks with index -1 so the daily reads it as missed. Score 25 × points. |
+| `games/step/run/RunTask.tsx` | Steps 1 and 2, 45 s each, reveal cut at 2 s (`Slam` `cap`). Writes `step.progress.v2` and records cards to the collection as the daily does. A timeout locks the chosen name if any, else asks for a miss. |
+
+Changes inside the games (small, tested):
+- Steps: `judge` returns `depth` (`depthOf` in `lib/rules.ts`: where the
+  pick's fact sits between its grade's bar cuts, in log space; the field's
+  deepest checkable answer is 1). The verdict carries it. `judgePick` with
+  pick `''` is a timeout: a miss with the step's answers, pick "No answer".
+  `After` says "Out of time" for it. `Track`, `After`, `useAlbum` exported.
+- Spoofed: `judgePick` accepts index -1 when `last` (the clock ran out):
+  reveals the fake. `VERDICT` exported.
+
+**Deviation:** no `app/api/run/day` yet. Each RunTask fetches its own game's
+API (the slices need nothing new server-side). Add it when Pitch pin and
+Season line bring run schedules.
+
+**Verified:** typecheck clean, `npm test` 2,212 passed. Playwright on the dev
+server, 1366×768: a full run (career 1 found first time, career 2 timed out
+and peeled, step 1 Kevin-Prince Boateng Sharp, step 2 timed out), the report
+at £10.5m Decent, `scrollHeight` = 768 on the task and report screens;
+375×812 report stacks and Share shows. After the run, `/spoofed/play` opens on
+career 3 and `/step` on step 3 with the run's marks. Reload of a finished run
+opens the report. No console errors after a duplicate-key fix.
+**Not checked:** a real run timed end to end (the waits above were forced),
+the archive path `/run?date=`, Share's clipboard text in a real browser, a
+real phone.
+
+**Known, for Jonno:**
+1. **The find goes by task score**, as section 4 says, so a Sharp Steps pick
+   loses to a Spoofed task scored 50 when the other step timed out (seen in
+   the test run: the find was the Watkins spoof). The alternative is to rank
+   finds by the item's own score (the pick's 92 beats one career's 100?).
+   Your call.
+2. The Decent word (silver material) is pale on the cream page.
+3. A task already answered shows a full clock bar on reload (cosmetic).
+4. The hub does not yet show the run (the hub is being redesigned on `main`).

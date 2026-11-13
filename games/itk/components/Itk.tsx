@@ -19,7 +19,7 @@ import { markDone } from '../../../src/lib/today';
  * never knows where the fake is until the round is over. Progress is kept in
  * this browser, so a reload resumes and a finished day stays finished.
  */
-const VERDICT: Record<PlateMark, string> = { held: 'Clocked it', hinted: 'Got there', missed: 'Had you' };
+export const VERDICT: Record<PlateMark, string> = { held: 'Clocked it', hinted: 'Got there', missed: 'Had you' };
 /** The beat between circling a club and hearing about it. */
 const BEAT = 520;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
