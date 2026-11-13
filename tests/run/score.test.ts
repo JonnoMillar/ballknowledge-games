@@ -40,6 +40,10 @@ describe('run score', () => {
 });
 
 describe('best moment', () => {
+  it('ranks finds by their own item, not the task average', () => {
+    expect(bestMoment({ spoofed: { score: 50, find: 'spoof', findScore: 100 }, step: { score: 46, find: 'step', findScore: 92 } })).toBe('spoof');
+    expect(bestMoment({ spoofed: { score: 75, find: 'spoof', findScore: 100 }, step: { score: 48, find: 'step', findScore: 100 } })).toBe('step');
+  });
   it('takes the highest scoring find, ties to Steps first', () => {
     expect(bestMoment({ spoofed: { score: 100, find: 'spoof' }, step: { score: 100, find: 'step' } })).toBe('step');
     expect(bestMoment({ spoofed: { score: 100, find: 'spoof' }, step: { score: 90, find: 'step' } })).toBe('spoof');

@@ -39,6 +39,8 @@ export interface TaskResult {
   /** 0 to 100, one decimal. */
   score: number;
   find?: string;
+  /** The find's own item score (one career, one pick), which ranks finds: the best moment, not the best task. */
+  findScore?: number;
 }
 
 /**

@@ -94,7 +94,7 @@ function Careers({ day, items, clockMs, next, onDone }: { day: ItkDay; items: nu
     const firsts = all.flatMap((m, i) => (m === 'held' ? [i] : [])).sort((a, b) => day.rounds[b]!.stops.length - day.rounds[a]!.stops.length);
     const f = firsts[0];
     const fake = f !== undefined && played.fakes[f] != null ? day.rounds[f]!.stops[played.fakes[f]!] : undefined;
-    onDone({ score, ...(f !== undefined && fake ? { find: `Spotted first time: ${day.rounds[f]!.player.name} never joined ${shortClubName(fake.name)}` } : {}) });
+    onDone({ score, ...(f !== undefined && fake ? { findScore: 100, find: `Spotted first time: ${day.rounds[f]!.player.name} never joined ${shortClubName(fake.name)}` } : {}) });
   }
 
   return (

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * One item's clock in the daily run: an ink bar that drains under the task's
@@ -11,6 +11,8 @@ export default function RunClock({ ms, running, onEnd }: { ms: number; running: 
   const end = useRef(onEnd);
   end.current = onEnd;
   const left = useRef(ms);
+  // Already answered when it mounted (a reload): the time is spent, show the bar empty.
+  const [spent] = useState(!running);
   useEffect(() => {
     if (!running || left.current <= 0) return;
     const started = performance.now();
@@ -19,7 +21,7 @@ export default function RunClock({ ms, running, onEnd }: { ms: number; running: 
   }, [running]);
   return (
     <div className="run-clock" role="timer" aria-label={`${Math.round(ms / 1000)} second clock`}>
-      <span className="run-clock__ink" style={{ animationDuration: `${ms}ms`, animationPlayState: running ? 'running' : 'paused' }} />
+      <span className="run-clock__ink" style={spent ? { transform: 'scaleX(0)', animation: 'none' } : { animationDuration: `${ms}ms`, animationPlayState: running ? 'running' : 'paused' }} />
     </div>
   );
 }

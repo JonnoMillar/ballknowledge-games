@@ -95,7 +95,7 @@ function Steps({ day, items, clockMs, next, onDone }: { day: StepDay; items: num
     // The find: the deepest pick graded Sharp or Elite.
     const best = vs.map((v, i) => ({ v, s: scores[i]! })).filter(({ v }) => v.grade === 'sharp' || v.grade === 'elite').sort((a, b) => b.s - a.s)[0];
     const find = best?.v.pick.clubs ? `${GRADE_WORD[best.v.grade!]} find: ${plateName(best.v.pick.id, best.v.pick.name)} at ${shortClubName(best.v.pick.clubs[1].club.name)}` : undefined;
-    onDone({ score: Math.round((scores.reduce((a, b) => a + b, 0) / items) * 10) / 10, ...(find ? { find } : {}) });
+    onDone({ score: Math.round((scores.reduce((a, b) => a + b, 0) / items) * 10) / 10, ...(find ? { find, findScore: best!.s } : {}) });
   }
 
   const clubName = shortClubName(step.club.club.name);

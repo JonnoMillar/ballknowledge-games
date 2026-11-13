@@ -84,6 +84,8 @@ button.run-list__row { cursor: pointer; }
   background: var(--material, var(--ink)); -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 2px 0 rgba(20, 18, 16, 0.18));
 }
+/* Silver and gold are pale on the cream page: an ink edge keeps the word readable. */
+.run-band.slab--decent, .run-band.slab--solid { -webkit-text-stroke: 1.5px rgba(20, 18, 16, 0.45); }
 .run-value { font-size: 20px; color: var(--muted); }
 .run-value b { color: var(--ink); font-variant-numeric: tabular-nums; }
 

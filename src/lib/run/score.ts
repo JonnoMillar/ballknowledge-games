@@ -69,15 +69,17 @@ export const MARK_GLYPH: Record<TaskMark, string> = { clean: 'âœ…', partial: 'ðŸ
 export const MARK_WORD: Record<TaskMark, string> = { clean: 'Clean', partial: 'Partial', miss: 'Miss' };
 
 /**
- * The best moment of the run: the find with the highest task score, ties
- * broken by FIND_ORDER. With no find, the best task named plainly.
+ * The best moment of the run: the find whose own item scored highest (a
+ * Sharp pick beats a task average dragged down by a timeout), ties broken by
+ * FIND_ORDER. With no find, the best task named plainly.
  */
 export function bestMoment(results: Partial<Record<TaskId, TaskResult>>): string | null {
   const done = RUN_TASKS.flatMap((t) => (results[t.id] ? [{ t, r: results[t.id]! }] : []));
   if (done.length === 0) return null;
   const finds = done.filter((d) => d.r.find);
   if (finds.length > 0) {
-    finds.sort((a, b) => b.r.score - a.r.score || FIND_ORDER.indexOf(a.t.id) - FIND_ORDER.indexOf(b.t.id));
+    const at = (r: TaskResult) => r.findScore ?? r.score;
+    finds.sort((a, b) => at(b.r) - at(a.r) || FIND_ORDER.indexOf(a.t.id) - FIND_ORDER.indexOf(b.t.id));
     return finds[0]!.r.find!;
   }
   const best = done.reduce((a, b) => (b.r.score > a.r.score ? b : a));
