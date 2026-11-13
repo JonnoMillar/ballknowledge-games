@@ -555,12 +555,50 @@ opens the report. No console errors after a duplicate-key fix.
 the archive path `/run?date=`, Share's clipboard text in a real browser, a
 real phone.
 
+**Settled after the first slice (2026-11-13):**
+1. Finds rank by their own item's score (`findScore`: one career, one
+   pick, one goal), not the task average, so a timeout elsewhere in a task
+   cannot bury its best moment. Ties still go by `FIND_ORDER`.
+2. Pale band words (Decent, Solid) carry an ink edge.
+3. A task already answered shows its clock spent after a reload.
+
+---
+
+## 12. Gate 2, rest of phase 1: Log the shot, Read the season, the transfer line (2026-11-13)
+
+Phase 1 is now whole: four tasks in order and the transfer line under the
+fee. Play it at `/run`.
+
+| Path | What |
+|---|---|
+| `games/pin/lib/run.ts`, `data/run.json` | The run's goals: 3 a day from `RUN_PIN_START` 2026-11-13, a 60-day reuse gap, at most one classic, one from the last 365 days (this season's first), never two from one match, the lazy pin under 60. When goals run thin (summer has none for ten weeks) the gap shrinks by itself in steps of 10 to `RUN_PIN_GAP_MIN` 30 and the day records it (`gap`), so nobody has to step in; below 30 it throws. On today's goals alone, with no new ones, it runs 182 days. |
+| `games/pin/run/RunTask.tsx`, `app/api/pin/run` | One throw a goal, 20 s each, on the existing pitch and throw route (board `run:<date>`, served only from its date). Out of time with no pin: 0 points, the true spot shown. StatsBomb credit and logo on the task, as its licence asks. Find: the closest bullseye. |
+| `games/season-line/lib/run.ts`, `data/run.json` | The run's boards: `runPool` (2000 on, a story, no title, story + 2 × fame under 5: 147 boards), a club not back within 10 days, never the daily's board within 60 days either way (the daily's `extend` now also keeps clear of the run). The window's first season is drawn per date. |
+| `games/season-line/run/RunTask.tsx`, `app/api/season-line/run` | The whole line, "Between 2005/06 and 2009/10", three club guesses at 30 s (squad player after one miss, top scorer after two), then the season at 20 s (`SEASON_PICK_MS`). Hints that could place the season (the top scorer's tally) wait until it is picked. Score 80/55/30 + 20 exact or 10 one off. Find: club first time and season exact. |
+| `src/lib/transfers.ts`, `data/transfers.json`, `scripts/run/build-transfers.ts`, `app/api/run/deal` | 1,598 priced moves from 33 windows (summer 2010 to summer 2026), 1,252 matched to the pool by title. The parser reads the three page formats the lists have used (one-line headers and "Name", `{{dts}}` dates, rowspans on any cell, `{{ntsh}}` keys or plain fees); tested on a cut of the real summer 2023 page. `dealFor`: a 500k+ view player's deal within ±10% (±5% first), else "More than" the dearest under. 954 of the 1,001 report values get a near deal, 47 the "More than" line. Served by a route so the page does not carry the list. |
+| `scripts/run/build-days.ts`, `.github/workflows/run-days.yml`, `transfers.yml` | `npm run run:days` tops both run schedules up to 28 days ahead; daily at 06:30 UTC after pin-packs. `npm run transfers` re-reads the lists; on 3 and 10 February and September. Both run tests before committing. **They fire only once on `main`.** |
+| `src/lib/run/progress.ts` | `loadItems`/`saveItems`: mid-task state for tasks with no daily (Log the shot, Read the season) lives in `run.progress.v1`. The shell re-reads the record before filing a task, so it never overwrites that state. |
+
+Top fees read: Coutinho £142m (2018), Isak £125m (2025), Enzo Fernández
+£125m (summer 2026), Rogers £117m, Anderson £116m, Barcola £106m (2026):
+as the pages state them; not checked against another source.
+
+**Verified:** typecheck clean, `npm test` 2,232 passed, prod build clean
+(`NEXT_DIST_DIR=.next-prod`). Playwright, dev server, 1366×768:
+Log the shot (a goal timed out at +0 with the spot shown, two throws, the
+reveal), Read the season (a wrong guess brought the squad player, Leicester
+on guess 2, 2000/01 exact: 75), the report with four marks, £9.4m Decent and
+"About what Bournemouth paid for Justin Kluivert" (fee, club and year on
+tap); `scrollHeight` 768 on each; no console errors. The spoofed and steps
+results in that run were seeded, so the four were not played in one go.
+**Not checked:** a real run timed end to end, a phone through the new two
+tasks, the crons on GitHub, the archive path.
+
 **Known, for Jonno:**
-1. **The find goes by task score**, as section 4 says, so a Sharp Steps pick
-   loses to a Spoofed task scored 50 when the other step timed out (seen in
-   the test run: the find was the Watkins spoof). The alternative is to rank
-   finds by the item's own score (the pick's 92 beats one career's 100?).
-   Your call.
-2. The Decent word (silver material) is pale on the cream page.
-3. A task already answered shows a full clock bar on reload (cosmetic).
-4. The hub does not yet show the run (the hub is being redesigned on `main`).
+1. The goals and boards are generated, not reviewed: gate 3 is your read of
+   upcoming days (`npm run run:days -- --print`). Some goals are obscure
+   (Saman Ghoddos, Guemissongui Ouattara); some boards are famous-ish
+   (Liverpool 18/19).
+2. The hub does not yet show the run (the hub is being redesigned on `main`).
+3. The run's archive starts at 2026-11-13: the goal schedule cannot be
+   backfilled to 19 September, because goals had to exist before their day.
