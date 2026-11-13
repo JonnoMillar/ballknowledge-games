@@ -602,3 +602,40 @@ tasks, the crons on GitHub, the archive path.
 2. The hub does not yet show the run (the hub is being redesigned on `main`).
 3. The run's archive starts at 2026-11-13: the goal schedule cannot be
    backfilled to 19 September, because goals had to exist before their day.
+
+---
+
+## 13. Next (Jonno, 2026-11-13)
+
+- **Priority is high-impact items** that improve the run most right away.
+  Calibration (section 3) is a small addition at the end, not now.
+- **The run's look will be redesigned** to the new scout's-office design
+  (main: `design-drafts/brand-concepts/`, scene bible v2 has a daily-run
+  dossier slot). Do not polish the current UI. What survives: `src/lib/run`,
+  both run schedules and crons, the transfer data and parser, the game API
+  routes, each RunTask's game logic. What gets redone: `components/run/Run.tsx`,
+  `run.css`, the JSX layout of each RunTask.
+- **Next build: Find the mole as a run task (phase 2, task 4).** Jonno: we
+  hide a player in a real XI ourselves to make it a daily; no solo-mode
+  generator beyond that. Facts found:
+  - `games/bluff/data/sides.json`: 408 real XIs (CL and FA Cup finals,
+    World Cup and Euro knockouts, 1995 on), `Side` in `games/bluff/lib/types.ts`
+    (`lines` of `Slot {id, name, pos}`).
+  - Each side already carries `help`: plausible fakes per position class
+    (same club or nation, era, position), built for Help the faker. Use it
+    as the planted name; it is the fairness work already done.
+  - Leak rules (games/bluff/HANDOFF.md): names only, no numbers, flags,
+    portraits or captain marks; the fake is never already in the XI.
+  - Shape like Log the shot: `games/bluff/lib/run.ts` (schedule: a side
+    and a planted name a day, side not back within a gap, seeded by date),
+    `data/run.json` in `games/bluff/data`, topped up by `scripts/run/build-days.ts`
+    (add to `run-days.yml`'s commit list), a route serving the XI with the
+    fake in place (never which one), a tap route judging it, `RunTask`
+    with up to 2 taps (100 / 50 / 0), 40 s clock, find "Found the mole first
+    time: <fake> in <team>'s <comp> XI". Add to `RunRoute.tsx`; state via
+    `loadItems`/`saveItems`.
+- After that: Pecking Order once its branch merges; then the redesign.
+
+**Resume prompt:** "Daily run, branch `claude/daily-run-spec-e6d716`. Read
+CLAUDE.md, then docs/daily-run.md sections 11 to 13. Build Find the mole as
+section 13 says, verify in the browser, commit, give me the localhost link."
