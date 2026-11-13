@@ -134,13 +134,14 @@ this is dev-only design work.
 - Night key frame `00719d0f-a9fe-4007-8582-b28c749c431d`, clipping `cfa89e57-48b6-433d-a635-c6efa7b6674d`
 - Golden baked `07f92207-f773-455c-bdce-0fdba0101206`, golden empty `2d000011-e170-498e-b581-18065586a080`
 - Daylight baked `74ecf664-308e-44ca-ab63-5f2864d232b4`, daylight empty `db165c85-771a-4a28-9ebd-39a47b375d6d`
+- Round 2 (`round2.html`, files in `img/round2/`, 2026-11-13, 10 images at 0.25 = 2.5 credits): portakabin desk `cbd402cb-7d95-412b-a038-8f4204044d9d` phone `c8078cac-2ea0-49ab-8353-bf22aaca59fd`; academy desk `d299d06d-616a-4df6-8222-e088538a0538` phone `81eba370-9a62-472d-99d4-2bc79a0e4e04`; bedroom desk `79c5b697-0c27-4e71-8115-8bfb38247683` phone `f124d9a1-23d9-466b-8b7e-1ddbe5c9be8e`; dressing room desk `3249f300-3f26-4805-9195-d04dcea99fc5` phone `d82334ce-4aab-4121-83ec-3aa79f9ac86b`; stylised office desk `da537930-88ee-438b-996a-60c257c618f7` phone `0b7bc323-cee0-4350-a7fc-465b6dd3199f`. `0-desk.png` is a copy of `img/gen/grade-cool/baked.png`.
 Rebuild pieces: `python -X utf8 design-drafts/brand-concepts/cutout.py day`
 (and `sunny`), then `grade.py`. `build.py` (concepts board effects) reads the
 photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Next
 
-0. **Round 2 first (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged) and six more concepts with phone frames, awaiting Jonno's approval before any generation. The bible sign-off waits for the chosen concept.
+0. **Round 2 (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged); five concepts generated (car cut by Jonno), compared on `round2.html` (localhost:4321/round2.html). Next: Jonno's shortlist of 2 or 3, then the mates' 5-second test. The bible sign-off waits for the chosen concept.
 1. Jonno's sign-off on `bible.html` (objects, and the four open calls).
 2. **Single-item control test** on the Spoofed clipping, about 0.75 credits:
    design the item alone until approved; bake it in using it as a reference
