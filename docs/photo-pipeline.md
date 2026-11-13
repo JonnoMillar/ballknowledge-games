@@ -439,3 +439,13 @@ its two jobs, and a second watchdog started afterwards exited at once (`watchdog
 `powershell -ExecutionPolicy Bypass -File scripts\photos\ops\install-task.ps1 -Remove`. If the repo or worktree
 moves, run the install script again from the new place (the task stores the absolute path). It needs the
 runners copied into `.scratch/photo-all/` (they are, from `scripts/photos/ops/`).
+
+### Upcoming games first (2026-11-13)
+
+Jonno: no kit cards if at all possible; review the players in upcoming games first. `?focus=1` on
+`/photo-check` and `/photo-pick` shows only the ids in `.scratch/photo-all/focus.json`, all on one page,
+soonest first: every player in Spoofed's rounds, Steps' fixed players and the daily run's Line them up
+fives from today to the end of each schedule (294 on 2026-11-13: 136 already approved or picked, 119
+cutouts to check, 23 marked wrong, 16 with no usable photo). The list was written from the daily-run
+branch's schedules. The watchdog's heartbeat stopped 2026-11-12 15:58 at 295 MB free: restart it before
+asking it for more candidates.

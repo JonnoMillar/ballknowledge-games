@@ -14,8 +14,12 @@ const json = <T,>(file: string, fallback: T): T => (existsSync(`${DIR}/${file}`)
  * awaiting thousands of file reads in the component made React's dev stream record every one
  * ("Maximum call stack size exceeded", 100 s a load).
  */
-function nextBatch(): { items: CheckItem[]; stats: CheckStats } {
-  const players = json<{ id: string; name: string; club?: string }[]>('players.json', []);
+function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats } {
+  const all = json<{ id: string; name: string; club?: string }[]>('players.json', []);
+  // ?focus=1: only the players in upcoming games (focus.json, soonest first), all in one page.
+  const want = focus ? json<string[]>('focus.json', []) : null;
+  const byId = new Map(all.map((p) => [p.id, p]));
+  const players = want ? want.flatMap((id) => (byId.has(id) ? [byId.get(id)!] : [])) : all;
   const marks = json<{ wrong: string[]; flagged: string[] }>('marks.json', { wrong: [], flagged: [] });
   const approved = new Set(json<string[]>('approved.json', []));
   const bad = new Set([...marks.wrong, ...marks.flagged]);
@@ -29,7 +33,7 @@ function nextBatch(): { items: CheckItem[]; stats: CheckStats } {
     if (!st) return;
     if (!st.ok) { kit++; return; }
     left++;
-    if (items.length < BATCH) items.push({ id: p.id, name: p.name, rank: i + 1, club: p.club, cutout: true, file: st.results?.[0]?.file.replace(/^File:/, ''), year: st.results?.[0]?.year });
+    if (focus || items.length < BATCH) items.push({ id: p.id, name: p.name, rank: (want ? all.indexOf(p) : i) + 1, club: p.club, cutout: true, file: st.results?.[0]?.file.replace(/^File:/, ''), year: st.results?.[0]?.year });
   });
   return { items, stats: { approved: approved.size, wrong: bad.size, left, kit } };
 }
@@ -40,8 +44,8 @@ function nextBatch(): { items: CheckItem[]; stats: CheckStats } {
  * ("Approve the rest") records every card in it that was not marked wrong. Cards already approved or
  * marked wrong in an earlier batch are skipped; players with no cutout are not shown (kit card).
  */
-export default function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<{ focus?: string }> }) {
   if (process.env.NODE_ENV !== 'development') notFound();
-  const { items, stats } = nextBatch();
+  const { items, stats } = nextBatch(!!(await searchParams).focus);
   return <PhotoCheck items={items} stats={stats} />;
 }
