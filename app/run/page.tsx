@@ -3,6 +3,7 @@ import '../../games/itk/itk.css';
 import '../../games/step/step.css';
 import '../../games/pin/pin.css';
 import '../../games/bluff/bluff.css';
+import '../../games/tunnel/tunnel.css';
 import '../../games/season-line/season-line.css';
 import '../../components/run/run.css';
 

@@ -1,7 +1,8 @@
 /**
  * Keep the daily run's own schedules ahead of the calendar: Log the shot's
  * goals (games/pin/data/run.json), Find the mole's planted XIs
- * (games/bluff/data/run.json) and Read the season's boards
+ * (games/bluff/data/run.json), Line them up's fives
+ * (games/tunnel/data/run.json) and Read the season's boards
  * (games/season-line/data/run.json). Run daily by
  * .github/workflows/run-days.yml; safe to run by hand.
  *
@@ -15,6 +16,8 @@ import { addDays, extend as extendPin, MIN_AHEAD, problems as pinProblems, TOP_U
 import type { Goals } from '../../games/pin/lib/types';
 import { extend as extendMole, problems as moleProblems, type RunMoleDay } from '../../games/bluff/lib/run';
 import type { Side } from '../../games/bluff/lib/types';
+import { buildWorld, type Inputs } from '../../games/tunnel/lib/day';
+import { extend as extendOrder, problems as orderProblems, type RunOrderDay } from '../../games/tunnel/lib/run';
 import { extendRun, problems as slProblems, type RunSlDay } from '../../games/season-line/lib/run';
 import type { StoredData, StoredDay } from '../../games/season-line/lib/types';
 
@@ -60,6 +63,29 @@ if (print) {
     const s = byKey.get(d.side)!;
     const name = Object.values(s.help).flat().find((p) => p!.id === d.fake)?.name;
     console.log(`${d.date}  ${s.team} (${s.comp}, ${s.date.slice(0, 4)})  ${name} for ${s.lines[d.at[0]]![d.at[1]]!.name}`);
+  }
+}
+
+// ── Line them up ──────────────────────────────────────────────────────────
+export const ORDER_RUN = 'games/tunnel/data/run.json';
+const world = buildWorld({
+  pool: JSON.parse(readFileSync('data/pool.json', 'utf8')) as Inputs['pool'],
+  careers: (JSON.parse(readFileSync('data/careers.json', 'utf8')) as { players: Inputs['careers'] }).players,
+  facts: JSON.parse(readFileSync('games/tunnel/data/facts.json', 'utf8')) as Inputs['facts'],
+});
+const orderDays = read<RunOrderDay>(ORDER_RUN);
+if (ahead(orderDays) < MIN_AHEAD) {
+  const all = extendOrder(world, orderDays, addDays(today, TOP_UP));
+  const fresh = all.slice(orderDays.length);
+  const bad = fresh.flatMap((d, i) => orderProblems(world, d, all.slice(0, orderDays.length + i)));
+  if (bad.length) throw new Error(`run order schedule broke its own rules:\n${bad.join('\n')}`);
+  write(ORDER_RUN, all);
+  console.log(`Line them up: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);
+} else console.log(`Line them up: ${ahead(orderDays)} days in hand.`);
+if (print) {
+  const clubNames = JSON.parse(readFileSync('data/clubs.json', 'utf8')) as Record<string, { name: string }>;
+  for (const d of read<RunOrderDay>(ORDER_RUN).filter((x) => x.date >= today)) {
+    console.log(`${d.date}  ${clubNames[d.club]?.name ?? d.club}: ${d.players.map((id, i) => `${world.byId.get(id)!.name} (${new Date(-d.values.age[i]! * 86_400_000).getUTCFullYear()}, ${d.values.height[i]} cm)`).join(' · ')}`);
   }
 }
 

@@ -673,8 +673,47 @@ path is tested), a phone, a whole run played in one go.
    need `npm run bluff:sides` by hand. The mole schedule cycles fine on the
    280 it has.
 
-**Next:** Pecking Order once its branch merges; then the redesign.
+**Next:** Line them up (section 15).
+
+---
+
+## 15. Phase 2, task 5: Line them up (2026-11-13)
+
+All six tasks are in the run. Jonno, on "Pecking Order is blocked": sort it.
+It was blocked only on paper: Pecking Order's daily waits on its own data
+(six categories need Instagram counts for about 150 players; 25 are
+checked), but the run needs only age and height, which are complete. So the
+run has its own five a day, like Log the shot and Find the mole, instead of
+playing the daily's first two categories (section 7's hybrid, deferred until
+the daily is live).
+
+| Path | What |
+|---|---|
+| `games/tunnel/lib/{rules,day,types}.ts`, `data/facts.json`, `components/Card.tsx`, `tunnel.css` | Copied **unchanged** from Pecking Order's branch (`claude/brave-heisenberg-ba64b8`, 4ba97c6), so that branch merges over them cleanly. No `/sorted` route or daily comes with them. If that branch edits these files before it merges, take its version. |
+| `games/tunnel/lib/run.ts`, `data/run.json` | Five who played for one club (Pecking Order's world: 10+ league games there, 300k+ views, clubs with 15+ such players, bigger clubs more often), born 1985 on, from 2026-11-13. Age and height each fair by Pecking Order's own `fair` (a year, 3 cm), the walk-out, age and height lines all `apart`, no player back within 30 days, no club within 7. Its own seed (`run-order:<date>`). `problems()` checks it all; half a year builds clean. |
+| `games/tunnel/run/server.ts`, `app/api/pecking-order/run` | One POST with the locked lines: the club, the five (names, faces, grounds), and the values only for categories with a locked line. Served from its date only. |
+| `games/tunnel/run/RunTask.tsx` | "Five who played for Valencia", Age then Height, 30 s each. Pecking Order's cards in its line (Youngest to Oldest); tap one, tap another, they swap; Lock in shows the values, ringed where right, and "6/10 pairs in the right order". Height starts from the true age line. A clock that runs out locks the line as it stands. Score: pairs right over 20, as 0 to 100. Find: "Perfect line: Valencia's five by height". Lines in `run.progress.v1`. |
+| `scripts/run/build-days.ts`, `run-days.yml` | Tops it up with the other three; `--print` lists each five with birth year and height. The cron commits `games/tunnel/data/run.json` too. |
+
+**Verified:** typecheck clean, `npm test` 2,245 passed (5 new: schedule
+rules, half a year, refusals, values held back until a line is locked, bad
+lines and days ahead refused), prod build clean. Browser, dev server,
+1366×768, earlier tasks seeded: Valencia (Nani, Batshuayi, Rodrigo, Mata,
+Neto), one swap, Lock in: values, rings and 6/10; Next: Height started from
+the true age line; locked at 3/10; "Next: Read the season"; a reload kept
+both lines. `scrollHeight` 768, no console errors.
+**Not checked:** the clock running out in the browser, a phone (the cards
+stack as rows under 760 wide, as in Pecking Order), a whole run in one go.
+
+**For Pecking Order's branch, when its daily ships:** keep its daily clear
+of the run's players (as Season line's daily keeps clear of the run's
+boards), or switch the run to the daily's first two categories (the hybrid)
+and retire `games/tunnel/data/run.json`. Its rename to Pecking Order should
+keep `/api/pecking-order/run` as is.
+
+**Next:** ship the run (Jonno plays one full run, then merge to `main` with
+a way in from the hub), then the redesign, then calibration.
 
 **Resume prompt:** "Daily run, branch `claude/daily-run-spec-e6d716`. Read
-CLAUDE.md, then docs/daily-run.md sections 11 to 14. Next: Pecking Order's
-run task once its branch merges, else the run redesign."
+CLAUDE.md, then docs/daily-run.md sections 11 to 15. All six tasks are in.
+Next: ship it to main with a hub entry, then the redesign."

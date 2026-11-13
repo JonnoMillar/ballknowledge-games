@@ -1,5 +1,5 @@
 # The daily run's own schedules (Log the shot's goals, Find the mole's XIs,
-# Read the season's boards),
+# Line them up's fives, Read the season's boards),
 # kept ahead of the calendar with no one in the loop. Daily at 06:30 UTC, after
 # pin-packs has added the week's new goals: top up to 28 days ahead when fewer
 # than 14 are left, test, and commit to the default branch; the push deploys.
@@ -33,7 +33,7 @@ jobs:
       - run: npm test
       - name: Commit new days
         run: |
-          FILES="games/pin/data/run.json games/bluff/data/run.json games/season-line/data/run.json"
+          FILES="games/pin/data/run.json games/bluff/data/run.json games/tunnel/data/run.json games/season-line/data/run.json"
           if [ -z "$(git status --porcelain $FILES)" ]; then
             echo "No new days."
             exit 0
