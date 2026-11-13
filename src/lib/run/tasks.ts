@@ -24,9 +24,11 @@ export const RUN_TASKS: readonly RunTaskDef[] = [
   { id: 'pin', name: 'Log the shot', rule: 'Pin where each goal was struck from.', items: 3, clockMs: 20_000 },
   { id: 'mole', name: 'Find the mole', rule: "One name in this XI didn't start. Find it.", items: 1, clockMs: 40_000 },
   { id: 'order', name: 'Line them up', rule: 'Put them in order.', items: 2, clockMs: 30_000 },
-  // ponytail: Read the season's 20 s season pick gets its own constant when the task is built.
   { id: 'season', name: 'Read the season', rule: 'Name the club. Then the season.', items: 1, clockMs: 30_000 },
 ];
+
+/** Read the season: `clockMs` is a club guess; the season pick has its own. */
+export const SEASON_PICK_MS = 20_000;
 
 /** A Steps reveal in the run stops here and lands on its rest state. */
 export const RUN_REVEAL_MS = 2_000;

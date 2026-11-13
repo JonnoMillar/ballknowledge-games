@@ -12,6 +12,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { addDays, extend as extendPin, MIN_AHEAD, problems as pinProblems, TOP_UP, type RunPinDay } from '../../games/pin/lib/run';
 import type { Goals } from '../../games/pin/lib/types';
+import { extendRun, problems as slProblems, type RunSlDay } from '../../games/season-line/lib/run';
+import type { StoredData, StoredDay } from '../../games/season-line/lib/types';
 
 const today = new Date().toISOString().slice(0, 10);
 const print = process.argv.includes('--print');
@@ -35,3 +37,19 @@ if (ahead(pinDays) < MIN_AHEAD) {
   console.log(`Log the shot: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);
 } else console.log(`Log the shot: ${ahead(pinDays)} days in hand.`);
 if (print) for (const d of read<RunPinDay>(PIN_RUN).filter((x) => x.date >= today)) console.log(`${d.date}  ${d.goals.map((s) => `${goals[s]!.scorer} (${goals[s]!.date})`).join(' · ')}`);
+
+// ── Read the season ───────────────────────────────────────────────────────
+export const SL_RUN = 'games/season-line/data/run.json';
+const sl = JSON.parse(readFileSync('games/season-line/data/seasons.json', 'utf8')) as StoredData;
+const daily = read<StoredDay>('games/season-line/data/days.json');
+const [first, last] = [sl.seasons[0]!.start, sl.seasons.at(-1)!.start];
+const slDays = read<RunSlDay>(SL_RUN);
+if (ahead(slDays) < MIN_AHEAD) {
+  const all = extendRun(sl.boards, slDays, daily, addDays(today, TOP_UP), first, last);
+  const fresh = all.slice(slDays.length);
+  const bad = fresh.flatMap((d) => slProblems(sl.boards, d, all, daily, first, last));
+  if (bad.length) throw new Error(`run season schedule broke its own rules:\n${bad.join('\n')}`);
+  write(SL_RUN, all);
+  console.log(`Read the season: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);
+} else console.log(`Read the season: ${ahead(slDays)} days in hand.`);
+if (print) for (const d of read<RunSlDay>(SL_RUN).filter((x) => x.date >= today)) console.log(`${d.date}  ${d.board}  window from ${d.from}`);

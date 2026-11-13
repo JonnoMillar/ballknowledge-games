@@ -125,3 +125,13 @@ button.run-list__row { cursor: pointer; }
   .run-pin .pin__stage .pitch { height: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
   .run-pin .pin__stage .pitch__svg { height: 100%; width: auto; max-width: 100%; }
 }
+
+/* Read the season: the whole line beside the guesses. */
+.run-season__window { margin: 0; font-size: 16px; color: var(--muted); }
+.run-season__window b { color: var(--ink); }
+.run-season__pick, .run-season__end { display: flex; flex-direction: column; gap: 10px; }
+.run-season__ask { margin: 0; font-weight: 700; }
+.run-season__years { display: flex; flex-wrap: wrap; gap: 8px; }
+.run-season__verdict { margin: 0; font-weight: 700; }
+.run-season .sl-row__club b { margin-left: auto; font-size: 16px; }
+@media (min-width: 860px) { .run-season .sl-plot { height: clamp(280px, calc(100dvh - 380px), 520px); } }
