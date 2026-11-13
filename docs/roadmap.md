@@ -47,6 +47,8 @@ careers; pick, test and grade with recent players. Applies to every item below.
   rules); confirm or switch to never autoplay.
 
 ## Big decisions, in dependency order (each unblocks the next)
+In progress (Nov 2026): items 2-4 as one world, the scout's-office lobby;
+state, decisions and next steps in `design-drafts/brand-concepts/HANDOFF.md`.
 1. Names: the site ("Football games" in the masthead), Rondo (his ideas:
    "Keep it up", "One touch"; the game is closer to hot potato), Chain, others.
 2. Brand kit for the hub: logo, palette, type, icon style.

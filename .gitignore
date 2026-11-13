@@ -27,3 +27,6 @@ public/badges/
 
 # Vercel project link, written by `vercel link`.
 .vercel
+
+# Brand-concept preview images (Commons photos; regenerate with build.py)
+design-drafts/*/img/

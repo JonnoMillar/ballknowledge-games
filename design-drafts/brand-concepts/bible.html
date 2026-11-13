@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene bible</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Scene bible for the scout's office lobby. "Plan" shows the layout to lock
+   before the high-quality rebake: board slots as boxes, room props as
+   markers, and the area every window size shows. "Now" is the current frame.
+   Status is marker shape plus a word, never colour alone. */
+:root { --ink: #2A1A0E; --paper: #F4EEE2; --line: #D9CDB8; --muted: #6B5A48; --focus: #1E4FD8; }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body { background: var(--paper); color: var(--ink); font: 14px/1.45 'Libre Franklin', system-ui, sans-serif; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(330px, 1fr); height: 100vh; overflow: hidden; }
+.left { padding: 18px 18px 18px 22px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+h1 { font: 900 34px/0.9 'Big Shoulders', sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.sub { color: var(--muted); font-weight: 700; }
+.bar { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.seg { display: inline-flex; border: 2px solid var(--ink); border-radius: 6px; overflow: hidden; }
+.seg button { font: 800 13px/1 'Libre Franklin'; background: transparent; color: var(--ink); border: 0; padding: 8px 14px; cursor: pointer; }
+.seg button[aria-pressed=true] { background: var(--ink); color: #FFF8EE; }
+.seg button:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; box-shadow: 0 8px 24px rgba(40,20,5,.25); flex: none; align-self: center; max-width: calc((100vh - 250px) * 16 / 9); }
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 300ms, filter 300ms; }
+.plan img { opacity: .38; filter: grayscale(.6); }
+.plan-only { transition: opacity 300ms; }
+.now .plan-only { opacity: 0; pointer-events: none; }
+.safe { position: absolute; border: 2px dashed var(--ink); left: 5%; right: 5%; top: 0; bottom: 17%; pointer-events: none; }
+.safe span { position: absolute; right: 6px; top: 4px; max-width: 46%; text-align: right; font: 800 10px/1.2 'Libre Franklin'; letter-spacing: .06em; text-transform: uppercase; background: #FFF8EE; padding: 2px 5px; }
+.boardline { position: absolute; left: 25%; top: 17%; width: 65%; height: 65%; border: 3px solid var(--ink); border-radius: 3px; pointer-events: none; }
+.slot { position: absolute; border: 2px solid var(--ink); background: rgba(255,248,238,.9); border-radius: 2px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2px; cursor: pointer; font: 800 clamp(9px, .9vw, 13px)/1.1 'Libre Franklin'; color: var(--ink); }
+.slot b { font: 900 clamp(12px, 1.3vw, 18px)/1 'Big Shoulders'; }
+.slot.hero { border-width: 3px; background: rgba(255,248,238,.96); }
+.slot.on, .slot:hover { background: var(--ink); color: #FFF8EE; }
+.slot:focus-visible, .mk:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.mk { position: absolute; transform: translate(-50%, -50%); width: 26px; height: 26px; display: grid; place-items: center; font: 800 12px/1 'Libre Franklin'; color: var(--ink); background: #FFF8EE; border: 2px solid var(--ink); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.45); padding: 0; }
+.mk span { display: block; }
+.mk.keep { border-radius: 50%; } .mk.redesign { border-radius: 2px; }
+.mk.new { transform: translate(-50%, -50%) rotate(45deg); width: 24px; height: 24px; } .mk.new span { transform: rotate(-45deg); }
+.mk.on, .mk:hover { background: var(--ink); color: #FFF8EE; z-index: 2; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 700; color: var(--muted); align-items: center; }
+.legend i { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--ink); background: #FFF8EE; vertical-align: -2px; margin-right: 6px; }
+.legend .keep { border-radius: 50%; } .legend .redesign { border-radius: 2px; } .legend .new { transform: rotate(45deg) scale(.85); }
+.rules { columns: 2; column-gap: 24px; padding-left: 18px; }
+.rules li { break-inside: avoid; margin-bottom: 3px; }
+.right { border-left: 1px solid var(--line); overflow-y: auto; padding: 18px 22px 40px; background: #FBF7EF; }
+h2 { font: 900 20px/1 'Big Shoulders', sans-serif; text-transform: uppercase; letter-spacing: .04em; margin: 24px 0 8px; }
+h2:first-child { margin-top: 0; }
+.intro { color: var(--muted); margin-bottom: 6px; }
+.ob { border-top: 1px solid var(--line); padding: 12px 0; scroll-margin-top: 12px; }
+.ob.on { background: #F1E7D3; margin: 0 -12px; padding: 12px; border-radius: 4px; }
+.ob h3 { font: 800 15px/1.2 'Libre Franklin'; display: flex; gap: 8px; align-items: baseline; }
+.ob h3 b { font: 900 15px/1 'Big Shoulders'; min-width: 22px; }
+.ob h3 em { font-style: normal; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-left: auto; white-space: nowrap; }
+.ob dl { display: grid; grid-template-columns: 74px 1fr; gap: 3px 10px; margin-top: 6px; }
+.ob dt { font-weight: 800; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+.ob dd { margin: 0; }
+.plain { padding-left: 18px; } .plain li { margin: 5px 0; }
+.q { border-top: 1px solid var(--line); padding: 12px 0; }
+.q h3 { font: 800 15px/1.2 'Libre Franklin'; margin-bottom: 4px; }
+@media (max-width: 900px) { body { display: block; height: auto; overflow: auto; } .frame { max-width: none; } .right { border-left: 0; overflow: visible; } .rules { columns: 1; } }
+</style>
+</head>
+<body>
+<div class="left">
+  <div>
+    <h1>Scene bible: the scout's office</h1>
+    <p class="sub">The layout to lock before the final rebake. Click a box, a marker or an entry.</p>
+  </div>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="View"><button data-v="plan" aria-pressed="true">Plan</button><button data-v="now" aria-pressed="false">Now</button></div>
+    <div class="legend"><span><i class="keep"></i>Keep</span><span><i class="redesign"></i>Redesign</span><span><i class="new"></i>New</span></div>
+  </div>
+  <div class="frame plan" id="frame">
+    <img src="img/gen/grade-cool/baked.png" alt="Current lobby frame, Golden cool light">
+    <div class="plan-only boardline"></div>
+    <div class="plan-only safe"><span>Shown on laptop windows, 16:10 to 1920x900. Everything clickable goes inside.</span></div>
+  </div>
+  <ol class="rules">
+    <li>The board holds only things you can play. The room holds the clues and the life.</li>
+    <li>Every object answers "why is this in a scout's office?"</li>
+    <li>No made-up writing: any words are ours, checked letter by letter.</li>
+    <li>No readable faces of made-up people.</li>
+    <li>No real kits, sponsors or maker logos. Real club badges, from our badge images as reference.</li>
+    <li>Red stays rationed: brand and the one suggested game.</li>
+  </ol>
+</div>
+<div class="right" id="list"></div>
+<script>
+// slot: [x, y, w, h] in percent of the 16:9 frame (board items).
+// where: [x, y] marker in percent of the frame (room props).
+const OBJECTS = [
+  { group: 'The board: 8 slots', intro: "Three columns. The centre is today's run; the dailies sit round it; Rondo takes the bottom-left corner with its bib hanging below the frame. Each slot is smaller than now, about 240 by 160 px on a 1440 window, still readable." },
+  { name: "Today's assignment (the daily run)", slot: [43.2, 35.9, 28.6, 44.1], hero: true, status: 'new', job: 'Play every daily in one go, shortened, for one overall result.',
+    shows: "A manila scouting dossier stamped with today's date, a typed checklist of the day's tasks, a paper-clipped photo.",
+    click: 'Camera moves in; the dossier opens into the run.', belongs: "The chief scout's brief for the day.", fix: 'Replaces the Olise print in the centre spot.' },
+  { name: 'Spoofed: newspaper clipping', slot: [26.3, 19, 14.3, 19.5], status: 'redesign', job: 'Spoofed. In the run: "Check the rumours".',
+    shows: 'A back-page transfer story we write, our grain photo of the player, stamped FAKE in red ink.',
+    click: 'Camera moves in; the clipping becomes the lobby.', belongs: 'Scouts keep the rumours that turned out false.', fix: 'Blurry made-up columns, generic photo. First item for the control test.' },
+  { name: 'Chain: two Polaroids and string', slot: [43.2, 19, 28.6, 13.6], status: 'redesign', job: 'Chain (Steps lives inside it). In the run: "Trace the link".',
+    shows: 'Two Polaroids of recent real players (our grain portraits), names in marker, red string pin to pin.',
+    click: 'Both photos and the string lift together as one cut-out.', belongs: 'The detective-board link.', fix: 'Generated faces; string cut by the masks on hover.' },
+  { name: 'Odd Man Out: team photo', slot: [74.4, 19, 14.3, 19.5], status: 'redesign', job: 'Odd Man Out. In the run: "Find the mole".',
+    shows: 'A faded squad photo, one face circled in red marker.', click: 'Camera moves in on the circled face.',
+    belongs: 'Scouts circle the one they came to watch.', fix: 'Rows of generated faces: fewer, smaller, grain style.' },
+  { name: 'Pitch Pin: match report', slot: [26.3, 41, 14.3, 19], status: 'redesign', job: 'Pitch Pin. In the run: "Log the shot".',
+    shows: 'A match report form, a pitch diagram with shots marked x in pen.', click: 'Camera moves in on the diagram.',
+    belongs: 'Every scout files a match report.', fix: 'Grey bars stand in for writing.' },
+  { name: 'The Tunnel: line-up card', slot: [74.4, 41, 14.3, 19], status: 'new', job: 'The Tunnel. In the run: "Line them up".',
+    shows: 'Five small player photos clipped in a row on a card, a pencilled order beside them.', click: 'Camera moves in; the row becomes the game.',
+    belongs: 'Ranking players is the job.', fix: 'Needs a slot; the draft is on its own branch.' },
+  { name: 'Season Line: league table cutting', slot: [74.4, 62.5, 14.3, 17.5], status: 'redesign', job: 'Season Line. In the run: "Read the season".',
+    shows: 'A league table cut from a paper, one row underlined in pen.', click: 'Camera moves in on the underlined row.',
+    belongs: 'Scouts track who is rising.', fix: 'Grey bars, no readable rows.' },
+  { name: 'Rondo: session plan and bib', slot: [26.3, 62.5, 14.3, 17.5], status: 'redesign', job: 'Rondo, with mates. Not in the run.',
+    shows: 'A training session plan with a rondo drill drawn on it; an orange bib hangs from its pin, below the board.',
+    click: 'Camera moves in; the plan becomes the set-up screen.', belongs: 'Borrowed from the coaches down the corridor.', fix: 'Was "Multiplayer, name TBC"; Rondo is the live multiplayer game. Bib is now cropped off; this brings it into view.' },
+  { group: 'The room: clues and life', intro: 'Only the shirt is clickable. Everything else is there to be spotted.' },
+  { name: 'Shirt over the chair', where: [12, 78], status: 'new', job: "Small win: today's niche player.",
+    shows: "A crumpled shirt over the chair back in the player's club colours, his name and number on the back. Generated per player (a crumpled name cannot be laid on afterwards). No crest or sponsor. Replaces the scarf.",
+    click: 'Lifts off the chair and comes into focus, then turns into a factfile: grain portrait, clubs with apps, goals and years.',
+    belongs: 'A shirt from a player he spotted early.', fix: 'Generated in batches ahead of time; you scan each batch.' },
+  { name: 'Pennants: Brighton and Fenerbahçe', where: [9, 7], status: 'redesign', job: 'Easter egg: spot the badges.',
+    shows: "Two pennants hung from the blind rail, real badges. Fixed, not daily.", click: 'Nothing; spotting them is the win.',
+    belongs: 'Swapped on away trips.', fix: 'Now hidden under the Menu button, top right.' },
+  { name: 'Binoculars on the window sill', where: [14.5, 47], status: 'new', job: 'Clue: this is a scout.', shows: 'Worn binoculars on the sill, pointing at the pitch.', click: 'Nothing.', belongs: 'Where he watches training from.', fix: '' },
+  { name: 'Stadium pass on the window handle', where: [19.5, 37], status: 'new', job: 'Clue: this is a scout.', shows: 'A scout pass on a lanyard for a real ground, hung on the window handle.', click: 'Nothing.', belongs: 'A game most nights.', fix: 'Moved off the board.' },
+  { name: 'Window onto the training pitch', where: [8, 26], status: 'keep', job: 'Says "training ground".', shows: 'Empty sunny pitch, blinds throwing stripes.', click: 'Nothing.', belongs: 'Scouts work out of the training ground.', fix: '' },
+  { name: 'Radio on the shelf', where: [9, 58], status: 'redesign', job: 'Life, and a fan detail.', shows: 'A digital radio whose little screen reads "5 LIVE".', click: 'Nothing.', belongs: 'Saturday results come in on the radio.', fix: 'See "Radio text" below.' },
+  { name: 'Jabulani on the shelf', where: [20, 58], status: 'new', job: 'Easter egg for fans who remember 2010.',
+    shows: "The 2010 ball's swirls and colours, no maker wordmark or tournament emblem.", click: 'Nothing.',
+    belongs: 'Kept from a game he scouted at the World Cup.', fix: 'Replaces the plain ball, which was cropped off on the desk.' },
+  { name: 'Card binder: your collection', where: [14.5, 66], status: 'new', job: 'Your collection.', shows: 'A ring binder of player cards on the shelf, a few card corners showing.', click: 'Opens your cards. Also in the Menu.', belongs: 'His file of players.', fix: 'Moved off the board; the shelf stays visible on wide windows, the desk does not.' },
+  { name: 'Coffee mug', where: [27.5, 88], status: 'keep', job: 'Life.', shows: 'Mug, coffee ring on the report pad.', click: 'Nothing.', belongs: 'Long days.', fix: '' },
+  { name: 'Scouting report pad and stopwatch', where: [38, 92], status: 'redesign', job: 'Clue: this is a scout.', shows: 'A pad headed SCOUTING REPORT, players rated out of 10, the stopwatch on top.', click: 'Nothing.', belongs: 'His actual work.', fix: 'Replaces the plain notebook.' },
+  { name: 'Plants', where: [24.5, 6], status: 'keep', job: 'Life.', shows: 'Hanging plant, pot on the sill.', click: 'Nothing.', belongs: 'Someone looks after this office.', fix: '' },
+];
+const CUT = [
+  ["Sticky note with yesterday's answer", 'daily writing on the busiest item, and clutter on the board.'],
+  ['Fixture list and train ticket', 'two more papers tucked in the frame competed with the games.'],
+  ['Desk calendar', 'daily writing for little reward; the dossier already carries the date.'],
+  ['Olise print', 'the centre goes to the daily run; the art style lives on in the factfiles and portraits.'],
+  ['Scarf and plain football', 'replaced by the shirt and the Jabulani.'],
+];
+const LOCK = [
+  'Board size and the 8 slot positions.',
+  'Which props exist and where they sit, inside the visible area.',
+  'Golden cool light and the camera.',
+];
+const LATER = [
+  "Each item's design: redesigned alone and swapped into its slot by an edit, as long as the slot size holds.",
+  'Game names, labels, site name, title: real type.',
+  'Daily run rules, rounds per game, scoring.',
+  'Shirt players, factfiles, portraits: batches.',
+  'Zoom and hover motion, a moving-string loop.',
+];
+const QUESTIONS = [
+  { h: 'Radio text', p: 'Match of the Day is TV, so "MOTD live" on a radio is the kind of slip a fan spots. My pick is "5 LIVE", where Saturday results really come in. If you want MOTD in the room, it fits as a circled TV listing instead.' },
+  { h: 'Daily run score', p: 'Chain\'s daily has had no score since September, after "21/21 least obscure" felt like a loss. A run result is a different thing (how you did across tasks), but it should read as a scout\'s report grade, never "N of M". Rules can wait; only the centre slot is needed now.' },
+  { h: 'The Tunnel or Sorted?', p: 'The docs say the Tunnel draft took the name "Sorted". Which goes on the label?' },
+  { h: 'Moving string', p: 'A short generated video loop where only the string sways. Price check before anything runs.' },
+  { h: 'Site name', p: 'Still blocks the title and logo, but it is real type, so it does not block the rebake.' },
+];
+const frame = document.getElementById('frame'), list = document.getElementById('list');
+const WORD = { keep: 'Keep', redesign: 'Redesign', new: 'New' };
+let n = 0, html = '';
+for (const o of OBJECTS) {
+  if (o.group) { html += `<h2>${o.group}</h2><p class="intro">${o.intro}</p>`; continue; }
+  o.n = ++n;
+  html += `<div class="ob" id="ob${o.n}"><h3><b>${o.n}</b>${o.name}<em>${WORD[o.status]}</em></h3><dl>
+    <dt>Job</dt><dd>${o.job}</dd><dt>Shows</dt><dd>${o.shows}</dd><dt>Click</dt><dd>${o.click}</dd>
+    <dt>Belongs</dt><dd>${o.belongs}</dd>${o.fix ? `<dt>Note</dt><dd>${o.fix}</dd>` : ''}</dl></div>`;
+  const el = document.createElement('button');
+  el.dataset.n = o.n; el.setAttribute('aria-label', `${o.n}: ${o.name} (${WORD[o.status]})`);
+  if (o.slot) {
+    const [x, y, w, h] = o.slot;
+    el.className = 'plan-only slot' + (o.hero ? ' hero' : '');
+    Object.assign(el.style, { left: x + '%', top: y + '%', width: w + '%', height: h + '%' });
+    el.innerHTML = `<b>${o.n}</b>${o.name.split(':')[0].replace(' (the daily run)', '')}`;
+  } else {
+    el.className = 'plan-only mk ' + o.status;
+    el.style.left = o.where[0] + '%'; el.style.top = o.where[1] + '%';
+    el.innerHTML = `<span>${o.n}</span>`;
+  }
+  frame.appendChild(el);
+}
+html += '<h2>Cut, so it is not cramped</h2><ul class="plain">' + CUT.map(([a, b]) => `<li><strong>${a}:</strong> ${b}</li>`).join('') + '</ul>';
+html += '<h2>Lock before the rebake</h2><ul class="plain">' + LOCK.map(s => `<li>${s}</li>`).join('') + '</ul>';
+html += '<h2>Adjust any time after</h2><ul class="plain">' + LATER.map(s => `<li>${s}</li>`).join('') + '</ul>';
+html += '<h2>Your calls</h2>' + QUESTIONS.map(q => `<div class="q"><h3>${q.h}</h3><p>${q.p}</p></div>`).join('');
+list.innerHTML = html;
+function pick(k, scroll) {
+  document.querySelectorAll('.on').forEach(e => e.classList.remove('on'));
+  document.querySelector(`#frame [data-n="${k}"]`)?.classList.add('on');
+  const ob = document.getElementById('ob' + k); ob.classList.add('on');
+  if (scroll) ob.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+frame.addEventListener('click', e => { const m = e.target.closest('[data-n]'); if (m) pick(m.dataset.n, true); });
+list.addEventListener('click', e => { const ob = e.target.closest('.ob'); if (ob) pick(ob.id.slice(2), false); });
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  frame.classList.toggle('plan', b.dataset.v === 'plan'); frame.classList.toggle('now', b.dataset.v === 'now');
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+}));
+</script>
+</body>
+</html>

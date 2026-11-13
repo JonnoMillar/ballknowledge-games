@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scout's lobby</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Lobby mock, sunny scout's office. At rest the page shows the baked frame
+   exactly (items lit with the room). Hovering swaps in an empty-cork patch
+   from the edited plate under that item and lifts the item's cut-out, so
+   lighting always matches. Labels and chrome are real type, never generated. */
+:root { --ease: cubic-bezier(.4,0,.2,1); --ink: #2A1A0E; }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; background: #1A120B; overflow: hidden; font: 15px/1.4 'Libre Franklin', system-ui, sans-serif; }
+.stage { position: fixed; inset: 0; overflow: hidden; }
+.plate { position: absolute; left: 50%; top: 0; width: max(100vw, 177.8vh); aspect-ratio: 16 / 9; transform: translateX(-50%); }
+.scene { position: absolute; inset: 0; transition: transform 950ms var(--ease), filter 950ms var(--ease); }
+.layer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none; }
+.room { transform: translate(var(--px, 0), var(--py, 0)) scale(1.02); transition: transform 700ms ease-out; }
+.room > * { position: absolute; inset: 0; }
+
+/* Alive: sun shimmer through the blinds, dust in the light, grain. */
+.sun { mix-blend-mode: soft-light; opacity: .55; background: linear-gradient(115deg, transparent 20%, rgba(255,214,140,.55) 45%, transparent 70%); background-size: 220% 100%; animation: shimmer 11s ease-in-out infinite alternate; }
+@keyframes shimmer { from { background-position: 0% 0 } to { background-position: 100% 0 } }
+.dust i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,236,190,.8); filter: blur(.5px); animation: drift linear infinite; }
+@keyframes drift { from { transform: translate(0,0); opacity: 0 } 15% { opacity: .9 } to { transform: translate(60px,-90px); opacity: 0 } }
+.grain { opacity: .14; mix-blend-mode: overlay; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1s steps(4) infinite; }
+@keyframes grain { 25% { transform: translate(-5px,3px) } 50% { transform: translate(4px,-3px) } 75% { transform: translate(-2px,-4px) } }
+
+/* Items: patch (bare cork) + cut-out, both full-frame so they stack exactly. */
+.item .patch { opacity: 0; transition: opacity 200ms; }
+.item .cut { transition: transform 380ms var(--ease), filter 380ms var(--ease); transform-origin: var(--ox) var(--oy); }
+.item.lift .patch { opacity: 1; }
+.item.lift .cut { transform: translate(-.25%, -1%) scale(1.035); filter: drop-shadow(.4vw 1.2vw 1vw rgba(40,20,5,.5)) drop-shadow(.1vw .3vw .2vw rgba(40,20,5,.4)) brightness(1.04); }
+.hit { position: absolute; cursor: pointer; border-radius: 4px; outline: none; }
+.hit:focus-visible { outline: 3px solid #1E4FD8; outline-offset: 4px; }
+
+/* Label-maker tape: the game's name in real, legible type. */
+.tape { position: absolute; z-index: 2; display: flex; gap: .5em; align-items: center; transform: rotate(var(--r, -1.5deg)); pointer-events: none; transition: transform 380ms var(--ease); }
+.tape span { background: #151413; color: #F4F1EA; font: 800 clamp(11px, 1.15vw, 19px)/1 'Big Shoulders', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: .38em .7em .3em; border-radius: 2px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 -1px 0 rgba(0,0,0,.6); box-shadow: 0 2px 3px rgba(40,20,5,.45), inset 0 1px 0 rgba(255,255,255,.12); }
+.tape small { background: #F2EBDB; color: #3B2C1D; font: 800 clamp(9px, .75vw, 12px)/1 'Libre Franklin', sans-serif; letter-spacing: .1em; text-transform: uppercase; padding: .45em .6em; border-radius: 2px; box-shadow: 0 2px 3px rgba(40,20,5,.35); }
+.tape.next span { background: #C8202F; }
+.tape.done small::before { content: '✓ '; }
+.item.lift + .tape, .tape.lifted { transform: rotate(var(--r, -1.5deg)) translateY(-.5vw); }
+
+/* Title painted on the wall: multiply, so the sun stripes fall across it. */
+.title { position: absolute; left: 27%; right: 8%; top: 3.2%; text-align: center; pointer-events: none; mix-blend-mode: multiply; }
+.title h1 { font: 900 6.4cqw/0.86 'Big Shoulders', sans-serif; color: #3A2412; letter-spacing: .01em; text-transform: uppercase; }
+.title p { font: 800 .95cqw/1 'Libre Franklin', sans-serif; letter-spacing: .32em; text-transform: uppercase; color: #5A3A1E; margin-top: .6cqw; }
+.plate { container-type: inline-size; }
+
+/* Chrome: clear buttons, not part of the scene. */
+.chrome { position: fixed; top: 16px; right: 18px; z-index: 6; display: flex; gap: 8px; }
+.chrome button { font: 700 14px/1 'Libre Franklin', sans-serif; color: #FFF8EE; background: rgba(30,20,12,.55); border: 1px solid rgba(255,240,220,.35); border-radius: 6px; padding: 10px 14px; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.chrome button:hover, .chrome button:focus-visible { background: rgba(30,20,12,.8); outline: none; }
+.chrome .menu { display: inline-flex; gap: 8px; align-items: center; }
+.chrome .menu i { display: grid; gap: 3px; } .chrome .menu i b { display: block; width: 14px; height: 2px; background: currentColor; }
+.grades { position: fixed; right: 18px; bottom: 14px; z-index: 6; display: flex; gap: 6px; align-items: center; background: rgba(30,20,12,.55); padding: 6px; border-radius: 8px; backdrop-filter: blur(6px); font: 700 12px/1 'Libre Franklin'; color: #FFF8EE; }
+.grades span { padding: 0 6px; letter-spacing: .08em; text-transform: uppercase; }
+.grades button { font: 700 13px/1 'Libre Franklin'; color: #FFF8EE; background: transparent; border: 1px solid rgba(255,240,220,.35); border-radius: 5px; padding: 7px 10px; cursor: pointer; }
+.grades button[aria-pressed=true] { background: #FFF8EE; color: #2A1A0E; }
+.zoomed .grades { opacity: 0; pointer-events: none; }
+.hint { position: fixed; left: 18px; bottom: 14px; z-index: 6; font: 700 13px/1.3 'Libre Franklin'; color: #FFF8EE; background: rgba(30,20,12,.5); padding: 7px 10px; border-radius: 6px; backdrop-filter: blur(6px); }
+
+/* Zoom into a game. */
+.game { position: fixed; inset: 0; z-index: 10; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, 400px); gap: 40px; align-items: center; padding: 40px max(24px, 6vw); opacity: 0; pointer-events: none; transition: opacity 450ms var(--ease); }
+.game .art { justify-self: center; position: relative; width: min(100%, 62vh * var(--ar)); aspect-ratio: var(--ar); overflow: hidden; border-radius: 2px; filter: drop-shadow(0 24px 34px rgba(0,0,0,.55)); transform: scale(.92) rotate(-2deg); transition: transform 950ms var(--ease); }
+.game .art img { position: absolute; width: var(--iw); left: var(--il); top: var(--it); }
+.game h2 { font: 900 clamp(44px, 5.4vw, 80px)/.88 'Big Shoulders', sans-serif; text-transform: uppercase; color: #FFF8EE; }
+.game p { color: rgba(255,248,238,.85); margin: 12px 0 18px; max-width: 32ch; font-size: 16px; }
+.game .play { background: #C8202F; color: #fff; border: 0; font: 900 22px/1 'Big Shoulders', sans-serif; text-transform: uppercase; padding: 14px 28px; border-radius: 6px; cursor: pointer; }
+.game .back { position: fixed; left: 18px; top: 16px; font: 700 14px/1 'Libre Franklin'; color: #FFF8EE; background: rgba(30,20,12,.55); border: 1px solid rgba(255,240,220,.35); border-radius: 6px; padding: 10px 14px; cursor: pointer; }
+.zoomed .scene { transform: scale(2.2); filter: blur(7px) brightness(.45) saturate(1.1); }
+.zoomed .game { opacity: 1; pointer-events: auto; transition-delay: 380ms; }
+.zoomed .game .art { transform: scale(1) rotate(0); }
+.zoomed .chrome, .zoomed .hint { opacity: 0; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) { .sun, .grain, .dust i { animation: none; } .scene, .cut, .game, .game .art { transition-duration: 1ms !important; } }
+@media (max-width: 760px) { .game { grid-template-columns: 1fr; align-content: center; } .hint { display: none; } }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="plate"><div class="scene" id="scene">
+    <div class="layer room" id="room">
+      <img class="layer" id="base" alt="">
+      <div class="sun"></div>
+      <div id="items"></div>
+      <div class="title"><h1>Ball Knowledge</h1><p>Daily football games · working name</p></div>
+      <div class="dust" id="dust"></div>
+    </div>
+    <div class="layer grain"></div>
+  </div></div>
+
+  <nav class="chrome" aria-label="Account"><button>Log in</button><button class="menu"><i><b></b><b></b><b></b></i>Menu</button></nav>
+  <div class="hint">Hover a pinned item, click to open.</div>
+  <div class="grades" role="group" aria-label="Colour grade"><span>Light</span><button data-g="day/">Daylight</button><button data-g="sunny/">Golden</button><button data-g="grade-cool/">Golden, cool</button></div>
+
+  <div class="game" id="game" aria-hidden="true">
+    <button class="back" id="back">Back to the board</button>
+    <div class="art" id="art"><img id="artimg" alt=""></div>
+    <div><h2 id="gt"></h2><p id="gp"></p><button class="play" id="gplay"></button></div>
+  </div>
+</div>
+<script>
+// Boxes in percent of the frame, from cutout.py (items.json).
+const ITEMS = {
+  spoofed: { box: [29.17, 21.28, 12.72, 22.21], name: 'Spoofed', tag: 'Daily #49', next: true, title: 'Spot the spoof', blurb: 'Five careers. In each, one move never happened.', play: "Play today's daily", r: '-2deg' },
+  chain:   { box: [47.47, 22.74, 22.32, 14.23], name: 'Chain', tag: 'Daily #49', title: 'Chain', blurb: 'Link the players through the clubs they shared.', play: 'Play', r: '1deg' },
+  oddman:  { box: [75.22, 20.88, 15.1, 18.22], name: 'Odd Man Out', tag: 'Daily', title: 'Find the mole', blurb: 'Four players. One never played there.', play: 'Play', r: '-1deg' },
+  pin:     { box: [29.24, 46.41, 12.65, 29.12], name: 'Pitch Pin', tag: 'Packs', title: 'Where was it struck from?', blurb: 'Pin the spot on the pitch.', play: 'Play', r: '1.5deg' },
+  olise:   { box: [45.09, 40.03, 24.85, 34.57], name: 'Your collection', tag: '24 cards', title: 'Your collection', blurb: 'Every card you have earned.', play: 'Open', r: '-1deg' },
+  season:  { box: [73.74, 41.36, 13.76, 14.49], name: 'Season Line', tag: 'Daily', done: true, title: 'Season line', blurb: 'Who scored, and when?', play: 'See result', r: '2deg' },
+  session: { box: [73.14, 52.79, 20.54, 27.26], name: 'Multiplayer', tag: 'Name TBC', title: 'Pass the phone', blurb: '2 to 4 players, one phone.', play: 'Kick off', r: '-2deg' },
+};
+const root = document.getElementById('items');
+for (const [id, it] of Object.entries(ITEMS)) {
+  const [x, y, w, h] = it.box;
+  const g = document.createElement('div'); g.className = 'item'; g.dataset.id = id;
+  g.style.setProperty('--ox', (x + w / 2) + '%'); g.style.setProperty('--oy', (y + h / 2) + '%');
+  g.innerHTML = `<img class="layer patch" data-src="items/${id}-patch.png" alt=""><img class="layer cut" data-src="items/${id}.png" alt="">`;
+  root.appendChild(g);
+  const t = document.createElement('div'); t.className = 'tape' + (it.next ? ' next' : '') + (it.done ? ' done' : '');
+  t.style.left = (x + w * .05) + '%'; t.style.top = (y + h - 3.4) + '%'; t.style.setProperty('--r', it.r);
+  t.innerHTML = `<span>${it.name}</span><small>${it.done ? 'Done' : it.tag}</small>`;
+  root.appendChild(t);
+  const hit = document.createElement('div'); hit.className = 'hit'; hit.tabIndex = 0; hit.setAttribute('role', 'button'); hit.setAttribute('aria-label', 'Open ' + it.name);
+  Object.assign(hit.style, { left: x + '%', top: y + '%', width: w + '%', height: h + '%', pointerEvents: 'auto' });
+  const on = () => { g.classList.add('lift'); t.classList.add('lifted'); }, off = () => { g.classList.remove('lift'); t.classList.remove('lifted'); };
+  hit.addEventListener('pointerenter', on); hit.addEventListener('pointerleave', off); hit.addEventListener('focus', on); hit.addEventListener('blur', off);
+  hit.addEventListener('click', () => open(id)); hit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(id); } });
+  root.appendChild(hit);
+}
+let BASE = 'img/gen/';
+function setGrade(g) { BASE = 'img/gen/' + g; document.getElementById('base').src = BASE + 'baked.png'; document.querySelectorAll('[data-src]').forEach(i => i.src = BASE + i.dataset.src); document.querySelectorAll('.grades button').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === g)); try { localStorage.setItem('lobby-light', g); } catch (e) {} }
+document.querySelectorAll('.grades button').forEach(b => b.addEventListener('click', () => setGrade(b.dataset.g)));
+let saved = 'day/'; try { saved = localStorage.getItem('lobby-light') ?? saved; } catch (e) {}
+setGrade(saved);
+const stage = document.getElementById('stage'), scene = document.getElementById('scene'), room = document.getElementById('room');
+function open(id) {
+  const it = ITEMS[id], [x, y, w, h] = it.box, ar = (w * 16) / (h * 9);
+  scene.style.transformOrigin = (x + w / 2) + '% ' + (y + h / 2) + '%';
+  const art = document.getElementById('art'), img = document.getElementById('artimg');
+  art.style.setProperty('--ar', ar); img.src = BASE + `items/${id}.png`;
+  img.style.setProperty('--iw', (100 / w * 100) + '%'); img.style.setProperty('--il', (-x / w * 100) + '%'); img.style.setProperty('--it', (-y / h * 100) + '%');
+  document.getElementById('gt').textContent = it.title; document.getElementById('gp').textContent = it.blurb; document.getElementById('gplay').textContent = it.play;
+  stage.classList.add('zoomed');
+}
+document.getElementById('back').addEventListener('click', () => stage.classList.remove('zoomed'));
+addEventListener('keydown', e => { if (e.key === 'Escape') stage.classList.remove('zoomed'); });
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  addEventListener('pointermove', e => { const px = e.clientX / innerWidth - .5, py = e.clientY / innerHeight - .5; room.style.setProperty('--px', (-px * 10) + 'px'); room.style.setProperty('--py', (-py * 7) + 'px'); });
+  const dust = document.getElementById('dust'); Object.assign(dust.style, { left: '10%', top: '5%', width: '45%', height: '70%' });
+  for (let i = 0; i < 22; i++) { const d = document.createElement('i'); d.style.left = Math.random() * 100 + '%'; d.style.top = Math.random() * 100 + '%'; d.style.animationDuration = (7 + Math.random() * 9) + 's'; d.style.animationDelay = (-Math.random() * 12) + 's'; dust.appendChild(d); }
+}
+</script>
+</body>
+</html>
