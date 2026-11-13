@@ -6,7 +6,7 @@ import type { RunTaskProps } from '../../../src/lib/run/tasks';
 import { Scoreline } from '../components/Game';
 import Pitch, { type Mark } from '../components/Pitch';
 import { sameAt, type At } from '../lib/match';
-import { matchName, MOLE_TAPS, moleScore } from '../lib/run';
+import { MOLE_TAPS, moleScore } from '../lib/run';
 import type { RunMoleView } from '../server';
 
 /**
@@ -63,7 +63,7 @@ export default function MoleRunTask({ date, def, next, onDone }: RunTaskProps) {
   function finish() {
     onDone({
       score,
-      ...(caught === 0 ? { find: `Found the mole first time: ${v.reveal!.fake} in ${v.team}’s XI, ${matchName(side)}`, findScore: 100 } : {}),
+      ...(caught === 0 ? { find: `Mole spotted: ${v.reveal!.fake.slice(v.reveal!.fake.indexOf(' ') + 1)}, ${v.team} ${v.played.slice(0, 4)}`, findScore: 100 } : {}),
     });
   }
 

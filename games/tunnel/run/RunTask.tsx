@@ -83,7 +83,7 @@ function Lines({ view, state, date, clockMs, next, onDone, onLocked }: {
     const perfect = RUN_ORDER_CATS.filter((_, i) => scores[i] === PAIRS);
     onDone({
       score: Math.round((scores.reduce((a, s) => a + s, 0) / (n * PAIRS)) * 1000) / 10,
-      ...(perfect.length ? { find: `Perfect line: ${club}’s five by ${perfect.map((c) => LABEL[c].toLowerCase()).join(' and ')}`, findScore: 100 } : {}),
+      ...(perfect.length ? { find: `Perfect line: ${club} by ${perfect.map((c) => LABEL[c].toLowerCase()).join(' and ')}`, findScore: 100 } : {}),
     });
   }
 
