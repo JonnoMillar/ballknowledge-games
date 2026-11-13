@@ -140,6 +140,7 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Next
 
+0. **Round 2 first (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged) and six more concepts with phone frames, awaiting Jonno's approval before any generation. The bible sign-off waits for the chosen concept.
 1. Jonno's sign-off on `bible.html` (objects, and the four open calls).
 2. **Single-item control test** on the Spoofed clipping, about 0.75 credits:
    design the item alone until approved; bake it in using it as a reference
