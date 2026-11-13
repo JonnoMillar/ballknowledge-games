@@ -271,7 +271,8 @@ The report runs in stages, one at a time, on one laptop screen at 1366×768.
 3. **The result** lands alone and large: eyebrow "Ball knowledge", the band
    word ("Sharp") in Big Shoulders, in the band's material (the Steps case
    textures), and under it "Report valued at £37.0m", the fee counting up as
-   it lands.
+   it lands. Under that, once the fee stops, a real transfer of about the
+   same fee: "About what Newcastle paid for Harvey Barnes" (section 4a).
 4. **The find (the peak):** one card, the player's best moment today, in one
    line with its fact.
 5. **The rest:** the curve and "Top X%" line (top half), the streak, the
@@ -287,6 +288,30 @@ Every find is checkable from data the game already holds.
 **Why the find comes after the result:** the peak-end rule. The result can be
 low; the find is the best thing that happened, so every run ends on its high
 point, truthfully.
+
+### 4a. The transfer beside the fee (Jonno, 2026-11-13)
+
+A report value means more beside a deal the player remembers. Measured in
+gate 1 (section 10): Wikipedia's "List of English football transfers" pages
+give a real deal near almost every value.
+
+- **The line:** "About what Newcastle paid for Harvey Barnes" (£38m, 2023),
+  in small type under the fee. The fee and year show on tap, not in the line.
+- **The pick:** among priced deals within ±10% of the report value, the
+  player with the most English Wikipedia views (`player-views.json`), at
+  least `TRANSFER_MIN_VIEWS` 500k, from 2010 on (the audience is 16 to 26);
+  a deal within ±5% beats one further away. Fixed per value, so the same
+  fee always gets the same deal.
+- **No deal close enough:** "More than Arsenal paid for Declan Rice" (the
+  dearest known deal under the value). Measured: 5 of 1,001 values need it
+  (£113m to £119m).
+- **Not in the share line:** it would push the grid down; the fee is enough.
+- **Data:** `data/transfers.json` (shared, next to the pool), built by a
+  script from the transfer-list pages: player (matched to the pool by
+  Wikipedia title), from, to, fee in pounds, window. Only stated fees count:
+  "Undisclosed", free and loan rows are dropped. CC BY-SA text, fees are
+  facts; a credits line on `/credits`. A cron refreshes it after each window
+  closes (early February and early September), so no hand upkeep.
 
 **Hub dossier states:** never played (red Open); not started; part played
 (tasks ticked, Continue); done (the result on the dossier, the countdown, no
@@ -369,17 +394,18 @@ imports a game (`CLAUDE.md`), so:
 |---|---|---|
 | **Shared run shell** | `/run` route, dossier frame, task header and clock, staged moves, resume at the first open task (with the clock restarted for that item), the report, archive (`/run?date=`), hub dossier states, `markDone('run')`, `syncHub` | Large |
 | **Scoring and calibration** | `src/lib/run` maths with tests; the simulation that sets `BANDS`, `SCALE_MEAN`, `SCALE_SD`; a test that the laziest run stays under 4.0 | Medium |
+| **Transfers** | `data/transfers.json` from Wikipedia's transfer lists, a parser tested on a saved real page (like Odd Man Out's `wiki.ts`), the deal-picking rule with tests, a cron after each window, a credits line | Medium |
 | Spoofed | `RunTask` over careers 1 and 2 with the clock; write picks to its progress | Small |
-| Steps | `RunTask` over steps 1 and 2; continuous score from `factOf` inside the grade; capped reveal; write to its progress | Small to medium |
-| Pitch pin | A run schedule (3 goals a day: round packs and classics, never three from one match, the round packs' fairness test), its cron, `RunTask` on the existing throw | Medium |
-| Season line | A run schedule (mid-fame boards, never today's daily, a five-season window placed at random), its cron, `RunTask` (whole line, club guesses with hints, season pick in the window); reset `EPOCH` before launch | Medium |
+| Steps | `RunTask` over steps 1 and 2; the pick route returns a `depth` (0 to 1 inside the grade) so the score is continuous; capped reveal; write to its progress | Small to medium |
+| Pitch pin | A run schedule (3 goals a day, reuse gap, mix: section 10), its cron, `RunTask` on the existing throw | Medium |
+| Season line | A run schedule (the mid-fame pool in section 10, no board shared with the daily within `BOARD_GAP`, a five-season window placed at random), its cron, `RunTask` (whole line, club guesses with hints, season pick in the window); reset `EPOCH` before launch | Medium |
 | Odd Man Out | **Solo mode:** a generator that plants a believable fake in a real XI, a schedule and cron, a `problems()` check, `RunTask` with up to 2 taps; a playtest | Large |
 | Pecking Order | Merge first; then `RunTask` over categories 1 and 2 | Medium, blocked |
 | **Result store** | To show real players' curve, each finished run's score is sent to a small online database (today every score stays on the phone). `POST /api/run/report` (date, *R*, marks, a random id kept on the phone; first finished run per phone per day; never archive runs); `GET /api/run/curve` (binned, *n*). Free tier from the Vercel Marketplace: costs nothing at our size, but it is a new outside service. **Jonno, 2026-11-13: later, once the run has traffic.** Until then "Top X%" stays on our scale. No personal data. | Medium |
 
 **Phases**
-1. **Run v1:** shell, scoring (with the scale curve for "Top X%"), Spoofed,
-   Steps, Pitch pin, Season line. No server.
+1. **Run v1:** shell, scoring (with the scale curve for "Top X%"), the
+   transfer line, Spoofed, Steps, Pitch pin, Season line. No server.
 2. **Six tasks:** Odd Man Out solo, Pecking Order once merged.
 3. **Real curve,** once the run has traffic: the result store, "Top X%
    today", per-task facts.
@@ -409,9 +435,10 @@ run, try the clocks), review of generated days; HANDOFF, commit, check in.
 | 13 | Name | **Pecking Order** (2026-11-13), for the game the docs called The Tunnel and its branch calls Sorted. |
 | 14 | Result store | Later, once the run has traffic (2026-11-13). |
 | 15 | Clocks | Cap only: time never scores (2026-11-13). |
+| 16 | Transfer line | A real deal of about the same fee under the report value (2026-11-13, Jonno's idea; section 4a). |
 
-**Still open:** nothing. The spec is ready for phase 1 when Jonno wants it
-built.
+**Still open:** nothing. Phase 1 started 2026-11-13 ("Let's go"); gate 1 is
+section 10.
 
 **Follow-ups outside this branch**
 - **Rename to Pecking Order** on the game's own branch
@@ -420,3 +447,67 @@ built.
   in `design-drafts/brand-concepts/bible.html`. Not done here: this branch
   writes only its two docs.
 - **Share glyphs:** Spoofed's and Chain's 🟩🟨🟥 differ by hue alone.
+
+---
+
+## 10. Gate 1: data check (2026-11-13)
+
+Measured on the committed data and live Wikipedia, free, no keys. The
+scratch scripts are not committed; the numbers are.
+
+### Transfers for the report value (section 4a)
+
+- **Source:** English Wikipedia's "List of English football transfers summer
+  YYYY" and "winter YYYY–YY" pages, 2010 to summer 2026: all 33 windows exist
+  and parse (one table format: date, player with `{{sortname}}` or a link,
+  from, to, fee). Wikipedia rate-limits bursts (HTTP 429): fetch with a pause
+  of a few seconds a page and retry.
+- **Rows:** 7,569 moves; 997 with a stated fee of £0.5m or more (2,550
+  undisclosed, 2,322 free, 1,643 loans, dropped). 803 of the 997 match a pool
+  player by Wikipedia title.
+- **Coverage of every report value** (£1.0m to £131.5m in steps of *R* 0.1,
+  1,001 values), counting only deals for players with 500k+ English views
+  since 2010: **874 within ±5%, 996 within ±10%.** With 1M+ views since 2016:
+  650 and 758. With 300k+ views, 1,001 of 1,001 within ±10%. The 5 left
+  (£113m to £119m) use the "more than" line.
+- **Top fees:** Coutinho £142m (2018), Enzo Fernández £107m (2023), Rice
+  £105m, Caicedo £100m, Kane £95m. The page also lists Enzo Fernández at
+  £125m and Barcola at £106m in summer 2026: unchecked, spot-check the
+  parser's top rows against the pages before shipping.
+- **Licence:** CC BY-SA text; fees and clubs are facts. Credits line needed.
+
+### Pitch pin: goals for a 3-goal daily
+
+- 187 goals: 143 recent (110 since 2022), 44 classic (14 before 2010); 95
+  struck inside the box, 92 outside. About 6 new goals a week arrive (55
+  this season, 21 Aug to 25 Oct).
+- 3 goals a day uses 21 a week, so goals must repeat. With
+  `RUN_PIN_GAP` 60 days a schedule needs about 180 distinct goals: it fits
+  today, only just, and grows by about 6 a week. **Default: 3 a day, a goal
+  never back within 60 days, at most one classic a day and at least one from
+  this season, never two from one match.** The generator fails loudly (and
+  the cron goes red) if it cannot fill a day; then drop to 2 goals a day.
+
+### Season line: run boards
+
+- 268 boards, 204 in the daily pool. Run pool: 2000 on, at least one story,
+  no title story, story score + 2 × fame under 5 (mid-fame): **147 boards
+  over 39 clubs** (e.g. Bolton 01/02 collapse, Norwich 12/13 boom,
+  Bournemouth 22/23 escape).
+- The run and the daily share boards, so no board appears in either within
+  `BOARD_GAP` 60 days of the other. At one run board a day the pool cycles
+  in about five months; a finished season adds about 20 boards.
+
+### Steps and Spoofed slices
+
+- Both games store a day as one entry per round (`step.progress.v2`: a
+  verdict per step; `spoofed.progress.v1`: picks per career), so the run can
+  write rounds 1 and 2 and the daily resumes at round 3 with no format change.
+- Steps' verdict carries the grade but not the pick's ruler value, so the
+  continuous score needs the pick route to add a `depth` (0 to 1 inside the
+  grade, from where the pick's fact sits between its grade's bar cuts). A
+  small change inside `games/step`.
+
+**Gate 1 verdict:** every phase 1 task has the data it needs. Next is gate
+2, the playable draft: shared shell and scoring first, then Spoofed and
+Steps (no new data), then Pitch pin and Season line (new schedules).
