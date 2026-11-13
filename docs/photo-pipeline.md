@@ -449,3 +449,114 @@ fives from today to the end of each schedule (294 on 2026-11-13: 136 already app
 cutouts to check, 23 marked wrong, 16 with no usable photo). The list was written from the daily-run
 branch's schedules. The watchdog's heartbeat stopped 2026-11-12 15:58 at 295 MB free: restart it before
 asking it for more candidates.
+
+## Automatic screen and tags (2026-11-13)
+
+Jonno: no kit cards; every player in an upcoming game needs a good checked photo, and he does not want to check
+thousands by eye. Two parts, both dev-only and both only *suggest*: only photos he checked ship.
+
+### The screen (`scripts/photos/screen.py`)
+
+Free and local (YuNet, SFace, CLIP ViT-B/32, numpy; no sklearn). Three stages, each resumable, all files in
+`.scratch/photo-all/screen/`: `features` (measure every `out/<id>.0.webp`, `feat.json`, about 1 s a cutout),
+`emb` (CLIP image embeddings, `emb.npz`), `fit` (fit on his decisions, print the held-out numbers, write
+`screen.json`: `{cut, items: {id: {suspect, tags, why}}}`). Run `features`, `emb`, `fit` again after each
+review batch; `fit` alone is seconds. Measures per cutout:
+
+- **crop:** face box position and size in the frame (YuNet on the cutout), against the median of his approved
+  cutouts; alpha on the top edge (head cut off) and low alpha on the bottom edge (floating).
+- **cutout:** stray blobs, holes, half-transparent mass (ghosting), alpha beside the head (`checks.edge_mass`),
+  a second face.
+- **sharpness:** source face px and size, the candidate's own sharpness, pose (yaw, roll), and a blur score of the
+  face in the cutout.
+- **clothing:** CLIP zero-shot over four prompt groups (kit, training kit, smart or casual clothes, mural/statue/puppet),
+  recomputed from the stored embeddings; and the embedding itself for the linear probe.
+- **identity:** SFace similarity of the chosen photo's face to the player's other candidate photos (median, max, and how well
+  those match each other). Low similarity to photos that match each other means "not him".
+- **era:** photo year against the career span in `cand/<id>.json`.
+
+A ridge logistic regression on the measures (and, when it scores better out of fold, a linear probe on the CLIP embedding)
+is trained on his decisions: `approved.json` (fine) against `marks.json` wrong/flagged. A wrong card's cutout sits in
+`rej/<id>.0.webp` once redone, which is the picture he judged. `suspect` is that model's score; the rule-based tags (below)
+are suggested only on suspects, because on the rest the rules are wrong more often than right.
+
+Tag rules have fixed thresholds in `DEFAULT_TH`: training (CLIP training prompts beat kit), notkit (smart/casual clothes),
+lowq (source face under 80 px or a blurry face), crop (no face, second face, head cut off, floating, or the face far from where
+his approved ones sit), unusable (mural, statue, sign, puppet), messy (blobs, holes, ghosting, mass beside the head), nothim
+(low SFace match), old (photo years after the career ended). `better` is never suggested. Once he has confirmed enough tags
+(12 of one tag), `fit` trains a per-tag probe on them and uses it in place of the rule when it holds up out of fold.
+
+### The review page and the tags
+
+`/photo-check` (and `?focus=1`, the players in upcoming games): suspects first, likely fine last. Hover a card for text
+buttons over the lower half of the photo; click or press 1-9 to toggle (0 = fine, A = keep the suggestion); a card carries
+several tags. 1 In training kit, 2 Not in kit, 3 Low quality, 4 Bad crop, 5 Unusable, 6 Must be a better option,
+7 Not him, 8 Messy cutout, 9 Too old. **Soft** (starred) tags, training kit and better option, still ship; **every other tag
+blocks**. The screen's guesses show dashed with a "?" until he acts on them and are never saved or shipped by themselves;
+"Keep all N suggestions" confirms them in bulk, "Approve the other N" approves every card with no blocking tag (soft tags are
+saved with it). No colour carries meaning: blocked cards have a heavy frame and the word BLOCKED, chosen tags are filled and ticked.
+
+`marks.json` gains `tags: {id: [tag ids]}` (an empty list = looked, fine). `wrong` is kept in step (any blocking tag) so
+`publish.py` and older code still work. Old marks have no tags; they stay wrong.
+
+### Automatic fixes (on "Approve ... next batch", via `redo_marked.py`)
+
+Blocked cards are queued once the batch is final (never at the click, so a mis-click can be undone):
+
+- **Bad crop only:** the same photo is cut again and cropped three ways (looser, tighter, centred on the shoulders;
+  `recrop.json`, `CROPS` in cutout.py); he picks one on `/photo-pick`.
+- **Any other blocking tag** (low quality, not in kit, unusable, not him, messy, too old): the file is banned and the next
+  three candidates that pass the checks are cut (the existing "marked" path).
+- Soft tags: nothing happens; the photo ships. A search for a better option behind a soft tag is not built.
+
+Nothing in either path approves anything: the new pictures sit on `/photo-pick` until he chooses, and `publish.py` still
+ships only approved or picked cutouts.
+
+### How well the screen agrees with him (measured 2026-11-13, `screen.py fit`)
+
+His labels: 366 approved cutouts and 64 wrong ones (15% wrong), all from the top-500 review, so the famous, mostly decent
+end of the pool; the long tail will have a higher wrong rate than this, and every number below is for his past marks only.
+Every card is scored by a model that never saw it (5-fold, mean of four splits):
+
+| model | AUC | flag top 10%: precision / recall | top 20% | top 30% |
+|---|---|---|---|---|
+| measures only | 0.85 | 0.53 / 0.36 | 0.47 / 0.62 | 0.38 / 0.77 |
+| CLIP linear probe only | 0.86 | 0.60 / 0.41 | 0.47 / 0.62 | 0.39 / 0.78 |
+| measures + probe (used) | 0.88 | 0.60 / 0.41 | 0.50 / 0.67 | 0.40 / 0.80 |
+
+A random flag has precision 0.15. A plain 60/40 split (fit on 258, test on 172 with 25 wrong): AUC 0.86; flagging the top 20%
+gives precision 0.50, recall 0.68. The suspect line on the page (`cut` in screen.json, 0.54) flags about 17% of his cards with
+precision 0.52 and recall 0.59: **it misses about two in five of the cards he would mark, and half of what it flags he would
+have kept.** Treat it as an ordering, not a verdict. The model choice was made on the same cards, so the best row is a
+little optimistic. Across the 3,072 cutouts so far it marks 688 (22%) as suspects, 41 of the 275 screened players in the
+upcoming-game list.
+
+Tags: he marked "wrong", not why, so per-tag precision is "share of cards carrying the tag that he marked wrong" and recall
+is only measurable on my own reading of his 64 wrong cards (`screen_reading.json`, from a contact sheet; not his tags).
+The rules have fixed thresholds, scored on all 430:
+
+| tag | fired | on his wrong | on approved | precision | recall on my reading |
+|---|---|---|---|---|---|
+| In training kit (soft) | 104 | 27/64 | 77/366 | 0.26 | 12/15 |
+| Not in kit | 23 | 9/64 | 14/366 | 0.39 | 4/6 |
+| Low quality | 40 | 13/64 | 27/366 | 0.33 | not read |
+| Bad crop | 63 | 16/64 | 47/366 | 0.25 | not read |
+| Unusable | 3 | 3/64 | 0/366 | 1.00 | 3/3 |
+| Messy cutout | 26 | 7/64 | 19/366 | 0.27 | not read |
+| Not him | 4 | 2/64 | 2/366 | 0.50 | not read |
+| Too old | 6 | 3/64 | 3/366 | 0.50 | not read |
+| Must be a better option | 0 | | | | never suggested |
+
+Read plainly: Unusable (puppets, murals) and Not in kit are caught well, the training-kit rule finds most bibs but also
+a lot of approved cards (soft tag, so harmless), and Bad crop, Low quality and Messy cutout are barely better than chance
+(precision about twice the 15% base rate). Not him and Too old fire too rarely to judge. A tag is only suggested on a
+suspect, and is only ever a dashed guess. The honest fix is his own tags: once 12 cards carry a tag, `fit` trains a probe for
+that tag and prints its held-out AUC, so run `features`, `emb`, `fit` after each review batch.
+
+Verified: the re-crop path ran end to end in the live pipeline on one real photo (Josip Šimunić, a test entry in `recrop.json`
+on 2026-11-13): three different crops (looser, tighter, centred on the shoulders), all through the checks, `recrop.json`
+emptied; the test outputs were deleted so the normal pass redoes him. The new `cutout.py` also ran the normal path
+(several players, no errors). `redo_marked.py`'s routing was tested on a temp folder, `crop()` on a synthetic cutout, the
+tag saves with the save call stubbed (his real marks were not touched), and `scripts/photos/test_screen.py` covers the
+screen's pure parts. Not tried: his first real "Approve ... next batch" click with blocked cards (it starts `redo_marked.py`
+in the background); the soft-tag "better option" search is not built.

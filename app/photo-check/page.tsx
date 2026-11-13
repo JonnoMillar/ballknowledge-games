@@ -14,7 +14,8 @@ const json = <T,>(file: string, fallback: T): T => (existsSync(`${DIR}/${file}`)
  * awaiting thousands of file reads in the component made React's dev stream record every one
  * ("Maximum call stack size exceeded", 100 s a load).
  */
-function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats } {
+function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats; cut: number; screened: number } {
+  const screen = json<{ cut: number; items: Record<string, { suspect: number; tags: string[]; why: Record<string, string> }> }>('screen.json', { cut: 0.5, items: {} });
   const all = json<{ id: string; name: string; club?: string }[]>('players.json', []);
   // ?focus=1: only the players in upcoming games (focus.json, soonest first), all in one page.
   const want = focus ? json<string[]>('focus.json', []) : null;
@@ -33,9 +34,11 @@ function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats } {
     if (!st) return;
     if (!st.ok) { kit++; return; }
     left++;
-    if (focus || items.length < BATCH) items.push({ id: p.id, name: p.name, rank: (want ? all.indexOf(p) : i) + 1, club: p.club, cutout: true, file: st.results?.[0]?.file.replace(/^File:/, ''), year: st.results?.[0]?.year });
+    const sc = screen.items[p.id];   // not screened yet: counts as a suspect, so it is looked at
+    if (focus || items.length < BATCH) items.push({ id: p.id, name: p.name, rank: (want ? all.indexOf(p) : i) + 1, club: p.club, cutout: true, file: st.results?.[0]?.file.replace(/^File:/, ''), year: st.results?.[0]?.year, suspect: sc ? sc.suspect : screen.cut, suggest: sc?.tags, why: sc?.why });
   });
-  return { items, stats: { approved: approved.size, wrong: bad.size, left, kit } };
+  items.sort((a, b) => (b.suspect ?? 0) - (a.suspect ?? 0) || a.rank - b.rank);   // suspects first, likely fine last
+  return { items, stats: { approved: approved.size, wrong: bad.size, left, kit }, cut: screen.cut, screened: Object.keys(screen.items).length };
 }
 
 /**
@@ -46,6 +49,6 @@ function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats } {
  */
 export default async function Page({ searchParams }: { searchParams: Promise<{ focus?: string }> }) {
   if (process.env.NODE_ENV !== 'development') notFound();
-  const { items, stats } = nextBatch(!!(await searchParams).focus);
-  return <PhotoCheck items={items} stats={stats} />;
+  const { items, stats, cut, screened } = nextBatch(!!(await searchParams).focus);
+  return <PhotoCheck items={items} stats={stats} cut={cut} screened={screened} />;
 }

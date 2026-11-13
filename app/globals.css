@@ -1384,7 +1384,7 @@ html.table-off .table { display: none; }
 .slab--sm { --sticker-w: 124px; --slab-pad: 9px; }
 .slab--md { --sticker-w: 136px; }
 .slab--lg { --sticker-w: 208px; --slab-pad: 13px; }
-@media (min-width: 760px) { .slab--md { --sticker-w: 150px; } }
+@media (min-width: 760px) { .slab--md { --sticker-w: 190px; } }
 .slab__face {
   position: absolute;
   inset: 0;
@@ -2180,18 +2180,32 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 .gprev__row > li { --sticker-w: 124px; }
 
 /* ── DEV ONLY: /photo-check, marking the wrong cutouts ──────────────────── */
-.pc { display: flex; flex-direction: column; gap: 14px; padding: 16px; max-width: 1200px; margin: 0 auto; --sticker-w: 124px; }
-.pc__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; position: sticky; top: 0; z-index: 5; padding: 10px 0; background: var(--page); border-bottom: 1.5px solid var(--rule-strong); }
-.pc__group { display: flex; gap: 8px; margin-left: auto; }
+.pc { display: flex; flex-direction: column; gap: 14px; padding: 16px; max-width: 1400px; margin: 0 auto; --sticker-w: 190px; }
+.pc__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; position: sticky; top: 0; z-index: 8; padding: 10px 0; background: var(--page); border-bottom: 1.5px solid var(--rule-strong); }
+.pc__group { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
 .pc__help { margin: 0; font-size: 14px; }
 .pc__h { margin: 12px 0 0; font-size: 16px; }
-.pc__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px 10px; justify-items: center; }
-.pc__card { appearance: none; position: relative; border: 0; padding: 6px; background: transparent; cursor: pointer; border-radius: 4px; font: inherit; }
-.pc__card:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.pc__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: 18px 12px; justify-items: center; }
+.pc__item { position: relative; }
+.pc__item:hover, .pc__item:focus-within { z-index: 4; }
+.pc__card { position: relative; padding: 6px; min-height: 280px; border-radius: 4px; display: flex; align-items: flex-start; justify-content: center; }
 .pc__card.is-wrong { box-shadow: 0 0 0 4px var(--ink); background: rgba(20, 18, 16, 0.1); }
 .pc__card.is-wrong .sticker { opacity: 0.55; }
+.pc__card.is-soft { box-shadow: 0 0 0 2px var(--ink); }
+.pc__card.is-suggested { outline: 3px dashed var(--ink); outline-offset: 2px; }
 .pc__flag { position: absolute; top: 6px; left: 6px; z-index: 3; padding: 1px 6px; font-size: 12px; font-weight: 700; color: var(--ink); background: rgba(255, 255, 255, 0.85); border-radius: 2px; }
+.pc__card.is-suggested .pc__flag { color: #fff; background: var(--ink); font-size: 12px; font-weight: 700; }
 .pc__card.is-wrong .pc__flag { color: #fff; background: var(--ink); font-size: 14px; padding: 3px 8px; }
+.pc__tagline { position: absolute; left: 6px; right: 6px; bottom: 6px; z-index: 3; padding: 2px 5px; font-size: 12px; line-height: 1.25; font-weight: 700; color: #fff; background: var(--ink); border-radius: 2px; }
+.pc .sticker .sticker__flag { display: none !important; }   /* the in-game button; this page has the tags */
+/* The tag buttons sit over the lower half of the photo (shirt and shoulders), so the face stays visible while he tags. */
+.pc__tags { position: absolute; left: 6px; right: 6px; bottom: 6px; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 0; }
+.pc__tag { appearance: none; border: 1.5px solid var(--ink); border-radius: 2px; padding: 1px 4px; background: rgba(255, 255, 255, 0.9); color: var(--ink); font: inherit; font-size: 11px; line-height: 1.2; font-weight: 600; text-align: left; cursor: pointer; }
+.pc__tag b { display: inline-block; min-width: 0.8em; }
+.pc__tag.is-wide { grid-column: 1 / -1; }
+.pc__tag:hover, .pc__tag:focus-visible { background: var(--ink-soft, #e8e4dc); outline: 2px solid var(--ink); }
+.pc__tag.is-on { background: var(--ink); color: #fff; }
+.pc__tag.is-on.is-suggested { background: rgba(255, 255, 255, 0.94); color: var(--ink); border-style: dashed; border-width: 2px; }
 .pp__row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--rule-strong); }
 .pp__name { margin: 0; font-size: 16px; }
 .pp__opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }

@@ -1,0 +1,36 @@
+{
+ "note": "My reading of Jonno's 64 wrong cutouts from a contact sheet on 2026-11-13: why each looks wrong. NOT his tags; only a rough ground truth for the training/notkit/unusable screen until he has tagged real batches.",
+ "tags": {
+  "training": [
+   "Q67198835",
+   "Q128829",
+   "Q97999586",
+   "Q166317",
+   "Q66241169",
+   "Q26704890",
+   "Q26973015",
+   "Q136986",
+   "Q1907",
+   "Q99529077",
+   "Q159159",
+   "Q48892",
+   "Q483583",
+   "Q1925465",
+   "Q213427",
+   "Q6186603"
+  ],
+  "notkit": [
+   "Q168740",
+   "Q44737408",
+   "Q20806743",
+   "Q317282",
+   "Q160472",
+   "Q927006"
+  ],
+  "unusable": [
+   "Q13002",
+   "Q47778",
+   "Q927006"
+  ]
+ }
+}

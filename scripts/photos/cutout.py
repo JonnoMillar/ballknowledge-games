@@ -54,12 +54,19 @@ def commons_text(file):
             time.sleep(2 * (a + 1))
     return ''
 
-def crop(cut: Image.Image, box):
+# "Bad crop" (/photo-check): the same photo cropped three other ways, offered on /photo-pick (redo_marked.py -> recrop.json).
+CROPS = [{'name': 'looser', 'side': 3.8, 'above': 0.8}, {'name': 'tighter', 'side': 2.7, 'above': 0.4}, {'name': 'body', 'centre': 'body'}]
+
+def crop(cut: Image.Image, box, side=3.2, above=0.55, centre='face', **_):
     x, y, w, h = box
     alpha = np.array(cut.getchannel('A'))
     H, W = alpha.shape
-    cx, top = x + w / 2, max(int(y - 0.55 * h), 0)
-    side = min(int(3.2 * h), W)
+    cx, top = x + w / 2, max(int(y - above * h), 0)
+    if centre == 'body':   # centre on the shoulders, not the face (a head turned to one side)
+        below = alpha[int(y + h): int(y + 2.5 * h)] > 128
+        if below.sum():
+            cx = float(np.where(below)[1].mean())
+    side = min(int(side * h), W)
     left = int(min(max(cx - side / 2, 0), W - side))
     cols = alpha[:, left:left + side] > 128
     rows = np.where(cols.sum(1) > 0.25 * side)[0]
@@ -70,7 +77,12 @@ def crop(cut: Image.Image, box):
     left = int(min(max(cx - side / 2, 0), W - side))
     return cut.crop((left, top, left + side, top + side)).resize((SIDE, SIDE), Image.LANCZOS)
 
-marked = set(json.loads((D / 'marked.json').read_text(encoding='utf8'))) if (D / 'marked.json').exists() else set()   # redo_marked.py
+def read_json(name, empty):
+    f = D / name
+    try:
+        return json.loads(f.read_text(encoding='utf8')) if f.exists() else empty
+    except ValueError:   # mid-write
+        return empty
 players = json.loads((D / (args[0] if args else 'players.json')).read_text(encoding='utf8'))
 if len(args) > 1:
     i, n = (int(v) for v in args[1].split('/'))
@@ -90,11 +102,15 @@ for p in players:
     cands = sorted((c for c in data['cands'] if not c['gate']), key=lambda c: -c['score'])
     bad_file = D / 'bad' / f"{p['id']}.json"
     skip = set(json.loads(bad_file.read_text(encoding='utf8'))) if bad_file.exists() else set()
+    marked = set(read_json('marked.json', []))   # redo_marked.py; read again for each player so a new mark is seen at once
+    forced = read_json('recrop.json', {}).get(p['id'])   # {id: file}: crop this photo again, three ways
+    if forced:
+        cands = [c for c in cands if c['file'] == forced]
     results, tried, rejected = [], 0, []
     for c in cands:
         if c['file'] in skip:
             continue
-        if len(results) >= (3 if p['id'] in marked else ALTS) or tried >= TRIES:
+        if len(results) >= (3 if p['id'] in marked or forced else ALTS) or tried >= TRIES:
             break
         if c['room'] < MIN_HEADS:   # cheap check: the photo ends too close to the face to fill the frame
             continue
@@ -106,19 +122,30 @@ for p in players:
             continue
         im = Image.open(D / c['local']).convert('RGB')
         try:
-            head = crop(remove(im, session=session), c['box'])
+            cut = remove(im, session=session)
         except Exception as e:   # out of memory on a big photo: skip it, keep the process (and its model) alive
             print(f"  {c['file']}: {str(e)[:80]}", flush=True)
             continue
-        if head is None:
+        for v in (CROPS if forced else [{}]):
+            head = crop(cut, c['box'], **v)
+            if head is None:
+                continue
+            why, measures = checks.crop_verdict(head, det, clip, data.get('manager', False))
+            if why:
+                rejected.append({'file': c['file'], 'why': why, **measures})
+                continue
+            k = len(results)
+            head.save(OUT / f"{p['id']}.{k}.webp", 'WEBP', quality=82, method=6)
+            results.append({'file': c['file'], 'k': k, 'score': c['score'], 'year': c['year'], 'source': [im.width, im.height], 'face': c['face'], **({'origin': c['origin']} if c.get('origin') else {}), **({'crop': v['name']} if v else {}), **measures})
+    if forced:   # done with this request, whatever came of it
+        rc = read_json('recrop.json', {})
+        rc.pop(p['id'], None)
+        (D / 'recrop.json').write_text(json.dumps(rc))
+        if not results:   # no crop of that photo works: ban it, and the next pass cuts the next candidates as usual
+            (D / 'bad').mkdir(exist_ok=True)
+            bad_file.write_text(json.dumps(sorted(skip | {forced})))
+            print(f"{p['name']}: no re-crop of {forced} fits, moving on", flush=True)
             continue
-        why, measures = checks.crop_verdict(head, det, clip, data.get('manager', False))
-        if why:
-            rejected.append({'file': c['file'], 'why': why, **measures})
-            continue
-        k = len(results)
-        head.save(OUT / f"{p['id']}.{k}.webp", 'WEBP', quality=82, method=6)
-        results.append({'file': c['file'], 'k': k, 'score': c['score'], 'year': c['year'], 'source': [im.width, im.height], 'face': c['face'], **({'origin': c['origin']} if c.get('origin') else {}), **measures})
     if results:
         status.write_text(json.dumps({'ok': True, 'results': results, 'rejected': rejected}))
         print(f"{p['name']}: {len(results)} cutout(s), best {results[0]['file']}", flush=True)
