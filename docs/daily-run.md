@@ -187,7 +187,7 @@ transfer fee, never *R*:
 | 60 (the scale's middle) | £18.7m | Solid |
 | 70 | £30.4m | Sharp from here |
 | 74 | £37.0m | Sharp |
-| 85 | £63.0m | Elite from here |
+| 85 | £63.3m | Elite from here |
 | 100 | £131.5m | Elite |
 
 Why a valuation:
@@ -236,7 +236,7 @@ than 100 over the last 7 days):
   `SCALE_MEAN` 60 and spread `SCALE_SD` 15, drawn with the valuation under
   the player's mark and no axis numbers.
 - X = 100 × (1 − Φ((*R* − 60) / 15)), rounded up to a whole number. £37.0m
-  (*R* 74) is top 18%; £63.0m (*R* 85) is top 5%; £18.7m (*R* 60) is top 50%.
+  (*R* 74) is top 18%; £63.3m (*R* 85) is top 5%; £18.7m (*R* 60) is top 50%.
 - **The words say it is the scale:** "Top 18% on our scale". Until real
   players exist, "of scores" or "of players" would be a claim that is not
   true (research Q2).
