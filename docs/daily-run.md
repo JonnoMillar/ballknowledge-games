@@ -22,9 +22,9 @@ of the new hub, "Today's assignment", a manila dossier on the cork board
   mole needs a solo mode; Pecking Order needs to merge first.
 - **Result: an exact score with no visible ceiling, beside its band word.**
   Jonno wants a score that is not read against 1 to 10 or 1 to 100, so a bad
-  day does not look bad. Proposed: a transfer valuation, "Sharp · £37.0m"
-  (to confirm). One mark per task, then the player's best moment of the run,
-  named with its fact.
+  day does not look bad. The score is what the day's scouting report is
+  worth: "Sharp · Report valued at £37.0m" (Jonno, 2026-11-13). One mark per
+  task, then the player's best moment of the run, named with its fact.
 - **"Top X%"** from day one, on our own scale's curve (a normal distribution),
   switching to today's real players at 100 plays. Shown to the top half only.
 - **Streak:** days with a finished run, with earned rest days.
@@ -171,14 +171,17 @@ Spoofed and the mole stay coarse; the continuous tasks give the margins.
 *R* = mean of *s* over the tasks in today's run, to one decimal. Equal
 weights: calibration (below) makes each task worth the same to a decent fan.
 
-**How it shows: a valuation (Jonno, 2026-11-13: an obscure score with no
-visible scale; the valuation itself is to confirm).** The player sees a
-transfer fee, never *R*:
+**How it shows: the report's value (Jonno, 2026-11-13).** He asked for an
+obscure score with no visible scale, then chose a fee for the *report*, not
+for the player: the scout files the day's dossier and the dossier is valued,
+the way a scouting department is judged by the transfers it sources. A fee on
+the player would read as if the player were the one being sold. The player
+sees "Report valued at £37.0m", never *R*:
 
-> valuation (£m) = `VALUE_BASE` × `VALUE_GROWTH` ^ *R*, with 1.0 and 1.05,
+> report value (£m) = `VALUE_BASE` × `VALUE_GROWTH` ^ *R*, with 1.0 and 1.05,
 > shown to one decimal: "£37.0m".
 
-| *R* | Valuation | Band |
+| *R* | Report value | Band |
 |---|---|---|
 | 0 | £1.0m | Basic |
 | 22 (laziest run) | £2.9m | Basic |
@@ -190,7 +193,7 @@ transfer fee, never *R*:
 | 85 | £63.3m | Elite from here |
 | 100 | £131.5m | Elite |
 
-Why a valuation:
+Why a report value:
 - **No ceiling to read against.** Fees have no famous maximum, so £14.6m
   reads as a real player, not as 55 out of 100. Nothing is hidden: the score
   is exact and the same play always gets the same fee; the page just never
@@ -198,13 +201,13 @@ Why a valuation:
 - **Fine margins where they matter.** The curve is steep at the top: one
   point of *R* is £0.1m at the bottom and over £6m at the very top, so the
   best players are spread far apart. Mates compare to £0.1m.
-- **Football's own unit, and the agent theme.** Every fan reads a fee; the
-  brag writes itself ("a £63m scout today"). It fits the scout and agent
-  direction Jonno raised.
+- **Football's own unit, on the scout's own work.** Every fan reads a fee;
+  the brag writes itself ("my report was worth £63m today"). It fits the
+  dossier and the scout and agent direction Jonno raised.
 - Not Krillion's metres, and none of its words.
-
-The alternative, if a fee feels wrong: a points total with an odd ceiling
-(e.g. task maxima that sum to 2,387, never printed).
+- Known stretch: Log the shot and Read the season do not find players, so
+  "what the report is worth" is loose for them. Accepted: a report covers
+  everything the scout checked that day.
 
 The band words are the site's scale (Jonno, 2026-11-12), shown beside the
 fee; new words may come later with a new name for the whole site.
@@ -233,7 +236,7 @@ Two sources, one line, overall only (never per task), top half only.
 **Before real data** (fewer than `CURVE_MIN` = 100 reports today, and fewer
 than 100 over the last 7 days):
 - The curve is **our scale's normal distribution** over *R*, mean
-  `SCALE_MEAN` 60 and spread `SCALE_SD` 15, drawn with the valuation under
+  `SCALE_MEAN` 60 and spread `SCALE_SD` 15, drawn with the report value under
   the player's mark and no axis numbers.
 - X = 100 × (1 − Φ((*R* − 60) / 15)), rounded up to a whole number. £37.0m
   (*R* 74) is top 18%; £63.3m (*R* 85) is top 5%; £18.7m (*R* 60) is top 50%.
@@ -251,7 +254,7 @@ than 100 over the last 7 days):
 - Needs the result store (section 8: later, once the run has traffic).
 
 **For everyone below the top half** (X > 50): the curve with their mark on it
-and their own record ("Your best this month: Sharp · 7.9"), no percentage
+and their own record ("Your best report this month: £52.4m"), no percentage
 (Jonno, 2026-11-12).
 
 **Per task, later:** facts, not ranks. "12% of today's scouts spotted this
@@ -266,8 +269,9 @@ The report runs in stages, one at a time, on one laptop screen at 1366×768.
 1. **The dossier closes** (~800 ms).
 2. **The marks** tick in down the task list, 100 ms apart.
 3. **The result** lands alone and large: eyebrow "Ball knowledge", the band
-   word and the valuation ("Sharp · £37.0m") in Big Shoulders, in the band's
-   material (the Steps case textures). The fee counts up as it lands.
+   word ("Sharp") in Big Shoulders, in the band's material (the Steps case
+   textures), and under it "Report valued at £37.0m", the fee counting up as
+   it lands.
 4. **The find (the peak):** one card, the player's best moment today, in one
    line with its fact.
 5. **The rest:** the curve and "Top X%" line (top half), the streak, the
@@ -294,7 +298,8 @@ red; the hub's suggestion moves to the unfinished dailies).
 
 ```
 Today's assignment #55
-Ball knowledge: Sharp · £37.0m
+Ball knowledge: Sharp
+Report valued at £37.0m
 ✅✅🔸✅❌✅
 Top 18% on our scale
 🔥 12
@@ -353,7 +358,7 @@ ballknowledge-games.vercel.app
 **Architecture.** Games never import each other and shared code never
 imports a game (`CLAUDE.md`), so:
 - `src/lib/run/` (shared): `RUN_TASKS` (names, rule lines, clocks), the task
-  result type, the run score, bands, the valuation, the scale curve and "Top
+  result type, the run score, bands, the report value, the scale curve and "Top
   X%", marks, the share line, the streak, `run.progress.v1`. Pure, tested.
 - `games/<name>/run/` (each game): a `RunTask` component and its mapping to a
   task score, importing only shared code.
@@ -390,7 +395,7 @@ run, try the clocks), review of generated days; HANDOFF, commit, check in.
 
 | # | Question | Decision |
 |---|---|---|
-| 1 | Score display | An exact score with the band word, on no visible scale (2026-11-13: not 1 to 10 or 1 to 100, so a bad score does not look bad). A transfer valuation is proposed, to confirm. |
+| 1 | Score display | An exact score with the band word, on no visible scale (2026-11-13: not 1 to 10 or 1 to 100, so a bad score does not look bad). Shown as what the day's report is worth: "Report valued at £37.0m" (2026-11-13). |
 | 2 | Fine margins | Continuous task scores where the data allows. Plus Jonno's addition: time limits in the run only, none when a game is played on its own. Spec: clocks cap, never score. |
 | 3 | Band words | The site scale: Basic, Decent, Solid, Sharp, Elite. New words maybe later, with a new name for the whole site. |
 | 4 | Curve before real data | "Top X%" from our scale's normal distribution from day one, worded "on our scale". |
@@ -405,10 +410,8 @@ run, try the clocks), review of generated days; HANDOFF, commit, check in.
 | 14 | Result store | Later, once the run has traffic (2026-11-13). |
 | 15 | Clocks | Cap only: time never scores (2026-11-13). |
 
-**Still open**
-
-1. **The valuation** (section 3): confirm a transfer fee ("Sharp · £37.0m"),
-   or use a points total with an odd, never-printed ceiling.
+**Still open:** nothing. The spec is ready for phase 1 when Jonno wants it
+built.
 
 **Follow-ups outside this branch**
 - **Rename to Pecking Order** on the game's own branch
