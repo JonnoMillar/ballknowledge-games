@@ -113,3 +113,15 @@ button.run-list__row { cursor: pointer; }
   /* The clock still drains: it is information, not decoration. */
   .run-sheet, .run-sheet.is-leaving, .run-list--report li, .run-result, .run-stage { animation: none; }
 }
+
+/* Log the shot: the goal and the button beside the pitch on a laptop; the pitch takes the height left. */
+.run-pin__grid { display: flex; flex-direction: column; gap: 12px; }
+.run-pin__side { display: flex; flex-direction: column; gap: 12px; }
+@media (min-width: 900px) {
+  .run-pin__grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); column-gap: 36px; align-items: start; }
+  .run-pin__side { height: 100%; }
+  .run-pin__side .pin__controls { margin-top: auto; }
+  .run-pin .pin__stage { height: calc(100dvh - 64px - 66px - 200px); min-height: 300px; }
+  .run-pin .pin__stage .pitch { height: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+  .run-pin .pin__stage .pitch__svg { height: 100%; width: auto; max-width: 100%; }
+}

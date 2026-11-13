@@ -1,0 +1,45 @@
+# The daily run's own schedules (Log the shot's goals, Read the season's boards),
+# kept ahead of the calendar with no one in the loop. Daily at 06:30 UTC, after
+# pin-packs has added the week's new goals: top up to 28 days ahead when fewer
+# than 14 are left, test, and commit to the default branch; the push deploys.
+# See docs/daily-run.md.
+name: Run days
+
+on:
+  schedule:
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: run-days
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run run:days
+      - run: npm test
+      - name: Commit new days
+        run: |
+          FILES="games/pin/data/run.json games/season-line/data/run.json"
+          if [ -z "$(git status --porcelain $FILES)" ]; then
+            echo "No new days."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $FILES
+          git commit -m "chore(run): new days"
+          git pull --rebase
+          git push

@@ -12,6 +12,8 @@ export interface RunDay {
   finishedOn?: string;
   /** R, frozen when the run was filed. */
   score?: number;
+  /** Mid-task state for tasks with no daily of their own to keep it (Log the shot, Read the season), so a reload resumes. */
+  items?: Partial<Record<TaskId, unknown>>;
 }
 
 const KEY = 'run.progress.v1';
@@ -24,6 +26,13 @@ export const loadRunDay = (date: string): RunDay => allRuns()[date] ?? { results
 
 export function saveRunDay(date: string, day: RunDay): void {
   try { localStorage.setItem(KEY, JSON.stringify({ ...allRuns(), [date]: day })); } catch { /* private mode, or full */ }
+}
+
+/** A task's own mid-task state, kept in the run's record. */
+export const loadItems = <T,>(date: string, id: TaskId): T | undefined => loadRunDay(date).items?.[id] as T | undefined;
+export function saveItems(date: string, id: TaskId, state: unknown): void {
+  const day = loadRunDay(date);
+  saveRunDay(date, { ...day, items: { ...day.items, [id]: state } });
 }
 
 /** The dates whose run was finished on the day itself: archive runs never count. */

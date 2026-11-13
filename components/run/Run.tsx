@@ -38,11 +38,13 @@ export default function Run({ tasks }: { tasks: Partial<Record<TaskId, Component
 
   function file(def: RunTaskDef, result: TaskResult) {
     if (!date) return;
-    const results = { ...run.results, [def.id]: result };
+    // Read fresh: tasks keep their own mid-task state in the same record.
+    const cur = loadRunDay(date);
+    const results = { ...cur.results, [def.id]: result };
     const last = list.every((t) => results[t.id]);
     const next: RunDay = last
-      ? { results, finishedOn: localDate(), score: runScore(list.map((t) => results[t.id]!.score)) }
-      : { ...run, results };
+      ? { ...cur, results, finishedOn: localDate(), score: runScore(list.map((t) => results[t.id]!.score)) }
+      : { ...cur, results };
     saveRunDay(date, next);
     if (last) markDone('run', date);
     setLeaving(true);
