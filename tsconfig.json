@@ -28,14 +28,15 @@
     "isolatedModules": true
   },
   "include": [
-    "src",
-    "scripts",
-    "tests",
+    ".next/types/**/*.ts",
     "app",
     "components",
     "games",
     "next-env.d.ts",
-    ".next/types/**/*.ts"
+    "scripts",
+    "src",
+    "tests",
+    ".next-prod/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

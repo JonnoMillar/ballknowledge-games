@@ -1,3 +1,4 @@
+import { seeded } from '../../../src/lib/seeded';
 import { lazyScore } from './score';
 import type { Goals } from './types';
 
@@ -37,19 +38,6 @@ export const addDays = (date: string, n: number): string => new Date(Date.parse(
 const between = (a: string, b: string) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86_400_000);
 /** The season a date falls in starts on 1 August. */
 export const seasonStart = (date: string): string => `${Number(date.slice(0, 4)) - (date.slice(5, 7) < '08' ? 1 : 0)}-08-01`;
-
-/** FNV-1a seed, then mulberry32: the same day draws the same goals on every machine. */
-function seeded(seed: string): () => number {
-  let h = 0x811c9dc5;
-  for (let i = 0; i < seed.length; i++) h = Math.imul(h ^ seed.charCodeAt(i), 0x01000193) >>> 0;
-  return () => {
-    h = (h + 0x6d2b79f5) >>> 0;
-    let t = h;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 /** What is wrong with one day, given the days before it. Empty when it keeps every promise. */
 export function problems(goals: Goals, day: RunPinDay, before: readonly RunPinDay[]): string[] {

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { matchName } from '../lib/run';
 import Pitch, { Name, type Mark } from './Pitch';
 import Swap from './Swap';
 import Help from './Help';
@@ -234,9 +235,8 @@ function Ask({ head, sub }: { head: string; sub?: string }) {
 }
 
 /** The match it is from, crest or flag each side: both players need it, so it's no clue. */
-function Scoreline({ side }: { side: Side }) {
-  const year = side.date.slice(0, 4);
-  const comp = /\d{4}/.test(side.comp) ? side.comp : `${side.comp} ${year}`;
+export function Scoreline({ side }: { side: Pick<Side, 'team' | 'opponent' | 'score' | 'comp' | 'date' | 'formation'> }) {
+  const comp = matchName(side);
   return (
     <div className="bf-sheet vt">
       <span className="bf-sheet__team"><TeamBadge team={side.team} size={30} /><b>{side.team}</b></span>

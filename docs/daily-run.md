@@ -636,6 +636,45 @@ tasks, the crons on GitHub, the archive path.
     `loadItems`/`saveItems`.
 - After that: Pecking Order once its branch merges; then the redesign.
 
+Done: section 14.
+
+---
+
+## 14. Phase 2, task 4: Find the mole (2026-11-13)
+
+Five tasks in the run now: Find the mole sits between Log the shot and Read
+the season. Play it at `/run`.
+
+| Path | What |
+|---|---|
+| `games/bluff/lib/run.ts`, `data/run.json` | A side and a planted name a day from `RUN_MOLE_START` 2026-11-13. Sides from `RUN_MOLE_FIRST` 2010 on (280 of 408), the match (either team's XI) not back within `RUN_MOLE_GAP` 120 days, longest-unused first. The mole replaces an outfielder (keeper picks are thin and some are quirky, e.g. an outfielder listed as a keeper) and is a "Help the faker" pick of that slot's group, never already in the XI, and inside the XI's fame band: no less famous than its least famous starter, no more famous than its upper quartile (so never a Messi-level tell). `problems()` checks every rule; a year runs on today's sides. |
+| `games/bluff/server.ts` `runMole`, `app/api/odd-man-out/run` | One POST with the taps so far (and `out` when the clock ran out), like Read the season's route: the XI with the mole in place as names only (no ids), each tap judged, and the reveal (slot, mole, real starter) only once found, both taps spent or out of time. Served from its date only (up to UTC tomorrow). |
+| `games/bluff/run/RunTask.tsx` | Odd Man Out's own pitch, scoreline and flip reveal. Tap a name, "That's the mole"; a wrong tap greys that card; up to 2 taps, 100 / 50 / 0 (`moleScore`). One 40 s clock; when it runs out a picked but unconfirmed name is sent as the last tap. Taps live in `run.progress.v1` (`loadItems`/`saveItems`). Find: "Found the mole first time: <mole> in <team>'s XI, <match>". |
+| `scripts/run/build-days.ts`, `run-days.yml` | Tops up the mole schedule with the other two; `--print` lists "<team> (<comp>) <mole> for <starter>". The cron commits `games/bluff/data/run.json` too. |
+| `src/lib/seeded.ts` | The date-seeded random, moved out of Pitch pin's run code so two games share it (Spoofed and Steps still keep their own copies). |
+
+**Verified:** typecheck clean, prod build clean, `npm test` 2,240 passed (8 new: schedule
+rules, a year of days, refusals, the fame cap, scoring, the served view
+leaks no ids and reveals only when over, bad taps and days ahead refused).
+Browser, dev server, 1366×768, earlier tasks seeded: Real Madrid's 2018 XI
+with Hakimi for Marcelo, a wrong tap on Isco greyed it, Hakimi on the
+second tap: +50, "Found on the second go.", the card turns to Marcelo, Next
+filed `mole: 50` and opened Read the season. `scrollHeight` 768, no console
+errors.
+**Not checked:** the clock running out in the browser (the route's `out`
+path is tested), a phone, a whole run played in one go.
+
+**Known, for Jonno:**
+1. The planted names are generated, not reviewed (`npm run run:days --
+   --print`). Help the faker's quirks carry over: club seasons from calendar
+   years, so a few moles are a season off; national picks are anyone active
+   that year (Nesta for Italy 2012, retired from Italy in 2006).
+2. Odd Man Out's sides are not refreshed by a cron (its HANDOFF): new finals
+   need `npm run bluff:sides` by hand. The mole schedule cycles fine on the
+   280 it has.
+
+**Next:** Pecking Order once its branch merges; then the redesign.
+
 **Resume prompt:** "Daily run, branch `claude/daily-run-spec-e6d716`. Read
-CLAUDE.md, then docs/daily-run.md sections 11 to 13. Build Find the mole as
-section 13 says, verify in the browser, commit, give me the localhost link."
+CLAUDE.md, then docs/daily-run.md sections 11 to 14. Next: Pecking Order's
+run task once its branch merges, else the run redesign."

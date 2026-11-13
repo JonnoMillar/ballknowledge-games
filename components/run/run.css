@@ -138,3 +138,8 @@ button.run-list__row { cursor: pointer; }
 .run-season__verdict { margin: 0; font-weight: 700; }
 .run-season .sl-row__club b { margin-left: auto; font-size: 16px; }
 @media (min-width: 860px) { .run-season .sl-plot { height: clamp(280px, calc(100dvh - 380px), 520px); } }
+
+/* Find the mole: Odd Man Out's stage, the pitch sized to fit under the run's header. */
+@media (min-width: 900px) {
+  .run-mole .bf-stage .bf-pitch { height: calc(100dvh - 292px); min-height: 380px; }
+}
