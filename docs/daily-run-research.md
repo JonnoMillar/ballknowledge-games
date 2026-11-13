@@ -36,8 +36,10 @@ him. Recorded here so the research and the decisions stay side by side.
 - **An exact score is shown** (Q1 recommended none). His reason: comparison
   with mates needs fine margins, and the top and bottom of one band reading
   the same is unfair. That is a fair point the research underweighted: the
-  rivalry row in Q4 needs a number to compare. The spec keeps "never N of M"
-  by showing the score as a match rating (to confirm) with no "/100".
+  rivalry row in Q4 needs a number to compare. On 2026-11-13 he added that it
+  should sit on no visible scale (not 1 to 10 or 1 to 100), so a bad score
+  does not look bad; the spec proposes a transfer valuation ("£37.0m"), which
+  also keeps "never N of M".
 - **"Top X%" from day one, on our scale's normal distribution** (Q2
   recommended nothing until real data). The spec words it "on our scale"
   until 100 real plays, so it makes no claim about players that is not true.

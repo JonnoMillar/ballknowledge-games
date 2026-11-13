@@ -14,20 +14,21 @@ of the new hub, "Today's assignment", a manila dossier on the cork board
 
 - **Six tasks, about 6 minutes, never more than 8** (the clocks cap it), in a fixed order: Check the
   rumours (Spoofed), Trace the link (Steps), Log the shot (Pitch pin), Find
-  the mole (Odd Man Out), Line them up (The Tunnel), Read the season (Season
+  the mole (Odd Man Out), Line them up (Pecking Order), Read the season (Season
   line).
 - **Timed in the run, untimed alone.** Each task has a clock that caps it;
   time never scores. Played individually, every game stays untimed.
 - **Phase 1 ships four** (the four that already have the content). Find the
-  mole needs a solo mode; The Tunnel needs to merge first.
-- **Result: an exact score with its band word.** Proposed as a match rating,
-  "Sharp · 7.4" (still to confirm; Jonno picked 0 to 100, and 7.4 is the same
-  number shown the football way). One mark per task, then the player's best
-  moment of the run, named with its fact.
+  mole needs a solo mode; Pecking Order needs to merge first.
+- **Result: an exact score with no visible ceiling, beside its band word.**
+  Jonno wants a score that is not read against 1 to 10 or 1 to 100, so a bad
+  day does not look bad. Proposed: a transfer valuation, "Sharp · £37.0m"
+  (to confirm). One mark per task, then the player's best moment of the run,
+  named with its fact.
 - **"Top X%"** from day one, on our own scale's curve (a normal distribution),
   switching to today's real players at 100 plays. Shown to the top half only.
 - **Streak:** days with a finished run, with earned rest days.
-- **Content:** where a daily is a sequence (Spoofed, Steps, The Tunnel), the
+- **Content:** where a daily is a sequence (Spoofed, Steps, Pecking Order), the
   run plays its first part and the daily carries on. Where it is one puzzle
   (Season line) or there is no daily (Pitch pin, Odd Man Out), the run has its
   own.
@@ -42,7 +43,7 @@ of the new hub, "Today's assignment", a manila dossier on the cork board
 | 2 | Trace the link | Steps | recall a set | type and search |
 | 3 | Log the shot | Pitch pin | place | pin and throw |
 | 4 | Find the mole | Odd Man Out (solo) | spot the liar | tap |
-| 5 | Line them up | The Tunnel | order | drag or tap to swap |
+| 5 | Line them up | Pecking Order | order | drag or tap to swap |
 | 6 | Read the season | Season line | identify a shape | choose |
 
 **In:** every game with a daily or daily-able content. **Out:** Rondo
@@ -102,7 +103,7 @@ live task (no separate intro screen).
 | Trace the link | Steps 1 and 2 of today's Steps daily, one shot each, reveal capped at `RUN_REVEAL_MS` (2 s) | "Name a player who fits the gap." | 45 s a step | ~70 s | 90 s |
 | Log the shot | 3 goals from the run's own daily set, one throw each | "Pin where each goal was struck from." | 20 s a goal | ~45 s | 60 s |
 | Find the mole | One real XI with one name planted by the generator; up to 2 taps | "One name in this XI didn't start. Find it." | 40 s | ~35 s | 40 s |
-| Line them up | Categories 1 and 2 (age, height) of today's Tunnel daily | "Put them in order." | 30 s a category | ~55 s | 60 s |
+| Line them up | Categories 1 and 2 (age, height) of today's Pecking Order daily | "Put them in order." | 30 s a category | ~55 s | 60 s |
 | Read the season | The run's own board, reshaped (below) | "Name the club. Then the season." | 30 s a guess, 20 s for the season | ~60 s | 110 s |
 
 **Length:** typical ~5 m 15 s of tasks, plus ~30 s of moves and ~30 s of
@@ -137,7 +138,7 @@ guesses).
   plausible club or nation, never famous enough to be a tell) and Odd Man
   Out's leak rules (names only).
 - **Line them up:** age and height are complete in the data; the FIFA and
-  Instagram categories (the Tunnel branch's supply problem) are not needed.
+  Instagram categories (the draft branch's supply problem) are not needed.
 - Between tasks the finished sheet slides into the dossier and the next slides
   out (staged, ~800 ms). Each task's reveal ends with the one red button,
   "Next: Log the shot", so the player reads the truth at their own pace (the
@@ -162,7 +163,7 @@ decimal internally.
 | Line them up | Per category: *c* = max(0, pairs right − 5) × 20, pairs out of 10; *s* = mean | Partly: 11 values a category | ≈ 0 |
 | Read the season | Club guess 1/2/3: 80/55/30, plus season exact +20 or one off +10 | Partly: 13 values | ≈ 10 |
 
-Chance is subtracted where random play would score (The Tunnel's pairs).
+Chance is subtracted where random play would score (Pecking Order's pairs).
 Spoofed and the mole stay coarse; the continuous tasks give the margins.
 
 ### Run score
@@ -170,27 +171,47 @@ Spoofed and the mole stay coarse; the continuous tasks give the margins.
 *R* = mean of *s* over the tasks in today's run, to one decimal. Equal
 weights: calibration (below) makes each task worth the same to a decent fan.
 
-**How it shows (to confirm, section 9):** as a **match rating**, *R* ÷ 10 to
-one decimal: "Sharp · 7.4". It is the same number as 74 out of 100.
-Why a rating: every fan already reads it (a 6 is an ordinary game, a 7 a good
-one, a 9 outstanding), so a 6.8 does not feel like failing an exam, and there
-is no "/100" to read as "N of M". The other option is "Sharp · 74".
+**How it shows: a valuation (Jonno, 2026-11-13: an obscure score with no
+visible scale; the valuation itself is to confirm).** The player sees a
+transfer fee, never *R*:
 
-| Band | Rating | *R* |
+> valuation (£m) = `VALUE_BASE` × `VALUE_GROWTH` ^ *R*, with 1.0 and 1.05,
+> shown to one decimal: "£37.0m".
+
+| *R* | Valuation | Band |
 |---|---|---|
-| Basic | under 4.0 | 0 to 39.9 |
-| Decent | 4.0 to 5.4 | 40 to 54.9 |
-| Solid | 5.5 to 6.9 | 55 to 69.9 |
-| Sharp | 7.0 to 8.4 | 70 to 84.9 |
-| Elite | 8.5 and up | 85 to 100 |
+| 0 | £1.0m | Basic |
+| 22 (laziest run) | £2.9m | Basic |
+| 40 | £7.0m | Decent from here |
+| 55 | £14.6m | Solid from here |
+| 60 (the scale's middle) | £18.7m | Solid |
+| 70 | £30.4m | Sharp from here |
+| 74 | £37.0m | Sharp |
+| 85 | £63.0m | Elite from here |
+| 100 | £131.5m | Elite |
+
+Why a valuation:
+- **No ceiling to read against.** Fees have no famous maximum, so £14.6m
+  reads as a real player, not as 55 out of 100. Nothing is hidden: the score
+  is exact and the same play always gets the same fee; the page just never
+  prints a maximum.
+- **Fine margins where they matter.** The curve is steep at the top: one
+  point of *R* is £0.1m at the bottom and over £6m at the very top, so the
+  best players are spread far apart. Mates compare to £0.1m.
+- **Football's own unit, and the agent theme.** Every fan reads a fee; the
+  brag writes itself ("a £63m scout today"). It fits the scout and agent
+  direction Jonno raised.
+- Not Krillion's metres, and none of its words.
+
+The alternative, if a fee feels wrong: a points total with an odd ceiling
+(e.g. task maxima that sum to 2,387, never printed).
 
 The band words are the site's scale (Jonno, 2026-11-12), shown beside the
-number; new words may come later with a new name for the whole site (an
-agent or scout theme). The laziest run averages about 2.2 (Basic).
+fee; new words may come later with a new name for the whole site.
 
 **Calibration, before launch** (the Pitch pin method): a script plays every
 upcoming day as lazy, casual, decent and expert strategies, 200 runs each.
-Accept when the laziest median is under 4.0 and its maximum under 5.5, and a
+Accept when the laziest median *R* is under 40 and its maximum under 55, and a
 decent fan lands Solid on most days. Every number is a named constant
 (`TASK_MAP`, `BANDS`, `SCALE_MEAN`, `SCALE_SD`, `RUN_REVEAL_MS`, the clocks).
 
@@ -211,10 +232,11 @@ Two sources, one line, overall only (never per task), top half only.
 
 **Before real data** (fewer than `CURVE_MIN` = 100 reports today, and fewer
 than 100 over the last 7 days):
-- The curve is **our scale's normal distribution**, mean `SCALE_MEAN` 6.0
-  and spread `SCALE_SD` 1.5 (an ordinary match rating as the middle).
-- X = 100 × (1 − Φ((rating − 6.0) / 1.5)), rounded up to a whole number.
-  7.4 is top 18%; 8.5 is top 5%; 6.0 is top 50%.
+- The curve is **our scale's normal distribution** over *R*, mean
+  `SCALE_MEAN` 60 and spread `SCALE_SD` 15, drawn with the valuation under
+  the player's mark and no axis numbers.
+- X = 100 × (1 − Φ((*R* − 60) / 15)), rounded up to a whole number. £37.0m
+  (*R* 74) is top 18%; £63.0m (*R* 85) is top 5%; £18.7m (*R* 60) is top 50%.
 - **The words say it is the scale:** "Top 18% on our scale". Until real
   players exist, "of scores" or "of players" would be a claim that is not
   true (research Q2).
@@ -223,10 +245,10 @@ than 100 over the last 7 days):
 
 **With real data** (100+ reports today, or 100+ over the last 7 days, labelled
 "this week"):
-- The curve is a smoothed histogram of the real ratings, never a fitted bell.
-- X = 100 × (count at or above the rating) / *n*, rounded up: "Top 18% today".
+- The curve is a smoothed histogram of the real scores, never a fitted bell.
+- X = 100 × (count at or above *R*) / *n*, rounded up: "Top 18% today".
 - Anyone on today's top score sees "Joint best today".
-- Needs the result store (section 8, still to confirm).
+- Needs the result store (section 8: later, once the run has traffic).
 
 **For everyone below the top half** (X > 50): the curve with their mark on it
 and their own record ("Your best this month: Sharp · 7.9"), no percentage
@@ -244,8 +266,8 @@ The report runs in stages, one at a time, on one laptop screen at 1366×768.
 1. **The dossier closes** (~800 ms).
 2. **The marks** tick in down the task list, 100 ms apart.
 3. **The result** lands alone and large: eyebrow "Ball knowledge", the band
-   word and the rating ("Sharp · 7.4") in Big Shoulders, in the band's
-   material (the Steps case textures). The rating counts up as it lands.
+   word and the valuation ("Sharp · £37.0m") in Big Shoulders, in the band's
+   material (the Steps case textures). The fee counts up as it lands.
 4. **The find (the peak):** one card, the player's best moment today, in one
    line with its fact.
 5. **The rest:** the curve and "Top X%" line (top half), the streak, the
@@ -272,7 +294,7 @@ red; the hub's suggestion moves to the unfinished dailies).
 
 ```
 Today's assignment #55
-Ball knowledge: Sharp · 7.4
+Ball knowledge: Sharp · £37.0m
 ✅✅🔸✅❌✅
 Top 18% on our scale
 🔥 12
@@ -311,7 +333,7 @@ ballknowledge-games.vercel.app
 |---|---|---|
 | Spoofed | Careers 1 and 2 of today's daily | Written to `spoofed.progress.v1`; the daily resumes at career 3. Done only when all 5 are. |
 | Steps | Steps 1 and 2 of today's daily | Written to `step.progress.v2`; resumes at step 3. |
-| The Tunnel | Categories 1 and 2 of today's daily | Written to its progress; resumes at category 3. |
+| Pecking Order | Categories 1 and 2 of today's daily | Written to its progress; resumes at category 3. |
 | Season line | Its own board | None: today's daily stays unspoiled. |
 | Pitch pin | Its own 3 goals a day | None (no daily). |
 | Odd Man Out | Its own XI a day, solo | None (the pub game is separate). |
@@ -331,7 +353,7 @@ ballknowledge-games.vercel.app
 **Architecture.** Games never import each other and shared code never
 imports a game (`CLAUDE.md`), so:
 - `src/lib/run/` (shared): `RUN_TASKS` (names, rule lines, clocks), the task
-  result type, the run score, bands, the rating, the scale curve and "Top
+  result type, the run score, bands, the valuation, the scale curve and "Top
   X%", marks, the share line, the streak, `run.progress.v1`. Pure, tested.
 - `games/<name>/run/` (each game): a `RunTask` component and its mapping to a
   task score, importing only shared code.
@@ -347,14 +369,15 @@ imports a game (`CLAUDE.md`), so:
 | Pitch pin | A run schedule (3 goals a day: round packs and classics, never three from one match, the round packs' fairness test), its cron, `RunTask` on the existing throw | Medium |
 | Season line | A run schedule (mid-fame boards, never today's daily, a five-season window placed at random), its cron, `RunTask` (whole line, club guesses with hints, season pick in the window); reset `EPOCH` before launch | Medium |
 | Odd Man Out | **Solo mode:** a generator that plants a believable fake in a real XI, a schedule and cron, a `problems()` check, `RunTask` with up to 2 taps; a playtest | Large |
-| The Tunnel | Merge first; then `RunTask` over categories 1 and 2 | Medium, blocked |
-| **Result store** | To show real players' curve, each finished run's rating is sent to a small online database (today every score stays on the phone). `POST /api/run/report` (date, rating, marks, a random id kept on the phone; first finished run per phone per day; never archive runs); `GET /api/run/curve` (binned, *n*). Free tier from the Vercel Marketplace: costs nothing at our size, but it is a new outside service. **Waits on Jonno's yes.** No personal data. | Medium |
+| Pecking Order | Merge first; then `RunTask` over categories 1 and 2 | Medium, blocked |
+| **Result store** | To show real players' curve, each finished run's score is sent to a small online database (today every score stays on the phone). `POST /api/run/report` (date, *R*, marks, a random id kept on the phone; first finished run per phone per day; never archive runs); `GET /api/run/curve` (binned, *n*). Free tier from the Vercel Marketplace: costs nothing at our size, but it is a new outside service. **Jonno, 2026-11-13: later, once the run has traffic.** Until then "Top X%" stays on our scale. No personal data. | Medium |
 
 **Phases**
 1. **Run v1:** shell, scoring (with the scale curve for "Top X%"), Spoofed,
    Steps, Pitch pin, Season line. No server.
-2. **Six tasks:** Odd Man Out solo, The Tunnel once merged.
-3. **Real curve:** the result store, "Top X% today", per-task facts.
+2. **Six tasks:** Odd Man Out solo, Pecking Order once merged.
+3. **Real curve,** once the run has traffic: the result store, "Top X%
+   today", per-task facts.
 
 Gate per phase as for a new game: data check, playable draft (time a real
 run, try the clocks), review of generated days; HANDOFF, commit, check in.
@@ -367,7 +390,7 @@ run, try the clocks), review of generated days; HANDOFF, commit, check in.
 
 | # | Question | Decision |
 |---|---|---|
-| 1 | Score display | An exact number with the band word. Picked 0 to 100; the match rating (same number ÷ 10) is proposed below, to confirm. |
+| 1 | Score display | An exact score with the band word, on no visible scale (2026-11-13: not 1 to 10 or 1 to 100, so a bad score does not look bad). A transfer valuation is proposed, to confirm. |
 | 2 | Fine margins | Continuous task scores where the data allows. Plus Jonno's addition: time limits in the run only, none when a game is played on its own. Spec: clocks cap, never score. |
 | 3 | Band words | The site scale: Basic, Decent, Solid, Sharp, Elite. New words maybe later, with a new name for the whole site. |
 | 4 | Curve before real data | "Top X%" from our scale's normal distribution from day one, worded "on our scale". |
@@ -378,19 +401,19 @@ run, try the clocks), review of generated days; HANDOFF, commit, check in.
 | 9 | Find the mole | Build the solo planted-XI mode in phase 2. |
 | 10 | Read the season | The whole line, hints (squad player, top scorer), the club guessed, the season picked inside a five-season window (section 2). |
 | 12 | Task names | Keep the working names, held in one config constant, baked into no art. |
-| 13 | Board label | The Tunnel (for now; see below). |
+| 13 | Name | **Pecking Order** (2026-11-13), for the game the docs called The Tunnel and its branch calls Sorted. |
+| 14 | Result store | Later, once the run has traffic (2026-11-13). |
+| 15 | Clocks | Cap only: time never scores (2026-11-13). |
 
 **Still open**
 
-1. **Rating or 0 to 100?** Recommended: the match rating, "Sharp · 7.4". The
-   alternative is "Sharp · 74".
-2. **The result store** (explained in section 8): yes when phase 3 starts,
-   later, or never.
-3. **Clocks:** confirm they cap and never score (recommended), or score speed
-   as well.
-4. **The Tunnel's name.** Jonno: it does not quite fit beside Spoofed, Chain,
-   Odd Man Out, Pitch Pin, Season Line. Candidates: **Pecking Order** (the
-   football phrase for a squad's ranking: fits the ordering verb and a fan's
-   vocabulary), The Tunnel (keep), Line-Up (clashes with Odd Man Out's XI). Its
-   draft branch calls it Sorted; whichever wins, the label, route and storage
-   key change together, after Jonno says.
+1. **The valuation** (section 3): confirm a transfer fee ("Sharp · £37.0m"),
+   or use a points total with an odd, never-printed ceiling.
+
+**Follow-ups outside this branch**
+- **Rename to Pecking Order** on the game's own branch
+  (`claude/brave-heisenberg-ba64b8`, currently "Sorted": label, route, storage
+  key and view-transition name change together) and on the hub board's label
+  in `design-drafts/brand-concepts/bible.html`. Not done here: this branch
+  writes only its two docs.
+- **Share glyphs:** Spoofed's and Chain's 🟩🟨🟥 differ by hue alone.
