@@ -1,0 +1,657 @@
+{
+ "span": [
+  2019,
+  2026
+ ],
+ "prime": 2021.5,
+ "cat": "Jude Bellingham",
+ "files": 60,
+ "cands": [
+  {
+   "file": "File:Jude Bellingham England v Ghana 23 June 2026-061 (cropped).jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q66241169/0.jpg",
+   "gate": null,
+   "face": 468,
+   "share": 0.33,
+   "sharp": 557,
+   "room": 2.7,
+   "box": [
+    290,
+    199,
+    346,
+    468
+   ],
+   "yaw": -0.29,
+   "roll": -3.5,
+   "cx": 0.48,
+   "why": "face 468px, 33% of height, sharpness 557",
+   "score": 12.837
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190551-2 (cropped).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/12.jpg",
+   "gate": null,
+   "face": 482,
+   "share": 0.34,
+   "sharp": 88,
+   "room": 2.5,
+   "box": [
+    259,
+    230,
+    355,
+    482
+   ],
+   "yaw": -0.06,
+   "roll": -2.4,
+   "cx": 0.45,
+   "why": "face 482px, 34% of height, sharpness 88",
+   "score": 5.52
+  },
+  {
+   "file": "File:Jude Bellingham WC2022.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q66241169/10.jpg",
+   "gate": null,
+   "face": 59,
+   "share": 0.29,
+   "sharp": 1786,
+   "room": 3.0,
+   "box": [
+    48,
+    30,
+    47,
+    59
+   ],
+   "yaw": -0.27,
+   "roll": -0.3,
+   "cx": 0.48,
+   "why": "face 59px, 29% of height, sharpness 1786",
+   "score": 4.443
+  },
+  {
+   "file": "File:Jude Bellingham Laureus 2024 (cropped2).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/29.jpg",
+   "gate": null,
+   "face": 322,
+   "share": 0.22,
+   "sharp": 509,
+   "room": 4.1,
+   "box": [
+    382,
+    135,
+    225,
+    322
+   ],
+   "yaw": 0.11,
+   "roll": -2.5,
+   "cx": 0.52,
+   "why": "face 322px, 22% of height, sharpness 509",
+   "score": 4.223
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190558.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/17.jpg",
+   "gate": null,
+   "face": 217,
+   "share": 0.34,
+   "sharp": 855,
+   "room": 2.6,
+   "box": [
+    341,
+    83,
+    161,
+    217
+   ],
+   "yaw": 0.31,
+   "roll": -8.3,
+   "cx": 0.44,
+   "why": "face 217px, 34% of height, sharpness 855",
+   "score": 4.198
+  },
+  {
+   "file": "File:2025 04 26 Final de la Copa del Rey - 54482387776 (Jude Bellingham).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q66241169/30.jpg",
+   "gate": null,
+   "face": 104,
+   "share": 0.33,
+   "sharp": 674,
+   "room": 2.7,
+   "box": [
+    96,
+    36,
+    77,
+    104
+   ],
+   "yaw": 0.43,
+   "roll": 0.0,
+   "cx": 0.55,
+   "why": "face 104px, 33% of height, sharpness 674",
+   "score": 3.682
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190558 (cropped).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/16.jpg",
+   "gate": null,
+   "face": 380,
+   "share": 0.34,
+   "sharp": 579,
+   "room": 2.6,
+   "box": [
+    462,
+    145,
+    276,
+    380
+   ],
+   "yaw": 0.28,
+   "roll": -6.0,
+   "cx": 0.62,
+   "why": "face 380px, 34% of height, sharpness 579",
+   "score": 3.578
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190551-2.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/14.jpg",
+   "gate": null,
+   "face": 149,
+   "share": 0.1,
+   "sharp": 1300,
+   "room": 9.1,
+   "box": [
+    388,
+    79,
+    106,
+    149
+   ],
+   "yaw": -0.13,
+   "roll": -1.6,
+   "cx": 0.46,
+   "why": "face 149px, 10% of height, sharpness 1300",
+   "score": 2.593
+  },
+  {
+   "file": "File:2022 FIFA World Cup - Bellingham (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q66241169/5.jpg",
+   "gate": null,
+   "face": 66,
+   "share": 0.22,
+   "sharp": 2774,
+   "room": 4.2,
+   "box": [
+    66,
+    31,
+    49,
+    66
+   ],
+   "yaw": -0.36,
+   "roll": 0.0,
+   "cx": 0.41,
+   "why": "face 66px, 22% of height, sharpness 2774",
+   "score": 2.519
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190535.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/11.jpg",
+   "gate": null,
+   "face": 147,
+   "share": 0.1,
+   "sharp": 1009,
+   "room": 9.3,
+   "box": [
+    460,
+    74,
+    101,
+    147
+   ],
+   "yaw": -0.3,
+   "roll": -1.3,
+   "cx": 0.53,
+   "why": "face 147px, 10% of height, sharpness 1009",
+   "score": 2.261
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190614-2.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/18.jpg",
+   "gate": null,
+   "face": 291,
+   "share": 0.2,
+   "sharp": 697,
+   "room": 4.7,
+   "box": [
+    406,
+    81,
+    186,
+    291
+   ],
+   "yaw": 0.82,
+   "roll": -1.8,
+   "cx": 0.52,
+   "why": "face 291px, 20% of height, sharpness 697",
+   "score": 2.171
+  },
+  {
+   "file": "File:Jude Bellingham 2020 (cropped2).jpg",
+   "p18": false,
+   "year": 2020,
+   "local": "cand/Q66241169/4.jpg",
+   "gate": null,
+   "face": 113,
+   "share": 0.25,
+   "sharp": 446,
+   "room": 3.3,
+   "box": [
+    97,
+    82,
+    78,
+    113
+   ],
+   "yaw": -0.65,
+   "roll": -0.3,
+   "cx": 0.41,
+   "why": "face 113px, 25% of height, sharpness 446",
+   "score": 2.147
+  },
+  {
+   "file": "File:Jude Bellingham during EA Sports on Sep 26 2024.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/27.jpg",
+   "gate": null,
+   "face": 185,
+   "share": 0.1,
+   "sharp": 321,
+   "room": 8.9,
+   "box": [
+    368,
+    182,
+    131,
+    185
+   ],
+   "yaw": 0.14,
+   "roll": -1.9,
+   "cx": 0.45,
+   "why": "face 185px, 10% of height, sharpness 321",
+   "score": 2.132
+  },
+  {
+   "file": "File:Jude Bellingham during an EA Sports event in September 2024 2.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/25.jpg",
+   "gate": null,
+   "face": 170,
+   "share": 0.1,
+   "sharp": 780,
+   "room": 8.9,
+   "box": [
+    410,
+    152,
+    125,
+    170
+   ],
+   "yaw": -0.37,
+   "roll": -3.0,
+   "cx": 0.49,
+   "why": "face 170px, 10% of height, sharpness 780",
+   "score": 2.128
+  },
+  {
+   "file": "File:Jude Bellingham during an EA Sports event in September 2024.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/26.jpg",
+   "gate": null,
+   "face": 173,
+   "share": 0.1,
+   "sharp": 651,
+   "room": 8.8,
+   "box": [
+    409,
+    137,
+    124,
+    173
+   ],
+   "yaw": -0.26,
+   "roll": -6.7,
+   "cx": 0.49,
+   "why": "face 173px, 10% of height, sharpness 651",
+   "score": 1.99
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190619.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/19.jpg",
+   "gate": null,
+   "face": 281,
+   "share": 0.2,
+   "sharp": 897,
+   "room": 4.6,
+   "box": [
+    333,
+    146,
+    184,
+    281
+   ],
+   "yaw": 0.69,
+   "roll": -5.2,
+   "cx": 0.44,
+   "why": "face 281px, 20% of height, sharpness 897",
+   "score": 1.862
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190626-2.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/20.jpg",
+   "gate": null,
+   "face": 211,
+   "share": 0.33,
+   "sharp": 1005,
+   "room": 2.6,
+   "box": [
+    365,
+    86,
+    136,
+    211
+   ],
+   "yaw": 1.16,
+   "roll": -13.1,
+   "cx": 0.45,
+   "why": "face 211px, 33% of height, sharpness 1005",
+   "score": 1.634
+  },
+  {
+   "file": "File:Jude Bellingham 10 England v Ghana at 2026 Fifa World Cup by YantsImages 01.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/37.jpg",
+   "gate": null,
+   "face": 75,
+   "share": 0.12,
+   "sharp": 5258,
+   "room": 7.5,
+   "box": [
+    352,
+    79,
+    58,
+    75
+   ],
+   "yaw": 0.03,
+   "roll": -1.6,
+   "cx": 0.4,
+   "why": "face 75px, 12% of height, sharpness 5258",
+   "score": 1.566
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190555-2.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/15.jpg",
+   "gate": null,
+   "face": 156,
+   "share": 0.11,
+   "sharp": 882,
+   "room": 8.8,
+   "box": [
+    365,
+    65,
+    103,
+    156
+   ],
+   "yaw": -0.49,
+   "roll": -5.6,
+   "cx": 0.43,
+   "why": "face 156px, 11% of height, sharpness 882",
+   "score": 1.431
+  },
+  {
+   "file": "File:Ezri Konsa Jude Bellingham England v Panama 27 June 26-159.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/33.jpg",
+   "gate": null,
+   "face": 106,
+   "share": 0.17,
+   "sharp": 3818,
+   "room": 5.2,
+   "box": [
+    598,
+    86,
+    80,
+    106
+   ],
+   "yaw": 0.37,
+   "roll": -0.8,
+   "cx": 0.66,
+   "why": "face 106px, 17% of height, sharpness 3818",
+   "score": 1.35
+  },
+  {
+   "file": "File:Jude Bellingham EA Sports 2024.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/28.jpg",
+   "gate": null,
+   "face": 232,
+   "share": 0.12,
+   "sharp": 535,
+   "room": 7.7,
+   "box": [
+    361,
+    120,
+    149,
+    232
+   ],
+   "yaw": -0.89,
+   "roll": 19.2,
+   "cx": 0.45,
+   "why": "face 232px, 12% of height, sharpness 535",
+   "score": 0.623
+  },
+  {
+   "file": "File:Jude Bellingham Birmingham 2019.jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q66241169/1.jpg",
+   "gate": "face sharpness 65, soft",
+   "face": 254,
+   "share": 0.23,
+   "sharp": 65,
+   "room": 3.7,
+   "box": [
+    433,
+    160,
+    185,
+    254
+   ],
+   "yaw": 0.32,
+   "roll": 1.0,
+   "cx": 0.65,
+   "why": "face sharpness 65, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Danil Krugovoy and Jude Bellingham 2020 (cropped).jpg",
+   "p18": false,
+   "year": 2020,
+   "local": "cand/Q66241169/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Danil Krugovoy and Jude Bellingham 2020.jpg",
+   "p18": false,
+   "year": 2020,
+   "local": "cand/Q66241169/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2022 FIFA World Cup England 0-0 USA - Bellingham falls.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q66241169/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2022 FIFA World Cup England 0-0 USA - Pulisic and Bellingham.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q66241169/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Bellingham WC2022.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q66241169/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jude Bellingham 2022-11-21 1.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q66241169/9.jpg",
+   "gate": "face 37px, too small",
+   "why": "face 37px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190551-2 (cropped2).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/13.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham - 240422 190626.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham, Usain Bolt - 240422 190740.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:25th Laureus World Sports Awards - Red Carpet - Jude Bellingham, Usain Bolt - 240422 190743.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jude Bellingham and Endrick in 2024.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q66241169/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2025 04 26 Final de la Copa del Rey - 54482387776 (Vin\u00edcius J\u00fanior, Jude Bellingham e Rodrygo Go\u00e9s) (cropped).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q66241169/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Caleb Yirenkyi Jude Bellingham England v Ghana 23 June 2026-264.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Inaki Williams 19, Jude Bellingham 10 England v Ghana at 2026 Fifa World Cup by YantsImages 01.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jose Luis Rodriguez Jude Bellingham England v Panama 27 June 26-103.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jose Luis Rodriguez Jude Bellingham England v Panama 27 June 26-113.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jude Bellingham Cristian Martinez England v Panama 27 June 26-088.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jude Bellingham England v Ghana 23 June 2026-015.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q66241169/39.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

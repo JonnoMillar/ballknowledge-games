@@ -1,0 +1,540 @@
+{
+ "span": [
+  2009,
+  2026
+ ],
+ "prime": 2016.0,
+ "cat": "Harry Kane",
+ "files": 70,
+ "cands": [
+  {
+   "file": "File:Harry Kane England v Ghana 23 June 2026-219 (cropped).jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q969725/0.jpg",
+   "gate": null,
+   "face": 404,
+   "share": 0.28,
+   "sharp": 2178,
+   "room": 3.1,
+   "box": [
+    338,
+    176,
+    291,
+    404
+   ],
+   "yaw": 0.14,
+   "roll": -4.5,
+   "cx": 0.5,
+   "why": "face 404px, 28% of height, sharpness 2178",
+   "score": 8.945
+  },
+  {
+   "file": "File:Harry Kane 2018-06-28 1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/20.jpg",
+   "gate": null,
+   "face": 168,
+   "share": 0.3,
+   "sharp": 1523,
+   "room": 2.8,
+   "box": [
+    126,
+    85,
+    116,
+    168
+   ],
+   "yaw": -0.23,
+   "roll": -2.0,
+   "cx": 0.47,
+   "why": "face 168px, 30% of height, sharpness 1523",
+   "score": 6.09
+  },
+  {
+   "file": "File:Harry Kane in Russia1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/25.jpg",
+   "gate": null,
+   "face": 239,
+   "share": 0.37,
+   "sharp": 1083,
+   "room": 2.3,
+   "box": [
+    427,
+    99,
+    153,
+    239
+   ],
+   "yaw": -0.43,
+   "roll": 4.8,
+   "cx": 0.52,
+   "why": "face 239px, 37% of height, sharpness 1083",
+   "score": 5.668
+  },
+  {
+   "file": "File:Harry Kane 2015.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q969725/10.jpg",
+   "gate": null,
+   "face": 363,
+   "share": 0.37,
+   "sharp": 499,
+   "room": 2.4,
+   "box": [
+    427,
+    115,
+    256,
+    363
+   ],
+   "yaw": 0.21,
+   "roll": 4.2,
+   "cx": 0.58,
+   "why": "face 363px, 37% of height, sharpness 499",
+   "score": 5.6
+  },
+  {
+   "file": "File:Harry Kane - CRO vs ENG - 2018.07.13 (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/19.jpg",
+   "gate": null,
+   "face": 104,
+   "share": 0.28,
+   "sharp": 4574,
+   "room": 2.8,
+   "box": [
+    152,
+    81,
+    82,
+    104
+   ],
+   "yaw": 0.13,
+   "roll": 0.9,
+   "cx": 0.66,
+   "why": "face 104px, 28% of height, sharpness 4574",
+   "score": 3.304
+  },
+  {
+   "file": "File:Conor Coady and Harry Kane (cropped).jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q969725/5.jpg",
+   "gate": null,
+   "face": 273,
+   "share": 0.16,
+   "sharp": 86,
+   "room": 5.8,
+   "box": [
+    414,
+    115,
+    192,
+    273
+   ],
+   "yaw": 0.05,
+   "roll": 3.0,
+   "cx": 0.53,
+   "why": "face 273px, 16% of height, sharpness 86",
+   "score": 2.398
+  },
+  {
+   "file": "File:The Prime Minister speaks to Harry Kane (52770172346).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/37.jpg",
+   "gate": null,
+   "face": 132,
+   "share": 0.21,
+   "sharp": 2934,
+   "room": 3.8,
+   "box": [
+    447,
+    144,
+    85,
+    132
+   ],
+   "yaw": 0.45,
+   "roll": -2.0,
+   "cx": 0.51,
+   "why": "face 132px, 21% of height, sharpness 2934",
+   "score": 2.353
+  },
+  {
+   "file": "File:Harry Kane.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q969725/7.jpg",
+   "gate": null,
+   "face": 257,
+   "share": 0.17,
+   "sharp": 80,
+   "room": 5.4,
+   "box": [
+    427,
+    113,
+    188,
+    257
+   ],
+   "yaw": 0.02,
+   "roll": 6.4,
+   "cx": 0.54,
+   "why": "face 257px, 17% of height, sharpness 80",
+   "score": 2.141
+  },
+  {
+   "file": "File:Harry Kane (24685589756).jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q969725/14.jpg",
+   "gate": null,
+   "face": 133,
+   "share": 0.18,
+   "sharp": 322,
+   "room": 4.4,
+   "box": [
+    494,
+    140,
+    83,
+    133
+   ],
+   "yaw": 0.52,
+   "roll": -4.8,
+   "cx": 0.56,
+   "why": "face 133px, 18% of height, sharpness 322",
+   "score": 2.054
+  },
+  {
+   "file": "File:Harry Kane 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/22.jpg",
+   "gate": null,
+   "face": 106,
+   "share": 0.12,
+   "sharp": 4936,
+   "room": 7.9,
+   "box": [
+    274,
+    77,
+    80,
+    106
+   ],
+   "yaw": 0.13,
+   "roll": 1.7,
+   "cx": 0.62,
+   "why": "face 106px, 12% of height, sharpness 4936",
+   "score": 1.912
+  },
+  {
+   "file": "File:Harry Kane (24685589756) (cropped).jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q969725/13.jpg",
+   "gate": null,
+   "face": 319,
+   "share": 0.32,
+   "sharp": 121,
+   "room": 2.7,
+   "box": [
+    532,
+    137,
+    187,
+    319
+   ],
+   "yaw": 0.85,
+   "roll": -8.1,
+   "cx": 0.65,
+   "why": "face 319px, 32% of height, sharpness 121",
+   "score": 1.688
+  },
+  {
+   "file": "File:The Prime Minister speaks to Harry Kane (52769635277).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/36.jpg",
+   "gate": null,
+   "face": 131,
+   "share": 0.2,
+   "sharp": 1507,
+   "room": 3.8,
+   "box": [
+    421,
+    147,
+    76,
+    131
+   ],
+   "yaw": 0.94,
+   "roll": 4.3,
+   "cx": 0.48,
+   "why": "face 131px, 20% of height, sharpness 1507",
+   "score": 1.183
+  },
+  {
+   "file": "File:The Prime Minister speaks to Harry Kane (52770172531).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/38.jpg",
+   "gate": null,
+   "face": 279,
+   "share": 0.44,
+   "sharp": 1406,
+   "room": 2.3,
+   "box": [
+    228,
+    2,
+    186,
+    279
+   ],
+   "yaw": 0.61,
+   "roll": 39.5,
+   "cx": 0.33,
+   "why": "face 279px, 44% of height, sharpness 1406",
+   "score": 0.447
+  },
+  {
+   "file": "File:Harry Kane mural.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q969725/1.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kaneary Wharf - platform 01.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q969725/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Kaneary Wharf - platform 02.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q969725/3.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Kaneary Wharf - platform 03.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q969725/4.jpg",
+   "gate": "face 27px, too small",
+   "why": "face 27px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Conor Coady and Harry Kane.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q969725/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:England striker Harry Kane (22695723477).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q969725/8.jpg",
+   "gate": "face 27px, too small",
+   "why": "face 27px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:England striker Harry Kane and France midfielder Morgan Schneiderlin (22721788819).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q969725/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane in the Spurs 5 - Chelsea 3 match.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q969725/11.jpg",
+   "gate": "face 43px, too small",
+   "why": "face 43px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Laurent Koscielny of France marking England striker Harry Kane (22695724617).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q969725/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane battles it out with ze Germans.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q969725/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ederson and Harry Kane (36593752966).jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q969725/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane (35805453874).jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q969725/17.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane scores! North London is ours... -coys.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q969725/18.jpg",
+   "gate": "face 11px, too small",
+   "why": "face 11px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane 2018-07-03 1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/21.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane in Russia 2.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/23.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane in Russia.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q969725/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Rahman Osman after interviewing Harry Kane.jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q969725/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane England cap at the London Museum.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q969725/27.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:2022 FIFA World Cup England 0-0 USA - Kane and Ream.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q969725/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2022 FIFA World Cup England 0-0 USA - McKennie vs Kane.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q969725/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane 2022 World Cup (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q969725/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:\u062f\u06cc\u062f\u0627\u0631 \u062a\u06cc\u0645\u200c\u0647\u0627\u06cc \u0641\u0648\u062a\u0628\u0627\u0644 \u0627\u06cc\u0631\u0627\u0646 \u0648 \u0627\u0646\u06af\u0644\u06cc\u0633- \u062c\u0627\u0645 \u062c\u0647\u0627\u0646\u06cc \u06f2\u06f0\u06f2\u06f2 (8) (Harry Kane).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q969725/31.jpg",
+   "gate": "face 46px, too small",
+   "why": "face 46px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane 2023 (cropped).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/32.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane 2023.jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/33.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Harry Kane on October 10, 2023.jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/34.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:The Prime Minister at St George's Park with Gareth Southgate on October 10, 2023 (Harry Kane).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/35.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:The Prime Minister speaks to Harry Kane (52770586210).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q969725/39.jpg",
+   "gate": "photo ends at the chin (2.2 face heights below)",
+   "why": "photo ends at the chin (2.2 face heights below)",
+   "score": 0
+  }
+ ]
+}

@@ -11,7 +11,10 @@
    51,
    109,
    150
-  ]
+  ],
+  "yaw": 0.06,
+  "roll": -2.8,
+  "cx": 0.46
  },
  {
   "file": "File:Robin Van Persie August 2007.jpg",
@@ -25,7 +28,10 @@
    75,
    95,
    152
-  ]
+  ],
+  "yaw": -0.4,
+  "roll": -5.1,
+  "cx": 0.44
  },
  {
   "file": "File:Robin Van Persie.jpg",
@@ -39,7 +45,10 @@
    90,
    135,
    177
-  ]
+  ],
+  "yaw": 0.06,
+  "roll": -0.4,
+  "cx": 0.54
  },
  {
   "file": "File:Van Persie Oranje.jpg",
@@ -53,7 +62,10 @@
    35,
    99,
    119
-  ]
+  ],
+  "yaw": -0.0,
+  "roll": -0.0,
+  "cx": 0.52
  },
  {
   "file": "File:Robin Van Persie 2009.jpg",
@@ -67,7 +79,10 @@
    73,
    81,
    111
-  ]
+  ],
+  "yaw": 0.04,
+  "roll": 0.4,
+  "cx": 0.52
  },
  {
   "file": "File:Robin van Persie.jpg",
@@ -81,7 +96,10 @@
    133,
    83,
    115
-  ]
+  ],
+  "yaw": -0.3,
+  "roll": 4.4,
+  "cx": 0.51
  },
  {
   "file": "File:Robin Van Persie 2 (6141719397).jpg",
@@ -95,7 +113,10 @@
    116,
    42,
    58
-  ]
+  ],
+  "yaw": 0.62,
+  "roll": 0.8,
+  "cx": 0.41
  },
  {
   "file": "File:Robin Van Persie & Leon Britton (6141652957).jpg",
@@ -109,7 +130,10 @@
    66,
    39,
    54
-  ]
+  ],
+  "yaw": 0.03,
+  "roll": 0.5,
+  "cx": 0.47
  },
  {
   "file": "File:Robin Van Persie 3 (6141753031).jpg",
@@ -123,7 +147,10 @@
    80,
    41,
    54
-  ]
+  ],
+  "yaw": 1.17,
+  "roll": 8.4,
+  "cx": 0.34
  },
  {
   "file": "File:File-Van persie henry crop.jpg",

@@ -1,0 +1,514 @@
+{
+ "span": [
+  1991,
+  2014
+ ],
+ "prime": 2002.5,
+ "cat": "Alessandro Del Piero",
+ "files": 49,
+ "cands": [
+  {
+   "file": "File:Del Piero.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q624/20.jpg",
+   "gate": null,
+   "face": 121,
+   "share": 0.19,
+   "sharp": 1039,
+   "room": 5.0,
+   "box": [
+    410,
+    39,
+    87,
+    121
+   ],
+   "yaw": 0.07,
+   "roll": -0.8,
+   "cx": 0.47,
+   "why": "face 121px, 19% of height, sharpness 1039",
+   "score": 2.837
+  },
+  {
+   "file": "File:Alex Del Piero (2006).jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q624/10.jpg",
+   "gate": null,
+   "face": 323,
+   "share": 0.25,
+   "sharp": 116,
+   "room": 3.8,
+   "box": [
+    247,
+    98,
+    231,
+    323
+   ],
+   "yaw": -0.02,
+   "roll": -4.3,
+   "cx": 0.38,
+   "why": "face 323px, 25% of height, sharpness 116",
+   "score": 2.578
+  },
+  {
+   "file": "File:Alessandro Del Piero (11149462915).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/35.jpg",
+   "gate": null,
+   "face": 496,
+   "share": 0.33,
+   "sharp": 125,
+   "room": 2.5,
+   "box": [
+    290,
+    254,
+    353,
+    496
+   ],
+   "yaw": 0.2,
+   "roll": 5.6,
+   "cx": 0.49,
+   "why": "face 496px, 33% of height, sharpness 125",
+   "score": 2.56
+  },
+  {
+   "file": "File:Del Piero Italia Mondiali 1998.jpg",
+   "p18": false,
+   "year": 1998,
+   "local": "cand/Q624/3.jpg",
+   "gate": null,
+   "face": 76,
+   "share": 0.15,
+   "sharp": 4372,
+   "room": 5.3,
+   "box": [
+    244,
+    94,
+    57,
+    76
+   ],
+   "yaw": -0.14,
+   "roll": 1.3,
+   "cx": 0.5,
+   "why": "face 76px, 15% of height, sharpness 4372",
+   "score": 2.448
+  },
+  {
+   "file": "File:Alessandro Del Piero 2008 cropped.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q624/19.jpg",
+   "gate": null,
+   "face": 240,
+   "share": 0.19,
+   "sharp": 838,
+   "room": 5.0,
+   "box": [
+    496,
+    77,
+    176,
+    240
+   ],
+   "yaw": -0.01,
+   "roll": 2.3,
+   "cx": 0.61,
+   "why": "face 240px, 19% of height, sharpness 838",
+   "score": 2.339
+  },
+  {
+   "file": "File:Alessandro Del Piero Juventus.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q624/15.jpg",
+   "gate": null,
+   "face": 145,
+   "share": 0.21,
+   "sharp": 390,
+   "room": 3.4,
+   "box": [
+    289,
+    184,
+    115,
+    145
+   ],
+   "yaw": 0.34,
+   "roll": 9.5,
+   "cx": 0.68,
+   "why": "face 145px, 21% of height, sharpness 390",
+   "score": 1.052
+  },
+  {
+   "file": "File:Juventus v Chievo, 5 April 2009 - Alessandro Del Piero (2).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q624/22.jpg",
+   "gate": null,
+   "face": 79,
+   "share": 0.1,
+   "sharp": 1080,
+   "room": 9.1,
+   "box": [
+    186,
+    82,
+    63,
+    79
+   ],
+   "yaw": -0.28,
+   "roll": -1.9,
+   "cx": 0.41,
+   "why": "face 79px, 10% of height, sharpness 1080",
+   "score": 0.887
+  },
+  {
+   "file": "File:Alessandro Del Piero Rimini-Juventus 2006 cropped.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/9.jpg",
+   "gate": null,
+   "face": 59,
+   "share": 0.11,
+   "sharp": 803,
+   "room": 8.7,
+   "box": [
+    205,
+    35,
+    44,
+    59
+   ],
+   "yaw": 0.08,
+   "roll": 0.1,
+   "cx": 0.57,
+   "why": "face 59px, 11% of height, sharpness 803",
+   "score": 0.807
+  },
+  {
+   "file": "File:Juventus v Chievo, 5 April 2009 - Alessandro Del Piero (1).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q624/21.jpg",
+   "gate": null,
+   "face": 81,
+   "share": 0.1,
+   "sharp": 1222,
+   "room": 8.7,
+   "box": [
+    198,
+    97,
+    50,
+    81
+   ],
+   "yaw": -1.54,
+   "roll": 11.0,
+   "cx": 0.42,
+   "why": "face 81px, 10% of height, sharpness 1222",
+   "score": 0.211
+  },
+  {
+   "file": "File:Guadalajara Chivas vs Juventus FC, 2011, Alex Del Piero.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q624/27.jpg",
+   "gate": null,
+   "face": 54,
+   "share": 0.08,
+   "sharp": 2040,
+   "room": 8.2,
+   "box": [
+    885,
+    193,
+    36,
+    54
+   ],
+   "yaw": -1.07,
+   "roll": 6.7,
+   "cx": 0.94,
+   "why": "face 54px, 8% of height, sharpness 2040",
+   "score": 0.064
+  },
+  {
+   "file": "File:Alessandro Del Piero, New York NY 2015.jpg",
+   "p18": true,
+   "year": 2015,
+   "local": "cand/Q624/0.jpg",
+   "gate": "photo ends at the chin (1.8 face heights below)",
+   "why": "photo ends at the chin (1.8 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Serie A 1999-09-25 Lecce x Juventus - Savino x Del Piero.jpg",
+   "p18": false,
+   "year": 1999,
+   "local": "cand/Q624/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero2.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q624/2.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Juventus - 2010 - Giorgio Chiellini, Alex Manninger and Alex Del Piero.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q624/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Juventus FC - Champions League 1995-96 - Alessandro Del Piero e Paulo Sousa.jpg",
+   "p18": false,
+   "year": 1996,
+   "local": "cand/Q624/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Juventus Museum - Shirts of Gaetano Scirea and Alex Del Piero.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/6.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Maglia di alex del piero indossata nel 2000, 01.JPG",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q624/7.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Maglia di alex del piero indossata nel 2000, 02.JPG",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q624/8.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q624/11.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Giovanna Melandri abbraccia Del Piero dopo vittoria mondiale 2006.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q624/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Urby2004 e Alex Del Piero.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q624/13.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alessandro Del Piero 2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q624/14.jpg",
+   "gate": "photo ends at the chin (1.6 face heights below)",
+   "why": "photo ends at the chin (1.6 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Del Piero - Juventus.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q624/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:DelPiero500.PNG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q624/17.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Del Piero 250.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q624/18.jpg",
+   "gate": "face 12px, too small",
+   "why": "face 12px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Juventus v Chievo, 5 April 2009 - Alessandro Del Piero (3).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q624/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Del Piero2009.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/24.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:DelPieroPenaltyChelsea.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q624/25.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Guadalajara Chivas vs Juventus FC, 2011, Alex Del Piero (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q624/26.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Alessandro Del Piero - 04-2012 cropped.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/28.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Alessandro Del Piero aprile 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/29.jpg",
+   "gate": "face sharpness 25, soft",
+   "face": 181,
+   "share": 0.25,
+   "sharp": 25,
+   "room": 3.5,
+   "box": [
+    141,
+    81,
+    126,
+    181
+   ],
+   "yaw": 0.06,
+   "roll": -0.8,
+   "cx": 0.38,
+   "why": "face sharpness 25, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Alessandro Del Piero in Toronto.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero Dubai 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/31.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Del Piero, Sydney FC-Newcastle Jets cropped.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Del Piero, Sydney FC-Newcastle Jets.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Striscione per Del Piero.JPG",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q624/34.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero Sydney FC (cropped).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero Sydney FC 2 cropped.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/37.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero Sydney FC 2.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alex Del Piero Sydney FC 3 (cropped).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q624/39.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

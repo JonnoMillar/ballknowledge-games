@@ -1,0 +1,578 @@
+{
+ "span": [
+  2023,
+  2026
+ ],
+ "prime": 2024.5,
+ "cat": "Lamine Yamal",
+ "files": 37,
+ "cands": [
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-214 (new cropped).jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q113704154/0.jpg",
+   "gate": null,
+   "face": 439,
+   "share": 0.34,
+   "sharp": 1541,
+   "room": 2.4,
+   "box": [
+    283,
+    251,
+    339,
+    439
+   ],
+   "yaw": 0.06,
+   "roll": -7.3,
+   "cx": 0.47,
+   "why": "face 439px, 34% of height, sharpness 1541",
+   "score": 19.336
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-142 (cropped).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/26.jpg",
+   "gate": null,
+   "face": 478,
+   "share": 0.33,
+   "sharp": 3873,
+   "room": 2.4,
+   "box": [
+    290,
+    269,
+    340,
+    478
+   ],
+   "yaw": -0.06,
+   "roll": 4.0,
+   "cx": 0.48,
+   "why": "face 478px, 33% of height, sharpness 3873",
+   "score": 8.875
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-214 (cropped 3).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/17.jpg",
+   "gate": null,
+   "face": 309,
+   "share": 0.24,
+   "sharp": 2876,
+   "room": 3.7,
+   "box": [
+    374,
+    163,
+    215,
+    309
+   ],
+   "yaw": 0.03,
+   "roll": -4.0,
+   "cx": 0.5,
+   "why": "face 309px, 24% of height, sharpness 2876",
+   "score": 6.519
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-142.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/27.jpg",
+   "gate": null,
+   "face": 387,
+   "share": 0.27,
+   "sharp": 4216,
+   "room": 3.0,
+   "box": [
+    337,
+    262,
+    280,
+    387
+   ],
+   "yaw": -0.13,
+   "roll": 6.1,
+   "cx": 0.5,
+   "why": "face 387px, 27% of height, sharpness 4216",
+   "score": 6.473
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-162.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/30.jpg",
+   "gate": null,
+   "face": 366,
+   "share": 0.25,
+   "sharp": 3982,
+   "room": 3.3,
+   "box": [
+    352,
+    225,
+    253,
+    366
+   ],
+   "yaw": 0.13,
+   "roll": -7.1,
+   "cx": 0.5,
+   "why": "face 366px, 25% of height, sharpness 3982",
+   "score": 5.676
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-214 (cropped 2).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/16.jpg",
+   "gate": null,
+   "face": 281,
+   "share": 0.2,
+   "sharp": 3582,
+   "room": 4.4,
+   "box": [
+    371,
+    149,
+    202,
+    281
+   ],
+   "yaw": 0.05,
+   "roll": -6.2,
+   "cx": 0.49,
+   "why": "face 281px, 20% of height, sharpness 3582",
+   "score": 4.852
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-214 (cropped).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/18.jpg",
+   "gate": null,
+   "face": 370,
+   "share": 0.23,
+   "sharp": 2060,
+   "room": 3.7,
+   "box": [
+    313,
+    202,
+    279,
+    370
+   ],
+   "yaw": 0.08,
+   "roll": -7.5,
+   "cx": 0.47,
+   "why": "face 370px, 23% of height, sharpness 2060",
+   "score": 4.453
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-144.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/29.jpg",
+   "gate": null,
+   "face": 291,
+   "share": 0.2,
+   "sharp": 2843,
+   "room": 4.4,
+   "box": [
+    370,
+    170,
+    209,
+    291
+   ],
+   "yaw": 0.04,
+   "roll": 8.0,
+   "cx": 0.49,
+   "why": "face 291px, 20% of height, sharpness 2843",
+   "score": 4.451
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-214.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/19.jpg",
+   "gate": null,
+   "face": 133,
+   "share": 0.21,
+   "sharp": 3561,
+   "room": 4.2,
+   "box": [
+    373,
+    84,
+    97,
+    133
+   ],
+   "yaw": 0.06,
+   "roll": -2.8,
+   "cx": 0.44,
+   "why": "face 133px, 21% of height, sharpness 3561",
+   "score": 4.297
+  },
+  {
+   "file": "File:Lamine Yamal a Xina (2025).png",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q113704154/1.jpg",
+   "gate": null,
+   "face": 211,
+   "share": 0.37,
+   "sharp": 91,
+   "room": 2.3,
+   "box": [
+    215,
+    99,
+    168,
+    211
+   ],
+   "yaw": 0.67,
+   "roll": -7.8,
+   "cx": 0.52,
+   "why": "face 211px, 37% of height, sharpness 91",
+   "score": 3.583
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-092.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/25.jpg",
+   "gate": null,
+   "face": 119,
+   "share": 0.19,
+   "sharp": 3873,
+   "room": 4.5,
+   "box": [
+    361,
+    106,
+    89,
+    119
+   ],
+   "yaw": -0.54,
+   "roll": 1.8,
+   "cx": 0.42,
+   "why": "face 119px, 19% of height, sharpness 3873",
+   "score": 2.302
+  },
+  {
+   "file": "File:Lamine Yamal a Xina.png",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q113704154/2.jpg",
+   "gate": null,
+   "face": 211,
+   "share": 0.34,
+   "sharp": 115,
+   "room": 2.5,
+   "box": [
+    226,
+    85,
+    159,
+    211
+   ],
+   "yaw": 0.64,
+   "roll": -21.9,
+   "cx": 0.5,
+   "why": "face 211px, 34% of height, sharpness 115",
+   "score": 2.225
+  },
+  {
+   "file": "File:Lamine Yamal in 2025 (cropped2).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q113704154/4.jpg",
+   "gate": null,
+   "face": 140,
+   "share": 0.11,
+   "sharp": 1481,
+   "room": 8.7,
+   "box": [
+    497,
+    68,
+    99,
+    140
+   ],
+   "yaw": -0.42,
+   "roll": -0.6,
+   "cx": 0.57,
+   "why": "face 140px, 11% of height, sharpness 1481",
+   "score": 2.195
+  },
+  {
+   "file": "File:Spain World Cup Winners Argentina v Spain 19 July 2026-1 (Lamine Yamal).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/36.jpg",
+   "gate": null,
+   "face": 154,
+   "share": 0.22,
+   "sharp": 506,
+   "room": 4.1,
+   "box": [
+    225,
+    55,
+    129,
+    154
+   ],
+   "yaw": 0.23,
+   "roll": 11.4,
+   "cx": 0.63,
+   "why": "face 154px, 22% of height, sharpness 506",
+   "score": 1.858
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-143.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/28.jpg",
+   "gate": null,
+   "face": 95,
+   "share": 0.15,
+   "sharp": 5247,
+   "room": 5.3,
+   "box": [
+    435,
+    132,
+    66,
+    95
+   ],
+   "yaw": 0.85,
+   "roll": -4.3,
+   "cx": 0.49,
+   "why": "face 95px, 15% of height, sharpness 5247",
+   "score": 1.564
+  },
+  {
+   "file": "File:Lamine Yamal Nico Williams Argentina v Spain 19 July 2026-252.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/32.jpg",
+   "gate": null,
+   "face": 60,
+   "share": 0.09,
+   "sharp": 4959,
+   "room": 6.6,
+   "box": [
+    538,
+    244,
+    49,
+    60
+   ],
+   "yaw": -0.12,
+   "roll": 1.7,
+   "cx": 0.59,
+   "why": "face 60px, 9% of height, sharpness 4959",
+   "score": 1.56
+  },
+  {
+   "file": "File:Lamine Yamal in 2025.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q113704154/5.jpg",
+   "gate": null,
+   "face": 121,
+   "share": 0.08,
+   "sharp": 1682,
+   "room": 10.0,
+   "box": [
+    548,
+    262,
+    90,
+    121
+   ],
+   "yaw": -0.42,
+   "roll": 1.4,
+   "cx": 0.62,
+   "why": "face 121px, 8% of height, sharpness 1682",
+   "score": 1.401
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-319.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/20.jpg",
+   "gate": null,
+   "face": 231,
+   "share": 0.16,
+   "sharp": 7919,
+   "room": 5.2,
+   "box": [
+    200,
+    230,
+    138,
+    231
+   ],
+   "yaw": 0.89,
+   "roll": 4.5,
+   "cx": 0.28,
+   "why": "face 231px, 16% of height, sharpness 7919",
+   "score": 0.905
+  },
+  {
+   "file": "File:Lamine Yamal in 2025 (cropped).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q113704154/3.jpg",
+   "gate": "photo ends at the chin (2.2 face heights below)",
+   "why": "photo ends at the chin (2.2 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal Lucas Digne France v Spain 7.24.26-157.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal, S\u00e1nchez se reuni\u00f3 con los futbolistas de la selecci\u00f3n espa\u00f1ola tras ganar la Eurocopa 2024 (3) (cropped) (cropped).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q113704154/7.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal, S\u00e1nchez se reuni\u00f3 con los futbolistas de la selecci\u00f3n espa\u00f1ola tras ganar la Eurocopa 2024 (3) (cropped).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q113704154/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lucas Digne Lamine Yamal France v Spain 7.24.26-094.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Mike Maignan Lamine Yamal France v Spain 7.24.26-188.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/10.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Williams and Yamal in 2025.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q113704154/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal Alexis Mac Allister Argentina v Spain 19 July 2026-129.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-133.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/13.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-144.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal Argentina v Spain 19 July 2026-167.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal Cristian Romero Argentina v Spain 19 July 2026-124.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-057.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-058.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-059.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lamine Yamal France v Spain 7.24.26-187.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Nicolas Tagliafico Lamine Yamal Argentina v Spain 19 July 2026-095.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Nicolas Tagliafico Lamine Yamal Argentina v Spain 19 July 2026-150.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/34.jpg",
+   "gate": "face 49px, too small",
+   "why": "face 49px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Nicolas Tagliafico Lamine Yamal Argentina v Spain 19 July 2026-216.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q113704154/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

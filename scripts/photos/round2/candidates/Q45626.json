@@ -1,0 +1,135 @@
+{
+ "span": [
+  1993,
+  2012
+ ],
+ "prime": 2003.5,
+ "cat": "Ruud van Nistelrooy",
+ "files": 13,
+ "cands": [
+  {
+   "file": "File:Ruud van Nistelrooy.JPG",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q45626/4.jpg",
+   "gate": null,
+   "face": 207,
+   "share": 0.29,
+   "sharp": 1065,
+   "room": 2.4,
+   "box": [
+    397,
+    220,
+    148,
+    207
+   ],
+   "yaw": 0.03,
+   "roll": 4.1,
+   "cx": 0.49,
+   "why": "face 207px, 29% of height, sharpness 1065",
+   "score": 6.439
+  },
+  {
+   "file": "File:Van Nistelrooy (2007).JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45626/5.jpg",
+   "gate": null,
+   "face": 332,
+   "share": 0.28,
+   "sharp": 356,
+   "room": 2.8,
+   "box": [
+    323,
+    237,
+    239,
+    332
+   ],
+   "yaw": 0.04,
+   "roll": -0.4,
+   "cx": 0.46,
+   "why": "face 332px, 28% of height, sharpness 356",
+   "score": 5.184
+  },
+  {
+   "file": "File:Ruud Van Nistelrooy madrid.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45626/3.jpg",
+   "gate": null,
+   "face": 120,
+   "share": 0.11,
+   "sharp": 353,
+   "room": 8.4,
+   "box": [
+    525,
+    69,
+    89,
+    120
+   ],
+   "yaw": 0.0,
+   "roll": -6.4,
+   "cx": 0.59,
+   "why": "face 120px, 11% of height, sharpness 353",
+   "score": 1.422
+  },
+  {
+   "file": "File:Ruud van Nistelrooy (2007).JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q45626/2.jpg",
+   "gate": null,
+   "face": 113,
+   "share": 0.14,
+   "sharp": 292,
+   "room": 5.4,
+   "box": [
+    488,
+    180,
+    88,
+    113
+   ],
+   "yaw": 0.25,
+   "roll": 6.6,
+   "cx": 0.55,
+   "why": "face 113px, 14% of height, sharpness 292",
+   "score": 1.421
+  },
+  {
+   "file": "File:Adios Ruud Van Nistelrooy.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q45626/0.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Huntelaar nistelrooy persie.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q45626/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Van Nistelrooy en La Romareda.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q45626/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Van Persie Van Nistelrooy.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q45626/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

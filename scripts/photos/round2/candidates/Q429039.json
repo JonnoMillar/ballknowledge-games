@@ -1,0 +1,268 @@
+{
+ "span": [
+  1991,
+  2016
+ ],
+ "prime": 2001.5,
+ "cat": "Roberto Carlos",
+ "files": 26,
+ "cands": [
+  {
+   "file": "File:Roberto Carlos in Moscow 3.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q429039/11.jpg",
+   "gate": null,
+   "face": 254,
+   "share": 0.34,
+   "sharp": 185,
+   "room": 2.4,
+   "box": [
+    209,
+    145,
+    174,
+    254
+   ],
+   "yaw": 0.3,
+   "roll": 0.6,
+   "cx": 0.56,
+   "why": "face 254px, 34% of height, sharpness 185",
+   "score": 3.852
+  },
+  {
+   "file": "File:Roberto Carlos in Moscow 3 (cropped).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q429039/10.jpg",
+   "gate": null,
+   "face": 237,
+   "share": 0.36,
+   "sharp": 203,
+   "room": 2.5,
+   "box": [
+    210,
+    65,
+    173,
+    237
+   ],
+   "yaw": 0.31,
+   "roll": 2.8,
+   "cx": 0.56,
+   "why": "face 237px, 36% of height, sharpness 203",
+   "score": 3.683
+  },
+  {
+   "file": "File:Roberto Carlos 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q429039/2.jpg",
+   "gate": null,
+   "face": 182,
+   "share": 0.23,
+   "sharp": 459,
+   "room": 4.2,
+   "box": [
+    205,
+    44,
+    132,
+    182
+   ],
+   "yaw": 0.11,
+   "roll": -0.6,
+   "cx": 0.45,
+   "why": "face 182px, 23% of height, sharpness 459",
+   "score": 2.33
+  },
+  {
+   "file": "File:Roberto Carlos in Moscow 2.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q429039/9.jpg",
+   "gate": null,
+   "face": 131,
+   "share": 0.3,
+   "sharp": 166,
+   "room": 3.0,
+   "box": [
+    155,
+    43,
+    103,
+    131
+   ],
+   "yaw": 0.28,
+   "roll": 0.6,
+   "cx": 0.63,
+   "why": "face 131px, 30% of height, sharpness 166",
+   "score": 2.232
+  },
+  {
+   "file": "File:Roberto Carlos 7221.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q429039/7.jpg",
+   "gate": null,
+   "face": 52,
+   "share": 0.1,
+   "sharp": 1066,
+   "room": 9.2,
+   "box": [
+    136,
+    37,
+    40,
+    52
+   ],
+   "yaw": 0.27,
+   "roll": -1.3,
+   "cx": 0.47,
+   "why": "face 52px, 10% of height, sharpness 1066",
+   "score": 0.785
+  },
+  {
+   "file": "File:Roberto Carlos in Moscow 5.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q429039/13.jpg",
+   "gate": null,
+   "face": 70,
+   "share": 0.16,
+   "sharp": 545,
+   "room": 5.9,
+   "box": [
+    346,
+    23,
+    54,
+    70
+   ],
+   "yaw": -0.23,
+   "roll": 1.1,
+   "cx": 0.93,
+   "why": "face 70px, 16% of height, sharpness 545",
+   "score": 0.308
+  },
+  {
+   "file": "File:Ali Karimi sprinting through Roberto Carlos and Edgar Davids.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q429039/0.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:FBCarlos.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q429039/1.jpg",
+   "gate": "face 26px, too small",
+   "why": "face 26px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q429039/3.jpg",
+   "gate": "photo ends at the chin (1.6 face heights below)",
+   "why": "photo ends at the chin (1.6 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos 33816.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q429039/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos 37914.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q429039/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos Corinthians.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q429039/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos in Moscow 4.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q429039/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos in Moscow.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q429039/15.jpg",
+   "gate": "photo ends at the chin (1.8 face heights below)",
+   "why": "photo ends at the chin (1.8 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos in Tehran.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q429039/16.jpg",
+   "gate": "face 48px, too small",
+   "why": "face 48px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos Sivasspor.JPG",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q429039/17.jpg",
+   "gate": "face sharpness 49, soft",
+   "face": 100,
+   "share": 0.1,
+   "sharp": 49,
+   "room": 9.2,
+   "box": [
+    270,
+    72,
+    75,
+    100
+   ],
+   "yaw": 0.12,
+   "roll": -0.7,
+   "cx": 0.57,
+   "why": "face sharpness 49, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Roberto Carlos.JPG",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q429039/18.jpg",
+   "gate": "face sharpness 76, soft",
+   "face": 194,
+   "share": 0.14,
+   "sharp": 76,
+   "room": 6.7,
+   "box": [
+    301,
+    54,
+    147,
+    194
+   ],
+   "yaw": 0.11,
+   "roll": 2.3,
+   "cx": 0.42,
+   "why": "face sharpness 76, soft",
+   "score": 0
+  }
+ ]
+}

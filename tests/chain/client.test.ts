@@ -10,6 +10,13 @@ describe('the album index over the wire', () => {
     expect(encodePicture(commons)!.length).toBeLessThan(commons.url.length / 2);
   });
 
+  it('round-trips one of our cutouts as a short key, and sends the kit card as no picture', () => {
+    const ours = { url: '/portraits/Q615.webp', fit: 'box' as const };
+    expect(encodePicture(ours)).toBe('b:Q615.webp');
+    expect(decodePicture(encodePicture(ours))).toEqual(ours);
+    expect(encodePicture({ url: '', fit: 'kit' as const, club: 'Q9' })).toBeNull();
+  });
+
   it('keeps an unfamiliar URL whole, with its fit', () => {
     const other = { url: 'https://example.org/a.png', fit: 'contain' as const };
     expect(decodePicture(encodePicture(other))).toEqual(other);

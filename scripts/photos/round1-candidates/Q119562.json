@@ -11,7 +11,10 @@
    205,
    252,
    422
-  ]
+  ],
+  "yaw": 0.69,
+  "roll": -8.2,
+  "cx": 0.7
  },
  {
   "file": "File:Sergio Ag\u00fcero 2011-09-08 004.jpg",
@@ -25,7 +28,10 @@
    200,
    167,
    237
-  ]
+  ],
+  "yaw": -0.24,
+  "roll": -3.2,
+  "cx": 0.41
  },
  {
   "file": "File:2017 FRIENDLY MATCH RUSSIA v ARGENTINA - Sergio Ag\u00fcero.jpg",
@@ -39,7 +45,10 @@
    106,
    194,
    267
-  ]
+  ],
+  "yaw": -0.35,
+  "roll": 4.4,
+  "cx": 0.41
  },
  {
   "file": "File:Kun Ag\u00fcero vs West Ham.png",
@@ -53,7 +62,10 @@
    185,
    191,
    265
-  ]
+  ],
+  "yaw": -0.58,
+  "roll": 4.0,
+  "cx": 0.37
  },
  {
   "file": "File:Sergio Ag\u00fcero 2011-09-08 001.jpg",
@@ -67,7 +79,10 @@
    172,
    120,
    165
-  ]
+  ],
+  "yaw": -0.33,
+  "roll": -10.9,
+  "cx": 0.46
  },
  {
   "file": "File:Sergio Ag\u00fcero 2012-08-09 001.jpg",
@@ -81,7 +96,10 @@
    255,
    148,
    203
-  ]
+  ],
+  "yaw": 0.0,
+  "roll": -0.4,
+  "cx": 0.53
  },
  {
   "file": "File:Aguero Independiente 2005.jpg",
@@ -95,7 +113,10 @@
    88,
    100,
    134
-  ]
+  ],
+  "yaw": 0.06,
+  "roll": -3.4,
+  "cx": 0.44
  },
  {
   "file": "File:Sergio Ag\u00fcero 2018.jpg",
@@ -109,7 +130,10 @@
    54,
    89,
    119
-  ]
+  ],
+  "yaw": 0.1,
+  "roll": -0.5,
+  "cx": 0.47
  },
  {
   "file": "File:Suisse vs Argentine - Sergio Ag\u00fcero (cropped).jpg",
@@ -123,7 +147,10 @@
    137,
    92,
    154
-  ]
+  ],
+  "yaw": 0.69,
+  "roll": 1.1,
+  "cx": 0.69
  },
  {
   "file": "File:Sergio Aguero 69784.jpg",
@@ -137,7 +164,10 @@
    48,
    72,
    96
-  ]
+  ],
+  "yaw": -0.12,
+  "roll": -1.2,
+  "cx": 0.43
  },
  {
   "file": "File:Suisse vs Argentine - Sergio Ag\u00fcero.jpg",
@@ -151,7 +181,10 @@
    195,
    74,
    108
-  ]
+  ],
+  "yaw": 0.77,
+  "roll": -4.2,
+  "cx": 0.53
  },
  {
   "file": "File:Kun Aguero bandera Independiente.jpg",
@@ -165,7 +198,10 @@
    39,
    65,
    85
-  ]
+  ],
+  "yaw": -0.01,
+  "roll": -1.7,
+  "cx": 0.18
  },
  {
   "file": "File:Sergio Ag\u00fcero 2011-09-08 002.jpg",
@@ -179,7 +215,10 @@
    178,
    83,
    113
-  ]
+  ],
+  "yaw": -0.01,
+  "roll": -0.9,
+  "cx": 0.48
  },
  {
   "file": "File:Sergio Ag\u00fcero 2011-09-08 005.jpg",
@@ -193,7 +232,10 @@
    217,
    75,
    102
-  ]
+  ],
+  "yaw": -0.41,
+  "roll": -7.4,
+  "cx": 0.52
  },
  {
   "file": "File:Aguero Athletico.jpg",
@@ -207,7 +249,10 @@
    109,
    63,
    69
-  ]
+  ],
+  "yaw": -0.05,
+  "roll": -3.5,
+  "cx": 0.63
  },
  {
   "file": "File:Sergio Ag\u00fcero 2011-09-08 003.jpg",
@@ -221,7 +266,10 @@
    326,
    64,
    91
-  ]
+  ],
+  "yaw": -0.43,
+  "roll": -3.1,
+  "cx": 0.59
  },
  {
   "file": "File:Ag\u00fcero in 2018.jpg",

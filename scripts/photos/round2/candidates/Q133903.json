@@ -1,0 +1,286 @@
+{
+ "span": [
+  2011,
+  2026
+ ],
+ "prime": 2022.0,
+ "cat": "Virgil van Dijk",
+ "files": 19,
+ "cands": [
+  {
+   "file": "File:Liverpool vs. Chelsea, UEFA Super Cup 2019-08-14 05 (Virgil Van Dijk).jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q133903/7.jpg",
+   "gate": null,
+   "face": 51,
+   "share": 0.21,
+   "sharp": 6836,
+   "room": 4.4,
+   "box": [
+    62,
+    21,
+    39,
+    51
+   ],
+   "yaw": 0.06,
+   "roll": -1.8,
+   "cx": 0.51,
+   "why": "face 51px, 21% of height, sharpness 6836",
+   "score": 3.177
+  },
+  {
+   "file": "File:Alisson Becker and Virgil van Dijk 04012026 (1) - Van Dijk (cropped).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/1.jpg",
+   "gate": null,
+   "face": 60,
+   "share": 0.2,
+   "sharp": 1968,
+   "room": 4.8,
+   "box": [
+    94,
+    18,
+    44,
+    60
+   ],
+   "yaw": 0.02,
+   "roll": 0.9,
+   "cx": 0.5,
+   "why": "face 60px, 20% of height, sharpness 1968",
+   "score": 3.035
+  },
+  {
+   "file": "File:Virgil van Dijk 06042025 (2).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q133903/14.jpg",
+   "gate": null,
+   "face": 148,
+   "share": 0.13,
+   "sharp": 1791,
+   "room": 7.2,
+   "box": [
+    469,
+    112,
+    91,
+    148
+   ],
+   "yaw": 0.41,
+   "roll": -1.1,
+   "cx": 0.54,
+   "why": "face 148px, 13% of height, sharpness 1791",
+   "score": 2.303
+  },
+  {
+   "file": "File:LFC Parade 2019 01-Virgil van Dijk.jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q133903/6.jpg",
+   "gate": null,
+   "face": 291,
+   "share": 0.25,
+   "sharp": 605,
+   "room": 3.5,
+   "box": [
+    246,
+    151,
+    224,
+    291
+   ],
+   "yaw": -0.41,
+   "roll": 21.2,
+   "cx": 0.52,
+   "why": "face 291px, 25% of height, sharpness 605",
+   "score": 1.693
+  },
+  {
+   "file": "File:Virgil van Dijk 06042025 (1).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q133903/13.jpg",
+   "gate": null,
+   "face": 117,
+   "share": 0.11,
+   "sharp": 2556,
+   "room": 8.2,
+   "box": [
+    315,
+    128,
+    81,
+    117
+   ],
+   "yaw": 0.37,
+   "roll": -0.0,
+   "cx": 0.37,
+   "why": "face 117px, 11% of height, sharpness 2556",
+   "score": 1.403
+  },
+  {
+   "file": "File:Virgil van Dijk 04012026 (2).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/12.jpg",
+   "gate": null,
+   "face": 66,
+   "share": 0.1,
+   "sharp": 2209,
+   "room": 6.3,
+   "box": [
+    574,
+    225,
+    50,
+    66
+   ],
+   "yaw": 0.03,
+   "roll": -1.9,
+   "cx": 0.62,
+   "why": "face 66px, 10% of height, sharpness 2209",
+   "score": 1.217
+  },
+  {
+   "file": "File:Virgil van Dijk 2019.jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q133903/16.jpg",
+   "gate": null,
+   "face": 255,
+   "share": 0.12,
+   "sharp": 2802,
+   "room": 8.2,
+   "box": [
+    389,
+    55,
+    164,
+    255
+   ],
+   "yaw": -0.97,
+   "roll": 10.4,
+   "cx": 0.49,
+   "why": "face 255px, 12% of height, sharpness 2802",
+   "score": 1.095
+  },
+  {
+   "file": "File:20160604 AUT NED 8876 (cropped).jpg",
+   "p18": true,
+   "year": 2016,
+   "local": "cand/Q133903/0.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Alisson Becker and Virgil van Dijk 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Conor Bradley,Virgil van Dijk and Florian Wirtz 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Curtis Jones, Conor Bradley, Virgil van Dijk and Florian Wirtz 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Dominik Szoboszlai, Virgil van Dijk and Ryan Gravenberch 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Jim\u00e9nez and Virgil van Dijk 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Timothy Castagne, Virgil van Dijk and Curtis Jones 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/9.jpg",
+   "gate": "face 25px, too small",
+   "why": "face 25px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Virgil van Dijk , Curtis Jones and Dominik Szoboszlai 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/10.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Virgil van Dijk 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Virgil van Dijk 2015.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q133903/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Virgil van Dijk, Curtis Jones and Harry Wilson 04012026 (1).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q133903/17.jpg",
+   "gate": "face 45px, too small",
+   "why": "face 45px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Virgilvandijk.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q133903/18.jpg",
+   "gate": null,
+   "face": 64,
+   "share": 0.16,
+   "sharp": 99,
+   "room": 5.3,
+   "box": [
+    172,
+    51,
+    40,
+    64
+   ],
+   "yaw": 5.73,
+   "roll": -56.0,
+   "cx": 0.61,
+   "why": "face 64px, 16% of height, sharpness 99",
+   "score": 0.0
+  }
+ ]
+}

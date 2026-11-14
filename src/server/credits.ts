@@ -8,11 +8,12 @@ export interface CreditRow {
   artist: string;
   licence: string;
   licenceUrl?: string;
+  /** Where the photo lives, for a photo from outside Commons (its Flickr page); a Commons file is linked by name. */
+  url?: string;
 }
 
 interface Credit { artist: string; licence: string; licenceUrl?: string }
 
-const FILEPATH = 'Special:FilePath/';
 
 /** A–Z by the name's first letter, accents folded; anything else under '#'. */
 export const letterOf = (name: string) => {
@@ -30,17 +31,23 @@ let rows: Promise<CreditRow[]> | null = null;
 function allRows(): Promise<CreditRow[]> {
   rows ??= (async () => {
     const { byId } = await loadData();
-    const images = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
     const portraits = JSON.parse(await readFile('data/portraits.json', 'utf8')) as Record<string, PortraitRecord>;
     const credits = JSON.parse(await readFile('data/credits.json', 'utf8').catch(() => '{}')) as Record<string, Credit | null>;
     const out: CreditRow[] = [];
-    for (const [id, { url }] of Object.entries(portraitUrls(images, portraits))) {
-      const at = url.indexOf(FILEPATH);
-      if (at < 0) continue;
-      const file = decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!);
-      const c = credits[file];
+    for (const id of Object.keys(portraitUrls(portraits))) {
+      // Our own cutouts name the Commons file they came from.
+      const rec = portraits[id];
+      const file = rec?.source === 'processed' ? rec.file : undefined;
+      if (!file) continue;
       const player = byId.get(id)?.name;
-      if (!c || !player) continue;
+      if (!player) continue;
+      if (rec?.origin) {   // outside Commons: the record carries its own credit
+        const o = rec.origin;
+        out.push({ player, file: o.title || file, artist: o.creator || 'Unknown', licence: o.licence, ...(o.licenceUrl ? { licenceUrl: o.licenceUrl } : {}), ...(o.url ? { url: o.url } : {}) });
+        continue;
+      }
+      const c = credits[file];
+      if (!c) continue;
       out.push({ player, file, ...c });
     }
     return out.sort((a, b) => a.player.localeCompare(b.player, 'en'));
@@ -54,4 +61,13 @@ export async function creditsFor(letter: string): Promise<{ rows: CreditRow[]; c
   const counts: Record<string, number> = {};
   for (const r of all) counts[letterOf(r.player)] = (counts[letterOf(r.player)] ?? 0) + 1;
   return { rows: all.filter((r) => letterOf(r.player) === letter), counts, total: all.length };
+}
+
+/** The photo the kit card's figure (public/kit-figure.png) was cut from. */
+export const KIT_FIGURE_FILE = 'Thiago Silva (cropped).jpg';
+
+export async function kitFigureCredit(): Promise<(Credit & { file: string }) | null> {
+  const credits = JSON.parse(await readFile('data/credits.json', 'utf8').catch(() => '{}')) as Record<string, Credit | null>;
+  const c = credits[KIT_FIGURE_FILE];
+  return c ? { file: KIT_FIGURE_FILE, ...c } : null;
 }

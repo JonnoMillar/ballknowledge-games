@@ -11,7 +11,10 @@
    165,
    276,
    395
-  ]
+  ],
+  "yaw": 0.4,
+  "roll": 1.0,
+  "cx": 0.52
  },
  {
   "file": "File:Luka Modric - Croatia vs. Portugal (cropped).jpg",
@@ -25,7 +28,10 @@
    86,
    210,
    275
-  ]
+  ],
+  "yaw": 0.3,
+  "roll": -6.1,
+  "cx": 0.56
  },
  {
   "file": "File:Luka Modri\u0107 in 2018.jpg",
@@ -39,7 +45,10 @@
    136,
    187,
    240
-  ]
+  ],
+  "yaw": 0.3,
+  "roll": -6.6,
+  "cx": 0.58
  },
  {
   "file": "File:Luka Modric 2018.png",
@@ -53,7 +62,10 @@
    58,
    112,
    152
-  ]
+  ],
+  "yaw": 0.49,
+  "roll": -3.5,
+  "cx": 0.56
  },
  {
   "file": "File:Luka Modri\u0107 meets Kolinda Grabar-Kitarovi\u0107 after the 2018 FIFA World Cup Final (2).jpg",
@@ -67,7 +79,10 @@
    136,
    73,
    121
-  ]
+  ],
+  "yaw": 1.67,
+  "roll": -11.3,
+  "cx": 0.3
  },
  {
   "file": "File:Luka Modric - Croatia vs. Portugal, 10th June 2013.jpg",
@@ -81,7 +96,10 @@
    97,
    119,
    155
-  ]
+  ],
+  "yaw": 0.21,
+  "roll": -1.6,
+  "cx": 0.54
  },
  {
   "file": "File:Luka Modri\u0107 2010 2.jpg",
@@ -95,7 +113,10 @@
    64,
    131,
    181
-  ]
+  ],
+  "yaw": 0.29,
+  "roll": -0.4,
+  "cx": 0.55
  },
  {
   "file": "File:Luka Modri\u0107 2010.jpg",
@@ -109,7 +130,10 @@
    92,
    128,
    166
-  ]
+  ],
+  "yaw": 0.28,
+  "roll": -4.4,
+  "cx": 0.55
  },
  {
   "file": "File:Modri\u0107 World Cup 2018.jpg",
@@ -123,7 +147,10 @@
    108,
    90,
    107
-  ]
+  ],
+  "yaw": 0.03,
+  "roll": -2.7,
+  "cx": 0.45
  },
  {
   "file": "File:Luka Modri\u0107 TOTS 2021.png",
@@ -137,7 +164,10 @@
    186,
    75,
    105
-  ]
+  ],
+  "yaw": -0.08,
+  "roll": 0.5,
+  "cx": 0.67
  },
  {
   "file": "File:Luka Modri\u0107 Real Madrid.jpg",
@@ -151,7 +181,10 @@
    121,
    87,
    120
-  ]
+  ],
+  "yaw": 0.07,
+  "roll": -5.5,
+  "cx": 0.5
  },
  {
   "file": "File:Luka Modric 2015.jpg",
@@ -165,7 +198,10 @@
    166,
    51,
    72
-  ]
+  ],
+  "yaw": 0.92,
+  "roll": -3.2,
+  "cx": 0.56
  },
  {
   "file": "File:Kant\u00e9 vs Modri\u0107 Russia 2018.jpg",
@@ -179,7 +215,10 @@
    54,
    37,
    50
-  ]
+  ],
+  "yaw": -0.27,
+  "roll": -0.8,
+  "cx": 0.31
  },
  {
   "file": "File:Luka Modri\u0107 against Sevilla.jpg",
@@ -193,7 +232,10 @@
    51,
    38,
    51
-  ]
+  ],
+  "yaw": 0.55,
+  "roll": -6.7,
+  "cx": 0.48
  },
  {
   "file": "File:Luka Modri\u0107 10052008.jpg",
@@ -207,7 +249,10 @@
    186,
    66,
    89
-  ]
+  ],
+  "yaw": 0.5,
+  "roll": -3.9,
+  "cx": 0.48
  },
  {
   "file": "File:Luka Modric.jpg",

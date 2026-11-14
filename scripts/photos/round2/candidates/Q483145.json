@@ -1,0 +1,127 @@
+{
+ "span": [
+  1989,
+  2009
+ ],
+ "prime": 1997.5,
+ "cat": "Lu\u00eds Figo",
+ "files": 26,
+ "cands": [
+  {
+   "file": "File:Luis Figo.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q483145/8.jpg",
+   "gate": null,
+   "face": 56,
+   "share": 0.09,
+   "sharp": 444,
+   "room": 9.2,
+   "box": [
+    269,
+    102,
+    39,
+    56
+   ],
+   "yaw": -0.25,
+   "roll": 0.2,
+   "cx": 0.52,
+   "why": "face 56px, 9% of height, sharpness 444",
+   "score": 0.847
+  },
+  {
+   "file": "File:Luis Figo de visita al m\u00e9dico del Madrid.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q483145/5.jpg",
+   "gate": null,
+   "face": 61,
+   "share": 0.08,
+   "sharp": 6061,
+   "room": 7.8,
+   "box": [
+    491,
+    243,
+    51,
+    61
+   ],
+   "yaw": 0.38,
+   "roll": -1.5,
+   "cx": 0.54,
+   "why": "face 61px, 8% of height, sharpness 6061",
+   "score": 0.636
+  },
+  {
+   "file": "File:FigoBallond'Or2000 (cropped).jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q483145/0.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:FigoBallond'Or2000.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q483145/1.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Hagi and Luis Figo.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q483145/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Luis Figo 19-10-06.JPG",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q483145/3.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Luis Figo 2009 2.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q483145/4.jpg",
+   "gate": "photo ends at the chin (1.2 face heights below)",
+   "why": "photo ends at the chin (1.2 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Luis Figo flickr remix.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q483145/6.jpg",
+   "gate": "photo ends at the chin (1.6 face heights below)",
+   "why": "photo ends at the chin (1.6 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Luis Figo-2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q483145/7.jpg",
+   "gate": "photo ends at the chin (1.2 face heights below)",
+   "why": "photo ends at the chin (1.2 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Lu\u00eds Figo 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q483145/9.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  }
+ ]
+}

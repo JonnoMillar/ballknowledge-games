@@ -1,0 +1,514 @@
+{
+ "span": [
+  2002,
+  2021
+ ],
+ "prime": 2010.5,
+ "cat": "Wayne Rooney",
+ "files": 64,
+ "cands": [
+  {
+   "file": "File:Wayne-Rooney-2015-10-21.jpg",
+   "p18": true,
+   "year": 2015,
+   "local": "cand/Q266613/0.jpg",
+   "gate": null,
+   "face": 117,
+   "share": 0.2,
+   "sharp": 2218,
+   "room": 4.3,
+   "box": [
+    145,
+    65,
+    109,
+    117
+   ],
+   "yaw": 0.17,
+   "roll": -11.0,
+   "cx": 0.41,
+   "why": "face 117px, 20% of height, sharpness 2218",
+   "score": 4.417
+  },
+  {
+   "file": "File:Rooney CL.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/15.jpg",
+   "gate": null,
+   "face": 361,
+   "share": 0.28,
+   "sharp": 134,
+   "room": 3.2,
+   "box": [
+    479,
+    139,
+    235,
+    361
+   ],
+   "yaw": 0.49,
+   "roll": -0.5,
+   "cx": 0.62,
+   "why": "face 361px, 28% of height, sharpness 134",
+   "score": 2.679
+  },
+  {
+   "file": "File:Wayne-Rooney-Japan-England-2010-2.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q266613/25.jpg",
+   "gate": null,
+   "face": 133,
+   "share": 0.1,
+   "sharp": 153,
+   "room": 9.3,
+   "box": [
+    271,
+    74,
+    104,
+    133
+   ],
+   "yaw": 0.19,
+   "roll": 0.8,
+   "cx": 0.56,
+   "why": "face 133px, 10% of height, sharpness 153",
+   "score": 2.05
+  },
+  {
+   "file": "File:W Rooney.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/10.jpg",
+   "gate": null,
+   "face": 57,
+   "share": 0.11,
+   "sharp": 633,
+   "room": 8.3,
+   "box": [
+    151,
+    51,
+    44,
+    57
+   ],
+   "yaw": -0.37,
+   "roll": -1.4,
+   "cx": 0.53,
+   "why": "face 57px, 11% of height, sharpness 633",
+   "score": 1.303
+  },
+  {
+   "file": "File:Wayne Rooney on fire.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/12.jpg",
+   "gate": null,
+   "face": 81,
+   "share": 0.1,
+   "sharp": 288,
+   "room": 9.3,
+   "box": [
+    296,
+    49,
+    64,
+    81
+   ],
+   "yaw": -0.06,
+   "roll": 0.4,
+   "cx": 0.62,
+   "why": "face 81px, 10% of height, sharpness 288",
+   "score": 1.259
+  },
+  {
+   "file": "File:Wayne Rooney UEFA Champions League.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/13.jpg",
+   "gate": null,
+   "face": 224,
+   "share": 0.21,
+   "sharp": 461,
+   "room": 4.5,
+   "box": [
+    161,
+    60,
+    157,
+    224
+   ],
+   "yaw": -0.66,
+   "roll": 12.0,
+   "cx": 0.36,
+   "why": "face 224px, 21% of height, sharpness 461",
+   "score": 1.033
+  },
+  {
+   "file": "File:Rooney 2010.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q266613/23.jpg",
+   "gate": null,
+   "face": 67,
+   "share": 0.1,
+   "sharp": 250,
+   "room": 9.2,
+   "box": [
+    106,
+    46,
+    50,
+    67
+   ],
+   "yaw": -0.66,
+   "roll": 0.6,
+   "cx": 0.38,
+   "why": "face 67px, 10% of height, sharpness 250",
+   "score": 0.787
+  },
+  {
+   "file": "File:W Rooney 02.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/7.jpg",
+   "gate": null,
+   "face": 58,
+   "share": 0.09,
+   "sharp": 607,
+   "room": 9.5,
+   "box": [
+    487,
+    89,
+    38,
+    58
+   ],
+   "yaw": 1.39,
+   "roll": 1.1,
+   "cx": 0.53,
+   "why": "face 58px, 9% of height, sharpness 607",
+   "score": 0.484
+  },
+  {
+   "file": "File:W Rooney 01.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/6.jpg",
+   "gate": null,
+   "face": 57,
+   "share": 0.07,
+   "sharp": 374,
+   "room": 12.4,
+   "box": [
+    258,
+    93,
+    32,
+    57
+   ],
+   "yaw": 2.44,
+   "roll": 9.3,
+   "cx": 0.51,
+   "why": "face 57px, 7% of height, sharpness 374",
+   "score": 0.128
+  },
+  {
+   "file": "File:W Rooney 04.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/9.jpg",
+   "gate": null,
+   "face": 62,
+   "share": 0.08,
+   "sharp": 355,
+   "room": 11.7,
+   "box": [
+    290,
+    72,
+    34,
+    62
+   ],
+   "yaw": -2.74,
+   "roll": 29.2,
+   "cx": 0.58,
+   "why": "face 62px, 8% of height, sharpness 355",
+   "score": 0.035
+  },
+  {
+   "file": "File:Wayne Rooney - Everton Football Club.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q266613/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney 2.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q266613/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q266613/3.jpg",
+   "gate": "face sharpness 50, soft",
+   "face": 160,
+   "share": 0.17,
+   "sharp": 50,
+   "room": 5.4,
+   "box": [
+    540,
+    62,
+    127,
+    160
+   ],
+   "yaw": 0.24,
+   "roll": 4.5,
+   "cx": 0.63,
+   "why": "face sharpness 50, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney (Broken Foot).JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q266613/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Rooney close.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/5.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:W Rooney 03.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/8.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney Anderson.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q266613/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:O'Shea Rooney Carrick.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Rooney defended by Iniesta, Busquets, UEFA Champions League Final 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Rooney defended by Puyol, 2009 UEFA Champions League Final.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/17.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Rooney England.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/18.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Rooney Robinson.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney vs Carles Puyol, 2009 UEFA Champions League Final.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney vs Everton 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q266613/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Giggs, Rooney e Berbatov atacando contra o Sunderland em 2010 no Boxing Day.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q266613/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne-Rooney-Japan-England-2010-1.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q266613/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Yasuyuki-Konno-Japan-Wayne-Rooney-England-2011.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q266613/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:WayneRooney MLSvsMANU edit.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q266613/27.jpg",
+   "gate": "face 39px, too small",
+   "why": "face 39px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:De Rossi tackle on Rooney England-Italy Euro 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q266613/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:SAFC v MUFC Wayne Rooney free kick.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q266613/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney Euro 2012 vs Italy.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q266613/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:England striker Wayne Rooney (23125438141).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/31.jpg",
+   "gate": "face 28px, too small",
+   "why": "face 28px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:England striker Wayne Rooney and France midfielder Morgan Schneiderlin (23114034985).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22491273444).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/33.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22492781873).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22695604078).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/35.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22721660389).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/36.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22721721889).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/37.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22721723669).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/38.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Wayne Rooney freekick (22721724409).jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q266613/39.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  }
+ ]
+}

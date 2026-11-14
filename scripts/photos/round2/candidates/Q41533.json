@@ -1,0 +1,644 @@
+{
+ "span": [
+  1995,
+  2016
+ ],
+ "prime": 2007.5,
+ "cat": "Frank Lampard",
+ "files": 43,
+ "cands": [
+  {
+   "file": "File:F-Lampard.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41533/10.jpg",
+   "gate": null,
+   "face": 97,
+   "share": 0.28,
+   "sharp": 1351,
+   "room": 3.4,
+   "box": [
+    123,
+    15,
+    73,
+    97
+   ],
+   "yaw": 0.0,
+   "roll": 0.5,
+   "cx": 0.56,
+   "why": "face 97px, 28% of height, sharpness 1351",
+   "score": 5.465
+  },
+  {
+   "file": "File:Frank Lampard (cropped).jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/26.jpg",
+   "gate": null,
+   "face": 117,
+   "share": 0.35,
+   "sharp": 360,
+   "room": 2.3,
+   "box": [
+    86,
+    74,
+    91,
+    117
+   ],
+   "yaw": 0.19,
+   "roll": -0.2,
+   "cx": 0.49,
+   "why": "face 117px, 35% of height, sharpness 360",
+   "score": 5.368
+  },
+  {
+   "file": "File:Frank lampard.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41533/4.jpg",
+   "gate": null,
+   "face": 351,
+   "share": 0.27,
+   "sharp": 164,
+   "room": 2.9,
+   "box": [
+    385,
+    279,
+    302,
+    351
+   ],
+   "yaw": -0.02,
+   "roll": 8.3,
+   "cx": 0.56,
+   "why": "face 351px, 27% of height, sharpness 164",
+   "score": 4.044
+  },
+  {
+   "file": "File:Just Frank Lampard.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41533/20.jpg",
+   "gate": null,
+   "face": 174,
+   "share": 0.18,
+   "sharp": 251,
+   "room": 5.1,
+   "box": [
+    333,
+    73,
+    128,
+    174
+   ],
+   "yaw": -0.16,
+   "roll": -5.8,
+   "cx": 0.41,
+   "why": "face 174px, 18% of height, sharpness 251",
+   "score": 2.281
+  },
+  {
+   "file": "File:Frank Lampard2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41533/14.jpg",
+   "gate": null,
+   "face": 107,
+   "share": 0.19,
+   "sharp": 276,
+   "room": 4.9,
+   "box": [
+    228,
+    34,
+    76,
+    107
+   ],
+   "yaw": -0.67,
+   "roll": 1.3,
+   "cx": 0.53,
+   "why": "face 107px, 19% of height, sharpness 276",
+   "score": 1.998
+  },
+  {
+   "file": "File:Frank Lampard 2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41533/13.jpg",
+   "gate": null,
+   "face": 79,
+   "share": 0.11,
+   "sharp": 1541,
+   "room": 7.1,
+   "box": [
+    224,
+    140,
+    59,
+    79
+   ],
+   "yaw": -0.01,
+   "roll": 1.4,
+   "cx": 0.4,
+   "why": "face 79px, 11% of height, sharpness 1541",
+   "score": 1.978
+  },
+  {
+   "file": "File:Frank Lampard vs Arsenal 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41533/18.jpg",
+   "gate": null,
+   "face": 65,
+   "share": 0.12,
+   "sharp": 560,
+   "room": 5.4,
+   "box": [
+    421,
+    190,
+    50,
+    65
+   ],
+   "yaw": -0.16,
+   "roll": -1.4,
+   "cx": 0.46,
+   "why": "face 65px, 12% of height, sharpness 560",
+   "score": 1.769
+  },
+  {
+   "file": "File:Frank Lampard 2012 FIFA Club World Cup.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/27.jpg",
+   "gate": null,
+   "face": 63,
+   "share": 0.1,
+   "sharp": 1365,
+   "room": 9.4,
+   "box": [
+    447,
+    47,
+    48,
+    63
+   ],
+   "yaw": 0.04,
+   "roll": -0.8,
+   "cx": 0.49,
+   "why": "face 63px, 10% of height, sharpness 1365",
+   "score": 1.76
+  },
+  {
+   "file": "File:Frank Lampard against AS Roma 2013 (3).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q41533/31.jpg",
+   "gate": null,
+   "face": 135,
+   "share": 0.15,
+   "sharp": 830,
+   "room": 5.0,
+   "box": [
+    444,
+    201,
+    93,
+    135
+   ],
+   "yaw": 0.47,
+   "roll": -3.1,
+   "cx": 0.51,
+   "why": "face 135px, 15% of height, sharpness 830",
+   "score": 1.736
+  },
+  {
+   "file": "File:Frank Lampard 2010.JPG",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q41533/21.jpg",
+   "gate": null,
+   "face": 111,
+   "share": 0.1,
+   "sharp": 173,
+   "room": 9.6,
+   "box": [
+    151,
+    58,
+    84,
+    111
+   ],
+   "yaw": -0.27,
+   "roll": -1.0,
+   "cx": 0.37,
+   "why": "face 111px, 10% of height, sharpness 173",
+   "score": 1.09
+  },
+  {
+   "file": "File:Frank Lampard against AS Roma 2013 (2).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q41533/30.jpg",
+   "gate": null,
+   "face": 122,
+   "share": 0.12,
+   "sharp": 460,
+   "room": 7.2,
+   "box": [
+    427,
+    135,
+    89,
+    122
+   ],
+   "yaw": 0.62,
+   "roll": -6.5,
+   "cx": 0.49,
+   "why": "face 122px, 12% of height, sharpness 460",
+   "score": 1.024
+  },
+  {
+   "file": "File:Frank Lampard against AS Roma 2013 (4).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q41533/32.jpg",
+   "gate": null,
+   "face": 91,
+   "share": 0.09,
+   "sharp": 659,
+   "room": 7.3,
+   "box": [
+    417,
+    364,
+    78,
+    91
+   ],
+   "yaw": -0.3,
+   "roll": -7.0,
+   "cx": 0.47,
+   "why": "face 91px, 9% of height, sharpness 659",
+   "score": 0.955
+  },
+  {
+   "file": "File:Frank Lampard tour.JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41533/3.jpg",
+   "gate": null,
+   "face": 56,
+   "share": 0.14,
+   "sharp": 466,
+   "room": 6.6,
+   "box": [
+    42,
+    41,
+    53,
+    56
+   ],
+   "yaw": -0.28,
+   "roll": -1.0,
+   "cx": 0.25,
+   "why": "face 56px, 14% of height, sharpness 466",
+   "score": 0.772
+  },
+  {
+   "file": "File:Frank Lampard vs Norwich City.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/28.jpg",
+   "gate": null,
+   "face": 148,
+   "share": 0.1,
+   "sharp": 527,
+   "room": 8.1,
+   "box": [
+    370,
+    244,
+    130,
+    148
+   ],
+   "yaw": 0.3,
+   "roll": -21.7,
+   "cx": 0.45,
+   "why": "face 148px, 10% of height, sharpness 527",
+   "score": 0.736
+  },
+  {
+   "file": "File:Frank Lampard against AS Roma 2013 (5).jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q41533/33.jpg",
+   "gate": null,
+   "face": 78,
+   "share": 0.06,
+   "sharp": 829,
+   "room": 11.8,
+   "box": [
+    485,
+    453,
+    61,
+    78
+   ],
+   "yaw": 0.54,
+   "roll": 3.1,
+   "cx": 0.54,
+   "why": "face 78px, 6% of height, sharpness 829",
+   "score": 0.725
+  },
+  {
+   "file": "File:Frank Lampard 21-02-15.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q41533/39.jpg",
+   "gate": null,
+   "face": 60,
+   "share": 0.09,
+   "sharp": 151,
+   "room": 10.0,
+   "box": [
+    103,
+    63,
+    46,
+    60
+   ],
+   "yaw": 0.13,
+   "roll": -2.3,
+   "cx": 0.43,
+   "why": "face 60px, 9% of height, sharpness 151",
+   "score": 0.708
+  },
+  {
+   "file": "File:Frank Lampard 09.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41533/15.jpg",
+   "gate": null,
+   "face": 102,
+   "share": 0.11,
+   "sharp": 259,
+   "room": 8.9,
+   "box": [
+    95,
+    49,
+    68,
+    102
+   ],
+   "yaw": -0.85,
+   "roll": 0.8,
+   "cx": 0.31,
+   "why": "face 102px, 11% of height, sharpness 259",
+   "score": 0.577
+  },
+  {
+   "file": "File:Frank Lampard 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41533/17.jpg",
+   "gate": null,
+   "face": 103,
+   "share": 0.07,
+   "sharp": 195,
+   "room": 9.0,
+   "box": [
+    492,
+    455,
+    68,
+    103
+   ],
+   "yaw": 1.45,
+   "roll": -8.2,
+   "cx": 0.55,
+   "why": "face 103px, 7% of height, sharpness 195",
+   "score": 0.361
+  },
+  {
+   "file": "File:Frank Lampard8.JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41533/5.jpg",
+   "gate": null,
+   "face": 69,
+   "share": 0.17,
+   "sharp": 647,
+   "room": 5.4,
+   "box": [
+    94,
+    34,
+    44,
+    69
+   ],
+   "yaw": -5.61,
+   "roll": 44.4,
+   "cx": 0.38,
+   "why": "face 69px, 17% of height, sharpness 647",
+   "score": 0.002
+  },
+  {
+   "file": "File:Frank Lampard in the rain - geograph.org.uk - 1608772.jpg",
+   "p18": false,
+   "year": 2004,
+   "local": "cand/Q41533/0.jpg",
+   "gate": "face 31px, too small",
+   "why": "face 31px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard cropped.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q41533/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lampard chelsea.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q41533/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lampard chelsea2.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41533/6.jpg",
+   "gate": "photo ends at the chin (1.8 face heights below)",
+   "why": "photo ends at the chin (1.8 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Lampard playing.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41533/7.jpg",
+   "gate": "face sharpness 55, soft",
+   "face": 120,
+   "share": 0.1,
+   "sharp": 55,
+   "room": 8.9,
+   "box": [
+    231,
+    77,
+    91,
+    120
+   ],
+   "yaw": -0.5,
+   "roll": 1.8,
+   "cx": 0.56,
+   "why": "face sharpness 55, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Terry lampard.JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q41533/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ballack Lampard warmup.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41533/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:FLampard.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41533/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard 18-10-2008 1.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q41533/12.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard 2009 2.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41533/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q41533/19.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Lampard penalty against Wales.png",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q41533/22.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Ashley Cole and Frank Lampard.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/23.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Bosingwa Kalou Meireles Mikel Lampard.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Fernando Torres Frank Lampard 2012 FIFA Club World Cup.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/25.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lampard Drogba Gomez Robben.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q41533/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard against AS Roma 2013.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q41533/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard v PSG 2014.jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q41533/35.jpg",
+   "gate": "face 41px, too small",
+   "why": "face 41px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard'13-14.JPG",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q41533/36.jpg",
+   "gate": "face sharpness 69, soft",
+   "face": 232,
+   "share": 0.19,
+   "sharp": 69,
+   "room": 4.7,
+   "box": [
+    241,
+    105,
+    169,
+    232
+   ],
+   "yaw": -0.58,
+   "roll": 0.9,
+   "cx": 0.34,
+   "why": "face sharpness 69, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Sel\u00e7uk Lampard.JPG",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q41533/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Frank Lampard 2015.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q41533/38.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  }
+ ]
+}

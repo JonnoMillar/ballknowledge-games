@@ -426,6 +426,39 @@ button { font-family: inherit; }
    It gets the ground as a frame instead: the coloured border a sticker has
    always had, and the reveal still changes the card. */
 .sticker__photo--cover > img { inset: 7px; width: calc(100% - 14px); height: calc(100% - 14px); }
+.sticker__photo--box > img {
+  object-fit: cover;
+  object-position: 50% 100%;
+  filter: drop-shadow(0 2px 3px rgba(20, 18, 16, 0.25));
+}
+/* Dev only: the "wrong photo" button (Sticker.tsx FlagPhoto), on hover. */
+.sticker__flag { display: none; position: absolute; z-index: 4; inset: 4px auto auto 4px; padding: 3px 7px; border: 0; border-radius: 3px; background: var(--ink); color: #fff; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.sticker:hover .sticker__flag, .sticker__flag:focus-visible { display: block; }
+/* The kit card: an anonymous figure on the ground (grey, or the grade's material). The figure
+   is a mask (--kit-url, set by a preview to try another; /kit-figure.png is the one that ships). */
+.sticker__kit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--kit-ink, rgba(20, 18, 16, 0.8));
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.35));
+  -webkit-mask: var(--kit-url, url(/kit-figure.png)) 50% 100% / 100% auto no-repeat;
+  mask: var(--kit-url, url(/kit-figure.png)) 50% 100% / 100% auto no-repeat;
+}
+.sticker__photo > .sticker__crest {
+  position: absolute;
+  z-index: 2;
+  inset: 4% 5% auto auto;
+  width: 24%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  padding: 4%;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 50%;
+  filter: drop-shadow(0 1px 1px rgba(20, 18, 16, 0.25));
+  pointer-events: none;
+}
 /* Clean cards (a draft, dev preview only for now: `.cards-clean` on an
    ancestor): a player with a picture stands on a plain studio backdrop, with
    no club ground, no seam and no club-coloured frame. A player with no
@@ -438,23 +471,25 @@ button { font-family: inherit; }
   background: radial-gradient(120% 90% at 50% 22%, #FFFFFF 0%, #EEEAE1 62%, #DDD8CB 100%);
 }
 .cards-clean .sticker--shot .sticker__photo--cover > img { inset: 0; width: 100%; height: 100%; }
-/* Grade material (Steps, `.cards-grade` on its root): a player with a picture
-   stands on grey, with no club ground, seam or club-coloured frame, until
-   the verdict; then the case's own material rides the ground's two halves
-   in from the corners (the develop) and carries on behind the player,
-   darker towards the edges so the face stays the brightest thing. A bare
-   sticker (a given, a pick not judged yet, a miss) keeps the grey, so the
-   ground never names a grade early. A kit card (no picture) keeps its club
-   ground. */
+/* Grade material (`.cards-grade`, on <body>: one rule site-wide, Jonno 2026-10-29): a
+   sticker has no club ground, seam or club-coloured frame. A card with no grade yet
+   (Rondo passes, How to play demos, Steps before the verdict) stands on the plain grey
+   of `.sticker__photo`; once a case seals it, the case's own material rides the ground's
+   two halves in from the corners (the develop) and carries on behind the player, darker
+   towards the edges so the face stays the brightest thing. The kit card (no picture) is
+   the same: its figure on grey or on the material. Chain's own board is the one place
+   the ground is the verdict (a club's colour per link, red for a broken one), so
+   `.cards-links` on its root keeps the two-colour ground. The empty slot is not a card. */
 .cards-grade .slab--basic { --material: linear-gradient(150deg, #5f3b21 0%, #8d5f3b 30%, #a8784f 50%, #87593a 72%, #5a381f 100%); }
 .cards-grade .slab--decent { --material: linear-gradient(150deg, #8b939c 0%, #d7dce2 30%, #f2f4f6 46%, #b7bec6 64%, #e3e7eb 82%, #949ca5 100%); }
 .cards-grade .slab--solid { --material: linear-gradient(150deg, #7a5710 0%, #c99c36 28%, #f0d68a 46%, #b88a24 64%, #e6c56a 82%, #7f5c12 100%); }
 .cards-grade .slab--sharp { --material: url('/grades/sharp.jpg') center / cover; }
 .cards-grade .slab--elite { --material: url('/grades/elite.jpg') center / cover; }
-.cards-grade .sticker--shot .sticker__seam,
-.cards-grade .sticker--shot:not(.slab .sticker) .sticker__half { display: none; }
-.cards-grade .sticker--shot .sticker__photo::after { border: 0; opacity: 1; z-index: 0; background: radial-gradient(90% 75% at 50% 32%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.32) 100%); }
-.cards-grade .slab .sticker--shot .sticker__half { background: var(--material) !important; }
+.cards-grade :is(.slab--sharp, .slab--elite) { --kit-ink: rgba(255, 255, 255, 0.78); }   /* a dark figure would vanish on sapphire and onyx */
+.cards-grade .sticker:not(.sticker--empty, .cards-links .sticker) .sticker__seam,
+.cards-grade .sticker:not(.sticker--empty, .cards-links .sticker, .slab .sticker) .sticker__half { display: none; }
+.cards-grade .sticker:not(.sticker--empty, .cards-links .sticker) .sticker__photo::after { border: 0; opacity: 1; z-index: 0; background: radial-gradient(90% 75% at 50% 32%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.32) 100%); }
+.cards-grade .slab .sticker:not(.sticker--empty, .cards-links .sticker) .sticker__half { background: var(--material) !important; }
 .sticker__figure { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 .sticker__plate {
   display: flex;
@@ -1349,7 +1384,7 @@ html.table-off .table { display: none; }
 .slab--sm { --sticker-w: 124px; --slab-pad: 9px; }
 .slab--md { --sticker-w: 136px; }
 .slab--lg { --sticker-w: 208px; --slab-pad: 13px; }
-@media (min-width: 760px) { .slab--md { --sticker-w: 150px; } }
+@media (min-width: 760px) { .slab--md { --sticker-w: 190px; } }
 .slab__face {
   position: absolute;
   inset: 0;
@@ -2122,3 +2157,55 @@ html.is-smoothing::view-transition-old(*), html.is-smoothing::view-transition-ne
 html.is-smoothing::view-transition-old(.game), html.is-smoothing::view-transition-new(.game) { object-fit: fill; }
 html.is-smoothing::view-transition-old(*):only-child { animation: vt-leave 180ms var(--ease-in) both; }
 html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260ms var(--ease-out) 90ms both; }
+
+/* ── DEV ONLY: /grounds, the card's look on the site-wide grade material ──
+   Real cutouts, and the kit card's candidate figures (`--kit-url`), each on grey
+   and on the five grades' materials. */
+.gprev { display: flex; flex-direction: column; gap: 20px; padding: 20px 16px 40px; max-width: 1100px; margin: 0 auto; }
+.gprev__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.gprev__bar .hero__eyebrow { margin: 0 8px 0 0; }
+.gprev__btn {
+  appearance: none; border: 0; min-height: 40px; padding: 0 12px; border-radius: 8px;
+  background: var(--panel); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--rule-strong);
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.gprev__btn.is-on { background: var(--ink); color: #fff; box-shadow: none; }
+.gprev__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 14px; justify-items: center; }
+.gprev__grid, .gprev__grid .slab--sm, .gprev__row .slab--sm { --sticker-w: 124px; }
+.gprev__bar .gprev__gap { margin-left: 16px; }
+@media (min-width: 1100px) { .gprev__grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+.gprev__opt { display: flex; flex-direction: column; gap: 8px; }
+.gprev__opt h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.gprev__row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+.gprev__row > li { --sticker-w: 124px; }
+
+/* ── DEV ONLY: /photo-check, marking the wrong cutouts ──────────────────── */
+.pc { display: flex; flex-direction: column; gap: 14px; padding: 16px; max-width: 1400px; margin: 0 auto; --sticker-w: 190px; }
+.pc__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; position: sticky; top: 0; z-index: 8; padding: 10px 0; background: var(--page); border-bottom: 1.5px solid var(--rule-strong); }
+.pc__group { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+.pc__help { margin: 0; font-size: 14px; }
+.pc__h { margin: 12px 0 0; font-size: 16px; }
+.pc__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: 18px 12px; justify-items: center; }
+.pc__item { position: relative; }
+.pc__item:hover, .pc__item:focus-within { z-index: 4; }
+.pc__card { position: relative; padding: 6px; min-height: 280px; border-radius: 4px; display: flex; align-items: flex-start; justify-content: center; }
+.pc__card.is-wrong { box-shadow: 0 0 0 4px var(--ink); background: rgba(20, 18, 16, 0.1); }
+.pc__card.is-wrong .sticker { opacity: 0.55; }
+.pc__card.is-soft { box-shadow: 0 0 0 2px var(--ink); }
+.pc__card.is-suggested { outline: 3px dashed var(--ink); outline-offset: 2px; }
+.pc__flag { position: absolute; top: 6px; left: 6px; z-index: 3; padding: 1px 6px; font-size: 12px; font-weight: 700; color: var(--ink); background: rgba(255, 255, 255, 0.85); border-radius: 2px; }
+.pc__card.is-suggested .pc__flag { color: #fff; background: var(--ink); font-size: 12px; font-weight: 700; }
+.pc__card.is-wrong .pc__flag { color: #fff; background: var(--ink); font-size: 14px; padding: 3px 8px; }
+.pc__tagline { position: absolute; left: 6px; right: 6px; bottom: 6px; z-index: 3; padding: 2px 5px; font-size: 12px; line-height: 1.25; font-weight: 700; color: #fff; background: var(--ink); border-radius: 2px; }
+.pc .sticker .sticker__flag { display: none !important; }   /* the in-game button; this page has the tags */
+/* The tag buttons sit over the lower half of the photo (shirt and shoulders), so the face stays visible while he tags. */
+.pc__tags { position: absolute; left: 6px; right: 6px; bottom: 6px; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 0; }
+.pc__tag { appearance: none; border: 1.5px solid var(--ink); border-radius: 2px; padding: 1px 4px; background: rgba(255, 255, 255, 0.9); color: var(--ink); font: inherit; font-size: 11px; line-height: 1.2; font-weight: 600; text-align: left; cursor: pointer; }
+.pc__tag b { display: inline-block; min-width: 0.8em; }
+.pc__tag.is-wide { grid-column: 1 / -1; }
+.pc__tag:hover, .pc__tag:focus-visible { background: var(--ink-soft, #e8e4dc); outline: 2px solid var(--ink); }
+.pc__tag.is-on { background: var(--ink); color: #fff; }
+.pc__tag.is-on.is-suggested { background: rgba(255, 255, 255, 0.94); color: var(--ink); border-style: dashed; border-width: 2px; }
+.pp__row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--rule-strong); }
+.pp__name { margin: 0; font-size: 16px; }
+.pp__opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }

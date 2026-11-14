@@ -11,7 +11,10 @@
    119,
    211,
    336
-  ]
+  ],
+  "yaw": -0.34,
+  "roll": 1.7,
+  "cx": 0.51
  },
  {
   "file": "File:Cesc Fabregas 2011.jpg",
@@ -25,7 +28,10 @@
    114,
    149,
    214
-  ]
+  ],
+  "yaw": 0.11,
+  "roll": -2.4,
+  "cx": 0.48
  },
  {
   "file": "File:Fabregas newcastle emirates.jpg",
@@ -39,7 +45,10 @@
    85,
    179,
    213
-  ]
+  ],
+  "yaw": 0.12,
+  "roll": -8.9,
+  "cx": 0.45
  },
  {
   "file": "File:Cesc F\u00e0bregas 2011-09-22 001.jpg",
@@ -53,7 +62,10 @@
    97,
    118,
    156
-  ]
+  ],
+  "yaw": -0.07,
+  "roll": -0.1,
+  "cx": 0.46
  },
  {
   "file": "File:Cesc F\u00e0bregas in 2011-10-22 002.jpg",
@@ -67,7 +79,10 @@
    75,
    80,
    139
-  ]
+  ],
+  "yaw": 0.54,
+  "roll": -0.3,
+  "cx": 0.64
  },
  {
   "file": "File:Cesc F\u00e0bregas 1 (5194376123).jpg",
@@ -81,7 +96,10 @@
    250,
    78,
    143
-  ]
+  ],
+  "yaw": 0.48,
+  "roll": 1.7,
+  "cx": 0.43
  },
  {
   "file": "File:Cesc F\u00e0bregas 4.jpg",
@@ -95,7 +113,10 @@
    250,
    78,
    143
-  ]
+  ],
+  "yaw": 0.48,
+  "roll": 1.7,
+  "cx": 0.43
  },
  {
   "file": "File:Cesc F\u00e0bregas 2011-09-22 002.jpg",
@@ -109,7 +130,10 @@
    206,
    103,
    128
-  ]
+  ],
+  "yaw": -0.1,
+  "roll": -18.9,
+  "cx": 0.56
  },
  {
   "file": "File:Cesc F\u00e0bregas Anderson.jpg",
@@ -123,7 +147,10 @@
    145,
    54,
    73
-  ]
+  ],
+  "yaw": -0.45,
+  "roll": 0.8,
+  "cx": 0.67
  },
  {
   "file": "File:Cesc F\u00e0bregas 3 (5194463073).jpg",
@@ -137,7 +164,10 @@
    367,
    72,
    96
-  ]
+  ],
+  "yaw": -0.07,
+  "roll": -1.1,
+  "cx": 0.35
  },
  {
   "file": "File:Cesc F\u00e0bregas 2 (5194447611).jpg",
@@ -151,7 +181,10 @@
    306,
    85,
    97
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": -1.1,
+  "cx": 0.35
  },
  {
   "file": "File:Cesc Fabregas 2009-05-10.jpg",
@@ -165,7 +198,10 @@
    200,
    54,
    63
-  ]
+  ],
+  "yaw": 0.13,
+  "roll": -1.8,
+  "cx": 0.57
  },
  {
   "file": "File:Cesc Fabregas.jpg",
@@ -179,7 +215,10 @@
    44,
    40,
    50
-  ]
+  ],
+  "yaw": 0.07,
+  "roll": 0.4,
+  "cx": 0.52
  },
  {
   "file": "File:William Gallas & Cesc F\u00e0bregas 2 (5195045788).jpg",
@@ -193,7 +232,10 @@
    595,
    48,
    63
-  ]
+  ],
+  "yaw": 0.53,
+  "roll": -7.4,
+  "cx": 0.93
  },
  {
   "file": "File:2023 - Cesc Fabregas (cropped).jpg",

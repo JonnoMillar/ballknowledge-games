@@ -1,4 +1,4 @@
-import { creditsFor } from '../../src/server/credits';
+import { creditsFor, kitFigureCredit } from '../../src/server/credits';
 import Back from '../../components/Back';
 
 export const metadata = { title: 'Credits · Chain' };
@@ -10,6 +10,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
   const asked = ((await searchParams).l ?? 'A').toUpperCase();
   const letter = LETTERS.includes(asked) ? asked : 'A';
   const { rows, counts, total } = await creditsFor(letter);
+  const kit = await kitFigureCredit();
 
   return (
     <div className="app">
@@ -85,6 +86,15 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
           <p>
             {total.toLocaleString('en-GB')} photos from Wikimedia Commons, each under the licence its author
             chose. Every one is listed below with its author and licence; the file link has the full details.
+            Most are shown cut out and cropped to the frame, which makes them adaptations, so those cutouts are
+            shared under the same licence as the photo they came from.
+            {kit ? (
+              <>
+                {' '}The blacked-out figure on a card with no photo is a cutout of{' '}
+                <a href={commonsPage(kit.file)}>a photo</a> by {kit.artist}
+                {' '}({kit.licenceUrl ? <a href={kit.licenceUrl}>{kit.licence}</a> : kit.licence}).
+              </>
+            ) : null}
           </p>
 
           <nav className="credits__letters" aria-label="Players by letter">
@@ -102,7 +112,7 @@ export default async function Credits({ searchParams }: { searchParams: Promise<
             <tbody>
               {rows.map((r) => (
                 <tr key={`${r.player}|${r.file}`}>
-                  <td><a href={commonsPage(r.file)}>{r.player}</a></td>
+                  <td><a href={r.url ?? commonsPage(r.file)}>{r.player}</a></td>
                   <td>{r.artist}</td>
                   <td>{r.licenceUrl ? <a href={r.licenceUrl}>{r.licence}</a> : r.licence}</td>
                 </tr>

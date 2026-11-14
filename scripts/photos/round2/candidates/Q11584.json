@@ -1,0 +1,527 @@
+{
+ "span": [
+  1998,
+  2020
+ ],
+ "prime": 2007.0,
+ "cat": "Iker Casillas",
+ "files": 80,
+ "cands": [
+  {
+   "file": "File:Iker Casillas 2.jpg",
+   "p18": true,
+   "year": 2018,
+   "local": "cand/Q11584/0.jpg",
+   "gate": null,
+   "face": 165,
+   "share": 0.27,
+   "sharp": 987,
+   "room": 3.5,
+   "box": [
+    191,
+    46,
+    124,
+    165
+   ],
+   "yaw": 0.13,
+   "roll": -5.1,
+   "cx": 0.5,
+   "why": "face 165px, 27% of height, sharpness 987",
+   "score": 7.176
+  },
+  {
+   "file": "File:Iker Casillas (2007).JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q11584/8.jpg",
+   "gate": null,
+   "face": 253,
+   "share": 0.33,
+   "sharp": 388,
+   "room": 2.3,
+   "box": [
+    440,
+    194,
+    181,
+    253
+   ],
+   "yaw": 0.03,
+   "roll": 7.1,
+   "cx": 0.55,
+   "why": "face 253px, 33% of height, sharpness 388",
+   "score": 6.431
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833111835).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/38.jpg",
+   "gate": null,
+   "face": 185,
+   "share": 0.19,
+   "sharp": 1403,
+   "room": 4.4,
+   "box": [
+    426,
+    145,
+    137,
+    185
+   ],
+   "yaw": 0.02,
+   "roll": 0.7,
+   "cx": 0.52,
+   "why": "face 185px, 19% of height, sharpness 1403",
+   "score": 4.227
+  },
+  {
+   "file": "File:Iker Casillas in 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q11584/15.jpg",
+   "gate": null,
+   "face": 169,
+   "share": 0.19,
+   "sharp": 941,
+   "room": 5.0,
+   "box": [
+    230,
+    50,
+    124,
+    169
+   ],
+   "yaw": 0.04,
+   "roll": -3.1,
+   "cx": 0.49,
+   "why": "face 169px, 19% of height, sharpness 941",
+   "score": 2.105
+  },
+  {
+   "file": "File:IkerCasillas2010.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/23.jpg",
+   "gate": null,
+   "face": 89,
+   "share": 0.09,
+   "sharp": 129,
+   "room": 9.8,
+   "box": [
+    177,
+    83,
+    72,
+    89
+   ],
+   "yaw": -0.08,
+   "roll": -0.2,
+   "cx": 0.47,
+   "why": "face 89px, 9% of height, sharpness 129",
+   "score": 1.581
+  },
+  {
+   "file": "File:\u00cdker Casillas en La Romareda.JPG",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/24.jpg",
+   "gate": null,
+   "face": 81,
+   "share": 0.11,
+   "sharp": 150,
+   "room": 5.2,
+   "box": [
+    494,
+    295,
+    64,
+    81
+   ],
+   "yaw": 0.14,
+   "roll": 1.3,
+   "cx": 0.55,
+   "why": "face 81px, 11% of height, sharpness 150",
+   "score": 1.403
+  },
+  {
+   "file": "File:Iker Casillas Eurocopa.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11584/14.jpg",
+   "gate": null,
+   "face": 69,
+   "share": 0.11,
+   "sharp": 947,
+   "room": 9.0,
+   "box": [
+    556,
+    18,
+    64,
+    69
+   ],
+   "yaw": 0.1,
+   "roll": -6.7,
+   "cx": 0.61,
+   "why": "face 69px, 11% of height, sharpness 947",
+   "score": 1.228
+  },
+  {
+   "file": "File:Iker Casillas 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q11584/9.jpg",
+   "gate": null,
+   "face": 131,
+   "share": 0.14,
+   "sharp": 935,
+   "room": 6.4,
+   "box": [
+    256,
+    96,
+    104,
+    131
+   ],
+   "yaw": 0.01,
+   "roll": -1.6,
+   "cx": 0.6,
+   "why": "face 131px, 14% of height, sharpness 935",
+   "score": 1.167
+  },
+  {
+   "file": "File:Iker Casillas Eurocopa (cropped).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11584/13.jpg",
+   "gate": null,
+   "face": 135,
+   "share": 0.1,
+   "sharp": 106,
+   "room": 9.8,
+   "box": [
+    348,
+    51,
+    127,
+    135
+   ],
+   "yaw": -0.02,
+   "roll": -19.6,
+   "cx": 0.43,
+   "why": "face 135px, 10% of height, sharpness 106",
+   "score": 1.011
+  },
+  {
+   "file": "File:IkerCasillas.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11584/18.jpg",
+   "gate": null,
+   "face": 220,
+   "share": 0.11,
+   "sharp": 115,
+   "room": 8.3,
+   "box": [
+    509,
+    139,
+    135,
+    220
+   ],
+   "yaw": 0.87,
+   "roll": -2.4,
+   "cx": 0.6,
+   "why": "face 220px, 11% of height, sharpness 115",
+   "score": 0.871
+  },
+  {
+   "file": "File:Iker Casillas.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q11584/17.jpg",
+   "gate": null,
+   "face": 108,
+   "share": 0.11,
+   "sharp": 1623,
+   "room": 8.8,
+   "box": [
+    244,
+    46,
+    75,
+    108
+   ],
+   "yaw": -0.72,
+   "roll": 0.7,
+   "cx": 0.45,
+   "why": "face 108px, 11% of height, sharpness 1623",
+   "score": 0.641
+  },
+  {
+   "file": "File:\"Iker Casillas\" (4993976167).jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alcobendas - Calle de Iker Casillas.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q11584/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Casillas a por todas (2795198549).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11584/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Casillas organizando.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11584/4.jpg",
+   "gate": "face 41px, too small",
+   "why": "face 41px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Casillas Spain vs England cropped.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11584/5.jpg",
+   "gate": "face sharpness 48, soft",
+   "face": 148,
+   "share": 0.09,
+   "sharp": 48,
+   "room": 10.4,
+   "box": [
+    417,
+    178,
+    114,
+    148
+   ],
+   "yaw": -0.07,
+   "roll": 1.1,
+   "cx": 0.49,
+   "why": "face sharpness 48, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Casillas Spain vs England.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11584/6.jpg",
+   "gate": "face 44px, too small",
+   "why": "face 44px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Iker Casillas (2007) (cropped).JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q11584/7.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Iker Casillas back (4135679583).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11584/10.jpg",
+   "gate": "face 29px, too small",
+   "why": "face 29px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Iker Casillas calentando (4135679273).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11584/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Iker Casillas con el pie (4135679433).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11584/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Iker Casillas's gloves.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11584/16.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Casillas besando la Copa del Mundo de f\u00fatbol.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:CasillasReal cropped.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:CasillasReal.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Iker Casillas (5098204948).jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11584/22.jpg",
+   "gate": "face 44px, too small",
+   "why": "face 44px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833106195).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/25.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833106525).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833107099).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/27.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833107423).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833107813).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833108219).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833108603).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833108863).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833110137) (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/33.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833110137).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833110817).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833110933).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833111427).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:14-6-2011 Visita Iker Casillas (5833660954).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11584/39.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

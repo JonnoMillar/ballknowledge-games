@@ -1,0 +1,436 @@
+{
+ "span": [
+  2000,
+  2017
+ ],
+ "prime": 2008.5,
+ "cat": "Kak\u00e1 (association football player)",
+ "files": 80,
+ "cands": [
+  {
+   "file": "File:Kaka 355 280 px.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/10.jpg",
+   "gate": null,
+   "face": 96,
+   "share": 0.34,
+   "sharp": 773,
+   "room": 2.4,
+   "box": [
+    145,
+    53,
+    70,
+    96
+   ],
+   "yaw": 0.23,
+   "roll": 0.8,
+   "cx": 0.51,
+   "why": "face 96px, 34% of height, sharpness 773",
+   "score": 6.001
+  },
+  {
+   "file": "File:Kaka samba d or.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/27.jpg",
+   "gate": null,
+   "face": 145,
+   "share": 0.2,
+   "sharp": 1022,
+   "room": 4.3,
+   "box": [
+    499,
+    96,
+    108,
+    145
+   ],
+   "yaw": 0.0,
+   "roll": -1.0,
+   "cx": 0.58,
+   "why": "face 145px, 20% of height, sharpness 1022",
+   "score": 4.409
+  },
+  {
+   "file": "File:Kaka of AC Milan, April 19, 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/24.jpg",
+   "gate": null,
+   "face": 277,
+   "share": 0.23,
+   "sharp": 272,
+   "room": 3.6,
+   "box": [
+    409,
+    196,
+    197,
+    277
+   ],
+   "yaw": 0.05,
+   "roll": -2.1,
+   "cx": 0.63,
+   "why": "face 277px, 23% of height, sharpness 272",
+   "score": 3.378
+  },
+  {
+   "file": "File:Kaka06052007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/14.jpg",
+   "gate": null,
+   "face": 90,
+   "share": 0.13,
+   "sharp": 359,
+   "room": 6.5,
+   "box": [
+    205,
+    95,
+    69,
+    90
+   ],
+   "yaw": 0.19,
+   "roll": 0.4,
+   "cx": 0.53,
+   "why": "face 90px, 13% of height, sharpness 359",
+   "score": 2.128
+  },
+  {
+   "file": "File:Kak\u00e1 (3940190283).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/31.jpg",
+   "gate": null,
+   "face": 131,
+   "share": 0.2,
+   "sharp": 321,
+   "room": 3.5,
+   "box": [
+    446,
+    178,
+    88,
+    131
+   ],
+   "yaw": 0.81,
+   "roll": -9.0,
+   "cx": 0.51,
+   "why": "face 131px, 20% of height, sharpness 321",
+   "score": 1.689
+  },
+  {
+   "file": "File:Ricardo Izecson dos Santos Leite (Kak\u00e1) 01.jpg",
+   "p18": true,
+   "year": 2007,
+   "local": "cand/Q531814/0.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Adidas Kak\u00e1 shirt rear.JPG",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q531814/1.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Adidas Kak\u00e1 Track Top front.JPG",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q531814/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Adidas Kak\u00e1 Track Top rear.JPG",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q531814/3.jpg",
+   "gate": "face 45px, too small",
+   "why": "face 45px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Delgado and Kaka.png",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q531814/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Jersey of Kaka.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q531814/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka boots.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q531814/6.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka.JPG",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q531814/7.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka061115 Crop.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q531814/8.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka061115.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q531814/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka and Lula.JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka caroline.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka in Moscow 2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/13.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (Peru vs Peru).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 in 2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/16.jpg",
+   "gate": "photo ends at the chin (1.8 face heights below)",
+   "why": "photo ends at the chin (1.8 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q531814/17.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:... y ahora Kak\u00e1 (4062578000).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/18.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:...Kaka 2... (3868265305).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:...Kaka 3...y (3868265481).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Guti por Kak\u00e1 (3869052664).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/21.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka 1... (3868265107).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka and Cristiano Ronaldo of Real Madrid, August 29, 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/23.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka of Real Madrid, August 29, 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/25.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kaka portrait, February 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/26.jpg",
+   "gate": "photo ends at the chin (1.4 face heights below)",
+   "why": "photo ends at the chin (1.4 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3868260191).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/28.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3868269997).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/29.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3940190103).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/30.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3940190719).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3940191873).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3940192105).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3940968010).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3970341862).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3970345330).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (3970345504).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Kak\u00e1 (4135685617).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q531814/39.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

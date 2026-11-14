@@ -130,6 +130,17 @@ async function careers(): Promise<Map<string, [number, number]>> {
     const last = Math.max(0, ...Object.values(p.spells ?? {}).map((s) => s[2] ?? 0));
     if (cur && last > cur[1]) out.set(p.id, [cur[0], last]);
   }
+  // A last spell with no end year that is not a loan means still playing: the
+  // span runs to this year. Without this Messi's 2026 photos count as taken
+  // after he retired (his Inter Miami spell has no end in careers.json).
+  const stints = (JSON.parse(await readFile('data/careers.json', 'utf8')) as {
+    players: Record<string, { stints: { to?: number; loan?: boolean }[] }>;
+  }).players;
+  const thisYear = new Date().getFullYear();
+  for (const [id, span] of out) {
+    const last = stints[id]?.stints.at(-1);
+    if (last && last.to === undefined && !last.loan) out.set(id, [span[0], thisYear]);
+  }
   return out;
 }
 

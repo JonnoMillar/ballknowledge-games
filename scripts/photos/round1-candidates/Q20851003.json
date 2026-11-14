@@ -11,7 +11,10 @@
    218,
    283,
    382
-  ]
+  ],
+  "yaw": 0.27,
+  "roll": -2.7,
+  "cx": 0.6
  },
  {
   "file": "File:Ousmane Dembele France v Senegal 16 June 2026-341 (cropped) 2.jpg",
@@ -25,7 +28,10 @@
    105,
    251,
    349
-  ]
+  ],
+  "yaw": 0.3,
+  "roll": -3.7,
+  "cx": 0.59
  },
  {
   "file": "File:Ousmane Dembele France v Norway 26 June 26-085.jpg",
@@ -39,7 +45,10 @@
    155,
    249,
    332
-  ]
+  ],
+  "yaw": 0.12,
+  "roll": -6.0,
+  "cx": 0.52
  },
  {
   "file": "File:Ousmane Dembele France v Norway 26 June 26-085 (cropped).jpg",
@@ -53,7 +62,10 @@
    142,
    291,
    392
-  ]
+  ],
+  "yaw": 0.13,
+  "roll": -4.5,
+  "cx": 0.5
  },
  {
   "file": "File:Ousmane Dembele France v Senegal 16 June 2026-263.jpg",
@@ -67,7 +79,10 @@
    156,
    237,
    313
-  ]
+  ],
+  "yaw": -0.15,
+  "roll": 1.6,
+  "cx": 0.44
  },
  {
   "file": "File:Ousmane Dembele France v Senegal 16 June 2026-263 (cropped).jpg",
@@ -81,7 +96,10 @@
    179,
    289,
    398
-  ]
+  ],
+  "yaw": -0.23,
+  "roll": 3.9,
+  "cx": 0.44
  },
  {
   "file": "File:Ousmane Demb\u00e9l\u00e9 World Cup Trophy.jpg",
@@ -95,7 +113,10 @@
    132,
    179,
    208
-  ]
+  ],
+  "yaw": 0.48,
+  "roll": -11.0,
+  "cx": 0.47
  },
  {
   "file": "File:Ousmane Demb\u00e9l\u00e9 2018.jpg",
@@ -109,7 +130,10 @@
    64,
    147,
    195
-  ]
+  ],
+  "yaw": 0.35,
+  "roll": -6.9,
+  "cx": 0.53
  },
  {
   "file": "File:Ousmane Dembele France v Senegal 16 June 2026-341.jpg",
@@ -123,7 +147,10 @@
    126,
    164,
    215
-  ]
+  ],
+  "yaw": 0.2,
+  "roll": 0.3,
+  "cx": 0.54
  },
  {
   "file": "File:Saint-L\u00f4 - Rennes CFA2 20150523 - Ousmane Demb\u00e9l\u00e9 4.JPG",
@@ -137,7 +164,10 @@
    234,
    263,
    347
-  ]
+  ],
+  "yaw": 0.22,
+  "roll": -1.9,
+  "cx": 0.51
  },
  {
   "file": "File:Ousmane Dembele France v Norway 26 June 26-084.jpg",
@@ -151,7 +181,10 @@
    92,
    95,
    145
-  ]
+  ],
+  "yaw": 0.47,
+  "roll": -1.5,
+  "cx": 0.47
  },
  {
   "file": "File:Dembele 2018 (cropped).jpg",
@@ -165,7 +198,10 @@
    62,
    98,
    122
-  ]
+  ],
+  "yaw": 0.49,
+  "roll": 2.6,
+  "cx": 0.64
  },
  {
   "file": "File:Dembele170727-2 (cropped).jpg",
@@ -179,7 +215,10 @@
    109,
    228,
    286
-  ]
+  ],
+  "yaw": -0.05,
+  "roll": 16.6,
+  "cx": 0.59
  },
  {
   "file": "File:France national football team 2018 (cropped) - Ousmane Dembele.jpg",
@@ -193,7 +232,10 @@
    56,
    63,
    81
-  ]
+  ],
+  "yaw": -0.11,
+  "roll": -1.9,
+  "cx": 0.51
  },
  {
   "file": "File:Ousmane Dembele France v Senegal 16 June 2026-378.jpg",
@@ -207,7 +249,10 @@
    149,
    101,
    141
-  ]
+  ],
+  "yaw": 0.42,
+  "roll": 5.9,
+  "cx": 0.52
  },
  {
   "file": "File:Ousmane Dembele France v Morocco 9 July 2026-195.jpg",
@@ -221,7 +266,10 @@
    99,
    63,
    82
-  ]
+  ],
+  "yaw": -0.24,
+  "roll": 0.5,
+  "cx": 0.46
  },
  {
   "file": "File:Ousmane Demb\u00e9l\u00e9 vs Valladolid 2.jpg",
@@ -235,7 +283,10 @@
    34,
    40,
    54
-  ]
+  ],
+  "yaw": -0.02,
+  "roll": -0.8,
+  "cx": 0.5
  },
  {
   "file": "File:Ousmane Dembele France v Senegal 16 June 2026-386.jpg",
@@ -249,7 +300,10 @@
    373,
    73,
    95
-  ]
+  ],
+  "yaw": -0.11,
+  "roll": 0.2,
+  "cx": 0.49
  },
  {
   "file": "File:Ousmane Dembele France v Spain 7.24.26-129.jpg",
@@ -263,7 +317,10 @@
    89,
    44,
    61
-  ]
+  ],
+  "yaw": -0.06,
+  "roll": -0.1,
+  "cx": 0.47
  },
  {
   "file": "File:Dembele170727-3.jpg",
@@ -277,7 +334,10 @@
    105,
    46,
    60
-  ]
+  ],
+  "yaw": -0.47,
+  "roll": 0.4,
+  "cx": 0.71
  },
  {
   "file": "File:Saint-L\u00f4 - Rennes CFA2 20150523 - Ousmane Demb\u00e9l\u00e9 3.JPG",
@@ -291,7 +351,10 @@
    154,
    48,
    59
-  ]
+  ],
+  "yaw": 0.14,
+  "roll": 3.5,
+  "cx": 0.23
  },
  {
   "file": "File:Saint-L\u00f4 - Rennes CFA2 20150523 - Ousmane Demb\u00e9l\u00e9 2.JPG",
@@ -305,7 +368,10 @@
    124,
    39,
    65
-  ]
+  ],
+  "yaw": -2.28,
+  "roll": 18.1,
+  "cx": 0.33
  },
  {
   "file": "File:Saint-L\u00f4 - Rennes CFA2 20150523 - Ousmane Demb\u00e9l\u00e9 1.JPG",

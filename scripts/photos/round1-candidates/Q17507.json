@@ -11,7 +11,10 @@
    108,
    150,
    208
-  ]
+  ],
+  "yaw": 0.4,
+  "roll": -7.7,
+  "cx": 0.55
  },
  {
   "file": "File:Piqu\u00e9.jpg",
@@ -25,7 +28,10 @@
    132,
    142,
    197
-  ]
+  ],
+  "yaw": -0.34,
+  "roll": 6.1,
+  "cx": 0.48
  },
  {
   "file": "File:SalPIQU\u00c9 su chicle aqu\u00ed (letrero en Calle Venustiano Carranza).jpg",
@@ -39,7 +45,10 @@
    228,
    191,
    217
-  ]
+  ],
+  "yaw": 0.21,
+  "roll": -9.6,
+  "cx": 0.69
  },
  {
   "file": "File:Pique.jpg",
@@ -53,7 +62,10 @@
    181,
    108,
    166
-  ]
+  ],
+  "yaw": 1.23,
+  "roll": -10.5,
+  "cx": 0.48
  },
  {
   "file": "File:Gerard Piqu\u00e9 2018.jpg",
@@ -67,7 +79,10 @@
    90,
    89,
    123
-  ]
+  ],
+  "yaw": 0.38,
+  "roll": -2.3,
+  "cx": 0.54
  },
  {
   "file": "File:Gerard piqu\u00e9 SPA-ITA Euro 2012.jpg",
@@ -81,7 +96,10 @@
    74,
    78,
    99
-  ]
+  ],
+  "yaw": 0.15,
+  "roll": 0.4,
+  "cx": 0.53
  },
  {
   "file": "File:Gerard Piqu\u00e9 en La Moncloa.jpg",
@@ -95,7 +113,10 @@
    80,
    63,
    79
-  ]
+  ],
+  "yaw": -0.41,
+  "roll": 0.2,
+  "cx": 0.47
  },
  {
   "file": "File:Gerard Pique pase (edited).jpg",
@@ -109,7 +130,10 @@
    124,
    92,
    129
-  ]
+  ],
+  "yaw": 0.37,
+  "roll": -2.8,
+  "cx": 0.43
  },
  {
   "file": "File:2012 2013 - 03 Gerard Piqu\u00e9.jpg",
@@ -123,7 +147,10 @@
    79,
    86,
    118
-  ]
+  ],
+  "yaw": -0.35,
+  "roll": 7.2,
+  "cx": 0.51
  },
  {
   "file": "File:Gerard Piqu\u00e9 Euro 2012 trophy.jpg",
@@ -137,7 +164,10 @@
    264,
    54,
    72
-  ]
+  ],
+  "yaw": 0.05,
+  "roll": -1.2,
+  "cx": 0.51
  },
  {
   "file": "File:Gerard Piqu\u00e9.jpg",
@@ -151,7 +181,10 @@
    69,
    76,
    109
-  ]
+  ],
+  "yaw": -0.68,
+  "roll": 1.2,
+  "cx": 0.46
  },
  {
   "file": "File:Gerard Piqu\u00e9 in 2018.jpg",
@@ -165,7 +198,10 @@
    63,
    73,
    97
-  ]
+  ],
+  "yaw": 0.28,
+  "roll": -2.0,
+  "cx": 0.4
  },
  {
   "file": "File:2015 UEFA Super Cup 70 (Gerard Piqu\u00e9).jpg",
@@ -179,7 +215,10 @@
    40,
    42,
    55
-  ]
+  ],
+  "yaw": 0.39,
+  "roll": -0.9,
+  "cx": 0.37
  },
  {
   "file": "File:GerardPique.jpg",

@@ -1,0 +1,531 @@
+{
+ "span": [
+  1992,
+  2013
+ ],
+ "prime": 1997.5,
+ "cat": "David Beckham",
+ "files": 56,
+ "cands": [
+  {
+   "file": "File:David Beckham 2009.jpg",
+   "p18": true,
+   "year": 2009,
+   "local": "cand/Q10520/0.jpg",
+   "gate": null,
+   "face": 310,
+   "share": 0.34,
+   "sharp": 113,
+   "room": 2.5,
+   "box": [
+    200,
+    156,
+    231,
+    310
+   ],
+   "yaw": -0.01,
+   "roll": -2.2,
+   "cx": 0.49,
+   "why": "face 310px, 34% of height, sharpness 113",
+   "score": 8.992
+  },
+  {
+   "file": "File:David Beckham Nov 11 2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/19.jpg",
+   "gate": null,
+   "face": 101,
+   "share": 0.22,
+   "sharp": 612,
+   "room": 3.8,
+   "box": [
+    119,
+    62,
+    78,
+    101
+   ],
+   "yaw": 0.1,
+   "roll": 0.9,
+   "cx": 0.53,
+   "why": "face 101px, 22% of height, sharpness 612",
+   "score": 1.91
+  },
+  {
+   "file": "File:Beckham LA Galaxy cropped.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/25.jpg",
+   "gate": null,
+   "face": 174,
+   "share": 0.13,
+   "sharp": 293,
+   "room": 6.3,
+   "box": [
+    470,
+    202,
+    129,
+    174
+   ],
+   "yaw": 0.02,
+   "roll": -1.9,
+   "cx": 0.56,
+   "why": "face 174px, 13% of height, sharpness 293",
+   "score": 1.32
+  },
+  {
+   "file": "File:David Beckham.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q10520/12.jpg",
+   "gate": null,
+   "face": 102,
+   "share": 0.14,
+   "sharp": 221,
+   "room": 6.5,
+   "box": [
+    409,
+    55,
+    81,
+    102
+   ],
+   "yaw": -0.25,
+   "roll": -0.8,
+   "cx": 0.47,
+   "why": "face 102px, 14% of height, sharpness 221",
+   "score": 1.174
+  },
+  {
+   "file": "File:Beckham 2 (2114756146).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/23.jpg",
+   "gate": null,
+   "face": 68,
+   "share": 0.11,
+   "sharp": 1335,
+   "room": 5.7,
+   "box": [
+    422,
+    254,
+    50,
+    68
+   ],
+   "yaw": -0.05,
+   "roll": -1.1,
+   "cx": 0.47,
+   "why": "face 68px, 11% of height, sharpness 1335",
+   "score": 1.122
+  },
+  {
+   "file": "File:David Beckham 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q10520/38.jpg",
+   "gate": null,
+   "face": 58,
+   "share": 0.1,
+   "sharp": 1957,
+   "room": 9.5,
+   "box": [
+    164,
+    34,
+    46,
+    58
+   ],
+   "yaw": -0.11,
+   "roll": 0.2,
+   "cx": 0.54,
+   "why": "face 58px, 10% of height, sharpness 1957",
+   "score": 0.811
+  },
+  {
+   "file": "File:Beckham warmingup.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q10520/13.jpg",
+   "gate": null,
+   "face": 64,
+   "share": 0.1,
+   "sharp": 344,
+   "room": 9.0,
+   "box": [
+    241,
+    72,
+    48,
+    64
+   ],
+   "yaw": 0.42,
+   "roll": -0.3,
+   "cx": 0.47,
+   "why": "face 64px, 10% of height, sharpness 344",
+   "score": 0.739
+  },
+  {
+   "file": "File:David Beckham MLS All Stars 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q10520/39.jpg",
+   "gate": null,
+   "face": 56,
+   "share": 0.09,
+   "sharp": 5359,
+   "room": 9.3,
+   "box": [
+    377,
+    121,
+    46,
+    56
+   ],
+   "yaw": -0.06,
+   "roll": 0.6,
+   "cx": 0.42,
+   "why": "face 56px, 9% of height, sharpness 5359",
+   "score": 0.731
+  },
+  {
+   "file": "File:David Beckham 2010 LA Galaxy.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q10520/37.jpg",
+   "gate": null,
+   "face": 170,
+   "share": 0.12,
+   "sharp": 542,
+   "room": 7.7,
+   "box": [
+    211,
+    121,
+    130,
+    170
+   ],
+   "yaw": -0.16,
+   "roll": -2.6,
+   "cx": 0.29,
+   "why": "face 170px, 12% of height, sharpness 542",
+   "score": 0.559
+  },
+  {
+   "file": "File:David Beckham at Al Saad.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q10520/34.jpg",
+   "gate": null,
+   "face": 63,
+   "share": 0.1,
+   "sharp": 513,
+   "room": 7.6,
+   "box": [
+    626,
+    162,
+    48,
+    63
+   ],
+   "yaw": -0.0,
+   "roll": -0.2,
+   "cx": 0.68,
+   "why": "face 63px, 10% of height, sharpness 513",
+   "score": 0.479
+  },
+  {
+   "file": "File:Beckham shirt Real Madrid.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/1.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham2001award.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:1999 FA Cup Final Beckham corner (cropped).jpg",
+   "p18": false,
+   "year": 1999,
+   "local": "cand/Q10520/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:1999 FA Cup Final Beckham corner.jpg",
+   "p18": false,
+   "year": 1999,
+   "local": "cand/Q10520/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham taking a free kick - geograph.org.uk - 7626153.jpg",
+   "p18": false,
+   "year": 1999,
+   "local": "cand/Q10520/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:-Soccer- David Beckham (2374016020).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/6.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:020607beckhamPK.jpg",
+   "p18": false,
+   "year": 2002,
+   "local": "cand/Q10520/7.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham zidane team.jpg",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q10520/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham zidane.jpg",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q10520/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham in Madrid.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q10520/10.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham 2005.jpg",
+   "p18": false,
+   "year": 2005,
+   "local": "cand/Q10520/11.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham first goal LA Galaxy.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Beckhamtakesfreekick.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/15.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:David y Victoria Beckham.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham Nov 11 2007 Autographs.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/17.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham Nov 11 2007 Direction.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/18.jpg",
+   "gate": "face 44px, too small",
+   "why": "face 44px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham outside Wellington Airport.JPG",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/20.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham 2 (2114756146) cropped (cropped).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/21.jpg",
+   "gate": "face sharpness 52, soft",
+   "face": 218,
+   "share": 0.3,
+   "sharp": 52,
+   "room": 2.7,
+   "box": [
+    180,
+    132,
+    157,
+    218
+   ],
+   "yaw": -0.11,
+   "roll": 0.1,
+   "cx": 0.48,
+   "why": "face sharpness 52, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham 2 (2114756146) cropped.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/22.jpg",
+   "gate": "face sharpness 50, soft",
+   "face": 214,
+   "share": 0.16,
+   "sharp": 50,
+   "room": 5.6,
+   "box": [
+    315,
+    133,
+    153,
+    214
+   ],
+   "yaw": -0.11,
+   "roll": -2.1,
+   "cx": 0.43,
+   "why": "face sharpness 50, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham1.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q10520/24.jpg",
+   "gate": "photo ends at the chin (1.8 face heights below)",
+   "why": "photo ends at the chin (1.8 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham LA Galaxy.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham 70 yards goal.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/27.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham, 2008 (cropped).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/28.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham, 2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/29.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham getting on the bus to leave (2491710318).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/31.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham leaving (2490891727).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q10520/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham at Al Saad (cropped).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q10520/33.jpg",
+   "gate": "face sharpness 32, soft",
+   "face": 169,
+   "share": 0.12,
+   "sharp": 32,
+   "room": 7.6,
+   "box": [
+    276,
+    155,
+    127,
+    169
+   ],
+   "yaw": 0.0,
+   "roll": -1.4,
+   "cx": 0.35,
+   "why": "face sharpness 32, soft",
+   "score": 0
+  },
+  {
+   "file": "File:David Beckham of AC Milan, April 19, 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q10520/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:David-Beckham3.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q10520/36.jpg",
+   "gate": "photo ends at the chin (1.2 face heights below)",
+   "why": "photo ends at the chin (1.2 face heights below)",
+   "score": 0
+  }
+ ]
+}
