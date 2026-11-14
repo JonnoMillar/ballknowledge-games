@@ -2,7 +2,7 @@
 
 > Living notes for the site-wide brand and lobby redesign. Read this before
 > touching anything in `design-drafts/brand-concepts/`.
-> Last updated: 2026-11-12, after the daylight lobby variant.
+> Last updated: 2026-11-14, after the round-2 shortlist and the direction call.
 
 ## Status
 
@@ -13,6 +13,31 @@ prototype is the **scout's office**: a cork board on a training-ground office
 wall, each game a pinned object, and clicking an object zooms into that game.
 A working mock exists at `lobby.html`. Nothing is on the live site yet; all of
 this is dev-only design work.
+
+## Direction (Jonno, 2026-11-14)
+
+**Illustrated world, with a real HTML/CSS layer on top.** Round 2 shortlist:
+6 (stylised scout's office; Jonno liked its phone column) and 2 (academy
+analyst's office; calm, clean-cut shapes). Cut: 1 portakabin (gloomy, "not
+trying to remind people of terrible pitch conditions"; the world should be
+clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
+5: **the clipboard as the run's object**, a checklist of what to do today.
+
+- Why illustration long term: one style stretches to every game screen, icon,
+  share card and rank art; CSS, SVG and real badges match flat art, where they
+  clash with photo-real; motion is cheap; it hides AI tells; flat images load
+  light on phones. It also fits the grain player portraits already approved.
+- **This lifts the 2026-11-12 "nothing drawn in code" rule**, which held only
+  because code clashed with a photo-real room. Now: the art is the world, and
+  the crisp layer (run clipboard, labels, buttons, done states, chrome) is
+  HTML/CSS. Jonno: the layer itself brings the contrast and variety the art
+  lacks.
+- Mock: `direction.html` (localhost:4321/direction.html), 6's frames with the
+  CSS clipboard and labels on top, desktop and phone. No new art.
+- Order Jonno set: settle the design direction, then the hub name (it shapes
+  game names and how each game is shown in the hub).
+- Risk to manage: keeping many generated pieces in one style needs a locked
+  style reference (palette, line, grain) before item generation.
 
 ## Verified state (2026-11-12)
 
@@ -141,7 +166,8 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Next
 
-0. **Round 2 (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged); five concepts generated (car cut by Jonno), compared on `round2.html` (localhost:4321/round2.html). Next: Jonno's shortlist of 2 or 3, then the mates' 5-second test. The bible sign-off waits for the chosen concept.
+0. **Direction (2026-11-14):** illustrated plus CSS layer (above). Next: Jonno's verdict on `direction.html`, then the hub name, then a style sheet (palette, type, line and grain, layer components) and grey-box layout. The 5-second test runs on the merged direction, not on separate concepts.
+0a. **Round 2 (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged); five concepts generated (car cut by Jonno), compared on `round2.html` (localhost:4321/round2.html). Next: Jonno's shortlist of 2 or 3, then the mates' 5-second test. The bible sign-off waits for the chosen concept.
 1. Jonno's sign-off on `bible.html` (objects, and the four open calls).
 2. **Single-item control test** on the Spoofed clipping, about 0.75 credits:
    design the item alone until approved; bake it in using it as a reference
