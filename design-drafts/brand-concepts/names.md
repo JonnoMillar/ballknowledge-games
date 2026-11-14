@@ -4,6 +4,25 @@ Scored against `docs/naming-checklist.md`. Domain checks are registry
 lookups on 2026-11-14 (nothing bought); a taken domain is not fatal if a
 fixed modifier works (`___fc.com`). Clash checks are one web search each.
 
+## Round 3: coined words (Jonno: a unique word like Krillion, close to football)
+
+Jonno: Scouted FC reads as a football club, which is wrong. "Daily" in the
+name is out: generic, crowded ("Daily Football Quiz" exists), and it fences
+out Rondo, the pub games and packs; it goes in the descriptor instead.
+
+| Name | For | Against | Domain |
+|---|---|---|---|
+| **Footlore** | Football + lore: "lore" is 16 to 26 slang for knowing the backstory, so it means ball knowledge. Familiar shape (Footloose) helps it stick. Fits a room of files and clippings. Search finds nothing. | "Foot" alone can read as feet. | **footlore.gg free**; .com taken |
+| **Ballion** | Ball + "-illion", the Krillion pattern; bullion hints at gold. "Done today's Ballion?" works. | Close to BallOn (a pitch-booking app); could be spelled Balion or Ballian. | **ballion.gg free**; .com taken |
+| **Footwit** | Football + wit (and a nitwit pun for a wrong answer). | Reads a little like a joke name. | **footwit.com free** |
+| **Scoutling** | A young scout; sounds like a player. | Reads young, close to a kids' game. | **scoutling.gg free** |
+
+Cut in round 3: Knowtball (heard aloud it is just "football"), Goalden
+(spelled Golden), Ballogy (a basketball app of that name), Kickle (kids'
+game feel), Footsy (flirting), Dribbl (dropped vowel fails spell-once),
+Pitchlore (Footlore says it better; "pitch" also means sales pitch). Also
+found: a football quiz app already called Ball Knowledge.
+
 ## Round 2 (Jonno: Clocked has too little football in it; Scouted is closest)
 
 | Name | For | Against | Domain |
