@@ -1,3 +1,4 @@
+import { clashes } from './run';
 import type { StoredBoard, StoredDay } from './types';
 
 /**
@@ -33,9 +34,10 @@ function hash(s: string): number {
 /**
  * Extend the schedule to `upTo`. Each day takes the board unseen longest
  * (never seen first), best story and best-known club first, skipping a club
- * or season used too recently.
+ * or season used too recently, and never a board the daily run has within
+ * BOARD_GAP days (`run`, the run's schedule).
  */
-export function extend(boards: readonly StoredBoard[], days: readonly StoredDay[], upTo: string, start = EPOCH): StoredDay[] {
+export function extend(boards: readonly StoredBoard[], days: readonly StoredDay[], upTo: string, start = EPOCH, run: readonly StoredDay[] = []): StoredDay[] {
   const pool = dailyPool(boards);
   if (pool.length === 0) throw new Error('no daily boards');
   const byId = new Map(boards.map((b) => [b.id, b]));
@@ -48,7 +50,8 @@ export function extend(boards: readonly StoredBoard[], days: readonly StoredDay[
     const rank = (b: StoredBoard) => b.score + 2 * b.fame + (hash(date + b.id) % 100) / 100;
     const queue = [...pool].sort((a, b) =>
       (lastSeen.get(a.id) ?? '').localeCompare(lastSeen.get(b.id) ?? '') || rank(b) - rank(a));
-    const pick = queue.find((b) => !clubs.has(b.club) && !seasons.has(b.season)) ?? queue[0]!;
+    const free = queue.filter((b) => !clashes(b.id, date, run));
+    const pick = free.find((b) => !clubs.has(b.club) && !seasons.has(b.season)) ?? free[0] ?? queue[0]!;
     out.push({ date, board: pick.id });
     lastSeen.set(pick.id, date);
   }

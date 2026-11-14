@@ -150,7 +150,7 @@ function Ticks({ n, thrown, current }: { n: number; thrown: number; current: num
   );
 }
 
-function GoalCard({ goal, small }: { goal: Card; small: boolean }) {
+export function GoalCard({ goal, small }: { goal: Card; small: boolean }) {
   return (
     <section className={`pin__card${small ? ' pin__card--small' : ''}`}>
       {small ? null : <span className="pin__comp">{goal.competition}</span>}

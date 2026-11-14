@@ -3,6 +3,8 @@ import { dayNumber } from '../../src/lib/daily';
 import { COLOUR, INK, seasonLabel } from './lib/clubs';
 import { addDays, dailyPool, EPOCH, FIRST_DAILY_SEASON } from './lib/day';
 import { fifths, rivals } from './lib/table';
+import { RUN_GUESSES, WINDOW, type RunSlDay } from './lib/run';
+import type { TopScorer } from './lib/wiki';
 import { GUESSES, type BoardView, type Guess, type Judged, type StoredBoard, type StoredData, type StoredDay } from './lib/types';
 
 /**
@@ -73,7 +75,9 @@ async function resolve(id: string): Promise<{ board: StoredBoard; range: [number
   return b && b.start >= range[0] && b.start <= range[1] ? { board: b, range, day: null, date: null } : null;
 }
 
-const plain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const plain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  // letters with no accent to strip: type them as the plain letter ("Sanli" for \u015eanl\u0131)
+  .replace(/\u0131/g, 'i').replace(/\u00f8/g, 'o').replace(/\u0142/g, 'l').replace(/\u0111/g, 'd').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 /** A bonus guess is right when it is a top scorer's full name or surname, ignoring accents and case. */
 export function scorerMatches(names: readonly string[], guess: string): boolean {
@@ -156,4 +160,72 @@ export async function demo() {
 export async function counts(): Promise<{ daily: number; endless: number }> {
   const { data } = await load();
   return { daily: dailyPool(data.boards).length, endless: data.boards.length };
+}
+
+// ── The daily run: Read the season ─────────────────────────────────────────
+
+/** What the run's page may see. The club only once it is named or the guesses are spent; the season once it is picked. */
+export interface RunSeasonView {
+  date: string;
+  games: number;
+  teams: number;
+  /** The five seasons the answer is in, as start years. */
+  window: [number, number];
+  clubs: { club: string; name: string; q: string | null; colour: string }[];
+  line: number[];
+  /** Each club guess: '' when the clock ran out. */
+  guesses: { club: string; right: boolean }[];
+  hints: { squad: string | null; top: TopScorer | null };
+  /** Set once the club is named or the guesses are spent. */
+  club: { club: string; name: string; q: string | null; colour: string } | null;
+  /** 1 to 3: the guess that named the club, or null. */
+  clubAt: number | null;
+  /** Set once the season is picked (null pick: the clock ran out). */
+  season: { picked: number | null; start: number; champion: string; championName: string } | null;
+}
+
+let runRead: Promise<Map<string, RunSlDay>> | null = null;
+const runDays = () => (process.env.NODE_ENV === 'development' ? null : runRead)
+  ?? (runRead = read<RunSlDay[]>('run.json').then((ds) => new Map(ds.map((d) => [d.date, d]))));
+
+/**
+ * The run's board for `date` after these guesses. `clubs` are the club
+ * guesses so far ('' = out of time); `season` is the season pick, null when
+ * its clock ran out, undefined until then. Bad input is null.
+ */
+export async function runView(date: string, clubs: readonly unknown[], season?: unknown): Promise<RunSeasonView | null> {
+  if (!playable(date)) return null;
+  const [day, { data, byId }] = [(await runDays()).get(date), await load()];
+  const b = day && byId.get(day.board);
+  if (!day || !b) return null;
+  const s = data.seasons.find((x) => x.id === b.season)!;
+  const window: [number, number] = [day.from, day.from + WINDOW - 1];
+  const names = new Set<string>();
+  for (const x of data.seasons) if (x.start >= window[0] && x.start <= window[1]) for (const c of Object.keys(x.table)) names.add(c);
+  const card = (c: string) => ({ club: c, name: data.clubs[c]!.name, q: data.clubs[c]!.q, colour: COLOUR[c] ?? INK });
+  const guesses: RunSeasonView['guesses'] = [];
+  for (const g of clubs.slice(0, RUN_GUESSES)) {
+    if (guesses.some((x) => x.right)) break;
+    if (typeof g !== 'string' || (g !== '' && !names.has(g))) return null;
+    guesses.push({ club: g, right: g === b.club });
+  }
+  const misses = guesses.filter((g) => !g.right).length;
+  const clubAt = guesses.findIndex((g) => g.right) + 1 || null;
+  const clubDone = clubAt !== null || misses >= RUN_GUESSES;
+  let picked: number | null | undefined;
+  if (clubDone && season !== undefined) {
+    if (season !== null && (typeof season !== 'number' || !Number.isInteger(season) || season < window[0] || season > window[1])) return null;
+    picked = season as number | null;
+  }
+  return {
+    date, games: s.games, teams: Object.keys(s.table).length, window,
+    clubs: [...names].map(card).sort((x, y) => x.name.localeCompare(y.name)),
+    line: s.table[b.club]!,
+    guesses,
+    // Hints come with misses; the rest only once the season is picked (a top scorer's tally can place the season).
+    hints: { squad: misses >= 1 || picked !== undefined ? b.squad[1] : null, top: misses >= 2 || picked !== undefined ? b.top : null },
+    club: clubDone ? card(b.club) : null,
+    clubAt,
+    season: picked === undefined ? null : { picked, start: b.start, champion: s.champion, championName: data.clubs[s.champion]!.name },
+  };
 }

@@ -21,6 +21,7 @@ import { parseTopScorer, topScorerField } from '../../games/season-line/lib/wiki
 
 export const DATA = 'games/season-line/data/seasons.json';
 export const DAYS = 'games/season-line/data/days.json';
+export const RUN = 'games/season-line/data/run.json';
 const FIRST = 1993;
 const UA = { 'User-Agent': 'season-line/0.1 (football quiz; data refresh)' };
 
@@ -142,7 +143,9 @@ const today = new Date().toISOString().slice(0, 10);
 const days: StoredDay[] = existsSync(DAYS) ? JSON.parse(readFileSync(DAYS, 'utf8')) : [];
 const last = days.at(-1)?.date;
 if (!last || daysBetween(today, last) < MIN_AHEAD) {
-  const all = extend(data.boards, days, addDays(today, TOP_UP));
+  // Clear of the daily run's boards (games/season-line/data/run.json, scripts/run/build-days.ts).
+  const run: StoredDay[] = existsSync(RUN) ? JSON.parse(readFileSync(RUN, 'utf8')) : [];
+  const all = extend(data.boards, days, addDays(today, TOP_UP), undefined, run);
   writeFileSync(DAYS, `[\n${all.map((d) => JSON.stringify(d)).join(',\n')}\n]\n`);
   console.log(`${all.length - days.length} new days, to ${all.at(-1)!.date}`);
 } else {

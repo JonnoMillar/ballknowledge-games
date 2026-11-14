@@ -31,3 +31,6 @@ public/badges/
 # Photo pipeline scratch: downloaded candidates, models, rembg output.
 .scratch/
 __pycache__/
+
+# Brand-concept preview images (Commons photos; regenerate with build.py)
+design-drafts/*/img/

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scout's office</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+/* Interface-vibe mock for the scout's office hub. The room is one low-quality
+   key frame (the real build is layered); the clipping is a separately
+   generated item, lit and shadowed here in CSS so every item shares one light. */
+:root { --ink: #F4EFE6; --ease: cubic-bezier(.4,0,.2,1); }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; background: #07080B; color: var(--ink); font: 15px/1.4 'Libre Franklin', system-ui, sans-serif; overflow: hidden; }
+.stage { position: fixed; inset: 0; overflow: hidden; }
+.plate { position: absolute; left: 50%; top: 50%; width: max(106vw, 188.5vh); aspect-ratio: 16 / 9; transform: translate(-50%, -50%); }
+.scene { position: absolute; inset: 0; transition: transform 900ms var(--ease), filter 900ms var(--ease); transform-origin: 77% 22%; }
+.room { position: absolute; inset: 0; background: url(img/gen/scout-keyframe-low.png) center / 100% 100% no-repeat; transform: translate(var(--px, 0), var(--py, 0)); transition: transform 600ms ease-out; }
+
+/* Light layer: floodlight through the blinds, lamp pool, monitor spill. */
+.blinds { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: .22;
+  background: repeating-linear-gradient(-28deg, rgba(170,200,255,.0) 0 26px, rgba(170,200,255,.55) 26px 40px);
+  -webkit-mask: radial-gradient(60% 70% at 20% 40%, #000 0%, transparent 75%); mask: radial-gradient(60% 70% at 20% 40%, #000 0%, transparent 75%); }
+.lamp { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: radial-gradient(38% 46% at 13% 68%, rgba(255,170,80,.30), transparent 70%); animation: flicker 7s infinite; }
+.monitor { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: radial-gradient(30% 60% at 100% 70%, rgba(90,150,255,.22), transparent 70%); animation: screen 3.1s infinite steps(1); }
+.vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 40%, transparent 50%, rgba(0,0,0,.65)); }
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: .18; mix-blend-mode: overlay;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1s steps(4) infinite; }
+@keyframes flicker { 0%,100% { opacity: 1 } 47% { opacity: 1 } 48% { opacity: .86 } 49% { opacity: 1 } 73% { opacity: .95 } }
+@keyframes screen { 0% { opacity: .8 } 33% { opacity: 1 } 66% { opacity: .7 } }
+@keyframes grain { 0% { transform: translate(0,0) } 25% { transform: translate(-6px,4px) } 50% { transform: translate(5px,-3px) } 75% { transform: translate(-3px,-5px) } }
+
+/* Dust drifting in the lamp beam. */
+.dust { position: absolute; left: 4%; top: 40%; width: 26%; height: 46%; pointer-events: none; }
+.dust i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,220,170,.55); filter: blur(.6px); animation: drift linear infinite; }
+@keyframes drift { from { transform: translate(0, 0); opacity: 0 } 15% { opacity: .8 } to { transform: translate(40px, -120px); opacity: 0 } }
+
+/* A pinned item: one light, two shadows (contact + cast away from the lamp). */
+.item { position: absolute; left: 66.5%; top: 2.5%; width: 23%; cursor: pointer; transform: rotate(-3deg); transition: transform 380ms var(--ease), filter 380ms var(--ease);
+  filter: drop-shadow(1px 2px 1px rgba(0,0,0,.55)) drop-shadow(10px 14px 14px rgba(0,0,0,.45)) brightness(.86) sepia(.08); outline: none; }
+.item img { display: block; width: 100%; }
+.item:hover, .item:focus-visible { transform: rotate(-1.5deg) translateY(-8px) scale(1.02);
+  filter: drop-shadow(1px 3px 2px rgba(0,0,0,.45)) drop-shadow(18px 26px 22px rgba(0,0,0,.5)) brightness(.98) sepia(.04); }
+.item:focus-visible { outline: 2px solid #FFC93C; outline-offset: 6px; }
+.tag { position: absolute; left: -14%; bottom: -9%; background: #F3E9D2; color: #1A1712; padding: 8px 12px 7px; transform: rotate(4deg); box-shadow: 3px 5px 8px rgba(0,0,0,.45); font: 400 clamp(14px, 1.5vw, 22px)/1 'Permanent Marker', cursive; white-space: nowrap; }
+.tag b { display: block; font: 700 11px/1 'Libre Franklin', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #6B5B42; margin-bottom: 5px; }
+
+/* Interface chrome: minimal, sits on the room. */
+.mast { position: fixed; left: 24px; top: 20px; z-index: 5; font: 900 28px/1 'Big Shoulders', sans-serif; text-transform: uppercase; letter-spacing: .01em; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+.mast small { display: block; font: 700 11px/1.3 'Libre Franklin', sans-serif; letter-spacing: .14em; color: rgba(244,239,230,.65); margin-top: 4px; }
+.hint { position: fixed; left: 24px; bottom: 20px; z-index: 5; font: 500 13px/1.3 'Libre Franklin'; color: rgba(244,239,230,.7); text-shadow: 0 1px 6px #000; }
+
+/* Zoom into the item = the game's page. */
+.game { position: fixed; inset: 0; z-index: 10; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 380px); gap: 32px; align-items: center; padding: 32px max(24px, 6vw); opacity: 0; pointer-events: none; transition: opacity 500ms var(--ease) 0ms; }
+.game .sheet { justify-self: center; height: min(86vh, 900px); filter: drop-shadow(0 30px 40px rgba(0,0,0,.6)); transform: scale(.9) rotate(-3deg); transition: transform 900ms var(--ease); }
+.game .side { display: grid; gap: 14px; }
+.game h2 { font: 900 clamp(40px, 5vw, 72px)/.9 'Big Shoulders', sans-serif; text-transform: uppercase; }
+.game p { color: rgba(244,239,230,.8); max-width: 34ch; }
+.game .play { justify-self: start; background: #D62839; color: #fff; border: 0; font: 900 22px/1 'Big Shoulders', sans-serif; text-transform: uppercase; padding: 14px 28px; border-radius: 6px; cursor: pointer; }
+.game .back { position: fixed; left: 24px; top: 20px; background: rgba(20,18,16,.6); color: var(--ink); border: 1px solid rgba(244,239,230,.3); border-radius: 6px; padding: 9px 14px; font: 700 13px/1 'Libre Franklin'; cursor: pointer; }
+.zoomed .scene { transform: scale(2.4); filter: blur(6px) brightness(.35); }
+.zoomed .item { opacity: 0; }
+.zoomed .game { opacity: 1; pointer-events: auto; transition-delay: 350ms; }
+.zoomed .game .sheet { transform: scale(1) rotate(0); }
+.zoomed .mast, .zoomed .hint { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) { .lamp, .monitor, .grain, .dust i { animation: none; } .scene, .item, .game, .game .sheet { transition-duration: 1ms; } }
+@media (max-width: 760px) { .game { grid-template-columns: 1fr; align-content: center; } .game .sheet { height: 52vh; } }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="plate"><div class="scene">
+    <div class="room" id="room"></div>
+    <div class="blinds"></div><div class="lamp"></div><div class="monitor"></div>
+    <div class="dust" id="dust"></div>
+    <div class="vignette"></div><div class="grain"></div>
+    <div class="item" id="item" tabindex="0" role="button" aria-label="Open Spoofed">
+      <img src="img/gen/clipping-low.png" alt="Newspaper clipping stamped FAKE">
+      <div class="tag"><b>Daily #49</b>Spoofed</div>
+    </div>
+  </div></div>
+  <div class="mast">Ball Knowledge<small>Working name · scouting dept.</small></div>
+  <div class="hint">Hover the clipping, then click it.</div>
+  <div class="game" aria-hidden="true">
+    <button class="back" id="back">Back to the board</button>
+    <img class="sheet" src="img/gen/clipping-low.png" alt="">
+    <div class="side">
+      <h2>Spot the spoof</h2>
+      <p>Five careers. In each, one move never happened.</p>
+      <button class="play">Play today's daily</button>
+    </div>
+  </div>
+</div>
+<script>
+const stage = document.getElementById('stage'), room = document.getElementById('room');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!reduce) addEventListener('pointermove', e => {
+  const x = (e.clientX / innerWidth - .5), y = (e.clientY / innerHeight - .5);
+  room.style.setProperty('--px', (-x * 14) + 'px'); room.style.setProperty('--py', (-y * 10) + 'px');
+});
+const dust = document.getElementById('dust');
+for (let i = 0; i < 18; i++) { const d = document.createElement('i'); d.style.left = Math.random() * 100 + '%'; d.style.top = Math.random() * 100 + '%'; d.style.animationDuration = (6 + Math.random() * 8) + 's'; d.style.animationDelay = (-Math.random() * 10) + 's'; dust.appendChild(d); }
+const open = () => stage.classList.add('zoomed'), close = () => stage.classList.remove('zoomed');
+const item = document.getElementById('item');
+item.addEventListener('click', open); item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+document.getElementById('back').addEventListener('click', close);
+addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+</script>
+</body>
+</html>

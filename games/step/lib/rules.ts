@@ -185,9 +185,26 @@ const byBar = (fact: number, bar: Bar): Grade => (fact >= bar[0] ? 'basic' : fac
 /** Everything a pick is measured against: the bar and the lens (data/ruler.json). */
 export interface Ruler extends Lens { bar: Bar }
 
+/**
+ * 0 to 1: how deep a pick sits inside its grade, for the daily run's
+ * continuous score. Where the fact falls between the grade's two bar cuts,
+ * in log space (facts span a thousandfold); Basic's top is the field's best
+ * known fact, Elite's floor its least known. A grade the field gave deeper
+ * than the bar (the fact is above the grade's cuts) is 0, just in.
+ */
+export function depthOf(fact: number, grade: Grade, bar: Bar, field: readonly number[]): number {
+  const edges = [Math.max(...field, bar[0]), ...bar, Math.min(...field, bar[3])];
+  const i = gradeRank(grade);
+  const [top, bottom] = [Math.log(edges[i]!), Math.log(edges[i + 1]!)];
+  if (!(fact > 0) || top <= bottom) return 0;
+  return Math.min(1, Math.max(0, (top - Math.log(fact)) / (top - bottom)));
+}
+
 export interface Judged {
   held: boolean;
   grade: Grade | null;
+  /** 0 to 1 inside the grade (depthOf); 0 when it did not hold. */
+  depth: number;
   /** The club that links the pick to the given, the best known one. Null when it did not hold. */
   via: string | null;
   /** The best known answer on the step, whatever was picked. */
@@ -202,15 +219,17 @@ export function judge(pick: Player, given: Player, club: string, members: readon
   const { obvious, elite } = endsOf(given, club, field, views, ruler);
 
   const held = field.some((p) => p.id === pick.id);
-  if (!held) return { held, grade: null, via: null, obvious, elite };
+  if (!held) return { held, grade: null, depth: 0, via: null, obvious, elite };
   const mine = fact(pick);
   const above = field.filter((p) => p.id !== pick.id && fact(p) > mine).length;
   const isElite = elite !== null && field.length >= ELITE_MIN_FIELD && mine <= fact(elite);
   const inField = gradeOf(above, field.length, isElite);
   const absolute = byBar(mine, ruler.bar);
+  const grade = gradeRank(absolute) > gradeRank(inField) ? absolute : inField;
   return {
     held,
-    grade: gradeRank(absolute) > gradeRank(inField) ? absolute : inField,
+    grade,
+    depth: isElite && grade === 'elite' ? 1 : depthOf(mine, grade, ruler.bar, field.map(fact)),
     via: linkOf(pick, given, views, ruler).club,
     obvious,
     elite,

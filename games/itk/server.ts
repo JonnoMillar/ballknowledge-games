@@ -87,7 +87,8 @@ export async function demoCareer(): Promise<DemoCareer> {
 export async function judgePick(date: string, round: number, index: number, last: boolean): Promise<Verdict | null> {
   if (!playable(date)) return null;
   const r = (await readDays()).get(date)?.rounds[round];
-  if (!r || !Number.isInteger(index) || index < 0 || index >= r.stops.length) return null;
+  // -1 with `last` is the daily run's clock running out: no pick, the round is over.
+  if (!r || !Number.isInteger(index) || index < (last ? -1 : 0) || index >= r.stops.length) return null;
   const fake = index === r.fake;
   if (!fake && !last) return { fake, fakeIndex: null, real: null };
   const { clubs } = await loadData();

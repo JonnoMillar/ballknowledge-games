@@ -5,6 +5,10 @@ path back to full context. **The site-wide polish plan (what's done, what waits
 on Jonno, the big decisions in order) is `docs/roadmap.md`: read it next.** The design is in
 `docs/superpowers/specs/2026-09-19-sticker-album-identity-design.md`.
 
+**Brand rebuild (Nov 2026):** the hub's new look (scout's-office lobby,
+grain illustrations, CC photos) is in dev-only design drafts; read
+`design-drafts/brand-concepts/HANDOFF.md`.
+
 ## Games
 
 One site; `/` is the hub (`components/Hub.tsx`): a bento of coloured tiles, each with a cut-out tabletop miniature (`public/hub/`, Higgsfield, style Jonno chose 2026-10-14, backgrounds removed so the art stands on the tile's own lit ground). There are two large tiles and four small: the suggestion (first game with a daily not done today, per `src/lib/today.ts`, top left, the page's only red button) and the `big` game (Rondo, bottom right, no button), with two small tiles in each gap (a pinwheel, three equal rows from 760px). Any game can be the suggestion, so one shifts small to large once the game before it is done. Odd Man Out has no hub line (it only sits small). Read from
@@ -24,6 +28,7 @@ are in `CLAUDE.md`.
 | Step | `/step` | `games/step` | Live inside Chain's hub (shown as "Steps"); back goes to `/chain`; marks itself done in `src/lib/today`. `games/step/HANDOFF.md`. |
 | Odd Man Out | `/odd-man-out` (front page), `/odd-man-out/play` | `games/bluff` (internal id `bluff`) | Merged to `main` 2026-10-16; headline "Can you find the mole?". Mole miniature on the hub (2026-10-16; direction approved, not final art). `games/bluff/HANDOFF.md`. |
 | Season line (working name) | `/season-line` (front page), `/season-line/play` | `games/season-line` | Merged to `main` 2026-10-16; on the hub with a cord-and-shield miniature (2026-10-16) and a credits line. Still needs `EPOCH` reset at launch, a name, and a decision on the Premier League lion. `games/season-line/HANDOFF.md`. |
+| Today's assignment (the daily run) | `/run` (`?date=` for a past day) | `src/lib/run`, `components/run`, each game's `run/` | Merged to `main` 2026-11-13 with all six tasks and a bare hub tile (first on the board). UI is due the scout's-office redesign. `docs/daily-run.md` (sections 11 to 15). |
 
 ## The site hub and Chain's hub (2026-10-14)
 

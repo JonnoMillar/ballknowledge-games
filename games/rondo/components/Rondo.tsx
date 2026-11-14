@@ -7,7 +7,7 @@ import Scoreboard from './Scoreboard';
 import { buildIndex, type SearchIndex } from '../../../src/lib/search/index';
 import { decodeNames, type NameEntry, type NameRow } from '../../../src/lib/chain/client';
 import {
-  dealt, lost, nextBall, passed, rematch, winner,
+  dealt, lost, nextBall, passed, winner,
   type Carrier, type Match,
 } from '../lib/match';
 import type { PassResponse } from '../lib/wire';
@@ -159,8 +159,8 @@ export default function Rondo() {
           over={match.over}
           winnerIndex={winner(match)}
           onNext={() => setMatch((m) => (m ? nextBall(m) : m))}
-          onRematch={() => setMatch((m) => (m ? rematch(m) : m))}
-          onNewGame={leave}
+          onMenu={leave}
+          onHub={() => { writeMatch(null); location.assign('/'); }}
         />
       ) : null}
 

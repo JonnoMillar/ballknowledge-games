@@ -1,0 +1,134 @@
+/* ── SORTED ────────────────────────────────────────────────────────────
+   Five players in a line, least to most. On a phone the line runs down
+   the page as rows (it has to fit five); on a desk it runs across as
+   stickers. One red button a screen: Lock in, then Next. Marks carry a
+   symbol as well as a colour (green ✓ perfect, gold ✓ close, grey ✕ off;
+   red is the brand and the action, never a verdict). */
+.sorted {
+  --tn-yes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6.2 11.4l3.2 3.2 6.4-6.8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --tn-no: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M7.4 7.4l7.2 7.2M14.6 7.4l-7.2 7.2' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.tn__main {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 18px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 760px) { .tn__main { padding: 34px 28px 72px; gap: 26px; } }
+.tn__none { margin: 40px 0; text-align: center; color: var(--muted); }
+
+/* Category progress, easy to hard. */
+.tn-steps { list-style: none; margin: 0; padding: 0; display: flex; justify-content: space-between; gap: 6px; }
+.tn-step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1 1 0; min-width: 0; color: var(--muted); font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; }
+.tn-step.is-current { color: var(--ink); }
+.tn-step__pip { display: block; width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--silhouette); flex: 0 0 auto; }
+.tn-step.is-current .tn-step__pip { border-color: var(--ink); }
+.is-perfect > .tn-step__pip, .tn-step__pip.is-perfect { border-color: transparent; background: var(--green) var(--tn-yes) center / 100% no-repeat; }
+.is-close > .tn-step__pip, .tn-step__pip.is-close { border-color: transparent; background: var(--gold) var(--tn-yes) center / 100% no-repeat; }
+.is-off > .tn-step__pip, .tn-step__pip.is-off { border-color: transparent; background: var(--muted) var(--tn-no) center / 100% no-repeat; }
+.tn-step__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+@media (min-width: 760px) { .tn-step { font-size: 13px; } .tn-step__pip { width: 22px; height: 22px; } }
+
+.tn-stage { display: flex; flex-direction: column; gap: 12px; }
+.tn-stage__head { margin: 0; font-size: 34px; font-weight: 900; line-height: 0.95; text-transform: uppercase; text-align: center; }
+.tn-instagram-logo { display: inline-block; width: 0.85em; height: 0.85em; margin-right: 0.25em; vertical-align: -0.02em; flex: 0 0 auto; }
+.tn-stage__source { margin: 10px 0 0; text-align: center; color: var(--muted); font-size: 13px; }
+.tn-previews { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 18px; font-weight: 700; }
+.tn-preview-again { display: block; margin: 16px auto 0; border: 0; background: none; color: var(--muted); font: inherit; text-decoration: underline; cursor: pointer; }
+@media (min-width: 760px) { .tn-stage__head { font-size: 52px; } }
+
+/* The line: an end label, the five, the other end. */
+.tn-line { display: flex; flex-direction: column; gap: 6px; }
+.tn-end { font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-left: 4px; }
+.tn-cards { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tn-slot { display: block; }
+
+.tn-card {
+  appearance: none;
+  border: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 14px;
+  background: var(--sticker);
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(20, 18, 16, 0.07), 0 6px 16px rgba(20, 18, 16, 0.08);
+  transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+/* Cards are picked up and dragged: the browser keeps its own scroll and text selection out of it. */
+.tn-card:not(:disabled) { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.tn-card:disabled { cursor: default; }
+@media (hover: hover) { .tn-card:not(:disabled):hover { transform: translateY(-2px); } }
+.tn-card:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* Dragged: rides the pointer (Tunnel.tsx sets the transform), above the rest. */
+.tn-card.is-dragging { z-index: 10; cursor: grabbing; transition: box-shadow var(--t-base) var(--ease-out); box-shadow: 0 0 0 3px var(--ink), 0 18px 34px rgba(20, 18, 16, 0.28); }
+/* Picked up: lifted, waiting for the one to swap with. */
+.tn-card.is-selected { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 0 3px var(--ink), 0 14px 28px rgba(20, 18, 16, 0.2); }
+.tn-card.is-new { animation: tn-pop 360ms var(--ease-out); }
+@keyframes tn-pop { 40% { transform: scale(1.05); } }
+.tn-card.is-right { box-shadow: 0 0 0 3px var(--green), 0 6px 16px rgba(20, 18, 16, 0.08); }
+.tn-card.is-wrong { box-shadow: 0 0 0 2px var(--rule-strong), 0 6px 16px rgba(20, 18, 16, 0.08); }
+
+.tn-card__photo { position: relative; display: block; width: 52px; height: 52px; border-radius: 10px; overflow: hidden; }
+.tn-card__photo img { display: block; width: 100%; height: 100%; }
+.tn-card__photo .sticker__figure { position: absolute; inset: 8px 4px 0; width: auto; height: auto; }
+.tn-card__name { font-size: 19px; font-weight: 800; line-height: 1; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tn-card__value { display: flex; align-items: baseline; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; animation: rise-in 360ms var(--ease-out) both; }
+.tn-card__value b { font-size: 24px; color: var(--ink); font-weight: 900; }
+
+@media (min-width: 760px) {
+  .tn-line { flex-direction: row; align-items: center; gap: 14px; }
+  .tn-end { writing-mode: vertical-rl; transform: rotate(180deg); padding: 0; }
+  .tn-end:last-child { transform: none; }
+  .tn-cards { flex-direction: row; flex: 1 1 auto; gap: 14px; }
+  .tn-slot { flex: 1 1 0; min-width: 0; }
+  .tn-card { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto; row-gap: 10px; padding: 8px 8px 14px; justify-items: center; text-align: center; height: 100%; align-content: start; }
+  .tn-card__photo { width: 100%; height: auto; aspect-ratio: 4 / 5; border-radius: 10px; }
+  .tn-card__name { font-size: 18px; white-space: normal; text-wrap: balance; }
+}
+
+/* Under the line: Lock in, or the score and Next, or the day's result. */
+.tn-act { display: flex; align-items: center; justify-content: center; gap: 16px; min-height: 56px; }
+.tn-act .seal { min-width: 180px; }
+.tn-score { font-size: 34px; font-weight: 900; }
+.tn-score--perfect { color: var(--green); }
+.tn-score--off { color: var(--muted); }
+
+.tn-end-card { width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: stretch; gap: 14px; padding: 18px 20px 22px; border-radius: 22px; background: var(--sticker); box-shadow: 0 3px 0 rgba(20, 18, 16, 0.07), 0 14px 30px rgba(20, 18, 16, 0.1); }
+.tn-end-card__total { margin: 0; text-align: center; font-size: 64px; font-weight: 900; line-height: 0.9; }
+.tn-end-card__total span { font-size: 28px; color: var(--muted); }
+.tn-end-card__rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tn-end-card__rows li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; font-weight: 700; }
+.tn-end-card__rows b { font-variant-numeric: tabular-nums; }
+
+/* The front page: today's five on the ground, the categories beneath. */
+.tn-lobby__five { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
+.tn-lobby__face { position: relative; flex: 1 1 0; aspect-ratio: 4 / 5; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22); }
+.tn-lobby__face img { display: block; width: 100%; height: 100%; }
+.tn-lobby__face .sticker__figure { position: absolute; inset: 14% 8% 0; width: auto; height: auto; }
+.tn-lobby__total { margin: 0; font-size: 56px; font-weight: 900; line-height: 0.9; }
+.tn-lobby__total span { font-size: 24px; opacity: 0.7; }
+.tn-lobby__marks { display: flex; gap: 6px; }
+.tn-lobby__next { margin: 0; font-weight: 700; opacity: 0.86; }
+.tn-lobby__cats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 17px; font-weight: 700; }
+.tn-lobby__cats li { display: flex; align-items: center; gap: 12px; }
+.tn-lobby__cats .display { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--page); font-size: 18px; font-weight: 900; }
+@media (min-width: 760px) {
+  .tn-lobby__cats { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  .tn-lobby__cats li { flex-direction: column; align-items: flex-start; }
+  .lobby-hero__go.tn-lobby__go { padding-top: 0; }
+}
+
+.tn-step__name .tn-instagram-logo { width: 16px; height: 16px; margin: 0; vertical-align: middle; }

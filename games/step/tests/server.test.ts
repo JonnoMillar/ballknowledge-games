@@ -75,6 +75,15 @@ describe('the wire', () => {
     expect(await judgePick(d.date, 0, outsider.id, [])).toMatchObject({ held: false, grade: null });
   });
 
+  it('scores depth inside the grade, and a run timeout is a miss with the answers', async () => {
+    const depths = await Promise.all(field.slice(0, 8).map((p) => judgePick(d.date, 0, p.id, []).then((v) => v!.depth!)));
+    for (const x of depths) expect(x).toBeGreaterThanOrEqual(0), expect(x).toBeLessThanOrEqual(1);
+    expect(new Set(depths).size).toBeGreaterThan(1);
+    const t = await judgePick(d.date, 0, '', []);
+    expect(t).toMatchObject({ held: false, grade: null, pick: { id: '' } });
+    expect(t?.obvious).not.toBeNull();
+  });
+
   it('refuses a repeat, a given, a bad step and an unknown player', async () => {
     expect(await judgePick(d.date, 1, field[0]!.id, [field[0]!.id])).toBeNull();
     expect(await judgePick(d.date, 0, d.players[1]!, [])).toBeNull();

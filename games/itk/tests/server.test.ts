@@ -49,6 +49,9 @@ describe('the wire', () => {
     expect(await judgePick(date, 0, wrong, false)).toEqual({ fake: false, fakeIndex: null, real: null });
     expect(await judgePick(date, 0, r.fake, false)).toMatchObject({ fake: true, fakeIndex: r.fake });
     expect(await judgePick(date, 0, 99, false)).toBeNull();
+    // The run's clock: -1 reveals only as the round's last word.
+    expect(await judgePick(date, 0, -1, false)).toBeNull();
+    expect(await judgePick(date, 0, -1, true)).toMatchObject({ fake: false, fakeIndex: r.fake });
   });
 });
 

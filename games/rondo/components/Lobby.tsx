@@ -68,6 +68,7 @@ export default function Lobby({ demo }: { demo: DemoBall }) {
         </section>
 
         <How demo={demo} />
+        <Careful stuck={demo.stuck} />
       </main>
     </div>
   );
@@ -83,6 +84,28 @@ const RULES: HowRule[] = [
   { text: 'A club that links two players can’t be used again.', frames: [3600] },
   { text: 'Can’t name anyone? That’s a strike. Three and you’re out.', frames: [3400] },
 ];
+
+/**
+ * The one rule the three above don't make obvious: a player with a single
+ * club is a dead end the moment that club burns. Saka's card, struck out.
+ */
+function Careful({ stuck }: { stuck: DemoBall['stuck'] }) {
+  return (
+    <section className="lobby-card lobby__wide careful vt">
+      <h2 className="lobby-tag lobby-tag--paper">One rule</h2>
+      <div className="careful__body">
+        <div className="careful__card" aria-hidden>
+          <StickerFace player={stuck} image={stuck.image} ground={solid(stuck.ground)} className="sticker--still" />
+          <svg className="careful__no" viewBox="0 0 100 100" aria-hidden>
+            <circle cx="50" cy="50" r="42" fill="none" strokeWidth="8" />
+            <path d="M20 80L80 20" strokeWidth="8" strokeLinecap="round" />
+          </svg>
+        </div>
+        <p className="careful__head display">You cannot pick a player who has only played for one club</p>
+      </div>
+    </section>
+  );
+}
 
 function How({ demo }: { demo: DemoBall }) {
   const [a, b, c] = demo.players;

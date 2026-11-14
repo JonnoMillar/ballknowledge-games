@@ -28,6 +28,8 @@ export type GameCard = {
 };
 
 export const GAMES: readonly GameCard[] = [
+  // The daily run: no miniature yet (the scout's-office redesign gives it the dossier).
+  { id: 'run', href: '/run', name: 'Today’s assignment', line: 'Six quick tasks', tag: 'Daily', ground: '#6B4A2B', dailies: ['run'] },
   { id: 'chain', href: '/chain', name: 'Chain', line: 'Steps, then the puzzle', tag: 'Daily', icon: 'chain', ground: '#2A2622', dailies: ['step', 'chain'] },
   { id: 'spoofed', href: '/spoofed', name: 'Spoofed', line: 'Spot the fake move', tag: 'Daily', icon: 'spoofed', ground: '#5B2A86', dailies: ['spoofed'] },
   { id: 'season-line', href: '/season-line', name: 'Season line', line: 'Name that season', tag: 'Daily', icon: 'season-line', ground: '#1F5F57', dailies: ['season-line'] },
