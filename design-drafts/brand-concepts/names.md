@@ -4,6 +4,21 @@ Scored against `docs/naming-checklist.md`. Domain checks are registry
 lookups on 2026-11-14 (nothing bought); a taken domain is not fatal if a
 fixed modifier works (`___fc.com`). Clash checks are one web search each.
 
+## Round 4: wider styles (2026-11-15; Jonno rejected all of round 3)
+
+Domains are .gg checks (all free unless noted). Clash-checked: Toepoke
+(clean), Regista (cut: a football management sim and a football word game
+already use it).
+
+- **Fan slang:** Toepoke (the scrappy toe-end finish; playful, ownable),
+  Worldies, Keepies, Fraud Watch (the "fraud" meme for overrated players).
+- **Tactics words, the name itself a flex:** Half Space (the zone between
+  the lines; also sounds like a place), Gegen, False Nine, Box to Box,
+  Fantasista.
+- **Match clock:** Added Time, Stoppage.
+- **Short sounds:** Golo, Panna (street football's nutmeg).
+- **Culture:** The 92 (every league club; UK-only).
+
 ## Round 3: coined words (Jonno: a unique word like Krillion, close to football)
 
 Jonno: Scouted FC reads as a football club, which is wrong. "Daily" in the
