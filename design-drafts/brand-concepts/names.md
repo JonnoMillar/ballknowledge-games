@@ -4,6 +4,22 @@ Scored against `docs/naming-checklist.md`. Domain checks are registry
 lookups on 2026-11-14 (nothing bought); a taken domain is not fatal if a
 fixed modifier works (`___fc.com`). Clash checks are one web search each.
 
+## Round 5: football word + scout word (2026-11-15)
+
+Jonno: "FootyScout? Something like that." The name must match how the games
+play (identifying players, spotting fakes), not just sound footbally;
+Toepoke matched nothing.
+
+| Name | Notes | Domain |
+|---|---|---|
+| **FootyScout** (lead) | Says the role and the play: you scout players. Descriptive, so search and AI find it. No app found with the name. "Footy" means Aussie rules in Australia; US fans say soccer. | .gg, .io, .co.uk free; .com taken |
+| BallScout | Same idea, plainer. | .gg free |
+| PitchScout | "Pitch" also a sales pitch. | .gg free |
+| FootyFile | Fits the dossier; less about you. | .gg free |
+| FootySleuth / FootyDetective | Fits the deduction games (Spoofed, the mole); off the scout world. | .com free |
+| FootySpy | Spying, not scouting. | .gg free |
+| Cut: FootyIQ (an app already uses it), ScoutIQ (generic). | | |
+
 ## Round 4: wider styles (2026-11-15; Jonno rejected all of round 3)
 
 Domains are .gg checks (all free unless noted). Clash-checked: Toepoke
