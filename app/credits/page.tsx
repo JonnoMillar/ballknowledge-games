@@ -1,7 +1,7 @@
 import { creditsFor } from '../../src/server/credits';
 import Back from '../../components/Back';
 
-export const metadata = { title: 'Credits · Chain' };
+export const metadata = { title: 'Credits' };
 
 const LETTERS = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '#'];
 const commonsPage = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, '_'))}`;
