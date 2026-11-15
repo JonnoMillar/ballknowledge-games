@@ -1,0 +1,250 @@
+{
+ "span": [
+  2010,
+  2026
+ ],
+ "prime": 2020.0,
+ "cat": "Son Heung-min",
+ "files": 15,
+ "cands": [
+  {
+   "file": "File:Best Footballer in Asia 2022 Son Heung-min (cropped).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q439722/11.jpg",
+   "gate": null,
+   "face": 326,
+   "share": 0.26,
+   "sharp": 188,
+   "room": 3.4,
+   "box": [
+    321,
+    140,
+    245,
+    326
+   ],
+   "yaw": 0.04,
+   "roll": -8.4,
+   "cx": 0.46,
+   "why": "face 326px, 26% of height, sharpness 188",
+   "score": 3.379
+  },
+  {
+   "file": "File:BFA 2023 -2 Heung-Min Son.jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q439722/13.jpg",
+   "gate": null,
+   "face": 249,
+   "share": 0.2,
+   "sharp": 1422,
+   "room": 4.5,
+   "box": [
+    382,
+    148,
+    192,
+    249
+   ],
+   "yaw": 0.06,
+   "roll": -8.6,
+   "cx": 0.5,
+   "why": "face 249px, 20% of height, sharpness 1422",
+   "score": 3.366
+  },
+  {
+   "file": "File:Titan Sports Conferred the trophy to Son Heung-min on April 24th, 2018.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q439722/6.jpg",
+   "gate": null,
+   "face": 130,
+   "share": 0.18,
+   "sharp": 420,
+   "room": 4.3,
+   "box": [
+    552,
+    161,
+    91,
+    130
+   ],
+   "yaw": -0.0,
+   "roll": -2.5,
+   "cx": 0.62,
+   "why": "face 130px, 18% of height, sharpness 420",
+   "score": 2.42
+  },
+  {
+   "file": "File:Best Footballer in Asia 2022 Son Heung-min.jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q439722/12.jpg",
+   "gate": null,
+   "face": 167,
+   "share": 0.12,
+   "sharp": 493,
+   "room": 6.3,
+   "box": [
+    379,
+    390,
+    137,
+    167
+   ],
+   "yaw": 0.03,
+   "roll": -6.1,
+   "cx": 0.47,
+   "why": "face 167px, 12% of height, sharpness 493",
+   "score": 2.352
+  },
+  {
+   "file": "File:Son Heung-min at 2019 AFC Asian Cup.jpg",
+   "p18": false,
+   "year": 2019,
+   "local": "cand/Q439722/7.jpg",
+   "gate": null,
+   "face": 50,
+   "share": 0.09,
+   "sharp": 13388,
+   "room": 9.4,
+   "box": [
+    201,
+    71,
+    39,
+    50
+   ],
+   "yaw": 0.06,
+   "roll": -0.3,
+   "cx": 0.52,
+   "why": "face 50px, 9% of height, sharpness 13388",
+   "score": 2.277
+  },
+  {
+   "file": "File:Best Footballer in Asia 2021 Son Heung-min.png",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q439722/9.jpg",
+   "gate": null,
+   "face": 90,
+   "share": 0.18,
+   "sharp": 682,
+   "room": 4.8,
+   "box": [
+    318,
+    79,
+    62,
+    90
+   ],
+   "yaw": -0.18,
+   "roll": 3.0,
+   "cx": 0.55,
+   "why": "face 90px, 18% of height, sharpness 682",
+   "score": 2.083
+  },
+  {
+   "file": "File:Son Heung-Min Spurs 2016.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q439722/4.jpg",
+   "gate": null,
+   "face": 225,
+   "share": 0.11,
+   "sharp": 1615,
+   "room": 8.4,
+   "box": [
+    492,
+    154,
+    156,
+    225
+   ],
+   "yaw": 0.5,
+   "roll": -3.1,
+   "cx": 0.59,
+   "why": "face 225px, 11% of height, sharpness 1615",
+   "score": 1.356
+  },
+  {
+   "file": "File:Son Heung-Min.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q439722/2.jpg",
+   "gate": null,
+   "face": 170,
+   "share": 0.13,
+   "sharp": 229,
+   "room": 6.5,
+   "box": [
+    392,
+    156,
+    147,
+    170
+   ],
+   "yaw": 0.28,
+   "roll": -11.2,
+   "cx": 0.48,
+   "why": "face 170px, 13% of height, sharpness 229",
+   "score": 0.935
+  },
+  {
+   "file": "File:BFA 2023 -2 Heung-Min Son (cropped).jpg",
+   "p18": true,
+   "year": 2024,
+   "local": "cand/Q439722/0.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Son Heung-min Tottenham Mural.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q439722/1.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Son Heung-min 2016.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q439722/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Heung-min Son 2017.jpg",
+   "p18": false,
+   "year": 2017,
+   "local": "cand/Q439722/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Heung-Min Son 2021.png",
+   "p18": false,
+   "year": 2021,
+   "local": "cand/Q439722/8.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Son Heung-min - 2022 (52552243725) (cropped).jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q439722/10.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:LIV-MU-CARABAO-24(7) (Lisandro Mart\u00ednez and Heung-min Son).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q439722/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

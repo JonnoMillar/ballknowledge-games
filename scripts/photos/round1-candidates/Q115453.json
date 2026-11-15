@@ -11,7 +11,10 @@
    52,
    62,
    83
-  ]
+  ],
+  "yaw": -0.1,
+  "roll": -1.7,
+  "cx": 0.46
  },
  {
   "file": "File:Rakitic 2010.jpg",
@@ -25,7 +28,10 @@
    180,
    173,
    252
-  ]
+  ],
+  "yaw": -0.44,
+  "roll": -17.5,
+  "cx": 0.29
  },
  {
   "file": "File:Ivan Rakitic 2018 (cropped).jpg",
@@ -39,7 +45,10 @@
    98,
    157,
    221
-  ]
+  ],
+  "yaw": -0.25,
+  "roll": -0.1,
+  "cx": 0.47
  },
  {
   "file": "File:Ivan Rakiti\u0107 - Croatia vs. Portugal, 10th June 2013 (cropped).jpg",
@@ -53,7 +62,10 @@
    122,
    139,
    193
-  ]
+  ],
+  "yaw": -0.11,
+  "roll": -3.4,
+  "cx": 0.44
  },
  {
   "file": "File:Ivan Rakiti\u0107 2010.jpg",
@@ -67,7 +79,10 @@
    153,
    202,
    304
-  ]
+  ],
+  "yaw": -0.33,
+  "roll": -18.4,
+  "cx": 0.37
  },
  {
   "file": "File:Ivan Rakitic 2018.jpg",
@@ -81,7 +96,10 @@
    76,
    114,
    165
-  ]
+  ],
+  "yaw": -0.25,
+  "roll": -0.9,
+  "cx": 0.51
  },
  {
   "file": "File:Ivan Rakitic.jpg",
@@ -95,7 +113,10 @@
    151,
    103,
    147
-  ]
+  ],
+  "yaw": -0.05,
+  "roll": -8.2,
+  "cx": 0.55
  },
  {
   "file": "File:Ivan Rakiti\u0107.jpg",
@@ -109,7 +130,10 @@
    62,
    86,
    119
-  ]
+  ],
+  "yaw": -0.18,
+  "roll": 2.1,
+  "cx": 0.51
  },
  {
   "file": "File:Bar\u00e7a - Napoli - 20140806 - Ivan Rakitic.jpg",
@@ -123,7 +147,10 @@
    168,
    98,
    138
-  ]
+  ],
+  "yaw": 0.32,
+  "roll": -0.8,
+  "cx": 0.54
  },
  {
   "file": "File:Ivan Rakiti\u0107 - Croatia vs. Portugal, 10th June 2013.jpg",
@@ -137,7 +164,10 @@
    276,
    86,
    121
-  ]
+  ],
+  "yaw": -0.1,
+  "roll": -3.3,
+  "cx": 0.6
  },
  {
   "file": "File:Ivan Rakiti\u0107 2020.jpg",
@@ -151,7 +181,10 @@
    51,
    61,
    85
-  ]
+  ],
+  "yaw": -0.11,
+  "roll": -2.0,
+  "cx": 0.47
  },
  {
   "file": "File:11Rakitic in Radkersburg.jpg",
@@ -165,7 +198,10 @@
    95,
    73,
    110
-  ]
+  ],
+  "yaw": -0.4,
+  "roll": -2.5,
+  "cx": 0.44
  },
  {
   "file": "File:IvanRakitic.jpg",
@@ -179,7 +215,10 @@
    165,
    71,
    89
-  ]
+  ],
+  "yaw": -0.2,
+  "roll": -4.1,
+  "cx": 0.52
  },
  {
   "file": "File:Ivan Rakitic (FC Barcelona), Mattias Ekstr\u00f6m (EKS) (33718294426).jpg",

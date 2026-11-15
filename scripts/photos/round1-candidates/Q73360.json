@@ -11,7 +11,10 @@
    130,
    248,
    330
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": 5.2,
+  "cx": 0.49
  },
  {
   "file": "File:Thibaut Courtois - 01.jpg",
@@ -25,7 +28,10 @@
    275,
    238,
    363
-  ]
+  ],
+  "yaw": -0.64,
+  "roll": 0.4,
+  "cx": 0.51
  },
  {
   "file": "File:Thibaut Courtois, August 2014.jpg",
@@ -39,7 +45,10 @@
    198,
    238,
    351
-  ]
+  ],
+  "yaw": 0.44,
+  "roll": 0.6,
+  "cx": 0.54
  },
  {
   "file": "File:Thibaut Courtois at the 2018 World Cup (cropped).jpg",
@@ -53,7 +62,10 @@
    59,
    133,
    191
-  ]
+  ],
+  "yaw": 0.6,
+  "roll": -12.3,
+  "cx": 0.53
  },
  {
   "file": "File:Thibaut Courtois - 02.jpg",
@@ -67,7 +79,10 @@
    166,
    149,
    198
-  ]
+  ],
+  "yaw": -0.18,
+  "roll": 4.6,
+  "cx": 0.48
  },
  {
   "file": "File:Thibaut Courtois Belgium v USA 6 July 2026-077.jpg",
@@ -81,7 +96,10 @@
    145,
    120,
    191
-  ]
+  ],
+  "yaw": -0.94,
+  "roll": 14.8,
+  "cx": 0.5
  },
  {
   "file": "File:Thibaut Courtois WC2022.jpg",
@@ -95,7 +113,10 @@
    53,
    108,
    173
-  ]
+  ],
+  "yaw": 0.81,
+  "roll": -6.4,
+  "cx": 0.65
  },
  {
   "file": "File:Thibaut Courtois POTM jan2020.png",
@@ -109,7 +130,10 @@
    159,
    88,
    117
-  ]
+  ],
+  "yaw": 0.06,
+  "roll": 0.0,
+  "cx": 0.65
  },
  {
   "file": "File:Thibaut Courtois.jpg",
@@ -123,7 +147,10 @@
    41,
    51,
    72
-  ]
+  ],
+  "yaw": 0.01,
+  "roll": 0.8,
+  "cx": 0.63
  },
  {
   "file": "File:Thibaut Courtois TOTS 2021.png",
@@ -137,7 +164,10 @@
    163,
    87,
    114
-  ]
+  ],
+  "yaw": 0.06,
+  "roll": 0.9,
+  "cx": 0.65
  },
  {
   "file": "File:Thibaut Courtois Belgium v USA 6 July 2026-076.jpg",
@@ -151,7 +181,10 @@
    61,
    65,
    90
-  ]
+  ],
+  "yaw": -0.01,
+  "roll": 0.8,
+  "cx": 0.49
  },
  {
   "file": "File:Belgium goalkeeper Thibaut Courtois making a save during the match against Brazil, 6 July 2018.jpg",

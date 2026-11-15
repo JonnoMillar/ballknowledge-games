@@ -11,7 +11,10 @@
    265,
    305,
    444
-  ]
+  ],
+  "yaw": 0.28,
+  "roll": -6.1,
+  "cx": 0.51
  },
  {
   "file": "File:Samuel Eto'o 2011 September.jpg",
@@ -25,7 +28,10 @@
    35,
    139,
    190
-  ]
+  ],
+  "yaw": -0.06,
+  "roll": -4.4,
+  "cx": 0.64
  },
  {
   "file": "File:Eto'o 2015.jpg",
@@ -39,7 +45,10 @@
    591,
    219,
    269
-  ]
+  ],
+  "yaw": -0.02,
+  "roll": -3.1,
+  "cx": 0.23
  },
  {
   "file": "File:Samuel Eto'o 2009.jpg",
@@ -53,7 +62,10 @@
    56,
    59,
    98
-  ]
+  ],
+  "yaw": 1.85,
+  "roll": -22.6,
+  "cx": 0.48
  },
  {
   "file": "File:Samuel Eto'o'14.JPG",
@@ -67,7 +79,10 @@
    61,
    97,
    168
-  ]
+  ],
+  "yaw": -1.19,
+  "roll": 9.8,
+  "cx": 0.54
  },
  {
   "file": "File:Samuel Eto'o April 2014.jpg",
@@ -81,7 +96,10 @@
    164,
    93,
    133
-  ]
+  ],
+  "yaw": -0.28,
+  "roll": -3.7,
+  "cx": 0.47
  },
  {
   "file": "File:Samuel Eto'o.jpg",
@@ -95,7 +113,10 @@
    100,
    154,
    215
-  ]
+  ],
+  "yaw": -0.23,
+  "roll": 2.1,
+  "cx": 0.44
  },
  {
   "file": "File:Eto'o.jpg",
@@ -109,7 +130,10 @@
    142,
    63,
    98
-  ]
+  ],
+  "yaw": 2.96,
+  "roll": -27.0,
+  "cx": 0.7
  },
  {
   "file": "File:Samuel Eto'o - 001.jpg",
@@ -123,7 +147,10 @@
    230,
    95,
    127
-  ]
+  ],
+  "yaw": 0.22,
+  "roll": -3.7,
+  "cx": 0.54
  },
  {
   "file": "File:Semih eto'o.JPG",
@@ -137,7 +164,10 @@
    58,
    64,
    90
-  ]
+  ],
+  "yaw": -0.95,
+  "roll": -0.1,
+  "cx": 0.19
  },
  {
   "file": "File:Samuel Eto'o vs Morocco.jpg",
@@ -151,7 +181,10 @@
    80,
    43,
    55
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": 1.2,
+  "cx": 0.56
  },
  {
   "file": "File:Samuel Eto'o (Inter).jpg",
@@ -165,7 +198,10 @@
    47,
    55,
    67
-  ]
+  ],
+  "yaw": -0.62,
+  "roll": -0.8,
+  "cx": 0.58
  },
  {
   "file": "File:Chelsea 1 Sunderland 2 Eto'o Mannone.jpg",

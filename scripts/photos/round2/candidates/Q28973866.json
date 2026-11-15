@@ -1,0 +1,290 @@
+{
+ "span": [
+  2017,
+  2026
+ ],
+ "prime": 2022.0,
+ "cat": "Vin\u00edcius J\u00fanior",
+ "files": 18,
+ "cands": [
+  {
+   "file": "File:Vin\u00edcius J\u00fanior Brazil V Morocco 13 June 2026-207 (cropped).jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q28973866/0.jpg",
+   "gate": null,
+   "face": 415,
+   "share": 0.29,
+   "sharp": 4372,
+   "room": 3.0,
+   "box": [
+    312,
+    203,
+    293,
+    415
+   ],
+   "yaw": -0.18,
+   "roll": 2.6,
+   "cx": 0.48,
+   "why": "face 415px, 29% of height, sharpness 4372",
+   "score": 15.856
+  },
+  {
+   "file": "File:Vinicius Junior Brazil V Morocco 13 June 2026-94 (cropped).jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/14.jpg",
+   "gate": null,
+   "face": 404,
+   "share": 0.29,
+   "sharp": 630,
+   "room": 2.7,
+   "box": [
+    304,
+    290,
+    289,
+    404
+   ],
+   "yaw": -0.08,
+   "roll": 1.6,
+   "cx": 0.47,
+   "why": "face 404px, 29% of height, sharpness 630",
+   "score": 5.259
+  },
+  {
+   "file": "File:Vinicius Junior Brazil V Morocco 13 June 2026-94.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/15.jpg",
+   "gate": null,
+   "face": 188,
+   "share": 0.13,
+   "sharp": 805,
+   "room": 6.8,
+   "box": [
+    397,
+    170,
+    132,
+    188
+   ],
+   "yaw": -0.0,
+   "roll": -0.3,
+   "cx": 0.48,
+   "why": "face 188px, 13% of height, sharpness 805",
+   "score": 3.199
+  },
+  {
+   "file": "File:Vin\u00edcius J\u00fanior Brazil V Morocco 13 June 2026-207.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/17.jpg",
+   "gate": null,
+   "face": 227,
+   "share": 0.16,
+   "sharp": 5180,
+   "room": 5.4,
+   "box": [
+    350,
+    213,
+    173,
+    227
+   ],
+   "yaw": -0.22,
+   "roll": 1.5,
+   "cx": 0.45,
+   "why": "face 227px, 16% of height, sharpness 5180",
+   "score": 2.987
+  },
+  {
+   "file": "File:Vin\u00edcius J\u00fanior - Real Madrid CF (2024-25).jpg",
+   "p18": false,
+   "year": 2024,
+   "local": "cand/Q28973866/7.jpg",
+   "gate": null,
+   "face": 158,
+   "share": 0.25,
+   "sharp": 2776,
+   "room": 3.4,
+   "box": [
+    478,
+    102,
+    100,
+    158
+   ],
+   "yaw": 1.14,
+   "roll": -1.0,
+   "cx": 0.55,
+   "why": "face 158px, 25% of height, sharpness 2776",
+   "score": 2.211
+  },
+  {
+   "file": "File:2025 04 26 Final de la Copa del Rey - Vin\u00edcius J\u00fanior.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q28973866/10.jpg",
+   "gate": null,
+   "face": 97,
+   "share": 0.27,
+   "sharp": 745,
+   "room": 2.7,
+   "box": [
+    150,
+    102,
+    75,
+    97
+   ],
+   "yaw": 0.5,
+   "roll": 0.7,
+   "cx": 0.62,
+   "why": "face 97px, 27% of height, sharpness 745",
+   "score": 1.993
+  },
+  {
+   "file": "File:Vin\u00edcius J\u00fanior (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q28973866/3.jpg",
+   "gate": null,
+   "face": 104,
+   "share": 0.2,
+   "sharp": 116,
+   "room": 4.4,
+   "box": [
+    91,
+    53,
+    84,
+    104
+   ],
+   "yaw": -0.07,
+   "roll": 0.7,
+   "cx": 0.39,
+   "why": "face 104px, 20% of height, sharpness 116",
+   "score": 1.794
+  },
+  {
+   "file": "File:Vin\u00edcius J\u00fanior POTM nov2021.png",
+   "p18": false,
+   "year": 2021,
+   "local": "cand/Q28973866/5.jpg",
+   "gate": null,
+   "face": 108,
+   "share": 0.11,
+   "sharp": 671,
+   "room": 7.6,
+   "box": [
+    427,
+    177,
+    80,
+    108
+   ],
+   "yaw": -0.18,
+   "roll": 0.5,
+   "cx": 0.67,
+   "why": "face 108px, 11% of height, sharpness 671",
+   "score": 1.37
+  },
+  {
+   "file": "File:Vin\u00edcius J\u00fanior.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q28973866/4.jpg",
+   "gate": null,
+   "face": 105,
+   "share": 0.1,
+   "sharp": 117,
+   "room": 9.5,
+   "box": [
+    91,
+    53,
+    83,
+    105
+   ],
+   "yaw": -0.08,
+   "roll": 0.8,
+   "cx": 0.39,
+   "why": "face 105px, 10% of height, sharpness 117",
+   "score": 1.161
+  },
+  {
+   "file": "File:Vinicius Junior 2018 1 (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q28973866/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Vinicius Junior 2018 1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q28973866/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Vinicius Junior WC2022.jpg",
+   "p18": false,
+   "year": 2022,
+   "local": "cand/Q28973866/6.jpg",
+   "gate": "face 47px, too small",
+   "why": "face 47px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:2025 04 26 Final de la Copa del Rey - 54482387776 (Vin\u00edcius J\u00fanior).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q28973866/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2025 04 26 Final de la Copa del Rey - 54482387776 (Vin\u00edcius J\u00fanior, Jude Bellingham e Rodrygo Go\u00e9s) (cropped).jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q28973866/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Brahim Diaz Vinicius Junior Brazil V Morocco 13 June 2026-128.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Vinicius Junior Achraf Hakimi Brazil V Morocco 13 June 2026-119.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Vinicius Junior Brazil V Morocco 13 June 2026-93.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/13.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:VINICIUS JUNIOR, Ismael SAIBARI, Issa Diopand, and Ayyoub BOUADDI at 2026 FIFA World Cup by YantsImages.jpg",
+   "p18": false,
+   "year": 2026,
+   "local": "cand/Q28973866/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

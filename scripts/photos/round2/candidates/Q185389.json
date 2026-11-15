@@ -1,0 +1,69 @@
+{
+ "span": [
+  1986,
+  2006
+ ],
+ "prime": 2000.5,
+ "cat": "Dennis Bergkamp",
+ "files": 13,
+ "cands": [
+  {
+   "file": "File:Bergkamp.jpg",
+   "p18": false,
+   "year": 1996,
+   "local": "cand/Q185389/0.jpg",
+   "gate": null,
+   "face": 54,
+   "share": 0.08,
+   "sharp": 641,
+   "room": 8.8,
+   "box": [
+    333,
+    189,
+    38,
+    54
+   ],
+   "yaw": 0.5,
+   "roll": 1.9,
+   "cx": 0.44,
+   "why": "face 54px, 8% of height, sharpness 641",
+   "score": 0.739
+  },
+  {
+   "file": "File:Dennis Bergkamp - FC Inter - Coppa UEFA 1993-94.jpg",
+   "p18": false,
+   "year": 1994,
+   "local": "cand/Q185389/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Dennis Bergkamp 1989, Bestanddeelnr 934-4782.jpg",
+   "p18": false,
+   "year": 1989,
+   "local": "cand/Q185389/2.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Dennis Bergkamp Aug2003.JPG",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q185389/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Dennis Bergkamp.jpg",
+   "p18": false,
+   "year": 2001,
+   "local": "cand/Q185389/4.jpg",
+   "gate": "face 49px, too small",
+   "why": "face 49px, too small",
+   "score": 0
+  }
+ ]
+}

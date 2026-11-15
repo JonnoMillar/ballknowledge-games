@@ -93,7 +93,8 @@ function Roll({ to, cat }: { to: number; cat: Category }) {
 /** A face, or the silhouette when there is none or its link has died. */
 export function Photo({ image }: { image: PortraitImage | null }) {
   const [dead, setDead] = useState(false);
-  return image && !dead
-    ? <img src={image.url} alt="" draggable={false} style={{ objectFit: image.fit }} onError={() => setDead(true)} />
+  // 'box' is one of our cutouts (head and shoulders, bottom-anchored); 'kit' is the kit card, which this game draws as the silhouette.
+  return image && image.fit !== 'kit' && !dead
+    ? <img src={image.url} alt="" draggable={false} style={{ objectFit: image.fit === 'box' ? 'cover' : image.fit, objectPosition: image.fit === 'box' ? 'center bottom' : undefined }} onError={() => setDead(true)} />
     : <Figure tone="rgba(255,255,255,0.55)" />;
 }

@@ -1,0 +1,212 @@
+[
+ {
+  "id": "Q17515",
+  "name": "Diego Maradona",
+  "club": "Q2641",
+  "clubName": "SSC Napoli",
+  "colour": "#12A0D7"
+ },
+ {
+  "id": "Q1835",
+  "name": "Zinedine Zidane",
+  "club": "Q8682",
+  "clubName": "Real Madrid Club de Fútbol",
+  "colour": "#FEBE10"
+ },
+ {
+  "id": "Q10520",
+  "name": "David Beckham",
+  "club": "Q18656",
+  "clubName": "Manchester United F.C.",
+  "colour": "#DA291C"
+ },
+ {
+  "id": "Q45901",
+  "name": "Thierry Henry",
+  "club": "Q9617",
+  "clubName": "Arsenal F.C.",
+  "colour": "#EF0107"
+ },
+ {
+  "id": "Q67964",
+  "name": "Roberto Baggio",
+  "club": "Q1422",
+  "clubName": "Juventus FC",
+  "colour": "#000000"
+ },
+ {
+  "id": "Q185389",
+  "name": "Dennis Bergkamp",
+  "club": "Q9617",
+  "clubName": "Arsenal F.C.",
+  "colour": "#EF0107"
+ },
+ {
+  "id": "Q41244",
+  "name": "Andriy Shevchenko",
+  "club": "Q1543",
+  "clubName": "AC Milan",
+  "colour": "#FB090B"
+ },
+ {
+  "id": "Q429039",
+  "name": "Roberto Carlos",
+  "club": "Q8682",
+  "clubName": "Real Madrid Club de Fútbol",
+  "colour": "#FEBE10"
+ },
+ {
+  "id": "Q483145",
+  "name": "Luís Figo",
+  "club": "Q7156",
+  "clubName": "FC Barcelona",
+  "colour": "#A50044"
+ },
+ {
+  "id": "Q11576",
+  "name": "Raúl",
+  "club": "Q8682",
+  "clubName": "Real Madrid Club de Fútbol",
+  "colour": "#FEBE10"
+ },
+ {
+  "id": "Q131261",
+  "name": "Oliver Kahn",
+  "club": "Q15789",
+  "clubName": "FC Bayern Munich",
+  "colour": "#DC052D"
+ },
+ {
+  "id": "Q624",
+  "name": "Alessandro Del Piero",
+  "club": "Q1422",
+  "clubName": "Juventus FC",
+  "colour": "#000000"
+ },
+ {
+  "id": "Q173972",
+  "name": "Ruud Gullit",
+  "club": "Q1543",
+  "clubName": "AC Milan",
+  "colour": "#FB090B"
+ },
+ {
+  "id": "Q45626",
+  "name": "Ruud van Nistelrooy",
+  "club": "Q18656",
+  "clubName": "Manchester United F.C.",
+  "colour": "#DA291C"
+ },
+ {
+  "id": "Q41533",
+  "name": "Frank Lampard",
+  "club": "Q9616",
+  "clubName": "Chelsea F.C.",
+  "colour": "#034694"
+ },
+ {
+  "id": "Q266613",
+  "name": "Wayne Rooney",
+  "club": "Q18656",
+  "clubName": "Manchester United F.C.",
+  "colour": "#DA291C"
+ },
+ {
+  "id": "Q459830",
+  "name": "Steven Gerrard",
+  "club": "Q1130849",
+  "clubName": "Liverpool F.C.",
+  "colour": "#C8102E"
+ },
+ {
+  "id": "Q11584",
+  "name": "Iker Casillas",
+  "club": "Q8682",
+  "clubName": "Real Madrid Club de Fútbol",
+  "colour": "#FEBE10"
+ },
+ {
+  "id": "Q17500",
+  "name": "Xavi Hernández",
+  "club": "Q7156",
+  "clubName": "FC Barcelona",
+  "colour": "#A50044"
+ },
+ {
+  "id": "Q531814",
+  "name": "Kaká",
+  "club": "Q1543",
+  "clubName": "AC Milan",
+  "colour": "#FB090B"
+ },
+ {
+  "id": "Q43913",
+  "name": "Arjen Robben",
+  "club": "Q15789",
+  "clubName": "FC Bayern Munich",
+  "colour": "#DC052D"
+ },
+ {
+  "id": "Q142794",
+  "name": "Neymar",
+  "club": "Q7156",
+  "clubName": "FC Barcelona",
+  "colour": "#A50044"
+ },
+ {
+  "id": "Q21621995",
+  "name": "Kylian Mbappé",
+  "club": "Q483020",
+  "clubName": "Paris Saint-Germain FC",
+  "colour": "#004170"
+ },
+ {
+  "id": "Q28967995",
+  "name": "Erling Haaland",
+  "club": "Q50602",
+  "clubName": "Manchester City F.C.",
+  "colour": "#6CABDD"
+ },
+ {
+  "id": "Q969725",
+  "name": "Harry Kane",
+  "club": "Q18741",
+  "clubName": "Tottenham Hotspur F.C.",
+  "colour": "#132257"
+ },
+ {
+  "id": "Q113704154",
+  "name": "Lamine Yamal",
+  "club": "Q7156",
+  "clubName": "FC Barcelona",
+  "colour": "#A50044"
+ },
+ {
+  "id": "Q28973866",
+  "name": "Vinícius Júnior",
+  "club": "Q8682",
+  "clubName": "Real Madrid Club de Fútbol",
+  "colour": "#FEBE10"
+ },
+ {
+  "id": "Q439722",
+  "name": "Son Heung-min",
+  "club": "Q18741",
+  "clubName": "Tottenham Hotspur F.C.",
+  "colour": "#132257"
+ },
+ {
+  "id": "Q133903",
+  "name": "Virgil van Dijk",
+  "club": "Q1130849",
+  "clubName": "Liverpool F.C.",
+  "colour": "#C8102E"
+ },
+ {
+  "id": "Q66241169",
+  "name": "Jude Bellingham",
+  "club": "Q41420",
+  "clubName": "Borussia Dortmund",
+  "colour": "#FDE100"
+ }
+]

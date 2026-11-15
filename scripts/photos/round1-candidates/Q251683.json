@@ -11,7 +11,10 @@
    79,
    202,
    289
-  ]
+  ],
+  "yaw": -0.45,
+  "roll": 0.8,
+  "cx": 0.44
  },
  {
   "file": "File:Angel di Maria-Portugal vs. Argentina.jpg",
@@ -25,7 +28,10 @@
    150,
    251,
    385
-  ]
+  ],
+  "yaw": -0.55,
+  "roll": -0.4,
+  "cx": 0.3
  },
  {
   "file": "File:2017 FRIENDLY MATCH RUSSIA v ARGENTINA - \u00c1ngel Di Mar\u00eda.jpg",
@@ -39,7 +45,10 @@
    97,
    209,
    317
-  ]
+  ],
+  "yaw": -0.65,
+  "roll": -1.6,
+  "cx": 0.3
  },
  {
   "file": "File:\u00c1ngel Di Mar\u00eda 2018.jpg",
@@ -53,7 +62,10 @@
    34,
    90,
    138
-  ]
+  ],
+  "yaw": -0.88,
+  "roll": 1.6,
+  "cx": 0.4
  },
  {
   "file": "File:MariaAngel.jpg",
@@ -67,7 +79,10 @@
    252,
    67,
    118
-  ]
+  ],
+  "yaw": -0.74,
+  "roll": 3.3,
+  "cx": 0.57
  },
  {
   "file": "File:\u00c1ngel Di Mar\u00eda (cropped Benfica).jpg",
@@ -81,7 +96,10 @@
    51,
    55,
    76
-  ]
+  ],
+  "yaw": 0.15,
+  "roll": 0.7,
+  "cx": 0.38
  },
  {
   "file": "File:Angel Di Maria \u2013 Portugal vs. Argentina, 9th February 2011 (cropped).jpg",
@@ -95,7 +113,10 @@
    205,
    80,
    127
-  ]
+  ],
+  "yaw": -0.19,
+  "roll": -0.1,
+  "cx": 0.61
  },
  {
   "file": "File:Angel Di Maria \u2013 Portugal vs. Argentina, 9th February 2011 (2).jpg",
@@ -109,7 +130,10 @@
    180,
    69,
    91
-  ]
+  ],
+  "yaw": 0.15,
+  "roll": 1.5,
+  "cx": 0.59
  },
  {
   "file": "File:Angel Di Maria \u2013 Portugal vs. Argentina, 9th February 2011 (1).jpg",
@@ -123,7 +147,10 @@
    156,
    56,
    90
-  ]
+  ],
+  "yaw": -0.1,
+  "roll": 0.8,
+  "cx": 0.66
  },
  {
   "file": "File:\u00c1ngel Di Mar\u00eda.jpg",
@@ -137,7 +164,10 @@
    85,
    57,
    80
-  ]
+  ],
+  "yaw": 0.17,
+  "roll": 2.3,
+  "cx": 0.38
  },
  {
   "file": "File:Di maria - Milano.jpg",
@@ -151,7 +181,10 @@
    81,
    36,
    50
-  ]
+  ],
+  "yaw": 1.43,
+  "roll": -1.1,
+  "cx": 0.35
  },
  {
   "file": "File:Angeldimaria.JPG",

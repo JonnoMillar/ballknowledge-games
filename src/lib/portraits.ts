@@ -9,23 +9,36 @@
 /**
  * A picture ready to put in a frame.
  *
- * `fit` is not cosmetic. A cutout is the whole player against transparency and
- * has to be shown WHOLE — cropping it beheads him. A press photo is the
- * opposite: Commons framing runs from tight portrait to a figure somewhere in
- * a stadium, so it is cropped to the frame and anchored high. Getting this
- * backwards letterboxes every press photo inside its mount.
+ * `fit` is not cosmetic. A TheSportsDB cutout (dev only) is the whole player
+ * against transparency and has to be shown WHOLE: cropping it beheads him. Our
+ * processed cutouts are pre-cropped (`box`); `cover` survives only in the
+ * Chain link codec (src/lib/chain/client.ts).
  */
 export interface PortraitImage {
   url: string;
-  fit: 'cover' | 'contain';
+  /**
+   * `box`: one of our processed cutouts, square, face in the same box every
+   * time, body running off the bottom edge, shown on the grade material.
+   * `kit`: no photo; the kit card, with `club` for the crest (`url` is empty).
+   */
+  fit: 'cover' | 'contain' | 'box' | 'kit';
+  club?: string;
 }
+
+/** The kit card: shown where no good photo exists. */
+export const kitCard = (club: string | undefined): PortraitImage => ({ url: '', fit: 'kit', ...(club ? { club } : {}) });
 
 /** A portrait resolved by scripts/fetch-portraits.ts. */
 export interface PortraitRecord {
-  source: 'cutout' | 'commons' | 'none';
+  /** `processed`: our own cutout of a Commons photo, hosted under /portraits (scripts/photos). */
+  source: 'cutout' | 'commons' | 'processed' | 'none';
   url?: string;
+  /** Processed and commons: the Commons file it came from, credited in data/credits.json. */
+  file?: string;
   /** Commons only: the capture year the photo was accepted on. */
   year?: number;
+  /** A processed photo found outside Commons (Openverse, mostly Flickr): what its credit needs. `file` is `openverse:<id>`. */
+  origin?: { source?: string; title?: string; creator?: string; creatorUrl?: string; licence: string; licenceUrl?: string; url?: string };
   career?: [number, number];
   reason?: string;
   /** Cutouts only: the in-era Commons photo to show where the cutout may not be. */
@@ -43,42 +56,27 @@ export function commonsThumb(filename: string, width: number): string {
 }
 
 /**
- * The picture for each player, as a ready URL.
+ * The picture for each player, as a ready URL: our own processed cutout, and nothing else.
  *
- * A resolved portrait WINS over the raw Commons photo, and a resolved `none`
- * beats it too — that is the whole point. 31% of the photos in images.json
- * were taken after the player retired, so a card that falls back to one is
- * showing a pundit in a suit. An empty card is the honest answer; the crest
- * and the club colours still carry it.
- *
- * Players the resolver has not reached yet keep their old photo, so the board
- * degrades to its previous behaviour rather than emptying out mid-migration.
+ * Everyone without one gets the kit card from the caller, which knows the
+ * club (see `kitCard`). That includes players who used to carry a raw
+ * Commons photo from data/images.json or an unjudged `commons` record: 31% of
+ * those were taken after the player retired, and the rest were never looked
+ * at, so a kit card is the honest answer (Jonno, 2026-10-29).
  *
  * TheSportsDB cutouts carry no `strCreativeCommons` flag, and its terms say
  * such artwork must not be used publicly, websites included. So they appear
- * only with `allowUncleared` (local development); everywhere else a cutout
- * gives way to its in-era Commons `alt`, or to an empty card.
+ * only with `allowUncleared` (local development).
  */
 export function portraitUrls(
-  images: Record<string, string>,
   portraits: Record<string, PortraitRecord>,
-  width = 200,
   allowUncleared = false,
 ): Record<string, PortraitImage> {
   const out: Record<string, PortraitImage> = {};
-  // An unresolved player keeps a press photo, which is cropped to the frame.
-  for (const [id, file] of Object.entries(images)) {
-    out[id] = { url: commonsThumb(file, width), fit: 'cover' };
-  }
   for (const [id, p] of Object.entries(portraits)) {
-    if (p.source === 'cutout' && !allowUncleared) {
-      if (p.alt) out[id] = { url: p.alt.url, fit: 'cover' };
-      else delete out[id];
-    } else if (p.source !== 'none' && p.url) {
-      out[id] = { url: p.url, fit: p.source === 'cutout' ? 'contain' : 'cover' };
-    } else {
-      delete out[id];
-    }
+    if (!p.url) continue;
+    if (p.source === 'processed') out[id] = { url: p.url, fit: 'box' };
+    else if (p.source === 'cutout' && allowUncleared) out[id] = { url: p.url, fit: 'contain' };
   }
   return out;
 }

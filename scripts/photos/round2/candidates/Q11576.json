@@ -1,0 +1,570 @@
+{
+ "span": [
+  1994,
+  2015
+ ],
+ "prime": 2002.0,
+ "cat": "Ra\u00fal Gonz\u00e1lez",
+ "files": 47,
+ "cands": [
+  {
+   "file": "File:Ra\u00fal Gonz\u00e1lez footballer.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q11576/27.jpg",
+   "gate": null,
+   "face": 174,
+   "share": 0.31,
+   "sharp": 180,
+   "room": 2.6,
+   "box": [
+    126,
+    101,
+    120,
+    174
+   ],
+   "yaw": -0.0,
+   "roll": -0.3,
+   "cx": 0.5,
+   "why": "face 174px, 31% of height, sharpness 180",
+   "score": 5.936
+  },
+  {
+   "file": "File:Raul Gonzalez 10mar2007.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q11576/8.jpg",
+   "gate": null,
+   "face": 200,
+   "share": 0.21,
+   "sharp": 894,
+   "room": 4.1,
+   "box": [
+    381,
+    138,
+    143,
+    200
+   ],
+   "yaw": 0.34,
+   "roll": -5.9,
+   "cx": 0.5,
+   "why": "face 200px, 21% of height, sharpness 894",
+   "score": 2.672
+  },
+  {
+   "file": "File:Ra\u00fal Gonz\u00e1lez in Real Madrid 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/28.jpg",
+   "gate": null,
+   "face": 223,
+   "share": 0.17,
+   "sharp": 139,
+   "room": 5.3,
+   "box": [
+    393,
+    102,
+    160,
+    223
+   ],
+   "yaw": -0.06,
+   "roll": 0.4,
+   "cx": 0.49,
+   "why": "face 223px, 17% of height, sharpness 139",
+   "score": 2.436
+  },
+  {
+   "file": "File:Raul Gonzalez 10mar2007 (cropped).jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q11576/7.jpg",
+   "gate": null,
+   "face": 204,
+   "share": 0.22,
+   "sharp": 914,
+   "room": 4.0,
+   "box": [
+    324,
+    86,
+    139,
+    204
+   ],
+   "yaw": 0.4,
+   "roll": -6.0,
+   "cx": 0.52,
+   "why": "face 204px, 22% of height, sharpness 914",
+   "score": 2.435
+  },
+  {
+   "file": "File:Raul Gonzalez Al Sadd.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/9.jpg",
+   "gate": null,
+   "face": 190,
+   "share": 0.29,
+   "sharp": 1169,
+   "room": 2.5,
+   "box": [
+    461,
+    172,
+    144,
+    190
+   ],
+   "yaw": 0.08,
+   "roll": 11.3,
+   "cx": 0.56,
+   "why": "face 190px, 29% of height, sharpness 1169",
+   "score": 2.042
+  },
+  {
+   "file": "File:Ra\u00fal Aspire4Sport Conference 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/23.jpg",
+   "gate": null,
+   "face": 218,
+   "share": 0.22,
+   "sharp": 1718,
+   "room": 3.9,
+   "box": [
+    380,
+    138,
+    146,
+    218
+   ],
+   "yaw": 0.29,
+   "roll": -7.3,
+   "cx": 0.47,
+   "why": "face 218px, 22% of height, sharpness 1718",
+   "score": 1.722
+  },
+  {
+   "file": "File:Raul 2011-08-03-2 (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11576/3.jpg",
+   "gate": null,
+   "face": 406,
+   "share": 0.28,
+   "sharp": 343,
+   "room": 3.0,
+   "box": [
+    426,
+    204,
+    251,
+    406
+   ],
+   "yaw": 0.46,
+   "roll": 6.7,
+   "cx": 0.57,
+   "why": "face 406px, 28% of height, sharpness 343",
+   "score": 1.543
+  },
+  {
+   "file": "File:Ra\u00fal Al-Sadd vs Al-Arabi 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/21.jpg",
+   "gate": null,
+   "face": 206,
+   "share": 0.13,
+   "sharp": 5337,
+   "room": 7.2,
+   "box": [
+    336,
+    143,
+    134,
+    206
+   ],
+   "yaw": 0.24,
+   "roll": 0.8,
+   "cx": 0.42,
+   "why": "face 206px, 13% of height, sharpness 5337",
+   "score": 1.427
+  },
+  {
+   "file": "File:Ra\u00fal QSL Opening Ceremony 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/29.jpg",
+   "gate": null,
+   "face": 218,
+   "share": 0.15,
+   "sharp": 750,
+   "room": 5.6,
+   "box": [
+    476,
+    204,
+    155,
+    218
+   ],
+   "yaw": -0.08,
+   "roll": -2.4,
+   "cx": 0.58,
+   "why": "face 218px, 15% of height, sharpness 750",
+   "score": 1.412
+  },
+  {
+   "file": "File:Ra\u00fal Al-Rayyan vs Al-Sadd Sheikh Jassim Cup final 2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/17.jpg",
+   "gate": null,
+   "face": 167,
+   "share": 0.12,
+   "sharp": 3215,
+   "room": 7.7,
+   "box": [
+    462,
+    111,
+    117,
+    167
+   ],
+   "yaw": -0.16,
+   "roll": -5.1,
+   "cx": 0.54,
+   "why": "face 167px, 12% of height, sharpness 3215",
+   "score": 1.408
+  },
+  {
+   "file": "File:Raul 2012-05-13-2.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/6.jpg",
+   "gate": null,
+   "face": 285,
+   "share": 0.26,
+   "sharp": 643,
+   "room": 3.4,
+   "box": [
+    557,
+    131,
+    207,
+    285
+   ],
+   "yaw": -0.01,
+   "roll": 7.1,
+   "cx": 0.69,
+   "why": "face 285px, 26% of height, sharpness 643",
+   "score": 1.267
+  },
+  {
+   "file": "File:Raul on Shoot for Love Challenge.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q11576/13.jpg",
+   "gate": null,
+   "face": 84,
+   "share": 0.13,
+   "sharp": 5252,
+   "room": 6.8,
+   "box": [
+    513,
+    71,
+    62,
+    84
+   ],
+   "yaw": -0.03,
+   "roll": 0.7,
+   "cx": 0.57,
+   "why": "face 84px, 13% of height, sharpness 5252",
+   "score": 1.073
+  },
+  {
+   "file": "File:Ra\u00fal Al-Rayyan vs Al-Sadd 2012 Sheikh Jassim Cup final.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/16.jpg",
+   "gate": null,
+   "face": 200,
+   "share": 0.11,
+   "sharp": 3705,
+   "room": 8.3,
+   "box": [
+    526,
+    132,
+    141,
+    200
+   ],
+   "yaw": -0.14,
+   "roll": 4.0,
+   "cx": 0.62,
+   "why": "face 200px, 11% of height, sharpness 3705",
+   "score": 1.057
+  },
+  {
+   "file": "File:Raul Gonzalez Blanco Schalke.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11576/10.jpg",
+   "gate": null,
+   "face": 55,
+   "share": 0.09,
+   "sharp": 835,
+   "room": 10.2,
+   "box": [
+    112,
+    60,
+    42,
+    55
+   ],
+   "yaw": -0.18,
+   "roll": 0.3,
+   "cx": 0.53,
+   "why": "face 55px, 9% of height, sharpness 835",
+   "score": 0.878
+  },
+  {
+   "file": "File:Ra\u00fal Al-Sadd 23-09-2012.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/18.jpg",
+   "gate": null,
+   "face": 215,
+   "share": 0.12,
+   "sharp": 267,
+   "room": 8.0,
+   "box": [
+    470,
+    84,
+    136,
+    215
+   ],
+   "yaw": 0.54,
+   "roll": 1.0,
+   "cx": 0.56,
+   "why": "face 215px, 12% of height, sharpness 267",
+   "score": 0.848
+  },
+  {
+   "file": "File:Raul 2011-08-03-2.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11576/4.jpg",
+   "gate": null,
+   "face": 248,
+   "share": 0.26,
+   "sharp": 553,
+   "room": 3.2,
+   "box": [
+    605,
+    161,
+    172,
+    248
+   ],
+   "yaw": 0.72,
+   "roll": -3.1,
+   "cx": 0.72,
+   "why": "face 248px, 26% of height, sharpness 553",
+   "score": 0.745
+  },
+  {
+   "file": "File:Raul Gonzalez 2012 2.jpg",
+   "p18": true,
+   "year": 2012,
+   "local": "cand/Q11576/0.jpg",
+   "gate": "photo ends at the chin (1.7 face heights below)",
+   "why": "photo ends at the chin (1.7 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Con Coral Bistuer y Ra\u00fal Gonz\u00e1lez.jpg",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q11576/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Manuel Alfaro y Ra\u00fal Gonz\u00e1lez Blanco.jpg",
+   "p18": false,
+   "year": 2000,
+   "local": "cand/Q11576/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Raul 2011-08-03.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q11576/5.jpg",
+   "gate": "photo ends at the chin (1.3 face heights below)",
+   "why": "photo ends at the chin (1.3 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Raul Gonzalez Supercopa 2008 (cropped).jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11576/11.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Raul Gonzalez Supercopa 2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11576/12.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:RaulRonaldo.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal (3868260607).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Al-Sadd signing 01.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/19.jpg",
+   "gate": "photo ends at the chin (1.0 face heights below)",
+   "why": "photo ends at the chin (1.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Al-Sadd signing 02.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/20.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal and Nadir Belhadj.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q11576/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Gonz\u00e1lez 11dic2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q11576/24.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Gonz\u00e1lez 2009.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/25.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Gonz\u00e1lez Blanco.JPG",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11576/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Real Madrid-Xerez 2009 (1).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal Real Madrid-Xerez 2009 (2).jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal vs M\u00e1laga CF 2010-01-24.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11576/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal vs M\u00e1laga CF 2010.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11576/33.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal walkout 2 Edmonton.JPG",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q11576/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Ra\u00fal.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q11576/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Real Madrid Moment before Rauls header.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/36.jpg",
+   "gate": "face 9px, too small",
+   "why": "face 9px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Real Madrid Raul.JPG",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Real Madrid-Getafe 2009 - Chilena de Ra\u00fal.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q11576/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

@@ -296,7 +296,7 @@ export default function Chain({
 
   return (
     <DndContext id="chain" sensors={sensors} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-      <div className="app">
+      <div className="app cards-links">
         <header className="masthead">
           <Back href={deep ? '/deep' : '/chain'} label={deep ? 'Deep Cuts' : 'Chain'} />
           <a className="masthead__brand display" href="/chain">

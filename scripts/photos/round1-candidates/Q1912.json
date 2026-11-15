@@ -11,7 +11,10 @@
    161,
    222,
    326
-  ]
+  ],
+  "yaw": -0.43,
+  "roll": 11.8,
+  "cx": 0.47
  },
  {
   "file": "File:Karim Benzema.jpg",
@@ -25,7 +28,10 @@
    106,
    125,
    174
-  ]
+  ],
+  "yaw": 0.17,
+  "roll": -4.4,
+  "cx": 0.42
  },
  {
   "file": "File:K.Benzema.jpg",
@@ -39,7 +45,10 @@
    153,
    93,
    111
-  ]
+  ],
+  "yaw": -0.09,
+  "roll": 7.1,
+  "cx": 0.49
  },
  {
   "file": "File:Karim Benzema Euro 2012 vs Sweden 02.jpg",
@@ -53,7 +62,10 @@
    76,
    77,
    99
-  ]
+  ],
+  "yaw": 0.12,
+  "roll": -0.6,
+  "cx": 0.6
  },
  {
   "file": "File:Karim Benzema TOTS 2021.png",
@@ -67,7 +79,10 @@
    169,
    86,
    117
-  ]
+  ],
+  "yaw": 0.26,
+  "roll": 2.3,
+  "cx": 0.71
  },
  {
   "file": "File:Karim Benzema POTM jun2020.png",
@@ -81,7 +96,10 @@
    174,
    87,
    112
-  ]
+  ],
+  "yaw": 0.27,
+  "roll": 1.2,
+  "cx": 0.71
  },
  {
   "file": "File:Karim Benzema POTM mar2021.png",
@@ -95,7 +113,10 @@
    174,
    87,
    112
-  ]
+  ],
+  "yaw": 0.27,
+  "roll": 1.2,
+  "cx": 0.71
  },
  {
   "file": "File:Karim Benzema POTM sept2021.png",
@@ -109,7 +130,10 @@
    174,
    87,
    112
-  ]
+  ],
+  "yaw": 0.27,
+  "roll": 1.2,
+  "cx": 0.71
  },
  {
   "file": "File:Karim Benzema 2012.JPG",
@@ -123,7 +147,10 @@
    91,
    130,
    219
-  ]
+  ],
+  "yaw": -1.55,
+  "roll": -30.1,
+  "cx": 0.24
  },
  {
   "file": "File:Benzema 48609.jpg",
@@ -137,7 +164,10 @@
    39,
    55,
    71
-  ]
+  ],
+  "yaw": -0.17,
+  "roll": -2.8,
+  "cx": 0.46
  },
  {
   "file": "File:KBenzema.jpg",
@@ -151,7 +181,10 @@
    199,
    70,
    103
-  ]
+  ],
+  "yaw": 1.03,
+  "roll": -2.7,
+  "cx": 0.62
  },
  {
   "file": "File:Karim Benzema Euro 2012 vs Sweden 01.jpg",
@@ -165,7 +198,10 @@
    86,
    50,
    68
-  ]
+  ],
+  "yaw": -0.06,
+  "roll": -1.3,
+  "cx": 0.49
  },
  {
   "file": "File:Real Madrid Karim Benzema.jpg",
@@ -179,7 +215,10 @@
    142,
    105,
    149
-  ]
+  ],
+  "yaw": 0.02,
+  "roll": -3.7,
+  "cx": 0.45
  },
  {
   "file": "File:Regate de Benzema (5155866921).jpg",
@@ -193,7 +232,10 @@
    162,
    37,
    50
-  ]
+  ],
+  "yaw": 0.64,
+  "roll": 0.0,
+  "cx": 0.33
  },
  {
   "file": "File:Karim Benzema 17586 (cropped).jpg",

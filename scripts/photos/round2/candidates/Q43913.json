@@ -1,0 +1,657 @@
+{
+ "span": [
+  2000,
+  2021
+ ],
+ "prime": 2014.0,
+ "cat": "Arjen Robben",
+ "files": 80,
+ "cands": [
+  {
+   "file": "File:Arjen Robben 2013.jpg",
+   "p18": true,
+   "year": 2013,
+   "local": "cand/Q43913/0.jpg",
+   "gate": null,
+   "face": 176,
+   "share": 0.33,
+   "sharp": 380,
+   "room": 2.7,
+   "box": [
+    165,
+    58,
+    125,
+    176
+   ],
+   "yaw": 0.21,
+   "roll": -0.7,
+   "cx": 0.61,
+   "why": "face 176px, 33% of height, sharpness 380",
+   "score": 13.871
+  },
+  {
+   "file": "File:Arjen Robben (cropped).jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q43913/6.jpg",
+   "gate": null,
+   "face": 115,
+   "share": 0.31,
+   "sharp": 921,
+   "room": 2.9,
+   "box": [
+    121,
+    33,
+    88,
+    115
+   ],
+   "yaw": -0.11,
+   "roll": 0.4,
+   "cx": 0.51,
+   "why": "face 115px, 31% of height, sharpness 921",
+   "score": 6.453
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-5.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/38.jpg",
+   "gate": null,
+   "face": 147,
+   "share": 0.1,
+   "sharp": 463,
+   "room": 9.1,
+   "box": [
+    451,
+    172,
+    103,
+    147
+   ],
+   "yaw": -0.06,
+   "roll": -1.5,
+   "cx": 0.52,
+   "why": "face 147px, 10% of height, sharpness 463",
+   "score": 2.794
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-3.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/36.jpg",
+   "gate": null,
+   "face": 136,
+   "share": 0.1,
+   "sharp": 636,
+   "room": 8.4,
+   "box": [
+    458,
+    166,
+    89,
+    136
+   ],
+   "yaw": -0.06,
+   "roll": -2.8,
+   "cx": 0.52,
+   "why": "face 136px, 10% of height, sharpness 636",
+   "score": 2.582
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-16.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/28.jpg",
+   "gate": null,
+   "face": 160,
+   "share": 0.1,
+   "sharp": 426,
+   "room": 8.2,
+   "box": [
+    423,
+    290,
+    106,
+    160
+   ],
+   "yaw": -0.08,
+   "roll": -5.9,
+   "cx": 0.5,
+   "why": "face 160px, 10% of height, sharpness 426",
+   "score": 2.512
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-4.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/37.jpg",
+   "gate": null,
+   "face": 154,
+   "share": 0.1,
+   "sharp": 410,
+   "room": 9.1,
+   "box": [
+    418,
+    171,
+    105,
+    154
+   ],
+   "yaw": 0.24,
+   "roll": -3.4,
+   "cx": 0.49,
+   "why": "face 154px, 10% of height, sharpness 410",
+   "score": 2.301
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-15.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/27.jpg",
+   "gate": null,
+   "face": 155,
+   "share": 0.11,
+   "sharp": 487,
+   "room": 8.2,
+   "box": [
+    426,
+    172,
+    102,
+    155
+   ],
+   "yaw": -0.29,
+   "roll": -6.7,
+   "cx": 0.5,
+   "why": "face 155px, 11% of height, sharpness 487",
+   "score": 2.131
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-20.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/33.jpg",
+   "gate": null,
+   "face": 145,
+   "share": 0.11,
+   "sharp": 184,
+   "room": 8.2,
+   "box": [
+    350,
+    147,
+    101,
+    145
+   ],
+   "yaw": 0.21,
+   "roll": 1.9,
+   "cx": 0.42,
+   "why": "face 145px, 11% of height, sharpness 184",
+   "score": 1.78
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-21.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/34.jpg",
+   "gate": null,
+   "face": 142,
+   "share": 0.1,
+   "sharp": 610,
+   "room": 9.0,
+   "box": [
+    479,
+    199,
+    81,
+    142
+   ],
+   "yaw": 0.56,
+   "roll": -0.9,
+   "cx": 0.54,
+   "why": "face 142px, 10% of height, sharpness 610",
+   "score": 1.686
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-17.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/29.jpg",
+   "gate": null,
+   "face": 143,
+   "share": 0.1,
+   "sharp": 348,
+   "room": 8.4,
+   "box": [
+    469,
+    218,
+    92,
+    143
+   ],
+   "yaw": 0.48,
+   "roll": -1.9,
+   "cx": 0.54,
+   "why": "face 143px, 10% of height, sharpness 348",
+   "score": 1.655
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-2.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/32.jpg",
+   "gate": null,
+   "face": 149,
+   "share": 0.1,
+   "sharp": 387,
+   "room": 8.9,
+   "box": [
+    505,
+    178,
+    94,
+    149
+   ],
+   "yaw": 0.58,
+   "roll": -3.3,
+   "cx": 0.57,
+   "why": "face 149px, 10% of height, sharpness 387",
+   "score": 1.323
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-6.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/39.jpg",
+   "gate": null,
+   "face": 148,
+   "share": 0.1,
+   "sharp": 380,
+   "room": 8.8,
+   "box": [
+    561,
+    160,
+    95,
+    148
+   ],
+   "yaw": 0.45,
+   "roll": -3.2,
+   "cx": 0.63,
+   "why": "face 148px, 10% of height, sharpness 380",
+   "score": 1.167
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-19.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/31.jpg",
+   "gate": null,
+   "face": 89,
+   "share": 0.09,
+   "sharp": 482,
+   "room": 9.9,
+   "box": [
+    350,
+    137,
+    68,
+    89
+   ],
+   "yaw": 0.41,
+   "roll": 1.4,
+   "cx": 0.4,
+   "why": "face 89px, 9% of height, sharpness 482",
+   "score": 1.049
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-13.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/25.jpg",
+   "gate": null,
+   "face": 156,
+   "share": 0.13,
+   "sharp": 80,
+   "room": 6.6,
+   "box": [
+    579,
+    191,
+    100,
+    156
+   ],
+   "yaw": 0.49,
+   "roll": 2.3,
+   "cx": 0.66,
+   "why": "face 156px, 13% of height, sharpness 80",
+   "score": 1.018
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-12.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/24.jpg",
+   "gate": null,
+   "face": 104,
+   "share": 0.08,
+   "sharp": 270,
+   "room": 10.0,
+   "box": [
+    496,
+    210,
+    67,
+    104
+   ],
+   "yaw": 0.78,
+   "roll": -1.4,
+   "cx": 0.55,
+   "why": "face 104px, 8% of height, sharpness 270",
+   "score": 0.9
+  },
+  {
+   "file": "File:Arjen Robben ball.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q43913/12.jpg",
+   "gate": null,
+   "face": 103,
+   "share": 0.07,
+   "sharp": 95,
+   "room": 10.8,
+   "box": [
+    294,
+    392,
+    90,
+    103
+   ],
+   "yaw": 0.31,
+   "roll": -4.9,
+   "cx": 0.55,
+   "why": "face 103px, 7% of height, sharpness 95",
+   "score": 0.868
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-1.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/21.jpg",
+   "gate": null,
+   "face": 164,
+   "share": 0.09,
+   "sharp": 119,
+   "room": 8.5,
+   "box": [
+    544,
+    359,
+    106,
+    164
+   ],
+   "yaw": 0.54,
+   "roll": 7.3,
+   "cx": 0.62,
+   "why": "face 164px, 9% of height, sharpness 119",
+   "score": 0.819
+  },
+  {
+   "file": "File:Arjen Robben 2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q43913/7.jpg",
+   "gate": null,
+   "face": 50,
+   "share": 0.12,
+   "sharp": 2982,
+   "room": 8.1,
+   "box": [
+    53,
+    14,
+    33,
+    50
+   ],
+   "yaw": -0.53,
+   "roll": -0.0,
+   "cx": 0.4,
+   "why": "face 50px, 12% of height, sharpness 2982",
+   "score": 0.791
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-22.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/35.jpg",
+   "gate": null,
+   "face": 124,
+   "share": 0.1,
+   "sharp": 473,
+   "room": 9.4,
+   "box": [
+    467,
+    143,
+    79,
+    124
+   ],
+   "yaw": 2.97,
+   "roll": -2.5,
+   "cx": 0.53,
+   "why": "face 124px, 10% of height, sharpness 473",
+   "score": 0.167
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-11.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/23.jpg",
+   "gate": null,
+   "face": 122,
+   "share": 0.09,
+   "sharp": 103,
+   "room": 8.6,
+   "box": [
+    248,
+    253,
+    84,
+    122
+   ],
+   "yaw": -2.27,
+   "roll": -13.0,
+   "cx": 0.3,
+   "why": "face 122px, 9% of height, sharpness 103",
+   "score": 0.085
+  },
+  {
+   "file": "File:Robben pepe.jpg",
+   "p18": false,
+   "year": 2009,
+   "local": "cand/Q43913/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:20151113 WAL NED Robben.jpg",
+   "p18": false,
+   "year": 2015,
+   "local": "cand/Q43913/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:2016-05-15 Vidal - Robben 2601.JPG",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben (15300557428).jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q43913/4.jpg",
+   "gate": "face 37px, too small",
+   "why": "face 37px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben (15486848452).jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q43913/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben 20120609.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q43913/8.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben 2444.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q43913/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben 2565.jpg",
+   "p18": false,
+   "year": 2013,
+   "local": "cand/Q43913/10.jpg",
+   "gate": "photo ends at the chin (1.6 face heights below)",
+   "why": "photo ends at the chin (1.6 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben 2649.jpg",
+   "p18": false,
+   "year": 2014,
+   "local": "cand/Q43913/11.jpg",
+   "gate": "photo ends at the chin (2.1 face heights below)",
+   "why": "photo ends at the chin (2.1 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Bayern.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q43913/13.jpg",
+   "gate": "face sharpness 46, soft",
+   "face": 111,
+   "share": 0.1,
+   "sharp": 46,
+   "room": 9.1,
+   "box": [
+    348,
+    111,
+    99,
+    111
+   ],
+   "yaw": 0.23,
+   "roll": 3.5,
+   "cx": 0.59,
+   "why": "face sharpness 46, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Mats Hummels Training 2018-05-08 FC Bayern Muenchen-1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q43913/14.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Sandro Wagner Sven Ulreich Training 2018-10-09 FC Bayern Muenchen-1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q43913/15.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Sandro Wagner Training 2018-10-09 FC Bayern Muenchen-1 (cropped).jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q43913/16.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Sandro Wagner Training 2018-10-09 FC Bayern Muenchen-1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q43913/17.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben smile.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q43913/18.jpg",
+   "gate": "photo ends at the chin (2.0 face heights below)",
+   "why": "photo ends at the chin (2.0 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Thiago Sebastian Rudy Training 2018-05-08 FC Bayern Muenchen-1.jpg",
+   "p18": false,
+   "year": 2018,
+   "local": "cand/Q43913/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Tom Starcke Training 2016-11 FC Bayern Muenchen-1.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-10.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/22.jpg",
+   "gate": null,
+   "face": 134,
+   "share": 0.1,
+   "sharp": 521,
+   "room": 9.3,
+   "box": [
+    508,
+    142,
+    79,
+    134
+   ],
+   "yaw": -6.55,
+   "roll": -166.1,
+   "cx": 0.57,
+   "why": "face 134px, 10% of height, sharpness 521",
+   "score": 0.0
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-14.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Arjen Robben Training 2016-11 FC Bayern Muenchen-18.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q43913/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  }
+ ]
+}

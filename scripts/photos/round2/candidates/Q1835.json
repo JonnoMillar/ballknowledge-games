@@ -1,0 +1,158 @@
+{
+ "span": [
+  1989,
+  2006
+ ],
+ "prime": 2003.5,
+ "cat": "Zinedine Zidane",
+ "files": 23,
+ "cands": [
+  {
+   "file": "File:Zinedine zidane wcf 2006.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q1835/11.jpg",
+   "gate": null,
+   "face": 55,
+   "share": 0.09,
+   "sharp": 347,
+   "room": 9.9,
+   "box": [
+    423,
+    93,
+    32,
+    55
+   ],
+   "yaw": -1.51,
+   "roll": 12.5,
+   "cx": 0.46,
+   "why": "face 55px, 9% of height, sharpness 347",
+   "score": 0.246
+  },
+  {
+   "file": "File:Zinedine zidane wcf 2006-edit.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q1835/10.jpg",
+   "gate": null,
+   "face": 181,
+   "share": 0.1,
+   "sharp": 497,
+   "room": 8.9,
+   "box": [
+    396,
+    194,
+    93,
+    181
+   ],
+   "yaw": -2.5,
+   "roll": -5.4,
+   "cx": 0.46,
+   "why": "face 181px, 10% of height, sharpness 497",
+   "score": 0.241
+  },
+  {
+   "file": "File:Maillot Zidane.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q1835/0.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Zidane (32090133204).jpg",
+   "p18": false,
+   "year": 1998,
+   "local": "cand/Q1835/1.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham zidane team.jpg",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q1835/2.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Beckham zidane.jpg",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q1835/3.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Zinedine Zidane (cropped).JPG",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q1835/4.jpg",
+   "gate": "face 44px, too small",
+   "why": "face 44px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Zinedine Zidane.JPG",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q1835/5.jpg",
+   "gate": "face 45px, too small",
+   "why": "face 45px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Zinedine Zidane.png",
+   "p18": false,
+   "year": 2003,
+   "local": "cand/Q1835/6.jpg",
+   "gate": "face 46px, too small",
+   "why": "face 46px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Zidane Paris CdG.png",
+   "p18": false,
+   "year": 2007,
+   "local": "cand/Q1835/7.jpg",
+   "gate": "face sharpness 58, soft",
+   "face": 88,
+   "share": 0.1,
+   "sharp": 58,
+   "room": 8.0,
+   "box": [
+    374,
+    200,
+    69,
+    88
+   ],
+   "yaw": 0.12,
+   "roll": 0.2,
+   "cx": 0.61,
+   "why": "face sharpness 58, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Zinedine zidane 2005 cropped.jpg",
+   "p18": false,
+   "year": 2005,
+   "local": "cand/Q1835/8.jpg",
+   "gate": "face 44px, too small",
+   "why": "face 44px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Zinedine zidane 2005.jpg",
+   "p18": false,
+   "year": 2005,
+   "local": "cand/Q1835/9.jpg",
+   "gate": "face 48px, too small",
+   "why": "face 48px, too small",
+   "score": 0
+  }
+ ]
+}

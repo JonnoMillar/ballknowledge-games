@@ -11,7 +11,10 @@
    76,
    181,
    239
-  ]
+  ],
+  "yaw": 0.16,
+  "roll": 3.1,
+  "cx": 0.51
  },
  {
   "file": "File:Spain - Chile - 10-09-2013 - Geneva - Andres Iniesta 7 (cropped).jpg",
@@ -25,7 +28,10 @@
    75,
    159,
    257
-  ]
+  ],
+  "yaw": -0.63,
+  "roll": -9.9,
+  "cx": 0.24
  },
  {
   "file": "File:Spain - Chile - 10-09-2013 - Geneva - Andres Iniesta 1.jpg",
@@ -39,7 +45,10 @@
    213,
    144,
    214
-  ]
+  ],
+  "yaw": 0.4,
+  "roll": -9.0,
+  "cx": 0.54
  },
  {
   "file": "File:Andr\u00e9s Iniesta Euro 2012 final.jpg",
@@ -53,7 +62,10 @@
    48,
    95,
    152
-  ]
+  ],
+  "yaw": 0.55,
+  "roll": 2.0,
+  "cx": 0.51
  },
  {
   "file": "File:Andr\u00e9s Iniesta 21dec2006.jpg",
@@ -67,7 +79,10 @@
    118,
    83,
    121
-  ]
+  ],
+  "yaw": 0.43,
+  "roll": 0.8,
+  "cx": 0.58
  },
  {
   "file": "File:Andr\u00e9s Iniesta Euro 2012 vs France 02.jpg",
@@ -81,7 +96,10 @@
    40,
    54,
    75
-  ]
+  ],
+  "yaw": 0.21,
+  "roll": 1.5,
+  "cx": 0.44
  },
  {
   "file": "File:Andres Iniesta v Uruguay 2013.jpg",
@@ -95,7 +113,10 @@
    110,
    52,
    71
-  ]
+  ],
+  "yaw": -0.38,
+  "roll": -7.2,
+  "cx": 0.39
  },
  {
   "file": "File:Espa\u00f1a Suecia inicio Iniesta.jpg",
@@ -109,7 +130,10 @@
    41,
    86,
    113
-  ]
+  ],
+  "yaw": -0.22,
+  "roll": -0.4,
+  "cx": 0.34
  },
  {
   "file": "File:Spain - Chile - 10-09-2013 - Geneva - Andres Iniesta 4.jpg",
@@ -123,7 +147,10 @@
    445,
    65,
    106
-  ]
+  ],
+  "yaw": -0.97,
+  "roll": -1.7,
+  "cx": 0.51
  },
  {
   "file": "File:Andr\u00e9s Iniesta - 002.jpg",
@@ -137,7 +164,10 @@
    255,
    70,
    93
-  ]
+  ],
+  "yaw": 0.13,
+  "roll": 1.4,
+  "cx": 0.52
  },
  {
   "file": "File:Ignazio Abate and Andr\u00e9s Iniesta Euro 2012 final.jpg",
@@ -151,7 +181,10 @@
    64,
    55,
    67
-  ]
+  ],
+  "yaw": -0.25,
+  "roll": -2.6,
+  "cx": 0.37
  },
  {
   "file": "File:Gdansk PGE Arena ESP-IRE Euro 2012 14 Iniesta.jpg",
@@ -165,7 +198,10 @@
    361,
    65,
    108
-  ]
+  ],
+  "yaw": -1.68,
+  "roll": 25.1,
+  "cx": 0.48
  },
  {
   "file": "File:Andres Iniesta Joan Gamper.jpg",

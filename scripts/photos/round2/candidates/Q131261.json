@@ -1,0 +1,122 @@
+{
+ "span": [
+  1987,
+  2008
+ ],
+ "prime": 2001.0,
+ "cat": "Oliver Kahn",
+ "files": 14,
+ "cands": [
+  {
+   "file": "File:Oliver Kahn 2006.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q131261/4.jpg",
+   "gate": null,
+   "face": 145,
+   "share": 0.31,
+   "sharp": 423,
+   "room": 2.7,
+   "box": [
+    69,
+    75,
+    121,
+    145
+   ],
+   "yaw": 0.07,
+   "roll": -10.7,
+   "cx": 0.41,
+   "why": "face 145px, 31% of height, sharpness 423",
+   "score": 2.72
+  },
+  {
+   "file": "File:Flickr - tpower1978 - Oli, Oli, Oli Kahn.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q131261/0.jpg",
+   "gate": null,
+   "face": 122,
+   "share": 0.19,
+   "sharp": 1597,
+   "room": 4.6,
+   "box": [
+    559,
+    82,
+    111,
+    122
+   ],
+   "yaw": 0.66,
+   "roll": -1.5,
+   "cx": 0.64,
+   "why": "face 122px, 19% of height, sharpness 1597",
+   "score": 0.968
+  },
+  {
+   "file": "File:Football-gloves Oliver Kahn.jpg",
+   "p18": false,
+   "year": 2006,
+   "local": "cand/Q131261/1.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Oliver Kahn (Confed-Cup 2005).JPG",
+   "p18": false,
+   "year": 2005,
+   "local": "cand/Q131261/2.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Oliver Kahn 06-2004.jpg",
+   "p18": false,
+   "year": 2004,
+   "local": "cand/Q131261/3.jpg",
+   "gate": "face sharpness 65, soft",
+   "face": 140,
+   "share": 0.26,
+   "sharp": 65,
+   "room": 3.0,
+   "box": [
+    235,
+    105,
+    102,
+    140
+   ],
+   "yaw": 0.42,
+   "roll": -2.0,
+   "cx": 0.63,
+   "why": "face sharpness 65, soft",
+   "score": 0
+  },
+  {
+   "file": "File:Oliver Kahn of Munich, September 2, 2008.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q131261/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Oliver Kahn.jpg",
+   "p18": false,
+   "year": 2005,
+   "local": "cand/Q131261/6.jpg",
+   "gate": "face 37px, too small",
+   "why": "face 37px, too small",
+   "score": 0
+  },
+  {
+   "file": "File:Oliver Kahn1.jpg",
+   "p18": false,
+   "year": 2008,
+   "local": "cand/Q131261/7.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  }
+ ]
+}

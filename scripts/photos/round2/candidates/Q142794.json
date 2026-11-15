@@ -1,0 +1,527 @@
+{
+ "span": [
+  2009,
+  2026
+ ],
+ "prime": 2015.0,
+ "cat": "Neymar",
+ "files": 81,
+ "cands": [
+  {
+   "file": "File:Neymar Junior Brazil V Morocco 13 June 2026-40.jpg",
+   "p18": true,
+   "year": 2026,
+   "local": "cand/Q142794/0.jpg",
+   "gate": null,
+   "face": 492,
+   "share": 0.34,
+   "sharp": 1163,
+   "room": 2.5,
+   "box": [
+    361,
+    196,
+    329,
+    492
+   ],
+   "yaw": 0.19,
+   "roll": -1.5,
+   "cx": 0.55,
+   "why": "face 492px, 34% of height, sharpness 1163",
+   "score": 8.821
+  },
+  {
+   "file": "File:Neymar.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q142794/7.jpg",
+   "gate": null,
+   "face": 170,
+   "share": 0.32,
+   "sharp": 340,
+   "room": 2.4,
+   "box": [
+    338,
+    121,
+    129,
+    170
+   ],
+   "yaw": -0.03,
+   "roll": -0.9,
+   "cx": 0.5,
+   "why": "face 170px, 32% of height, sharpness 340",
+   "score": 6.274
+  },
+  {
+   "file": "File:Messi with Neymar Junior the Future of Brazil.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/14.jpg",
+   "gate": null,
+   "face": 213,
+   "share": 0.23,
+   "sharp": 530,
+   "room": 3.5,
+   "box": [
+    277,
+    156,
+    155,
+    213
+   ],
+   "yaw": 0.34,
+   "roll": -4.9,
+   "cx": 0.37,
+   "why": "face 213px, 23% of height, sharpness 530",
+   "score": 1.858
+  },
+  {
+   "file": "File:Neymar - Santos b&w.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/16.jpg",
+   "gate": null,
+   "face": 173,
+   "share": 0.27,
+   "sharp": 1524,
+   "room": 2.8,
+   "box": [
+    122,
+    168,
+    128,
+    173
+   ],
+   "yaw": -0.1,
+   "roll": -2.4,
+   "cx": 0.19,
+   "why": "face 173px, 27% of height, sharpness 1524",
+   "score": 1.636
+  },
+  {
+   "file": "File:Neymar vs Pe\u00f1arol (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/33.jpg",
+   "gate": null,
+   "face": 166,
+   "share": 0.15,
+   "sharp": 454,
+   "room": 5.6,
+   "box": [
+    335,
+    141,
+    116,
+    166
+   ],
+   "yaw": 0.35,
+   "roll": 5.2,
+   "cx": 0.58,
+   "why": "face 166px, 15% of height, sharpness 454",
+   "score": 1.553
+  },
+  {
+   "file": "File:Neymar Santos 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/28.jpg",
+   "gate": null,
+   "face": 133,
+   "share": 0.11,
+   "sharp": 341,
+   "room": 8.6,
+   "box": [
+    263,
+    77,
+    100,
+    133
+   ],
+   "yaw": -0.46,
+   "roll": 1.5,
+   "cx": 0.47,
+   "why": "face 133px, 11% of height, sharpness 341",
+   "score": 1.489
+  },
+  {
+   "file": "File:Alan Hutton and Neymar (5575029223).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/8.jpg",
+   "gate": null,
+   "face": 122,
+   "share": 0.08,
+   "sharp": 378,
+   "room": 9.9,
+   "box": [
+    366,
+    228,
+    79,
+    122
+   ],
+   "yaw": 0.07,
+   "roll": -4.1,
+   "cx": 0.42,
+   "why": "face 122px, 8% of height, sharpness 378",
+   "score": 1.308
+  },
+  {
+   "file": "File:Neymar dance.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/21.jpg",
+   "gate": null,
+   "face": 220,
+   "share": 0.11,
+   "sharp": 107,
+   "room": 8.3,
+   "box": [
+    308,
+    165,
+    156,
+    220
+   ],
+   "yaw": 0.08,
+   "roll": -8.7,
+   "cx": 0.4,
+   "why": "face 220px, 11% of height, sharpness 107",
+   "score": 1.159
+  },
+  {
+   "file": "File:Neymar suit.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/29.jpg",
+   "gate": null,
+   "face": 320,
+   "share": 0.19,
+   "sharp": 2901,
+   "room": 4.8,
+   "box": [
+    580,
+    161,
+    251,
+    320
+   ],
+   "yaw": -0.12,
+   "roll": 15.3,
+   "cx": 0.73,
+   "why": "face 320px, 19% of height, sharpness 2901",
+   "score": 1.0
+  },
+  {
+   "file": "File:Neymar Junior the Future of Brazil 2 (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/23.jpg",
+   "gate": null,
+   "face": 248,
+   "share": 0.17,
+   "sharp": 246,
+   "room": 4.8,
+   "box": [
+    293,
+    241,
+    184,
+    248
+   ],
+   "yaw": -0.29,
+   "roll": -27.9,
+   "cx": 0.4,
+   "why": "face 248px, 17% of height, sharpness 246",
+   "score": 0.625
+  },
+  {
+   "file": "File:Neymar - Copa Libertadores de America 2011 - Pe\u00f1arol - Santos - 110616-6925-jikatu.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/15.jpg",
+   "gate": null,
+   "face": 60,
+   "share": 0.07,
+   "sharp": 6191,
+   "room": 9.2,
+   "box": [
+    227,
+    260,
+    43,
+    60
+   ],
+   "yaw": -0.29,
+   "roll": 1.0,
+   "cx": 0.26,
+   "why": "face 60px, 7% of height, sharpness 6191",
+   "score": 0.563
+  },
+  {
+   "file": "File:Neymar 2011.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/18.jpg",
+   "gate": null,
+   "face": 146,
+   "share": 0.1,
+   "sharp": 431,
+   "room": 8.5,
+   "box": [
+    477,
+    196,
+    93,
+    146
+   ],
+   "yaw": -1.27,
+   "roll": 41.9,
+   "cx": 0.55,
+   "why": "face 146px, 10% of height, sharpness 431",
+   "score": 0.139
+  },
+  {
+   "file": "File:Bola autografada por Neymar roubada durante ato golpista \u00e9 devolvida (1).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q142794/1.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Bola autografada por Neymar roubada durante ato golpista \u00e9 devolvida (2).jpg",
+   "p18": false,
+   "year": 2023,
+   "local": "cand/Q142794/2.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar - Santos vs Juventude - 04-08-2025.jpg",
+   "p18": false,
+   "year": 2025,
+   "local": "cand/Q142794/3.jpg",
+   "gate": "no face",
+   "why": "no face",
+   "score": 0
+  },
+  {
+   "file": "File:Caf\u00fa, Ganso e Neymar.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q142794/4.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Eus\u00e9bio and Neymar Interview.jpg",
+   "p18": false,
+   "year": 2016,
+   "local": "cand/Q142794/5.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Eus\u00e9bio and Neymar.jpg",
+   "p18": false,
+   "year": 2010,
+   "local": "cand/Q142794/6.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Alan Hutton, Scott Brown and Neymar.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/9.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Andr\u00e9 Santos, Neymar and Ramires celebrate Neymars goal.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/10.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:James McArthur and Neymar.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/11.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lucas Leiva, Neymar and Ramires celebrate Neymars goal 2 (5575110815).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/12.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lucas Leiva, Neymar and Ramires celebrate Neymars goal 3 (5575693380).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/13.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar 2011 FIFA Club World Cup Final.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/17.jpg",
+   "gate": "photo ends at the chin (1.5 face heights below)",
+   "why": "photo ends at the chin (1.5 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar and Andre Santos.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/19.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar attacking (5575090925).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/20.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar Junior the Future of Brazil 2 (brightened).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/22.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar Junior the Future of Brazil 2.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/24.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar Junior the Future of Brazil.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/25.jpg",
+   "gate": "photo ends at the chin (1.6 face heights below)",
+   "why": "photo ends at the chin (1.6 face heights below)",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar meets Dilma Rousseff.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/26.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar on the deck 2 (5575527724).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/27.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar visiting Red Bull Arena (cropped).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/30.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar visiting Red Bull Arena.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/31.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar vs Pe\u00f1arol (cropped) 2.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/32.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar vs Pe\u00f1arol.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/34.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar, Lucas Moura, Dilma Rousseff, Ganso.jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/35.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymars penalty 1 (5575137667).jpg",
+   "p18": false,
+   "year": 2011,
+   "local": "cand/Q142794/36.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lucas e Neymar 01.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q142794/37.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Lucas e Neymar 02.jpg",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q142794/38.jpg",
+   "gate": "two people",
+   "why": "two people",
+   "score": 0
+  },
+  {
+   "file": "File:Neymar 2012.JPG",
+   "p18": false,
+   "year": 2012,
+   "local": "cand/Q142794/39.jpg",
+   "gate": "photo ends at the chin (1.9 face heights below)",
+   "why": "photo ends at the chin (1.9 face heights below)",
+   "score": 0
+  }
+ ]
+}

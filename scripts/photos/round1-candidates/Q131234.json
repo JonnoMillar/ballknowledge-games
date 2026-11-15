@@ -11,7 +11,10 @@
    188,
    345,
    453
-  ]
+  ],
+  "yaw": 0.13,
+  "roll": -2.6,
+  "cx": 0.52
  },
  {
   "file": "File:Toni Kroos, Germany national football team (01).jpg",
@@ -25,7 +28,10 @@
    215,
    222,
    285
-  ]
+  ],
+  "yaw": -0.03,
+  "roll": 0.0,
+  "cx": 0.48
  },
  {
   "file": "File:Toni Kroos, Germany national football team (02).jpg",
@@ -39,7 +45,10 @@
    109,
    181,
    242
-  ]
+  ],
+  "yaw": -0.43,
+  "roll": 3.4,
+  "cx": 0.46
  },
  {
   "file": "File:Toni Kroos, Germany national football team (05).jpg",
@@ -53,7 +62,10 @@
    146,
    116,
    148
-  ]
+  ],
+  "yaw": 0.24,
+  "roll": 0.8,
+  "cx": 0.51
  },
  {
   "file": "File:Toni Kroos, Germany national football team (04).jpg",
@@ -67,7 +79,10 @@
    103,
    102,
    142
-  ]
+  ],
+  "yaw": 1.18,
+  "roll": -6.0,
+  "cx": 0.54
  },
  {
   "file": "File:Toni Kroos - CdR - RM v ATL (cropped).jpg",
@@ -81,7 +96,10 @@
    210,
    86,
    116
-  ]
+  ],
+  "yaw": -0.38,
+  "roll": -9.1,
+  "cx": 0.45
  },
  {
   "file": "File:Toni Kroos - CdR - RM v ATL.jpg",
@@ -95,7 +113,10 @@
    92,
    40,
    50
-  ]
+  ],
+  "yaw": -0.52,
+  "roll": -0.7,
+  "cx": 0.4
  },
  {
   "file": "File:FIFA WC-qualification 2014 - Austria vs. Germany 2012-09-11 - Toni Kroos.JPG",

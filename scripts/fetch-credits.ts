@@ -11,7 +11,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { portraitUrls, type PortraitRecord } from '../src/lib/portraits';
 
-const AGENT = 'RecallXI/0.1 (https://github.com/; jonno@m1llar.com)';
+const AGENT = 'BallKnowledgePhotoPipeline/0.1 (football games site, photo credits)';
 const OUT = 'data/credits.json';
 const API = 'https://commons.wikimedia.org/w/api.php';
 
@@ -21,15 +21,16 @@ export interface Credit {
   licenceUrl?: string;
 }
 
-const images = JSON.parse(await readFile('data/images.json', 'utf8')) as Record<string, string>;
 const portraits = JSON.parse(await readFile('data/portraits.json', 'utf8')) as Record<string, PortraitRecord>;
 
-const FILEPATH = 'Special:FilePath/';
 const files = new Set<string>();
-for (const { url } of Object.values(portraitUrls(images, portraits))) {
-  const at = url.indexOf(FILEPATH);
-  if (at >= 0) files.add(decodeURIComponent(url.slice(at + FILEPATH.length).split('?')[0]!));
+for (const id of Object.keys(portraitUrls(portraits))) {
+  // Our own cutouts name the Commons file they came from.
+  const file = portraits[id]?.source === 'processed' ? portraits[id]!.file : undefined;
+  if (file && !file.startsWith('openverse:')) files.add(file);   // those carry their own credit (portraits.json `origin`)
 }
+// The kit card's figure (public/kit-figure.png) is a cutout of this photo.
+files.add('Thiago Silva (cropped).jpg');
 console.log(`${files.size} Commons files on public pages`);
 
 /** Commons puts markup in Artist; the page wants the words. */

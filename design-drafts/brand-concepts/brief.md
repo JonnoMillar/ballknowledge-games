@@ -55,7 +55,7 @@ patterns to try across the concepts:
 ## Constraints already decided
 
 - Cheerful, daylight, rich contrast, no colour wash; Golden cool light.
-- Every object belongs in the world and has a job; nothing drawn in code.
+- Every object belongs in the world and has a job. The world is illustrated; the crisp layer on it (run clipboard, labels, buttons, chrome) is HTML/CSS (2026-11-14, replaces "nothing drawn in code").
 - Labels, title and chrome are real type; red only on the one action and the
   suggested game.
 - Real club badges and flags only (ClubBadge, `public/flags`).
@@ -87,3 +87,8 @@ approves the list. The current lobby stays as the control.
 | 6 | **Stylised scout's office** | Concept 0 in the grain-illustration style (photo reference + style prompt, as the Olise test) | Same phone crop as 0 | Slop-hater: tests whether stylised beats fake-real |
 
 Open for Jonno: approve, cut or swap concepts before anything is generated.
+
+## Round 2 result (2026-11-14)
+
+Shortlist 6 and 2, merged into one direction: illustrated world, HTML/CSS
+layer on top, the run as a clipboard checklist. Cut 1, 3, 5. See HANDOFF.

@@ -1,9 +1,11 @@
 'use client';
+import { useState } from 'react';
 import type React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import type { Named } from '../src/lib/chain/client';
 import type { PortraitImage } from '../src/lib/portraits';
 import { plateName } from '../src/lib/short-name';
+import { crestPath } from '../src/lib/clubs';
 
 /**
  * The ground behind a sticker's photo: two halves, split on the diagonal.
@@ -92,19 +94,61 @@ export function StickerFace({
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
   const name = plateName(player.id, player.name).toUpperCase();
   const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
+  const fit = !image ? 'kit' : image.fit;
   return (
-    <div ref={ref} {...rest} className={`sticker${image ? ' sticker--shot' : ''} ${className}`} title={player.name}>
-      <div className={`sticker__photo ${image?.fit === 'contain' ? 'sticker__photo--contain' : 'sticker__photo--cover'}`}>
+    <div ref={ref} {...rest} className={`sticker${fit !== 'kit' ? ' sticker--shot' : ''} ${className}`} title={player.name}>
+      <div className={`sticker__photo sticker__photo--${fit}`}>
         <span className={`sticker__half sticker__half--a ${ground.liveA ? 'is-live' : ''}`} style={{ background: ground.a }} aria-hidden />
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />
         <span className={`sticker__seam ${seam ? 'is-live' : ''}`} aria-hidden />
-        {image ? <img src={image.url} alt="" draggable={false} /> : <Figure tone="rgba(255,255,255,0.45)" />}
+        {!image || image.fit === 'kit' ? <KitCard club={image?.club} ground={ground} /> : <img src={image.url} alt="" draggable={false} />}
+        {process.env.NODE_ENV === 'development' && image?.fit === 'box' ? <FlagPhoto id={player.id} /> : null}
       </div>
       <div className="sticker__plate">
         <span className={`sticker__name ${name.length > 10 ? 'sticker__name--long' : ''}`}>{name}</span>
         {index !== undefined ? <span className="sticker__no">{index}</span> : null}
       </div>
     </div>
+  );
+}
+
+/**
+ * Dev only: "Wrong photo", on hover over a card with one of our cutouts. Writes the player to
+ * .scratch/photo-all/marks.json (`flagged`) for the next check round (docs/photo-pipeline.md).
+ */
+function FlagPhoto({ id }: { id: string }) {
+  const [sent, setSent] = useState(false);
+  return (
+    <button
+      type="button"
+      className="sticker__flag"
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+        fetch('/api/photo-check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ flag: id }) }).then((r) => setSent(r.ok)).catch(() => {});
+      }}
+    >
+      {sent ? 'Flagged' : 'Wrong photo'}
+    </button>
+  );
+}
+
+/**
+ * The kit card, for a player with no good photo: an anonymous head and
+ * shoulders, framed like a real cutout (face in the same box, body off the
+ * bottom edge), on whatever the sticker stands on: grey, or the grade's
+ * material once a case seals it. The club crest sits small in the top-right
+ * corner on a white disc, and only on a solid live ground: a pick's ground is
+ * neutral until the seal, and a crest there would name a club before the board
+ * has judged it.
+ */
+export function KitCard({ club, ground }: { club?: string; ground: Ground }) {
+  const crest = club && ground.liveA && ground.liveB && ground.a === ground.b;
+  return (
+    <>
+      <span className="sticker__kit" aria-hidden />
+      {crest ? <img className="sticker__crest" src={crestPath(club)} alt="" draggable={false} /> : null}
+    </>
   );
 }
 
