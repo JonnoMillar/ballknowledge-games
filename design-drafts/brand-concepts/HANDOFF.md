@@ -34,6 +34,12 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   lacks.
 - Mock: `direction.html` (localhost:4321/direction.html), 6's frames with the
   CSS clipboard and labels on top, desktop and phone. No new art.
+- **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
+  as BK Scout** (as FM is Football Manager). Full name explains the role and
+  carries the "ball knowledge" meme; BK Scout is the handle, watermark and
+  mark. Domains free on 2026-11-15, not bought: ballknowledgescout.com,
+  bkscout.gg/.app/.io/.co.uk (bkscout.com taken). Nothing renamed on the site
+  yet. Rounds and reasons in `names.md`.
 - Order Jonno set: settle the design direction, then the hub name (it shapes
   game names and how each game is shown in the hub).
 - Risk to manage: keeping many generated pieces in one style needs a locked
@@ -166,7 +172,7 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Next
 
-0. **Direction (2026-11-14):** illustrated plus CSS layer (above). Next: Jonno's verdict on `direction.html`, then the hub name, then a style sheet (palette, type, line and grain, layer components) and grey-box layout. The 5-second test runs on the merged direction, not on separate concepts.
+0. **Direction (2026-11-14):** illustrated plus CSS layer (above). Name decided (Ball Knowledge Scout / BK Scout). Next: a style sheet (palette, type, line and grain, layer components) and grey-box layout. The 5-second test runs on the merged direction, not on separate concepts.
 0a. **Round 2 (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged); five concepts generated (car cut by Jonno), compared on `round2.html` (localhost:4321/round2.html). Next: Jonno's shortlist of 2 or 3, then the mates' 5-second test. The bible sign-off waits for the chosen concept.
 1. Jonno's sign-off on `bible.html` (objects, and the four open calls).
 2. **Single-item control test** on the Spoofed clipping, about 0.75 credits:
@@ -180,8 +186,9 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Open questions for Jonno
 
-- Blocking for logo and title: the site name ("Ball Knowledge" is a working
-  name) and the multiplayer game's name.
+- Blocking for the logo: the multiplayer game's name. (Site name decided
+  2026-11-15: **Ball Knowledge Scout**, short form **BK Scout**; see
+  `names.md`.)
 - Non-blocking: the Olise print's job on the board; whether the pub idea
   returns later (as the room around the board?).
 

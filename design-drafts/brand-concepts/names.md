@@ -1,5 +1,10 @@
 # Hub name pool (2026-11-14)
 
+**Decided (Jonno, 2026-11-15): Ball Knowledge Scout, short form BK Scout.**
+Full name for meaning (the role plus the "ball knowledge" meme); BK Scout
+for speech, handle, watermark and mark, as FM is Football Manager. Watch: a
+football quiz app called "Ball Knowledge" exists, so lead with BK Scout.
+
 Scored against `docs/naming-checklist.md`. Domain checks are registry
 lookups on 2026-11-14 (nothing bought); a taken domain is not fatal if a
 fixed modifier works (`___fc.com`). Clash checks are one web search each.
