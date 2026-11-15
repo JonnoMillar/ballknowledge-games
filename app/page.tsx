@@ -5,8 +5,8 @@ import { isBoardId } from '../src/server/board';
 import { HUB_COOKIE, readHubCookie } from '../src/lib/today';
 
 export const metadata = {
-  title: 'Football games',
-  description: 'Football puzzles and pub games. Chain, Spoofed, Pitch pin and Rondo.',
+  title: { absolute: 'Ball Knowledge Scout' },
+  description: 'Daily football games: today’s assignment, Chain, Spoofed, Odd Man Out, Pitch pin, Season line and Rondo.',
 };
 
 /**

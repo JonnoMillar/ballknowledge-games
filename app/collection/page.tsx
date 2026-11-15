@@ -1,6 +1,6 @@
 import Collection from '../../components/Collection';
 
-export const metadata = { title: 'Collection · Chain' };
+export const metadata = { title: 'Collection' };
 
 /** The cards are in the browser, so the page is all client. */
 export default function CollectionPage() {

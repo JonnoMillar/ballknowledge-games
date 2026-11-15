@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import PlayClient from '../../../components/PlayClient';
 import { isBoardId, listBoards, loadBoard } from '../../../src/server/board';
 
+export const metadata = { title: 'Chain' };
+
 /**
  * A board to play.
  *

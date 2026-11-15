@@ -3,6 +3,11 @@ import Home from '../../components/Home';
 import { demoChain, isBoardId, listBoards } from '../../src/server/board';
 import { demoSteps } from '../../games/step/server';
 
+export const metadata = {
+  title: 'Chain',
+  description: 'A football chain a day. Name the players who link the givens.',
+};
+
 /**
  * The front door: today's chain, the streak, the ladder and the archive.
  *

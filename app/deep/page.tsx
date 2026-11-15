@@ -1,7 +1,7 @@
 import DeepIndex from '../../components/DeepIndex';
 import { listBoards } from '../../src/server/board';
 
-export const metadata = { title: 'Deep Cuts · Chain' };
+export const metadata = { title: 'Deep Cuts' };
 
 /** The Deep Cuts boards. What has been played is read in the browser. */
 export default async function DeepPage() {

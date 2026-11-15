@@ -37,9 +37,10 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
 - **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
-  mark. Domains free on 2026-11-15, not bought: ballknowledgescout.com,
-  bkscout.gg/.app/.io/.co.uk (bkscout.com taken). Nothing renamed on the site
-  yet. Rounds and reasons in `names.md`.
+  mark; `bkscout` in URLs and handles. Domains free on 2026-11-15, not bought:
+  ballknowledgescout.com, bkscout.gg/.app/.io/.co.uk (bkscout.com taken).
+  Live so far: page titles only ("Ball Knowledge Scout" on the hub,
+  "Game · BK Scout" elsewhere). Rounds and reasons in `names.md`.
 - **Style sheet draft 1 (2026-11-15):** `style.html`
   (localhost:4321/style.html). BK Scout wordmark and scout's-pass mark, layer
   palette (ink, paper, navy, sun; red only for the one action, only on paper

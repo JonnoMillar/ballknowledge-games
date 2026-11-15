@@ -2,7 +2,7 @@ import PuzzleArchive from '../../../components/PuzzleArchive';
 import { listBoards } from '../../../src/server/board';
 
 export const metadata = {
-  title: 'Puzzle archive · Chain',
+  title: 'Chain archive',
   description: 'Every daily Chain puzzle so far, and the ladder of harder boards.',
 };
 
