@@ -63,7 +63,7 @@ function morph(fronts: string[]) {
 const MORPH = `(${morph.toString()})(${JSON.stringify(GAMES.map((g) => g.href))})`;
 
 export const metadata = {
-  title: { default: 'Ball Knowledge Scout', template: '%s · BKScout' },
+  title: { default: 'Ball Knowledge Scout', template: '%s · BK Scout' },
   description: 'Daily football games for people with real ball knowledge.',
   applicationName: 'Ball Knowledge Scout',
 };
