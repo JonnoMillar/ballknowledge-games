@@ -40,6 +40,18 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   mark. Domains free on 2026-11-15, not bought: ballknowledgescout.com,
   bkscout.gg/.app/.io/.co.uk (bkscout.com taken). Nothing renamed on the site
   yet. Rounds and reasons in `names.md`.
+- **Style sheet draft 1 (2026-11-15):** `style.html`
+  (localhost:4321/style.html). BK Scout wordmark and scout's-pass mark, layer
+  palette (ink, paper, navy, sun; red only for the one action, only on paper
+  or ink: red on cork is 1.3:1), Big Shoulders plus Libre Franklin, art rules
+  for every generation, CSS grain and down-right shadows, label tape states,
+  the run's clipboard (fresh, in progress, filed stamp), buttons, phone paper
+  slips, chrome, motion tokens. Art finding: concept 6 is 8 of 10 orange
+  tones, so rebakes should add cool accents in the scene.
+- **Split across sessions (2026-11-15):** this session owns the style sheet
+  and this file. Grey-box hub layout (`layout.html`, `layout.md`) and the
+  no-blink zoom into a game (`transition.html`, `transition.md`) run in their
+  own sessions and worktrees; fold one line for each here when they finish.
 - Order Jonno set: settle the design direction, then the hub name (it shapes
   game names and how each game is shown in the hub).
 - Risk to manage: keeping many generated pieces in one style needs a locked

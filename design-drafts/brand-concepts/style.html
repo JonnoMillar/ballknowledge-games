@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BK Scout style sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens: the layer. The art keeps its own palette (section 2). ===== */
+:root {
+  --ink: #1B2230;        /* cool navy-black: all type, outlines, tape */
+  --paper: #FBF6EA;      /* every surface type sits on */
+  --paper-2: #F1E6CF;    /* aged paper, second surface */
+  --rule: #E2D6BD;
+  --muted: #5E574D;      /* secondary type, 6.6:1 on paper */
+  --navy: #1F3A5F;       /* the cool counterweight to an orange world */
+  --sun: #F2B24A;        /* highlight: streak, today */
+  --red: #C8202F;        /* the one action, and the word Next. Never on cork. */
+  --red-deep: #8E1520;
+  --tape: #151413;
+  --cork: #B0642A; --wood: #6B3A18; /* art samples, for demos only */
+
+  --display: 'Big Shoulders', sans-serif;
+  --body: 'Libre Franklin', system-ui, sans-serif;
+
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --t-fast: 160ms; --t-mid: 280ms; --t-slow: 480ms;
+
+  /* Light comes from the window, top left: shadows fall down and right. */
+  --shadow-1: 1px 2px 0 rgba(27,34,48,.18), 2px 4px 8px rgba(40,20,5,.22);
+  --shadow-2: 2px 3px 0 rgba(27,34,48,.18), 6px 12px 24px rgba(40,20,5,.30);
+
+  /* Paper grain, so the crisp layer shares the art's tooth. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 var(--body); }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 80px; }
+section { margin-top: 44px; }
+h2 { font: 900 30px/1 var(--display); letter-spacing: .02em; margin: 0 0 6px; text-transform: uppercase; }
+h2 span { color: var(--muted); margin-right: 8px; }
+h3 { font: 800 12px/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+.lede { color: var(--muted); max-width: 72ch; margin: 0 0 14px; }
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 820px) { .g2, .g3 { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; position: relative; }
+.panel.cork { background: var(--cork); border-color: #8f4f1f; }
+.panel.inkbg { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.grained { position: relative; isolation: isolate; }
+.grained::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--grain); mix-blend-mode: multiply; opacity: .35; pointer-events: none; z-index: 1; }
+.rules { margin: 0; padding-left: 18px; }
+.rules li { margin: 4px 0; }
+.rules b { font-weight: 800; }
+code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--paper-2); padding: 2px 5px; border-radius: 4px; }
+
+/* ===== 1. Wordmark and mark ===== */
+.hero { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.wordmark { display: inline-flex; align-items: baseline; gap: .12em; font: 900 clamp(56px, 9vw, 112px)/.85 var(--display); letter-spacing: .01em; text-transform: uppercase; }
+.wordmark .bk { background: var(--ink); color: var(--paper); padding: .06em .14em .02em; border-radius: .06em; transform: rotate(-2deg); display: inline-block; box-shadow: var(--shadow-1); }
+.wordmark .scout { color: var(--ink); }
+.inkbg .wordmark .bk { background: var(--paper); color: var(--ink); }
+.inkbg .wordmark .scout { color: var(--paper); }
+.fullname { font: 800 14px/1.3 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+.descriptor { font: 700 15px/1.3 var(--body); color: var(--ink); margin-top: 2px; }
+
+/* The mark: a scout's pass, hole-punched, BK on it. */
+.pass { --s: 96px; width: var(--s); height: calc(var(--s) * 1.18); background: var(--paper); border: calc(var(--s) * .045) solid var(--ink); border-radius: calc(var(--s) * .14); position: relative; display: grid; place-items: end center; padding-bottom: calc(var(--s) * .12); box-shadow: var(--shadow-1); flex: none; }
+.pass::before { content: ''; position: absolute; top: calc(var(--s) * .1); left: 50%; width: calc(var(--s) * .3); height: calc(var(--s) * .09); transform: translateX(-50%); border-radius: 99px; background: var(--paper-2); box-shadow: inset 0 0 0 calc(var(--s) * .035) var(--ink); }
+.pass b { font: 900 calc(var(--s) * .52)/.8 var(--display); letter-spacing: -.01em; color: var(--ink); }
+.pass i { position: absolute; left: calc(var(--s) * .12); right: calc(var(--s) * .12); bottom: calc(var(--s) * .07); height: calc(var(--s) * .05); background: var(--red); border-radius: 2px; }
+.pass.inv { background: var(--ink); border-color: var(--paper); }
+.pass.inv b { color: var(--paper); }
+.pass.inv::before { background: var(--navy); box-shadow: inset 0 0 0 calc(var(--s) * .035) var(--paper); }
+.sizes { display: flex; align-items: end; gap: 18px; flex-wrap: wrap; }
+.sizes figure { margin: 0; text-align: center; font: 700 11px/1 var(--body); color: var(--muted); }
+.sizes figcaption { margin-top: 6px; }
+.fav { width: 32px; height: 32px; border-radius: 7px; background: var(--ink); color: var(--paper); display: grid; place-items: center; font: 900 19px/1 var(--display); }
+.fav.s16 { width: 16px; height: 16px; border-radius: 4px; font-size: 10px; }
+.watermark { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 9 / 16; max-width: 220px; background: linear-gradient(160deg, #2a5a3a, #173a26); }
+.watermark img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .9; }
+.watermark .wm { position: absolute; right: 8px; bottom: 10px; font: 900 18px/.9 var(--display); text-transform: uppercase; display: flex; gap: 3px; align-items: baseline; }
+.watermark .wm .bk { background: var(--paper); color: var(--ink); padding: 2px 4px 0; border-radius: 2px; }
+.watermark .wm .scout { color: var(--paper); text-shadow: 0 1px 3px rgba(0,0,0,.6); }
+
+/* ===== 2. Palette ===== */
+.sw { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.sw:last-child { border-bottom: 0; }
+.chip { width: 64px; height: 44px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); display: grid; place-items: center; font: 900 18px/1 var(--display); }
+.sw b { font: 800 14px/1.2 var(--body); display: block; }
+.sw small { color: var(--muted); font-size: 12.5px; line-height: 1.35; display: block; }
+.artrow { display: flex; gap: 6px; flex-wrap: wrap; }
+.artrow span { width: 48px; height: 32px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); }
+.ratio { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.ratio div { border-radius: 6px; padding: 10px; font: 800 13px/1.25 var(--body); }
+.ratio small { display: block; font-weight: 700; opacity: .85; margin-top: 3px; }
+.ratio .fail { outline: 3px dashed var(--ink); outline-offset: -3px; }
+
+/* ===== 3. Type ===== */
+.spec { display: grid; grid-template-columns: 150px 1fr; gap: 6px 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.spec:last-child { border-bottom: 0; }
+.spec small { color: var(--muted); font: 700 12px/1.35 var(--body); }
+.t-hero { font: 900 56px/.95 var(--display); }
+.t-h1 { font: 900 36px/1 var(--display); }
+.t-tape { font: 800 18px/1 var(--display); letter-spacing: .14em; text-transform: uppercase; }
+.t-score { font: 900 64px/.9 var(--display); font-variant-numeric: tabular-nums; }
+.t-body { font: 500 16px/1.5 var(--body); }
+.t-ui { font: 700 15px/1.2 var(--body); }
+.t-eyebrow { font: 800 12px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* ===== 4. Line, grain and light ===== */
+.paperdemo { height: 120px; border-radius: 8px; background: var(--paper); display: grid; place-items: center; font: 800 13px/1.2 var(--body); color: var(--muted); text-align: center; box-shadow: var(--shadow-1); }
+.lift { transition: transform var(--t-mid) var(--ease), box-shadow var(--t-mid) var(--ease); }
+.lift:hover { transform: translate(-1px, -3px) rotate(-.4deg); box-shadow: var(--shadow-2); }
+
+/* ===== 5. Components ===== */
+/* Label tape: sits on the art. Type is always on the tape, never on cork. */
+.tape { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; transform: rotate(var(--r, -1.5deg)); }
+.tape b { background: var(--tape); color: #F4F1EA; font: 800 18px/1 var(--display); letter-spacing: .14em; text-transform: uppercase; padding: .38em .7em .3em; border-radius: 2px; box-shadow: var(--shadow-1); display: inline-flex; align-items: center; gap: .5em; }
+.tape small { background: var(--paper); color: var(--ink); font: 800 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; padding: .5em .6em; border-radius: 2px; box-shadow: var(--shadow-1); }
+.tape .flag { font: 900 12px/1 var(--body); letter-spacing: .08em; background: var(--red); color: #fff; padding: .3em .45em; border-radius: 2px; box-shadow: 0 0 0 2px var(--paper); }
+.tape.done small::before { content: '✓ '; font-weight: 900; }
+.tape.done b { background: var(--tape); opacity: .78; }
+.tapes { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding: 22px 8px; }
+
+/* Buttons */
+.btn { font: 900 20px/1 var(--display); letter-spacing: .1em; text-transform: uppercase; border: 0; border-radius: 6px; padding: .6em 1.3em .55em; cursor: pointer; min-height: 48px; transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease); }
+.btn:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+.btn-go { color: #fff; background: var(--red); box-shadow: 0 4px 0 var(--red-deep); }
+.btn-go:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--red-deep); }
+.btn-go:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--red-deep); }
+.btn-two { color: var(--ink); background: var(--paper); box-shadow: inset 0 0 0 2px var(--ink), 0 4px 0 var(--ink); }
+.btn-two:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 2px var(--ink), 0 6px 0 var(--ink); }
+.btn-two:active { transform: translateY(3px); box-shadow: inset 0 0 0 2px var(--ink), 0 1px 0 var(--ink); }
+.btn-ghost { color: var(--ink); background: transparent; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; box-shadow: none; padding-inline: .4em; }
+.btn[disabled] { background: var(--paper-2); color: var(--muted); box-shadow: inset 0 0 0 2px var(--rule); cursor: not-allowed; transform: none; }
+.btnrow { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.chrome { display: flex; gap: 8px; }
+.chrome span { background: var(--paper); color: var(--ink); font: 800 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 12px 14px; border-radius: 6px; box-shadow: var(--shadow-1); }
+
+/* The run's clipboard */
+.clip { position: relative; background: linear-gradient(160deg, #9a6a3f, #8a5a33 60%, #714626); border-radius: 14px; padding: 28px 14px 14px; box-shadow: var(--shadow-2); max-width: 380px; }
+.clip::before { content: ''; position: absolute; left: 50%; top: -12px; width: 34%; height: 36px; transform: translateX(-50%); border-radius: 8px 8px 11px 11px; background: linear-gradient(#e9eaec, #a9adb3 55%, #7d8188); box-shadow: 0 3px 6px rgba(0,0,0,.4); z-index: 2; }
+.sheet { background: var(--paper); border-radius: 4px; padding: 16px 18px; box-shadow: 0 2px 4px rgba(0,0,0,.25); position: relative; overflow: hidden; }
+.eyebrow { display: flex; justify-content: space-between; }
+.sheet h4 { margin: 6px 0 8px; font: 900 30px/1 var(--display); }
+.tasks { list-style: none; margin: 0; padding: 0; }
+.tasks li { display: flex; align-items: center; gap: 10px; font: 700 15px/1.2 var(--body); padding: 8px 0; border-bottom: 1px solid var(--rule); cursor: pointer; user-select: none; }
+.tasks li:last-child { border-bottom: 0; }
+.box { width: 22px; height: 22px; flex: none; border: 2px solid var(--ink); border-radius: 3px; display: grid; place-items: center; background: var(--paper); }
+.box svg { width: 16px; height: 16px; stroke: var(--ink); stroke-width: 3.2; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset var(--t-mid) var(--ease); }
+.tasks li.done .box svg { stroke-dashoffset: 0; }
+.tasks li .nm { transition: color var(--t-mid) var(--ease); background: linear-gradient(var(--ink), var(--ink)) left 55% / 0 2px no-repeat; }
+.tasks li.done .nm { color: var(--muted); background-size: 100% 2px; transition: color var(--t-mid) var(--ease), background-size var(--t-mid) var(--ease); }
+.tasks li em { margin-left: auto; font: 800 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: var(--muted); }
+.tasks li.next em { color: var(--red); }
+.tasks li.done em::before { content: 'Done'; }
+.go { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.streak { font: 800 11px/1.2 var(--body); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.streak b { font: 900 26px/1 var(--display); color: var(--ink); display: block; letter-spacing: 0; }
+.stamp { position: absolute; right: 12px; top: 44%; transform: rotate(-12deg) scale(1.4); opacity: 0; font: 900 34px/1 var(--display); letter-spacing: .12em; color: var(--navy); border: 4px solid var(--navy); border-radius: 6px; padding: 4px 10px 2px; transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease); mix-blend-mode: multiply; pointer-events: none; }
+.sheet.filed .stamp { opacity: .9; transform: rotate(-12deg) scale(1); }
+.result { font: 900 46px/1 var(--display); font-variant-numeric: tabular-nums; }
+
+/* Phone list card: a game as a paper slip on the board. */
+.slip { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; background: var(--paper); border-radius: 6px; padding: 10px 12px; box-shadow: var(--shadow-1); min-height: 64px; }
+.slip + .slip { margin-top: 10px; }
+.slip .art { width: 56px; height: 44px; border-radius: 3px; background: var(--paper-2) center / cover; box-shadow: inset 0 0 0 1px var(--rule); }
+.slip b { font: 900 20px/1 var(--display); letter-spacing: .04em; text-transform: uppercase; display: block; }
+.slip small { font: 700 12.5px/1.3 var(--body); color: var(--muted); }
+.slip .state { font: 800 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+.slip .state.done::before { content: '✓'; font-size: 14px; }
+.slip .state.next { color: var(--red); }
+
+/* Motion tokens */
+.mrow { display: grid; grid-template-columns: 120px 1fr 90px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--rule); font: 700 13px/1.3 var(--body); }
+.mrow:last-child { border-bottom: 0; }
+.track { height: 30px; background: var(--paper-2); border-radius: 6px; position: relative; overflow: hidden; }
+.dot { position: absolute; top: 5px; left: 5px; width: 20px; height: 20px; border-radius: 4px; background: var(--ink); }
+.track.run .dot { left: calc(100% - 25px); }
+.mrow small { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ===== 1 ===== -->
+  <section style="margin-top:0">
+    <div class="hero">
+      <div class="pass"><b>BK</b><i></i></div>
+      <div>
+        <div class="wordmark"><span class="bk">BK</span><span class="scout">Scout</span></div>
+        <div class="fullname">Ball Knowledge Scout</div>
+        <div class="descriptor">Daily football games</div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:18px">Style sheet for the hub and every game screen. The world is illustrated; everything crisp on top (labels, the run's clipboard, buttons, chrome) is HTML and CSS built from this page. Draft 1, 2026-11-15.</p>
+  </section>
+
+  <section>
+    <h2><span>1</span>Name and mark</h2>
+    <p class="lede">Say and write <b>BK Scout</b>; the full name appears once, under the wordmark. The mark is a scout's pass: hole-punched card, BK on it, one red rule. It is ours, never in the style of a club crest.</p>
+    <div class="grid g3">
+      <div class="panel grained">
+        <h3>On paper</h3>
+        <div class="wordmark" style="font-size:52px"><span class="bk">BK</span><span class="scout">Scout</span></div>
+      </div>
+      <div class="panel inkbg">
+        <h3 style="color:#c9c1b2">On ink</h3>
+        <div class="wordmark" style="font-size:52px"><span class="bk">BK</span><span class="scout">Scout</span></div>
+      </div>
+      <div class="panel">
+        <h3>Sizes</h3>
+        <div class="sizes">
+          <figure><div class="pass" style="--s:64px"><b>BK</b><i></i></div><figcaption>App icon</figcaption></figure>
+          <figure><div class="pass inv" style="--s:48px"><b>BK</b><i></i></div><figcaption>On ink</figcaption></figure>
+          <figure><div class="fav">BK</div><figcaption>32 px</figcaption></figure>
+          <figure><div class="fav s16">BK</div><figcaption>16 px</figcaption></figure>
+        </div>
+      </div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="panel">
+        <h3>Watermark on a phone video</h3>
+        <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap">
+          <div class="watermark"><img src="img/round2/6-phone.png" alt=""><div class="wm"><span class="bk">BK</span><span class="scout">Scout</span></div></div>
+          <ul class="rules" style="flex:1; min-width:200px">
+            <li>Bottom right, above the platform's own buttons.</li>
+            <li>BK on a paper chip, Scout in paper type with a soft shadow: reads on any footage.</li>
+            <li>The handle is the same word: <code>@bkscout</code>.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Rules</h3>
+        <ul class="rules">
+          <li><b>BK Scout</b> in speech, handles, watermarks, share cards. <b>Ball Knowledge Scout</b> only as the full name under the mark.</li>
+          <li>Descriptor is fixed: <b>Daily football games</b>. Page titles and store listings carry it.</li>
+          <li>Share card leads with the name and the day: <b>BK Scout #42 · 87.4</b>.</li>
+          <li>No generated type, ever: the wordmark is real type.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2 ===== -->
+  <section>
+    <h2><span>2</span>Colour</h2>
+    <p class="lede">The art is warm (cork, wood, sun). The layer brings the cool, dark counterweight that gives the contrast concept 6 lacked. Meaning is carried by shape, words and lightness; colour only ever repeats it.</p>
+    <div class="grid g2">
+      <div class="panel">
+        <h3>Layer palette</h3>
+        <div class="sw"><div class="chip" style="background:#1B2230;color:#FBF6EA">Aa</div><div><b>Ink · #1B2230</b><small>All type, outlines, tape. 14.8:1 on paper.</small></div></div>
+        <div class="sw"><div class="chip" style="background:#FBF6EA;color:#1B2230">Aa</div><div><b>Paper · #FBF6EA</b><small>Every surface type sits on. Type never sits straight on the art.</small></div></div>
+        <div class="sw"><div class="chip" style="background:#F1E6CF;color:#1B2230">Aa</div><div><b>Aged paper · #F1E6CF</b><small>Second surface, page ground, disabled.</small></div></div>
+        <div class="sw"><div class="chip" style="background:#5E574D;color:#FBF6EA">Aa</div><div><b>Pencil · #5E574D</b><small>Secondary type. 6.6:1 on paper.</small></div></div>
+        <div class="sw"><div class="chip" style="background:#1F3A5F;color:#FBF6EA">Aa</div><div><b>Navy · #1F3A5F</b><small>The cool accent: the FILED stamp, focus rings, selected states. 10.7:1 on paper.</small></div></div>
+        <div class="sw"><div class="chip" style="background:#F2B24A;color:#1B2230">Aa</div><div><b>Sun · #F2B24A</b><small>Highlight only: streak, today's date, a new find. Ink type on it, 8.5:1.</small></div></div>
+        <div class="sw"><div class="chip" style="background:#C8202F;color:#fff">Aa</div><div><b>Red · #C8202F</b><small>The one action per screen and the word Next. White type 5.7:1. Only on paper or ink, never on cork (1.3:1).</small></div></div>
+      </div>
+      <div class="panel">
+        <h3>Art palette (sampled from concept 6)</h3>
+        <div class="artrow">
+          <span style="background:#C65808"></span><span style="background:#D57215"></span><span style="background:#ECA33F"></span><span style="background:#F2D190"></span><span style="background:#FADF9E"></span><span style="background:#B2A66C"></span><span style="background:#87642C"></span><span style="background:#7C3007"></span><span style="background:#453615"></span><span style="background:#341706"></span>
+        </div>
+        <p class="lede" style="margin-top:10px">Too much orange: 8 of the 10 strongest colours are cork, wood and sun. When the plate is rebaked, ask for more cool in the art itself (window sky, pitch, a navy pennant, white paper) so the layer isn't doing all the work.</p>
+        <h3>Contrast checks (WCAG)</h3>
+        <div class="ratio">
+          <div style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 0 0 1px #E2D6BD">Ink on paper<small>14.8 · pass</small></div>
+          <div style="background:#C8202F;color:#fff">White on red<small>5.7 · pass</small></div>
+          <div style="background:#1F3A5F;color:#FBF6EA">Paper on navy<small>10.7 · pass</small></div>
+          <div style="background:#F2B24A;color:#1B2230">Ink on sun<small>8.5 · pass</small></div>
+          <div class="fail" style="background:#B0642A;color:#1B2230">Ink on cork<small>3.6 · fail: use tape</small></div>
+          <div class="fail" style="background:#B0642A;color:#C8202F">Red on cork<small>1.3 · never</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3 ===== -->
+  <section>
+    <h2><span>3</span>Type</h2>
+    <p class="lede">Two families, already in the lobby: <b>Big Shoulders</b> for names, numbers and tape (condensed, like stadium signage and kit numbers); <b>Libre Franklin</b> for everything you read.</p>
+    <div class="panel grained">
+      <div class="spec"><small>Hero · Big Shoulders 900 · 56</small><div class="t-hero">Today’s assignment</div></div>
+      <div class="spec"><small>Heading · 900 · 36</small><div class="t-h1">Find the mole</div></div>
+      <div class="spec"><small>Score · 900 · 64 · tabular</small><div class="t-score">87.4</div></div>
+      <div class="spec"><small>Tape · 800 · 18 · +14% tracking</small><div class="t-tape">Season line</div></div>
+      <div class="spec"><small>Eyebrow · Franklin 800 · 12 · caps</small><div class="t-eyebrow">Daily · Sat 15 Nov</div></div>
+      <div class="spec"><small>UI · Franklin 700 · 15</small><div class="t-ui">Log the shot</div></div>
+      <div class="spec"><small>Body · Franklin 500 · 16</small><div class="t-body">One move in each career never happened. Find it before the clock runs out.</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 4 ===== -->
+  <section>
+    <h2><span>4</span>Line, grain and light</h2>
+    <div class="grid g2">
+      <div class="panel">
+        <h3>The art (rules for every generation)</h3>
+        <ul class="rules">
+          <li><b>Style:</b> the grain illustration of concept 6 and the Olise test A: printed-grain texture, soft ink line, rich colour, no gloss.</li>
+          <li><b>Light:</b> Golden cool, from a window top left. Shadows fall down and right.</li>
+          <li><b>Palette:</b> warm base with cool accents in the scene (sky, pitch, navy, white paper); no colour wash.</li>
+          <li><b>Never in the art:</b> faces of real or made-up people, type, crests, logos. Real badges come from ClubBadge on top.</li>
+          <li><b>Lock:</b> one approved style-reference image goes into every generation, so pieces match.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>The layer (so CSS pieces belong in the art)</h3>
+        <ul class="rules">
+          <li><b>Grain:</b> paper surfaces carry the same tooth (SVG noise, multiply, 35%).</li>
+          <li><b>Shadow:</b> two steps, contact plus soft, always down-right.</li>
+          <li><b>Tilt:</b> pinned paper sits off-square, 0.5 to 2 degrees, never the same twice in a row.</li>
+          <li><b>Corners:</b> paper 4 to 6 px, the clipboard 14 px; nothing pill-shaped.</li>
+        </ul>
+        <div class="grid g2" style="margin-top:12px">
+          <div class="paperdemo lift">Flat paper</div>
+          <div class="paperdemo grained lift">Grained paper<br>(hover: lift)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5 ===== -->
+  <section>
+    <h2><span>5</span>Layer components</h2>
+
+    <h3>Label tape, on the art</h3>
+    <div class="panel cork grained">
+      <div class="tapes">
+        <div class="tape" style="--r:-2deg"><b>Spoofed</b><small>Spot the fake move</small></div>
+        <div class="tape" style="--r:1.2deg"><b>Chain <span class="flag">Next</span></b><small>Steps, then the puzzle</small></div>
+        <div class="tape done" style="--r:-1deg"><b>Season line</b><small>Done today</small></div>
+        <div class="tape" style="--r:1.5deg"><b>Rondo</b><small>2 to 4 players, one phone</small></div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:8px">Default · suggested (the word Next on a red flag, ringed in paper so it never touches cork) · done (tick and the words Done today) · multiplayer. Each state has its own word, not just its own colour.</p>
+
+    <div class="grid g2" style="margin-top:8px">
+      <div>
+        <h3>The run's clipboard (click a task)</h3>
+        <div class="clip">
+          <div class="sheet grained" id="sheet">
+            <div class="eyebrow"><span class="t-eyebrow">Daily</span><span class="t-eyebrow">Sat 15 Nov</span></div>
+            <h4>Today’s assignment</h4>
+            <ol class="tasks" id="tasks">
+              <li class="done"><i class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg></i><span class="nm">Check the rumours</span><em></em></li>
+              <li class="done"><i class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg></i><span class="nm">Trace the link</span><em></em></li>
+              <li><i class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg></i><span class="nm">Log the shot</span><em></em></li>
+              <li><i class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg></i><span class="nm">Find the mole</span><em></em></li>
+              <li><i class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg></i><span class="nm">Line them up</span><em></em></li>
+              <li><i class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg></i><span class="nm">Read the season</span><em></em></li>
+            </ol>
+            <div class="go" id="go"><div class="streak"><b>4 days</b>Streak</div><button class="btn btn-go" id="gobtn">Continue</button></div>
+            <div class="stamp">Filed</div>
+          </div>
+        </div>
+        <p class="lede" style="margin-top:10px">States: fresh (Start) · in progress (Continue, the next task named in red) · filed (the stamp lands, the result replaces the button). Ticks draw in; nothing pops.</p>
+      </div>
+
+      <div>
+        <h3>Buttons</h3>
+        <div class="panel">
+          <div class="btnrow">
+            <button class="btn btn-go">Continue</button>
+            <button class="btn btn-two">Share</button>
+            <button class="btn btn-ghost">How to play</button>
+            <button class="btn" disabled>Locked</button>
+          </div>
+          <ul class="rules" style="margin-top:12px">
+            <li>One red button per screen. The second action is ink outline, the third is a text link.</li>
+            <li>48 px tall minimum; press sinks 3 px, hover lifts 2 px.</li>
+            <li>Focus is a navy ring, never colour alone.</li>
+          </ul>
+        </div>
+
+        <h3>Phone: a game as a paper slip</h3>
+        <div class="panel cork grained" style="padding:14px">
+          <div class="slip"><div class="art" style="background-image:url(img/round2/6-phone.png); background-size: 134px auto; background-position: -16px -51px"></div><div><b>Spoofed</b><small>Spot the fake move</small></div><span class="state done">Done</span></div>
+          <div class="slip"><div class="art" style="background-image:url(img/round2/6-phone.png); background-size: 134px auto; background-position: -16px -73px"></div><div><b>Chain</b><small>Steps, then the puzzle</small></div><span class="state next">Next</span></div>
+          <div class="slip"><div class="art" style="background-image:url(img/round2/6-phone.png); background-size: 134px auto; background-position: -12px -119px"></div><div><b>Pitch pin</b><small>Pin the goal</small></div><span class="state">Packs</span></div>
+        </div>
+
+        <h3>Chrome</h3>
+        <div class="panel cork grained" style="display:flex; justify-content:flex-end"><div class="chrome"><span>Log in</span><span>Menu</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6 ===== -->
+  <section>
+    <h2><span>6</span>Motion</h2>
+    <p class="lede">No teleports: everything arrives from where it lives and leaves the way it came. One easing everywhere. Click a row to play it.</p>
+    <div class="panel" id="motion">
+      <div class="mrow"><span>Fast · 160 ms</span><div class="track" data-t="160"><i class="dot"></i></div><small>press, hover</small></div>
+      <div class="mrow"><span>Mid · 280 ms</span><div class="track" data-t="280"><i class="dot"></i></div><small>tick, lift, tape</small></div>
+      <div class="mrow"><span>Slow · 480 ms</span><div class="track" data-t="480"><i class="dot"></i></div><small>stamp, sheet slide</small></div>
+      <div class="mrow"><span>Ease</span><div style="font:600 13px/1.3 ui-monospace,Consolas,monospace">cubic-bezier(.2, .8, .2, 1)</div><small>fast out, soft land</small></div>
+    </div>
+  </section>
+
+</main>
+<script>
+  const tasks = [...document.querySelectorAll('#tasks li')];
+  const sheet = document.getElementById('sheet');
+  const go = document.getElementById('go');
+  const goHTML = go.innerHTML;
+  function sync() {
+    const done = tasks.filter((t) => t.classList.contains('done')).length;
+    tasks.forEach((t) => t.classList.remove('next'));
+    const next = tasks.find((t) => !t.classList.contains('done'));
+    if (next) { next.classList.add('next'); next.querySelector('em').textContent = 'Next'; }
+    tasks.forEach((t) => { if (t !== next) t.querySelector('em').textContent = ''; });
+    sheet.classList.toggle('filed', done === tasks.length);
+    if (done === tasks.length) go.innerHTML = '<div class="streak"><b>5 days</b>Streak</div><div class="result">87.4</div>';
+    else { go.innerHTML = goHTML; go.querySelector('button').textContent = done ? 'Continue' : 'Start'; }
+  }
+  tasks.forEach((t) => t.addEventListener('click', () => { t.classList.toggle('done'); sync(); }));
+  sync();
+  document.querySelectorAll('#motion .track').forEach((tr) => {
+    const dot = tr.querySelector('.dot');
+    dot.style.transition = `left ${tr.dataset.t}ms cubic-bezier(.2,.8,.2,1)`;
+    tr.parentElement.addEventListener('click', () => tr.classList.toggle('run'));
+  });
+</script>
+</body>
+</html>
