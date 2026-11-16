@@ -44,11 +44,11 @@ describe('the run schedule', () => {
 });
 
 describe('scoring', () => {
-  it('club 80/55/30, season +20 exact or +10 one off', () => {
-    expect(runScore(1, 0)).toBe(100);
-    expect(runScore(2, 1)).toBe(65);
-    expect(runScore(3, 2)).toBe(30);
-    expect(runScore(null, 0)).toBe(20);
+  it('club 80/55/30, season +20 on the first go or +10 on the second', () => {
+    expect(runScore(1, 1)).toBe(100);
+    expect(runScore(2, 2)).toBe(65);
+    expect(runScore(3, null)).toBe(30);
+    expect(runScore(null, 1)).toBe(20);
     expect(runScore(null, null)).toBe(0);
   });
 });
@@ -71,14 +71,25 @@ describe('serving a run board', () => {
     expect(v2.club?.club).toBe(club);
     expect(v2.season).toBeNull();
     expect(v2.hints.top).toBeNull();
-    const v3 = (await runView(d.date, [wrong, club], d.from))!;
-    expect(v3.season?.start).toBe(Number(d.board.slice(0, 4)));
+    const start = Number(d.board.slice(0, 4));
+    const miss = start === d.from ? d.from + 1 : d.from;
+    const v3 = (await runView(d.date, [wrong, club], [miss]))!;
+    expect(v3.season).toBeNull();
+    expect(v3.picks).toEqual([{ picked: miss, dir: miss > start ? 'earlier' : 'later' }]);
+    expect(JSON.stringify(v3)).not.toContain(`"start":${start}`);
+    const v4 = (await runView(d.date, [wrong, club], [miss, start]))!;
+    expect(v4.season).toMatchObject({ start, at: 2, picked: start });
+    const v5 = (await runView(d.date, [wrong, club], [start, miss]))!;
+    expect(v5.picks).toHaveLength(1);
+    expect(v5.season?.at).toBe(1);
+    const v6 = (await runView(d.date, [wrong, club], [null, null]))!;
+    expect(v6.season).toMatchObject({ at: null, picked: null });
   });
   it('a timeout is a miss; three misses show the club; bad input is refused', async () => {
     const v = (await runView(d.date, ['', '', '']))!;
     expect(v.clubAt).toBeNull();
     expect(v.club?.club).toBe(club);
     expect(await runView(d.date, ['Real Madrid'])).toBeNull();
-    expect(await runView(d.date, [club], d.from - 1)).toBeNull();
+    expect(await runView(d.date, [club], [d.from - 1])).toBeNull();
   });
 });

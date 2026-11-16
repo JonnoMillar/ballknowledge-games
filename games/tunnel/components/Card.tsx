@@ -37,7 +37,7 @@ export function shown(cat: Category, v: number): { big: string; unit: string } {
  * on a phone, a sticker on a desk (tunnel.css). Once the line is locked it
  * carries the value and whether it stood in the right place.
  */
-export function Card({ player, idx, cat, value, shown: out = true, roll, right, selected, dragging, onPick, onDown, disabled }: {
+export function Card({ player, idx, cat, value, shown: out = true, roll, right, badge, selected, dragging, onPick, onDown, disabled }: {
   player: TunnelPlayer;
   /** The player's place in the day's five: how the line finds this card's element. */
   idx: number;
@@ -48,6 +48,8 @@ export function Card({ player, idx, cat, value, shown: out = true, roll, right, 
   /** Count the number up as it lands. */
   roll?: boolean;
   right: boolean | null;
+  /** Show `right` as a tick or a cross in the corner too, not only the ring (shape, never hue alone). */
+  badge?: boolean;
   selected?: boolean;
   dragging?: boolean;
   onPick?: () => void;
@@ -62,6 +64,7 @@ export function Card({ player, idx, cat, value, shown: out = true, roll, right, 
         <span className="tn-card__photo" style={{ background: player.ground }}>
           <Photo image={player.image} />
         </span>
+        {badge && right !== null ? <span className={`tn-card__badge${right ? ' is-right' : ''}`} aria-label={right ? 'Right spot' : 'Wrong spot'}>{right ? '✓' : '✕'}</span> : null}
         <span className="tn-card__name display">{player.name}</span>
         {v ? (
           <span className="tn-card__value" style={out ? undefined : { visibility: 'hidden' }} title={cat === 'followers' ? value!.toLocaleString('en-GB') : undefined}>
