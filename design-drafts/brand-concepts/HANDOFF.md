@@ -67,6 +67,23 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   (binoculars, navy pennant, stopwatch, enamel mug, plain ball). Empty plate
   `e909946d-0030-466b-8c79-e3cd7a367f8e` (bare board, cooler sky, navy and
   white pennants); the cork is still very orange.
+- **Feedback on round 3 (Jonno, 2026-11-16):** the generated football in the
+  style reference looks bad (wrong panel pattern): keep balls out of generated
+  art or draw them as vector. The clipboard header was cramped by the pitch
+  lines: the streak moved into the eyebrow and Continue is one full-width
+  button; the next clipboard rebake should leave the header zone plain navy.
+- **Logo options (2026-11-16):** `logo.html` (localhost:4321/logo.html), five
+  SVG marks at 128/64/32/16 px, app icon, on ink and with the wordmark:
+  A binoculars with a pentagon ball in each lens, B the same with full ball
+  spokes, C ball in one lens and a glint in the other, D analyst glasses with
+  a ball reflected in one lens, E glasses with a ball in each lens. Rules:
+  one stroke weight, two colours, basic shapes, the ball reduced to one
+  pentagon. Jonno's worry: a complex concept will not shrink; judge at 32 and
+  16 px. Not decided; BK on the pass in `style.html` is a placeholder.
+- **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
+  the clipboard with a plain header (one variant, low, ask first); fold in the
+  layout and transition sessions' notes when they finish; then type-in-scene
+  and a phone check of `style.html`.
 - **Split across sessions (2026-11-15):** this session owns the style sheet
   and this file. Grey-box hub layout (`layout.html`, `layout.md`) and the
   no-blink zoom into a game (`transition.html`, `transition.md`) run in their

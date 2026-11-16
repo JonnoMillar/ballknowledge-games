@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BK Scout logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --muted: #5E574D; --rule: #E2D6BD; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 'Libre Franklin', system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { font: 900 34px/1 'Big Shoulders', sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .lede { color: var(--muted); max-width: 76ch; margin: 0 0 18px; }
+  .rules { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 18px; margin-bottom: 18px; }
+  .rules ul { margin: 6px 0 0; padding-left: 18px; }
+  .opt { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: center; }
+  @media (max-width: 760px) { .opt { grid-template-columns: 1fr; } }
+  .opt h2 { font: 900 22px/1 'Big Shoulders', sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .opt p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .sizes { display: flex; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .sizes figure { margin: 0; text-align: center; font: 700 11px/1 'Libre Franklin'; color: var(--muted); }
+  .sizes figcaption { margin-top: 6px; }
+  svg.icon { display: block; color: var(--ink); }
+  .ink { background: var(--ink); border-radius: 10px; padding: 8px; }
+  .ink svg.icon { color: var(--paper); --fill: var(--ink); }
+  .app { background: var(--ink); border-radius: 22%; padding: 12%; display: grid; place-items: center; }
+  .app svg.icon { color: var(--paper); --fill: var(--ink); }
+  .lock { display: flex; align-items: center; gap: 10px; }
+  .lock b { color: var(--ink); font: 900 34px/.85 'Big Shoulders', sans-serif; text-transform: uppercase; }
+  /* one stroke weight, two colours: ink lines, paper fill */
+  .s { fill: var(--fill, var(--paper)); stroke: currentColor; stroke-width: 4.5; stroke-linejoin: round; stroke-linecap: round; }
+  .l { fill: none; stroke: currentColor; stroke-width: 4.5; stroke-linecap: round; }
+  .f { fill: currentColor; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Ball glyph: one filled pentagon. Spoke version adds five lines in the same stroke. -->
+    <g id="pent"><polygon class="f" points="0,-5 4.76,-1.55 2.94,4.05 -2.94,4.05 -4.76,-1.55"/></g>
+    <g id="pent-spokes"><use href="#pent"/><path class="l" style="stroke-width:3" d="M0-5V-10.5M4.76-1.55L9.99-3.25M2.94 4.05L6.17 8.5M-2.94 4.05L-6.17 8.5M-4.76-1.55L-9.99-3.25"/></g>
+
+    <symbol id="binoc-both" viewBox="0 0 64 64">
+      <rect class="s" x="12" y="11" width="14" height="15" rx="4"/><rect class="s" x="38" y="11" width="14" height="15" rx="4"/>
+      <rect class="s" x="25" y="20" width="14" height="12" rx="3"/>
+      <circle class="s" cx="19" cy="40" r="12.5"/><circle class="s" cx="45" cy="40" r="12.5"/>
+      <use href="#pent" transform="translate(19 40)"/><use href="#pent" transform="translate(45 40)"/>
+    </symbol>
+
+    <symbol id="binoc-spokes" viewBox="0 0 64 64">
+      <rect class="s" x="12" y="11" width="14" height="15" rx="4"/><rect class="s" x="38" y="11" width="14" height="15" rx="4"/>
+      <rect class="s" x="25" y="20" width="14" height="12" rx="3"/>
+      <circle class="s" cx="19" cy="40" r="12.5"/><circle class="s" cx="45" cy="40" r="12.5"/>
+      <use href="#pent-spokes" transform="translate(19 40)"/><use href="#pent-spokes" transform="translate(45 40)"/>
+    </symbol>
+
+    <symbol id="binoc-one" viewBox="0 0 64 64">
+      <rect class="s" x="12" y="11" width="14" height="15" rx="4"/><rect class="s" x="38" y="11" width="14" height="15" rx="4"/>
+      <rect class="s" x="25" y="20" width="14" height="12" rx="3"/>
+      <circle class="s" cx="19" cy="40" r="12.5"/><circle class="s" cx="45" cy="40" r="12.5"/>
+      <use href="#pent-spokes" transform="translate(19 40)"/>
+      <path class="l" d="M39 36.5a7.5 7.5 0 0 1 5.5-3.8"/>
+    </symbol>
+
+    <symbol id="glasses-reflect" viewBox="0 0 64 64">
+      <path class="l" d="M5 29L2 26M59 29l3-3"/>
+      <rect class="s" x="5" y="22" width="23" height="19" rx="7"/><rect class="s" x="36" y="22" width="23" height="19" rx="7"/>
+      <path class="l" d="M28 29.5q4-4 8 0"/>
+      <use href="#pent" transform="translate(13.5 29.5) scale(.9)"/>
+      <path class="l" d="M46 36.5l6-8"/>
+    </symbol>
+
+    <symbol id="glasses-both" viewBox="0 0 64 64">
+      <path class="l" d="M5 29L2 26M59 29l3-3"/>
+      <rect class="s" x="5" y="22" width="23" height="19" rx="7"/><rect class="s" x="36" y="22" width="23" height="19" rx="7"/>
+      <path class="l" d="M28 29.5q4-4 8 0"/>
+      <use href="#pent" transform="translate(16.5 31.5)"/><use href="#pent" transform="translate(47.5 31.5)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main>
+  <h1>BK Scout logo: options</h1>
+  <p class="lede">Five marks, each shown at 128, 64, 32 and 16 px, as an app icon, and next to the wordmark. Drawn in SVG, not generated, so they stay crisp at any size. Judge them at 32 and 16 first: a mark that survives there survives everywhere.</p>
+
+  <div class="rules"><b>How complexity is kept down</b>
+    <ul>
+      <li>One stroke weight everywhere (4.5 on a 64 grid, about 7% of the width), round joins.</li>
+      <li>Two colours only: ink lines, paper fill. Reversed on ink for the app icon.</li>
+      <li>Basic shapes only: circles, rounded rectangles, one curve. No shading, no texture.</li>
+      <li>The ball is one filled pentagon, the part of a ball everyone recognises; spokes are an option, and they are the first thing to go at small sizes.</li>
+    </ul>
+  </div>
+
+  <div id="opts"></div>
+</main>
+
+<script>
+  const OPTS = [
+    ['binoc-both', 'A · Binoculars, a ball in each lens', 'Symmetrical. Reads as binoculars at every size; at 16 px the pentagons become two dots, still balanced.'],
+    ['binoc-spokes', 'B · Binoculars, full ball in each lens', 'More recognisably a football up close, but the spokes blur into the lens at 32 px and below.'],
+    ['binoc-one', 'C · Binoculars, ball in one lens, glint in the other', 'Deliberately unsymmetrical: one lens has spotted something. More story, slightly less tidy at small sizes.'],
+    ['glasses-reflect', 'D · Analyst glasses, a ball reflected in one lens', 'Rectangular frames for the analyst look; the ball sits high in the left lens like a reflection, a glint in the right.'],
+    ['glasses-both', 'E · Analyst glasses, a ball in each lens', 'Symmetrical, a little playful (ball eyes). The simplest shape of all five.'],
+  ];
+  const svg = (id, px) => `<svg class="icon" width="${px}" height="${px}" viewBox="0 0 64 64"><use href="#${id}"/></svg>`;
+  document.getElementById('opts').innerHTML = OPTS.map(([id, name, note]) => `
+    <section class="opt">
+      <div><h2>${name}</h2><p>${note}</p></div>
+      <div class="sizes">
+        <figure>${svg(id, 128)}<figcaption>128</figcaption></figure>
+        <figure>${svg(id, 64)}<figcaption>64</figcaption></figure>
+        <figure>${svg(id, 32)}<figcaption>32</figcaption></figure>
+        <figure>${svg(id, 16)}<figcaption>16</figcaption></figure>
+        <figure><div class="app" style="width:72px;height:72px">${svg(id, 52)}</div><figcaption>App icon</figcaption></figure>
+        <figure><div class="ink">${svg(id, 32)}</div><figcaption>On ink</figcaption></figure>
+        <figure><div class="lock">${svg(id, 44)}<b>BK Scout</b></div><figcaption>Lockup</figcaption></figure>
+      </div>
+    </section>`).join('');
+</script>
+</body>
+</html>

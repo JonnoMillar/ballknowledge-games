@@ -194,16 +194,16 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 .clipart > img { display: block; width: 100%; height: auto; filter: drop-shadow(4px 8px 10px rgba(40,20,5,.28)); }
 .clipart .head { position: absolute; left: 20.8%; top: 24.4%; width: 58.4%; height: 20.4%; padding: 1.6cqw 2cqw; box-sizing: border-box; display: flex; flex-direction: column; color: var(--paper); text-shadow: 0 0 1cqw #0f2140, 0 0 2cqw #0f2140; }
 .clipart .eyebrow { display: flex; justify-content: space-between; font: 800 2.5cqw/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: #C9D3E6; }
-.clipart h4 { margin: 1.6cqw 0 1.6cqw; font: 900 6.2cqw/1 var(--display); color: var(--paper); white-space: nowrap; }
+.clipart h4 { margin: 2cqw 0 2cqw; font: 900 6.4cqw/1 var(--display); color: var(--paper); white-space: nowrap; }
 .clipart .pips { gap: 1cqw; margin: 0; }
 .clipart .pips i { height: 1.4cqw; background: rgba(251,246,234,.2); box-shadow: none; }
 .clipart .pips i.on { background: var(--sun); }
-.clipart .go { margin-top: auto; min-height: 0; }
+.clipart .go { margin-top: auto; min-height: 0; justify-content: center; }
 .clipart .streak { color: #C9D3E6; font-size: 2.4cqw; }
 .clipart .streak b { color: var(--paper); font-size: 5cqw; }
-.clipart .btn { font-size: 3.8cqw; text-shadow: none; min-height: 0; padding: .5em 1.1em .45em; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--red-deep); }
+.clipart .btn { width: 100%; font-size: 4.2cqw; text-shadow: none; min-height: 0; padding: .5em 1.1em .45em; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--red-deep); }
 .clipart .btn:hover { box-shadow: 0 0 0 .5cqw var(--paper), 0 1.8cqw 0 .5cqw var(--red-deep); }
-.clipart .result { color: var(--paper); font-size: 9cqw; padding: 0 3cqw; }
+.clipart .result { color: var(--paper); font-size: 8cqw; padding: 0 3cqw; display: flex; align-items: baseline; gap: 2cqw; }
 .clipart .result small { color: #C9D3E6; font-size: 2.3cqw; }
 .clipart .result svg path { stroke: var(--paper); }
 .clipart .tasks li { position: absolute; left: 19.2%; width: 61.6%; height: 4.8%; margin: 0; padding: 0 2.4cqw; border: 0; border-radius: .6cqw; font-size: 3.7cqw; gap: 2.4cqw; }
@@ -401,10 +401,10 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
         <div class="clipart" id="sheet">
           <img src="img/round3/clipboard.png" alt="Tactics clipboard with a navy cutting-mat sheet">
           <div class="head">
-            <div class="eyebrow"><span>Daily</span><span>Sun 16 Nov</span></div>
+            <div class="eyebrow"><span>Daily · 4-day streak</span><span>Sun 16 Nov</span></div>
             <h4>Today’s assignment</h4>
             <div class="pips" id="pips"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="go" id="go"><div class="streak"><b>4 days</b>Streak</div><button class="btn btn-go" id="gobtn">Continue</button></div>
+            <div class="go" id="go"><button class="btn btn-go" id="gobtn">Continue</button></div>
           </div>
           <ol class="tasks" id="tasks">
               <li style="top:47.7%" class="done"><i class="box"><svg viewBox="0 0 22 22"><path class="biro" pathLength="1" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg></i><span class="nm">Check the rumours<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" pathLength="1" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg></span><em></em></li>
@@ -474,7 +474,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
     const next = tasks.find((t) => !t.classList.contains('done'));
     if (next) { next.classList.add('next'); next.querySelector('em').textContent = 'Next'; }
     tasks.forEach((t) => { if (t !== next) t.querySelector('em').textContent = ''; });
-    if (done === tasks.length) go.innerHTML = '<div class="streak"><b>5 days</b>Streak</div><div class="result">87.4<small>6 of 6</small>' + RING + '</div>';
+    if (done === tasks.length) go.innerHTML = '<div class="result">87.4<small>6 of 6</small>' + RING + '</div>';
     else { go.innerHTML = goHTML; go.querySelector('button').textContent = done ? 'Continue' : 'Start'; }
   }
   tasks.forEach((t) => t.addEventListener('click', () => {
