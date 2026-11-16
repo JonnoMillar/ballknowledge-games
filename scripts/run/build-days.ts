@@ -60,9 +60,12 @@ if (ahead(moleDays) < MIN_AHEAD) {
 if (print) {
   const byKey = new Map(sides.map((s) => [s.key, s]));
   for (const d of read<RunMoleDay>(MOLE_RUN).filter((x) => x.date >= today)) {
-    const s = byKey.get(d.side)!;
-    const name = Object.values(s.help).flat().find((p) => p!.id === d.fake)?.name;
-    console.log(`${d.date}  ${s.team} (${s.comp}, ${s.date.slice(0, 4)})  ${name} for ${s.lines[d.at[0]]![d.at[1]]!.name}`);
+    console.log(`${d.date}  ${d.moles.map((m) => {
+      const s = byKey.get(m.side)!;
+      const name = Object.values(s.help).flat().find((p) => p!.id === m.fake)?.name;
+      const slot = s.lines[m.at[0]]![m.at[1]]!;
+      return `${s.team} (${s.comp}, ${s.date.slice(0, 4)}) ${name} for ${slot.name} [${slot.pos}]`;
+    }).join(' · ')}`);
   }
 }
 

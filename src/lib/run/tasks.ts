@@ -22,7 +22,7 @@ export const RUN_TASKS: readonly RunTaskDef[] = [
   { id: 'spoofed', name: 'Check the rumours', rule: 'One move in each career never happened. Find it.', items: 2, clockMs: 30_000 },
   { id: 'step', name: 'Trace the link', rule: 'Name a player who fits the gap.', items: 2, clockMs: 45_000 },
   { id: 'pin', name: 'Log the shot', rule: 'Pin where each goal was struck from.', items: 3, clockMs: 20_000 },
-  { id: 'mole', name: 'Find the mole', rule: "One name in this XI didn't start. Find it.", items: 1, clockMs: 40_000 },
+  { id: 'mole', name: 'Find the mole', rule: "One name in each XI didn't start. Find it.", items: 2, clockMs: 40_000 },
   { id: 'order', name: 'Line them up', rule: 'Put them in order.', items: 2, clockMs: 30_000 },
   { id: 'season', name: 'Read the season', rule: 'Name the club. Then the season.', items: 1, clockMs: 30_000 },
 ];

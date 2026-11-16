@@ -157,3 +157,4 @@ button.run-list__row { cursor: pointer; }
 .run-season__ask b { white-space: nowrap; }
 .run-order__score { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .run-order__verdict { font-weight: 700; color: var(--ink); }
+.run-mole__count { margin: 0 0 2px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }

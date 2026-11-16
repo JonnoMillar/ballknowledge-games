@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { addDays, composeDay, extend, matchName, molesFor, moleScore, problems, RUN_MOLE_START, type RunMoleDay } from '../lib/run';
+import { addDays, composeDay, extend, matchName, molesFor, moleScore, playsThere, problems, rolesOf, RUN_MOLE_START, type RunMole, type RunMoleDay } from '../lib/run';
+import { rolesOfText } from '../lib/roles';
 import { runMole } from '../server';
 import type { Side } from '../lib/types';
 
@@ -25,16 +26,34 @@ describe('the mole schedule', () => {
 
   it('refuses a day that breaks a rule', () => {
     const d = composeDay(sides, fame, RUN_MOLE_START, []);
-    expect(problems(sides, fame, { ...d, at: [0, 0] }, [])).not.toEqual([]);
-    const side = sides.find((s) => s.key === d.side)!;
-    expect(problems(sides, fame, { ...d, fake: side.lines[1]![0]!.id! }, [])).not.toEqual([]);
+    const [m, m2] = d.moles as [RunMole, RunMole];
+    expect(problems(sides, fame, d, [])).toEqual([]);
+    expect(problems(sides, fame, { ...d, moles: [{ ...m, at: [0, 0] }, m2] }, [])).not.toEqual([]);
+    const side = sides.find((s) => s.key === m.side)!;
+    expect(problems(sides, fame, { ...d, moles: [{ ...m, fake: side.lines[1]![0]!.id! }, m2] }, [])).not.toEqual([]);
     expect(problems(sides, fame, d, [{ ...d, date: addDays(d.date, -1) }])).not.toEqual([]);
+    expect(problems(sides, fame, { ...d, moles: [m, m] }, [])).not.toEqual([]);
+    expect(problems(sides, fame, { ...d, moles: [m] }, [])).not.toEqual([]);
+  });
+
+  it('plants a mole only where he plays: never a playmaker in a holding slot', () => {
+    const roles = rolesOf(sides);
+    expect(playsThere(roles, 'Q368441', 'DM')).toBe(false); // James Rodríguez
+    expect(playsThere(roles, 'Q368441', 'AM')).toBe(true);
+    expect(playsThere(roles, 'Q616664', 'DM')).toBe(true); // Casemiro
+    expect(rolesOfText('Attacking midfielder, winger')).toEqual(['AM', 'W']);
+    expect(rolesOfText('Centre-back / right-back')).toEqual(['CB', 'FB']);
+    expect(rolesOfText('Defensive midfielder')).toEqual(['DM']);
+    for (const d of days) for (const m of d.moles) {
+      const side = sides.find((s) => s.key === m.side)!;
+      expect(playsThere(roles, m.fake, side.lines[m.at[0]]![m.at[1]]!.pos)).toBe(true);
+    }
   });
 
   it('never plants a mole more famous than the XI\'s upper quartile', () => {
     const messi = sides.find((s) => s.lines.flat().some((p) => p.name === 'Lionel Messi') && s.date >= '2022')!;
     for (const [l, line] of messi.lines.entries()) line.forEach((_, k) => {
-      for (const m of molesFor(messi, [l, k], fame)) expect(fame.get(m.id)!).toBeLessThan(fame.get('Q615')!);
+      for (const m of molesFor(messi, [l, k], fame, sides)) expect(fame.get(m.id)!).toBeLessThan(fame.get('Q615')!);
     });
   });
 
@@ -46,26 +65,32 @@ describe('the mole schedule', () => {
 });
 
 describe('serving a mole day', () => {
-  const d = days[0]!;
+  const d = { date: days[0]!.date, ...days[0]!.moles[0]! };
   const now = new Date(`${d.date}T12:00:00Z`);
   const wrong: [number, number] = d.at[0] === 1 ? [2, 0] : [1, 0];
   it('shows the mole in place, names only, and never says which until it is over', () => {
-    const v = runMole(d.date, [], false, now)!;
+    const v = runMole(d.date, 0, [], false, now)!;
     const fake = Object.values(sides.find((s) => s.key === d.side)!.help).flat().find((p) => p!.id === d.fake)!.name;
     expect(v.lines[d.at[0]]![d.at[1]]).toBe(fake);
     expect(v.reveal).toBeNull();
     expect(JSON.stringify(v)).not.toMatch(/"Q\d+"|"id"/);
-    expect(runMole(d.date, [wrong], false, now)!.reveal).toBeNull();
+    expect(runMole(d.date, 0, [wrong], false, now)!.reveal).toBeNull();
   });
   it('reveals on a find, after two taps, or when the clock runs out', () => {
-    expect(runMole(d.date, [d.at], false, now)!.taps).toEqual([{ at: d.at, right: true }]);
-    expect(runMole(d.date, [d.at], false, now)!.reveal?.fake).toBeTruthy();
-    expect(runMole(d.date, [wrong, d.at], false, now)!.reveal).not.toBeNull();
-    expect(runMole(d.date, [], true, now)!.reveal).not.toBeNull();
+    expect(runMole(d.date, 0, [d.at], false, now)!.taps).toEqual([{ at: d.at, right: true }]);
+    expect(runMole(d.date, 0, [d.at], false, now)!.reveal?.fake).toBeTruthy();
+    expect(runMole(d.date, 0, [wrong, d.at], false, now)!.reveal).not.toBeNull();
+    expect(runMole(d.date, 0, [], true, now)!.reveal).not.toBeNull();
+  });
+  it('serves the second XI, and no third', () => {
+    const v = runMole(d.date, 1, [], false, now)!;
+    expect(v).toMatchObject({ n: 1, of: 2 });
+    expect(v.team === runMole(d.date, 0, [], false, now)!.team && v.played === runMole(d.date, 0, [], false, now)!.played).toBe(false);
+    expect(runMole(d.date, 2, [], false, now)).toBeNull();
   });
   it('refuses bad taps and days ahead', () => {
-    expect(runMole(d.date, [wrong, wrong], false, now)).toBeNull();
-    expect(runMole(d.date, [[9, 9]], false, now)).toBeNull();
-    expect(runMole(addDays(d.date, 5), [], false, now)).toBeNull();
+    expect(runMole(d.date, 0, [wrong, wrong], false, now)).toBeNull();
+    expect(runMole(d.date, 0, [[9, 9]], false, now)).toBeNull();
+    expect(runMole(addDays(d.date, 5), 0, [], false, now)).toBeNull();
   });
 });
