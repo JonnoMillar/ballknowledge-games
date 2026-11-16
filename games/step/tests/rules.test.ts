@@ -174,15 +174,18 @@ describe('the absolute bar', () => {
 });
 
 describe('runGrade', () => {
-  it('is the average rounded down: an Elite run is four Elites', () => {
+  it('is the average rounded to the nearest, halves up', () => {
     expect(runGrade(['elite', 'elite', 'elite', 'elite'])).toBe('elite');
-    expect(runGrade(['elite', 'elite', 'elite', 'sharp'])).toBe('sharp');
-    expect(runGrade(['basic', 'decent', 'solid', 'sharp'])).toBe('decent'); // 10 / 4
+    expect(runGrade(['elite', 'elite', 'sharp', 'sharp'])).toBe('elite'); // 18 / 4 = 4.5
+    expect(runGrade(['sharp', 'elite', 'solid', 'solid'])).toBe('sharp'); // 15 / 4 = 3.75: Jonno's run
+    expect(runGrade(['elite', 'sharp', 'sharp', 'solid'])).toBe('sharp'); // 16 / 4
+    expect(runGrade(['basic', 'decent', 'solid', 'sharp'])).toBe('solid'); // 10 / 4 = 2.5
   });
 
   it('a miss counts nothing, but anything that held is at least Basic', () => {
     expect(runGrade(['sharp', null, null, null])).toBe('basic');
-    expect(runGrade(['elite', 'elite', null, null])).toBe('decent'); // 10 / 4
+    expect(runGrade(['elite', 'elite', null, null])).toBe('solid'); // 10 / 4
+    expect(runGrade(['basic', null, null, null])).toBe('basic');
   });
 
   it('is nothing when nothing held', () => {
@@ -192,7 +195,7 @@ describe('runGrade', () => {
 
 describe('shareLine', () => {
   it('a glyph per step and the run, never a name', () => {
-    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Decent\n🟦🟥🟫🏆');
+    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Solid\n🟦🟥🟫🏆');
     expect(shareLine(3, [null, null, null, null])).toBe('Step #3 · Ball knowledge: none\n🟥🟥🟥🟥');
   });
 });

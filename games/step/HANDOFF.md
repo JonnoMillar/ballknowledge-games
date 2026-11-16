@@ -9,7 +9,7 @@ the ruler work was branch `claude/steps-grading-555384`. Site-wide notes: root
 gave a first round of feedback (below, applied the same day). He then
 reverted the British grade words (keep Basic … Elite) and asked for the merge
 to `main`, same day. He took every recommendation in the spec: 4 steps, five grades site-wide, one
-shot, run = average rounded down, automatic daily.
+shot, run = average rounded to the nearest (was rounded down until 2026-11-16), automatic daily.
 
 ## Card ground: grade material (2026-10-28, live)
 

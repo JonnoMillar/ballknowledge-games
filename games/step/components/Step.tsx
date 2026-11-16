@@ -422,9 +422,11 @@ export function Summary({ day, run, fresh = false }: { day: StepDay; run: Run; f
   }
   return (
     <section className="step-end">
+      {/* The result on its own stage: a lit panel over the page's pattern, so the eye goes to the plaque and the cards. */}
+      <div className="step-end__stage" data-grade={word ?? undefined}>
       <div className="step-end__head">
         <span className="step-verdict__kicker">Ball knowledge</span>
-        {word ? <GradeChip grade={word} /> : <span className="step-end__none display">None</span>}
+        {word ? <GradeChip grade={word} shine /> : <span className="step-end__none display">None</span>}
       </div>
       <ol className="step-end__cards" ref={cards}>
         {run.map((v, i) => (
@@ -440,6 +442,7 @@ export function Summary({ day, run, fresh = false }: { day: StepDay; run: Run; f
           </li>
         ))}
       </ol>
+      </div>
       <div className="step-end__actions">
         <button type="button" className="lobby-play" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
         <a className="lobby-quiet" href="/collection" ref={collect}>View collection</a>

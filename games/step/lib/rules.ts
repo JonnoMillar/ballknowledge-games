@@ -237,14 +237,15 @@ export function judge(pick: Player, given: Player, club: string, members: readon
 }
 
 /**
- * The run's grade: Basic 1 … Elite 5, a miss 0, averaged and rounded down,
- * so an Elite run is every pick Elite. Anything that held makes it at least
- * Basic; nothing held, no grade.
+ * The run's grade: Basic 1 … Elite 5, a miss 0, averaged and rounded to the
+ * nearest, halves up (Jonno, 2026-11-16: rounding down made Sharp, Elite,
+ * Solid, Solid a Solid, "extremely harsh"; it is Sharp now). Anything that
+ * held makes it at least Basic; nothing held, no grade.
  */
 export function runGrade(grades: readonly (Grade | null)[]): Grade | null {
   if (!grades.some((g) => g !== null)) return null;
   const total = grades.reduce((n, g) => n + (g ? gradeRank(g) + 1 : 0), 0);
-  const level = Math.max(1, Math.floor(total / grades.length));
+  const level = Math.min(GRADES.length, Math.max(1, Math.round(total / grades.length)));
   return GRADES[level - 1]!;
 }
 
