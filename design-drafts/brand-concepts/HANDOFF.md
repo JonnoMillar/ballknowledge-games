@@ -100,11 +100,14 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   BK at 32 and 16 px. Favicon is the B alone. Awaiting Jonno's verdict.
 - **Logo K verdict (Jonno, 2026-11-16): "horrendous"**, spacing all over,
   barely binoculars; he wants Higgsfield, with the BK Scout wordmark as
-  reference (media `9b52a5ae-e008-44f9-b429-0975a8aacb49`). GPT Image 2.6
-  medium attempt `99d96f43…` (0.5 credits) came back as the same dark blur
-  as the two before: three failures in a row for flat logo prompts, about
-  1.0 credit lost. Ideogram Vector (SVG out, takes references) costs 5
-  credits a generation; awaiting Jonno's OK.
+  reference (media `9b52a5ae-e008-44f9-b429-0975a8aacb49`). Correction: the
+  "dark blur failures" were not failures. Those renders are transparent
+  PNGs and the viewer showed the transparency as black; flattened, all
+  three are fine (`*-flat.png`). Pass `background: opaque`. Latest:
+  `b9fd9323-dc04-46eb-bfad-a41302de3610` (medium, 0.5), barrels tapering
+  from small eyepieces on the left to the two lenses that form the B's
+  bowls (Jonno's idea): reads as binoculars and as BK. Top of `logo.html`;
+  next is a clean vector redraw if Jonno picks it.
 - **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
   the clipboard with a plain header (one variant, low, ask first); fold in the
   layout and transition sessions' notes when they finish; then type-in-scene
