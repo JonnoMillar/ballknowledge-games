@@ -107,7 +107,7 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   `b9fd9323-dc04-46eb-bfad-a41302de3610` (medium, 0.5), barrels tapering
   from small eyepieces on the left to the two lenses that form the B's
   bowls (Jonno's idea): reads as binoculars and as BK. Top of `logo.html`;
-  next is a clean vector redraw if Jonno picks it.
+  next is a clean vector redraw if Jonno picks it. Revision `2b04f973-1029-4dfd-9d53-0c02e7c7466d` (medium, 0.5): stubby barrels flush on a straight stem, reads as a B first, binoculars only as a hint; B nearly touches the K.
 - **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
   the clipboard with a plain header (one variant, low, ask first); fold in the
   layout and transition sessions' notes when they finish; then type-in-scene
