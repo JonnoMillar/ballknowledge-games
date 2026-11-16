@@ -49,6 +49,14 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   the run's clipboard (fresh, in progress, filed stamp), buttons, phone paper
   slips, chrome, motion tokens. Art finding: concept 6 is 8 of 10 orange
   tones, so rebakes should add cool accents in the scene.
+- **Style sheet feedback (Jonno, 2026-11-16):** the CSS clipboard looks cheap
+  and tacky: generate the clipboard (board, clip, blank sheet) and keep only
+  type, boxes and hand marks in CSS. The slanted "FILED" rubber stamp is a
+  dead giveaway of Claude-made design: never use it; finishing now writes the
+  result in and rings it in biro. Hover and tick needed more feedback: now a
+  row wash, the name leaning in, a ghost tick, a box press, biro tick, hand
+  strike and progress pips. Logo is open for discussion; BK on the pass is
+  not decided.
 - **Split across sessions (2026-11-15):** this session owns the style sheet
   and this file. Grey-box hub layout (`layout.html`, `layout.md`) and the
   no-blink zoom into a game (`transition.html`, `transition.md`) run in their
