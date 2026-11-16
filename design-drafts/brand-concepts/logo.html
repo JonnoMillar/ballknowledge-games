@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BK Scout logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --muted: #5E574D; --rule: #E2D6BD; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 'Libre Franklin', system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { font: 900 34px/1 'Big Shoulders', sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .lede { color: var(--muted); max-width: 76ch; margin: 0 0 18px; }
+  .rules { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 18px; margin-bottom: 18px; }
+  .rules ul { margin: 6px 0 0; padding-left: 18px; }
+  .opt { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: center; }
+  @media (max-width: 760px) { .opt { grid-template-columns: 1fr; } }
+  .opt h2 { font: 900 22px/1 'Big Shoulders', sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .opt p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .sizes { display: flex; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .sizes figure { margin: 0; text-align: center; font: 700 11px/1 'Libre Franklin'; color: var(--muted); }
+  .sizes figcaption { margin-top: 6px; }
+  svg.icon { display: block; color: var(--ink); }
+  .ink { background: var(--ink); border-radius: 10px; padding: 8px; }
+  .ink svg.icon { color: var(--paper); --fill: var(--ink); }
+  .app { background: var(--ink); border-radius: 22%; padding: 12%; display: grid; place-items: center; }
+  .app svg.icon { color: var(--paper); --fill: var(--ink); }
+  .lock { display: flex; align-items: center; gap: 10px; }
+  .lock b { color: var(--ink); font: 900 34px/.85 'Big Shoulders', sans-serif; text-transform: uppercase; }
+  /* one stroke weight, two colours: ink lines, paper fill */
+  .s { fill: var(--fill, var(--paper)); stroke: currentColor; stroke-width: 4.5; stroke-linejoin: round; stroke-linecap: round; }
+  .l { fill: none; stroke: currentColor; stroke-width: 4.5; stroke-linecap: round; }
+  .f { fill: currentColor; }
+  .k { fill: var(--fill, var(--paper)); stroke: currentColor; stroke-width: 6; stroke-linejoin: miter; }
+  .kb { fill: none; stroke: currentColor; stroke-width: 6; stroke-linecap: butt; }
+  .fk { fill: currentColor; }
+  .fp { fill: var(--fill, var(--paper)); }
+  .glyph { fill: currentColor; font-family: 'Big Shoulders', sans-serif; font-weight: 900; }
+  .glyph-p { fill: var(--fill, var(--paper)); }
+  .hg { fill: currentColor; stroke: var(--fill, var(--paper)); stroke-width: 2.4; }
+  .hl { fill: none; stroke: var(--fill, var(--paper)); stroke-width: 2.6; stroke-linecap: round; }
+  .feature { background: var(--paper); border: 2px solid var(--ink); border-radius: 10px; padding: 18px; margin-bottom: 18px; }
+  .feature h2 { font: 900 26px/1 'Big Shoulders', sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .feature .row { display: flex; align-items: end; gap: 26px; flex-wrap: wrap; margin-top: 14px; }
+  .feature figure { margin: 0; text-align: center; font: 700 11px/1 'Libre Franklin'; color: var(--muted); }
+  .feature figcaption { margin-top: 6px; }
+  .feature ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+  .compare { color: var(--ink); font: 900 128px/.8 'Big Shoulders', sans-serif; letter-spacing: .01em; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Round 2: squared, condensed, heavy, like Big Shoulders 900. No ball drawn. -->
+    <symbol id="sq-glasses" viewBox="0 0 64 64">
+      <rect class="k" x="5" y="21" width="22" height="20" rx="2.5" style="fill:currentColor"/>
+      <rect class="k" x="37" y="21" width="22" height="20" rx="2.5"/>
+      <path class="kb" d="M27 27h10M5 25H1M59 25h4"/>
+      <path class="kb" style="stroke-width:4.5" d="M44 36l8-10"/>
+    </symbol>
+    <symbol id="sq-binoc" viewBox="0 0 64 64">
+      <rect class="fk" x="11" y="10" width="15" height="10" rx="1.5"/><rect class="fk" x="38" y="10" width="15" height="10" rx="1.5"/>
+      <rect class="fk" x="28" y="22" width="8" height="14"/>
+      <rect class="fk" x="6" y="18" width="24" height="38" rx="3"/><rect class="fk" x="34" y="18" width="24" height="38" rx="3"/>
+      <circle class="fp" cx="18" cy="41" r="7.5"/><circle class="fp" cx="46" cy="41" r="7.5"/>
+      <path class="fk" d="M18 41V33.5A7.5 7.5 0 0 1 25.5 41Z"/>
+    </symbol>
+    <symbol id="sq-binoc-glint" viewBox="0 0 64 64">
+      <rect class="fk" x="11" y="10" width="15" height="10" rx="1.5"/><rect class="fk" x="38" y="10" width="15" height="10" rx="1.5"/>
+      <rect class="fk" x="28" y="22" width="8" height="14"/>
+      <rect class="fk" x="6" y="18" width="24" height="38" rx="3"/><rect class="fk" x="34" y="18" width="24" height="38" rx="3"/>
+      <circle class="fp" cx="18" cy="41" r="7.5"/><circle class="fp" cx="46" cy="41" r="7.5"/>
+      <rect class="fk" x="42" y="36" width="3.5" height="3.5"/>
+    </symbol>
+    <symbol id="sq-b" viewBox="0 0 64 64">
+      <text class="glyph" x="32" y="32" transform="rotate(-90 32 32)" text-anchor="middle" dominant-baseline="central" font-size="62">B</text>
+    </symbol>
+    <symbol id="sq-bk" viewBox="0 0 64 64">
+      <rect class="fk" x="2" y="12" width="60" height="40" rx="3"/>
+      <text class="glyph glyph-p" x="32" y="33" text-anchor="middle" dominant-baseline="central" font-size="46" letter-spacing="-1">BK</text>
+    </symbol>
+
+    <symbol id="bk-binoc" viewBox="0 0 118 100">
+      <rect class="fk" x="1" y="21" width="11" height="16" rx="1.5"/><rect class="fk" x="1" y="63" width="11" height="16" rx="1.5"/>
+      <path class="fk" d="M10 9.5Q10 8 11.5 8H42A18 18 0 0 1 60 26V32A18 18 0 0 1 42 50H10Z"/>
+      <path class="fk" d="M10 50H44A18 18 0 0 1 62 68V74A18 18 0 0 1 44 92H11.5Q10 92 10 90.5Z"/>
+      <rect class="hg" x="40" y="44.5" width="17" height="11" rx="1.5"/>
+      <circle class="fp" cx="39" cy="29" r="11"/><circle class="fp" cx="41" cy="71" r="11.5"/>
+      <rect class="fk" x="68" y="8" width="17" height="84" rx="1.5"/>
+      <polygon class="fk" points="82,42 98,8 116,8 91,58"/>
+      <polygon class="fk" points="89,46 116,92 98,92 82,66"/>
+    </symbol>
+    <symbol id="b-binoc" viewBox="0 0 64 100">
+      <rect class="fk" x="1" y="21" width="11" height="16" rx="1.5"/><rect class="fk" x="1" y="63" width="11" height="16" rx="1.5"/>
+      <path class="fk" d="M10 9.5Q10 8 11.5 8H42A18 18 0 0 1 60 26V32A18 18 0 0 1 42 50H10Z"/>
+      <path class="fk" d="M10 50H44A18 18 0 0 1 62 68V74A18 18 0 0 1 44 92H11.5Q10 92 10 90.5Z"/>
+      <rect class="hg" x="40" y="44.5" width="17" height="11" rx="1.5"/>
+      <circle class="fp" cx="39" cy="29" r="11"/><circle class="fp" cx="41" cy="71" r="11.5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main>
+  <h1>BK Scout logo: options</h1>
+  <p class="lede">Round 2, drawn to match the wordmark: squared, condensed, heavy strokes with flat ends, like Big Shoulders 900. No ball anywhere: the name already says Ball. Each at 128, 64, 32 and 16 px, as an app icon, on ink and with the wordmark. Judge at 32 and 16 first. The pentagon versions are gone.</p>
+
+  <section class="feature">
+    <h2>BK, the B as binoculars (Higgsfield)</h2>
+    <p class="lede" style="margin:0">Latest first. Generated with the BK Scout wordmark as reference; a direction to redraw as a clean vector, not final art.</p>
+    <div class="row">
+      <figure><img src="img/round3/bk-grid.png" alt="Grid of four BK binocular variants" style="width:460px;border-radius:8px;display:block"><figcaption>Grid (job b9682288): stroke-matched · lenses flattened into the stem · carved negative space · middle ground</figcaption></figure>
+      <figure><img src="img/round3/bk-binoc-3.png" alt="BK, stubby binocular B with a straight stem" style="width:360px;border-radius:8px;display:block"><figcaption>Shorter barrels, straight stem: more B (job 2b04f973)</figcaption></figure>
+      <figure><img src="img/round3/bk-binoc-2.png" alt="BK with the B as binoculars in perspective" style="width:280px;border-radius:8px;display:block"><figcaption>Barrels taper from eyepieces to lenses (job b9fd9323)</figcaption></figure>
+      <figure><img src="img/round3/bk-binoc-gen-flat.png" alt="BK with upright binoculars B" style="width:200px;border-radius:8px;display:block"><figcaption>First try (job 99d96f43)</figcaption></figure>
+      <figure><img src="img/round3/logo-grid-2-flat.png" alt="Font-matched grid" style="width:200px;border-radius:8px;display:block"><figcaption>Font-matched grid (job 0b23885e)</figcaption></figure>
+    </div>
+  </section>
+  <div class="rules"><b>How complexity is kept down</b>
+    <ul>
+      <li>One stroke weight everywhere (6 on a 64 grid, the stem weight of the wordmark), square corners and flat ends.</li>
+      <li>Two colours only: ink lines, paper fill. Reversed on ink for the app icon.</li>
+      <li>Basic shapes only: rectangles with tiny radii, circles only for lenses. No shading, no texture.</li>
+      <li>No ball: lenses carry the idea with a solid fill, a glint or a radar sweep (Gemini's point, and it holds).</li>
+    </ul>
+  </div>
+
+  <div id="opts"></div>
+</main>
+
+<script>
+  const OPTS = [
+    ['sq-glasses', 'F · Squared analyst glasses', 'From the bottom-left glasses you liked, cleaned up: square frames, a straight bridge, one lens solid, a single glint bar in the other.'],
+    ['sq-binoc', 'G · Squared binoculars, radar lens', 'Solid condensed barrels; the left lens carries a quarter radar sweep (scanning), the right is clear.'],
+    ['sq-binoc-glint', 'H · Squared binoculars, glint', 'Same body, a single square glint in one lens: the quietest version, strongest at 16 px.'],
+    ['sq-b', 'I · The B on its side', 'The wordmark\'s own B turned 90 degrees: its two bowls read as binocular lenses. Ties the mark to the type.'],
+    ['sq-bk', 'J · BK chip (current)', 'The BK block from the wordmark, as a baseline to beat.'],
+  ];
+  const svg = (id, px) => `<svg class="icon" width="${px}" height="${px}" viewBox="0 0 64 64"><use href="#${id}"/></svg>`;
+  document.getElementById('opts').innerHTML = OPTS.map(([id, name, note]) => `
+    <section class="opt">
+      <div><h2>${name}</h2><p>${note}</p></div>
+      <div class="sizes">
+        <figure>${svg(id, 128)}<figcaption>128</figcaption></figure>
+        <figure>${svg(id, 64)}<figcaption>64</figcaption></figure>
+        <figure>${svg(id, 32)}<figcaption>32</figcaption></figure>
+        <figure>${svg(id, 16)}<figcaption>16</figcaption></figure>
+        <figure><div class="app" style="width:72px;height:72px">${svg(id, 52)}</div><figcaption>App icon</figcaption></figure>
+        <figure><div class="ink">${svg(id, 32)}</div><figcaption>On ink</figcaption></figure>
+        <figure><div class="lock">${svg(id, 44)}<b>BK Scout</b></div><figcaption>Lockup</figcaption></figure>
+      </div>
+    </section>`).join('');
+</script>
+</body>
+</html>

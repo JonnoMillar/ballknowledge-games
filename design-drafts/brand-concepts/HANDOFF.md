@@ -41,6 +41,81 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   ballknowledgescout.com, bkscout.gg/.app/.io/.co.uk (bkscout.com taken).
   Live so far: page titles only ("Ball Knowledge Scout" on the hub,
   "Game · BK Scout" elsewhere). Rounds and reasons in `names.md`.
+- **Style sheet draft 1 (2026-11-15):** `style.html`
+  (localhost:4321/style.html). BK Scout wordmark and scout's-pass mark, layer
+  palette (ink, paper, navy, sun; red only for the one action, only on paper
+  or ink: red on cork is 1.3:1), Big Shoulders plus Libre Franklin, art rules
+  for every generation, CSS grain and down-right shadows, label tape states,
+  the run's clipboard (fresh, in progress, filed stamp), buttons, phone paper
+  slips, chrome, motion tokens. Art finding: concept 6 is 8 of 10 orange
+  tones, so rebakes should add cool accents in the scene.
+- **Style sheet feedback (Jonno, 2026-11-16):** the CSS clipboard looks cheap
+  and tacky: generate the clipboard (board, clip, blank sheet) and keep only
+  type, boxes and hand marks in CSS. The slanted "FILED" rubber stamp is a
+  dead giveaway of Claude-made design: never use it; finishing now writes the
+  result in and rings it in biro. Hover and tick needed more feedback: now a
+  row wash, the name leaning in, a ghost tick, a box press, biro tick, hand
+  strike and progress pips. Logo is open for discussion; BK on the pass is
+  not decided.
+- **Round 3 art (2026-11-16, 3 images at 0.25 = 0.75 credits; balance
+  581.5 before):** files in `img/round3/` (gitignored). Clipboard
+  `241fbd10-cf6c-46fe-bc1d-90f19e46bcb6`: walnut board, steel clip, a navy
+  cutting-mat sheet (Jonno's idea: crisp colours, clean matte), grid and ruler
+  ticks, half-pitch header, six cream bands that take the task rows. Now live
+  in `style.html`. Next rebake: keep the header zone plainer (pitch lines
+  fight the title). Style reference `b6b4987a-7811-4fc3-9a9d-7483645bd242`
+  (binoculars, navy pennant, stopwatch, enamel mug, plain ball). Empty plate
+  `e909946d-0030-466b-8c79-e3cd7a367f8e` (bare board, cooler sky, navy and
+  white pennants); the cork is still very orange.
+- **Feedback on round 3 (Jonno, 2026-11-16):** the generated football in the
+  style reference looks bad (wrong panel pattern): keep balls out of generated
+  art or draw them as vector. The clipboard header was cramped by the pitch
+  lines: the streak moved into the eyebrow and Continue is one full-width
+  button; the next clipboard rebake should leave the header zone plain navy.
+- **Logo options (2026-11-16):** `logo.html` (localhost:4321/logo.html), five
+  SVG marks at 128/64/32/16 px, app icon, on ink and with the wordmark:
+  A binoculars with a pentagon ball in each lens, B the same with full ball
+  spokes, C ball in one lens and a glint in the other, D analyst glasses with
+  a ball reflected in one lens, E glasses with a ball in each lens. Rules:
+  one stroke weight, two colours, basic shapes, the ball reduced to one
+  pentagon. Jonno's worry: a complex concept will not shrink; judge at 32 and
+  16 px. Not decided; BK on the pass in `style.html` is a placeholder.
+- **Generated logo grid (2026-11-16, 0.25 credits):** job
+  `776cab55-a2f9-455b-bd4b-af52919a9ab1`, `img/round3/logo-grid.png`, shown
+  on `logo.html`. Solid-body binoculars read better than the outlined SVG
+  ones; the reflected ball in the glasses is too small to survive 32 px.
+- **Logo round 2 (Jonno, 2026-11-16):** never a lone pentagon or hexagon as a
+  football (saved to memory); leave the ball out, the name carries it. Marks
+  must share the wordmark's style: squared, condensed, heavy, flat ends. He
+  liked the generated glasses shape, cleaner and less soft. Two generations
+  for a font-matched grid (`f1b84d17…`, `0b23885e…`, 0.5 credits) both came
+  back dark and blurred, unusable. `logo.html` now holds SVG round 2: F
+  squared glasses (one lens solid, glint bar), G binoculars with a radar
+  lens, H binoculars with a glint, I the wordmark's B on its side, J the BK
+  chip. The pentagon options and grid are off the page.
+- **Logo K, BK with the B as binoculars (2026-11-16):** top of `logo.html`.
+  Binoculars held upright: bowls are the barrels with round lens counters,
+  two tabs on the stem are the eyepieces, a bar set in the notch is the
+  hinge; K drawn to the same stem and cap height. Falls back to a plain bold
+  BK at 32 and 16 px. Favicon is the B alone. Awaiting Jonno's verdict.
+- **Logo K verdict (Jonno, 2026-11-16): "horrendous"**, spacing all over,
+  barely binoculars; he wants Higgsfield, with the BK Scout wordmark as
+  reference (media `9b52a5ae-e008-44f9-b429-0975a8aacb49`). Correction: the
+  "dark blur failures" were not failures. Those renders are transparent
+  PNGs and the viewer showed the transparency as black; flattened, all
+  three are fine (`*-flat.png`). Pass `background: opaque`. Latest:
+  `b9fd9323-dc04-46eb-bfad-a41302de3610` (medium, 0.5), barrels tapering
+  from small eyepieces on the left to the two lenses that form the B's
+  bowls (Jonno's idea): reads as binoculars and as BK. Top of `logo.html`;
+  next is a clean vector redraw if Jonno picks it. Revision `2b04f973-1029-4dfd-9d53-0c02e7c7466d` (medium, 0.5): stubby barrels flush on a straight stem, reads as a B first, binoculars only as a hint; B nearly touches the K. Grid `b9682288-644c-4f73-96a1-b34fe0b18eb6` (medium, 0.5): stroke-matched, lenses flattened into the stem (reads as a T, fails), carved negative space (clear B), middle ground (best balance so far).
+- **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
+  the clipboard with a plain header (one variant, low, ask first); fold in the
+  layout and transition sessions' notes when they finish; then type-in-scene
+  and a phone check of `style.html`.
+- **Split across sessions (2026-11-15):** this session owns the style sheet
+  and this file. Grey-box hub layout (`layout.html`, `layout.md`) and the
+  no-blink zoom into a game (`transition.html`, `transition.md`) run in their
+  own sessions and worktrees; fold one line for each here when they finish.
 - Order Jonno set: settle the design direction, then the hub name (it shapes
   game names and how each game is shown in the hub).
 - Risk to manage: keeping many generated pieces in one style needs a locked
