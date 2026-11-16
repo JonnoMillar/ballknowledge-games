@@ -57,6 +57,16 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   row wash, the name leaning in, a ghost tick, a box press, biro tick, hand
   strike and progress pips. Logo is open for discussion; BK on the pass is
   not decided.
+- **Round 3 art (2026-11-16, 3 images at 0.25 = 0.75 credits; balance
+  581.5 before):** files in `img/round3/` (gitignored). Clipboard
+  `241fbd10-cf6c-46fe-bc1d-90f19e46bcb6`: walnut board, steel clip, a navy
+  cutting-mat sheet (Jonno's idea: crisp colours, clean matte), grid and ruler
+  ticks, half-pitch header, six cream bands that take the task rows. Now live
+  in `style.html`. Next rebake: keep the header zone plainer (pitch lines
+  fight the title). Style reference `b6b4987a-7811-4fc3-9a9d-7483645bd242`
+  (binoculars, navy pennant, stopwatch, enamel mug, plain ball). Empty plate
+  `e909946d-0030-466b-8c79-e3cd7a367f8e` (bare board, cooler sky, navy and
+  white pennants); the cork is still very orange.
 - **Split across sessions (2026-11-15):** this session owns the style sheet
   and this file. Grey-box hub layout (`layout.html`, `layout.md`) and the
   no-blink zoom into a game (`transition.html`, `transition.md`) run in their
