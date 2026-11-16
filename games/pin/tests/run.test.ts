@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { addDays, composeDay, extend, problems, RUN_PIN_START, seasonStart, type RunPinDay } from '../lib/run';
+import { addDays, composeDay, extend, memorable, problems, RUN_CLUES, RUN_PIN_FAME_FROM, RUN_PIN_START, runLine, seasonStart, type RunPinDay } from '../lib/run';
 import { boardView, judge } from '../server';
 import type { Goals } from '../lib/types';
 import config from '../../../next.config';
@@ -30,6 +30,25 @@ describe('the run schedule', () => {
     const d = composeDay(goals, RUN_PIN_START, []);
     expect(problems(goals, { ...d, goals: [d.goals[0]!, d.goals[0]!, d.goals[1]!] }, [])).not.toEqual([]);
     expect(problems(goals, d, [{ date: addDays(RUN_PIN_START, -1), goals: [d.goals[0]!] }])).not.toEqual([]);
+  });
+
+  it('picks only memorable goals from the day the rule began, and keeps half a year going', () => {
+    const ok = memorable(goals, JSON.parse(readFileSync('data/pool.json', 'utf8')), JSON.parse(readFileSync('data/player-views.json', 'utf8')));
+    expect(ok.size).toBeGreaterThan(100);
+    expect([...ok].some((s) => goals[s]!.scorer === 'Jens Cajuste')).toBe(false);
+    days.forEach((d, i) => expect(problems(goals, d, days.slice(0, i), ok)).toEqual([]));
+    expect(days.some((d) => d.date >= RUN_PIN_FAME_FROM)).toBe(true);
+    const kept = days.filter((d) => d.date < RUN_PIN_FAME_FROM);
+    const a = extend(goals, kept, addDays(RUN_PIN_FAME_FROM, 181), ok);
+    a.forEach((d, i) => expect(problems(goals, d, a.slice(0, i), ok)).toEqual([]));
+  });
+
+  it('says when and why a goal mattered, never how or from where', () => {
+    expect(runLine('x', { kind: 'recent', line: 'A shot from a corner, in the 90th minute, to make it 1–1.' })).toBe('In the 90th minute, to make it 1–1.');
+    for (const [slug, g] of Object.entries(goals)) {
+      if (g.kind === 'classic') expect(RUN_CLUES[slug], slug).toBeTruthy();
+      expect(runLine(slug, g)).not.toMatch(/header|free kick|corner|volley|lob|curl|drive|strike|backheel|overhead|bicycle|scissor|solo|slalom|run from|half-volley|chip|dribble|cross|penalty/i);
+    }
   });
 
   it('starts seasons on 1 August', () => {

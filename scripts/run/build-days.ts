@@ -12,7 +12,7 @@
  * Reads only committed files, so a rerun writes the same days.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { addDays, extend as extendPin, MIN_AHEAD, problems as pinProblems, TOP_UP, type RunPinDay } from '../../games/pin/lib/run';
+import { addDays, extend as extendPin, memorable, MIN_AHEAD, problems as pinProblems, TOP_UP, type RunPinDay } from '../../games/pin/lib/run';
 import type { Goals } from '../../games/pin/lib/types';
 import { extend as extendMole, problems as moleProblems, type RunMoleDay } from '../../games/bluff/lib/run';
 import type { Side } from '../../games/bluff/lib/types';
@@ -34,10 +34,11 @@ const ahead = (days: { date: string }[]) => {
 export const PIN_RUN = 'games/pin/data/run.json';
 const goals = JSON.parse(readFileSync('games/pin/data/goals.json', 'utf8')) as Goals;
 const pinDays = read<RunPinDay>(PIN_RUN);
+const famousGoals = memorable(goals, JSON.parse(readFileSync('data/pool.json', 'utf8')) as { id: string; name: string; aliases?: string[] }[], JSON.parse(readFileSync('data/player-views.json', 'utf8')) as Record<string, number>);
 if (ahead(pinDays) < MIN_AHEAD) {
-  const all = extendPin(goals, pinDays, addDays(today, TOP_UP));
+  const all = extendPin(goals, pinDays, addDays(today, TOP_UP), famousGoals);
   const fresh = all.slice(pinDays.length);
-  const bad = fresh.flatMap((d, i) => pinProblems(goals, d, all.slice(0, pinDays.length + i)));
+  const bad = fresh.flatMap((d, i) => pinProblems(goals, d, all.slice(0, pinDays.length + i), famousGoals));
   if (bad.length) throw new Error(`run pin schedule broke its own rules:\n${bad.join('\n')}`);
   write(PIN_RUN, all);
   console.log(`Log the shot: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);
