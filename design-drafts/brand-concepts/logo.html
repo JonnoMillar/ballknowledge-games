@@ -34,81 +34,71 @@
   .s { fill: var(--fill, var(--paper)); stroke: currentColor; stroke-width: 4.5; stroke-linejoin: round; stroke-linecap: round; }
   .l { fill: none; stroke: currentColor; stroke-width: 4.5; stroke-linecap: round; }
   .f { fill: currentColor; }
+  .k { fill: var(--fill, var(--paper)); stroke: currentColor; stroke-width: 6; stroke-linejoin: miter; }
+  .kb { fill: none; stroke: currentColor; stroke-width: 6; stroke-linecap: butt; }
+  .fk { fill: currentColor; }
+  .fp { fill: var(--fill, var(--paper)); }
+  .glyph { fill: currentColor; font-family: 'Big Shoulders', sans-serif; font-weight: 900; }
+  .glyph-p { fill: var(--fill, var(--paper)); }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <!-- Ball glyph: one filled pentagon. Spoke version adds five lines in the same stroke. -->
-    <g id="pent"><polygon class="f" points="0,-5 4.76,-1.55 2.94,4.05 -2.94,4.05 -4.76,-1.55"/></g>
-    <g id="pent-spokes"><use href="#pent"/><path class="l" style="stroke-width:3" d="M0-5V-10.5M4.76-1.55L9.99-3.25M2.94 4.05L6.17 8.5M-2.94 4.05L-6.17 8.5M-4.76-1.55L-9.99-3.25"/></g>
-
-    <symbol id="binoc-both" viewBox="0 0 64 64">
-      <rect class="s" x="12" y="11" width="14" height="15" rx="4"/><rect class="s" x="38" y="11" width="14" height="15" rx="4"/>
-      <rect class="s" x="25" y="20" width="14" height="12" rx="3"/>
-      <circle class="s" cx="19" cy="40" r="12.5"/><circle class="s" cx="45" cy="40" r="12.5"/>
-      <use href="#pent" transform="translate(19 40)"/><use href="#pent" transform="translate(45 40)"/>
+    <!-- Round 2: squared, condensed, heavy, like Big Shoulders 900. No ball drawn. -->
+    <symbol id="sq-glasses" viewBox="0 0 64 64">
+      <rect class="k" x="5" y="21" width="22" height="20" rx="2.5" style="fill:currentColor"/>
+      <rect class="k" x="37" y="21" width="22" height="20" rx="2.5"/>
+      <path class="kb" d="M27 27h10M5 25H1M59 25h4"/>
+      <path class="kb" style="stroke-width:4.5" d="M44 36l8-10"/>
     </symbol>
-
-    <symbol id="binoc-spokes" viewBox="0 0 64 64">
-      <rect class="s" x="12" y="11" width="14" height="15" rx="4"/><rect class="s" x="38" y="11" width="14" height="15" rx="4"/>
-      <rect class="s" x="25" y="20" width="14" height="12" rx="3"/>
-      <circle class="s" cx="19" cy="40" r="12.5"/><circle class="s" cx="45" cy="40" r="12.5"/>
-      <use href="#pent-spokes" transform="translate(19 40)"/><use href="#pent-spokes" transform="translate(45 40)"/>
+    <symbol id="sq-binoc" viewBox="0 0 64 64">
+      <rect class="fk" x="11" y="10" width="15" height="10" rx="1.5"/><rect class="fk" x="38" y="10" width="15" height="10" rx="1.5"/>
+      <rect class="fk" x="28" y="22" width="8" height="14"/>
+      <rect class="fk" x="6" y="18" width="24" height="38" rx="3"/><rect class="fk" x="34" y="18" width="24" height="38" rx="3"/>
+      <circle class="fp" cx="18" cy="41" r="7.5"/><circle class="fp" cx="46" cy="41" r="7.5"/>
+      <path class="fk" d="M18 41V33.5A7.5 7.5 0 0 1 25.5 41Z"/>
     </symbol>
-
-    <symbol id="binoc-one" viewBox="0 0 64 64">
-      <rect class="s" x="12" y="11" width="14" height="15" rx="4"/><rect class="s" x="38" y="11" width="14" height="15" rx="4"/>
-      <rect class="s" x="25" y="20" width="14" height="12" rx="3"/>
-      <circle class="s" cx="19" cy="40" r="12.5"/><circle class="s" cx="45" cy="40" r="12.5"/>
-      <use href="#pent-spokes" transform="translate(19 40)"/>
-      <path class="l" d="M39 36.5a7.5 7.5 0 0 1 5.5-3.8"/>
+    <symbol id="sq-binoc-glint" viewBox="0 0 64 64">
+      <rect class="fk" x="11" y="10" width="15" height="10" rx="1.5"/><rect class="fk" x="38" y="10" width="15" height="10" rx="1.5"/>
+      <rect class="fk" x="28" y="22" width="8" height="14"/>
+      <rect class="fk" x="6" y="18" width="24" height="38" rx="3"/><rect class="fk" x="34" y="18" width="24" height="38" rx="3"/>
+      <circle class="fp" cx="18" cy="41" r="7.5"/><circle class="fp" cx="46" cy="41" r="7.5"/>
+      <rect class="fk" x="42" y="36" width="3.5" height="3.5"/>
     </symbol>
-
-    <symbol id="glasses-reflect" viewBox="0 0 64 64">
-      <path class="l" d="M5 29L2 26M59 29l3-3"/>
-      <rect class="s" x="5" y="22" width="23" height="19" rx="7"/><rect class="s" x="36" y="22" width="23" height="19" rx="7"/>
-      <path class="l" d="M28 29.5q4-4 8 0"/>
-      <use href="#pent" transform="translate(13.5 29.5) scale(.9)"/>
-      <path class="l" d="M46 36.5l6-8"/>
+    <symbol id="sq-b" viewBox="0 0 64 64">
+      <text class="glyph" x="32" y="32" transform="rotate(-90 32 32)" text-anchor="middle" dominant-baseline="central" font-size="62">B</text>
     </symbol>
-
-    <symbol id="glasses-both" viewBox="0 0 64 64">
-      <path class="l" d="M5 29L2 26M59 29l3-3"/>
-      <rect class="s" x="5" y="22" width="23" height="19" rx="7"/><rect class="s" x="36" y="22" width="23" height="19" rx="7"/>
-      <path class="l" d="M28 29.5q4-4 8 0"/>
-      <use href="#pent" transform="translate(16.5 31.5)"/><use href="#pent" transform="translate(47.5 31.5)"/>
+    <symbol id="sq-bk" viewBox="0 0 64 64">
+      <rect class="fk" x="2" y="12" width="60" height="40" rx="3"/>
+      <text class="glyph glyph-p" x="32" y="33" text-anchor="middle" dominant-baseline="central" font-size="46" letter-spacing="-1">BK</text>
     </symbol>
   </defs>
 </svg>
 
 <main>
   <h1>BK Scout logo: options</h1>
-  <p class="lede">Five marks, each shown at 128, 64, 32 and 16 px, as an app icon, and next to the wordmark. Drawn in SVG, not generated, so they stay crisp at any size. Judge them at 32 and 16 first: a mark that survives there survives everywhere.</p>
+  <p class="lede">Round 2, drawn to match the wordmark: squared, condensed, heavy strokes with flat ends, like Big Shoulders 900. No ball anywhere: the name already says Ball. Each at 128, 64, 32 and 16 px, as an app icon, on ink and with the wordmark. Judge at 32 and 16 first. The pentagon versions are gone.</p>
 
   <div class="rules"><b>How complexity is kept down</b>
     <ul>
-      <li>One stroke weight everywhere (4.5 on a 64 grid, about 7% of the width), round joins.</li>
+      <li>One stroke weight everywhere (6 on a 64 grid, the stem weight of the wordmark), square corners and flat ends.</li>
       <li>Two colours only: ink lines, paper fill. Reversed on ink for the app icon.</li>
-      <li>Basic shapes only: circles, rounded rectangles, one curve. No shading, no texture.</li>
-      <li>The ball is one filled pentagon, the part of a ball everyone recognises; spokes are an option, and they are the first thing to go at small sizes.</li>
+      <li>Basic shapes only: rectangles with tiny radii, circles only for lenses. No shading, no texture.</li>
+      <li>No ball: lenses carry the idea with a solid fill, a glint or a radar sweep (Gemini's point, and it holds).</li>
     </ul>
   </div>
 
-  <section class="opt" style="grid-template-columns: 220px 1fr">
-    <div><h2>Generated grid (Higgsfield)</h2><p>One low-quality generation, four marks, 2026-11-16 (job 776cab55). Top: binoculars with a solid body, ball in each lens; ball in one lens, glint in the other. Bottom: glasses with a reflected ball; glasses with a ball in each lens. A direction to redraw in SVG, not final art.</p></div>
-    <img src="img/round3/logo-grid.png" alt="Four generated logo marks in a grid" style="width:100%;max-width:560px;border-radius:8px;display:block">
-  </section>
   <div id="opts"></div>
 </main>
 
 <script>
   const OPTS = [
-    ['binoc-both', 'A · Binoculars, a ball in each lens', 'Symmetrical. Reads as binoculars at every size; at 16 px the pentagons become two dots, still balanced.'],
-    ['binoc-spokes', 'B · Binoculars, full ball in each lens', 'More recognisably a football up close, but the spokes blur into the lens at 32 px and below.'],
-    ['binoc-one', 'C · Binoculars, ball in one lens, glint in the other', 'Deliberately unsymmetrical: one lens has spotted something. More story, slightly less tidy at small sizes.'],
-    ['glasses-reflect', 'D · Analyst glasses, a ball reflected in one lens', 'Rectangular frames for the analyst look; the ball sits high in the left lens like a reflection, a glint in the right.'],
-    ['glasses-both', 'E · Analyst glasses, a ball in each lens', 'Symmetrical, a little playful (ball eyes). The simplest shape of all five.'],
+    ['sq-glasses', 'F · Squared analyst glasses', 'From the bottom-left glasses you liked, cleaned up: square frames, a straight bridge, one lens solid, a single glint bar in the other.'],
+    ['sq-binoc', 'G · Squared binoculars, radar lens', 'Solid condensed barrels; the left lens carries a quarter radar sweep (scanning), the right is clear.'],
+    ['sq-binoc-glint', 'H · Squared binoculars, glint', 'Same body, a single square glint in one lens: the quietest version, strongest at 16 px.'],
+    ['sq-b', 'I · The B on its side', 'The wordmark\'s own B turned 90 degrees: its two bowls read as binocular lenses. Ties the mark to the type.'],
+    ['sq-bk', 'J · BK chip (current)', 'The BK block from the wordmark, as a baseline to beat.'],
   ];
   const svg = (id, px) => `<svg class="icon" width="${px}" height="${px}" viewBox="0 0 64 64"><use href="#${id}"/></svg>`;
   document.getElementById('opts').innerHTML = OPTS.map(([id, name, note]) => `

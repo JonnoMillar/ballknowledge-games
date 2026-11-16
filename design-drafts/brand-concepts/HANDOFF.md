@@ -84,6 +84,15 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   `776cab55-a2f9-455b-bd4b-af52919a9ab1`, `img/round3/logo-grid.png`, shown
   on `logo.html`. Solid-body binoculars read better than the outlined SVG
   ones; the reflected ball in the glasses is too small to survive 32 px.
+- **Logo round 2 (Jonno, 2026-11-16):** never a lone pentagon or hexagon as a
+  football (saved to memory); leave the ball out, the name carries it. Marks
+  must share the wordmark's style: squared, condensed, heavy, flat ends. He
+  liked the generated glasses shape, cleaner and less soft. Two generations
+  for a font-matched grid (`f1b84d17…`, `0b23885e…`, 0.5 credits) both came
+  back dark and blurred, unusable. `logo.html` now holds SVG round 2: F
+  squared glasses (one lens solid, glint bar), G binoculars with a radar
+  lens, H binoculars with a glint, I the wordmark's B on its side, J the BK
+  chip. The pentagon options and grid are off the page.
 - **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
   the clipboard with a plain header (one variant, low, ask first); fold in the
   layout and transition sessions' notes when they finish; then type-in-scene
