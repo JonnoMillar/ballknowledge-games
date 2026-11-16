@@ -40,6 +40,15 @@
   .fp { fill: var(--fill, var(--paper)); }
   .glyph { fill: currentColor; font-family: 'Big Shoulders', sans-serif; font-weight: 900; }
   .glyph-p { fill: var(--fill, var(--paper)); }
+  .hg { fill: currentColor; stroke: var(--fill, var(--paper)); stroke-width: 2.4; }
+  .hl { fill: none; stroke: var(--fill, var(--paper)); stroke-width: 2.6; stroke-linecap: round; }
+  .feature { background: var(--paper); border: 2px solid var(--ink); border-radius: 10px; padding: 18px; margin-bottom: 18px; }
+  .feature h2 { font: 900 26px/1 'Big Shoulders', sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .feature .row { display: flex; align-items: end; gap: 26px; flex-wrap: wrap; margin-top: 14px; }
+  .feature figure { margin: 0; text-align: center; font: 700 11px/1 'Libre Franklin'; color: var(--muted); }
+  .feature figcaption { margin-top: 6px; }
+  .feature ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+  .compare { color: var(--ink); font: 900 128px/.8 'Big Shoulders', sans-serif; letter-spacing: .01em; }
 </style>
 </head>
 <body>
@@ -73,6 +82,24 @@
       <rect class="fk" x="2" y="12" width="60" height="40" rx="3"/>
       <text class="glyph glyph-p" x="32" y="33" text-anchor="middle" dominant-baseline="central" font-size="46" letter-spacing="-1">BK</text>
     </symbol>
+
+    <symbol id="bk-binoc" viewBox="0 0 118 100">
+      <rect class="fk" x="1" y="21" width="11" height="16" rx="1.5"/><rect class="fk" x="1" y="63" width="11" height="16" rx="1.5"/>
+      <path class="fk" d="M10 9.5Q10 8 11.5 8H42A18 18 0 0 1 60 26V32A18 18 0 0 1 42 50H10Z"/>
+      <path class="fk" d="M10 50H44A18 18 0 0 1 62 68V74A18 18 0 0 1 44 92H11.5Q10 92 10 90.5Z"/>
+      <rect class="hg" x="40" y="44.5" width="17" height="11" rx="1.5"/>
+      <circle class="fp" cx="39" cy="29" r="11"/><circle class="fp" cx="41" cy="71" r="11.5"/>
+      <rect class="fk" x="68" y="8" width="17" height="84" rx="1.5"/>
+      <polygon class="fk" points="82,42 98,8 116,8 91,58"/>
+      <polygon class="fk" points="89,46 116,92 98,92 82,66"/>
+    </symbol>
+    <symbol id="b-binoc" viewBox="0 0 64 100">
+      <rect class="fk" x="1" y="21" width="11" height="16" rx="1.5"/><rect class="fk" x="1" y="63" width="11" height="16" rx="1.5"/>
+      <path class="fk" d="M10 9.5Q10 8 11.5 8H42A18 18 0 0 1 60 26V32A18 18 0 0 1 42 50H10Z"/>
+      <path class="fk" d="M10 50H44A18 18 0 0 1 62 68V74A18 18 0 0 1 44 92H11.5Q10 92 10 90.5Z"/>
+      <rect class="hg" x="40" y="44.5" width="17" height="11" rx="1.5"/>
+      <circle class="fp" cx="39" cy="29" r="11"/><circle class="fp" cx="41" cy="71" r="11.5"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -80,6 +107,23 @@
   <h1>BK Scout logo: options</h1>
   <p class="lede">Round 2, drawn to match the wordmark: squared, condensed, heavy strokes with flat ends, like Big Shoulders 900. No ball anywhere: the name already says Ball. Each at 128, 64, 32 and 16 px, as an app icon, on ink and with the wordmark. Judge at 32 and 16 first. The pentagon versions are gone.</p>
 
+  <section class="feature">
+    <h2>K · BK, the B as binoculars</h2>
+    <p class="lede" style="margin:0">Binoculars held upright. The B's bowls are the barrels with round lenses for counters, two short tabs on the stem are the eyepieces, and the bar set into the notch is the hinge. Square corners and flat ends like the font; no fine detail. The K is drawn to the same stem weight and cap height as the wordmark. At 32 px and below the details fall away and it is simply a bold BK: it fails gracefully.</p>
+    <div class="row">
+      <figure><svg class="icon" width="189" height="160" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg><figcaption>Mark, 160</figcaption></figure>
+      <figure><svg class="icon" width="76" height="64" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg><figcaption>64</figcaption></figure>
+      <figure><svg class="icon" width="38" height="32" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg><figcaption>32</figcaption></figure>
+      <figure><svg class="icon" width="19" height="16" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg><figcaption>16</figcaption></figure>
+      <figure><div class="compare">BK</div><figcaption>The font's own BK, for comparison</figcaption></figure>
+    </div>
+    <div class="row">
+      <figure><div class="app" style="width:96px;height:96px"><svg class="icon" width="61" height="52" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg></div><figcaption>App icon</figcaption></figure>
+      <figure><div class="app" style="width:48px;height:48px;padding:8%"><svg class="icon" width="19" height="30" viewBox="0 0 64 100"><use href="#b-binoc"/></svg></div><figcaption>Favicon: the B alone</figcaption></figure>
+      <figure><div class="ink" style="padding:14px"><svg class="icon" width="57" height="48" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg></div><figcaption>On ink</figcaption></figure>
+      <figure><div class="lock"><svg class="icon" width="47" height="40" viewBox="0 0 118 100"><use href="#bk-binoc"/></svg><b style="font-size:46px">Scout</b></div><figcaption>Lockup: the mark is the BK in the wordmark</figcaption></figure>
+    </div>
+  </section>
   <div class="rules"><b>How complexity is kept down</b>
     <ul>
       <li>One stroke weight everywhere (6 on a 64 grid, the stem weight of the wordmark), square corners and flat ends.</li>

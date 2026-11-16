@@ -93,6 +93,11 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   squared glasses (one lens solid, glint bar), G binoculars with a radar
   lens, H binoculars with a glint, I the wordmark's B on its side, J the BK
   chip. The pentagon options and grid are off the page.
+- **Logo K, BK with the B as binoculars (2026-11-16):** top of `logo.html`.
+  Binoculars held upright: bowls are the barrels with round lens counters,
+  two tabs on the stem are the eyepieces, a bar set in the notch is the
+  hinge; K drawn to the same stem and cap height. Falls back to a plain bold
+  BK at 32 and 16 px. Favicon is the B alone. Awaiting Jonno's verdict.
 - **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
   the clipboard with a plain header (one variant, low, ask first); fold in the
   layout and transition sessions' notes when they finish; then type-in-scene
