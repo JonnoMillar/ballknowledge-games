@@ -17,7 +17,7 @@ import type { Goals } from '../../games/pin/lib/types';
 import { extend as extendMole, problems as moleProblems, type RunMoleDay } from '../../games/bluff/lib/run';
 import type { Side } from '../../games/bluff/lib/types';
 import { buildWorld, type Inputs } from '../../games/tunnel/lib/day';
-import { extend as extendOrder, problems as orderProblems, type RunOrderDay } from '../../games/tunnel/lib/run';
+import { checkedPhotos, extend as extendOrder, problems as orderProblems, type RunOrderDay } from '../../games/tunnel/lib/run';
 import { extendRun, problems as slProblems, type RunSlDay } from '../../games/season-line/lib/run';
 import type { StoredData, StoredDay } from '../../games/season-line/lib/types';
 
@@ -78,10 +78,11 @@ const world = buildWorld({
   facts: JSON.parse(readFileSync('games/tunnel/data/facts.json', 'utf8')) as Inputs['facts'],
 });
 const orderDays = read<RunOrderDay>(ORDER_RUN);
+const photos = checkedPhotos(JSON.parse(readFileSync('data/portraits.json', 'utf8')) as Record<string, { source: string; url?: string }>);
 if (ahead(orderDays) < MIN_AHEAD) {
-  const all = extendOrder(world, orderDays, addDays(today, TOP_UP));
+  const all = extendOrder(world, orderDays, addDays(today, TOP_UP), photos);
   const fresh = all.slice(orderDays.length);
-  const bad = fresh.flatMap((d, i) => orderProblems(world, d, all.slice(0, orderDays.length + i)));
+  const bad = fresh.flatMap((d, i) => orderProblems(world, d, all.slice(0, orderDays.length + i), photos));
   if (bad.length) throw new Error(`run order schedule broke its own rules:\n${bad.join('\n')}`);
   write(ORDER_RUN, all);
   console.log(`Line them up: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);

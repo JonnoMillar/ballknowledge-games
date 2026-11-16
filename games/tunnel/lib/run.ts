@@ -15,13 +15,18 @@ import { apart, fair, SIZE, trueOrder } from './rules';
  * - age and height each fair (no ties, neighbours a year and 3 cm apart);
  * - the walk-out line, the age line and the height line all apart, so no
  *   line hands over the next;
- * - no player back within RULES.playerGap days, no club within RULES.clubGap.
+ * - no player back within RULES.playerGap days, no club within RULES.clubGap;
+ * - from RUN_ORDER_PHOTO_FROM, all five have one of our checked photos, so
+ *   no well-known face is a silhouette (Jonno, 2026-11-16: Lamela and
+ *   Ndombele as blanks read as sloppy). `photos` is passed in, not imported,
+ *   so the page never carries the portrait list.
  * When Pecking Order's daily goes live it must keep clear of these players,
  * as Season line's daily keeps clear of the run's boards.
  */
 export const RUN_ORDER_START = '2026-11-13';
 export const RUN_ORDER_BORN = '1985-01-01';
 export const RUN_ORDER_CATS = ['age', 'height'] as const;
+export const RUN_ORDER_PHOTO_FROM = '2026-11-17';
 export type RunCat = (typeof RUN_ORDER_CATS)[number];
 const TRIES = 400;
 
@@ -36,8 +41,9 @@ const bornFrom = Math.round(dayMs(RUN_ORDER_BORN) / 86_400_000);
 const linesOf = (day: Pick<RunOrderDay, 'players' | 'values'>) => [day.players.map((_, i) => i), ...RUN_ORDER_CATS.map((c) => trueOrder(day.values[c]))];
 
 /** What is wrong with one day, given the days before it. Empty when it keeps every promise. */
-export function problems(world: World, day: RunOrderDay, before: readonly RunOrderDay[]): string[] {
+export function problems(world: World, day: RunOrderDay, before: readonly RunOrderDay[], photos?: ReadonlySet<string>): string[] {
   const out: string[] = [];
+  if (photos && day.date >= RUN_ORDER_PHOTO_FROM) for (const id of day.players) if (!photos.has(id)) out.push(`${day.date}: ${id} has no checked photo`);
   const ps = day.players.map((id) => world.byId.get(id));
   if (day.players.length !== SIZE || new Set(day.players).size !== SIZE) out.push(`${day.date}: not five players`);
   if (ps.some((p) => !p)) return [...out, `${day.date}: unknown player`];
@@ -56,7 +62,7 @@ export function problems(world: World, day: RunOrderDay, before: readonly RunOrd
 }
 
 /** One day: clubs in a seeded order (bigger ones more often), five of its players drawn until every rule holds. Throws if none does. */
-export function composeDay(world: World, date: string, before: readonly RunOrderDay[]): RunOrderDay {
+export function composeDay(world: World, date: string, before: readonly RunOrderDay[], photos?: ReadonlySet<string>): RunOrderDay {
   const rand = seeded(`run-order:${date}`);
   const cooling = new Set(before.filter((d) => between(d.date, date) < RULES.playerGap).flatMap((d) => d.players));
   const cool = new Set(before.filter((d) => between(d.date, date) < RULES.clubGap).map((d) => d.club));
@@ -65,7 +71,7 @@ export function composeDay(world: World, date: string, before: readonly RunOrder
     .sort((a, b) => b[1] - a[1]).map(([c]) => c)
     .filter((c) => !cool.has(c));
   for (const club of clubs) {
-    const members = world.clubs.get(club)!.filter((id) => !cooling.has(id) && world.byId.get(id)!.born >= bornFrom);
+    const members = world.clubs.get(club)!.filter((id) => !cooling.has(id) && world.byId.get(id)!.born >= bornFrom && (!photos || date < RUN_ORDER_PHOTO_FROM || photos.has(id)));
     if (members.length < SIZE) continue;
     for (let t = 0; t < TRIES; t++) {
       const pick = [...members];
@@ -73,15 +79,19 @@ export function composeDay(world: World, date: string, before: readonly RunOrder
       const players = pick.slice(0, SIZE);
       const ps = players.map((id) => world.byId.get(id)!);
       const day: RunOrderDay = { date, club, players, values: { age: ps.map((p) => -p.born), height: ps.map((p) => p.cm) } };
-      if (problems(world, day, before).length === 0) return day;
+      if (problems(world, day, before, photos).length === 0) return day;
     }
   }
   throw new Error(`run order: no five fit ${date}`);
 }
 
+/** The players with one of our checked photos (a processed cutout): what `photos` expects. */
+export const checkedPhotos = (portraits: Readonly<Record<string, { source: string; url?: string }>>): Set<string> =>
+  new Set(Object.entries(portraits).filter(([, p]) => p.source === 'processed' && p.url).map(([id]) => id));
+
 /** The schedule from RUN_ORDER_START through `through`, keeping the days already there. */
-export function extend(world: World, days: readonly RunOrderDay[], through: string): RunOrderDay[] {
+export function extend(world: World, days: readonly RunOrderDay[], through: string, photos?: ReadonlySet<string>): RunOrderDay[] {
   const out = [...days];
-  for (let d = out.length ? addDays(out[out.length - 1]!.date, 1) : RUN_ORDER_START; d <= through; d = addDays(d, 1)) out.push(composeDay(world, d, out));
+  for (let d = out.length ? addDays(out[out.length - 1]!.date, 1) : RUN_ORDER_START; d <= through; d = addDays(d, 1)) out.push(composeDay(world, d, out, photos));
   return out;
 }
