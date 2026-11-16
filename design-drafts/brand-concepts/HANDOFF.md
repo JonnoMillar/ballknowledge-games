@@ -80,6 +80,10 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   one stroke weight, two colours, basic shapes, the ball reduced to one
   pentagon. Jonno's worry: a complex concept will not shrink; judge at 32 and
   16 px. Not decided; BK on the pass in `style.html` is a placeholder.
+- **Generated logo grid (2026-11-16, 0.25 credits):** job
+  `776cab55-a2f9-455b-bd4b-af52919a9ab1`, `img/round3/logo-grid.png`, shown
+  on `logo.html`. Solid-body binoculars read better than the outlined SVG
+  ones; the reflected ball in the glasses is too small to survive 32 px.
 - **Next for a fresh session:** Jonno's pick from `logo.html`; then rebake
   the clipboard with a plain header (one variant, low, ask first); fold in the
   layout and transition sessions' notes when they finish; then type-in-scene
