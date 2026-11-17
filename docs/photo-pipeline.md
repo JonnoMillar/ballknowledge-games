@@ -560,3 +560,85 @@ emptied; the test outputs were deleted so the normal pass redoes him. The new `c
 tag saves with the save call stubbed (his real marks were not touched), and `scripts/photos/test_screen.py` covers the
 screen's pure parts. Not tried: his first real "Approve ... next batch" click with blocked cards (it starts `redo_marked.py`
 in the background); the soft-tag "better option" search is not built.
+
+## Gap batch and the sharpness floor (2026-11-17)
+
+Jonno, after playing the daily run on 2026-11-16: too many well-known players show the kit card ("reads as
+dev sloppiness"), and Figo's photo in Trace the link was too low quality and stood out. In the top 1,000 by
+views, 545 had no published cutout: 363 had a cutout waiting for review, 118 were on the kit card, 66 were
+marked wrong, 4 had not been searched.
+
+### The sharpness floor
+
+`checks.subject_sharpness`: Laplacian variance of the grey 440 px crop over the subject (alpha > 200, eroded
+2 px so the matte's edge does not count). `checks.MIN_SUBJECT_SHARP = 55`, picked from the 480 published
+cutouts: the five lowest are exactly the five he would call soft (Palmer 22, Figo 25, Park 28, Berbatov 39,
+Guardiola 47: small old photos upscaled), then a gap to Sancho 60 (soft, acceptable); median 941. A sheet of
+unreviewed cutouts at 40-55 was smeared; 55-70 was fine. On his labels: 6 of 84 wrong cards are under it
+against 5 of 468 approved (those 5 being the ones above). 126 of 3,551 unreviewed cutouts (3.5%) fall under it.
+
+It applies in two places:
+- **Cut time** (`checks.crop_verdict`, so `cutout.py`): a crop under the floor is rejected and the next
+  candidate tried, like any other failed check (`rejected`: "blurry (subject sharpness N)").
+- **The screen** (`screen.py fit`): `screen.json` gains `blurry: {id: [k]}` for every `out/<id>.<k>.webp`
+  under the floor (cached by file size in `screen/subj.json`). `/photo-check` treats a blurry first cutout as
+  no photo (it counts in "kit"), `/photo-pick` leaves blurry alternatives out. So run `screen.py fit` after a
+  batch of cutouts, or cutouts made by an older `cutout.py` can still show until it runs.
+
+`test_screen.py` covers it: a detailed subject passes, the same subject shrunk to 60 px and blown back up fails,
+a hard matte edge on a flat subject is not detail, and `blurry_cutouts` lists exactly the soft file.
+
+### Wider search for the gaps (`candidates.py`)
+
+- **Two people:** only a second face inside the square that `cutout.py` will crop (3.2 face heights wide, from
+  0.55 above the face) counts, for the gate and for the neighbour penalty. A team-mate a few metres away in a
+  match photo is cropped out anyway; this gate had taken 8 of Garnacho's 15 photos and 9 of Reijnders' 15.
+- **Deep search when under three usable**, not only when none (Højlund's category holds 4 files; the Commons
+  name search adds more), with room for 80 files on that pass.
+- **Small faces in big photos:** a face under 50 px in the 900 px thumbnail is judged again in a 1280 or 1920 px
+  thumbnail when the original is that wide. Commons now serves only standard thumbnail widths (1280 and 1920
+  work, 1900 is a 400) and rate-limits originals (429), so the code asks only for those two. Garnacho: 1 usable
+  photo to 3 (Copa América 2024 frames). A photo named after several players can now pass with the biggest face
+  being someone else ("Lautaro, Di María y Garnacho"): Jonno's check and the screen's "not him" catch it.
+- **No P373:** when Wikidata has no Commons category, the Commons sitelink (`Category:...`) is used. Antony had
+  none ("Antony (footballer, born 2000)"): 0 usable photos to 5. Frimpong is the same case.
+- The batch ran with `OV_ALWAYS=1`, so Openverse was asked for every gap player.
+
+### The batch (`scripts/photos/ops/gap_batch.py`)
+
+`python scripts/photos/ops/gap_batch.py <dir> [--n 150] [--repick Q1,Q2] [--dry]`, then
+`candidates.py <dir> gaps-redo.json`, `cutout.py <dir> gaps-redo.json`, `gap_batch.py <dir> --finish`,
+`screen.py <dir> fit`. It ranks every player with no published cutout (and not already approved or picked) by
+views, a career that ended before 2015 counted at 40% unless he is a manager. Wikidata's manager occupation is
+broad (Gascoigne, Bergkamp, Shearer have it), so in practice the order is close to plain views. The top N go in
+`focus-gaps.json`, shown on their own at `/photo-check?focus=gaps` and `/photo-pick?focus=gaps` (any
+`?focus=<name>` reads `focus-<name>.json`; `?focus=1` is still the upcoming-games list). Per player: a cutout
+waiting for review stays unless it is blurry (then its file is banned and the next candidate cut); kit card,
+never searched, or marked wrong with fewer than three sharp alternatives: searched again (old files go to `old/`).
+
+**Re-picks** (`--repick`, players already published): the published file is banned, the player joins
+`marked.json` for three new alternatives, and `--finish` puts the published cutout back as alternative 0 with
+`current: true`. He stays in `approved.json`, so if Jonno picks nothing the photo on the site stays;
+`/photo-pick` labels that card ON SITE NOW.
+
+**The data folder.** The pipeline's data lives in the photo-pipeline worktree's `.scratch/photo-all` (and
+`.scratch/models`). The review pages read `.scratch/photo-all` relative to the dev server, so another checkout
+needs directory junctions to both (`New-Item -ItemType Junction -Path .scratch\photo-all -Target <that folder>`).
+
+### Status when the laptop closed (2026-11-17, evening)
+
+- Built: `focus-gaps.json` (155 players: the top 150 gaps plus 5 re-picks), `gaps-redo.json` (70 to search
+  again), `repick.json`, bans in `bad/` for the 5 re-picks and 1 blurry cutout. `/photo-check?focus=gaps`
+  already shows the 65 gap players whose cutout was waiting for review; `/photo-pick?focus=gaps` the 20 marked
+  ones with three alternatives.
+- Candidate search for `gaps-redo.json`: about 30 of 70 done when the laptop closed; rerun
+  `OV_ALWAYS=1 python -X utf8 scripts/photos/candidates.py .scratch/photo-all gaps-redo.json` (skips finished ones).
+- **No cutouts yet for the 70.** The watchdog died at 15:27 (heartbeat stopped) and left its two jobs running
+  orphaned. Their cutout pass trails their candidate pass through the long tail and never restarts at the top, so
+  it would not reach this batch, and a second rembg process beside them at ~1 GB free is crash territory. Stopping
+  the orphans needs Jonno's OK. After a reboot they are gone anyway. Then: run
+  `python -X utf8 scripts/photos/cutout.py .scratch/photo-all gaps-redo.json` (one process), then
+  `gap_batch.py .scratch/photo-all --finish`, then `screen.py .scratch/photo-all features`, `emb`, `fit`, and
+  finally launch the watchdog again (the logon task does it after a reboot).
+- The watchdog runs the photo-pipeline worktree's scripts, which do not have the floor or the wider search
+  until that branch takes `main` (after this branch merges).
