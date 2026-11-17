@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { StickerFace, neutral } from './Sticker';
 import { kitCard } from '../src/lib/portraits';
 
-export interface PickItem { id: string; name: string; rank: number; club?: string; alts: { file: string; year: number }[] }
+export interface PickItem { id: string; name: string; rank: number; club?: string; alts: { k: number; file: string; year: number; current?: boolean }[] }
 type Choice = number | 'kit';
 
 /**
@@ -38,9 +38,9 @@ export default function PhotoPick({ items, waiting }: { items: PickItem[]; waiti
         <span>{Object.keys(choices).length} picked</span>
         <span>{waiting} still being cut</span>
       </div>
-      <p className="pc__help">Click the photo you want, or the kit card. Click again to undo. A player you leave alone gets the kit card. Reload to see more as they finish.</p>
+      <p className="pc__help">Click the photo you want, or the kit card. Click again to undo. A player you leave alone gets the kit card, unless one card says ON SITE NOW: that photo stays. Reload to see more as they finish.</p>
       {items.map((it) => {
-        const options: { k: Choice; file?: string; year?: number }[] = [...it.alts.map((a, k) => ({ k: k as Choice, file: a.file, year: a.year })), { k: 'kit' }];
+        const options: { k: Choice; file?: string; year?: number; current?: boolean }[] = [...it.alts.map((a) => ({ k: a.k as Choice, file: a.file, year: a.year, current: a.current })), { k: 'kit' }];
         return (
           <section key={it.id} className="pp__row">
             <h2 className="pp__name">{it.rank}. {it.name}</h2>
@@ -54,7 +54,7 @@ export default function PhotoPick({ items, waiting }: { items: PickItem[]; waiti
                       ground={neutral()}
                       className="sticker--still"
                     />
-                    <span className="pc__flag">{choices[it.id] === o.k ? 'PICKED' : o.k === 'kit' ? 'KIT' : `${(o.k as number) + 1}`}</span>
+                    <span className="pc__flag">{choices[it.id] === o.k ? 'PICKED' : o.k === 'kit' ? 'KIT' : o.current ? 'ON SITE NOW' : `${(o.k as number) + 1}`}</span>
                   </button>
                 </li>
               ))}

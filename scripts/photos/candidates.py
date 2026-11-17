@@ -109,7 +109,12 @@ def judge(img):
     faces = sorted(faces, key=lambda f: -f[3])
     r = faces[0]
     x, y, fw, fh = (int(v) for v in r[:4])
-    second = faces[1][3] / fh if len(faces) > 1 else 0.0
+    # Only a face inside the square cutout.py will crop (3.2 face heights, from 0.55 above the face) is a second
+    # person in the picture: a team-mate a few metres away in a match photo is cropped out (2026-11-17: this gate
+    # took 8 of Garnacho's 15 photos, 9 of Reijnders' 15). What is left beside him the cutout checks still catch.
+    side, cxm, top = 3.2 * fh, x + fw / 2, y - 0.55 * fh
+    near = [f for f in faces[1:] if f[0] < cxm + side / 2 and f[0] + f[2] > cxm - side / 2 and f[1] < top + side and f[1] + f[3] > top]
+    second = max(f[3] for f in near) / fh if near else 0.0
     if second > 0.85:   # a true two-shot; a neighbour behind him is a score penalty and a cutout check
         return 'two people', None
     if fh < MIN_FACE:
@@ -216,7 +221,7 @@ for p in players:
         # the cutout checks, and for a retired legend that is often all Commons has.
         # A manager's photos from his managing years count too (tracksuit or suit; checks.py allows them).
         late = rank.THIS_YEAR + 1 if manager else span[1] + (30 if deep else 1)
-        era = [f for f in files if meta.get(f, {}).get('thumb') and (span[0] <= year[f] <= late if year[f] else span[1] >= 2012)][:MAX_FILES]
+        era = [f for f in files if meta.get(f, {}).get('thumb') and (span[0] <= year[f] <= late if year[f] else span[1] >= 2012)][:MAX_FILES * (2 if deep else 1)]
         return files, meta, year, era
 
     files, meta, year, era = pick_era(False)
@@ -251,7 +256,7 @@ for p in players:
 
     ranked = rank_all(era, meta, year)
     deep = False
-    if not any(r['score'] > 0 for r in ranked):
+    if sum(r['score'] > 0 for r in ranked) < 3:   # was: none at all. Højlund's category holds 4 files; the name search finds more
         files, meta, year, era = pick_era(True)
         ranked, deep = rank_all(era, meta, year), True
     if sum(r['score'] > 0 for r in ranked) < 3 or os.environ.get('OV_ALWAYS'):   # Commons is thin for him: look at Flickr and the rest of Openverse
