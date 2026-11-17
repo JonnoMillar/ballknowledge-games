@@ -43,11 +43,15 @@ def fold(s):
 def wikidata(qid):
     """(Commons category, Wikidata's chosen image, is he also an association football manager) for a player."""
     raw = get(f'https://www.wikidata.org/wiki/Special:EntityData/{qid}.json')
-    claims = json.loads(raw)['entities'][qid]['claims'] if raw else {}
+    ent = json.loads(raw)['entities'][qid] if raw else {}
+    claims = ent.get('claims', {})
     val = lambda p: claims.get(p, [{}])[0].get('mainsnak', {}).get('datavalue', {}).get('value')
     p18 = val('P18')
     jobs = {c.get('mainsnak', {}).get('datavalue', {}).get('value', {}).get('id') for c in claims.get('P106', [])}
-    return val('P373'), (f'File:{p18}' if p18 else None), 'Q628099' in jobs
+    # No P373 (Antony, Frimpong on 2026-11-17): the Commons sitelink often names the category anyway.
+    link = ent.get('sitelinks', {}).get('commonswiki', {}).get('title', '')
+    cat = val('P373') or (link.removeprefix('Category:') if link.startswith('Category:') else None)
+    return cat, (f'File:{p18}' if p18 else None), 'Q628099' in jobs
 
 def members(cat, kind):
     j = api(action='query', list='categorymembers', cmtype=kind, cmlimit=200, cmtitle=f'Category:{cat}')
@@ -96,7 +100,7 @@ def info(titles):
             meta = ii.get('extmetadata', {})
             raw = (meta.get('DateTimeOriginal') or meta.get('DateTime') or {}).get('value', '')
             y = re.search(r'\b(1[89]\d\d|20\d\d)\b', raw)
-            out[p['title']] = {'exif': int(y.group()) if y else None, 'thumb': ii.get('thumburl')}
+            out[p['title']] = {'exif': int(y.group()) if y else None, 'thumb': ii.get('thumburl'), 'width': ii.get('width') or 0}
     return out
 
 def judge(img):
@@ -237,6 +241,20 @@ for p in players:
                 continue
             try:
                 gate, feats = judge(img)
+                # A face too small in the 900 px thumbnail of a big original (a match photo of the whole box): judge a
+                # bigger thumbnail, the first standard width that makes it 50 px. 2026-11-17: Garnacho's Copa América photos.
+                small = re.match(r'face (\d+)px, too small', gate or '')
+                px = re.search(r'/\d+px-', meta[f]['thumb'])
+                if small and px:
+                    # Commons serves only standard thumbnail widths (1900 px is a 400; originals are rate-limited, 429).
+                    have, face = img.shape[1], max(int(small[1]), 1)
+                    w = next((b for b in (1280, 1920) if b > have and b <= meta[f]['width'] and face * b / have >= MIN_FACE), None)
+                    if w:
+                        raw2 = get(meta[f]['thumb'][:px.start()] + f'/{w}px-' + meta[f]['thumb'][px.end():])
+                        img2 = cv2.imdecode(np.frombuffer(raw2, np.uint8), cv2.IMREAD_COLOR) if raw2 else None
+                        if img2 is not None:
+                            raw, img = raw2, img2
+                            gate, feats = judge(img)
             except cv2.error:   # out of memory while the machine is busy: skip this photo, keep the run alive
                 continue
             (folder / f'{n}.jpg').write_bytes(raw)
