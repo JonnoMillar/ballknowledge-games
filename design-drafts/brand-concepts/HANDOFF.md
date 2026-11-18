@@ -80,6 +80,12 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   same round join. A: up-left, left brow raised. B: up-right, right raised.
   C: up-right, both raised, right higher. D: straight up, both arched.
   E: B with bigger pupils. F: B with round pupils, for comparison.
+  Jonno: all read as sideways, not up. Cause: wide, short lenses give a
+  pupil lots of sideways travel and little upward travel.
+- **Looking-up drafts G to J (2026-11-18)**, symbols `th-g`…`th-j`, above
+  A to F. G: pupils top centre with empty lens below. H: taller lenses.
+  I: eye whites with the pupil at their top (the clearest "up"). J: taller
+  lenses plus eye whites (cartoonish, nearer surprised).
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
