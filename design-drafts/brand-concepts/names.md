@@ -5,6 +5,32 @@ Full name for meaning (the role plus the "ball knowledge" meme); BK Scout
 for speech, handle, watermark and mark, as FM is Football Manager. Watch: a
 football quiz app called "Ball Knowledge" exists, so lead with BK Scout.
 
+## Round 6: does BK Scout read as a game? (2026-11-18)
+
+Jonno's worry: "Scout" can read as a tool (Scout APM, Scout24), not a game.
+Counter: it names the player's role, as Football Manager and Hitman do, and
+the world, a descriptor ("BK Scout · daily football games") and gameplay
+clips carry the game signal. **Settle it in the mates' 5-second test:**
+wordmark alone, "what do you think this is?"; mostly "app/tool" means rename.
+
+Floated as game-leaning alternatives (none clash- or domain-checked):
+- **Spottle** (spot + -le): says the play (spot players, spot fakes), spelled
+  as said. Faint Wordle-family echo reads as one puzzle more than a hub. The
+  only coined -le worth backing; Scoutle is saturated.
+- Real football words ending in -le (Dribble, Tackle, Whistle, Huddle): the
+  Wordle echo without the clone look, but too common to own.
+- Snapped Up (also "sold out"), Sign Him (excludes women's football),
+  Bagsy (UK-only, young), Hidden Gem, Big Shout, Ballhunt: weaker.
+- **Ballerdex: parked for a separate project.** Best ring and the strongest
+  game signal, but the name promises a collection as the hub's spine, and
+  today's loop uses players rather than keeping them. Jonno would take on
+  accounts; the blocker is art: only ~480 checked portraits for a ~12.9k
+  pool, and drawn players would look bad.
+
+-le note: football is the most crowded -le shelf (Weddle and the
+player-guess family), and "-le" carries a milder form of the daily fence
+from round 3.
+
 Scored against `docs/naming-checklist.md`. Domain checks are registry
 lookups on 2026-11-14 (nothing bought); a taken domain is not fatal if a
 fixed modifier works (`___fc.com`). Clash checks are one web search each.
