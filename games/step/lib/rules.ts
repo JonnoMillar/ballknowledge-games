@@ -249,9 +249,30 @@ export function runGrade(grades: readonly (Grade | null)[]): Grade | null {
   return GRADES[level - 1]!;
 }
 
-/** The share line: the run and a glyph per step. No names. */
-export function shareLine(day: number, grades: readonly (Grade | null)[]): string {
+/**
+ * Points for a card (Jonno, 2026-11-17: a number like Krillion's, so the day
+ * has a quantitative score). Each grade has a band and the pick's depth
+ * inside its grade (depthOf, 0 to 1) places it in the band, growing
+ * geometrically: a deeper answer is worth more and the best picks spread far
+ * apart. No maximum is printed anywhere, so the total reads like a tally, not
+ * a mark out of something (SPEC's lesson from Chain). A miss is 0.
+ */
+export const POINTS: Record<Grade, readonly [number, number]> = {
+  basic: [10, 20], decent: [25, 45], solid: [50, 90], sharp: [100, 180], elite: [200, 350],
+};
+export function cardPoints(grade: Grade | null, depth = 0): number {
+  if (!grade) return 0;
+  const [lo, hi] = POINTS[grade];
+  return Math.round(lo * (hi / lo) ** Math.min(1, Math.max(0, depth)));
+}
+/** The day's total: every card's points. */
+export const runPoints = (cards: readonly ({ grade: Grade | null; depth?: number } | null | undefined)[]): number =>
+  cards.reduce((n, c) => n + (c ? cardPoints(c.grade, c.depth ?? 0) : 0), 0);
+
+/** The share line: the run, its points and a glyph per step. No names. */
+export function shareLine(day: number, grades: readonly (Grade | null)[], points?: number): string {
   const run = runGrade(grades);
   const grid = grades.map((g) => (g ? GRADE_GLYPH[g] : MARK_GLYPH.missed)).join('');
-  return `${NAME} #${day} · Ball knowledge: ${run ? GRADE_WORD[run] : 'none'}\n${grid}`;
+  const pts = points === undefined ? '' : ` · ${points.toLocaleString('en-GB')} pts`;
+  return `${NAME} #${day} · Ball knowledge: ${run ? GRADE_WORD[run] : 'none'}${pts}\n${grid}`;
 }

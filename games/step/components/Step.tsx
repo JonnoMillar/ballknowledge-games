@@ -12,7 +12,7 @@ import { recordCards, type CardNews } from '../../../src/lib/collection';
 import { localDate } from '../../../src/lib/daily';
 import { GRADE_WORD, gradeRank } from '../../../src/lib/chain/grade';
 import { plateName } from '../../../src/lib/short-name';
-import { NAME, STEPS, runGrade, shareLine } from '../lib/rules';
+import { cardPoints, NAME, runPoints, STEPS, runGrade, shareLine } from '../lib/rules';
 import Slam from './Slam';
 import { loadRun, saveRun, type Run } from '../lib/progress';
 import type { StepCard, StepClub, StepDay, StepGiven, Verdict } from '../lib/types';
@@ -309,6 +309,7 @@ export function After({ verdict, playerFirst }: { verdict: Verdict; playerFirst:
   const o = verdict.obvious;
   return (
     <div className="step-after">
+      {via && verdict.grade ? <p className="step-points display">+{cardPoints(verdict.grade, verdict.depth ?? 0)} <span>points</span></p> : null}
       {via ? (
         <p className="step-via">
           <span className="step-via__kicker">Linked by</span>
@@ -328,6 +329,24 @@ export function After({ verdict, playerFirst }: { verdict: Verdict; playerFirst:
       ) : null}
     </div>
   );
+}
+
+/** A number that counts up to its value once (the day's total landing); still when `run` is false or motion is reduced. */
+function Tally({ to, run }: { to: number; run: boolean }) {
+  const [n, setN] = useState(run ? 0 : to);
+  useEffect(() => {
+    if (!run || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setN(to); return; }
+    const t0 = performance.now() + 500;
+    let raf = 0;
+    const tick = (t: number) => {
+      const u = Math.min(1, Math.max(0, (t - t0) / 1100));
+      setN(Math.round(to * (1 - (1 - u) ** 3)));
+      if (u < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to, run]);
+  return <>{n.toLocaleString('en-GB')}</>;
 }
 
 /** A club as a sticker: its crest on its colour, its name on the plate. */
@@ -411,12 +430,13 @@ export function Summary({ day, run, fresh = false }: { day: StepDay; run: Run; f
   }, [fresh]);
   const grades = run.map((v) => v?.grade ?? null);
   const word = runGrade(grades);
+  const total = runPoints(run.map((v) => (v ? { grade: v.held ? v.grade : null, depth: v.depth } : null)));
   // The first card at the run's deepest grade, the one that catches the light.
   const ranks = grades.map((g) => (g ? gradeRank(g) : -1));
   const deepest = Math.max(...ranks) >= 0 ? ranks.indexOf(Math.max(...ranks)) : -1;
   const [copied, setCopied] = useState(false);
   async function share() {
-    await navigator.clipboard?.writeText(shareLine(day.day, grades)).catch(() => {});
+    await navigator.clipboard?.writeText(shareLine(day.day, grades, total)).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   }
@@ -427,12 +447,16 @@ export function Summary({ day, run, fresh = false }: { day: StepDay; run: Run; f
       <div className="step-end__head">
         <span className="step-verdict__kicker">Ball knowledge</span>
         {word ? <GradeChip grade={word} shine /> : <span className="step-end__none display">None</span>}
+        <p className="step-end__total"><b className="display"><Tally to={total} run={fresh} /></b> points</p>
       </div>
       <ol className="step-end__cards" ref={cards}>
         {run.map((v, i) => (
           <li key={i} className={i === deepest ? 'is-deepest' : undefined} style={{ ['--i' as string]: i }}>
             {v && v.held && v.grade
-              ? <Slab grade={v.grade} player={v.pick} image={v.pick.image ?? undefined} ground={cardGround(v.pick, day.steps[i]!.playerFirst)} size="sm" />
+              ? <>
+                <Slab grade={v.grade} player={v.pick} image={v.pick.image ?? undefined} ground={cardGround(v.pick, day.steps[i]!.playerFirst)} size="sm" />
+                <span className="step-end__pts display">{cardPoints(v.grade, v.depth ?? 0)}</span>
+              </>
               : (
                 <div className="step-end__miss">
                   {v ? <StickerFace player={v.pick} image={v.pick.image ?? undefined} ground={neutral()} className="sticker--still step-gap--missed" /> : null}

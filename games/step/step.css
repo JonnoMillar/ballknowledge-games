@@ -282,3 +282,13 @@
 .mprev__game { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; max-width: 760px; }
 .mprev__stage { display: flex; justify-content: center; align-items: flex-start; padding-top: 24px; min-height: 560px; }
 @media (min-width: 760px) { .mprev__stage { padding-top: 40px; } }
+
+/* Points (2026-11-17): the day's total under the plaque, each card's under it, a pick's on its verdict. No maximum shown. */
+.step-end__total { margin: 2px 0 0; display: flex; align-items: baseline; gap: 8px; font-size: 16px; color: var(--muted); }
+.step-end__total b { font-size: 40px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.step-end__cards > li { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.step-end__pts { font-size: 22px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.step-points { margin: 0; font-size: 26px; line-height: 1; color: var(--ink); animation: step-points-in 360ms var(--ease-out) both; }
+@keyframes step-points-in { from { opacity: 0; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .step-points { animation: none; } }
+.step-points span { font-family: inherit; font-size: 14px; color: var(--muted); letter-spacing: 0.04em; }
