@@ -104,6 +104,10 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   higher reads most naturally as thinking. A flat bar reads mechanical, like
   a minus sign. Both even reads calm, a bit blank. A tilted straight bar
   reads sceptical again: cut.
+  **Jonno picked the top right (flat left brow, arched right).** Cropped as
+  `img/round3/fs-think-pick.png`, shown at 128 to 16 at the top of
+  `logo.html`. Keep it as it is; the next step is a clean final version of
+  this exact icon, not a new design.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
