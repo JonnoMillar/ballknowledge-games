@@ -58,6 +58,10 @@ account using the name. The near-namesake is **Scoutle**, a 2022 VALORANT
 Wordle-style game (guess the pro player), still mirrored on Immaculate Grid
 and Blossom; same mechanic, different sport. Social handles not checked
 (searches cannot see them; check by hand on TikTok, Instagram, X).
+**FootballScoutle** also free (.com .gg .app .co.uk .io; no product found),
+but 15 letters, it swaps the Aussie "footy" issue for the bigger US one
+("football" = NFL), and searches for it land among real scouting tools
+(Wyscout, aiScout), the BK Scout trap. "Footy" is warmer and more fan.
 BrightonScoutle nods to Brighton's famous recruitment, but it ties the name
 to one club (rival fans, implied official link, the club's IP). Cut.
 
