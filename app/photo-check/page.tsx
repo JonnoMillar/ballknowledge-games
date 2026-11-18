@@ -25,7 +25,9 @@ function nextBatch(focus?: string): { items: CheckItem[]; stats: CheckStats; cut
   const marks = json<{ wrong: string[]; flagged: string[] }>('marks.json', { wrong: [], flagged: [] });
   const approved = new Set(json<string[]>('approved.json', []));
   const bad = new Set([...marks.wrong, ...marks.flagged]);
-  const skip = new Set([...approved, ...bad]);
+  // A player he has decided on /photo-pick or /photo-choose (an alternative, or the kit card) needs no check here.
+  const decided = Object.keys(json<Record<string, unknown>>('choices.json', {}));
+  const skip = new Set([...approved, ...bad, ...decided]);
   const items: CheckItem[] = [];
   let left = 0;
   let kit = 0;

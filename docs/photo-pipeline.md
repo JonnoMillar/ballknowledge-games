@@ -677,3 +677,14 @@ Palmer's 2025 one were never offered), so for anyone marked wrong the order is n
 
 The watchdog runs the photo-pipeline worktree's copy of the scripts: it does this only once that branch has this code
 and its cutout pass restarts (each pass is a new process).
+
+### First run of choose-then-cut (2026-11-18)
+
+Jonno chose for 125 players (72 photos, 53 "None good"). The watchdog's cutout process was restarted on his OK to
+load the new code; it cut the choices first, about 30-40 s each. 55 cut (42 pass every check; 13 carry a `check`
+note: someone beside him 7, not in kit 4, second face 1, blurry 1). **17 could not be cut:** the photo is narrower
+than 2 face heights (tight "(cropped)" portraits), which the first `preview.py` did not test. Their choices were
+cleared, `preview.py` now skips any photo whose square frame is under 2 face heights wide, and the 17 are at
+`/photo-choose?focus=rechoose` (Højlund and Santiago Giménez have no croppable photo left). `/photo-check` now
+skips anyone already decided in `choices.json` (an alternative or the kit card), so a "None good" no longer leaves the
+old cutout waiting there.

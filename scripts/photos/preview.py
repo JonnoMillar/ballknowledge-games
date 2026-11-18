@@ -48,7 +48,10 @@ def build(D: Path, pid: str, current: str | None = None) -> int:
             im = Image.open(D / c['local']).convert('RGB')
         except OSError:
             continue
-        im.crop(crop_box(im.width, im.height, c['box'])).resize((SIDE, SIDE), Image.LANCZOS).save(folder / f'{n}.jpg', quality=85)
+        l, t, r, b = crop_box(im.width, im.height, c['box'])
+        if r - l < MIN_HEADS * c['box'][3]:   # too narrow to frame (a tight "(cropped)" portrait): cutout.py cannot make a card of it
+            continue
+        im.crop((l, t, r, b)).resize((SIDE, SIDE), Image.LANCZOS).save(folder / f'{n}.jpg', quality=85)
         o = c.get('origin') or {}
         out.append({'n': n, 'file': c['file'], 'year': c.get('year'), 'face': c.get('face'), 'sharp': c.get('sharp'),
                     'source': o.get('source') or 'commons', **({'current': True} if c['file'] == current else {}),
