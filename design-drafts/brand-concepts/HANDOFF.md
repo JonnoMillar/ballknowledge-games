@@ -51,6 +51,15 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   on the pitch (generic, the line breaks oddly at the dot), viewfinder
   (clean but a camera-app cliché). Edge rule: crisp geometry with small
   tight radii, circles only for lenses and pupils, flat ends.
+  Jonno: all weak. Lens and viewfinder dropped (too universal, could be
+  anything); the OO doesn't say binoculars; scout eyes looks computer-coded,
+  but he likes "someone with glasses looking up in thought".
+- **Icon grid 2 (2026-11-18, 0.5 credits):** job `0a3fedce-52a3-49ec-bd7e-bb56ceb9f85e`,
+  `img/round3/fs-icon-grid-2.png`. Binoculars now read instantly (stepped
+  eyepieces, hinge with a focus wheel); the navy one with yellow lenses and
+  glints is the stronger. Thinking glasses with one raised brow (navy) work
+  as a character. Filled lenses read as sunglasses and the angled brows as
+  worried: cut.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
