@@ -51,6 +51,13 @@ either; footyscoutle.com/.gg free, scoutle.com taken). FootyScoutle keeps
 the scout office and reads as a game and as football, but it is 12 letters
 (past the ~11 that fit under an app icon), four syllables, "-le" puts it in
 the Wordle clone family, and "Footy" is Aussie rules in Australia.
+Full check (Jonno leaning FootyScoutle, 2026-11-18): every FootyScoutle
+domain tried is free (.com .gg .app .io .co.uk .games .net .org,
+footy-scoutle.com), and two extended web searches found no product, app or
+account using the name. The near-namesake is **Scoutle**, a 2022 VALORANT
+Wordle-style game (guess the pro player), still mirrored on Immaculate Grid
+and Blossom; same mechanic, different sport. Social handles not checked
+(searches cannot see them; check by hand on TikTok, Instagram, X).
 BrightonScoutle nods to Brighton's famous recruitment, but it ties the name
 to one club (rival fans, implied official link, the club's IP). Cut.
 
