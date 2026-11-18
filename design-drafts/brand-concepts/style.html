@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BK Scout style sheet</title>
+<title>FootyScoutle style sheet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
@@ -61,7 +61,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 
 /* ===== 1. Wordmark and mark ===== */
 .hero { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
-.wordmark { display: inline-flex; align-items: baseline; gap: .12em; font: 900 clamp(56px, 9vw, 112px)/.85 var(--display); letter-spacing: .01em; text-transform: uppercase; }
+.wordmark { display: inline-flex; align-items: baseline; gap: .12em; font: 900 clamp(40px, 12vw, 112px)/.85 var(--display); letter-spacing: .01em; text-transform: uppercase; }
 .wordmark .bk { background: var(--ink); color: var(--paper); padding: .06em .14em .02em; border-radius: .06em; transform: rotate(-2deg); display: inline-block; box-shadow: var(--shadow-1); }
 .wordmark .scout { color: var(--ink); }
 .inkbg .wordmark .bk { background: var(--paper); color: var(--ink); }
@@ -105,7 +105,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 .spec { display: grid; grid-template-columns: 150px 1fr; gap: 6px 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--rule); }
 .spec:last-child { border-bottom: 0; }
 .spec small { color: var(--muted); font: 700 12px/1.35 var(--body); }
-.t-hero { font: 900 56px/.95 var(--display); }
+.t-hero { font: 900 clamp(36px, 10vw, 56px)/.95 var(--display); }
 .t-h1 { font: 900 36px/1 var(--display); }
 .t-tape { font: 800 18px/1 var(--display); letter-spacing: .14em; text-transform: uppercase; }
 .t-score { font: 900 64px/.9 var(--display); font-variant-numeric: tabular-nums; }
@@ -237,10 +237,9 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
   <!-- ===== 1 ===== -->
   <section style="margin-top:0">
     <div class="hero">
-      <div class="pass"><b>BK</b><i></i></div>
+      <div class="pass"><b>FS</b><i></i></div>
       <div>
-        <div class="wordmark"><span class="bk">BK</span><span class="scout">Scout</span></div>
-        <div class="fullname">Ball Knowledge Scout</div>
+        <div class="wordmark"><span class="bk">Footy</span><span class="scout">Scoutle</span></div>
         <div class="descriptor">Daily football games</div>
       </div>
     </div>
@@ -249,23 +248,23 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 
   <section>
     <h2><span>1</span>Name and mark</h2>
-    <p class="lede">Say and write <b>BK Scout</b>; the full name appears once, under the wordmark. The mark is a scout's pass: hole-punched card, BK on it, one red rule. It is ours, never in the style of a club crest.</p>
+    <p class="lede">Name locked 2026-11-18: <b>FootyScoutle</b>, said and written as one word. The wordmark splits it in two tones (Footy on a chip, Scoutle in type) so the two halves read at a glance. The scout's pass with FS is a placeholder until the logo is chosen (binoculars, now a standalone mark rather than a B).</p>
     <div class="grid g3">
       <div class="panel grained">
         <h3>On paper</h3>
-        <div class="wordmark" style="font-size:52px"><span class="bk">BK</span><span class="scout">Scout</span></div>
+        <div class="wordmark" style="font-size:52px"><span class="bk">Footy</span><span class="scout">Scoutle</span></div>
       </div>
       <div class="panel inkbg">
         <h3 style="color:#c9c1b2">On ink</h3>
-        <div class="wordmark" style="font-size:52px"><span class="bk">BK</span><span class="scout">Scout</span></div>
+        <div class="wordmark" style="font-size:52px"><span class="bk">Footy</span><span class="scout">Scoutle</span></div>
       </div>
       <div class="panel">
         <h3>Sizes</h3>
         <div class="sizes">
-          <figure><div class="pass" style="--s:64px"><b>BK</b><i></i></div><figcaption>App icon</figcaption></figure>
-          <figure><div class="pass inv" style="--s:48px"><b>BK</b><i></i></div><figcaption>On ink</figcaption></figure>
-          <figure><div class="fav">BK</div><figcaption>32 px</figcaption></figure>
-          <figure><div class="fav s16">BK</div><figcaption>16 px</figcaption></figure>
+          <figure><div class="pass" style="--s:64px"><b>FS</b><i></i></div><figcaption>App icon</figcaption></figure>
+          <figure><div class="pass inv" style="--s:48px"><b>FS</b><i></i></div><figcaption>On ink</figcaption></figure>
+          <figure><div class="fav">FS</div><figcaption>32 px</figcaption></figure>
+          <figure><div class="fav s16">FS</div><figcaption>16 px</figcaption></figure>
         </div>
       </div>
     </div>
@@ -273,20 +272,20 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
       <div class="panel">
         <h3>Watermark on a phone video</h3>
         <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap">
-          <div class="watermark"><img src="img/round2/6-phone.png" alt=""><div class="wm"><span class="bk">BK</span><span class="scout">Scout</span></div></div>
+          <div class="watermark"><img src="img/round2/6-phone.png" alt=""><div class="wm"><span class="bk">Footy</span><span class="scout">Scoutle</span></div></div>
           <ul class="rules" style="flex:1; min-width:200px">
             <li>Bottom right, above the platform's own buttons.</li>
-            <li>BK on a paper chip, Scout in paper type with a soft shadow: reads on any footage.</li>
-            <li>The handle is the same word: <code>@bkscout</code>.</li>
+            <li>Footy on a paper chip, Scoutle in paper type with a soft shadow: reads on any footage.</li>
+            <li>The handle is the same word: <code>@footyscoutle</code> (check it is free on TikTok, Instagram and X before launch).</li>
           </ul>
         </div>
       </div>
       <div class="panel">
         <h3>Rules</h3>
         <ul class="rules">
-          <li><b>BK Scout</b> in speech, handles, watermarks, share cards. <b>Ball Knowledge Scout</b> only as the full name under the mark.</li>
+          <li><b>FootyScoutle</b> everywhere: speech, handles, watermarks, share cards. One word, capital F and S; never Footy Scoutle or FOOTYSCOUTLE in running text.</li>
           <li>Descriptor is fixed: <b>Daily football games</b>. Page titles and store listings carry it.</li>
-          <li>Share card leads with the name and the day: <b>BK Scout #42 · 87.4</b>.</li>
+          <li>Share card leads with the name and the day: <b>FootyScoutle #42 · 87.4</b>.</li>
           <li>No generated type, ever: the wordmark is real type.</li>
         </ul>
       </div>

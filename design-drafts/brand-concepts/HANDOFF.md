@@ -34,11 +34,15 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   lacks.
 - Mock: `direction.html` (localhost:4321/direction.html), 6's frames with the
   CSS clipboard and labels on top, desktop and phone. No new art.
-- **Name reopened (Jonno, 2026-11-18): BK Scout dropped** ("isn't a game,
-  doesn't sound like football"). Round 7 shortlist in `names.md`: Got Got
-  (lead), Panenka, The Boot Room. The live page titles still say Ball
-  Knowledge Scout; change them only once a new name is picked. The BK
-  binocular logo is on hold.
+- **Name locked (Jonno, 2026-11-18): FootyScoutle**, one word, capital F
+  and S. BK Scout was dropped the same day ("isn't a game, doesn't sound like
+  football"). It keeps the scout's office world and the clipboard. All
+  domains free on 2026-11-18, none bought (footyscoutle.com/.gg/.app/.io/
+  .co.uk/.games); social handles not checked yet. Near-namesake: Scoutle, a
+  2022 VALORANT guessing game. Live: page titles ("FootyScoutle · Daily
+  football games" on the hub, "Game · FootyScoutle" elsewhere); style.html
+  and logo.html renamed. The mark is open again: binoculars as a standalone
+  mark, not a B. Rounds and reasons in `names.md`.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
@@ -253,7 +257,7 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Next
 
-0. **Direction (2026-11-14):** illustrated plus CSS layer (above). Name decided (Ball Knowledge Scout / BK Scout). Next: a style sheet (palette, type, line and grain, layer components) and grey-box layout. The 5-second test runs on the merged direction, not on separate concepts.
+0. **Direction (2026-11-14):** illustrated plus CSS layer (above). Name: FootyScoutle (locked 2026-11-18; BK Scout dropped). Next: a style sheet (palette, type, line and grain, layer components) and grey-box layout. The 5-second test runs on the merged direction, not on separate concepts.
 0a. **Round 2 (2026-11-13):** `brief.md` (visitors, phone first, how concepts are judged); five concepts generated (car cut by Jonno), compared on `round2.html` (localhost:4321/round2.html). Next: Jonno's shortlist of 2 or 3, then the mates' 5-second test. The bible sign-off waits for the chosen concept.
 1. Jonno's sign-off on `bible.html` (objects, and the four open calls).
 2. **Single-item control test** on the Spoofed clipping, about 0.75 credits:
@@ -267,9 +271,8 @@ photo pipeline's scratch in the `photo-pipeline-1d882c` worktree.
 
 ## Open questions for Jonno
 
-- Blocking for the logo: the multiplayer game's name. (Site name decided
-  2026-11-15: **Ball Knowledge Scout**, short form **BK Scout**; see
-  `names.md`.)
+- Blocking for the logo: the multiplayer game's name. (Site name locked
+  2026-11-18: **FootyScoutle**; see `names.md`.)
 - Non-blocking: the Olise print's job on the board; whether the pub idea
   returns later (as the room around the board?).
 

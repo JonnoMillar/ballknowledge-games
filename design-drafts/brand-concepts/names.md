@@ -1,5 +1,9 @@
 # Hub name pool (2026-11-14)
 
+**Locked (Jonno, 2026-11-18): FootyScoutle.** One word, capital F and S.
+Free on every domain checked; social handles still to check by hand. Full
+check under round 7.
+
 **Reopened (Jonno, 2026-11-18): BK Scout is dropped.** "BK Scout isn't a
 game ... it doesn't sound like football." (Was decided 2026-11-15 as Ball
 Knowledge Scout, short form BK Scout.) The B-as-binoculars logo work is on
