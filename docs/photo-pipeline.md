@@ -670,6 +670,10 @@ Palmer's 2025 one were never offered), so for anyone marked wrong the order is n
 - `redo_marked.py` (run when he approves a batch on /photo-check) builds the previews for the cards he blocked
   instead of having three alternatives cut. "Bad crop" alone still re-crops the same photo three ways.
 - `test_cutout.py` runs the choose path with rembg and CLIP stubbed.
+- **Bug found and fixed:** `candidates.py` numbered Openverse photos from `len(ranked)`, so when a Commons photo failed to
+  decode, an Openverse jpg overwrote a Commons candidate's file and that candidate's face box pointed into another
+  picture (107 entries across 65 players). Openverse now numbers past every Commons file; `preview.py` drops the
+  overwritten Commons entries. Cutouts made from such an entry may show the wrong crop: his check catches it.
 
 The watchdog runs the photo-pipeline worktree's copy of the scripts: it does this only once that branch has this code
 and its cutout pass restarts (each pass is a new process).

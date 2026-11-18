@@ -278,7 +278,9 @@ for p in players:
         files, meta, year, era = pick_era(True)
         ranked, deep = rank_all(era, meta, year), True
     if sum(r['score'] > 0 for r in ranked) < 3 or os.environ.get('OV_ALWAYS'):   # Commons is thin for him: look at Flickr and the rest of Openverse
-        ranked += from_openverse(p, surname, folder, len(ranked), prime)
+        # Number past every Commons file judged (not len(ranked): undecodable ones leave gaps, and an Openverse photo then
+        # overwrote a Commons candidate's jpg, leaving its face box pointing into the wrong picture; 107 cases on 2026-11-18).
+        ranked += from_openverse(p, surname, folder, len(era), prime)
     ranked.sort(key=lambda r: -r['score'])
     out.write_text(json.dumps({'span': span, 'prime': prime, 'cat': cat, 'manager': manager, 'files': len(files), 'deep': deep, 'cands': ranked}, indent=1), encoding='utf8')
     print(f"{p['name']}: {cat!r}, {len(files)} files, {len(era)} in era, {sum(r['score'] > 0 for r in ranked)} usable, "

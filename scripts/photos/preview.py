@@ -35,6 +35,10 @@ def build(D: Path, pid: str, current: str | None = None) -> int:
     cands = json.loads(cf.read_text(encoding='utf8'))['cands']
     banned = set(json.loads((D / 'bad' / f'{pid}.json').read_text(encoding='utf8'))) if (D / 'bad' / f'{pid}.json').exists() else set()
     banned.discard(current)
+    # Before candidates.py numbered Openverse photos past the Commons ones, an Openverse jpg could overwrite a Commons
+    # candidate's file: the file on disk is the Openverse photo, so the Commons entry (its box from another picture) is dropped.
+    taken = {c['local'] for c in cands if c.get('origin')}
+    cands = [c for c in cands if c.get('origin') or c.get('local') not in taken]
     keep = sorted((c for c in cands if realistic(c, banned)), key=lambda c: (c['file'] != current, bool(c.get('gate')), -c.get('score', 0)))
     out, folder = [], D / 'pre' / pid
     folder.mkdir(parents=True, exist_ok=True)

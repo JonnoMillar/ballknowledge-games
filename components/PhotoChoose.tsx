@@ -45,7 +45,7 @@ export default function PhotoChoose({ items }: { items: ChooseItem[] }) {
             {it.opts.map((o) => {
               const on = chosen[it.id] === o.file;
               return (
-                <li key={o.n}>
+                <li key={o.file}>
                   <button type="button" className={`ch__opt ${on ? 'is-on' : ''}`} aria-pressed={on} onClick={() => choose(it.id, o.file)} title={`${o.file.replace(/^File:/, '')} (${o.year ?? '?'})`}>
                     <img src={`/api/photo-check/pre/${it.id}/${o.n}`} alt="" loading="lazy" width={160} height={160} />
                     <span className="pc__flag">{on ? 'CHOSEN' : o.current ? 'ON SITE NOW' : (o.year ?? '')}</span>
