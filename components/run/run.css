@@ -153,3 +153,10 @@ button.run-list__row { cursor: pointer; }
 .run-order__act { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .run-order__act p { margin: 0; color: var(--muted); }
 .run-order__score b { font-size: 26px; color: var(--ink); }
+.run-season__years .is-out { opacity: .35; text-decoration: line-through; }
+.run-season__ask b { white-space: nowrap; }
+.run-order__score { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.run-order__verdict { font-weight: 700; color: var(--ink); }
+.run-mole__count { margin: 0 0 2px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+/* The card stays in its case, which hangs below the strip: room for it before the verdict. */
+.run-steps .step-act { margin-top: 14px; }

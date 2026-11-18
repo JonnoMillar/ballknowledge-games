@@ -6,13 +6,15 @@ moves to <dir>/rej/ (it stays there as his label for screen.py), the status file
 <dir>/marked.json. Then, by his tags:
   - only "Bad crop": the same photo, cropped three other ways (recrop.json, cutout.py): he picks one on /photo-pick;
   - any other blocking tag, or none (the older marks): its Commons file goes in <dir>/bad/<id>.json so it is
-    not picked again, and cutout.py cuts the next three candidates that pass the checks, so Low quality,
-    the clothing tags, Not him, Messy cutout, Unusable and Too old all mean "the next candidate".
+    not picked again, and preview.py frames every other realistic candidate for /photo-choose. Nothing is cut
+    until he chooses one there (since 2026-11-18; before, cutout.py cut the next three on spec).
 Out/<id>.0-2.webp are the new pictures; nothing ships until he picks one (publish.py). An id he has already
 approved is left alone. Safe to run again: it only adds new marks.
 """
 import json, shutil, sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+import preview
 
 D = Path(sys.argv[1])
 marks = json.loads((D / 'marks.json').read_text(encoding='utf8'))
@@ -38,6 +40,7 @@ for pid in dict.fromkeys(marks['wrong'] + marks['flagged']):
         else:
             bad |= {r['file'] for r in st.get('results', [])}
             bad_file.write_text(json.dumps(sorted(bad)))
+            preview.build(D, pid)   # his options for /photo-choose; nothing is cut until he chooses (cutout.py)
         for f in (D / 'out').glob(f'{pid}.*'):
             shutil.move(str(f), D / 'rej' / f.name)
     queued.add(pid)

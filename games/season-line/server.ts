@@ -3,7 +3,7 @@ import { dayNumber } from '../../src/lib/daily';
 import { COLOUR, INK, seasonLabel } from './lib/clubs';
 import { addDays, dailyPool, EPOCH, FIRST_DAILY_SEASON } from './lib/day';
 import { fifths, rivals } from './lib/table';
-import { RUN_GUESSES, WINDOW, type RunSlDay } from './lib/run';
+import { RUN_GUESSES, SEASON_PICKS, WINDOW, type RunSlDay } from './lib/run';
 import type { TopScorer } from './lib/wiki';
 import { GUESSES, type BoardView, type Guess, type Judged, type StoredBoard, type StoredData, type StoredDay } from './lib/types';
 
@@ -180,8 +180,10 @@ export interface RunSeasonView {
   club: { club: string; name: string; q: string | null; colour: string } | null;
   /** 1 to 3: the guess that named the club, or null. */
   clubAt: number | null;
-  /** Set once the season is picked (null pick: the clock ran out). */
-  season: { picked: number | null; start: number; champion: string; championName: string } | null;
+  /** Each season pick so far (null: the clock ran out), and after a miss which way the answer lies. */
+  picks: { picked: number | null; dir: 'earlier' | 'later' | null }[];
+  /** Set once the season is found or the picks are spent. `picked` is the last pick. */
+  season: { picked: number | null; at: number | null; start: number; champion: string; championName: string } | null;
 }
 
 let runRead: Promise<Map<string, RunSlDay>> | null = null;
@@ -193,7 +195,7 @@ const runDays = () => (process.env.NODE_ENV === 'development' ? null : runRead)
  * guesses so far ('' = out of time); `season` is the season pick, null when
  * its clock ran out, undefined until then. Bad input is null.
  */
-export async function runView(date: string, clubs: readonly unknown[], season?: unknown): Promise<RunSeasonView | null> {
+export async function runView(date: string, clubs: readonly unknown[], seasons: readonly unknown[] = []): Promise<RunSeasonView | null> {
   if (!playable(date)) return null;
   const [day, { data, byId }] = [(await runDays()).get(date), await load()];
   const b = day && byId.get(day.board);
@@ -212,20 +214,27 @@ export async function runView(date: string, clubs: readonly unknown[], season?: 
   const misses = guesses.filter((g) => !g.right).length;
   const clubAt = guesses.findIndex((g) => g.right) + 1 || null;
   const clubDone = clubAt !== null || misses >= RUN_GUESSES;
-  let picked: number | null | undefined;
-  if (clubDone && season !== undefined) {
-    if (season !== null && (typeof season !== 'number' || !Number.isInteger(season) || season < window[0] || season > window[1])) return null;
-    picked = season as number | null;
+  const picks: RunSeasonView['picks'] = [];
+  if (clubDone) {
+    for (const p of seasons.slice(0, SEASON_PICKS)) {
+      if (picks.some((x) => x.picked === b.start)) break;
+      if (p !== null && (typeof p !== 'number' || !Number.isInteger(p) || p < window[0] || p > window[1])) return null;
+      const picked = p as number | null;
+      picks.push({ picked, dir: picked === null || picked === b.start ? null : picked > b.start ? 'earlier' : 'later' });
+    }
   }
+  const seasonAt = picks.findIndex((x) => x.picked === b.start) + 1 || null;
+  const seasonDone = seasonAt !== null || picks.length >= SEASON_PICKS;
   return {
     date, games: s.games, teams: Object.keys(s.table).length, window,
     clubs: [...names].map(card).sort((x, y) => x.name.localeCompare(y.name)),
     line: s.table[b.club]!,
     guesses,
     // Hints come with misses; the rest only once the season is picked (a top scorer's tally can place the season).
-    hints: { squad: misses >= 1 || picked !== undefined ? b.squad[1] : null, top: misses >= 2 || picked !== undefined ? b.top : null },
+    hints: { squad: misses >= 1 || seasonDone ? b.squad[1] : null, top: misses >= 2 || seasonDone ? b.top : null },
     club: clubDone ? card(b.club) : null,
     clubAt,
-    season: picked === undefined ? null : { picked, start: b.start, champion: s.champion, championName: data.clubs[s.champion]!.name },
+    picks,
+    season: !seasonDone ? null : { picked: picks.at(-1)!.picked, at: seasonAt, start: b.start, champion: s.champion, championName: data.clubs[s.champion]!.name },
   };
 }

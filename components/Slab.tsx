@@ -46,12 +46,18 @@ export default function Slab({ grade, player, image, ground, news, size = 'md', 
   );
 }
 
-/** The case without a card in it: a grade's name on its material. For keys and headings. */
-export function GradeChip({ grade, label }: { grade: Grade; label?: string }) {
-  return (
-    <span className={`slab slab--${grade} grade-chip`}>
+/**
+ * The case without a card in it: a grade's name on its material. For keys and
+ * headings. `shine`: a result's plaque, with depth, a slow turn in the light
+ * and a sheen crossing it now and then (end of a run).
+ */
+export function GradeChip({ grade, label, shine = false }: { grade: Grade; label?: string; shine?: boolean }) {
+  const chip = (
+    <span className={`slab slab--${grade} grade-chip${shine ? ' grade-chip--shine' : ''}`}>
       <span className="slab__face" aria-hidden><span className="slab__inlay" /></span>
       <span className="slab__label display">{label ?? GRADE_WORD[grade]}</span>
+      {shine ? <span className="grade-chip__shine" aria-hidden /> : null}
     </span>
   );
+  return shine ? <span className="plaque">{chip}</span> : chip;
 }

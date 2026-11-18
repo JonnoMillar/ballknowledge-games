@@ -82,6 +82,12 @@ export default function Slam({ verdict, ground, news, play, cap, onDone }: {
     return () => cancelAnimationFrame(raf);
   }, [phase]);
 
+  // At rest, nothing of the show is left. A frame can land between finish() and the show's cleanup
+  // (the run's cap ends it mid-push), so clear again once 'done' is committed and the frames are cancelled.
+  useEffect(() => {
+    if (phase === 'done') STAGE.forEach((p) => root.current?.style.removeProperty(p));
+  }, [phase]);
+
   useEffect(() => {
     if (phase !== 'settle') return;
     const t = window.setTimeout(finish, SETTLE);

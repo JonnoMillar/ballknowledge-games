@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { atClub, barOf, factOf, fieldOf, judge, knownOf, linkOf, runGrade, shareLine, stepsOf, stintWeight, CURRENT_STINT, ERA_FLOOR, ERA_FULL, PLAIN, STEPS, type Lens, type Ruler, type Views } from '../lib/rules';
+import { atClub, barOf, cardPoints, runPoints, factOf, fieldOf, judge, knownOf, linkOf, runGrade, shareLine, stepsOf, stintWeight, CURRENT_STINT, ERA_FLOOR, ERA_FULL, PLAIN, STEPS, type Lens, type Ruler, type Views } from '../lib/rules';
 import type { Player, Spell } from '../../../src/lib/chemistry/types';
 
 const player = (id: string, clubIds: string[], fame: number, spells: Record<string, Spell> = {}): Player => ({
@@ -174,15 +174,18 @@ describe('the absolute bar', () => {
 });
 
 describe('runGrade', () => {
-  it('is the average rounded down: an Elite run is four Elites', () => {
+  it('is the average rounded to the nearest, halves up', () => {
     expect(runGrade(['elite', 'elite', 'elite', 'elite'])).toBe('elite');
-    expect(runGrade(['elite', 'elite', 'elite', 'sharp'])).toBe('sharp');
-    expect(runGrade(['basic', 'decent', 'solid', 'sharp'])).toBe('decent'); // 10 / 4
+    expect(runGrade(['elite', 'elite', 'sharp', 'sharp'])).toBe('elite'); // 18 / 4 = 4.5
+    expect(runGrade(['sharp', 'elite', 'solid', 'solid'])).toBe('sharp'); // 15 / 4 = 3.75: Jonno's run
+    expect(runGrade(['elite', 'sharp', 'sharp', 'solid'])).toBe('sharp'); // 16 / 4
+    expect(runGrade(['basic', 'decent', 'solid', 'sharp'])).toBe('solid'); // 10 / 4 = 2.5
   });
 
   it('a miss counts nothing, but anything that held is at least Basic', () => {
     expect(runGrade(['sharp', null, null, null])).toBe('basic');
-    expect(runGrade(['elite', 'elite', null, null])).toBe('decent'); // 10 / 4
+    expect(runGrade(['elite', 'elite', null, null])).toBe('solid'); // 10 / 4
+    expect(runGrade(['basic', null, null, null])).toBe('basic');
   });
 
   it('is nothing when nothing held', () => {
@@ -192,7 +195,21 @@ describe('runGrade', () => {
 
 describe('shareLine', () => {
   it('a glyph per step and the run, never a name', () => {
-    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Decent\n🟦🟥🟫🏆');
+    expect(shareLine(26, ['sharp', null, 'basic', 'elite'])).toBe('Step #26 · Ball knowledge: Solid\n🟦🟥🟫🏆');
     expect(shareLine(3, [null, null, null, null])).toBe('Step #3 · Ball knowledge: none\n🟥🟥🟥🟥');
+    expect(shareLine(4, ['elite', 'sharp', null, null], 1240)).toBe('Step #4 · Ball knowledge: Decent · 1,240 pts\n🏆🟦🟥🟥');
+  });
+});
+
+describe('card points', () => {
+  it('each grade a band placed by depth, a miss nothing', () => {
+    expect(cardPoints(null, 1)).toBe(0);
+    expect(cardPoints('basic', 0)).toBe(10);
+    expect(cardPoints('solid', 0.5)).toBe(67);
+    expect(cardPoints('elite', 1)).toBe(350);
+    // A deeper grade always beats a shallower one, whatever the depth.
+    const order = ['basic', 'decent', 'solid', 'sharp', 'elite'] as const;
+    for (let i = 1; i < order.length; i++) expect(cardPoints(order[i]!, 0)).toBeGreaterThan(cardPoints(order[i - 1]!, 1));
+    expect(runPoints([{ grade: 'sharp', depth: 0 }, null, { grade: 'elite', depth: 1 }])).toBe(450);
   });
 });

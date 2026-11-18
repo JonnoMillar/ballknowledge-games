@@ -19,10 +19,11 @@ export const BOARD_GAP = 60;
 const CLUB_GAP = 10;
 export const WINDOW = 5;
 export const RUN_GUESSES = 3;
-/** Club named on guess 1, 2, 3; the season exact, or one off. */
+/** Club named on guess 1, 2, 3. */
 export const CLUB_POINTS = [80, 55, 30] as const;
-export const SEASON_EXACT = 20;
-export const SEASON_NEAR = 10;
+/** Two goes at the season (Jonno, 2026-11-16: one felt harsh); a miss says earlier or later. Points for finding it on go 1, 2. */
+export const SEASON_PICKS = 2;
+export const SEASON_POINTS = [20, 10] as const;
 
 /** A run day: the board and the first season of its window. */
 export interface RunSlDay { date: string; board: string; from: number }
@@ -85,8 +86,8 @@ export function extendRun(boards: readonly StoredBoard[], run: readonly RunSlDay
 }
 
 /** The task score: the club on guess 1, 2 or 3 (0 if never), plus the season, exact or one off. */
-export function runScore(clubAt: number | null, seasonOff: number | null): number {
+export function runScore(clubAt: number | null, seasonAt: number | null): number {
   const club = clubAt !== null && clubAt >= 1 && clubAt <= RUN_GUESSES ? CLUB_POINTS[clubAt - 1]! : 0;
-  const season = seasonOff === 0 ? SEASON_EXACT : seasonOff === 1 ? SEASON_NEAR : 0;
+  const season = seasonAt !== null && seasonAt >= 1 && seasonAt <= SEASON_PICKS ? SEASON_POINTS[seasonAt - 1]! : 0;
   return club + season;
 }

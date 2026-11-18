@@ -43,11 +43,15 @@ def fold(s):
 def wikidata(qid):
     """(Commons category, Wikidata's chosen image, is he also an association football manager) for a player."""
     raw = get(f'https://www.wikidata.org/wiki/Special:EntityData/{qid}.json')
-    claims = json.loads(raw)['entities'][qid]['claims'] if raw else {}
+    ent = json.loads(raw)['entities'][qid] if raw else {}
+    claims = ent.get('claims', {})
     val = lambda p: claims.get(p, [{}])[0].get('mainsnak', {}).get('datavalue', {}).get('value')
     p18 = val('P18')
     jobs = {c.get('mainsnak', {}).get('datavalue', {}).get('value', {}).get('id') for c in claims.get('P106', [])}
-    return val('P373'), (f'File:{p18}' if p18 else None), 'Q628099' in jobs
+    # No P373 (Antony, Frimpong on 2026-11-17): the Commons sitelink often names the category anyway.
+    link = ent.get('sitelinks', {}).get('commonswiki', {}).get('title', '')
+    cat = val('P373') or (link.removeprefix('Category:') if link.startswith('Category:') else None)
+    return cat, (f'File:{p18}' if p18 else None), 'Q628099' in jobs
 
 def members(cat, kind):
     j = api(action='query', list='categorymembers', cmtype=kind, cmlimit=200, cmtitle=f'Category:{cat}')
@@ -96,7 +100,7 @@ def info(titles):
             meta = ii.get('extmetadata', {})
             raw = (meta.get('DateTimeOriginal') or meta.get('DateTime') or {}).get('value', '')
             y = re.search(r'\b(1[89]\d\d|20\d\d)\b', raw)
-            out[p['title']] = {'exif': int(y.group()) if y else None, 'thumb': ii.get('thumburl')}
+            out[p['title']] = {'exif': int(y.group()) if y else None, 'thumb': ii.get('thumburl'), 'width': ii.get('width') or 0}
     return out
 
 def judge(img):
@@ -109,7 +113,12 @@ def judge(img):
     faces = sorted(faces, key=lambda f: -f[3])
     r = faces[0]
     x, y, fw, fh = (int(v) for v in r[:4])
-    second = faces[1][3] / fh if len(faces) > 1 else 0.0
+    # Only a face inside the square cutout.py will crop (3.2 face heights, from 0.55 above the face) is a second
+    # person in the picture: a team-mate a few metres away in a match photo is cropped out (2026-11-17: this gate
+    # took 8 of Garnacho's 15 photos, 9 of Reijnders' 15). What is left beside him the cutout checks still catch.
+    side, cxm, top = 3.2 * fh, x + fw / 2, y - 0.55 * fh
+    near = [f for f in faces[1:] if f[0] < cxm + side / 2 and f[0] + f[2] > cxm - side / 2 and f[1] < top + side and f[1] + f[3] > top]
+    second = max(f[3] for f in near) / fh if near else 0.0
     if second > 0.85:   # a true two-shot; a neighbour behind him is a score penalty and a cutout check
         return 'two people', None
     if fh < MIN_FACE:
@@ -216,7 +225,7 @@ for p in players:
         # the cutout checks, and for a retired legend that is often all Commons has.
         # A manager's photos from his managing years count too (tracksuit or suit; checks.py allows them).
         late = rank.THIS_YEAR + 1 if manager else span[1] + (30 if deep else 1)
-        era = [f for f in files if meta.get(f, {}).get('thumb') and (span[0] <= year[f] <= late if year[f] else span[1] >= 2012)][:MAX_FILES]
+        era = [f for f in files if meta.get(f, {}).get('thumb') and (span[0] <= year[f] <= late if year[f] else span[1] >= 2012)][:MAX_FILES * (2 if deep else 1)]
         return files, meta, year, era
 
     files, meta, year, era = pick_era(False)
@@ -232,6 +241,20 @@ for p in players:
                 continue
             try:
                 gate, feats = judge(img)
+                # A face too small in the 900 px thumbnail of a big original (a match photo of the whole box): judge a
+                # bigger thumbnail, the first standard width that makes it 50 px. 2026-11-17: Garnacho's Copa América photos.
+                small = re.match(r'face (\d+)px, too small', gate or '')
+                px = re.search(r'/\d+px-', meta[f]['thumb'])
+                if small and px:
+                    # Commons serves only standard thumbnail widths (1900 px is a 400; originals are rate-limited, 429).
+                    have, face = img.shape[1], max(int(small[1]), 1)
+                    w = next((b for b in (1280, 1920) if b > have and b <= meta[f]['width'] and face * b / have >= MIN_FACE), None)
+                    if w:
+                        raw2 = get(meta[f]['thumb'][:px.start()] + f'/{w}px-' + meta[f]['thumb'][px.end():])
+                        img2 = cv2.imdecode(np.frombuffer(raw2, np.uint8), cv2.IMREAD_COLOR) if raw2 else None
+                        if img2 is not None:
+                            raw, img = raw2, img2
+                            gate, feats = judge(img)
             except cv2.error:   # out of memory while the machine is busy: skip this photo, keep the run alive
                 continue
             (folder / f'{n}.jpg').write_bytes(raw)
@@ -251,11 +274,13 @@ for p in players:
 
     ranked = rank_all(era, meta, year)
     deep = False
-    if not any(r['score'] > 0 for r in ranked):
+    if sum(r['score'] > 0 for r in ranked) < 3:   # was: none at all. Højlund's category holds 4 files; the name search finds more
         files, meta, year, era = pick_era(True)
         ranked, deep = rank_all(era, meta, year), True
     if sum(r['score'] > 0 for r in ranked) < 3 or os.environ.get('OV_ALWAYS'):   # Commons is thin for him: look at Flickr and the rest of Openverse
-        ranked += from_openverse(p, surname, folder, len(ranked), prime)
+        # Number past every Commons file judged (not len(ranked): undecodable ones leave gaps, and an Openverse photo then
+        # overwrote a Commons candidate's jpg, leaving its face box pointing into the wrong picture; 107 cases on 2026-11-18).
+        ranked += from_openverse(p, surname, folder, len(era), prime)
     ranked.sort(key=lambda r: -r['score'])
     out.write_text(json.dumps({'span': span, 'prime': prime, 'cat': cat, 'manager': manager, 'files': len(files), 'deep': deep, 'cands': ranked}, indent=1), encoding='utf8')
     print(f"{p['name']}: {cat!r}, {len(files)} files, {len(era)} in era, {sum(r['score'] > 0 for r in ranked)} usable, "

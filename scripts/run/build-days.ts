@@ -12,12 +12,12 @@
  * Reads only committed files, so a rerun writes the same days.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { addDays, extend as extendPin, MIN_AHEAD, problems as pinProblems, TOP_UP, type RunPinDay } from '../../games/pin/lib/run';
+import { addDays, extend as extendPin, memorable, MIN_AHEAD, problems as pinProblems, TOP_UP, type RunPinDay } from '../../games/pin/lib/run';
 import type { Goals } from '../../games/pin/lib/types';
 import { extend as extendMole, problems as moleProblems, type RunMoleDay } from '../../games/bluff/lib/run';
 import type { Side } from '../../games/bluff/lib/types';
 import { buildWorld, type Inputs } from '../../games/tunnel/lib/day';
-import { extend as extendOrder, problems as orderProblems, type RunOrderDay } from '../../games/tunnel/lib/run';
+import { checkedPhotos, extend as extendOrder, problems as orderProblems, type RunOrderDay } from '../../games/tunnel/lib/run';
 import { extendRun, problems as slProblems, type RunSlDay } from '../../games/season-line/lib/run';
 import type { StoredData, StoredDay } from '../../games/season-line/lib/types';
 
@@ -34,10 +34,11 @@ const ahead = (days: { date: string }[]) => {
 export const PIN_RUN = 'games/pin/data/run.json';
 const goals = JSON.parse(readFileSync('games/pin/data/goals.json', 'utf8')) as Goals;
 const pinDays = read<RunPinDay>(PIN_RUN);
+const famousGoals = memorable(goals, JSON.parse(readFileSync('data/pool.json', 'utf8')) as { id: string; name: string; aliases?: string[] }[], JSON.parse(readFileSync('data/player-views.json', 'utf8')) as Record<string, number>);
 if (ahead(pinDays) < MIN_AHEAD) {
-  const all = extendPin(goals, pinDays, addDays(today, TOP_UP));
+  const all = extendPin(goals, pinDays, addDays(today, TOP_UP), famousGoals);
   const fresh = all.slice(pinDays.length);
-  const bad = fresh.flatMap((d, i) => pinProblems(goals, d, all.slice(0, pinDays.length + i)));
+  const bad = fresh.flatMap((d, i) => pinProblems(goals, d, all.slice(0, pinDays.length + i), famousGoals));
   if (bad.length) throw new Error(`run pin schedule broke its own rules:\n${bad.join('\n')}`);
   write(PIN_RUN, all);
   console.log(`Log the shot: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);
@@ -60,9 +61,12 @@ if (ahead(moleDays) < MIN_AHEAD) {
 if (print) {
   const byKey = new Map(sides.map((s) => [s.key, s]));
   for (const d of read<RunMoleDay>(MOLE_RUN).filter((x) => x.date >= today)) {
-    const s = byKey.get(d.side)!;
-    const name = Object.values(s.help).flat().find((p) => p!.id === d.fake)?.name;
-    console.log(`${d.date}  ${s.team} (${s.comp}, ${s.date.slice(0, 4)})  ${name} for ${s.lines[d.at[0]]![d.at[1]]!.name}`);
+    console.log(`${d.date}  ${d.moles.map((m) => {
+      const s = byKey.get(m.side)!;
+      const name = Object.values(s.help).flat().find((p) => p!.id === m.fake)?.name;
+      const slot = s.lines[m.at[0]]![m.at[1]]!;
+      return `${s.team} (${s.comp}, ${s.date.slice(0, 4)}) ${name} for ${slot.name} [${slot.pos}]`;
+    }).join(' · ')}`);
   }
 }
 
@@ -74,10 +78,11 @@ const world = buildWorld({
   facts: JSON.parse(readFileSync('games/tunnel/data/facts.json', 'utf8')) as Inputs['facts'],
 });
 const orderDays = read<RunOrderDay>(ORDER_RUN);
+const photos = checkedPhotos(JSON.parse(readFileSync('data/portraits.json', 'utf8')) as Record<string, { source: string; url?: string }>);
 if (ahead(orderDays) < MIN_AHEAD) {
-  const all = extendOrder(world, orderDays, addDays(today, TOP_UP));
+  const all = extendOrder(world, orderDays, addDays(today, TOP_UP), photos);
   const fresh = all.slice(orderDays.length);
-  const bad = fresh.flatMap((d, i) => orderProblems(world, d, all.slice(0, orderDays.length + i)));
+  const bad = fresh.flatMap((d, i) => orderProblems(world, d, all.slice(0, orderDays.length + i), photos));
   if (bad.length) throw new Error(`run order schedule broke its own rules:\n${bad.join('\n')}`);
   write(ORDER_RUN, all);
   console.log(`Line them up: ${fresh.length} new days, ${fresh[0]?.date} to ${fresh[fresh.length - 1]?.date}`);

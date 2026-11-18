@@ -560,3 +560,120 @@ emptied; the test outputs were deleted so the normal pass redoes him. The new `c
 tag saves with the save call stubbed (his real marks were not touched), and `scripts/photos/test_screen.py` covers the
 screen's pure parts. Not tried: his first real "Approve ... next batch" click with blocked cards (it starts `redo_marked.py`
 in the background); the soft-tag "better option" search is not built.
+
+## Gap batch and the sharpness floor (2026-11-17)
+
+Jonno, after playing the daily run on 2026-11-16: too many well-known players show the kit card ("reads as
+dev sloppiness"), and Figo's photo in Trace the link was too low quality and stood out. In the top 1,000 by
+views, 545 had no published cutout: 363 had a cutout waiting for review, 118 were on the kit card, 66 were
+marked wrong, 4 had not been searched.
+
+### The sharpness floor
+
+`checks.subject_sharpness`: Laplacian variance of the grey 440 px crop over the subject (alpha > 200, eroded
+2 px so the matte's edge does not count). `checks.MIN_SUBJECT_SHARP = 55`, picked from the 480 published
+cutouts: the five lowest are exactly the five he would call soft (Palmer 22, Figo 25, Park 28, Berbatov 39,
+Guardiola 47: small old photos upscaled), then a gap to Sancho 60 (soft, acceptable); median 941. A sheet of
+unreviewed cutouts at 40-55 was smeared; 55-70 was fine. On his labels: 6 of 84 wrong cards are under it
+against 5 of 468 approved (those 5 being the ones above). 126 of 3,551 unreviewed cutouts (3.5%) fall under it.
+
+It applies in two places:
+- **Cut time** (`checks.crop_verdict`, so `cutout.py`): a crop under the floor is rejected and the next
+  candidate tried, like any other failed check (`rejected`: "blurry (subject sharpness N)").
+- **The screen** (`screen.py fit`): `screen.json` gains `blurry: {id: [k]}` for every `out/<id>.<k>.webp`
+  under the floor (cached by file size in `screen/subj.json`). `/photo-check` treats a blurry first cutout as
+  no photo (it counts in "kit"), `/photo-pick` leaves blurry alternatives out. So run `screen.py fit` after a
+  batch of cutouts, or cutouts made by an older `cutout.py` can still show until it runs.
+
+`test_screen.py` covers it: a detailed subject passes, the same subject shrunk to 60 px and blown back up fails,
+a hard matte edge on a flat subject is not detail, and `blurry_cutouts` lists exactly the soft file.
+
+### Wider search for the gaps (`candidates.py`)
+
+- **Two people:** only a second face inside the square that `cutout.py` will crop (3.2 face heights wide, from
+  0.55 above the face) counts, for the gate and for the neighbour penalty. A team-mate a few metres away in a
+  match photo is cropped out anyway; this gate had taken 8 of Garnacho's 15 photos and 9 of Reijnders' 15.
+- **Deep search when under three usable**, not only when none (Højlund's category holds 4 files; the Commons
+  name search adds more), with room for 80 files on that pass.
+- **Small faces in big photos:** a face under 50 px in the 900 px thumbnail is judged again in a 1280 or 1920 px
+  thumbnail when the original is that wide. Commons now serves only standard thumbnail widths (1280 and 1920
+  work, 1900 is a 400) and rate-limits originals (429), so the code asks only for those two. Garnacho: 1 usable
+  photo to 3 (Copa América 2024 frames). A photo named after several players can now pass with the biggest face
+  being someone else ("Lautaro, Di María y Garnacho"): Jonno's check and the screen's "not him" catch it.
+- **No P373:** when Wikidata has no Commons category, the Commons sitelink (`Category:...`) is used. Antony had
+  none ("Antony (footballer, born 2000)"): 0 usable photos to 5. Frimpong is the same case.
+- The batch ran with `OV_ALWAYS=1`, so Openverse was asked for every gap player.
+
+### The batch (`scripts/photos/ops/gap_batch.py`)
+
+`python scripts/photos/ops/gap_batch.py <dir> [--n 150] [--repick Q1,Q2] [--dry]`, then
+`candidates.py <dir> gaps-redo.json`, `cutout.py <dir> gaps-redo.json`, `gap_batch.py <dir> --finish`,
+`screen.py <dir> fit`. It ranks every player with no published cutout (and not already approved or picked) by
+views, a career that ended before 2015 counted at 40% unless he is a manager. Wikidata's manager occupation is
+broad (Gascoigne, Bergkamp, Shearer have it), so in practice the order is close to plain views. The top N go in
+`focus-gaps.json`, shown on their own at `/photo-check?focus=gaps` and `/photo-pick?focus=gaps` (any
+`?focus=<name>` reads `focus-<name>.json`; `?focus=1` is still the upcoming-games list). Per player: a cutout
+waiting for review stays unless it is blurry (then its file is banned and the next candidate cut); kit card,
+never searched, or marked wrong with fewer than three sharp alternatives: searched again (old files go to `old/`).
+
+**Re-picks** (`--repick`, players already published): the published file is banned, the player joins
+`marked.json` for three new alternatives, and `--finish` puts the published cutout back as alternative 0 with
+`current: true`. He stays in `approved.json`, so if Jonno picks nothing the photo on the site stays;
+`/photo-pick` labels that card ON SITE NOW.
+
+**The data folder.** The pipeline's data lives in the photo-pipeline worktree's `.scratch/photo-all` (and
+`.scratch/models`). The review pages read `.scratch/photo-all` relative to the dev server, so another checkout
+needs directory junctions to both (`New-Item -ItemType Junction -Path .scratch\photo-all -Target <that folder>`).
+
+### Where the batch stands (2026-11-18)
+
+- All 70 in `gaps-redo.json` were searched again (my run, 2026-11-17) and cut by the watchdog the logon task
+  restarted after a reboot on 2026-11-18 (its own older `cutout.py`, so without the floor at cut time; the
+  screen's floor hides the blurry ones). `gap_batch.py --finish` ran: the re-picks keep the photo on the site as
+  alternative 0 (Guardiola 3 new, Palmer 2, Park 1, Berbatov 1, Figo none that passed).
+- `screen.py fit` ran with the floor: 137 cutouts of 135 players are blurry and stay off the pages.
+- **Ready for Jonno:** `/photo-check?focus=gaps` 75 cards; `/photo-pick?focus=gaps` 58 players (129 cards
+  counting re-picks' current photos). 26 of the 155 are still on the kit card: Højlund, Maresca, Huijsen,
+  Jobe Bellingham, Güler, Reijnders, Gascoigne, F. Inzaghi, Baldock, Kolo Muani, Camavinga, S. Giménez, Vinnie
+  Jones, Guiu, McCoist, Brennan Johnson, Ethan Mbappé, Vlahović, Merson, Lineker, Khusanov, Ian Wright, Dorgu,
+  Gittens, Davids, Palhinha. Most had usable candidates that the cutout checks threw out: someone or a limb
+  beside the head (`edge_mass`: Maresca 5 of 7, Davids 3 of 4) or not in kit (Ian Wright, Lineker: pundit photos).
+  The next fix for the first kind: keep only the matte's component that holds his face before the checks, so a
+  team-mate's shoulder no longer fails the crop.
+- Not run: `screen.py features` and `emb` for the new cutouts (about 500 MB free beside the watchdog's rembg; CLIP
+  needs more). Unscreened cards sort with the suspects, so nothing is hidden; run both, then `fit`, on an idle machine.
+- The watchdog runs the photo-pipeline worktree's scripts, which get the floor and the wider search only when that
+  branch takes `main` (after this branch merges).
+- The review cards no longer nest the dev "Wrong photo" button inside the card's own button (`StickerFace flag`),
+  which threw a hydration error on both pages.
+
+## Choose before cutting (2026-11-18)
+
+Jonno, on the gap batch's /photo-pick: "So many of these have no option that is good enough ... you don't need to do
+the cutout before I choose the photo option. Show me all the realistic options you can pre cutout, then I'll choose."
+Cutting costs 20-50 s a photo and the cutout checks threw out photos he might have liked (Figo's sharp 2006 close-up,
+Palmer's 2025 one were never offered), so for anyone marked wrong the order is now: choose a raw photo, then cut it.
+
+- `scripts/photos/preview.py <dir> [ids.json ...]` (default `focus-gaps.json` and `marked.json`): every candidate a
+  cutout could be made from (face found, not mush, at least 2.0 face heights of photo below the face top, no
+  statue/card/render in the name, not a file he rejected; profiles included, last) cropped as `cutout.py` frames it,
+  320 px, `pre/<id>/<n>.jpg` and `pre/<id>.json`. Milliseconds a photo: 1,272 previews for 189 players in 52 s.
+  For the 155 gap players: 1,023 options, 74 players with 6 or more, 5 with none.
+- **`/photo-choose`** (`?focus=gaps`, or no focus for everyone marked): one row per player who has no approved or
+  picked photo (re-picks included, their current photo labelled ON SITE NOW), every option, and "None good". A click
+  saves `chosen.json` `{id: file | "kit"}`; "None good" also writes `"kit"` to `choices.json` (publish.py's kit card).
+- **`cutout.py`** cuts his choices before anyone else (checked before every player, so the running watchdog picks a
+  choice up within one cutout once it runs this code), one photo each, checks recorded as `check` but not obeyed.
+  The cutout becomes alternative 0 (old ones shift up) and waits for one last look on `/photo-check` or
+  `/photo-pick`; for an approved player (a re-pick) it goes last, so the approved cutout keeps shipping until he picks
+  the new one. A player in `marked.json` with no choice is **not cut at all** any more.
+- `redo_marked.py` (run when he approves a batch on /photo-check) builds the previews for the cards he blocked
+  instead of having three alternatives cut. "Bad crop" alone still re-crops the same photo three ways.
+- `test_cutout.py` runs the choose path with rembg and CLIP stubbed.
+- **Bug found and fixed:** `candidates.py` numbered Openverse photos from `len(ranked)`, so when a Commons photo failed to
+  decode, an Openverse jpg overwrote a Commons candidate's file and that candidate's face box pointed into another
+  picture (107 entries across 65 players). Openverse now numbers past every Commons file; `preview.py` drops the
+  overwritten Commons entries. Cutouts made from such an entry may show the wrong crop: his check catches it.
+
+The watchdog runs the photo-pipeline worktree's copy of the scripts: it does this only once that branch has this code
+and its cutout pass restarts (each pass is a new process).

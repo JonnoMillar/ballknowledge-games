@@ -6,7 +6,9 @@ Usage: python screen.py [dir] features [--limit N]   measure every cutout (resum
 
 Free and local: YuNet + SFace (OpenCV), CLIP ViT-B/32 (checks.Clip), plain numpy. It only SUGGESTS: nothing here
 changes what ships (only photos he checked ship, publish.py). Written to <dir>/screen.json:
-  {id: {"suspect": 0..1, "tags": [tag ids], "why": {tag: reason}}}  (tag ids: see TAGS, same as components/PhotoCheck.tsx)
+  {cut, model, items: {id: {"suspect": 0..1, "tags": [tag ids], "why": {tag: reason}}}, blurry: {id: [k]}}
+  (tag ids: see TAGS, same as components/PhotoCheck.tsx). `blurry` is the one hard rule: cutouts under the sharpness
+  floor (checks.MIN_SUBJECT_SHARP), which the review pages leave out.
 
 Labels are his decisions: approved.json (not wrong) and marks.json wrong/flagged. A wrong card's cutout was moved to
 rej/<id>.0.webp when it was redone, so that is the picture he judged. docs/photo-pipeline.md, "Automatic screen".
@@ -232,6 +234,23 @@ def run_emb():
             print(n + len(batch), '/', len(todo), flush=True)
     save()
 
+# ---------------------------------------------------------------- the sharpness floor
+def blurry_cutouts(out_dir, cache_file):
+    """{id: [k, ...]} for every out/<id>.<k>.webp whose subject is softer than checks.MIN_SUBJECT_SHARP: a small old
+    photo upscaled to 440 px (Figo, Park). The review pages leave these out, so no blurry upscale reaches them;
+    cutout.py rejects the same crops at cut time and tries the next candidate. Cached by file size in cache_file."""
+    cache = json.loads(cache_file.read_text(encoding='utf8')) if cache_file.exists() else {}
+    out = {}
+    for w in Path(out_dir).glob('Q*.webp'):
+        size = w.stat().st_size
+        if cache.get(w.name, [None])[0] != size:
+            cache[w.name] = [size, round(checks.subject_sharpness(np.array(Image.open(w).convert('RGBA'))), 1)]
+        if cache[w.name][1] < checks.MIN_SUBJECT_SHARP:
+            pid, k = w.stem.split('.')
+            out.setdefault(pid, []).append(int(k))
+    cache_file.write_text(json.dumps(cache), encoding='utf8')
+    return {pid: sorted(ks) for pid, ks in out.items()}
+
 # ---------------------------------------------------------------- the fit stage
 def cand_measures(feat):
     """candidates.py's own measures of the chosen photo (pose, sharpness, room below the chin), added in place."""
@@ -453,9 +472,11 @@ def run_fit():
         suspect = p   # no lift from the rules: their precision (about 0.3) is well below the model's at the line (about 0.5)
         # A tag is only suggested on a suspect: on the rest the rules are wrong more often than right.
         res[items[k][1]] = {'suspect': round(min(1.0, suspect), 3), 'tags': [x for x in TAGS if x in t] if suspect >= thr else [], 'why': t}
-    (D / 'screen.json').write_text(json.dumps({'cut': round(thr, 3), 'model': best, 'items': res}), encoding='utf8')
+    blurry = blurry_cutouts(D / 'out', SC / 'subj.json')
+    (D / 'screen.json').write_text(json.dumps({'cut': round(thr, 3), 'model': best, 'items': res, 'blurry': blurry}), encoding='utf8')
     n_sus = sum(r['suspect'] >= thr for r in res.values())
     print(f'\nscreen.json: {len(res)} cutouts, model {best}; {n_sus} suspects ({n_sus / max(len(res), 1):.0%}), {sum(bool(r["tags"]) for r in res.values())} with suggested tags')
+    print(f'blurry (subject sharpness under {checks.MIN_SUBJECT_SHARP}, kept off the review pages): {sum(map(len, blurry.values()))} cutouts of {len(blurry)} players')
 
 if __name__ == '__main__':
     {'features': run_features, 'emb': run_emb, 'fit': run_fit}[STAGE]()

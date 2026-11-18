@@ -724,3 +724,28 @@ unpauses the project.
 **Resume prompt:** "Daily run, on `main` (branch `claude/daily-run-spec-e6d716`
 merged). Read CLAUDE.md, then docs/daily-run.md sections 11 to 15. Next: the
 run's redesign to the scout's-office design."
+
+---
+
+## 16. Jonno's run-through fixes (2026-11-16)
+
+Jonno played a full run and listed what was wrong. Each fix, and where:
+
+| Task | Problem | Fix |
+|---|---|---|
+| Read the season | One season pick felt harsh | Two goes (`SEASON_PICKS`); a miss says earlier or later and strikes the ruled-out seasons. 20 on go 1, 10 on go 2 (`SEASON_POINTS`); "one off" is gone. `runView(date, clubs, seasons[])`; old one-pick records migrate. |
+| Line them up | Tap-to-swap only; the reveal just ringed cards | Pecking Order's own drag (pick up, the rest shuffle along) and reveal, ported from its branch: values land least to most, then the five walk into the true line (FLIP). Tick on an ink disc or cross on a ring per card, "N of 5 in the right spot". |
+| Find the mole | One a day; James Rodríguez planted at DM | Two XIs a day (`MOLES_A_DAY`, 40 s each, the task is the mean). A mole must play the slot's role (`games/bluff/lib/roles.ts`): infobox positions for the 2,265 run-side players (`scripts/bluff/fetch-roles.ts` → `data/roles.json`, 2,244 read) plus the slots each started in; neighbour roles only (DM takes DM/CM, never AM). Match gap 120 to 60 days (159 matches at two a day). |
+| Log the shot | Obscure goals (Cajuste, Ipswich v Forest); "header" gave the spot away | From 2026-11-17 a recent goal's scorer needs `RUN_PIN_MIN_VIEWS` 400k views (classics exempt): 147 of 187 goals qualify. The run's line keeps minute, score and significance only (`runLine`, `RUN_CLUES` for the 44 classics). Packs keep the full line. With 147 goals the reuse gap relaxes towards 30 days on most days until the weekly packs add more. |
+| Trace the link | "Linked by" over the card's name; 45 s tight | The run's 2 s cap could leave the show's push on the card; `Slam` clears it once `done` commits. More room under the strip. 60 s a step. |
+| Kit cards | Well-known players as silhouettes | Line them up picks only players with checked photos from 2026-11-17 (`checkedPhotos`). The real gap is coverage (top 1,000 by views: 456 cutouts; Zidane, Grealish, Garnacho, Shearer, Güler have none): a photo batch, outside this change. |
+| Steps end | Sharp, Elite, Solid, Solid = Solid | `runGrade` rounds to the nearest, halves up: that run is Sharp. The result sits on a lit stage over the pattern, glowing in its grade colour; the plaque is larger, thick, turning in the light with a sheen (`GradeChip shine`). `/step/preview`, End of run. |
+
+Schedules rebuilt: the mole's from its start (two a day), Log the shot's and
+Line them up's from 2026-11-17 (days up to today kept). `npm run run:days --
+--print` lists the moles with each slot's position.
+
+**Not done, for Jonno:** Figo's cutout is the blurriest of the 479
+(sharpness check); Park Ji-sung, Cole Palmer, Berbatov and Guardiola are
+next. Replacing them needs new photos he checks. The run's own report page
+did not get the stage (it waits for the scout's-office redesign).

@@ -40,7 +40,7 @@ play becomes "try something deep, fall back on the obvious name", so depth
 costs nothing. (Alternative: one retry per step, at the cost of that tension.)
 
 **4. The run grade — recommend the floor of the average.** Basic 1 … Elite 5, a
-miss 0; the run's word is the average rounded down, floor Basic if anything
+miss 0; the run's word is the average rounded to the nearest, halves up (rounded down until 2026-11-16), floor Basic if anything
 held. No number on screen, only "Ball knowledge: Sharp" over your cards (a
 number on a good answer read as a loss on Chain). Rounding down means an Elite
 run is four Elites: the per-card Elite is the trophy, the Elite run a feat.

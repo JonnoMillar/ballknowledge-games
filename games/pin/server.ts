@@ -3,7 +3,7 @@ import goalsJson from './data/goals.json';
 import { utcToday } from './lib/dates';
 import { distance, inHalf, mirrorNote, type Spot } from './lib/pitch';
 import { isNew, shelve } from './lib/shelves';
-import type { RunPinDay } from './lib/run';
+import { runLine, type RunPinDay } from './lib/run';
 import type { Answer, BoardView, Goals, Pack, PackCard, Shelf } from './lib/types';
 
 /**
@@ -38,13 +38,15 @@ const utcTomorrow = (now: Date) => new Date(now.getTime() + 86_400_000).toISOStr
 export function boardView(id: string, now = new Date()): BoardView | null {
   const p = board(id, now);
   if (!p || p.goals.some((s) => !goals[s])) return null;
+  const isRun = runDays.has(id);
   return {
     id: p.id,
     kind: p.kind,
     title: p.title,
     goals: p.goals.map((slug) => {
       const g = goals[slug]!;
-      return { slug, scorer: g.scorer, match: g.match, date: g.date, competition: g.competition, line: g.line, credit: g.source.from };
+      // The run's line says when and why, never how or from where.
+      return { slug, scorer: g.scorer, match: g.match, date: g.date, competition: g.competition, line: isRun ? runLine(slug, g) : g.line, credit: g.source.from };
     }),
   };
 }

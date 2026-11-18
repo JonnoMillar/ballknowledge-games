@@ -10,7 +10,8 @@ Every finished crop goes through checks.py (CLIP "footballer in a shirt", other 
 beside him, a second face, and the Commons description); a crop that fails is dropped, the next
 candidate tried, and the reason kept in `rejected`. `bad/<id>.json` lists files an earlier pass
 rejected (recheck.py, redo_marked.py), which are skipped. Players in `marked.json` (Jonno marked their
-photo wrong) get three alternatives instead of one.
+photo wrong) are not cut at all: he chooses a raw photo on /photo-choose (preview.py) and `chosen.json` names it;
+those choices are cut first, before anyone else, one photo each (cut_chosen). Since 2026-11-18: no cutting before he chose.
 
 The crop (docs/photo-pipeline.md, decision 3): square, head about a third of the frame, starting
 0.55 face heights above the face; the frame's bottom is pulled up to where the body still fills a
@@ -87,10 +88,67 @@ players = json.loads((D / (args[0] if args else 'players.json')).read_text(encod
 if len(args) > 1:
     i, n = (int(v) for v in args[1].split('/'))
     players = players[i::n]
+def pending_chosen(by_id):
+    """His choices on /photo-choose (chosen.json: {id: candidate file | 'kit'}) that have no cutout yet."""
+    todo = []
+    for pid, f in read_json('chosen.json', {}).items():
+        st = read_json(f'out/{pid}.json', {}) or {}
+        if f != 'kit' and pid in by_id and (pid, f) not in attempted and not any(r.get('file') == f and r.get('chosen') for r in st.get('results', [])):
+            todo.append((by_id[pid], f))
+    return todo
+
+def cut_chosen(p, f):
+    """Cut the one photo he chose. Checks are recorded, not obeyed: he picked it, and looks once more at the cutout.
+    It becomes alternative 0 (shown on /photo-check, or /photo-pick for a marked player), except for a player already
+    approved (a re-pick): there it goes last, so the approved cutout 0 keeps shipping until he picks the new one."""
+    pid, status = p['id'], OUT / f"{p['id']}.json"
+    data = read_json(f'cand/{pid}.json', {'cands': []})
+    c = next((c for c in data['cands'] if c['file'] == f and c.get('box')), None)
+    st = read_json(f'out/{pid}.json', {}) or {}
+    results = st.get('results', []) if st.get('ok') else []
+    if c is None:
+        print(f"{p['name']}: chosen {f} is not among his candidates", flush=True)
+        return
+    im = Image.open(D / c['local']).convert('RGB')
+    try:
+        cut = remove(im, session=session)
+    except Exception as e:
+        print(f"  {f}: {str(e)[:80]}", flush=True)
+        return
+    head = crop(cut, c['box'])
+    if head is None:   # the preview passed MIN_HEADS but the body ends higher: a tighter frame, he chose it
+        head = crop(cut, c['box'], side=2.4)
+    if head is None:
+        print(f"{p['name']}: chosen {f} cannot fill the frame", flush=True)
+        return
+    why, measures = checks.crop_verdict(head, det, clip, data.get('manager', False))
+    first = pid not in set(read_json('approved.json', []))
+    if first:   # shift the existing alternatives up by one, highest first
+        for r in sorted(results, key=lambda r: -r['k']):
+            (OUT / f"{pid}.{r['k']}.webp").replace(OUT / f"{pid}.{r['k'] + 1}.webp")
+            r['k'] += 1
+    k = 0 if first else len(results)
+    head.save(OUT / f'{pid}.{k}.webp', 'WEBP', quality=82, method=6)
+    new = {'file': f, 'k': k, 'score': c.get('score', 0), 'year': c.get('year'), 'source': [im.width, im.height], 'face': c.get('face'), 'chosen': True,
+           **({'origin': c['origin']} if c.get('origin') else {}), **({'check': why} if why else {}), **measures}
+    results = [new] + results if first else results + [new]
+    status.write_text(json.dumps({**st, 'ok': True, 'results': results}))
+    print(f"{p['name']}: cut his chosen {f}" + (f' (check says: {why})' if why else ''), flush=True)
+
+# His choices jump the queue: checked before every player, so a choice is cut within one cutout's time.
+attempted = set()
+by_id = {q['id']: q for q in json.loads((D / 'players.json').read_text(encoding='utf8'))}
+lead = len(args) < 2 or args[1].startswith('0/')   # with several processes, only the first one cuts his choices
 for p in players:
+    while lead and (todo := pending_chosen(by_id)):
+        attempted.add((todo[0][0]['id'], todo[0][1]))   # once per process: a choice that cannot be cut must not loop
+        cut_chosen(*todo[0])
     status = OUT / f"{p['id']}.json"
     src = D / 'cand' / f"{p['id']}.json"
     if status.exists() or not src.exists():
+        continue
+    # A player marked wrong waits for /photo-choose: nothing is cut for him until he has chosen a photo (2026-11-18).
+    if p['id'] in set(read_json('marked.json', [])) and p['id'] not in set(read_json('recrop.json', {})):
         continue
     data = json.loads(src.read_text(encoding='utf8'))
     for c in data['cands']:   # rescore: the ranking may have moved on since candidates.py ran

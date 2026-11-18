@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { buildWorld, type Inputs } from '../lib/day';
-import { addDays, composeDay, extend, problems, RUN_ORDER_START, type RunOrderDay } from '../lib/run';
+import { addDays, checkedPhotos, composeDay, extend, problems, RUN_ORDER_PHOTO_FROM, RUN_ORDER_START, type RunOrderDay } from '../lib/run';
 import { runOrder } from '../run/server';
 
 const json = <T,>(f: string) => JSON.parse(readFileSync(f, 'utf8')) as T;
@@ -25,6 +25,16 @@ describe('the line-up schedule', () => {
     const a = extend(world, [], addDays(RUN_ORDER_START, 181));
     a.forEach((d, i) => expect(problems(world, d, a.slice(0, i))).toEqual([]));
     expect(extend(world, [], addDays(RUN_ORDER_START, 9))).toEqual(a.slice(0, 10));
+  });
+
+  it('shows only faces we have checked photos of, from the day the rule began', () => {
+    const photos = checkedPhotos(json('data/portraits.json'));
+    days.forEach((d, i) => expect(problems(world, d, days.slice(0, i), photos)).toEqual([]));
+    const later = days.find((d) => d.date >= RUN_ORDER_PHOTO_FROM)!;
+    expect(later.players.every((id) => photos.has(id))).toBe(true);
+    const kept = days.filter((d) => d.date < RUN_ORDER_PHOTO_FROM);
+    const a = extend(world, kept, addDays(RUN_ORDER_PHOTO_FROM, 181), photos);
+    a.forEach((d, i) => expect(problems(world, d, a.slice(0, i), photos)).toEqual([]));
   });
 
   it('refuses a day that breaks a rule', () => {

@@ -6,24 +6,28 @@ import { SEASON_PICK_MS, type RunTaskProps } from '../../../src/lib/run/tasks';
 import Chart from '../components/Chart';
 import { Clue, Crest } from '../components/Clue';
 import { INK, seasonLabel } from '../lib/clubs';
-import { RUN_GUESSES, runScore } from '../lib/run';
+import { RUN_GUESSES, SEASON_PICKS, runScore } from '../lib/run';
 import type { RunSeasonView } from '../server';
 
 /**
  * Read the season: the run's own board a day (games/season-line/data/run.json).
  * The whole line from the start, a five-season window; name the club in
  * three guesses (a squad player after one miss, the top scorer after two),
- * then pick the season. A clock a guess, a shorter one for the season. The
- * daily is untouched, so the guesses live in the run's record.
+ * then pick the season in two goes (a miss says earlier or later). A clock a
+ * guess, a shorter one for each season pick. The daily is untouched, so the
+ * guesses live in the run's record.
  */
-type State = { clubs: string[]; season?: number | null };
+type State = { clubs: string[]; seasons?: (number | null)[] };
+/** Records saved before the season had two goes held one pick. */
+const migrate = (s: State & { season?: number | null }): State =>
+  s.season !== undefined && !s.seasons ? { clubs: s.clubs, seasons: [s.season] } : s;
 
 const post = (date: string, s: State) => fetch('/api/season-line/run', {
   method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ date, ...s }),
 }).then((r) => (r.ok ? (r.json() as Promise<RunSeasonView>) : null), () => null);
 
 export default function SeasonRunTask({ date, def, next, onDone }: RunTaskProps) {
-  const [state, setState] = useState<State>(() => loadItems<State>(date, 'season') ?? { clubs: [] });
+  const [state, setState] = useState<State>(() => migrate(loadItems<State>(date, 'season') ?? { clubs: [] }));
   const [view, setView] = useState<RunSeasonView | null | undefined>(undefined);
   const [club, setClub] = useState('');
   const [busy, setBusy] = useState(false);
@@ -54,17 +58,19 @@ export default function SeasonRunTask({ date, def, next, onDone }: RunTaskProps)
   const v = view;
   const clubDone = v.club !== null;
   const done = v.season !== null;
-  const off = v.season && v.season.picked !== null ? Math.abs(v.season.picked - v.season.start) : null;
+  const seasons = state.seasons ?? [];
+  const tried = new Set(v.picks.map((p) => p.picked));
+  const lastDir = v.picks.at(-1)?.dir ?? null;
   const years = Array.from({ length: v.window[1] - v.window[0] + 1 }, (_, i) => v.window[0] + i);
   const name = (c: string) => v.clubs.find((x) => x.club === c)?.name ?? c;
   const q = (c: string) => v.clubs.find((x) => x.club === c)?.q ?? null;
   const me = { q: v.club?.q ?? null, colour: v.club?.colour ?? INK, name: v.club?.name };
 
   function finish() {
-    const score = runScore(v.clubAt, off);
+    const score = runScore(v.clubAt, v.season!.at);
     onDone({
       score,
-      ...(v.clubAt === 1 && off === 0 ? { find: `First guess: ${v.club!.name} ${seasonLabel(v.season!.start)}`, findScore: 100 } : {}),
+      ...(v.clubAt === 1 && v.season!.at === 1 ? { find: `First guess: ${v.club!.name} ${seasonLabel(v.season!.start)}`, findScore: 100 } : {}),
     });
   }
 
@@ -73,7 +79,7 @@ export default function SeasonRunTask({ date, def, next, onDone }: RunTaskProps)
       {!clubDone
         ? <RunClock key={`c${state.clubs.length}`} ms={(def.clockMs)} running={!busy} onEnd={() => void send({ clubs: [...state.clubs, club] })} />
         : !done
-          ? <RunClock key="s" ms={SEASON_PICK_MS} running={!busy} onEnd={() => void send({ ...state, season: null })} />
+          ? <RunClock key={`s${v.picks.length}`} ms={SEASON_PICK_MS} running={!busy} onEnd={() => void send({ ...state, seasons: [...seasons, null] })} />
           : <RunClock key="end" ms={SEASON_PICK_MS} running={false} onEnd={() => {}} />}
       <div className="sl-play run-season__grid">
         <section className="sl-card sl-chartcard" aria-label="The season">
@@ -98,9 +104,16 @@ export default function SeasonRunTask({ date, def, next, onDone }: RunTaskProps)
             ) : !done ? (
               <div className="run-season__pick">
                 <span className="sl-locked"><Crest q={v.club!.q} size={24} /><span>{v.club!.name}</span></span>
-                <p className="run-season__ask">Which season?</p>
+                <p className="run-season__ask" aria-live="polite">
+                  {v.picks.length === 0 ? 'Which season?'
+                    : v.picks.at(-1)!.picked === null ? `Out of time. ${SEASON_PICKS - v.picks.length} more go.`
+                      : <>Not {seasonLabel(v.picks.at(-1)!.picked!)}. <b>{lastDir === 'earlier' ? '◀ Earlier' : 'Later ▶'}</b>, last go.</>}
+                </p>
                 <div className="run-season__years">
-                  {years.map((y) => <button key={y} type="button" className="lobby-quiet lobby-small" disabled={busy} onClick={() => void send({ ...state, season: y })}>{seasonLabel(y)}</button>)}
+                  {years.map((y) => {
+                    const out = tried.has(y) || v.picks.some((p) => p.picked !== null && (p.dir === 'earlier' ? y >= p.picked : y <= p.picked));
+                    return <button key={y} type="button" className={`lobby-quiet lobby-small${out ? ' is-out' : ''}`} disabled={busy || out} onClick={() => void send({ ...state, seasons: [...seasons, y] })}>{seasonLabel(y)}</button>;
+                  })}
                 </div>
               </div>
             ) : (
@@ -113,7 +126,7 @@ export default function SeasonRunTask({ date, def, next, onDone }: RunTaskProps)
                   </div>
                 </div>
                 <p className="run-season__verdict">
-                  {v.season!.picked === null ? 'Out of time on the season' : off === 0 ? 'Season spot on' : off === 1 ? 'Season one off' : `You said ${seasonLabel(v.season!.picked)}`}
+                  {v.season!.at === 1 ? 'Season spot on' : v.season!.at === 2 ? 'Season on the second go' : v.season!.picked === null ? 'Out of time on the season' : `You said ${seasonLabel(v.season!.picked)}`}
                 </p>
                 <button type="button" className="lobby-play" onClick={finish}>{next}</button>
               </div>

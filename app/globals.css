@@ -1498,6 +1498,44 @@ html.table-off .table { display: none; }
 .grade-chip { --slab-pad: 3px; gap: 0; border-radius: 8px; box-shadow: 0 1px 0 rgba(20, 18, 16, 0.1), 0 3px 8px rgba(20, 18, 16, 0.14); }
 .grade-chip .slab__inlay { inset: 2px; border-radius: 6px; }
 .grade-chip .slab__label { height: 26px; padding: 0 12px 0 calc(12px + 0.28em); font-size: 13px; letter-spacing: 0.28em; white-space: nowrap; }
+/* A result's plaque: a thick slab of its material, turning slowly in the light,
+   a sheen in the grade's own colour crossing it every few seconds, the word
+   pressed into it. Light only: the object is the material texture. */
+.plaque { display: inline-block; perspective: 700px; }
+.grade-chip--shine {
+  transform-style: preserve-3d;
+  animation: plaque-turn 7s ease-in-out infinite;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.25), 0 2px 0 rgba(0, 0, 0, 0.22), 0 3px 0 rgba(0, 0, 0, 0.2), 0 4px 0 rgba(0, 0, 0, 0.18),
+    0 14px 28px rgba(20, 18, 16, 0.3);
+}
+.grade-chip--shine .slab__label { text-shadow: 0 1px 0 rgba(255, 255, 255, 0.28), 0 -1px 0 rgba(0, 0, 0, 0.45); }
+.grade-chip__shine { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 2; }
+.grade-chip__shine::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: -70%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent 0%, var(--sheen, rgba(255, 255, 255, 0.8)) 50%, transparent 100%);
+  mix-blend-mode: screen;
+  transform: rotate(18deg);
+  animation: plaque-sheen 4.2s 900ms ease-in-out infinite;
+}
+@keyframes plaque-turn {
+  0%, 100% { transform: rotateX(10deg) rotateY(-14deg); }
+  50% { transform: rotateX(-6deg) rotateY(14deg); }
+}
+@keyframes plaque-sheen {
+  0% { left: -70%; }
+  45%, 100% { left: 140%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grade-chip--shine, .grade-chip__shine::after { animation: none; }
+  .grade-chip__shine { display: none; }
+}
 
 /* ── THE MASTHEAD'S ALBUM LINKS ────────────────────────────────────────
    Deep Cuts, the collection and the grades key, on every page. On a phone
@@ -2209,3 +2247,10 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 .pp__row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--rule-strong); }
 .pp__name { margin: 0; font-size: 16px; }
 .pp__opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+/* /photo-choose: raw photos before any cutout. The chosen one gets a heavy ink frame and the word CHOSEN (no colour). */
+.pp__row.is-done .pp__name::after { content: ' - chosen'; font-weight: 400; }
+.ch__opt { position: relative; display: block; padding: 4px; border: 0; border-radius: 4px; background: none; cursor: pointer; }
+.ch__opt img { display: block; width: 160px; height: 160px; object-fit: cover; border-radius: 2px; }
+.ch__opt.is-on { box-shadow: 0 0 0 4px var(--ink); background: rgba(20, 18, 16, 0.1); }
+.ch__opt:focus-visible { outline: 2px solid var(--ink); }
+.ch__none { width: 168px; height: 168px; display: flex; align-items: center; justify-content: center; border: 1.5px dashed var(--ink); font: inherit; font-weight: 600; color: var(--ink); }
