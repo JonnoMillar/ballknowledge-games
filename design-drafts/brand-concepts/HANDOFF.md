@@ -60,6 +60,16 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   glints is the stronger. Thinking glasses with one raised brow (navy) work
   as a character. Filled lenses read as sunglasses and the angled brows as
   worried: cut.
+- **Thinking glasses, one generation at a time (2026-11-18).** Jonno: drop
+  binoculars (the generator only makes the stock glyph); thinking glasses
+  only; round dot pupils look cheap. Brief: asymmetric brows (low furrow
+  left, high arch right), tall pupils (taller than wide, like classic
+  cartoon eyes) cropped by the lens tops, squint lid on the furrowed side,
+  no mouth or hand (the hand is the 🤔 emoji's signature).
+  Gen 1: job `6275e574-943c-4f8b-94c7-47c37db75f7c`, `img/round3/fs-think-1.png`.
+  The expression lands (reads sceptical, "you what?") and holds at 32 px.
+  Misses: no clear sideways glance, no visible squint, left brow clips into
+  the frame, mixed corner radii, bridge thinner than the frame.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
