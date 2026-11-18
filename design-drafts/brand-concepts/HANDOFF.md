@@ -96,6 +96,14 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   rectangular frames plus spark lines (most app-store pop; the lines read as
   an "aha"). Outline tile with an ellipsis: weak tile. Ink with cloud and
   sparks: busy.
+  Jonno: use the old frame shape; the eyes are about right; nothing extra
+  (no clouds or thoughts); the brows aren't settled.
+- **Brows-only grid (2026-11-18, 0.5 credits):** job `be14180b-307f-4211-b528-d0d657177cdc`,
+  `img/round3/fs-think-brows.png`. Yellow tile, heavy ink tapered frames,
+  cream eye whites, pupils high with catchlights. Both arched with the right
+  higher reads most naturally as thinking. A flat bar reads mechanical, like
+  a minus sign. Both even reads calm, a bit blank. A tilted straight bar
+  reads sceptical again: cut.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
