@@ -625,20 +625,24 @@ never searched, or marked wrong with fewer than three sharp alternatives: search
 `.scratch/models`). The review pages read `.scratch/photo-all` relative to the dev server, so another checkout
 needs directory junctions to both (`New-Item -ItemType Junction -Path .scratch\photo-all -Target <that folder>`).
 
-### Status when the laptop closed (2026-11-17, evening)
+### Where the batch stands (2026-11-18)
 
-- Built: `focus-gaps.json` (155 players: the top 150 gaps plus 5 re-picks), `gaps-redo.json` (70 to search
-  again), `repick.json`, bans in `bad/` for the 5 re-picks and 1 blurry cutout. `/photo-check?focus=gaps`
-  already shows the 65 gap players whose cutout was waiting for review; `/photo-pick?focus=gaps` the 20 marked
-  ones with three alternatives.
-- Candidate search for `gaps-redo.json`: about 30 of 70 done when the laptop closed; rerun
-  `OV_ALWAYS=1 python -X utf8 scripts/photos/candidates.py .scratch/photo-all gaps-redo.json` (skips finished ones).
-- **No cutouts yet for the 70.** The watchdog died at 15:27 (heartbeat stopped) and left its two jobs running
-  orphaned. Their cutout pass trails their candidate pass through the long tail and never restarts at the top, so
-  it would not reach this batch, and a second rembg process beside them at ~1 GB free is crash territory. Stopping
-  the orphans needs Jonno's OK. After a reboot they are gone anyway. Then: run
-  `python -X utf8 scripts/photos/cutout.py .scratch/photo-all gaps-redo.json` (one process), then
-  `gap_batch.py .scratch/photo-all --finish`, then `screen.py .scratch/photo-all features`, `emb`, `fit`, and
-  finally launch the watchdog again (the logon task does it after a reboot).
-- The watchdog runs the photo-pipeline worktree's scripts, which do not have the floor or the wider search
-  until that branch takes `main` (after this branch merges).
+- All 70 in `gaps-redo.json` were searched again (my run, 2026-11-17) and cut by the watchdog the logon task
+  restarted after a reboot on 2026-11-18 (its own older `cutout.py`, so without the floor at cut time; the
+  screen's floor hides the blurry ones). `gap_batch.py --finish` ran: the re-picks keep the photo on the site as
+  alternative 0 (Guardiola 3 new, Palmer 2, Park 1, Berbatov 1, Figo none that passed).
+- `screen.py fit` ran with the floor: 137 cutouts of 135 players are blurry and stay off the pages.
+- **Ready for Jonno:** `/photo-check?focus=gaps` 75 cards; `/photo-pick?focus=gaps` 58 players (129 cards
+  counting re-picks' current photos). 26 of the 155 are still on the kit card: Højlund, Maresca, Huijsen,
+  Jobe Bellingham, Güler, Reijnders, Gascoigne, F. Inzaghi, Baldock, Kolo Muani, Camavinga, S. Giménez, Vinnie
+  Jones, Guiu, McCoist, Brennan Johnson, Ethan Mbappé, Vlahović, Merson, Lineker, Khusanov, Ian Wright, Dorgu,
+  Gittens, Davids, Palhinha. Most had usable candidates that the cutout checks threw out: someone or a limb
+  beside the head (`edge_mass`: Maresca 5 of 7, Davids 3 of 4) or not in kit (Ian Wright, Lineker: pundit photos).
+  The next fix for the first kind: keep only the matte's component that holds his face before the checks, so a
+  team-mate's shoulder no longer fails the crop.
+- Not run: `screen.py features` and `emb` for the new cutouts (about 500 MB free beside the watchdog's rembg; CLIP
+  needs more). Unscreened cards sort with the suspects, so nothing is hidden; run both, then `fit`, on an idle machine.
+- The watchdog runs the photo-pipeline worktree's scripts, which get the floor and the wider search only when that
+  branch takes `main` (after this branch merges).
+- The review cards no longer nest the dev "Wrong photo" button inside the card's own button (`StickerFace flag`),
+  which threw a hydration error on both pages.

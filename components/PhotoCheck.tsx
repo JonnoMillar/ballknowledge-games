@@ -111,7 +111,7 @@ export default function PhotoCheck({ items, stats, cut, screened }: { items: Che
       <li key={i.id} className="pc__item" onMouseEnter={() => setHover(i.id)} onMouseLeave={() => setHover((h) => (h === i.id ? null : h))}
         onFocus={() => setHover(i.id)} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setHover((h) => (h === i.id ? null : h)); }}>
         <div className={`pc__card ${block ? 'is-wrong' : suggested ? 'is-suggested' : tags.length ? 'is-soft' : ''}`} title={title}>
-          <StickerFace player={{ id: i.id, name: i.name }} image={{ url: `/api/photo-check/img/${i.id}.0.webp`, fit: 'box' }} ground={neutral()} className="sticker--still" />
+          <StickerFace player={{ id: i.id, name: i.name }} image={{ url: `/api/photo-check/img/${i.id}.0.webp`, fit: 'box' }} ground={neutral()} className="sticker--still" flag={false} />
           <span className="pc__flag">{block ? 'BLOCKED' : suggested && blocks(tags) ? 'SUSPECT' : `${i.rank}`}</span>
           {tags.length ? <span className="pc__tagline">{tags.map((t) => LABEL[t]).join(', ')}{suggested ? ' ?' : ''}</span> : null}
           {hover === i.id ? (

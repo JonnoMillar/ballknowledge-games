@@ -53,6 +53,7 @@ export default function PhotoPick({ items, waiting }: { items: PickItem[]; waiti
                       image={o.file ? { url: `/api/photo-check/img/${it.id}.${o.k}.webp`, fit: 'box' } : kitCard(it.club)}
                       ground={neutral()}
                       className="sticker--still"
+                      flag={false}
                     />
                     <span className="pc__flag">{choices[it.id] === o.k ? 'PICKED' : o.k === 'kit' ? 'KIT' : o.current ? 'ON SITE NOW' : `${(o.k as number) + 1}`}</span>
                   </button>
