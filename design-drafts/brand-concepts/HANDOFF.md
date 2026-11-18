@@ -86,6 +86,16 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   A to F. G: pupils top centre with empty lens below. H: taller lenses.
   I: eye whites with the pupil at their top (the clearest "up"). J: taller
   lenses plus eye whites (cartoonish, nearer surprised).
+  Jonno: still not nailing it; give Higgsfield freedom, rule only
+  "thinking, not suspicious".
+- **Free-rein grid (2026-11-18, 0.5 credits):** job `563c7696-daca-4051-92a3-cb87809ba9b9`,
+  `img/round3/fs-think-grid.png`, no reference. All four read as thinking.
+  What makes "up" work: eye whites with the pupil high, a catchlight, and
+  relaxed arched brows, one higher. Navy: round frames plus a thought bubble
+  (clearest, but the bubble is a cliché and dies small). Yellow: heavy ink
+  rectangular frames plus spark lines (most app-store pop; the lines read as
+  an "aha"). Outline tile with an ellipsis: weak tile. Ink with cloud and
+  sparks: busy.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
