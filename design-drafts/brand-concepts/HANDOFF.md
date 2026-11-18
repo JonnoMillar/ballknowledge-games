@@ -34,7 +34,12 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   lacks.
 - Mock: `direction.html` (localhost:4321/direction.html), 6's frames with the
   CSS clipboard and labels on top, desktop and phone. No new art.
-- **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
+- **Name reopened (Jonno, 2026-11-18): BK Scout dropped** ("isn't a game,
+  doesn't sound like football"). Round 7 shortlist in `names.md`: Got Got
+  (lead), Panenka, The Boot Room. The live page titles still say Ball
+  Knowledge Scout; change them only once a new name is picked. The BK
+  binocular logo is on hold.
+- *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
   mark; `bkscout` in URLs and handles. Domains free on 2026-11-15, not bought:

@@ -1,9 +1,31 @@
 # Hub name pool (2026-11-14)
 
-**Decided (Jonno, 2026-11-15): Ball Knowledge Scout, short form BK Scout.**
-Full name for meaning (the role plus the "ball knowledge" meme); BK Scout
-for speech, handle, watermark and mark, as FM is Football Manager. Watch: a
-football quiz app called "Ball Knowledge" exists, so lead with BK Scout.
+**Reopened (Jonno, 2026-11-18): BK Scout is dropped.** "BK Scout isn't a
+game ... it doesn't sound like football." (Was decided 2026-11-15 as Ball
+Knowledge Scout, short form BK Scout.) The B-as-binoculars logo work is on
+hold with it.
+
+## Round 7: from sources (2026-11-18)
+
+Sources: daily football game lists (Who Are Ya, FootballQuest, Footdle, Football
+Genius, Futbol-11: guess-the-player names are saturated), football slang
+glossaries (Goal.com, EF, Footy Addicts), Gen Z slang lists ("I know ball",
+aura), mobile naming advice (short, hints the gameplay; noun+verb is cloned),
+Panini and sticker culture ("got, got, need"). Clash checks are one web search
+each; no domains checked yet.
+
+| Name | For | Against |
+|---|---|---|
+| **Got Got** (lead) | The playground sticker-swap chant every UK fan knows; Panini is still huge (2026 World Cup album). Matches the play: name the player, "got". Reads as a game and as football at once; social-native ("got got" in comments). | A small World Cup swap tool is called "Got Got Need". Leans UK. |
+| **Panenka** | The cheeky chipped penalty: audacious, international, fun to say. No app found with the name. | Says nothing about the gameplay; a Spanish football magazine is called Panenka. |
+| **The Boot Room** | Anfield's famous room where coaches talked football: a room, so a ready hub world; cosy; means football knowledge. No game found. | Liverpool heritage (rivals); common phrase for podcasts and shops; reads less like a game. Would replace the scout's office world. |
+| Swapsies | Sticker swapping; only a kids' dress-up app uses it. | Young; swapping is not the play. |
+| Squeaky Bum | Fergie's phrase for late tension; funny. | Silly; weak as a brand. |
+
+Cut: Tekkers (half a dozen apps), I Know Ball (exact name free, but a "Ball
+Knowledge" quiz app with a daily challenge is too close), Footy Guessr
+(exists), Golazo (CBS Golazo network), Hattrick (a football manager game since
+1997), Rabona (a betting brand), Nutmeg (an investment app).
 
 ## Round 6: does BK Scout read as a game? (2026-11-18)
 
