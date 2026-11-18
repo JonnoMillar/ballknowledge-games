@@ -22,6 +22,14 @@ each; no domains checked yet.
 | Swapsies | Sticker swapping; only a kids' dress-up app uses it. | Young; swapping is not the play. |
 | Squeaky Bum | Fergie's phrase for late tension; funny. | Silly; weak as a brand. |
 
+**IKnowBall (Jonno likes it, 2026-11-18):** the exact TikTok phrase, a
+claim that dares a reply ("you don't know ball"), football and game at once.
+Contested: iknowball.com/.app/.io/.co.uk/.club and playiknowball.com are
+taken; iknowball.club is a US fantasy app (IKB) with Vegas odds; iKnoBall
+is a US all-time draft app (June 2026); a "Ball Knowledge" football quiz
+app exists. Free: iknowball.gg, iknowball.games, iknowballfc.com. A common
+phrase is weak as a trademark, so others can use it too.
+
 Cut: Tekkers (half a dozen apps), I Know Ball (exact name free, but a "Ball
 Knowledge" quiz app with a daily challenge is too close), Footy Guessr
 (exists), Golazo (CBS Golazo network), Hattrick (a football manager game since
