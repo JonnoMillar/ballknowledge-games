@@ -30,6 +30,22 @@ is a US all-time draft app (June 2026); a "Ball Knowledge" football quiz
 app exists. Free: iknowball.gg, iknowball.games, iknowballfc.com. A common
 phrase is weak as a trademark, so others can use it too.
 
+Jonno then dropped IKnowBall: too saturated and too American. Wants it to
+sound English; "maybe we weren't far with BK Scout or BK-something".
+
+**BK + an English football word (domains checked 2026-11-18, all free unless
+noted).** BK Scout failed because "Scout" is a role that reads as a tool; the
+second word must be football-only and say "play".
+- **BK Kickabout**: the casual game in the park; English, cosy, says play.
+  bkkickabout.com/.gg free; no "Kickabout" quiz app found.
+- **BK Matchday**: every day is matchday; football ritual plus the daily.
+  bkmatchday.com/.gg free. "Matchday" alone is a crowded app word.
+- **BK Sunday League**: English, humble and funny, community feel; long.
+  bksundayleague.com free.
+- BK Gaffer (another role, the BK Scout trap), BK Dugout (a place, not
+  play), BK Kickoff (fine, plain), BK Terraces, BK Five-a-side, BK FC
+  (Jonno: FC implies a club). bkcup.com taken.
+
 Cut: Tekkers (half a dozen apps), I Know Ball (exact name free, but a "Ball
 Knowledge" quiz app with a daily challenge is too close), Footy Guessr
 (exists), Golazo (CBS Golazo network), Hattrick (a football manager game since
