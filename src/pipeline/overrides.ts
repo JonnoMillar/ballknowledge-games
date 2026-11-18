@@ -37,6 +37,7 @@ export const NAME_OVERRIDES: Readonly<Record<string, string>> = {
   Q19116103: 'André Onana',     // was "Andrcu Onana" (found 2026-10-12, enwiki title checked)
   Q451818: 'Andrei Prepeliță',  // was "Ilie Poenaru", a different man (2026-10-19; enwiki title and mul agree)
   Q27990922: 'Ayumu Seko',      // was "Ayumu Seko 67" (2026-10-19; enwiki title checked)
+  Q110483835: 'Jobe Bellingham', // was "Johan Bellingham" (2026-11-18, Jonno; enwiki title and Wikidata's label now agree)
 };
 
 export function applyNameOverride(id: string, name: string): string {
