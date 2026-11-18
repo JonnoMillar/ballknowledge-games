@@ -70,6 +70,16 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   The expression lands (reads sceptical, "you what?") and holds at 32 px.
   Misses: no clear sideways glance, no visible squint, left brow clips into
   the frame, mixed corner radii, bridge thinner than the frame.
+  Jonno: reads suspicious, not thinking; thinking looks up. Draw drafts in
+  code first, then Higgsfield.
+- **Thinking SVG drafts A to F (2026-11-18)** on `logo.html` (symbols
+  `th-a`…`th-f`, built by a scratchpad script; edit the symbols directly
+  now). Rules: pupils in an upper corner, just clear of the frame (touching
+  read as hanging teeth); brows only rise, never angle down; one stroke
+  weight (6.5 on 100) for frame, bridge and brows; every corner set by the
+  same round join. A: up-left, left brow raised. B: up-right, right raised.
+  C: up-right, both raised, right higher. D: straight up, both arched.
+  E: B with bigger pupils. F: B with round pupils, for comparison.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
