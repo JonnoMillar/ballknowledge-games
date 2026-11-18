@@ -46,6 +46,14 @@ second word must be football-only and say "play".
   play), BK Kickoff (fine, plain), BK Terraces, BK Five-a-side, BK FC
   (Jonno: FC implies a club). bkcup.com taken.
 
+Jonno floated **FootyScoutle** and **BrightonScoutle** (no clash found for
+either; footyscoutle.com/.gg free, scoutle.com taken). FootyScoutle keeps
+the scout office and reads as a game and as football, but it is 12 letters
+(past the ~11 that fit under an app icon), four syllables, "-le" puts it in
+the Wordle clone family, and "Footy" is Aussie rules in Australia.
+BrightonScoutle nods to Brighton's famous recruitment, but it ties the name
+to one club (rival fans, implied official link, the club's IP). Cut.
+
 Cut: Tekkers (half a dozen apps), I Know Ball (exact name free, but a "Ball
 Knowledge" quiz app with a daily challenge is too close), Footy Guessr
 (exists), Golazo (CBS Golazo network), Hattrick (a football manager game since
