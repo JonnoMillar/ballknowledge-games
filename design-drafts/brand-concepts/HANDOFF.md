@@ -43,6 +43,14 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   football games" on the hub, "Game · FootyScoutle" elsewhere); style.html
   and logo.html renamed. The mark is open again: binoculars as a standalone
   mark, not a B. Rounds and reasons in `names.md`.
+- **Icon grid (2026-11-18, 0.5 credits):** job `aaeb8bc3-4b81-402f-93dd-156346f6e189`,
+  `img/round3/fs-icon-grid.png`, top of `logo.html`. Four concepts: the OO
+  (two lenses and a bridge; risks reading as a dumbbell), scout eyes (the
+  glasses shape Jonno liked in grid 776cab55, tightened, pupils glancing up
+  right; most ownable, but drawn too small and thin on a cream tile), lens
+  on the pitch (generic, the line breaks oddly at the dot), viewfinder
+  (clean but a camera-app cliché). Edge rule: crisp geometry with small
+  tight radii, circles only for lenses and pupils, flat ends.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
