@@ -21,10 +21,10 @@ function load(focus?: string): { items: PickItem[]; waiting: number } {
   for (const id of marked) {
     const p = byId.get(id);
     if (!p) continue;
-    const st = json<{ results?: { file: string; year: number; k: number; current?: boolean }[] } | null>(`out/${id}.json`, null);
+    const st = json<{ results?: { file: string; year: number; k: number; current?: boolean; chosen?: boolean }[] } | null>(`out/${id}.json`, null);
     if (!st) { waiting++; continue; }
     // A blurry alternative is left out (screen.py's floor), except the photo on the site now, which stays as the default.
-    const alts = (st.results ?? []).filter((r) => r.current || !blurry[id]?.includes(r.k));
+    const alts = (st.results ?? []).filter((r) => r.current || r.chosen || !blurry[id]?.includes(r.k));
     items.push({ id, name: p.name, rank: p.rank, club: p.club, alts: alts.map((r) => ({ k: r.k, file: r.file.replace(/^File:/, ''), year: r.year, current: r.current })) });
   }
   items.sort((a, b) => a.rank - b.rank);

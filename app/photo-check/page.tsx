@@ -31,9 +31,9 @@ function nextBatch(focus?: string): { items: CheckItem[]; stats: CheckStats; cut
   let kit = 0;
   players.forEach((p, i) => {
     if (skip.has(p.id)) return;
-    const st = json<{ ok: boolean; results?: { file: string; year: number }[] } | null>(`out/${p.id}.json`, null);
+    const st = json<{ ok: boolean; results?: { file: string; year: number; chosen?: boolean }[] } | null>(`out/${p.id}.json`, null);
     if (!st) return;
-    if (!st.ok || screen.blurry?.[p.id]?.includes(0)) { kit++; return; }   // a blurry upscale is never shown: the pipeline cuts the next one
+    if (!st.ok || (screen.blurry?.[p.id]?.includes(0) && !st.results?.[0]?.chosen)) { kit++; return; }   // a blurry upscale is never shown: the pipeline cuts the next one
     left++;
     const sc = screen.items[p.id];   // not screened yet: counts as a suspect, so it is looked at
     if (focus || items.length < BATCH) items.push({ id: p.id, name: p.name, rank: (want ? all.indexOf(p) : i) + 1, club: p.club, cutout: true, file: st.results?.[0]?.file.replace(/^File:/, ''), year: st.results?.[0]?.year, suspect: sc ? sc.suspect : screen.cut, suggest: sc?.tags, why: sc?.why });

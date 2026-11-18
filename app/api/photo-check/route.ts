@@ -15,11 +15,14 @@ import { NextResponse } from 'next/server';
  *  - Approving a batch also runs redo_marked.py: blocked cards go to the pipeline for a replacement (Bad crop alone: the same
  *    photo cropped three ways; any other blocking tag: the next candidates). Nothing ships until he picks on /photo-pick.
  *  - screen.json (scripts/photos/screen.py): the automatic suspect score and suggested tags; read-only here.
+ *  - chosen.json (from /photo-choose): {id: candidate file | 'kit'}, the raw photo he chose before anything was cut out;
+ *    cutout.py cuts only that one. 'kit' is also written to choices.json, which publish.py reads.
  */
 const DIR = '.scratch/photo-all';
 const FILE = `${DIR}/marks.json`;
 const CHOICES = `${DIR}/choices.json`;
 const APPROVED = `${DIR}/approved.json`;
+const CHOSEN = `${DIR}/chosen.json`;
 const TAG_IDS = ['training', 'notkit', 'lowq', 'crop', 'unusable', 'better', 'nothim', 'messy', 'old'] as const;
 const SOFT_TAGS = new Set<string>(['training', 'better']);
 interface Marks { wrong: string[]; flagged: string[]; tags?: Record<string, string[]> }
@@ -27,6 +30,7 @@ type Choices = Record<string, number | 'kit'>;
 
 const read = (): Promise<Marks> => readFile(FILE, 'utf8').then((s) => JSON.parse(s) as Marks).catch(() => ({ wrong: [], flagged: [] }));
 const readChoices = (): Promise<Choices> => readFile(CHOICES, 'utf8').then((s) => JSON.parse(s) as Choices).catch(() => ({}));
+const readChosen = (): Promise<Record<string, string>> => readFile(CHOSEN, 'utf8').then((s) => JSON.parse(s) as Record<string, string>).catch(() => ({}));
 const readApproved = (): Promise<string[]> => readFile(APPROVED, 'utf8').then((s) => JSON.parse(s) as string[]).catch(() => []);
 const isId = (v: unknown): v is string => typeof v === 'string' && /^Q\d+$/.test(v);
 const cleanTags = (v: unknown): string[] => (Array.isArray(v) ? TAG_IDS.filter((t) => v.includes(t)) : []);
@@ -47,12 +51,12 @@ function setTags(marks: Marks, id: string, tags: string[]) {
 
 export async function GET() {
   if (!dev()) return new NextResponse(null, { status: 404 });
-  return NextResponse.json({ ...(await read()), choices: await readChoices(), approved: await readApproved() });
+  return NextResponse.json({ ...(await read()), choices: await readChoices(), approved: await readApproved(), chosen: await readChosen() });
 }
 
 export async function POST(req: Request) {
   if (!dev()) return new NextResponse(null, { status: 404 });
-  const body = (await req.json().catch(() => ({}))) as { id?: unknown; tags?: unknown; flag?: unknown; approve?: unknown; approveTags?: unknown; pick?: { id?: unknown; value?: unknown } };
+  const body = (await req.json().catch(() => ({}))) as { id?: unknown; tags?: unknown; flag?: unknown; approve?: unknown; approveTags?: unknown; pick?: { id?: unknown; value?: unknown }; choose?: { id?: unknown; value?: unknown } };
   return serial(async () => {
     if (Array.isArray(body.approve)) {
       // "Approve the rest": these ids ship. approveTags carries the soft tags to remember for the ones that have them.
@@ -67,6 +71,19 @@ export async function POST(req: Request) {
       // The batch is final: queue what he blocked for its automatic fix (a re-crop of the same photo, or the next candidates).
       spawn('python', ['-X', 'utf8', 'scripts/photos/redo_marked.py', DIR], { detached: true, stdio: 'ignore' }).on('error', () => {}).unref();
       return NextResponse.json({ approved: approved.size });
+    }
+    if (body.choose && isId(body.choose.id)) {
+      const id = body.choose.id;
+      const v = body.choose.value;
+      const chosen = await readChosen();
+      const choices = await readChoices();
+      if (typeof v === 'string' && v.length < 400) chosen[id] = v;
+      else delete chosen[id];
+      if (v === 'kit') choices[id] = 'kit';
+      else if (choices[id] === 'kit') delete choices[id];
+      await writeFile(CHOSEN, JSON.stringify(chosen));
+      await writeFile(CHOICES, JSON.stringify(choices));
+      return NextResponse.json({ chosen });
     }
     if (body.pick && isId(body.pick.id)) {
       const choices = await readChoices();

@@ -646,3 +646,30 @@ needs directory junctions to both (`New-Item -ItemType Junction -Path .scratch\p
   branch takes `main` (after this branch merges).
 - The review cards no longer nest the dev "Wrong photo" button inside the card's own button (`StickerFace flag`),
   which threw a hydration error on both pages.
+
+## Choose before cutting (2026-11-18)
+
+Jonno, on the gap batch's /photo-pick: "So many of these have no option that is good enough ... you don't need to do
+the cutout before I choose the photo option. Show me all the realistic options you can pre cutout, then I'll choose."
+Cutting costs 20-50 s a photo and the cutout checks threw out photos he might have liked (Figo's sharp 2006 close-up,
+Palmer's 2025 one were never offered), so for anyone marked wrong the order is now: choose a raw photo, then cut it.
+
+- `scripts/photos/preview.py <dir> [ids.json ...]` (default `focus-gaps.json` and `marked.json`): every candidate a
+  cutout could be made from (face found, not mush, at least 2.0 face heights of photo below the face top, no
+  statue/card/render in the name, not a file he rejected; profiles included, last) cropped as `cutout.py` frames it,
+  320 px, `pre/<id>/<n>.jpg` and `pre/<id>.json`. Milliseconds a photo: 1,272 previews for 189 players in 52 s.
+  For the 155 gap players: 1,023 options, 74 players with 6 or more, 5 with none.
+- **`/photo-choose`** (`?focus=gaps`, or no focus for everyone marked): one row per player who has no approved or
+  picked photo (re-picks included, their current photo labelled ON SITE NOW), every option, and "None good". A click
+  saves `chosen.json` `{id: file | "kit"}`; "None good" also writes `"kit"` to `choices.json` (publish.py's kit card).
+- **`cutout.py`** cuts his choices before anyone else (checked before every player, so the running watchdog picks a
+  choice up within one cutout once it runs this code), one photo each, checks recorded as `check` but not obeyed.
+  The cutout becomes alternative 0 (old ones shift up) and waits for one last look on `/photo-check` or
+  `/photo-pick`; for an approved player (a re-pick) it goes last, so the approved cutout keeps shipping until he picks
+  the new one. A player in `marked.json` with no choice is **not cut at all** any more.
+- `redo_marked.py` (run when he approves a batch on /photo-check) builds the previews for the cards he blocked
+  instead of having three alternatives cut. "Bad crop" alone still re-crops the same photo three ways.
+- `test_cutout.py` runs the choose path with rembg and CLIP stubbed.
+
+The watchdog runs the photo-pipeline worktree's copy of the scripts: it does this only once that branch has this code
+and its cutout pass restarts (each pass is a new process).
