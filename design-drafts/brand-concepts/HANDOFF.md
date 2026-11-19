@@ -77,6 +77,13 @@ uncommon heavy faces (from Google Fonts popularity data) on the hub art;
 Alan Sans, Valley Sans, Phudu, Dela Gothic One, Sansita, each with an
 uncommon body face. Anybody is the default lead.
 
+**Picks so far (2026-11-19):** font Valley Sans + Onest. Wordmark is two-tone
+or glasses for oo; `type.html` now shows those plus the glasses with the
+icon's brows (alone and two-tone), with a large close-up. Colour: Jonno wants
+two primaries plus one rationed attention colour, nothing locked, clipboard
+colours open; section 3 shows four systems (navy/cream + yellow, yellow/ink +
+blue, pitch/cream + yellow, ink/cream + red) with the sheet repainted flat.
+
 ## Other pending work
 
 - Rebake the clipboard with a plain navy header zone (the pitch lines crowd
