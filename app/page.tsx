@@ -5,7 +5,7 @@ import { isBoardId } from '../src/server/board';
 import { HUB_COOKIE, readHubCookie } from '../src/lib/today';
 
 export const metadata = {
-  title: { absolute: 'FootyScoutle · Daily football games' },
+  title: { absolute: 'FootballScouted · Daily football games' },
   description: 'Daily football games: today’s assignment, Chain, Spoofed, Odd Man Out, Pitch pin, Season line and Rondo.',
 };
 

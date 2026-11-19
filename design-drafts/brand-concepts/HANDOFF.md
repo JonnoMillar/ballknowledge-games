@@ -7,10 +7,14 @@
 
 ## Status
 
-- **Name:** FootyScoutle (locked 2026-11-18), one word, capital F and S. Page
-  titles on the live site already say it ("FootyScoutle · Daily football
-  games" on the hub, "Game · FootyScoutle" elsewhere). Domains were all free
-  on 2026-11-18, none bought. Social handles (@footyscoutle) are not checked.
+- **Name:** FootballScouted (locked 2026-11-19, replacing FootyScoutle), one
+  word, capital F and S. The idea: the run ends with you scouted at a
+  valuation ("valued at £42m"), which can replace the numeric score. Live
+  page titles say it ("FootballScouted · Daily football games"). Every domain
+  checked is free, none bought. @footballscouted is taken on TikTok and
+  Instagram (an active football-scouting account on Instagram); fallbacks
+  @playfootballscouted and @footballscoutedhq are free. Jonno chose it
+  knowing this. `style.html` still says FootyScoutle until the type picks.
   Rounds and reasons are in `names.md`.
 - **Icon: done.** `img/fs-icon.svg`, a 420 square with no margin, plus PNGs
   (1024/512/180/64/32/16) in `img/fs-icon/`. It is the "thinking scout": heavy

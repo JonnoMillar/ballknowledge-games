@@ -63,9 +63,9 @@ function morph(fronts: string[]) {
 const MORPH = `(${morph.toString()})(${JSON.stringify(GAMES.map((g) => g.href))})`;
 
 export const metadata = {
-  title: { default: 'FootyScoutle · Daily football games', template: '%s · FootyScoutle' },
+  title: { default: 'FootballScouted · Daily football games', template: '%s · FootballScouted' },
   description: 'Daily football games for people with real ball knowledge.',
-  applicationName: 'FootyScoutle',
+  applicationName: 'FootballScouted',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

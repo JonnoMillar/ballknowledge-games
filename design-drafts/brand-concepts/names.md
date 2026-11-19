@@ -1,8 +1,13 @@
 # Hub name pool (2026-11-14)
 
-**Locked (Jonno, 2026-11-18): FootyScoutle.** One word, capital F and S.
-Free on every domain checked; social handles still to check by hand. Full
-check under round 7.
+**Locked (Jonno, 2026-11-19): FootballScouted.** One word, capital F and S.
+The run ends with you scouted at a valuation. Every domain checked is free,
+but @footballscouted is taken on TikTok and Instagram (an active football
+scouting account on Instagram), so the handles fall back to
+@playfootballscouted or @footballscoutedhq. Jonno chose it anyway, knowing
+this. Full check under round 8.
+
+Previous lock (2026-11-18): FootyScoutle, round 7.
 
 **Reopened (Jonno, 2026-11-18): BK Scout is dropped.** "BK Scout isn't a
 game ... it doesn't sound like football." (Was decided 2026-11-15 as Ball
