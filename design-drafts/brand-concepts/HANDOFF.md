@@ -84,6 +84,12 @@ two primaries plus one rationed attention colour, nothing locked, clipboard
 colours open; section 3 shows four systems (navy/cream + yellow, yellow/ink +
 blue, pitch/cream + yellow, ink/cream + red) with the sheet repainted flat.
 
+**Wordmark locked (2026-11-19): treatment 4, two-tone with brows.** "F[glasses
+with the icon's brows]tball" in yellow (ochre #9A5B00 on paper), "Scouted" in
+paper (ink on paper), Valley Sans 900. The glasses and brows are the icon's
+fitted paths (`#oob` symbol in `type.html`, viewBox 25 90 370 245). Judge
+colour for most eyes, not Jonno's colourblindness (his call).
+
 ## Other pending work
 
 - Rebake the clipboard with a plain navy header zone (the pitch lines crowd

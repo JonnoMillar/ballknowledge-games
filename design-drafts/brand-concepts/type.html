@@ -106,9 +106,9 @@ figure { margin: 0; }
 [data-case="lower"] .wm { text-transform: lowercase; }
 [data-case="caps"] .wm { text-transform: uppercase; }
 [data-case="caps"] .wm .oo { height: .74em; width: calc(.74em * 370 / 138); }
-/* With brows the box grows upward (230 units, not 138); the glasses stay the same size. */
-.wm .oo.brows { height: calc(.6em * 230 / 138); }
-[data-case="caps"] .wm .oo.brows { height: calc(.74em * 230 / 138); }
+/* With brows the box grows upward (245 units, not 138); the glasses stay the same size. */
+.wm .oo.brows { height: calc(.6em * 245 / 138); }
+[data-case="caps"] .wm .oo.brows { height: calc(.74em * 245 / 138); }
 .on-paper .wm.two .oo { --frame: var(--ochre); }
 
 .close { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 26px; }
@@ -187,7 +187,7 @@ figure { margin: 0; }
     <path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
     <rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
   </symbol>
-  <symbol id="oob" viewBox="25 105 370 230">
+  <symbol id="oob" viewBox="25 90 370 245">
     <path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
     <path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
     <circle style="fill:var(--pupil)" cx="139" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="148" cy="227.5" r="5"/>
@@ -229,7 +229,7 @@ figure { margin: 0; }
     <p class="lede">Primary A carries the big surfaces (top bar, clipboard sheet), primary B the second surface (task rows), and the attention colour appears only three times: the button, the Next chip and the Next flag on a tape. The clipboard sheet is repainted flat here, as a rebaked one would be. Font follows your pick above.</p>
     <div class="cards" id="colourCards"></div>
     <ul class="notes">
-      <li>The cork and wood art is orange, so the attention colour has to beat orange. Against cork: yellow 2.4:1, blue 1.4:1, red 1.1:1. Red is the classic attention colour, but for red-green colourblind eyes it nearly vanishes into orange art; it only holds by being darker than cream.</li>
+      <li>The art is warm: orange cork, wood, red kits and pins. Attention works by being the odd one out, so a warm attention colour (red, orange) blends in and a cool or much lighter one stands apart. Blue is orange’s opposite on the colour wheel; yellow is far lighter than the cork (2.4:1). Red is close to the art in both hue and lightness (1.1:1 against cork).</li>
       <li>Every state still has its own word and shape (tick, strike, Next with an arrow), so no option leans on hue alone.</li>
       <li>Changing the primaries away from navy means rebaking the clipboard (and later the art plate) to match. Higgsfield credits; one variant, after you pick.</li>
     </ul>
@@ -324,7 +324,7 @@ const V = [
     sw: [['#F5AF3E', '#1B2230', 'A · Yellow #F5AF3E'], ['#1B2230', '#FBF6EA', 'B · Ink #1B2230'], ['#2A55CC', '#fff', 'Attention · Blue, white type 6.4:1']] },
   { cls: 'cs pal-pitch', name: 'Pitch green and cream, yellow attention', note: 'Says football first. Green stays far darker than the yellow, so the two never blur.',
     sw: [['#1E5C3A', '#FBF6EA', 'A · Pitch #1E5C3A'], ['#FBF6EA', '#1B2230', 'B · Cream #FBF6EA'], ['#F5AF3E', '#1B2230', 'Attention · Yellow, 4.2:1 on green']] },
-  { cls: 'cs pal-inkred', name: 'Ink and cream, red attention', note: 'The textbook version, for comparison. Red pulls hardest for most eyes but least for yours.',
+  { cls: 'cs pal-inkred', name: 'Ink and cream, red attention', note: 'The textbook version, for comparison. Red is the strongest attention hue, but the art is full of red and orange (kits, pins, scarf, cork), so it competes instead of standing alone.',
     sw: [['#1B2230', '#FBF6EA', 'A · Ink #1B2230'], ['#FBF6EA', '#1B2230', 'B · Cream #FBF6EA'], ['#D7263D', '#fff', 'Attention · Red, white type 5.0:1']] },
 ];
 function renderColour() {
