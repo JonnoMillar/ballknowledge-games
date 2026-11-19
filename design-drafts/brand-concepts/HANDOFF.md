@@ -3,7 +3,7 @@
 > Living notes for the site-wide brand and hub redesign. Read before touching
 > `design-drafts/brand-concepts/`. Full history (logo rounds, BK Scout, round 3
 > art, lobby build, job ids): `handoff-archive.md`, read only if needed.
-> Last updated: 2026-11-19, after the type, wordmark and colour picks.
+> Last updated: 2026-11-19, style sheet draft 2 (picks applied, ink in place of navy).
 
 ## Status
 
@@ -14,7 +14,7 @@
   checked is free, none bought. @footballscouted is taken on TikTok and
   Instagram (an active football-scouting account on Instagram); fallbacks
   @playfootballscouted and @footballscoutedhq are free. Jonno chose it
-  knowing this. `style.html` still says FootyScoutle (next job fixes it).
+  knowing this.
   Rounds and reasons are in `names.md`.
 - **Icon: done.** `img/fs-icon.svg`, a 420 square with no margin, plus PNGs
   (1024/512/180/64/32/16) in `img/fs-icon/`. It is the "thinking scout": heavy
@@ -26,9 +26,11 @@
   colours are sampled: #F5AF3E, #19212A, #FBF6EA. Colours locked as they are
   (combo 1, 2026-11-19); #F5AF3E is now the brand yellow, the old sun #F2B24A
   is retired.
-- **Style sheet draft 1:** `style.html`. Palette, type, line and grain, layer
-  components (generated clipboard with CSS task rows, tape, buttons, phone
-  slips, chrome), motion. The icon is on it (hero, sizes, favicon).
+- **Style sheet draft 2 (2026-11-19):** `style.html` carries the locked picks:
+  FootballScouted, wordmark 4, Valley Sans + Onest, colour system A on ink,
+  yellow button/Next chip/Next flag, valuation (£42m) as the ringed result.
+  The clipboard sheet is repainted flat in ink over the old art until the
+  regeneration. Red, sun, navy and the chip wordmark are gone.
 - **Logo page:** `logo.html` holds the whole icon exploration, latest first.
 - **Direction (2026-11-14):** an illustrated world (the scout's office) with
   a crisp HTML/CSS layer on top. The clipboard is the daily run's object, a
@@ -53,30 +55,36 @@ palette, type). The full exploration it replaced is in git at commit 1f54dd7.
   `type.html` (viewBox 25 90 370 245; height .6em x 245/138 so the glasses
   sit at x-height).
 - **Icon:** colours unchanged (yellow tile, ink frames, cream lenses).
-- **Colour system A:** two primaries, navy #16305A (big surfaces: top bar,
-  clipboard sheet) and cream #FBF6EA (second surface: task rows, paper);
+- **Colour system A:** two primaries, ink #1B2230 (big surfaces: top bar,
+  clipboard sheet; Jonno 2026-11-19: the dark he liked was the ink, not
+  navy #16305A, which is retired) and cream #FBF6EA (second surface: task rows, paper);
   one rationed attention colour, yellow #F5AF3E, used only for the main
-  button, the Next chip and the Next flag. Ink #1B2230 for type. Red is
+  button, the Next chip and the Next flag. Ink is also the type on cream. Red is
   retired as the action colour. Judge colour for most eyes (Jonno's call),
   but never carry meaning by hue alone.
 
 ## Next: style sheet, then the regeneration queue
 
-1. **Update `style.html` to the picks:** name (FootballScouted), wordmark 4,
-   Valley Sans + Onest, colour system A tokens, buttons and states in the
-   new attention colour. Retire the red and the old wordmark chip.
+1. ~~Update `style.html` to the picks~~ done 2026-11-19 (draft 2).
 2. **Regeneration queue** (Higgsfield, one variant each, approve the concept
    before generating). Work through it in this order, highest impact first:
-   - Clipboard: navy sheet with a plain header zone (no pitch lines), cream
+   - Clipboard: ink sheet with a plain header zone (no pitch lines), cream
      task bands, same wood board and clip.
    - Style reference image re-locked to the new palette (every later piece is
      generated against it).
    - Office plate, desktop and phone: keep the scout's office but shift the
-     balance from orange toward navy and cream, so yellow attention stands
+     balance from orange toward ink and cream, so yellow attention stands
      out (today 8 of the 10 strongest art colours are cork, wood and sun).
    - Then the game item pieces for the plate, as the hub build needs them.
-   Inventory every generated asset first (`handoff-archive.md` has job ids)
-   and confirm the list with Jonno before spending credits.
+   Inventory (2026-11-19). Regenerate: clipboard `241fbd10` (round3/clipboard.png),
+   style ref `b6b4987a` (round3/style-ref.png, has the banned ball), empty
+   plate `e909946d` (round3/plate.png), phone frame `0b7bc323`
+   (round2/6-phone.png, used for slips and the watermark). Keep as mock
+   backdrop until the plate lands: desk `da537930` (round2/6-desk.png).
+   Done, no regen: icon and logo grids. Retired, never reuse: lobby bakes and
+   cut-outs (`img/gen/`), round 2 concepts 0 to 5, BK binoculars. Separate
+   pipeline, not brand art: the Olise grain tests.
+   Proposed to Jonno 2026-11-19 (balance 575.5), waiting for his OK.
 
 ## Other pending work
 
