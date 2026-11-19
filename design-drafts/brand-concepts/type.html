@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FootyScoutle type</title>
+<link rel="icon" href="img/fs-icon/fs-icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700;800&family=Barlow+Condensed:wght@700;800&family=Barlow:wght@500;700;800&family=Rubik:wght@500;700;800&family=Figtree:wght@500;700;800&family=Fredoka:wght@600;700&family=Nunito:wght@500;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,500..800&family=Archivo:wdth,wght@62..125,400..900&family=Bitter:wght@700;800&family=Source+Sans+3:wght@500;700;800&family=Unbounded:wght@700;800&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Page chrome is system-ui on purpose, so no candidate font competes with it. */
+:root {
+  --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --rule: #E2D6BD; --muted: #5E574D;
+  --navy: #1F3A5F; --sun: #F5AF3E; --biro: #23408E; --tape: #151413; --ochre: #9A5B00;
+  /* Accent set, swapped per variation in section 3. */
+  --act: #C8202F; --act-ink: #fff; --act-deep: #8E1520; --next-ink: #C8202F; --next-bg: transparent; --pip: #F5AF3E;
+  /* Font set, swapped per candidate. */
+  --h: 'Big Shoulders'; --hw: 900; --hx: 100%; --b: 'Libre Franklin';
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+main { max-width: 1500px; margin: 0 auto; padding: 24px 16px 80px; }
+header { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+header img { width: 56px; height: 56px; }
+h1 { margin: 0; font: 800 26px/1.1 system-ui, sans-serif; }
+header nav { display: flex; gap: 14px; flex-wrap: wrap; font-weight: 700; }
+header nav a { color: var(--ink); text-underline-offset: 3px; }
+section { margin-top: 40px; scroll-margin-top: 12px; }
+h2 { margin: 0 0 4px; font: 800 22px/1.2 system-ui, sans-serif; }
+h2 span { color: var(--muted); margin-right: 6px; }
+h3 { margin: 0 0 8px; font: 700 15px/1.3 system-ui, sans-serif; }
+h3 small { color: var(--muted); font-weight: 500; margin-left: 6px; }
+.lede { margin: 0 0 16px; color: var(--muted); max-width: 86ch; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 20px; }
+@media (max-width: 900px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; }
+
+/* Controls: state is a tick and a fill, never colour alone. */
+.ctl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 10px; }
+.ctl > span { font: 700 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); min-width: 44px; }
+.ctl button, .pick { font: 700 14px/1 system-ui, sans-serif; padding: 9px 12px; border-radius: 6px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+.ctl button[aria-pressed="true"], .pick[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.ctl button[aria-pressed="true"]::before, .pick[aria-pressed="true"]::before { content: '✓ '; }
+
+/* ===== The hub scene: a crop of the office frame at about real laptop scale.
+   Everything inside is sized in cqw of the scene. ===== */
+.scene { position: relative; container-type: inline-size; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 24px rgba(40,25,10,.25); background: #b36d32; font-family: var(--b), system-ui, sans-serif; color: var(--ink); }
+.scene > .art { position: absolute; width: 175cqw; max-width: none; left: -62cqw; top: -17cqw; }
+.H { font-family: var(--h), system-ui, sans-serif; font-weight: var(--hw); font-stretch: var(--hx); }
+
+.bar { position: absolute; left: 0; right: 0; top: 0; height: 7.4cqw; padding: 0 2.2cqw; display: flex; align-items: center; gap: 1.4cqw; background: var(--ink); color: var(--paper); z-index: 2; box-shadow: 0 .3cqw 1cqw rgba(0,0,0,.25); }
+.bar .icon { width: 4.8cqw; height: 4.8cqw; display: block; flex: none; }
+.bar .wm { font-size: 3.2cqw; }
+.bar nav { margin-left: auto; display: flex; gap: .8cqw; }
+.bar nav span { background: var(--paper); color: var(--ink); font: 800 1.3cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: .75em 1em; border-radius: .4cqw; }
+
+.tape { position: absolute; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: .3cqw; transform: rotate(var(--r, -1.5deg)); }
+.tape b { background: var(--tape); color: #F4F1EA; font-size: 1.9cqw; line-height: 1; letter-spacing: .12em; text-transform: uppercase; padding: .42em .7em .36em; border-radius: 2px; box-shadow: 0 2px 3px rgba(0,0,0,.35); display: flex; gap: .5em; align-items: center; }
+.tape small { background: var(--paper); color: var(--ink); font: 800 1.15cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: .5em .6em; border-radius: 2px; box-shadow: 0 2px 3px rgba(40,20,5,.35); }
+.tape .flag { font: 800 .62em/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; background: var(--act); color: var(--act-ink); padding: .35em .5em; border-radius: 2px; box-shadow: 0 0 0 .2cqw var(--paper); }
+
+/* Generated clipboard (img/round3/clipboard.png); the layer sits on its navy
+   header and cream bands, as in style.html. Inside, cqw is the clipboard's. */
+.clipart { position: absolute; left: 29cqw; top: 9cqw; width: 42cqw; z-index: 1; container-type: inline-size; }
+.clipart > .cb { filter: drop-shadow(.6cqw 1.2cqw 1.4cqw rgba(40,20,5,.35)); }
+/* The generated clipboard sits on a cream backdrop; clip to the board and its clip. */
+.clipart .cb img { display: block; width: 100%; height: auto; clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
+.head { position: absolute; left: 20.8%; top: 24.4%; width: 58.4%; height: 20.4%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); text-shadow: 0 0 1cqw #0f2140, 0 0 2cqw #0f2140; }
+.head .eyebrow { display: flex; justify-content: space-between; gap: 1em; font: 800 2.5cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #C9D3E6; }
+.head h4 { margin: 2cqw 0; font-size: 6.4cqw; line-height: 1; white-space: nowrap; color: var(--paper); }
+.pips { display: flex; gap: 1cqw; }
+.pips i { flex: 1; height: 1.4cqw; border-radius: .3cqw; background: rgba(251,246,234,.2); }
+.pips i.on { background: var(--pip); }
+.head .btn { margin-top: auto; width: 100%; font-size: 4.2cqw; line-height: 1; letter-spacing: .1em; text-transform: uppercase; color: var(--act-ink); background: var(--act); border: 0; border-radius: 1cqw; padding: .5em 1em .45em; text-shadow: none; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--act-deep); }
+.tasks { list-style: none; margin: 0; padding: 0; }
+.tasks li { position: absolute; left: 19.2%; width: 61.6%; height: 4.8%; display: flex; align-items: center; gap: 2.4cqw; padding: 0 2.4cqw; font: 700 3.7cqw/1.1 var(--b), system-ui, sans-serif; color: var(--ink); }
+.box { width: 5cqw; height: 5cqw; flex: none; border: .45cqw solid var(--ink); border-radius: .6cqw; display: grid; place-items: center; }
+.box svg { width: 5cqw; height: 5cqw; overflow: visible; }
+.biro { stroke: var(--biro); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.tasks li.done { color: var(--muted); }
+.nm { position: relative; white-space: nowrap; }
+.nm svg { position: absolute; left: -3px; top: 50%; width: calc(100% + 6px); height: .5em; transform: translateY(-40%); overflow: visible; }
+.nm svg path { stroke-width: 2.2; vector-effect: non-scaling-stroke; }
+.tasks li em { margin-left: auto; font: 800 2.5cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: var(--muted); }
+.tasks li.next em { color: var(--next-ink); background: var(--next-bg); padding: .35em .5em; border-radius: .5cqw; }
+.tasks li.next em::after { content: ' \2192'; }
+
+.card figcaption { padding: 10px 2px 0; }
+.cap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cap h3 { margin: 0; flex: 1; min-width: 220px; }
+.sample { margin: 6px 0 0; font: 500 16px/1.45 var(--b), system-ui, sans-serif; max-width: 62ch; }
+.sample b { font-family: var(--h), system-ui, sans-serif; font-weight: var(--hw); font-stretch: var(--hx); font-size: 26px; font-variant-numeric: tabular-nums; margin-right: 10px; }
+
+/* ===== Wordmark treatments ===== */
+.wm { white-space: nowrap; line-height: 1; display: inline-block; }
+.wm .a { display: inline-block; }
+.wm.two .a { color: var(--sun); }
+.on-paper .wm.two .a { color: var(--ochre); }
+.wm.chip .a { background: var(--paper); color: var(--ink); padding: .07em .16em .03em; border-radius: .08em; margin-right: .1em; }
+.on-paper .wm.chip .a { background: var(--ink); color: var(--paper); }
+.wm.lock { display: inline-flex; align-items: center; gap: .24em; }
+.wm.lock img { width: 1.3em; height: 1.3em; display: block; }
+.wm .oo { height: .6em; width: calc(.6em * 370 / 138); vertical-align: -.01em; margin: 0 .03em; --frame: var(--sun); --lens: var(--paper); --pupil: var(--ink); }
+.on-paper .wm .oo { --frame: var(--ink); }
+[data-case="lower"] .wm { text-transform: lowercase; }
+[data-case="caps"] .wm { text-transform: uppercase; }
+[data-case="caps"] .wm .oo { height: .74em; width: calc(.74em * 370 / 138); }
+
+.wmrow { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; margin-bottom: 28px; }
+@media (max-width: 760px) { .wmrow { grid-template-columns: minmax(0, 1fr); } .share { max-width: 320px; } }
+.strip { position: relative; container-type: inline-size; aspect-ratio: 1344 / 400; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 24px rgba(40,25,10,.25); font-family: var(--b), system-ui, sans-serif; }
+.strip > .art { position: absolute; width: 100cqw; max-width: none; left: 0; top: 0; }
+.strip .bar { height: 5cqw; padding: 0 1.6cqw; gap: 1cqw; }
+.strip .bar .icon { width: 3.4cqw; height: 3.4cqw; }
+.strip .bar .wm { font-size: 2.5cqw; }
+.strip .bar nav { gap: .6cqw; }
+.strip .bar nav span { font-size: 1cqw; }
+
+.share { position: relative; background: var(--paper); border-radius: 10px; padding: 16px; box-shadow: 0 8px 24px rgba(40,25,10,.2); font-family: var(--b), system-ui, sans-serif; color: var(--ink); }
+.share .wmline { display: flex; align-items: center; gap: 10px; }
+.share .wmline.stack { flex-direction: column; align-items: flex-start; gap: 8px; }
+.share .icon { width: 40px; height: 40px; flex: none; }
+.share .wm { font-size: 30px; }
+.share .wm.lock img { width: 1.3em; height: 1.3em; }
+.share .wmline.stack .wm.lock { flex-direction: column; align-items: flex-start; gap: .25em; }
+.share .wmline.stack .wm.lock img { width: 2em; height: 2em; }
+.share .shot { margin: 12px 0; aspect-ratio: 2 / 1; border-radius: 6px; background: url(img/round2/6-desk.png) 62% 42% / 190% auto; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); }
+.share .res { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+.share .res small { display: block; font: 800 11px/1.3 var(--b), system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.share .res b { display: block; font-size: 46px; line-height: .95; font-variant-numeric: tabular-nums; }
+.share .ticks { display: flex; gap: 4px; }
+.share .ticks i { width: 17px; height: 17px; border: 2px solid var(--ink); border-radius: 3px; display: grid; place-items: center; font: 900 11px/1 system-ui, sans-serif; font-style: normal; }
+.share .ticks i::after { content: '✓'; }
+
+/* ===== Colour variations ===== */
+.v-red  { --act: #C8202F; --act-ink: #fff; --act-deep: #8E1520; --next-ink: #C8202F; --next-bg: transparent; --pip: #F5AF3E; }
+.v-sun  { --act: #F5AF3E; --act-ink: #1B2230; --act-deep: #A8680F; --next-ink: #F5AF3E; --next-bg: #1B2230; --pip: #F5AF3E; }
+.v-biro { --act: #2A55CC; --act-ink: #fff; --act-deep: #173478; --next-ink: #2A55CC; --next-bg: transparent; --pip: #F5AF3E; }
+.sws { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.sws div { display: flex; align-items: center; gap: 8px; font: 600 13px/1.3 system-ui, sans-serif; background: var(--paper); border-radius: 6px; padding: 6px 10px 6px 6px; box-shadow: inset 0 0 0 1px var(--rule); }
+.sws i { width: 30px; height: 30px; border-radius: 4px; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); display: grid; place-items: center; font: 800 13px/1 system-ui, sans-serif; font-style: normal; }
+.notes { margin: 12px 0 0; padding-left: 18px; max-width: 90ch; color: var(--muted); }
+.notes li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<!-- The icon's glasses (paths from img/fs-icon.svg, no tile, no brows), for the "oo" treatment. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="oo" viewBox="25 197 370 138">
+    <path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
+    <path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+    <circle style="fill:var(--pupil)" cx="139" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="148" cy="227.5" r="5"/>
+    <circle style="fill:var(--pupil)" cx="319" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="328" cy="227.5" r="5"/>
+    <path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+    <rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
+  </symbol>
+</svg>
+<main>
+  <header>
+    <img src="img/fs-icon.svg" alt="FootyScoutle icon">
+    <div>
+      <h1>FootyScoutle: type, wordmark and colour</h1>
+      <nav><a href="#fonts">1 Fonts</a><a href="#wordmark">2 Wordmark</a><a href="#colour">3 Colour</a></nav>
+    </div>
+  </header>
+
+  <section id="fonts">
+    <h2><span>1</span>Heading and body fonts</h2>
+    <p class="lede">Each candidate on the office frame at about laptop size: wordmark and icon in the top bar, the clipboard header, task rows, the button and the tape labels. Heading font first, body font second. Press <b>Use below</b> to carry one into sections 2 and 3.</p>
+    <div class="cards" id="fontCards"></div>
+  </section>
+
+  <section id="wordmark">
+    <h2><span>2</span>Wordmark</h2>
+    <p class="lede">Five treatments, each in the hub top bar (on ink) and on a share card (on paper). No tilted chip. Switch the font and the case for all five at once.</p>
+    <div class="ctl" id="wmFonts"><span>Font</span></div>
+    <div class="ctl" id="wmCase"><span>Case</span>
+      <button data-case="title" aria-pressed="true">FootyScoutle</button><button data-case="lower" aria-pressed="false">footyscoutle</button><button data-case="caps" aria-pressed="false">FOOTYSCOUTLE</button>
+    </div>
+    <div id="wmRows" data-case="title" style="margin-top:18px"></div>
+  </section>
+
+  <section id="colour">
+    <h2><span>3</span>Accent and UI colour</h2>
+    <p class="lede">The world palette stays (navy, sun, cork and cream are baked into the art). Only the action colour and its partners change: the button, the word Next, the tape flag. Font follows your pick above.</p>
+    <div class="cards" id="colourCards"></div>
+    <ul class="notes">
+      <li>Every state still has its own word and shape (tick, strike, Next with an arrow), so no option leans on hue alone.</li>
+      <li>Red and blue sit at 2.6 and 2.3:1 against the clipboard's navy header, so the paper ring around the button does the separating. Sun stands out on its own (7.8:1).</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+const FONTS = [
+  { h: 'Big Shoulders', hw: 900, b: 'Libre Franklin', kind: 'Condensed signage. The current pair, from the Chain spec.' },
+  { h: 'Barlow Condensed', hw: 800, b: 'Barlow', kind: 'Condensed, like kit numbers, with softer corners.' },
+  { h: 'Rubik', hw: 800, b: 'Figtree', kind: 'Heavy grotesk with slightly rounded corners, like the icon’s frames.' },
+  { h: 'Fredoka', hw: 700, b: 'Nunito', kind: 'Rounded geometric. The friendliest; risks looking young.' },
+  { h: 'Bricolage Grotesque', hw: 800, b: 'DM Sans', kind: 'Chunky grotesk with ink traps; some character.' },
+  { h: 'Archivo', hw: 900, hx: '112%', b: 'Archivo', label: 'Archivo Expanded', kind: 'Wide, chunky grotesk. One family, expanded for headings.' },
+  { h: 'Bitter', hw: 800, b: 'Source Sans 3', kind: 'Slab. The scout’s dossier, typed up.' },
+  { h: 'Unbounded', hw: 800, b: 'Manrope', kind: 'Wide and rounded, modern sport.' },
+];
+const label = (f) => f.label || f.h;
+const vars = (f) => `--h:'${f.h}'; --hw:${f.hw}; --hx:${f.hx || '100%'}; --b:'${f.b}'`;
+let lead = 2; // Rubik: closest kin to the icon's heavy, rounded frames.
+
+const ICON = '<img class="icon" src="img/fs-icon.svg" alt="">';
+const TICK = '<svg viewBox="0 0 22 22"><path class="biro" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
+const STRIKE = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg>';
+const TASKS = ['Check the rumours', 'Trace the link', 'Log the shot', 'Find the mole', 'Line them up', 'Read the season'];
+const TOPS = [47.7, 54.2, 60.6, 67.2, 73.7, 80.3];
+
+function scene(f, cls = '') {
+  const rows = TASKS.map((t, i) => {
+    const state = i < 2 ? 'done' : i === 2 ? 'next' : '';
+    return `<li class="${state}" style="top:${TOPS[i]}%"><i class="box">${i < 2 ? TICK : ''}</i><span class="nm">${t}${i < 2 ? STRIKE : ''}</span><em>${i < 2 ? 'Done' : i === 2 ? 'Next' : ''}</em></li>`;
+  }).join('');
+  return `<div class="scene ${cls}" style="${vars(f)}">
+    <img class="art" src="img/round2/6-desk.png" alt="">
+    <div class="bar">${ICON}<span class="wm H">FootyScoutle</span><nav><span>Log in</span><span>Menu</span></nav></div>
+    <div class="tape" style="left:3cqw; top:20cqw; --r:-2deg"><b class="H">Spoofed</b><small>Spot the fake move</small></div>
+    <div class="tape" style="left:4cqw; top:50cqw; --r:1.5deg"><b class="H">Chain <span class="flag">Next</span></b><small>Steps, then the puzzle</small></div>
+    <div class="tape" style="left:74cqw; top:44cqw; --r:-1deg"><b class="H">Season line</b><small>Name that season</small></div>
+    <div class="clipart"><div class="cb"><img src="img/round3/clipboard.png" alt=""></div>
+      <div class="head"><div class="eyebrow"><span>4-day streak</span><span>Thu 19 Nov</span></div>
+        <h4 class="H">Today’s assignment</h4>
+        <div class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <button class="btn H">Continue</button></div>
+      <ol class="tasks">${rows}</ol>
+    </div>
+  </div>`;
+}
+
+// 1. Fonts
+document.getElementById('fontCards').innerHTML = FONTS.map((f, i) => `
+  <figure class="card">${scene(f)}
+    <figcaption style="${vars(f)}">
+      <div class="cap"><h3>${i + 1} · ${label(f)} ${f.hw} + ${f.b}<small>${f.kind}</small></h3><button class="pick" data-i="${i}" aria-pressed="false">Use below</button></div>
+      <p class="sample"><b>87.4</b>One move in each career never happened. Find it before the clock runs out.</p>
+    </figcaption>
+  </figure>`).join('');
+
+// 2. Wordmark
+const T = [
+  { name: 'One word', note: 'Plain, one weight, icon beside it.', wm: () => '<span class="wm H">FootyScoutle</span>', icon: true },
+  { name: 'Two-tone split', note: 'Footy in the icon’s yellow on ink; on paper it darkens to ochre (5.0:1) so it stays readable.', wm: () => '<span class="wm two H"><span class="a">Footy</span>Scoutle</span>', icon: true },
+  { name: 'Flat chip', note: 'Footy on a square chip, no tilt. Paper chip on ink, ink chip on paper.', wm: () => '<span class="wm chip H"><span class="a">Footy</span>Scoutle</span>', icon: true },
+  { name: 'Icon lockup', note: 'The icon sized and spaced to the type, one unit. Stacked on the share card.', wm: () => `<span class="wm lock H"><img src="img/fs-icon.svg" alt="">FootyScoutle</span>`, icon: false, stack: true },
+  { name: 'Glasses for oo', note: 'The icon’s own glasses (its fitted paths) stand in for the oo. No separate icon.', wm: () => '<span class="wm H">F<svg class="oo" aria-label="oo"><use href="#oo"/></svg>tyScoutle</span>', icon: false },
+];
+document.getElementById('wmRows').innerHTML = T.map((t, i) => `
+  <h3>${i + 1} · ${t.name}<small>${t.note}</small></h3>
+  <div class="wmrow">
+    <div class="strip"><img class="art" src="img/round2/6-desk.png" alt="">
+      <div class="bar">${t.icon ? ICON : ''}${t.wm()}<nav><span>Log in</span><span>Menu</span></nav></div></div>
+    <div class="share on-paper">
+      <div class="wmline${t.stack ? ' stack' : ''}">${t.icon ? ICON : ''}${t.wm()}</div>
+      <div class="shot"></div>
+      <div class="res"><div><small>#42 · Thu 19 Nov</small><b class="H">87.4</b></div><div><small style="text-align:right">6 of 6</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+    </div>
+  </div>`).join('');
+const wmFonts = document.getElementById('wmFonts');
+wmFonts.insertAdjacentHTML('beforeend', FONTS.map((f, i) => `<button data-i="${i}" style="font-family:'${f.h}',system-ui;font-weight:${f.hw};font-stretch:${f.hx || '100%'}" aria-pressed="false">${label(f)}</button>`).join(''));
+document.getElementById('wmCase').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.getElementById('wmRows').dataset.case = b.dataset.case;
+  document.querySelectorAll('#wmCase button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+  fitAll();
+});
+
+// 3. Colour
+const V = [
+  { cls: 'v-red', name: 'Red action', note: 'Current. Red button and Next; sun for the streak pips.', sw: [['#C8202F', '#fff', 'Red #C8202F · white type 5.7:1'], ['#F5AF3E', '#1B2230', 'Sun pips']] },
+  { cls: 'v-sun', name: 'Sun action', note: 'The icon’s yellow becomes the action; Next is sun on an ink chip. No red anywhere.', sw: [['#F5AF3E', '#1B2230', 'Sun #F5AF3E · ink type 8.4:1'], ['#1B2230', '#F5AF3E', 'Next chip 8.4:1']] },
+  { cls: 'v-biro', name: 'Biro action', note: 'The scout’s pen colour: the action matches the hand-drawn ticks. Blue and yellow, no red.', sw: [['#2A55CC', '#fff', 'Biro #2A55CC · white type 6.4:1'], ['#F5AF3E', '#1B2230', 'Sun pips']] },
+];
+function renderColour() {
+  const f = FONTS[lead];
+  document.getElementById('colourCards').innerHTML = V.map((v, i) => `
+    <figure class="card">${scene(f, v.cls)}
+      <figcaption><h3>${String.fromCharCode(65 + i)} · ${v.name}<small>${v.note}</small></h3>
+        <div class="sws">${v.sw.map(([bg, fg, t]) => `<div><i style="background:${bg};color:${fg}">Aa</i>${t}</div>`).join('')}</div>
+      </figcaption>
+    </figure>`).join('');
+}
+
+function setLead(i) {
+  lead = i;
+  document.getElementById('wordmark').setAttribute('style', vars(FONTS[i]));
+  document.querySelectorAll('#wmFonts button, .pick').forEach((b) => {
+    const on = +b.dataset.i === i;
+    b.setAttribute('aria-pressed', on);
+    if (b.classList.contains('pick')) b.textContent = on ? 'In use below' : 'Use below';
+  });
+  renderColour();
+  fitAll();
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.pick, #wmFonts button'); if (b) setLead(+b.dataset.i);
+});
+
+// Shrink anything that would overflow its box (wide fonts), never grow it.
+function fit(el, box) {
+  el.style.fontSize = '';
+  let s = parseFloat(getComputedStyle(el).fontSize), n = 0;
+  while (box.scrollWidth > box.clientWidth + 1 && n++ < 40) el.style.fontSize = (s *= .96) + 'px';
+}
+function fitAll() {
+  document.querySelectorAll('.head h4').forEach((h) => fit(h, h.parentElement));
+  document.querySelectorAll('.share .wmline').forEach((l) => fit(l.querySelector('.wm'), l));
+}
+setLead(lead);
+document.fonts.ready.then(fitAll);
+addEventListener('resize', fitAll);
+</script>
+</body>
+</html>

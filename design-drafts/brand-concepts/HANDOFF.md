@@ -57,6 +57,15 @@ the office frame from `direction.html`, with the icon beside it.
 Done when Jonno can compare the options side by side on one page and pick.
 Then update `style.html` to the picks. Commit, push, and give the link.
 
+**Built 2026-11-19: `type.html`, waiting for Jonno's picks.** Eight font
+pairs on a crop of the office frame at laptop scale (Big Shoulders, Barlow
+Condensed, Rubik, Fredoka, Bricolage Grotesque, Archivo Expanded, Bitter,
+Unbounded), five wordmark treatments (one word, two-tone, flat chip, icon
+lockup, glasses for "oo") with font and case switches, and three accents
+(red, sun, biro blue). Rubik is the default lead. Page chrome is system-ui
+so no candidate competes. The generated clipboard is clipped to its board
+shape there; `style.html` still shows its cream backdrop.
+
 ## Other pending work
 
 - Rebake the clipboard with a plain navy header zone (the pitch lines crowd
