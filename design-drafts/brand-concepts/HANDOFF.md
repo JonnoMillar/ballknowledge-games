@@ -117,6 +117,8 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   the top of `logo.html`. `icon_diff.py` re-checks it and re-exports the PNGs.
   At 16 px it is mush (a straight downscale): a hand-hinted favicon would be a
   separate job.
+  2026-11-19: brow corners rounded slightly (radius 4 on 420), as in the
+  original (Jonno spotted the sharp ones); diff 0.480%, PNGs re-exported.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
