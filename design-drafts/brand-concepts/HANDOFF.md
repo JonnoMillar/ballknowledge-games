@@ -119,6 +119,8 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   separate job.
   2026-11-19: brow corners rounded slightly (radius 4 on 420), as in the
   original (Jonno spotted the sharp ones); diff 0.480%, PNGs re-exported.
+  On `style.html` section 1 (hero, sizes, page favicon), replacing the FS
+  scout's-pass placeholder.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and
