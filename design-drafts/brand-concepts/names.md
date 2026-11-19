@@ -9,6 +9,23 @@ game ... it doesn't sound like football." (Was decided 2026-11-15 as Ball
 Knowledge Scout, short form BK Scout.) The B-as-binoculars logo work is on
 hold with it.
 
+## Round 8: FootballScouted and Scouted (checked 2026-11-19)
+
+Jonno floated FootballScouted (the run ends with you scouted at a valuation)
+and FootballSniped. Correction to round 3: it was the "FC" in Scouted FC that
+read as a club, not "Scouted". Domains via registry RDAP (whois.gg for .gg).
+- **FootballScouted:** free on .com .gg .app .io .co.uk .games .net .org. A
+  web search found no app or game with the name. Nearest: Skouted (a social
+  app for young players and scouts), bootbag (a football scouting game),
+  ScoutR. 15 letters; US readers take "football" as the NFL.
+- **Scouted:** .com .app .io .co.uk .net .org taken; .gg and .games free.
+  No game called Scouted found (Steam, App Store, Play). Several US SCOUTED
+  trademarks exist (an athlete social app from 2019, an activity-matching
+  app, ScoutedNYC in class 41), so it is weak to own and would need a
+  modifier for .com.
+- The valuation ending works under any name: the result becomes "valued at
+  £42m" in place of a score.
+
 ## Round 7: from sources (2026-11-18)
 
 Sources: daily football game lists (Who Are Ya, FootballQuest, Footdle, Football
