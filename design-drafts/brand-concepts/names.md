@@ -25,6 +25,17 @@ read as a club, not "Scouted". Domains via registry RDAP (whois.gg for .gg).
   modifier for .com.
 - The valuation ending works under any name: the result becomes "valued at
   £42m" in place of a score.
+- **Handles (checked by hand in Chrome, 2026-11-19).** "Free" means the
+  profile page says the account doesn't exist; a banned or held name can show
+  the same page, so only a sign-up proves it.
+  - @footballscouted: **taken on both.** TikTok: football analysis, 17
+    followers, 3 videos, binoculars avatar. Instagram: "Football Scout",
+    333 followers, 50 posts, scouting young players. Same name and same
+    niche, so the closest clash found for any candidate.
+  - @playfootballscouted and @footballscoutedhq: free on both.
+  - @footyscoutle: free on both.
+  - @scouted: taken on both (empty TikTok, a dormant Instagram account
+    posting clothes).
 
 ## Round 7: from sources (2026-11-18)
 
