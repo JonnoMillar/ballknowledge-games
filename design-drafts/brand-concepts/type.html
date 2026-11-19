@@ -7,7 +7,7 @@
 <link rel="icon" href="img/fs-icon/fs-icon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700;800&family=Barlow+Condensed:wght@700;800&family=Barlow:wght@500;700;800&family=Rubik:wght@500;700;800&family=Figtree:wght@500;700;800&family=Fredoka:wght@600;700&family=Nunito:wght@500;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,500..800&family=Archivo:wdth,wght@62..125,400..900&family=Bitter:wght@700;800&family=Source+Sans+3:wght@500;700;800&family=Unbounded:wght@700;800&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@800&family=Anybody:wght@900&family=Pathway+Extreme:wght@900&family=Alan+Sans:wght@900&family=Valley+Sans:wght@900&family=Phudu:wght@900&family=Dela+Gothic+One&family=Sansita:wght@900&family=Atkinson+Hyperlegible+Next:wght@500;700;800&family=Golos+Text:wght@500;700;800&family=Rethink+Sans:wght@500;700;800&family=Scoutie+Sans:wght@500;700;800&family=Onest:wght@500;700;800&family=Kumbh+Sans:wght@500;700;800&family=Commissioner:wght@500;700;800&family=National+Park:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 /* Page chrome is system-ui on purpose, so no candidate font competes with it. */
 :root {
@@ -167,7 +167,7 @@ figure { margin: 0; }
 
   <section id="fonts">
     <h2><span>1</span>Heading and body fonts</h2>
-    <p class="lede">Each candidate on the office frame at about laptop size: wordmark and icon in the top bar, the clipboard header, task rows, the button and the tape labels. Heading font first, body font second. Press <b>Use below</b> to carry one into sections 2 and 3.</p>
+    <p class="lede">Round 2. Found by filtering Google Fonts' own data (1,961 families) to heavy sans and display faces outside the top ~150, dropping the fonts AI tools reach for by reflex (Inter, DM Sans, Space Grotesk, Outfit, Manrope, Figtree, Unbounded and the rest) and anything too round, then judging 44 of them by eye on the hub art: <a href="font-sweep.html">font-sweep.html</a>. Rank is Google's popularity position; higher is rarer. Each card shows the wordmark, clipboard header, task rows, button and tapes. Press <b>Use below</b> to carry one into sections 2 and 3.</p>
     <div class="cards" id="fontCards"></div>
   </section>
 
@@ -194,18 +194,18 @@ figure { margin: 0; }
 
 <script>
 const FONTS = [
-  { h: 'Big Shoulders', hw: 900, b: 'Libre Franklin', kind: 'Condensed signage. The current pair, from the Chain spec.' },
-  { h: 'Barlow Condensed', hw: 800, b: 'Barlow', kind: 'Condensed, like kit numbers, with softer corners.' },
-  { h: 'Rubik', hw: 800, b: 'Figtree', kind: 'Heavy grotesk with slightly rounded corners, like the icon’s frames.' },
-  { h: 'Fredoka', hw: 700, b: 'Nunito', kind: 'Rounded geometric. The friendliest; risks looking young.' },
-  { h: 'Bricolage Grotesque', hw: 800, b: 'DM Sans', kind: 'Chunky grotesk with ink traps; some character.' },
-  { h: 'Archivo', hw: 900, hx: '112%', b: 'Archivo', label: 'Archivo Expanded', kind: 'Wide, chunky grotesk. One family, expanded for headings.' },
-  { h: 'Bitter', hw: 800, b: 'Source Sans 3', kind: 'Slab. The scout’s dossier, typed up.' },
-  { h: 'Unbounded', hw: 800, b: 'Manrope', kind: 'Wide and rounded, modern sport.' },
+  { h: 'Changa', hw: 800, b: 'Atkinson Hyperlegible Next', rank: 299, kind: 'Squared, slightly condensed, like kit lettering. Body built for low-vision legibility.' },
+  { h: 'Anybody', hw: 900, b: 'Golos Text', rank: 649, kind: 'Heavy and a touch wide, flat ends like the icon’s frames. Loudest against the art.' },
+  { h: 'Pathway Extreme', hw: 900, b: 'Rethink Sans', rank: 726, kind: 'Big, crisp grotesk with tall lowercase; the most legible at small sizes.' },
+  { h: 'Alan Sans', hw: 900, b: 'Scoutie Sans', rank: 992, kind: 'Dense heavy grotesk with tight spacing; reads as one solid block.' },
+  { h: 'Valley Sans', hw: 900, b: 'Onest', rank: 1586, kind: 'Sturdy and plain with square-ish curves; new on Google Fonts (2026).' },
+  { h: 'Phudu', hw: 900, b: 'Kumbh Sans', rank: 956, kind: 'Condensed capitals only, like a stadium scoreboard.' },
+  { h: 'Dela Gothic One', hw: 400, b: 'Commissioner', rank: 340, kind: 'Ultra-heavy and wide, one weight. Most poster-like.' },
+  { h: 'Sansita', hw: 900, b: 'National Park', rank: 581, kind: 'Heavy with a forward lean and lively curves; sporty, not round.' },
 ];
 const label = (f) => f.label || f.h;
 const vars = (f) => `--h:'${f.h}'; --hw:${f.hw}; --hx:${f.hx || '100%'}; --b:'${f.b}'`;
-let lead = 2; // Rubik: closest kin to the icon's heavy, rounded frames.
+let lead = 1; // Anybody: flat-ended heavy strokes like the icon, and the strongest against the art.
 
 const ICON = '<img class="icon" src="img/fs-icon.svg" alt="">';
 const TICK = '<svg viewBox="0 0 22 22"><path class="biro" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
@@ -238,7 +238,7 @@ function scene(f, cls = '') {
 document.getElementById('fontCards').innerHTML = FONTS.map((f, i) => `
   <figure class="card">${scene(f)}
     <figcaption style="${vars(f)}">
-      <div class="cap"><h3>${i + 1} · ${label(f)} ${f.hw} + ${f.b}<small>${f.kind}</small></h3><button class="pick" data-i="${i}" aria-pressed="false">Use below</button></div>
+      <div class="cap"><h3>${i + 1} · ${label(f)} ${f.hw} + ${f.b}<small>${f.kind} Google rank ${f.rank}.</small></h3><button class="pick" data-i="${i}" aria-pressed="false">Use below</button></div>
       <p class="sample"><b>£42m</b>One move in each career never happened. Find it before the clock runs out.</p>
     </figcaption>
   </figure>`).join('');

@@ -70,6 +70,13 @@ lockup, glasses for "oo") with font and case switches, and three accents
 so no candidate competes. The generated clipboard is clipped to its board
 shape there; `style.html` still shows its cream backdrop.
 
+**Round 2 fonts (2026-11-19).** Jonno rejected AI-default and very common
+fonts, and found Fredoka and Bricolage too round. `font-sweep.html` shows 44
+uncommon heavy faces (from Google Fonts popularity data) on the hub art;
+`type.html` section 1 now holds 8 picks: Changa, Anybody, Pathway Extreme,
+Alan Sans, Valley Sans, Phudu, Dela Gothic One, Sansita, each with an
+uncommon body face. Anybody is the default lead.
+
 ## Other pending work
 
 - Rebake the clipboard with a plain navy header zone (the pitch lines crowd
