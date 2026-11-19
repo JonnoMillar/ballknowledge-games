@@ -116,6 +116,18 @@ figure { margin: 0; }
 .close .wm { font-size: 9cqw; }
 .close small { display: block; margin-top: 10px; font: 700 12px/1.3 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
 @media (max-width: 760px) { .close { grid-template-columns: minmax(0, 1fr); } }
+.combos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0 0 30px; }
+@media (max-width: 900px) { .combos { grid-template-columns: minmax(0, 1fr); } }
+.combo { border-radius: 10px; overflow: hidden; box-shadow: 0 6px 18px rgba(40,25,10,.18); background: var(--paper); }
+.combo .lk { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+.combo .lk .wm { font-size: 34px; }
+.combo .ic { width: 48px; height: 48px; flex: none; display: block; border-radius: 24%; box-shadow: 0 0 0 var(--keyw, 0) var(--key, transparent); }
+.combo .lk.lt { border-bottom: 1px solid var(--rule); }
+.combo .meta { display: flex; gap: 14px; align-items: flex-end; padding: 12px 18px 14px; }
+.combo .meta h3 { margin: 0 0 2px; }
+.combo .meta p { margin: 0; font: 500 13px/1.4 system-ui, sans-serif; color: var(--muted); }
+.combo .sizes { display: flex; gap: 10px; align-items: flex-end; margin-left: auto; flex: none; }
+.combo .sizes svg { display: block; border-radius: 24%; box-shadow: 0 0 0 var(--keyw, 0) var(--key, transparent); }
 .wmrow { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; margin-bottom: 28px; }
 @media (max-width: 760px) { .wmrow { grid-template-columns: minmax(0, 1fr); } .share { max-width: 320px; } }
 .strip { position: relative; container-type: inline-size; aspect-ratio: 1344 / 400; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 24px rgba(40,25,10,.25); font-family: var(--b), system-ui, sans-serif; }
@@ -187,6 +199,19 @@ figure { margin: 0; }
     <path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
     <rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
   </symbol>
+  <symbol id="ico" viewBox="0 0 420 420">
+<path style="fill:var(--tile)" d="M101 0H319C370.51 0 420 49.49 420 101V319C420 370.51 370.51 420 319 420H101C49.49 420 0 370.51 0 319V101C0 49.49 49.49 0 101 0Z"/>
+<path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
+<path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+<circle style="fill:var(--pupil)" cx="139" cy="237.5" r="24"/>
+<circle style="fill:var(--lens)" cx="148" cy="227.5" r="5"/>
+<circle style="fill:var(--pupil)" cx="319" cy="237.5" r="24"/>
+<circle style="fill:var(--lens)" cx="328" cy="227.5" r="5"/>
+<path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+<rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
+<rect style="fill:var(--frame)" x="45" y="147" width="129" height="22" rx="4"/>
+<path style="fill:var(--frame);stroke:var(--frame)" stroke-width="8" stroke-linejoin="round" d="M222.73 129.50A113.0 113.0 0 0 1 368.75 120.56L360.36 131.76A99.0 99.0 0 0 0 232.43 139.59Z"/>
+</symbol>
   <symbol id="oob" viewBox="25 90 370 245">
     <path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
     <path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
@@ -221,6 +246,8 @@ figure { margin: 0; }
     <div class="ctl" id="wmCase"><span>Case</span>
       <button data-case="title" aria-pressed="true">FootballScouted</button><button data-case="lower" aria-pressed="false">footballscouted</button><button data-case="caps" aria-pressed="false">FOOTBALLSCOUTED</button>
     </div>
+    <h3 style="margin-top:6px">Icon and wordmark colour<small>Treatment 4 in Valley Sans, the icon recoloured from its own paths. Each pair shown on a dark bar, on paper, and as an app icon at 64, 32 and 16 px.</small></h3>
+    <div class="combos" id="combos"></div>
     <div id="wmRows" data-case="title" style="margin-top:18px"><div class="close" id="wmClose"></div></div>
   </section>
 
@@ -315,6 +342,26 @@ document.getElementById('wmCase').addEventListener('click', (e) => {
   document.querySelectorAll('#wmCase button').forEach((x) => x.setAttribute('aria-pressed', x === b));
   fitAll();
 });
+
+// 2b. Icon and wordmark colour. acc = the Football half and its glasses; accL = the same on paper.
+const C = [
+  { name: 'Yellow tile, ink frames', note: 'As fitted today. The icon and the wordmark share one yellow.', tile: '#F5AF3E', frame: '#19212A', dk: '#1B2230', acc: '#F5AF3E', accL: '#9A5B00' },
+  { name: 'Yellow tile on navy', note: 'Same icon on palette A’s navy bar; yellow on navy 6.9:1.', tile: '#F5AF3E', frame: '#19212A', dk: '#16305A', acc: '#F5AF3E', accL: '#9A5B00' },
+  { name: 'Ink tile, yellow frames', note: 'Inverted. Needs a cream keyline on dark bars or the tile disappears (1.2:1 on navy).', tile: '#1B2230', frame: '#F5AF3E', dk: '#16305A', acc: '#F5AF3E', accL: '#9A5B00', key: '#FBF6EA' },
+  { name: 'Blue tile, ink frames', note: 'Palette B’s blue as the brand. Lighter blue for the word on dark (6.5:1).', tile: '#2A55CC', frame: '#19212A', dk: '#1B2230', acc: '#7FA3FF', accL: '#2A55CC' },
+  { name: 'Pitch tile, yellow frames', note: 'Palette C. Football green with the yellow kept for the glasses.', tile: '#1E5C3A', frame: '#F5AF3E', dk: '#1B2230', acc: '#F5AF3E', accL: '#1E5C3A' },
+  { name: 'Red tile, ink frames', note: 'Classic football red. Lightened on dark for 5.1:1; competes with the warm art.', tile: '#D7263D', frame: '#19212A', dk: '#1B2230', acc: '#F2606D', accL: '#C8202F' },
+  { name: 'Cream tile, yellow lenses', note: 'Quiet tile, the yellow moved into the lenses. Needs an ink keyline on paper, or the tile vanishes.', tile: '#FBF6EA', frame: '#19212A', dk: '#1B2230', acc: '#F5AF3E', accL: '#9A5B00', lens: '#F5AF3E', key: '#1B2230' },
+];
+const ico = (c, px, cls = '') => `<svg class="${cls}" width="${px}" height="${px}" viewBox="0 0 420 420" style="--tile:${c.tile};--frame:${c.frame};--lens:${c.lens || '#FBF6EA'};--pupil:#19212A"><use href="#ico"/></svg>`;
+const wm4 = (acc, rest) => `<span class="wm H" style="color:${rest}"><span style="color:${acc}">F<svg class="oo brows" aria-label="oo" style="--frame:${acc};--lens:#FBF6EA;--pupil:#19212A"><use href="#oob"/></svg>tball</span>Scouted</span>`;
+document.getElementById('combos').innerHTML = C.map((c, i) => `
+  <div class="combo" style="${c.key ? `--key:${c.key};--keyw:2px` : ''}">
+    <div class="lk" style="background:${c.dk}">${ico(c, 48, 'ic')}${wm4(c.acc, '#FBF6EA')}</div>
+    <div class="lk lt">${ico(c, 48, 'ic')}${wm4(c.accL, '#1B2230')}</div>
+    <div class="meta"><div><h3>${i + 1} · ${c.name}</h3><p>${c.note}</p></div>
+      <div class="sizes">${ico(c, 64)}${ico(c, 32)}${ico(c, 16)}</div></div>
+  </div>`).join('');
 
 // 3. Colour
 const V = [

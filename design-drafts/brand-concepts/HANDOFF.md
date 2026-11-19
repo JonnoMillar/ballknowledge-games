@@ -88,7 +88,10 @@ blue, pitch/cream + yellow, ink/cream + red) with the sheet repainted flat.
 with the icon's brows]tball" in yellow (ochre #9A5B00 on paper), "Scouted" in
 paper (ink on paper), Valley Sans 900. The glasses and brows are the icon's
 fitted paths (`#oob` symbol in `type.html`, viewBox 25 90 370 245). Judge
-colour for most eyes, not Jonno's colourblindness (his call).
+colour for most eyes, not Jonno's colourblindness (his call). Jonno named the
+on-ink version as the style. Icon colours are not decided: `type.html` #combos
+shows seven icon + wordmark colour pairs (recoloured from the icon's own
+paths via the `#ico` symbol).
 
 ## Other pending work
 
