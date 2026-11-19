@@ -35,7 +35,11 @@
   checklist of today's tasks. Mock: `direction.html` (concept 6 frames).
 - Nothing in the hub is built in the Next app yet; all of this is dev-only.
 
-## Brand picks (locked 2026-11-19, from `type.html`)
+## Brand picks (locked 2026-11-19)
+
+`type.html` now shows only the chosen brand (hub mock, wordmark, icon,
+palette, type). The full exploration it replaced is in git at commit 1f54dd7.
+
 
 - **Fonts:** Valley Sans 900 for headings, wordmark, buttons and tape; Onest
   500/700/800 for body and UI. Both Google Fonts, uncommon (popularity rank

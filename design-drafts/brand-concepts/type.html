@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FootballScouted type</title>
+<title>FootballScouted brand</title>
 <link rel="icon" href="img/fs-icon/fs-icon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Changa:wght@800&family=Anybody:wght@900&family=Pathway+Extreme:wght@900&family=Alan+Sans:wght@900&family=Valley+Sans:wght@900&family=Phudu:wght@900&family=Dela+Gothic+One&family=Sansita:wght@900&family=Atkinson+Hyperlegible+Next:wght@500;700;800&family=Golos+Text:wght@500;700;800&family=Rethink+Sans:wght@500;700;800&family=Scoutie+Sans:wght@500;700;800&family=Onest:wght@500;700;800&family=Kumbh+Sans:wght@500;700;800&family=Commissioner:wght@500;700;800&family=National+Park:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Valley+Sans:wght@900&family=Onest:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-/* Page chrome is system-ui on purpose, so no candidate font competes with it. */
+/* The brand as chosen (2026-11-19). The exploration that led here is in git history. */
 :root {
   --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --rule: #E2D6BD; --muted: #5E574D;
   --navy: #1F3A5F; --sun: #F5AF3E; --biro: #23408E; --tape: #151413; --ochre: #9A5B00;
   /* Accent set, swapped per variation in section 3. */
   --act: #C8202F; --act-ink: #fff; --act-deep: #8E1520; --next-ink: #C8202F; --next-bg: transparent; --pip: #F5AF3E;
   /* Font set, swapped per candidate. */
-  --h: 'Big Shoulders'; --hw: 900; --hx: 100%; --b: 'Libre Franklin';
+  --h: 'Valley Sans'; --hw: 900; --hx: 100%; --b: 'Onest';
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
@@ -32,16 +32,9 @@ h2 span { color: var(--muted); margin-right: 6px; }
 h3 { margin: 0 0 8px; font: 700 15px/1.3 system-ui, sans-serif; }
 h3 small { color: var(--muted); font-weight: 500; margin-left: 6px; }
 .lede { margin: 0 0 16px; color: var(--muted); max-width: 86ch; }
-.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 20px; }
-@media (max-width: 900px) { .cards { grid-template-columns: minmax(0, 1fr); } }
 figure { margin: 0; }
 
 /* Controls: state is a tick and a fill, never colour alone. */
-.ctl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 10px; }
-.ctl > span { font: 700 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); min-width: 44px; }
-.ctl button, .pick { font: 700 14px/1 system-ui, sans-serif; padding: 9px 12px; border-radius: 6px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
-.ctl button[aria-pressed="true"], .pick[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.ctl button[aria-pressed="true"]::before, .pick[aria-pressed="true"]::before { content: '✓ '; }
 
 /* ===== The hub scene: a crop of the office frame at about real laptop scale.
    Everything inside is sized in cqw of the scene. ===== */
@@ -86,66 +79,21 @@ figure { margin: 0; }
 .tasks li.next em { color: var(--next-ink); background: var(--next-bg); padding: .35em .5em; border-radius: .5cqw; }
 .tasks li.next em::after { content: ' \2192'; }
 
-.card figcaption { padding: 10px 2px 0; }
-.cap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.cap h3 { margin: 0; flex: 1; min-width: 220px; }
-.sample { margin: 6px 0 0; font: 500 16px/1.45 var(--b), system-ui, sans-serif; max-width: 62ch; }
-.sample b { font-family: var(--h), system-ui, sans-serif; font-weight: var(--hw); font-stretch: var(--hx); font-size: 26px; font-variant-numeric: tabular-nums; margin-right: 10px; }
 
 /* ===== Wordmark treatments ===== */
 .wm { white-space: nowrap; line-height: 1; display: inline-block; }
 .wm .a { display: inline-block; }
 .wm.two .a { color: var(--sun); }
 .on-paper .wm.two .a { color: var(--ochre); }
-.wm.chip .a { background: var(--paper); color: var(--ink); padding: .07em .16em .03em; border-radius: .08em; margin-right: .1em; }
-.on-paper .wm.chip .a { background: var(--ink); color: var(--paper); }
-.wm.lock { display: inline-flex; align-items: center; gap: .24em; }
-.wm.lock img { width: 1.3em; height: 1.3em; display: block; }
 .wm .oo { height: .6em; width: calc(.6em * 370 / 138); vertical-align: -.01em; margin: 0 .03em; --frame: var(--sun); --lens: var(--paper); --pupil: var(--ink); }
 .on-paper .wm .oo { --frame: var(--ink); }
-[data-case="lower"] .wm { text-transform: lowercase; }
-[data-case="caps"] .wm { text-transform: uppercase; }
-[data-case="caps"] .wm .oo { height: .74em; width: calc(.74em * 370 / 138); }
-/* With brows the box grows upward (245 units, not 138); the glasses stay the same size. */
 .wm .oo.brows { height: calc(.6em * 245 / 138); }
-[data-case="caps"] .wm .oo.brows { height: calc(.74em * 245 / 138); }
 .on-paper .wm.two .oo { --frame: var(--ochre); }
 
-.close { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 26px; }
-.close > div { border-radius: 10px; padding: 26px 22px 20px; container-type: inline-size; }
-.close .wm { font-size: 9cqw; }
-.close small { display: block; margin-top: 10px; font: 700 12px/1.3 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
-@media (max-width: 760px) { .close { grid-template-columns: minmax(0, 1fr); } }
-.combos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0 0 30px; }
-@media (max-width: 900px) { .combos { grid-template-columns: minmax(0, 1fr); } }
-.combo { border-radius: 10px; overflow: hidden; box-shadow: 0 6px 18px rgba(40,25,10,.18); background: var(--paper); }
-.combo .lk { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
-.combo .lk .wm { font-size: 34px; }
-.combo .ic { width: 48px; height: 48px; flex: none; display: block; border-radius: 24%; box-shadow: 0 0 0 var(--keyw, 0) var(--key, transparent); }
-.combo .lk.lt { border-bottom: 1px solid var(--rule); }
-.combo .meta { display: flex; gap: 14px; align-items: flex-end; padding: 12px 18px 14px; }
-.combo .meta h3 { margin: 0 0 2px; }
-.combo .meta p { margin: 0; font: 500 13px/1.4 system-ui, sans-serif; color: var(--muted); }
-.combo .sizes { display: flex; gap: 10px; align-items: flex-end; margin-left: auto; flex: none; }
-.combo .sizes svg { display: block; border-radius: 24%; box-shadow: 0 0 0 var(--keyw, 0) var(--key, transparent); }
-.wmrow { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; margin-bottom: 28px; }
-@media (max-width: 760px) { .wmrow { grid-template-columns: minmax(0, 1fr); } .share { max-width: 320px; } }
-.strip { position: relative; container-type: inline-size; aspect-ratio: 1344 / 400; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 24px rgba(40,25,10,.25); font-family: var(--b), system-ui, sans-serif; }
-.strip > .art { position: absolute; width: 100cqw; max-width: none; left: 0; top: 0; }
-.strip .bar { height: 5cqw; padding: 0 1.6cqw; gap: 1cqw; }
-.strip .bar .icon { width: 3.4cqw; height: 3.4cqw; }
-.strip .bar .wm { font-size: 2.5cqw; }
-.strip .bar nav { gap: .6cqw; }
-.strip .bar nav span { font-size: 1cqw; }
 
 .share { position: relative; min-width: 0; overflow: hidden; background: var(--paper); border-radius: 10px; padding: 16px; box-shadow: 0 8px 24px rgba(40,25,10,.2); font-family: var(--b), system-ui, sans-serif; color: var(--ink); }
 .share .wmline { display: flex; align-items: center; gap: 10px; }
-.share .wmline.stack { flex-direction: column; align-items: flex-start; gap: 8px; }
-.share .icon { width: 40px; height: 40px; flex: none; }
 .share .wm { font-size: 30px; }
-.share .wm.lock img { width: 1.3em; height: 1.3em; }
-.share .wmline.stack .wm.lock { flex-direction: column; align-items: flex-start; gap: .25em; }
-.share .wmline.stack .wm.lock img { width: 2em; height: 2em; }
 .share .shot { margin: 12px 0; aspect-ratio: 2 / 1; border-radius: 6px; background: url(img/round2/6-desk.png) 62% 42% / 190% auto; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); }
 .share .res { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
 .share .res small { display: block; font: 800 11px/1.3 var(--b), system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -158,9 +106,6 @@ figure { margin: 0; }
 /* Palette systems: two primaries (A dominant, B second) and one rationed
    attention colour, used only for the button, the Next chip and the tape flag. */
 .pal-navy   { --pA: #16305A; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #16305A; --att: #F5AF3E; --att-ink: #1B2230; --att-deep: #A8680F; --biro: #23408E; }
-.pal-icon   { --pA: #F5AF3E; --pA-ink: #1B2230; --pB: #1B2230; --pB-ink: #FBF6EA; --bar: #1B2230; --att: #2A55CC; --att-ink: #fff; --att-deep: #173478; --biro: #1B2230; }
-.pal-pitch  { --pA: #1E5C3A; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #1E5C3A; --att: #F5AF3E; --att-ink: #1B2230; --att-deep: #A8680F; --biro: #23408E; }
-.pal-inkred { --pA: #1B2230; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #1B2230; --att: #D7263D; --att-ink: #fff; --att-deep: #8E1520; --biro: #23408E; }
 .cs { --act: var(--att); --act-ink: var(--att-ink); --act-deep: var(--att-deep); --next-ink: var(--att-ink); --next-bg: var(--att); }
 .cs .bar { background: var(--bar); }
 /* The clipboard sheet repainted flat in primary A, as a rebaked plain sheet would be;
@@ -180,12 +125,29 @@ figure { margin: 0; }
 .cs .tasks li em { color: color-mix(in srgb, var(--pB-ink) 62%, var(--pB)); }
 .cs .tasks li.next em { color: var(--att-ink); background: var(--att); }
 .cs .biro { stroke: var(--biro); }
-.pal-icon .biro { stroke: #FBF6EA; }
-.sws { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.sws div { display: flex; align-items: center; gap: 8px; font: 600 13px/1.3 system-ui, sans-serif; background: var(--paper); border-radius: 6px; padding: 6px 10px 6px 6px; box-shadow: inset 0 0 0 1px var(--rule); }
-.sws i { width: 30px; height: 30px; border-radius: 4px; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); display: grid; place-items: center; font: 800 13px/1 system-ui, sans-serif; font-style: normal; }
-.notes { margin: 12px 0 0; padding-left: 18px; max-width: 90ch; color: var(--muted); }
-.notes li { margin: 3px 0; }
+
+/* ===== The chosen brand page ===== */
+.duo { display: grid; grid-template-columns: minmax(0, 760px) minmax(0, 340px); gap: 24px; align-items: start; }
+@media (max-width: 1000px) { .duo { grid-template-columns: minmax(0, 1fr); } .duo > * { max-width: 760px; } }
+.wm .oo.brows { height: calc(.6em * 245 / 138); }
+.marks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .marks { grid-template-columns: minmax(0, 1fr); } }
+.marks > div { border-radius: 10px; padding: 28px 22px 18px; container-type: inline-size; }
+.marks .wm { font-size: 9.6cqw; }
+.marks small { display: block; margin-top: 12px; font: 700 12px/1.3 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .72; }
+.icons { display: flex; gap: 18px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px; }
+.icons figure { text-align: center; font: 600 12px/1 system-ui, sans-serif; color: var(--muted); }
+.icons figcaption { margin-top: 6px; }
+.pal { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.sw { border-radius: 10px; overflow: hidden; background: var(--paper); box-shadow: inset 0 0 0 1px var(--rule); }
+.sw i { display: flex; align-items: flex-end; height: 84px; padding: 10px 12px; font: 900 22px/1 'Valley Sans', system-ui; font-style: normal; }
+.sw div { padding: 10px 12px 12px; font: 500 13px/1.4 system-ui, sans-serif; color: var(--muted); }
+.sw b { display: block; color: var(--ink); font-size: 14px; }
+.spec { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 6px 18px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.spec:last-child { border-bottom: 0; }
+.spec small { font: 600 12px/1.35 system-ui, sans-serif; color: var(--muted); }
+@media (max-width: 640px) { .spec { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--paper); border-radius: 10px; padding: 6px 20px; box-shadow: inset 0 0 0 1px var(--rule); }
 </style>
 </head>
 <body>
@@ -226,180 +188,92 @@ figure { margin: 0; }
 </svg>
 <main>
   <header>
-    <img src="img/fs-icon.svg" alt="FootballScouted icon">
+    <svg width="56" height="56" viewBox="0 0 420 420" style="--tile:#F5AF3E;--frame:#19212A;--lens:#FBF6EA;--pupil:#19212A"><use href="#ico"/></svg>
     <div>
-      <h1>FootballScouted: type, wordmark and colour</h1>
-      <nav><a href="#fonts">1 Fonts</a><a href="#wordmark">2 Wordmark</a><a href="#colour">3 Colour</a></nav>
+      <h1>FootballScouted: the brand as chosen</h1>
+      <nav><a href="#hub">On the hub</a><a href="#mark">Wordmark and icon</a><a href="#colour">Colour</a><a href="#type">Type</a></nav>
     </div>
   </header>
 
-  <section id="fonts">
-    <h2><span>1</span>Heading and body fonts</h2>
-    <p class="lede">Round 2. Found by filtering Google Fonts' own data (1,961 families) to heavy sans and display faces outside the top ~150, dropping the fonts AI tools reach for by reflex (Inter, DM Sans, Space Grotesk, Outfit, Manrope, Figtree, Unbounded and the rest) and anything too round, then judging 44 of them by eye on the hub art: <a href="font-sweep.html">font-sweep.html</a>. Rank is Google's popularity position; higher is rarer. Each card shows the wordmark, clipboard header, task rows, button and tapes. Press <b>Use below</b> to carry one into sections 2 and 3.</p>
-    <div class="cards" id="fontCards"></div>
+  <section id="hub">
+    <h2>On the hub</h2>
+    <p class="lede">Navy and cream carry the surfaces; yellow appears only on the button, the Next chip and the Next flag. The clipboard sheet is repainted flat as a stand-in until the art is regenerated.</p>
+    <div class="duo">
+      <div id="scene"></div>
+      <div class="share on-paper" id="share"></div>
+    </div>
   </section>
 
-  <section id="wordmark">
-    <h2><span>2</span>Wordmark</h2>
-    <p class="lede">Your two picks (two-tone, glasses for oo) and the glasses with the icon’s brows, alone and combined with the two-tone. Each in the hub top bar (on ink) and on a share card (on paper). Switch the font and the case for all four at once.</p>
-    <div class="ctl" id="wmFonts"><span>Font</span></div>
-    <div class="ctl" id="wmCase"><span>Case</span>
-      <button data-case="title" aria-pressed="true">FootballScouted</button><button data-case="lower" aria-pressed="false">footballscouted</button><button data-case="caps" aria-pressed="false">FOOTBALLSCOUTED</button>
-    </div>
-    <h3 style="margin-top:6px">Icon and wordmark colour<small>Treatment 4 in Valley Sans, the icon recoloured from its own paths. Each pair shown on a dark bar, on paper, and as an app icon at 64, 32 and 16 px.</small></h3>
-    <div class="combos" id="combos"></div>
-    <div id="wmRows" data-case="title" style="margin-top:18px"><div class="close" id="wmClose"></div></div>
+  <section id="mark">
+    <h2>Wordmark and icon</h2>
+    <p class="lede">Two-tone with brows: the icon’s own glasses and brows stand in for the oo. The wordmark stands alone in the top bar; the icon is used on its own (app icon, favicon, avatar).</p>
+    <div class="marks" id="marks"></div>
+    <div class="icons" id="icons"></div>
   </section>
 
   <section id="colour">
-    <h2><span>3</span>Two primaries and one attention colour</h2>
-    <p class="lede">Primary A carries the big surfaces (top bar, clipboard sheet), primary B the second surface (task rows), and the attention colour appears only three times: the button, the Next chip and the Next flag on a tape. The clipboard sheet is repainted flat here, as a rebaked one would be. Font follows your pick above.</p>
-    <div class="cards" id="colourCards"></div>
-    <ul class="notes">
-      <li>The art is warm: orange cork, wood, red kits and pins. Attention works by being the odd one out, so a warm attention colour (red, orange) blends in and a cool or much lighter one stands apart. Blue is orange’s opposite on the colour wheel; yellow is far lighter than the cork (2.4:1). Red is close to the art in both hue and lightness (1.1:1 against cork).</li>
-      <li>Every state still has its own word and shape (tick, strike, Next with an arrow), so no option leans on hue alone.</li>
-      <li>Changing the primaries away from navy means rebaking the clipboard (and later the art plate) to match. Higgsfield credits; one variant, after you pick.</li>
-    </ul>
+    <h2>Colour</h2>
+    <p class="lede">Two primaries and one rationed attention colour. Meaning is always also carried by a word or shape, never by colour alone.</p>
+    <div class="pal">
+      <div class="sw"><i style="background:#16305A;color:#FBF6EA">Navy</i><div><b>Primary A · #16305A</b>Big surfaces: top bar, clipboard sheet. Cream type 12.1:1.</div></div>
+      <div class="sw"><i style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 -1px 0 #E2D6BD">Cream</i><div><b>Primary B · #FBF6EA</b>Second surface: task rows, paper, share cards.</div></div>
+      <div class="sw"><i style="background:#F5AF3E;color:#1B2230">Yellow</i><div><b>Attention · #F5AF3E</b>The icon’s yellow. Only the main button, Next and its flag. 6.9:1 on navy.</div></div>
+      <div class="sw"><i style="background:#1B2230;color:#FBF6EA">Ink</i><div><b>Type · #1B2230</b>All type on cream; the dark bar alternative. 14.8:1 on cream.</div></div>
+      <div class="sw"><i style="background:#9A5B00;color:#FBF6EA">Ochre</i><div><b>Yellow on paper · #9A5B00</b>The wordmark’s Football half on light grounds. 5.0:1.</div></div>
+    </div>
+  </section>
+
+  <section id="type">
+    <h2>Type</h2>
+    <p class="lede">Valley Sans for anything that shouts, Onest for anything you read. Both free on Google Fonts and uncommon; how they were found: <a href="font-sweep.html">font-sweep.html</a>.</p>
+    <div class="panel">
+      <div class="spec"><small>Valley Sans 900 · heading</small><div class="H" style="font-size:44px;line-height:1">Today’s assignment</div></div>
+      <div class="spec"><small>Valley Sans 900 · valuation</small><div class="H" style="font-size:56px;line-height:.95;font-variant-numeric:tabular-nums">£42m</div></div>
+      <div class="spec"><small>Valley Sans 900 · button and tape, caps +10%</small><div class="H" style="font-size:20px;letter-spacing:.1em;text-transform:uppercase">Continue · Season line</div></div>
+      <div class="spec"><small>Onest 800 · eyebrow, caps +12%</small><div style="font:800 12px/1 'Onest',system-ui;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">4-day streak · Thu 19 Nov</div></div>
+      <div class="spec"><small>Onest 700 · UI</small><div style="font:700 16px/1.3 'Onest',system-ui">Log the shot</div></div>
+      <div class="spec"><small>Onest 500 · body</small><div style="font:500 16px/1.5 'Onest',system-ui;max-width:62ch">One move in each career never happened. Find it before the clock runs out.</div></div>
+    </div>
   </section>
 </main>
 
 <script>
-const FONTS = [
-  { h: 'Changa', hw: 800, b: 'Atkinson Hyperlegible Next', rank: 299, kind: 'Squared, slightly condensed, like kit lettering. Body built for low-vision legibility.' },
-  { h: 'Anybody', hw: 900, b: 'Golos Text', rank: 649, kind: 'Heavy and a touch wide, flat ends like the icon’s frames. Loudest against the art.' },
-  { h: 'Pathway Extreme', hw: 900, b: 'Rethink Sans', rank: 726, kind: 'Big, crisp grotesk with tall lowercase; the most legible at small sizes.' },
-  { h: 'Alan Sans', hw: 900, b: 'Scoutie Sans', rank: 992, kind: 'Dense heavy grotesk with tight spacing; reads as one solid block.' },
-  { h: 'Valley Sans', hw: 900, b: 'Onest', rank: 1586, kind: 'Sturdy and plain with square-ish curves; new on Google Fonts (2026).' },
-  { h: 'Phudu', hw: 900, b: 'Kumbh Sans', rank: 956, kind: 'Condensed capitals only, like a stadium scoreboard.' },
-  { h: 'Dela Gothic One', hw: 400, b: 'Commissioner', rank: 340, kind: 'Ultra-heavy and wide, one weight. Most poster-like.' },
-  { h: 'Sansita', hw: 900, b: 'National Park', rank: 581, kind: 'Heavy with a forward lean and lively curves; sporty, not round.' },
-];
-const label = (f) => f.label || f.h;
-const vars = (f) => `--h:'${f.h}'; --hw:${f.hw}; --hx:${f.hx || '100%'}; --b:'${f.b}'`;
-let lead = 4; // Valley Sans: Jonno's pick, 2026-11-19.
-
-const ICON = '<img class="icon" src="img/fs-icon.svg" alt="">';
+const ICO = (px) => `<svg width="${px}" height="${px}" viewBox="0 0 420 420" style="display:block;--tile:#F5AF3E;--frame:#19212A;--lens:#FBF6EA;--pupil:#19212A"><use href="#ico"/></svg>`;
+const WM = (acc, rest) => `<span class="wm H" style="color:${rest}"><span style="color:${acc}">F<svg class="oo brows" aria-label="oo" style="--frame:${acc};--lens:#FBF6EA;--pupil:#19212A"><use href="#oob"/></svg>tball</span>Scouted</span>`;
+const WM_DARK = WM('#F5AF3E', '#FBF6EA'), WM_PAPER = WM('#9A5B00', '#1B2230');
 const TICK = '<svg viewBox="0 0 22 22"><path class="biro" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
 const STRIKE = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg>';
 const TASKS = ['Check the rumours', 'Trace the link', 'Log the shot', 'Find the mole', 'Line them up', 'Read the season'];
 const TOPS = [47.7, 54.2, 60.6, 67.2, 73.7, 80.3];
+const rows = TASKS.map((t, i) => {
+  const st = i < 2 ? 'done' : i === 2 ? 'next' : '';
+  return `<li class="${st}" style="top:${TOPS[i]}%"><i class="box">${i < 2 ? TICK : ''}</i><span class="nm">${t}${i < 2 ? STRIKE : ''}</span><em>${i < 2 ? 'Done' : i === 2 ? 'Next' : ''}</em></li>`;
+}).join('');
+document.getElementById('scene').innerHTML = `<div class="scene cs pal-navy">
+  <img class="art" src="img/round2/6-desk.png" alt="">
+  <div class="bar">${WM_DARK}<nav><span>Log in</span><span>Menu</span></nav></div>
+  <div class="tape" style="left:3cqw; top:20cqw; --r:-2deg"><b class="H">Spoofed</b><small>Spot the fake move</small></div>
+  <div class="tape" style="left:4cqw; top:50cqw; --r:1.5deg"><b class="H">Chain <span class="flag">Next</span></b><small>Steps, then the puzzle</small></div>
+  <div class="tape" style="left:74cqw; top:44cqw; --r:-1deg"><b class="H">Season line</b><small>Name that season</small></div>
+  <div class="clipart"><div class="cb"><img src="img/round3/clipboard.png" alt=""></div><div class="sheet"></div>
+    <div class="head"><div class="eyebrow"><span>4-day streak</span><span>Thu 19 Nov</span></div>
+      <h4 class="H">Today’s assignment</h4>
+      <div class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      <button class="btn H">Continue</button></div>
+    <ol class="tasks">${rows}</ol>
+  </div>
+</div>`;
+document.getElementById('share').innerHTML = `<div class="wmline">${WM_PAPER}</div>
+  <div class="shot"></div>
+  <div class="res"><div><small>Valued at</small><b class="H">£42m</b></div><div><small style="text-align:right">#42 · Thu 19 Nov</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>`;
+document.getElementById('marks').innerHTML =
+  `<div style="background:#1B2230;color:#FBF6EA">${WM_DARK}<small>On ink · the style</small></div>` +
+  `<div style="background:#16305A;color:#FBF6EA">${WM_DARK}<small>On navy · the top bar</small></div>` +
+  `<div class="on-paper" style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 0 0 1px #E2D6BD">${WM_PAPER}<small>On paper · share cards</small></div>`;
+document.getElementById('icons').innerHTML = [[128, 'App icon'], [64, '64'], [32, '32'], [16, '16']]
+  .map(([px, t]) => `<figure>${ICO(px)}<figcaption>${t}</figcaption></figure>`).join('');
 
-function scene(f, cls = '') {
-  const rows = TASKS.map((t, i) => {
-    const state = i < 2 ? 'done' : i === 2 ? 'next' : '';
-    return `<li class="${state}" style="top:${TOPS[i]}%"><i class="box">${i < 2 ? TICK : ''}</i><span class="nm">${t}${i < 2 ? STRIKE : ''}</span><em>${i < 2 ? 'Done' : i === 2 ? 'Next' : ''}</em></li>`;
-  }).join('');
-  return `<div class="scene ${cls}" style="${vars(f)}">
-    <img class="art" src="img/round2/6-desk.png" alt="">
-    <div class="bar">${ICON}<span class="wm H">FootballScouted</span><nav><span>Log in</span><span>Menu</span></nav></div>
-    <div class="tape" style="left:3cqw; top:20cqw; --r:-2deg"><b class="H">Spoofed</b><small>Spot the fake move</small></div>
-    <div class="tape" style="left:4cqw; top:50cqw; --r:1.5deg"><b class="H">Chain <span class="flag">Next</span></b><small>Steps, then the puzzle</small></div>
-    <div class="tape" style="left:74cqw; top:44cqw; --r:-1deg"><b class="H">Season line</b><small>Name that season</small></div>
-    <div class="clipart"><div class="cb"><img src="img/round3/clipboard.png" alt=""></div><div class="sheet"></div>
-      <div class="head"><div class="eyebrow"><span>4-day streak</span><span>Thu 19 Nov</span></div>
-        <h4 class="H">Today’s assignment</h4>
-        <div class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
-        <button class="btn H">Continue</button></div>
-      <ol class="tasks">${rows}</ol>
-    </div>
-  </div>`;
-}
-
-// 1. Fonts
-document.getElementById('fontCards').innerHTML = FONTS.map((f, i) => `
-  <figure class="card">${scene(f)}
-    <figcaption style="${vars(f)}">
-      <div class="cap"><h3>${i + 1} · ${label(f)} ${f.hw} + ${f.b}<small>${f.kind} Google rank ${f.rank}.</small></h3><button class="pick" data-i="${i}" aria-pressed="false">Use below</button></div>
-      <p class="sample"><b>£42m</b>One move in each career never happened. Find it before the clock runs out.</p>
-    </figcaption>
-  </figure>`).join('');
-
-// 2. Wordmark
-const OO = (brows) => `<svg class="oo${brows ? ' brows' : ''}" aria-label="oo"><use href="#${brows ? 'oob' : 'oo'}"/></svg>`;
-const T = [
-  { name: 'Two-tone split', note: 'Football in the icon’s yellow on ink; on paper it darkens to ochre (5.0:1) so it stays readable.', wm: () => '<span class="wm two H"><span class="a">Football</span>Scouted</span>', icon: true },
-  { name: 'Glasses for oo', note: 'The icon’s own glasses (its fitted paths) stand in for the oo. No separate icon.', wm: () => `<span class="wm H">F${OO(false)}tballScouted</span>`, icon: false },
-  { name: 'Glasses for oo, with brows', note: 'The icon’s brows too: flat left, arched right, rising into the cap height. The whole face of the icon lives in the word.', wm: () => `<span class="wm H">F${OO(true)}tballScouted</span>`, icon: false },
-  { name: 'Two-tone with brows', note: 'Both ideas at once: Football with the browed glasses in yellow, Scouted in paper.', wm: () => `<span class="wm two H"><span class="a">F${OO(true)}tball</span>Scouted</span>`, icon: false },
-];
-const closeHTML = [2, 3].map((k) => `<div style="background:var(--ink);color:var(--paper)">${T[k].wm()}<small>${k + 1} · ${T[k].name} · on ink</small></div><div class="on-paper" style="background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule)">${T[k].wm()}<small>${k + 1} · ${T[k].name} · on paper</small></div>`).join('');
-document.getElementById('wmRows').innerHTML = `<h3>Close-up<small>Browed versions large, so the brows can be judged.</small></h3><div class="close">${closeHTML}</div>` + T.map((t, i) => `
-  <h3>${i + 1} · ${t.name}<small>${t.note}</small></h3>
-  <div class="wmrow">
-    <div class="strip"><img class="art" src="img/round2/6-desk.png" alt="">
-      <div class="bar">${t.icon ? ICON : ''}${t.wm()}<nav><span>Log in</span><span>Menu</span></nav></div></div>
-    <div class="share on-paper">
-      <div class="wmline${t.stack ? ' stack' : ''}">${t.icon ? ICON : ''}${t.wm()}</div>
-      <div class="shot"></div>
-      <div class="res"><div><small>Valued at</small><b class="H">£42m</b></div><div><small style="text-align:right">#42 · Thu 19 Nov</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
-    </div>
-  </div>`).join('');
-const wmFonts = document.getElementById('wmFonts');
-wmFonts.insertAdjacentHTML('beforeend', FONTS.map((f, i) => `<button data-i="${i}" style="font-family:'${f.h}',system-ui;font-weight:${f.hw};font-stretch:${f.hx || '100%'}" aria-pressed="false">${label(f)}</button>`).join(''));
-document.getElementById('wmCase').addEventListener('click', (e) => {
-  const b = e.target.closest('button'); if (!b) return;
-  document.getElementById('wmRows').dataset.case = b.dataset.case;
-  document.querySelectorAll('#wmCase button').forEach((x) => x.setAttribute('aria-pressed', x === b));
-  fitAll();
-});
-
-// 2b. Icon and wordmark colour. acc = the Football half and its glasses; accL = the same on paper.
-const C = [
-  { name: 'Yellow tile, ink frames', note: 'As fitted today. The icon and the wordmark share one yellow.', tile: '#F5AF3E', frame: '#19212A', dk: '#1B2230', acc: '#F5AF3E', accL: '#9A5B00' },
-  { name: 'Yellow tile on navy', note: 'Same icon on palette A’s navy bar; yellow on navy 6.9:1.', tile: '#F5AF3E', frame: '#19212A', dk: '#16305A', acc: '#F5AF3E', accL: '#9A5B00' },
-  { name: 'Ink tile, yellow frames', note: 'Inverted. Needs a cream keyline on dark bars or the tile disappears (1.2:1 on navy).', tile: '#1B2230', frame: '#F5AF3E', dk: '#16305A', acc: '#F5AF3E', accL: '#9A5B00', key: '#FBF6EA' },
-  { name: 'Blue tile, ink frames', note: 'Palette B’s blue as the brand. Lighter blue for the word on dark (6.5:1).', tile: '#2A55CC', frame: '#19212A', dk: '#1B2230', acc: '#7FA3FF', accL: '#2A55CC' },
-  { name: 'Pitch tile, yellow frames', note: 'Palette C. Football green with the yellow kept for the glasses.', tile: '#1E5C3A', frame: '#F5AF3E', dk: '#1B2230', acc: '#F5AF3E', accL: '#1E5C3A' },
-  { name: 'Red tile, ink frames', note: 'Classic football red. Lightened on dark for 5.1:1; competes with the warm art.', tile: '#D7263D', frame: '#19212A', dk: '#1B2230', acc: '#F2606D', accL: '#C8202F' },
-  { name: 'Cream tile, yellow lenses', note: 'Quiet tile, the yellow moved into the lenses. Needs an ink keyline on paper, or the tile vanishes.', tile: '#FBF6EA', frame: '#19212A', dk: '#1B2230', acc: '#F5AF3E', accL: '#9A5B00', lens: '#F5AF3E', key: '#1B2230' },
-];
-const ico = (c, px, cls = '') => `<svg class="${cls}" width="${px}" height="${px}" viewBox="0 0 420 420" style="--tile:${c.tile};--frame:${c.frame};--lens:${c.lens || '#FBF6EA'};--pupil:#19212A"><use href="#ico"/></svg>`;
-const wm4 = (acc, rest) => `<span class="wm H" style="color:${rest}"><span style="color:${acc}">F<svg class="oo brows" aria-label="oo" style="--frame:${acc};--lens:#FBF6EA;--pupil:#19212A"><use href="#oob"/></svg>tball</span>Scouted</span>`;
-document.getElementById('combos').innerHTML = C.map((c, i) => `
-  <div class="combo" style="${c.key ? `--key:${c.key};--keyw:2px` : ''}">
-    <div class="lk" style="background:${c.dk}">${ico(c, 48, 'ic')}${wm4(c.acc, '#FBF6EA')}</div>
-    <div class="lk lt">${ico(c, 48, 'ic')}${wm4(c.accL, '#1B2230')}</div>
-    <div class="meta"><div><h3>${i + 1} · ${c.name}</h3><p>${c.note}</p></div>
-      <div class="sizes">${ico(c, 64)}${ico(c, 32)}${ico(c, 16)}</div></div>
-  </div>`).join('');
-
-// 3. Colour
-const V = [
-  { cls: 'cs pal-navy', name: 'Navy and cream, yellow attention', note: 'Close to today, with the icon’s yellow as the one loud thing.',
-    sw: [['#16305A', '#FBF6EA', 'A · Navy #16305A'], ['#FBF6EA', '#1B2230', 'B · Cream #FBF6EA'], ['#F5AF3E', '#1B2230', 'Attention · Yellow, 6.9:1 on navy']] },
-  { cls: 'cs pal-icon', name: 'Yellow and ink (the icon), blue attention', note: 'The brand is the icon’s own two colours; blue is the one colour missing from the warm art. The yellow sheet blends into the orange board, so the art would need cooling.',
-    sw: [['#F5AF3E', '#1B2230', 'A · Yellow #F5AF3E'], ['#1B2230', '#FBF6EA', 'B · Ink #1B2230'], ['#2A55CC', '#fff', 'Attention · Blue, white type 6.4:1']] },
-  { cls: 'cs pal-pitch', name: 'Pitch green and cream, yellow attention', note: 'Says football first. Green stays far darker than the yellow, so the two never blur.',
-    sw: [['#1E5C3A', '#FBF6EA', 'A · Pitch #1E5C3A'], ['#FBF6EA', '#1B2230', 'B · Cream #FBF6EA'], ['#F5AF3E', '#1B2230', 'Attention · Yellow, 4.2:1 on green']] },
-  { cls: 'cs pal-inkred', name: 'Ink and cream, red attention', note: 'The textbook version, for comparison. Red is the strongest attention hue, but the art is full of red and orange (kits, pins, scarf, cork), so it competes instead of standing alone.',
-    sw: [['#1B2230', '#FBF6EA', 'A · Ink #1B2230'], ['#FBF6EA', '#1B2230', 'B · Cream #FBF6EA'], ['#D7263D', '#fff', 'Attention · Red, white type 5.0:1']] },
-];
-function renderColour() {
-  const f = FONTS[lead];
-  document.getElementById('colourCards').innerHTML = V.map((v, i) => `
-    <figure class="card">${scene(f, v.cls)}
-      <figcaption><h3>${String.fromCharCode(65 + i)} · ${v.name}<small>${v.note}</small></h3>
-        <div class="sws">${v.sw.map(([bg, fg, t]) => `<div><i style="background:${bg};color:${fg}">Aa</i>${t}</div>`).join('')}</div>
-      </figcaption>
-    </figure>`).join('');
-}
-
-function setLead(i) {
-  lead = i;
-  document.getElementById('wordmark').setAttribute('style', vars(FONTS[i]));
-  document.querySelectorAll('#wmFonts button, .pick').forEach((b) => {
-    const on = +b.dataset.i === i;
-    b.setAttribute('aria-pressed', on);
-    if (b.classList.contains('pick')) b.textContent = on ? 'In use below' : 'Use below';
-  });
-  renderColour();
-  fitAll();
-}
-document.addEventListener('click', (e) => {
-  const b = e.target.closest('.pick, #wmFonts button'); if (b) setLead(+b.dataset.i);
-});
-
-// Shrink anything that would overflow its box (wide fonts), never grow it.
+// Shrink anything that would overflow its box, never grow it.
 function fit(el, box) {
   el.style.fontSize = '';
   let s = parseFloat(getComputedStyle(el).fontSize), n = 0;
@@ -410,7 +284,6 @@ function fitAll() {
   document.querySelectorAll('.share .wmline').forEach((l) => fit(l.querySelector('.wm'), l));
   document.querySelectorAll('.share .res').forEach((r) => fit(r.querySelector('b'), r));
 }
-setLead(lead);
 document.fonts.ready.then(fitAll);
 addEventListener('resize', fitAll);
 </script>
