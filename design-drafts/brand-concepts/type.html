@@ -105,7 +105,7 @@ figure { margin: 0; }
 /* ===== Colour variations ===== */
 /* Palette systems: two primaries (A dominant, B second) and one rationed
    attention colour, used only for the button, the Next chip and the tape flag. */
-.pal-navy   { --pA: #16305A; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #16305A; --att: #F5AF3E; --att-ink: #1B2230; --att-deep: #A8680F; --biro: #23408E; }
+.pal-ink    { --pA: #1B2230; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #1B2230; --att: #F5AF3E; --att-ink: #1B2230; --att-deep: #A8680F; --biro: #23408E; }
 .cs { --act: var(--att); --act-ink: var(--att-ink); --act-deep: var(--att-deep); --next-ink: var(--att-ink); --next-bg: var(--att); }
 .cs .bar { background: var(--bar); }
 /* The clipboard sheet repainted flat in primary A, as a rebaked plain sheet would be;
@@ -130,7 +130,7 @@ figure { margin: 0; }
 .duo { display: grid; grid-template-columns: minmax(0, 760px) minmax(0, 340px); gap: 24px; align-items: start; }
 @media (max-width: 1000px) { .duo { grid-template-columns: minmax(0, 1fr); } .duo > * { max-width: 760px; } }
 .wm .oo.brows { height: calc(.6em * 245 / 138); }
-.marks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.marks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 @media (max-width: 900px) { .marks { grid-template-columns: minmax(0, 1fr); } }
 .marks > div { border-radius: 10px; padding: 28px 22px 18px; container-type: inline-size; }
 .marks .wm { font-size: 9.6cqw; }
@@ -197,7 +197,7 @@ figure { margin: 0; }
 
   <section id="hub">
     <h2>On the hub</h2>
-    <p class="lede">Navy and cream carry the surfaces; yellow appears only on the button, the Next chip and the Next flag. The clipboard sheet is repainted flat as a stand-in until the art is regenerated.</p>
+    <p class="lede">Ink and cream carry the surfaces; yellow appears only on the button, the Next chip and the Next flag. The clipboard sheet is repainted flat as a stand-in until the art is regenerated.</p>
     <div class="duo">
       <div id="scene"></div>
       <div class="share on-paper" id="share"></div>
@@ -215,11 +215,10 @@ figure { margin: 0; }
     <h2>Colour</h2>
     <p class="lede">Two primaries and one rationed attention colour. Meaning is always also carried by a word or shape, never by colour alone.</p>
     <div class="pal">
-      <div class="sw"><i style="background:#16305A;color:#FBF6EA">Navy</i><div><b>Primary A · #16305A</b>Big surfaces: top bar, clipboard sheet. Cream type 12.1:1.</div></div>
+      <div class="sw"><i style="background:#1B2230;color:#FBF6EA">Ink</i><div><b>Primary A · #1B2230</b>Big surfaces: top bar, clipboard sheet; also all type on cream. 14.8:1 either way.</div></div>
       <div class="sw"><i style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 -1px 0 #E2D6BD">Cream</i><div><b>Primary B · #FBF6EA</b>Second surface: task rows, paper, share cards.</div></div>
-      <div class="sw"><i style="background:#F5AF3E;color:#1B2230">Yellow</i><div><b>Attention · #F5AF3E</b>The icon’s yellow. Only the main button, Next and its flag. 6.9:1 on navy.</div></div>
-      <div class="sw"><i style="background:#1B2230;color:#FBF6EA">Ink</i><div><b>Type · #1B2230</b>All type on cream; the dark bar alternative. 14.8:1 on cream.</div></div>
-      <div class="sw"><i style="background:#9A5B00;color:#FBF6EA">Ochre</i><div><b>Yellow on paper · #9A5B00</b>The wordmark’s Football half on light grounds. 5.0:1.</div></div>
+      <div class="sw"><i style="background:#F5AF3E;color:#1B2230">Yellow</i><div><b>Attention · #F5AF3E</b>The icon’s yellow. Only the main button, Next and its flag. 8.4:1 on ink.</div></div>
+            <div class="sw"><i style="background:#9A5B00;color:#FBF6EA">Ochre</i><div><b>Yellow on paper · #9A5B00</b>The wordmark’s Football half on light grounds. 5.0:1.</div></div>
     </div>
   </section>
 
@@ -249,7 +248,7 @@ const rows = TASKS.map((t, i) => {
   const st = i < 2 ? 'done' : i === 2 ? 'next' : '';
   return `<li class="${st}" style="top:${TOPS[i]}%"><i class="box">${i < 2 ? TICK : ''}</i><span class="nm">${t}${i < 2 ? STRIKE : ''}</span><em>${i < 2 ? 'Done' : i === 2 ? 'Next' : ''}</em></li>`;
 }).join('');
-document.getElementById('scene').innerHTML = `<div class="scene cs pal-navy">
+document.getElementById('scene').innerHTML = `<div class="scene cs pal-ink">
   <img class="art" src="img/round2/6-desk.png" alt="">
   <div class="bar">${WM_DARK}<nav><span>Log in</span><span>Menu</span></nav></div>
   <div class="tape" style="left:3cqw; top:20cqw; --r:-2deg"><b class="H">Spoofed</b><small>Spot the fake move</small></div>
@@ -267,8 +266,7 @@ document.getElementById('share').innerHTML = `<div class="wmline">${WM_PAPER}</d
   <div class="shot"></div>
   <div class="res"><div><small>Valued at</small><b class="H">£42m</b></div><div><small style="text-align:right">#42 · Thu 19 Nov</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>`;
 document.getElementById('marks').innerHTML =
-  `<div style="background:#1B2230;color:#FBF6EA">${WM_DARK}<small>On ink · the style</small></div>` +
-  `<div style="background:#16305A;color:#FBF6EA">${WM_DARK}<small>On navy · the top bar</small></div>` +
+  `<div style="background:#1B2230;color:#FBF6EA">${WM_DARK}<small>On ink · the style and the top bar</small></div>` +
   `<div class="on-paper" style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 0 0 1px #E2D6BD">${WM_PAPER}<small>On paper · share cards</small></div>`;
 document.getElementById('icons').innerHTML = [[128, 'App icon'], [64, '64'], [32, '32'], [16, '16']]
   .map(([px, t]) => `<figure>${ICO(px)}<figcaption>${t}</figcaption></figure>`).join('');
