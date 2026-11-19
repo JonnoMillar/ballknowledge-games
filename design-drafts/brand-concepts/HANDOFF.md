@@ -108,6 +108,15 @@ clean and cosy), 3 bedroom, 5 dressing room ("doesn't make sense"). Kept from
   `img/round3/fs-think-pick.png`, shown at 128 to 16 at the top of
   `logo.html`. Keep it as it is; the next step is a clean final version of
   this exact icon, not a new design.
+- **Final icon (2026-11-19):** `img/fs-icon.svg` (420 square, no margin) and
+  PNGs at 1024/512/180/64/32/16 in `img/fs-icon/` (both un-ignored in
+  `.gitignore`). Shapes fitted to `fs-think-pick.png` by pixel diff in Chrome,
+  then tidied: mirrored lenses, one 22-unit stroke (frame, bridge, brows),
+  whole/half-unit grid, colours sampled (#F5AF3E, #19212A, #FBF6EA).
+  **0.48% of pixels differ** from the original (untied fit 0.36%); heatmap at
+  the top of `logo.html`. `icon_diff.py` re-checks it and re-exports the PNGs.
+  At 16 px it is mush (a straight downscale): a hand-hinted favicon would be a
+  separate job.
 - *Superseded:* **Name (Jonno, 2026-11-15): Ball Knowledge Scout, said and written short
   as BK Scout** (as FM is Football Manager). Full name explains the role and
   carries the "ball knowledge" meme; BK Scout is the handle, watermark and

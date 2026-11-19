@@ -131,6 +131,24 @@
   <h1>FootyScoutle logo: options</h1>
   <p class="lede">Round 2, drawn to match the wordmark: squared, condensed, heavy strokes with flat ends, like Big Shoulders 900. No ball anywhere: the name already says Ball. Each at 128, 64, 32 and 16 px, as an app icon, on ink and with the wordmark. Judge at 32 and 16 first. The pentagon versions are gone.</p>
 
+  <section class="feature" id="final-icon">
+    <h2>Final icon: vector redraw of the pick</h2>
+    <p class="lede" style="margin:0">Traced from the pixels, not redrawn by eye: every shape is a parameter (tile, lens edges and corner radii, pupils, brows) fitted to the generated original by pixel diff. Then tidied: no cream margin, both lenses mirrored, one 22-unit stroke for frame, bridge and both brows, coordinates on a whole or half-unit grid of a 420 square. File: <code>img/fs-icon.svg</code>, PNGs in <code>img/fs-icon/</code>.</p>
+    <div class="row">
+      <figure><img src="img/round3/fs-think-pick.png" alt="Generated original" style="width:256px;display:block"><figcaption>Original (generated)</figcaption></figure>
+      <figure><img src="img/fs-icon.svg" alt="Vector redraw" style="width:256px;display:block"><figcaption>SVG (tile fills the square)</figcaption></figure>
+      <figure><img src="img/round3/fs-icon-diff.png" alt="Diff heatmap" style="width:256px;display:block"><figcaption>Diff: blue = pixel differs</figcaption></figure>
+    </div>
+    <ul>
+      <li><b>0.48% of pixels differ</b> (1,249 of 258,064), each pixel snapped to the nearest of the three colours first. Nearly all of it is one-pixel edge noise; the visible differences are the bridge (about 4 units thinner, to match the stroke) and the arch's ends, which the original rounds very slightly.</li>
+      <li>Before tidying, the untied fit was 0.36%. First hand-measured draft: 2.35%.</li>
+      <li>Colours sampled from the original: yellow #F5AF3E, ink #19212A, cream #FBF6EA.</li>
+    </ul>
+    <div class="row">
+      <figure><img src="img/fs-icon.svg" alt="" style="width:128px;display:block;margin:0 auto"><figcaption>128</figcaption></figure><figure><img src="img/fs-icon.svg" alt="" style="width:64px;display:block;margin:0 auto"><figcaption>64</figcaption></figure><figure><img src="img/fs-icon.svg" alt="" style="width:32px;display:block;margin:0 auto"><figcaption>32</figcaption></figure><figure><img src="img/fs-icon.svg" alt="" style="width:16px;display:block;margin:0 auto"><figcaption>16</figcaption></figure>
+      <figure><div style="background:#1B2230;padding:10px;border-radius:12px"><img src="img/fs-icon.svg" alt="" style="width:64px;display:block"></div><figcaption>On ink</figcaption></figure>
+    </div>
+  </section>
   <section class="feature">
     <h2>Picked: flat left brow, arched right (Jonno, 2026-11-18)</h2>
     <p class="lede" style="margin:0">Top-right cell of grid be14180b, cropped as it was generated. Next: a clean final version of exactly this (a vector redraw or one high-quality generation), not a new design.</p>

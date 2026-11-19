@@ -33,4 +33,7 @@ public/badges/
 __pycache__/
 
 # Brand-concept preview images (Commons photos; regenerate with build.py)
-design-drafts/*/img/
+design-drafts/*/img/*
+# ...except the final app icon (vector redraw and its PNG exports).
+!design-drafts/brand-concepts/img/fs-icon.svg
+!design-drafts/brand-concepts/img/fs-icon/
