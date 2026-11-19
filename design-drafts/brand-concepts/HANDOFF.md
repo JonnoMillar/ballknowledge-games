@@ -3,7 +3,7 @@
 > Living notes for the site-wide brand and hub redesign. Read before touching
 > `design-drafts/brand-concepts/`. Full history (logo rounds, BK Scout, round 3
 > art, lobby build, job ids): `handoff-archive.md`, read only if needed.
-> Last updated: 2026-11-19, after the icon was finalised.
+> Last updated: 2026-11-19, after the type, wordmark and colour picks.
 
 ## Status
 
@@ -14,7 +14,7 @@
   checked is free, none bought. @footballscouted is taken on TikTok and
   Instagram (an active football-scouting account on Instagram); fallbacks
   @playfootballscouted and @footballscoutedhq are free. Jonno chose it
-  knowing this. `style.html` still says FootyScoutle until the type picks.
+  knowing this. `style.html` still says FootyScoutle (next job fixes it).
   Rounds and reasons are in `names.md`.
 - **Icon: done.** `img/fs-icon.svg`, a 420 square with no margin, plus PNGs
   (1024/512/180/64/32/16) in `img/fs-icon/`. It is the "thinking scout": heavy
@@ -23,8 +23,9 @@
   rounded. It was fitted by pixel diff to Jonno's pick (`img/round3/fs-think-pick.png`,
   Higgsfield job `be14180b-307f-4211-b528-d0d657177cdc`, top-right cell):
   0.480% of pixels differ. `icon_diff.py` re-checks and re-exports. The icon
-  colours are sampled: #F5AF3E, #19212A, #FBF6EA. Its yellow is a touch off
-  the palette's sun #F2B24A (Jonno has not asked to snap it).
+  colours are sampled: #F5AF3E, #19212A, #FBF6EA. Colours locked as they are
+  (combo 1, 2026-11-19); #F5AF3E is now the brand yellow, the old sun #F2B24A
+  is retired.
 - **Style sheet draft 1:** `style.html`. Palette, type, line and grain, layer
   components (generated clipboard with CSS task rows, tape, buttons, phone
   slips, chrome), motion. The icon is on it (hero, sizes, favicon).
@@ -34,77 +35,55 @@
   checklist of today's tasks. Mock: `direction.html` (concept 6 frames).
 - Nothing in the hub is built in the Next app yet; all of this is dev-only.
 
-## Next: font, wordmark and colour exploration (agreed 2026-11-19)
+## Brand picks (locked 2026-11-19, from `type.html`)
 
-Never explored before:
-- Fonts: Big Shoulders plus Libre Franklin were inherited from Chain's
-  September sticker-album spec.
-- Palette: ink, cream and red are the site's existing colours; navy and sun
-  were sampled from concept 6 art.
-- Wordmark: one version only (a "Footy" chip, tilted -2°, plus "Scoutle").
+- **Fonts:** Valley Sans 900 for headings, wordmark, buttons and tape; Onest
+  500/700/800 for body and UI. Both Google Fonts, uncommon (popularity rank
+  1586 and 171). How they were found: `font-sweep.html` (Google Fonts
+  popularity data, AI-reflex fonts removed, judged on the hub art). Rejected:
+  Fredoka and Bricolage (too round), anything AI-default or very common.
+- **Wordmark:** treatment 4, "two-tone with brows", the on-ink version is the
+  style. "F[the icon's glasses and brows]tball" in yellow #F5AF3E, "Scouted"
+  in cream #FBF6EA, on ink or navy. On paper: ochre #9A5B00 plus ink. The
+  glasses and brows are the icon's fitted paths: the `#oob` symbol in
+  `type.html` (viewBox 25 90 370 245; height .6em x 245/138 so the glasses
+  sit at x-height).
+- **Icon:** colours unchanged (yellow tile, ink frames, cream lenses).
+- **Colour system A:** two primaries, navy #16305A (big surfaces: top bar,
+  clipboard sheet) and cream #FBF6EA (second surface: task rows, paper);
+  one rationed attention colour, yellow #F5AF3E, used only for the main
+  button, the Next chip and the Next flag. Ink #1B2230 for type. Red is
+  retired as the action colour. Judge colour for most eyes (Jonno's call),
+  but never carry meaning by hue alone.
 
-Build one dev page, `type.html`, in code, free, using Google Fonts. **Judge
-every option on the hub, not on a blank sheet** (Jonno's point): lay each over
-the office frame from `direction.html`, with the icon beside it.
-1. **Fonts:** six to eight heading candidates (condensed, rounded geometric,
-   chunky grotesk, slab, and so on), each with a body pairing. Each one sets
-   the wordmark, the clipboard header and task rows, and a button. The font
-   should feel like one family with the icon's heavy, slightly rounded,
-   friendly frames.
-2. **Wordmark:** four or five treatments in the leading fonts: one word,
-   two-tone split, a chip with **no tilt**, the icon as a lockup, lowercase
-   vs caps. Show each where it lives: the hub top bar and a share card.
-3. **Colours:** the world palette is mostly fixed, because the office art has
-   navy, sun, cork and cream baked in and changing it means regenerating art.
-   Test only two or three accent and UI variations on the same mock.
+## Next: style sheet, then the regeneration queue
 
-Done when Jonno can compare the options side by side on one page and pick.
-Then update `style.html` to the picks. Commit, push, and give the link.
-
-**Built 2026-11-19: `type.html`, waiting for Jonno's picks.** Eight font
-pairs on a crop of the office frame at laptop scale (Big Shoulders, Barlow
-Condensed, Rubik, Fredoka, Bricolage Grotesque, Archivo Expanded, Bitter,
-Unbounded), five wordmark treatments (one word, two-tone, flat chip, icon
-lockup, glasses for "oo") with font and case switches, and three accents
-(red, sun, biro blue). Rubik is the default lead. Page chrome is system-ui
-so no candidate competes. The generated clipboard is clipped to its board
-shape there; `style.html` still shows its cream backdrop.
-
-**Round 2 fonts (2026-11-19).** Jonno rejected AI-default and very common
-fonts, and found Fredoka and Bricolage too round. `font-sweep.html` shows 44
-uncommon heavy faces (from Google Fonts popularity data) on the hub art;
-`type.html` section 1 now holds 8 picks: Changa, Anybody, Pathway Extreme,
-Alan Sans, Valley Sans, Phudu, Dela Gothic One, Sansita, each with an
-uncommon body face. Anybody is the default lead.
-
-**Picks so far (2026-11-19):** font Valley Sans + Onest. Wordmark is two-tone
-or glasses for oo; `type.html` now shows those plus the glasses with the
-icon's brows (alone and two-tone), with a large close-up. Colour: Jonno wants
-two primaries plus one rationed attention colour, nothing locked, clipboard
-colours open; section 3 shows four systems (navy/cream + yellow, yellow/ink +
-blue, pitch/cream + yellow, ink/cream + red) with the sheet repainted flat.
-
-**Wordmark locked (2026-11-19): treatment 4, two-tone with brows.** "F[glasses
-with the icon's brows]tball" in yellow (ochre #9A5B00 on paper), "Scouted" in
-paper (ink on paper), Valley Sans 900. The glasses and brows are the icon's
-fitted paths (`#oob` symbol in `type.html`, viewBox 25 90 370 245). Judge
-colour for most eyes, not Jonno's colourblindness (his call). Jonno named the
-on-ink version as the style. Icon colours are not decided: `type.html` #combos
-shows seven icon + wordmark colour pairs (recoloured from the icon's own
-paths via the `#ico` symbol).
+1. **Update `style.html` to the picks:** name (FootballScouted), wordmark 4,
+   Valley Sans + Onest, colour system A tokens, buttons and states in the
+   new attention colour. Retire the red and the old wordmark chip.
+2. **Regeneration queue** (Higgsfield, one variant each, approve the concept
+   before generating). Work through it in this order, highest impact first:
+   - Clipboard: navy sheet with a plain header zone (no pitch lines), cream
+     task bands, same wood board and clip.
+   - Style reference image re-locked to the new palette (every later piece is
+     generated against it).
+   - Office plate, desktop and phone: keep the scout's office but shift the
+     balance from orange toward navy and cream, so yellow attention stands
+     out (today 8 of the 10 strongest art colours are cork, wood and sun).
+   - Then the game item pieces for the plate, as the hub build needs them.
+   Inventory every generated asset first (`handoff-archive.md` has job ids)
+   and confirm the list with Jonno before spending credits.
 
 ## Other pending work
 
-- Rebake the clipboard with a plain navy header zone (the pitch lines crowd
-  the title). One variant, low quality, ask Jonno first.
 - Fold one line each into this file from the hub-greybox (`layout.html`,
   `layout.md`) and hub-zoom (`transition.html`, `transition.md`) sessions'
   notes. They live in their own worktrees.
 - Mates' 5-second test on the merged direction. Phone check of `style.html`.
 - At 16 px the icon is a straight downscale and gets muddy; a hand-hinted
   favicon would be a separate job.
-- Before launch: check @footyscoutle on TikTok, Instagram and X; Jonno buys
-  domains if he wants them (paid).
+- Before launch: Jonno claims @playfootballscouted or @footballscoutedhq on
+  TikTok and Instagram (and checks X); he buys domains if he wants them (paid).
 
 ## Rules from Jonno's feedback (keep)
 
@@ -115,7 +94,7 @@ paths via the `#ico` symbol).
   and ringed in biro. Watch for any tilt that echoes it.
 - Never draw a lone pentagon or hexagon as a ball, and keep balls out of
   marks and generated art.
-- Red is one action only, on paper or ink, never on cork (1.3:1).
+- One attention colour (yellow), used only for the button, Next and its flag.
 - Red-green colourblind: never encode meaning by hue alone.
 - Higgsfield: one variant or one grid per generation, approve the concept
   first. GPT Image 2.6: 0.25 low / 0.5 medium / 1.5 high. Pass
@@ -145,17 +124,11 @@ paths via the `#ico` symbol).
 ## Open questions for Jonno
 
 - The multiplayer game's name (blocks how it shows in the hub).
-- Snap the icon yellow to the palette's #F2B24A?
 
 ## Resume prompt (paste after /clear)
 
-Read `design-drafts/brand-concepts/HANDOFF.md`. Build `type.html`, the font,
-wordmark and colour exploration for FootyScoutle. Judge every option laid
-over the hub office frame from `direction.html`, with `img/fs-icon.svg`
-beside it:
-- six to eight heading fonts with body pairings
-- four or five wordmark treatments (no tilted chip)
-- two or three accent/UI colour variations within the fixed world palette
-
-Show it at http://localhost:4321/type.html, commit and push. Then wait for
-Jonno's picks before changing `style.html`.
+Read `design-drafts/brand-concepts/HANDOFF.md`. The brand picks are locked
+(FootballScouted, Valley Sans + Onest, wordmark 4, colour system A). Update
+`style.html` to the picks and show it at http://localhost:4321/style.html.
+Then inventory the generated art and propose the regeneration queue (clipboard
+first), one variant each, and wait for Jonno's OK before spending credits.
