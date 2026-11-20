@@ -31,6 +31,13 @@
   yellow button/Next chip/Next flag, valuation (£42m) as the ringed result.
   The clipboard sheet is repainted flat in ink over the old art until the
   regeneration. Red, sun, navy and the chip wordmark are gone.
+- **Daily run (on main since 2026-11-13)** already reports a valuation
+  ("Report valued at £37.0m", one decimal, plus a real transfer of about the
+  same fee). Its UI waits for this brand: `Run.tsx`, `run.css` and each
+  task's layout get restyled from the `style.html` tokens; `src/lib/run`,
+  schedules, routes and task logic stay (`docs/daily-run.md` section 13).
+  Brand direction comes from the top session (Website design and branding
+  feedback), not daily-run.
 - **Logo page:** `logo.html` holds the whole icon exploration, latest first.
 - **Direction (2026-11-14):** an illustrated world (the scout's office) with
   a crisp HTML/CSS layer on top. The clipboard is the daily run's object, a
