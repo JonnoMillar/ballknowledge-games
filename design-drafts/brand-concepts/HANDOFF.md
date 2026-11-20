@@ -92,12 +92,54 @@ palette, type). The full exploration it replaced is in git at commit 1f54dd7.
    cut-outs (`img/gen/`), round 2 concepts 0 to 5, BK binoculars. Separate
    pipeline, not brand art: the Olise grain tests.
    Proposed to Jonno 2026-11-19 (balance 575.5), waiting for his OK.
+3. **In-game backgrounds** (taken over from the top session 2026-11-20; queue
+   after the style ref, generated against it; one desktop 16:10 each first,
+   low, 7 x 0.25 = 1.75 credits; phone crops judged after). Jonno asked for
+   "cooler" game backgrounds with more elements and variation. One location
+   per game, one style. Detail at the edges, a calm low-detail centre (the
+   game UI covers it). Ink and cream balance, golden-cool light top left, no
+   strong yellow (the button owns it). Never: people or faces, lettering,
+   crests or logos, balls, stamps of any kind. The easter egg is a blank
+   pennant, frame or programme in the art that a real `ClubBadge` sits on in
+   CSS (badges are never generated).
+   - Spoofed: a sports-desk from above, back pages with grey unreadable
+     columns and blank photo boxes, a red pencil, correction slips, a phone
+     face down. (The old ink pad is cut: it implies a stamp.)
+   - Chain: a case wall, string between blank photos, map pins, at the edges.
+   - Odd Man Out: a club museum corridor of squad photos, faces too small to
+     read, one blank pennant frame.
+   - Pitch Pin: the scout's seat high in an empty stand; the pitch below is
+     the game area, plain and unmarked in the centre.
+   - Season Line: an archive of yearbooks and programmes, a framed table with
+     unreadable rows.
+   - Pecking Order (the game the docs called The Tunnel, branch "Sorted",
+     `games/tunnel`, not on the hub yet): the players' tunnel, tiled walls,
+     light at the end.
+   - Rondo: a sunny training pitch, cones, mini goals, bibs at the edges, no
+     ball.
+   Show each behind a real game screen on a preview page before Jonno judges.
+
+## Fold-in from the other hub sessions (read 2026-11-20, not merged)
+
+- **hub-greybox** (`claude/hub-greybox-acfacc`, `layout.html`/`layout.md`,
+  2026-11-15): structure for phone and desktop in four states (first visit,
+  mid-run, finished, all done); the clipboard is fixed-height, game order
+  never changes, only the action button moves. Stale: BK Scout mark (now the
+  FootballScouted wordmark), the red action (now yellow), no Pecking Order
+  row. Its five open questions for Jonno (log in, labels, a button after
+  all done, menu contents, rest days) still stand.
+- **hub-zoom** (`claude/hub-zoom-c844a3`, `transition.html`/`transition.md`,
+  2026-11-15): hub-object-to-game zoom, three reveals (Fill, Lift, Write),
+  under a second, Back replays it in reverse, skip on tap, reduced-motion
+  fade; lean is build B (hub stays mounted, intercepting route). Stale: old
+  concept 6 art and BK Scout; Write ends on Play "stamped down" (check
+  against the stamp rule). Carry over: an SVG grain with a multiply blend on a
+  moving card dropped most of the frames, so `style.html`'s `.grained` is for
+  still paper only; moving paper uses a small tiled image without a blend.
+  Open for Jonno: which reveal, Quick or Calm, then A or B.
 
 ## Other pending work
 
-- Fold one line each into this file from the hub-greybox (`layout.html`,
-  `layout.md`) and hub-zoom (`transition.html`, `transition.md`) sessions'
-  notes. They live in their own worktrees.
 - Mates' 5-second test on the merged direction. Phone check of `style.html`.
 - At 16 px the icon is a straight downscale and gets muddy; a hand-hinted
   favicon would be a separate job.
