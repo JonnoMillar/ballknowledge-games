@@ -91,8 +91,13 @@ palette, type). The full exploration it replaced is in git at commit 1f54dd7.
      (`img/round3/clipboard-ink-lines.png`), B plain ink sheet
      `5e82726c-cabf-43b5-860d-eb9806e37348` (`clipboard-ink-plain.png`).
      Both keep the board, clip and framing (sheet x 13.5% to 86.4%, y 15.9%
-     to 89.9%). Compared on `clipboard.html#gen` with 3x corner crops;
-     waiting for Jonno's pick.
+     to 89.9%). Compared on `clipboard.html#gen` with 3x corner crops.
+     **Picked: B** (Jonno, 2026-11-20: go with one and move on). The plain
+     sheet is cut out as `img/round3/clipboard-ink-plain-cut.png` (backdrop,
+     clip shadow and the hole's backdrop flood-filled to alpha; brass kept)
+     and now used in `style.html`, `type.html` and `clipboard.html`. Marks in
+     code at 55% cream. A medium-quality rerender only if it looks soft on a
+     real phone.
    - Style reference image re-locked to the new palette (every later piece is
      generated against it).
    - Office plate, desktop and phone: keep the scout's office but shift the

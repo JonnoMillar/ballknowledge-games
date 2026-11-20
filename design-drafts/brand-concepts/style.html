@@ -23,7 +23,7 @@
   --biro: #23408E;       /* hand marks: ticks, strikes, the ringed result */
   --tape: #151413;
   --cream-dim: rgba(251,246,234,.72); /* secondary type on ink */
-  --mark: rgba(251,246,234,.42);     /* printed marks on the ink sheet: touchline and corner arcs */
+  --mark: rgba(251,246,234,.55);     /* printed marks on the ink sheet: touchline and corner arcs */
   --cork: #B0642A; --wood: #6B3A18; /* art samples, for demos only */
 
   --display: 'Valley Sans', system-ui, sans-serif; /* one weight: 900 */
@@ -150,14 +150,12 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 .chrome { display: flex; gap: 8px; margin-left: auto; }
 .chrome span { background: var(--paper); color: var(--ink); font: 800 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 12px 14px; border-radius: 6px; box-shadow: var(--shadow-1); }
 
-/* The run's clipboard: generated board and clip; the sheet is repainted flat in
-   ink as a stand-in until the art is regenerated (ink sheet, cream task bands). */
+/* The run's clipboard: generated board, clip and plain ink sheet (job 5e82726c,
+   2026-11-20); the touchline marks, cream bands and type are code on top. */
 .clipart { position: relative; width: 100%; max-width: 400px; container-type: inline-size; }
 .clipart > .cb { filter: drop-shadow(4px 8px 10px rgba(40,20,5,.28)); }
-/* The generated clipboard sits on a cream backdrop; clip to the board and its clip. */
-.clipart .cb img { display: block; width: 100%; height: auto; clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
-.clipart .sheet { position: absolute; left: 13.8%; top: 16.1%; width: 72.7%; height: 73.5%; background: var(--ink); border-radius: .5cqw;
-  clip-path: polygon(0 0, 21% 0, 21% 2.7%, 79% 2.7%, 79% 0, 100% 0, 100% 100%, 0 100%); }
+.clipart .cb img { display: block; width: 100%; height: auto; }
+.clipart .sheet { position: absolute; left: 13.5%; top: 15.9%; width: 72.9%; height: 74%; background: none; }
 .clipart .head { position: absolute; left: 20.8%; top: 23.6%; width: 58.4%; height: 21.6%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); }
 .clipart .eyebrow { display: flex; justify-content: space-between; gap: 1em; white-space: nowrap; overflow: hidden; font: 800 2.5cqw/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); }
 .clipart h4 { margin: 2.2cqw 0 1.2cqw; font: 900 6.4cqw/1 var(--display); color: var(--paper); white-space: nowrap; overflow: hidden; }
@@ -404,7 +402,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
       <div>
         <h3>The run's clipboard (click a task)</h3>
         <div class="clipart" id="sheet">
-          <div class="cb"><img src="img/round3/clipboard.png" alt="Tactics clipboard"></div>
+          <div class="cb"><img src="img/round3/clipboard-ink-plain-cut.png" alt="Tactics clipboard"></div>
           <div class="sheet"><svg viewBox="0 0 500 753" preserveAspectRatio="none" aria-hidden="true"><rect x="16" y="40" width="468" height="697" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 62A22 22 0 0 0 38 40M462 40A22 22 0 0 0 484 62M484 715A22 22 0 0 0 462 737M38 737A22 22 0 0 0 16 715" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 388.5H30M484 388.5H470" stroke="var(--mark)" stroke-width="1.6"/></svg></div>
           <div class="head">
             <div class="eyebrow" id="eyebrow"><span>#42 · Thu 19 Nov</span><span>4-day streak</span></div>
@@ -414,7 +412,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
           </div>
           <ol class="tasks" id="tasks"></ol>
         </div>
-        <p class="lede" style="margin-top:10px">Primary A, then B, then the attention yellow: ink sheet with printed touchline and corner arcs, cream task bands, one yellow Start. Two real states (the run is played in one go): before, and done, where the yellow leaves the clipboard and the valuation is written in and ringed in white marker; no stamp. No progress pips and no Next chip: the ticks and the button say it. The generated art will be the board, clip and a plain ink sheet; bands and marks stay code (variants: <a href="clipboard.html">clipboard.html</a>). Hover: the band warms, the name leans in, a ghost tick previews the click. Tick: the box presses, a biro tick draws, a hand strike crosses the name. In the real run a task ticks when you come back from it, not by click.</p>
+        <p class="lede" style="margin-top:10px">Primary A, then B, then the attention yellow: ink sheet with printed touchline and corner arcs, cream task bands, one yellow Start. Two real states (the run is played in one go): before, and done, where the yellow leaves the clipboard and the valuation is written in and ringed in white marker; no stamp. No progress pips and no Next chip: the ticks and the button say it. The art is the board, clip and a plain ink sheet (generated 2026-11-20); bands and marks are code (variants: <a href="clipboard.html">clipboard.html</a>). Hover: the band warms, the name leans in, a ghost tick previews the click. Tick: the box presses, a biro tick draws, a hand strike crosses the name. In the real run a task ticks when you come back from it, not by click.</p>
       </div>
 
       <div>

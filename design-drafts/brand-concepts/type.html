@@ -12,7 +12,7 @@
 /* The brand as chosen (2026-11-19). The exploration that led here is in git history. */
 :root {
   --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --rule: #E2D6BD; --muted: #5E574D;
-  --navy: #1F3A5F; --sun: #F5AF3E; --biro: #23408E; --tape: #151413; --ochre: #9A5B00;
+  --navy: #1F3A5F; --sun: #F5AF3E; --biro: #23408E; --tape: #151413; --ochre: #9A5B00; --mark: rgba(251,246,234,.55);
   /* Accent set, swapped per variation in section 3. */
   --act: #C8202F; --act-ink: #fff; --act-deep: #8E1520; --next-ink: #C8202F; --next-bg: transparent; --pip: #F5AF3E;
   /* Font set, swapped per candidate. */
@@ -53,15 +53,15 @@ figure { margin: 0; }
 .tape small { background: var(--paper); color: var(--ink); font: 800 1.15cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: .5em .6em; border-radius: 2px; box-shadow: 0 2px 3px rgba(40,20,5,.35); }
 .tape .flag { font: 800 .62em/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; background: var(--act); color: var(--act-ink); padding: .35em .5em; border-radius: 2px; box-shadow: 0 0 0 .2cqw var(--paper); }
 
-/* Generated clipboard (img/round3/clipboard.png); the layer sits on its navy
-   header and cream bands, as in style.html. Inside, cqw is the clipboard's. */
+/* Generated clipboard (img/round3/clipboard-ink-plain-cut.png, job 5e82726c); the layer
+   sits on its ink sheet, as in style.html. Inside, cqw is the clipboard's. */
 .clipart { position: absolute; left: 29cqw; top: 9cqw; width: 42cqw; z-index: 1; container-type: inline-size; }
 .clipart > .cb { filter: drop-shadow(.6cqw 1.2cqw 1.4cqw rgba(40,20,5,.35)); }
-/* The generated clipboard sits on a cream backdrop; clip to the board and its clip. */
-.clipart .cb img { display: block; width: 100%; height: auto; clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
-.head { position: absolute; left: 20.8%; top: 24.4%; width: 58.4%; height: 20.4%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); text-shadow: 0 0 1cqw #0f2140, 0 0 2cqw #0f2140; }
+.clipart .cb img { display: block; width: 100%; height: auto; }
+.head { position: absolute; left: 20.8%; top: 23.6%; width: 58.4%; height: 21.6%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); text-shadow: 0 0 1cqw #0f2140, 0 0 2cqw #0f2140; }
 .head .eyebrow { display: flex; justify-content: space-between; gap: 1em; font: 800 2.5cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #C9D3E6; }
-.head h4 { margin: 2cqw 0; font-size: 6.4cqw; line-height: 1; white-space: nowrap; color: var(--paper); }
+.head h4 { margin: 2.2cqw 0 1.2cqw; font-size: 6.4cqw; line-height: 1; white-space: nowrap; color: var(--paper); }
+.head .sub { margin: 0; font: 500 2.9cqw/1.3 var(--b), system-ui, sans-serif; color: var(--pA-ink, var(--paper)); opacity: .78; }
 .pips { display: flex; gap: 1cqw; }
 .pips i { flex: 1; height: 1.4cqw; border-radius: .3cqw; background: rgba(251,246,234,.2); }
 .pips i.on { background: var(--pip); }
@@ -108,11 +108,11 @@ figure { margin: 0; }
 .pal-ink    { --pA: #1B2230; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #1B2230; --att: #F5AF3E; --att-ink: #1B2230; --att-deep: #A8680F; --biro: #23408E; }
 .cs { --act: var(--att); --act-ink: var(--att-ink); --act-deep: var(--att-deep); --next-ink: var(--att-ink); --next-bg: var(--att); }
 .cs .bar { background: var(--bar); }
-/* The clipboard sheet repainted flat in primary A, as a rebaked plain sheet would be;
-   the notch leaves the metal clip showing. */
+/* The generated sheet is already ink; this box only carries the code-drawn touchline marks. */
 .sheet { display: none; }
-.cs .sheet { display: block; position: absolute; left: 13.8%; top: 16.1%; width: 72.7%; height: 73.5%; background: var(--pA); border-radius: .5cqw;
-  clip-path: polygon(0 0, 21% 0, 21% 2.7%, 79% 2.7%, 79% 0, 100% 0, 100% 100%, 0 100%); }
+.cs .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cs .sheet svg * { vector-effect: non-scaling-stroke; }
+.cs .sheet { display: block; position: absolute; left: 13.5%; top: 15.9%; width: 72.9%; height: 74%; background: none; }
 .cs .head { color: var(--pA-ink); text-shadow: none; }
 .cs .head h4 { color: var(--pA-ink); }
 .cs .head .eyebrow { color: var(--pA-ink); opacity: .78; }
@@ -197,7 +197,7 @@ figure { margin: 0; }
 
   <section id="hub">
     <h2>On the hub</h2>
-    <p class="lede">Ink and cream carry the surfaces; yellow appears only on the button, the Next chip and the Next flag. The clipboard sheet is repainted flat as a stand-in until the art is regenerated.</p>
+    <p class="lede">Ink and cream carry the surfaces; yellow appears only on the main button and the Next flag (the clipboard shows its before state). The clipboard is the generated plain ink sheet with the touchline marks in code.</p>
     <div class="duo">
       <div id="scene"></div>
       <div class="share on-paper" id="share"></div>
@@ -227,7 +227,7 @@ figure { margin: 0; }
     <p class="lede">Valley Sans for anything that shouts, Onest for anything you read. Both free on Google Fonts and uncommon; how they were found: <a href="font-sweep.html">font-sweep.html</a>.</p>
     <div class="panel">
       <div class="spec"><small>Valley Sans 900 · heading</small><div class="H" style="font-size:44px;line-height:1">Today’s assignment</div></div>
-      <div class="spec"><small>Valley Sans 900 · valuation</small><div class="H" style="font-size:56px;line-height:.95;font-variant-numeric:tabular-nums">£42m</div></div>
+      <div class="spec"><small>Valley Sans 900 · valuation</small><div class="H" style="font-size:56px;line-height:.95;font-variant-numeric:tabular-nums">£37.0m</div></div>
       <div class="spec"><small>Valley Sans 900 · button and tape, caps +10%</small><div class="H" style="font-size:20px;letter-spacing:.1em;text-transform:uppercase">Continue · Season line</div></div>
       <div class="spec"><small>Onest 800 · eyebrow, caps +12%</small><div style="font:800 12px/1 'Onest',system-ui;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">4-day streak · Thu 19 Nov</div></div>
       <div class="spec"><small>Onest 700 · UI</small><div style="font:700 16px/1.3 'Onest',system-ui">Log the shot</div></div>
@@ -243,10 +243,9 @@ const WM_DARK = WM('#F5AF3E', '#FBF6EA'), WM_PAPER = WM('#9A5B00', '#1B2230');
 const TICK = '<svg viewBox="0 0 22 22"><path class="biro" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
 const STRIKE = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg>';
 const TASKS = ['Check the rumours', 'Trace the link', 'Log the shot', 'Find the mole', 'Line them up', 'Read the season'];
-const TOPS = [47.7, 54.2, 60.6, 67.2, 73.7, 80.3];
+const TOPS = [48.4, 54.8, 61.2, 67.6, 74.0, 80.4];
 const rows = TASKS.map((t, i) => {
-  const st = i < 2 ? 'done' : i === 2 ? 'next' : '';
-  return `<li class="${st}" style="top:${TOPS[i]}%"><i class="box">${i < 2 ? TICK : ''}</i><span class="nm">${t}${i < 2 ? STRIKE : ''}</span><em>${i < 2 ? 'Done' : i === 2 ? 'Next' : ''}</em></li>`;
+  return `<li style="top:${TOPS[i]}%"><i class="box"></i><span class="nm">${t}</span><em></em></li>`;
 }).join('');
 document.getElementById('scene').innerHTML = `<div class="scene cs pal-ink">
   <img class="art" src="img/round2/6-desk.png" alt="">
@@ -254,17 +253,17 @@ document.getElementById('scene').innerHTML = `<div class="scene cs pal-ink">
   <div class="tape" style="left:3cqw; top:20cqw; --r:-2deg"><b class="H">Spoofed</b><small>Spot the fake move</small></div>
   <div class="tape" style="left:4cqw; top:50cqw; --r:1.5deg"><b class="H">Chain <span class="flag">Next</span></b><small>Steps, then the puzzle</small></div>
   <div class="tape" style="left:74cqw; top:44cqw; --r:-1deg"><b class="H">Season line</b><small>Name that season</small></div>
-  <div class="clipart"><div class="cb"><img src="img/round3/clipboard.png" alt=""></div><div class="sheet"></div>
-    <div class="head"><div class="eyebrow"><span>4-day streak</span><span>Thu 19 Nov</span></div>
+  <div class="clipart"><div class="cb"><img src="img/round3/clipboard-ink-plain-cut.png" alt=""></div><div class="sheet"><svg viewBox="0 0 500 753" preserveAspectRatio="none" aria-hidden="true"><rect x="16" y="40" width="468" height="697" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 62A22 22 0 0 0 38 40M462 40A22 22 0 0 0 484 62M484 715A22 22 0 0 0 462 737M38 737A22 22 0 0 0 16 715" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 388.5H30M484 388.5H470" stroke="var(--mark)" stroke-width="1.6"/></svg></div>
+    <div class="head"><div class="eyebrow"><span>#42 · Thu 19 Nov</span><span>4-day streak</span></div>
       <h4 class="H">Today’s assignment</h4>
-      <div class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
-      <button class="btn H">Continue</button></div>
+      <p class="sub">Six quick tasks. One report.</p>
+      <button class="btn H">Start</button></div>
     <ol class="tasks">${rows}</ol>
   </div>
 </div>`;
 document.getElementById('share').innerHTML = `<div class="wmline">${WM_PAPER}</div>
   <div class="shot"></div>
-  <div class="res"><div><small>Valued at</small><b class="H">£42m</b></div><div><small style="text-align:right">#42 · Thu 19 Nov</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>`;
+  <div class="res"><div><small>Valued at</small><b class="H">£37.0m</b></div><div><small style="text-align:right">#42 · Thu 19 Nov</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>`;
 document.getElementById('marks').innerHTML =
   `<div style="background:#1B2230;color:#FBF6EA">${WM_DARK}<small>On ink · the style and the top bar</small></div>` +
   `<div class="on-paper" style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 0 0 1px #E2D6BD">${WM_PAPER}<small>On paper · share cards</small></div>`;

@@ -13,7 +13,7 @@
 :root {
   --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --rule: #E2D6BD; --muted: #5E574D;
   --yellow: #F5AF3E; --yellow-deep: #A8680F; --biro: #23408E; --cream-dim: rgba(251,246,234,.72);
-  --mark: rgba(251,246,234,.42); /* perimeter marks: cream, quiet */
+  --mark: rgba(251,246,234,.55); /* perimeter marks: cream, quiet */
   --display: 'Valley Sans', system-ui, sans-serif; --body: 'Onest', system-ui, sans-serif;
   --ease: cubic-bezier(.2, .8, .2, 1);
 }
@@ -42,12 +42,12 @@ h1 { font: 900 30px/1 var(--display); margin: 0 0 6px; }
 .zoom { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--rule); }
 .zoom .clipart { position: absolute; width: 300%; left: -22%; top: -58%; }
 
-/* ===== The clipboard (stand-in art: round 3 board and clip, sheet repainted in ink) ===== */
+/* ===== The clipboard (generated plain ink sheet; marks and bands in code) ===== */
 .clipart { position: relative; width: 100%; container-type: inline-size; }
 .clipart > .cb { filter: drop-shadow(4px 8px 10px rgba(40,20,5,.28)); }
-.clipart .cb img { display: block; width: 100%; height: auto; clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
-.sheet { position: absolute; left: 13.8%; top: 16.1%; width: 72.7%; height: 73.5%; background: var(--ink); border-radius: .5cqw;
-  clip-path: polygon(0 0, 21% 0, 21% 2.7%, 79% 2.7%, 79% 0, 100% 0, 100% 100%, 0 100%); }
+.clipart .cb img { display: block; width: 100%; height: auto; }
+.clipart .cb img[src$="lines.png"] { clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
+.sheet { position: absolute; left: 13.5%; top: 15.9%; width: 72.9%; height: 74%; background: none; }
 .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .sheet svg * { vector-effect: non-scaling-stroke; }
 
@@ -84,7 +84,7 @@ h1 { font: 900 30px/1 var(--display); margin: 0 0 6px; }
 <body>
 <main>
   <h1>Clipboard: what's on it, and the perimeter marks</h1>
-  <p class="lede">The run is played in one go, so the clipboard has two real states: <b>before</b> (the six tasks and a yellow Start) and <b>done</b> (ticked tasks and the valuation, ringed). The middle state only has to hold up if someone leaves halfway. No progress pips (the ticks say it), no Next chip (the button says it), so there is only ever one yellow thing on it. Art stand-in: the round 3 board and clip, sheet painted flat in ink. Marks and bands are SVG and CSS, so they stay crisp and the row count can change without new art.</p>
+  <p class="lede">The run is played in one go, so the clipboard has two real states: <b>before</b> (the six tasks and a yellow Start) and <b>done</b> (ticked tasks and the valuation, ringed). The middle state only has to hold up if someone leaves halfway. No progress pips (the ticks say it), no Next chip (the button says it), so there is only ever one yellow thing on it. Art: the generated board, clip and plain ink sheet (job 5e82726c). Marks and bands are SVG and CSS, so they stay crisp and the row count can change without new art.</p>
 
   <div class="picker" id="picker" role="group" aria-label="Perimeter marks"></div>
   <p class="note" id="note"></p>
@@ -177,7 +177,7 @@ let current = 'pitch';
 function render() {
   const m = MARKS[current];
   document.getElementById('states').innerHTML = STATES.map((s) => `<figure>
-    <div class="clipart"><div class="cb"><img src="img/round3/clipboard.png" alt=""></div>
+    <div class="clipart"><div class="cb"><img src="img/round3/clipboard-ink-plain-cut.png" alt=""></div>
       <div class="sheet"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${m.svg()}</svg></div>
       <div class="head">${s.head}</div><ol class="tasks">${rows(s.done)}</ol></div>
     <figcaption>${s.cap}<span>${s.why}</span></figcaption></figure>`).join('');
@@ -209,8 +209,8 @@ render();
 const GEN_SHEET = 'left:13.5%;top:15.9%;width:72.9%;height:74%;background:none;clip-path:none';
 const GEN = [
   { cap: 'A · Lines in the art', why: 'Printed by the generator: cream border, corner arcs, halfway ticks.', src: 'img/round3/clipboard-ink-lines.png', marks: '' },
-  { cap: 'B · Plain art, SVG lines', why: 'Plain generated sheet; the same marks drawn in code at 42% cream.', src: 'img/round3/clipboard-ink-plain.png', marks: MARKS.pitch.svg() },
-  { cap: 'B · Plain art, no lines', why: 'The bare generated sheet, for reference.', src: 'img/round3/clipboard-ink-plain.png', marks: '' },
+  { cap: 'B · Plain art, SVG lines', why: 'Plain generated sheet; the same marks drawn in code at 55% cream.', src: 'img/round3/clipboard-ink-plain-cut.png', marks: MARKS.pitch.svg() },
+  { cap: 'B · Plain art, no lines', why: 'The bare generated sheet, for reference.', src: 'img/round3/clipboard-ink-plain-cut.png', marks: '' },
 ];
 const genBoard = (g) => `<div class="clipart"><div class="cb"><img src="${g.src}" alt=""></div>
   <div class="sheet" style="${GEN_SHEET}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${g.marks}</svg></div>
