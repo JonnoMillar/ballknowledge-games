@@ -75,8 +75,15 @@ palette, type). The full exploration it replaced is in git at commit 1f54dd7.
 1. ~~Update `style.html` to the picks~~ done 2026-11-19 (draft 2).
 2. **Regeneration queue** (Higgsfield, one variant each, approve the concept
    before generating). Work through it in this order, highest impact first:
-   - Clipboard: ink sheet with a plain header zone (no pitch lines), cream
-     task bands, same wood board and clip.
+   - Clipboard: same wood board and clip, a plain matte ink sheet, nothing
+     printed on it. Cream bands and perimeter marks are CSS/SVG on top, so
+     they stay crisp and the row count can change without new art.
+     Content and marks are picked first on `clipboard.html` (2026-11-20):
+     two real states, before (six tasks, yellow Start) and done (ticks,
+     valuation ringed, yellow gone to the next game); left-halfway only has
+     to hold up. No pips, no Next chip on the clipboard: one yellow thing.
+     Mark variants: none, ruler edges, touchline and corner arcs, print crop
+     marks, stitched seam. Waiting for Jonno's pick.
    - Style reference image re-locked to the new palette (every later piece is
      generated against it).
    - Office plate, desktop and phone: keep the scout's office but shift the
