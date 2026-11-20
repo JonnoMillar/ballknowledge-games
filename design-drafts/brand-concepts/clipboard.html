@@ -38,6 +38,10 @@ h1 { font: 900 30px/1 var(--display); margin: 0 0 6px; }
 .states figcaption { font: 800 12px/1.3 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
 .states figcaption span { display: block; font: 500 13.5px/1.4 var(--body); letter-spacing: 0; text-transform: none; margin-top: 4px; }
 
+/* 3x crop of the sheet's top-left corner. */
+.zoom { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--rule); }
+.zoom .clipart { position: absolute; width: 300%; left: -22%; top: -58%; }
+
 /* ===== The clipboard (stand-in art: round 3 board and clip, sheet repainted in ink) ===== */
 .clipart { position: relative; width: 100%; container-type: inline-size; }
 .clipart > .cb { filter: drop-shadow(4px 8px 10px rgba(40,20,5,.28)); }
@@ -86,6 +90,11 @@ h1 { font: 900 30px/1 var(--display); margin: 0 0 6px; }
   <p class="note" id="note"></p>
 
   <div class="states" id="states"></div>
+
+  <h1 style="margin-top:48px" id="gen">Generated lines or code lines</h1>
+  <p class="lede">Two Higgsfield edits of the round 3 clipboard, 2026-11-20 (GPT Image 2.6, low, one variant each): <b>A</b> with the touchline and corner arcs printed in the art (job 58a183a4), <b>B</b> with a plain ink sheet (job 5e82726c) and the same marks drawn in SVG on top. Same layer on both. The bottom row is the top-left corner at 3x, where crispness shows.</p>
+  <div class="states" id="genrow"></div>
+  <div class="states" id="genzoom" style="margin-top:18px"></div>
 </main>
 
 <script>
@@ -174,7 +183,6 @@ function render() {
     <figcaption>${s.cap}<span>${s.why}</span></figcaption></figure>`).join('');
   document.getElementById('note').textContent = m.note;
   document.querySelectorAll('#picker button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.k === current));
-  history.replaceState(null, '', '#' + current);
 }
 // Shrink anything that would overflow its box, never grow it.
 function fit(el, box) {
@@ -193,9 +201,23 @@ const _render = render;
 render = () => { _render(); document.fonts.ready.then(fitAll); };
 addEventListener('resize', fitAll);
 document.getElementById('picker').innerHTML = Object.entries(MARKS).map(([k, m]) => `<button data-k="${k}">${m.name}</button>`).join('');
-document.getElementById('picker').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { current = b.dataset.k; render(); } });
+document.getElementById('picker').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { current = b.dataset.k; history.replaceState(null, '', '#' + current); render(); } });
 if (MARKS[location.hash.slice(1)]) current = location.hash.slice(1);
 render();
+
+// Generated art: the sheet is already ink, so nothing is painted; B gets the SVG marks.
+const GEN_SHEET = 'left:13.5%;top:15.9%;width:72.9%;height:74%;background:none;clip-path:none';
+const GEN = [
+  { cap: 'A · Lines in the art', why: 'Printed by the generator: cream border, corner arcs, halfway ticks.', src: 'img/round3/clipboard-ink-lines.png', marks: '' },
+  { cap: 'B · Plain art, SVG lines', why: 'Plain generated sheet; the same marks drawn in code at 42% cream.', src: 'img/round3/clipboard-ink-plain.png', marks: MARKS.pitch.svg() },
+  { cap: 'B · Plain art, no lines', why: 'The bare generated sheet, for reference.', src: 'img/round3/clipboard-ink-plain.png', marks: '' },
+];
+const genBoard = (g) => `<div class="clipart"><div class="cb"><img src="${g.src}" alt=""></div>
+  <div class="sheet" style="${GEN_SHEET}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${g.marks}</svg></div>
+  <div class="head">${STATES[0].head}</div><ol class="tasks">${rows(0)}</ol></div>`;
+document.getElementById('genrow').innerHTML = GEN.map((g) => `<figure>${genBoard(g)}<figcaption>${g.cap}<span>${g.why}</span></figcaption></figure>`).join('');
+document.getElementById('genzoom').innerHTML = GEN.map((g) => `<figure><div class="zoom">${genBoard(g)}</div><figcaption>${g.cap} · corner at 3x</figcaption></figure>`).join('');
+document.fonts.ready.then(fitAll);
 </script>
 </body>
 </html>
