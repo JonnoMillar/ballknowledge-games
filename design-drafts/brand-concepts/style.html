@@ -23,6 +23,7 @@
   --biro: #23408E;       /* hand marks: ticks, strikes, the ringed result */
   --tape: #151413;
   --cream-dim: rgba(251,246,234,.72); /* secondary type on ink */
+  --mark: rgba(251,246,234,.42);     /* printed marks on the ink sheet: touchline and corner arcs */
   --cork: #B0642A; --wood: #6B3A18; /* art samples, for demos only */
 
   --display: 'Valley Sans', system-ui, sans-serif; /* one weight: 900 */
@@ -157,12 +158,12 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 .clipart .cb img { display: block; width: 100%; height: auto; clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
 .clipart .sheet { position: absolute; left: 13.8%; top: 16.1%; width: 72.7%; height: 73.5%; background: var(--ink); border-radius: .5cqw;
   clip-path: polygon(0 0, 21% 0, 21% 2.7%, 79% 2.7%, 79% 0, 100% 0, 100% 100%, 0 100%); }
-.clipart .head { position: absolute; left: 20.8%; top: 24.4%; width: 58.4%; height: 20.4%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); }
-.clipart .eyebrow { display: flex; justify-content: space-between; gap: 1em; font: 800 2.5cqw/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); }
-.clipart h4 { margin: 2cqw 0; font: 900 6.4cqw/1 var(--display); color: var(--paper); white-space: nowrap; }
-.pips { display: flex; gap: 1cqw; }
-.pips i { flex: 1; height: 1.4cqw; border-radius: .3cqw; background: rgba(251,246,234,.2); transition: background-color var(--t-mid) var(--ease); }
-.pips i.on { background: var(--paper); }
+.clipart .head { position: absolute; left: 20.8%; top: 23.6%; width: 58.4%; height: 21.6%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); }
+.clipart .eyebrow { display: flex; justify-content: space-between; gap: 1em; white-space: nowrap; overflow: hidden; font: 800 2.5cqw/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); }
+.clipart h4 { margin: 2.2cqw 0 1.2cqw; font: 900 6.4cqw/1 var(--display); color: var(--paper); white-space: nowrap; overflow: hidden; }
+.clipart .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.clipart .sheet svg * { vector-effect: non-scaling-stroke; }
+.clipart .sub { font: 500 2.9cqw/1.3 var(--body); color: var(--cream-dim); margin: 0; }
 .go { margin-top: auto; display: flex; align-items: center; justify-content: center; }
 .clipart .btn { width: 100%; font-size: 4.2cqw; min-height: 0; border-radius: 1cqw; padding: .5em 1.1em .45em; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--yellow-deep); }
 .clipart .btn:hover { box-shadow: 0 0 0 .5cqw var(--paper), 0 1.8cqw 0 .5cqw var(--yellow-deep); }
@@ -170,7 +171,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 /* Finished: the scout writes the valuation in and rings it in white marker, as on a
    tactics board. No rubber stamp. */
 .result { position: relative; display: flex; align-items: baseline; gap: 2cqw; padding: 0 3cqw; color: var(--paper); font: 900 8cqw/1 var(--display); font-variant-numeric: tabular-nums; animation: inkin var(--t-slow) var(--ease) both; }
-.result small { color: var(--cream-dim); font: 800 2.3cqw/1 var(--body); letter-spacing: .08em; text-transform: uppercase; }
+.result small { white-space: nowrap; color: var(--cream-dim); font: 800 2.3cqw/1 var(--body); letter-spacing: .08em; text-transform: uppercase; }
 .result svg { position: absolute; left: -8px; top: -10px; width: calc(100% + 16px); height: calc(100% + 22px); overflow: visible; }
 .result svg path { stroke: var(--paper); stroke-width: 2.4; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 620ms 260ms var(--ease) forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
@@ -197,8 +198,6 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 .tasks li.pop .box { animation: pop 340ms var(--ease); }
 @keyframes pop { 0% { transform: scale(1); } 30% { transform: scale(.86); } 65% { transform: scale(1.1); } 100% { transform: scale(1); } }
 .tasks li em { margin-left: auto; font: 800 2.5cqw/1 var(--body); letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: var(--muted); }
-.tasks li.next em { color: var(--ink); background: var(--yellow); padding: .35em .5em; border-radius: .5cqw; }
-.tasks li.next em::after { content: ' \2192'; }
 
 /* Phone list card: a game as a paper slip on the board. */
 .slip { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; background: var(--paper); border-radius: 6px; padding: 10px 12px; box-shadow: var(--shadow-1); min-height: 64px; }
@@ -251,7 +250,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
   <!-- ===== 1 ===== -->
   <section>
     <h2><span>1</span>Name and mark</h2>
-    <p class="lede">Name locked 2026-11-19: <b>FootballScouted</b>, one word. The run ends with you scouted at a valuation (<b>valued at £42m</b>), which replaces a numeric score. The wordmark is two-tone with brows: the icon's own glasses and brows stand in for the oo, Football in yellow and Scouted in cream. The icon is the thinking scout, file <code>img/fs-icon.svg</code>, PNGs from 1024 to 16 in <code>img/fs-icon/</code>. The two are used apart: the wordmark alone in the top bar, the icon alone as app icon, favicon and avatar.</p>
+    <p class="lede">Name locked 2026-11-19: <b>FootballScouted</b>, one word. The run ends with you scouted at a valuation (<b>valued at £37.0m</b>), which replaces a numeric score. The wordmark is two-tone with brows: the icon's own glasses and brows stand in for the oo, Football in yellow and Scouted in cream. The icon is the thinking scout, file <code>img/fs-icon.svg</code>, PNGs from 1024 to 16 in <code>img/fs-icon/</code>. The two are used apart: the wordmark alone in the top bar, the icon alone as app icon, favicon and avatar.</p>
     <div class="grid g3 marks">
       <div class="panel inkbg">
         <h3>On ink · the style</h3>
@@ -288,7 +287,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
         <ul class="rules">
           <li><b>FootballScouted</b> everywhere: speech, watermarks, share cards. One word, capital F and S; never Football Scouted or FOOTBALLSCOUTED in running text.</li>
           <li>Descriptor is fixed: <b>Daily football games</b>. Page titles carry it: <b>FootballScouted · Daily football games</b>.</li>
-          <li>Share card leads with the name, the day and the valuation: <b>FootballScouted #42 · £42m</b>.</li>
+          <li>Share card leads with the name, the day and the valuation: <b>FootballScouted #42 · £37.0m</b>.</li>
           <li>Football in yellow on ink, ochre on paper; Scouted in cream on ink, ink on paper. Never other pairs.</li>
           <li>No generated type, ever: the wordmark is real type plus the icon's fitted glasses.</li>
         </ul>
@@ -337,7 +336,7 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
     <div class="panel grained">
       <div class="spec"><small>Hero · Valley Sans 900 · 56</small><div class="t-hero">Today’s assignment</div></div>
       <div class="spec"><small>Heading · 900 · 36</small><div class="t-h1">Find the mole</div></div>
-      <div class="spec"><small>Valuation · 900 · 64 · tabular</small><div class="t-score">£42m</div></div>
+      <div class="spec"><small>Valuation · 900 · 64 · tabular</small><div class="t-score">£37.0m</div></div>
       <div class="spec"><small>Button and tape · 900 · caps +12%</small><div class="t-tape">Continue · Season line</div></div>
       <div class="spec"><small>Eyebrow · Onest 800 · 12 · caps</small><div class="t-eyebrow">4-day streak · Thu 19 Nov</div></div>
       <div class="spec"><small>UI · Onest 700 · 15</small><div class="t-ui">Log the shot</div></div>
@@ -406,16 +405,16 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
         <h3>The run's clipboard (click a task)</h3>
         <div class="clipart" id="sheet">
           <div class="cb"><img src="img/round3/clipboard.png" alt="Tactics clipboard"></div>
-          <div class="sheet"></div>
+          <div class="sheet"><svg viewBox="0 0 500 753" preserveAspectRatio="none" aria-hidden="true"><rect x="16" y="40" width="468" height="697" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 62A22 22 0 0 0 38 40M462 40A22 22 0 0 0 484 62M484 715A22 22 0 0 0 462 737M38 737A22 22 0 0 0 16 715" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 388.5H30M484 388.5H470" stroke="var(--mark)" stroke-width="1.6"/></svg></div>
           <div class="head">
-            <div class="eyebrow"><span>4-day streak</span><span>Thu 19 Nov</span></div>
-            <h4>Today’s assignment</h4>
-            <div class="pips" id="pips"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="eyebrow" id="eyebrow"><span>#42 · Thu 19 Nov</span><span>4-day streak</span></div>
+            <h4 id="title">Today’s assignment</h4>
+            <p class="sub" id="sub">Six quick tasks. One report.</p>
             <div class="go" id="go"><button class="btn btn-go">Continue</button></div>
           </div>
           <ol class="tasks" id="tasks"></ol>
         </div>
-        <p class="lede" style="margin-top:10px">Ink sheet, cream task bands. The sheet is repainted flat in ink as a stand-in until the clipboard art is regenerated (the board and clip are generated; the type, boxes and hand marks are code). Hover: the band warms, the name leans in, a ghost tick previews the click. Tick: the box presses, a biro tick draws, a hand strike crosses the name, a pip fills. Finished: the valuation is written in and ringed in white marker; no rubber stamp. In the real run a task ticks when you come back from it, not by click.</p>
+        <p class="lede" style="margin-top:10px">Primary A, then B, then the attention yellow: ink sheet with printed touchline and corner arcs, cream task bands, one yellow Start. Two real states (the run is played in one go): before, and done, where the yellow leaves the clipboard and the valuation is written in and ringed in white marker; no stamp. No progress pips and no Next chip: the ticks and the button say it. The generated art will be the board, clip and a plain ink sheet; bands and marks stay code (variants: <a href="clipboard.html">clipboard.html</a>). Hover: the band warms, the name leans in, a ghost tick previews the click. Tick: the box presses, a biro tick draws, a hand strike crosses the name. In the real run a task ticks when you come back from it, not by click.</p>
       </div>
 
       <div>
@@ -472,25 +471,24 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
   const TICK = '<svg viewBox="0 0 22 22"><path class="biro" pathLength="1" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
   const STRIKE = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" pathLength="1" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg>';
   const NAMES = ['Check the rumours', 'Trace the link', 'Log the shot', 'Find the mole', 'Line them up', 'Read the season'];
-  const TOPS = [47.7, 54.2, 60.6, 67.2, 73.7, 80.3];
+  const TOPS = [48.4, 54.8, 61.2, 67.6, 74.0, 80.4];
   document.getElementById('tasks').innerHTML = NAMES.map((n, i) =>
-    `<li style="top:${TOPS[i]}%"${i < 2 ? ' class="done"' : ''}><i class="box">${TICK}</i><span class="nm">${n}${STRIKE}</span><em></em></li>`).join('');
+    `<li style="top:${TOPS[i]}%"><i class="box">${TICK}</i><span class="nm">${n}${STRIKE}</span><em></em></li>`).join('');
 
   const tasks = [...document.querySelectorAll('#tasks li')];
   const go = document.getElementById('go');
   const goHTML = go.innerHTML;
-  const pips = [...document.querySelectorAll('#pips i')];
   const RING = '<svg viewBox="0 0 100 60" preserveAspectRatio="none"><path pathLength="1" fill="none" stroke-linecap="round" d="M58 4C30 1 6 9 4 27s20 30 50 29 44-12 42-29C94 9 70 2 44 6"/></svg>';
   function sync() {
     const done = tasks.filter((t) => t.classList.contains('done')).length;
-    pips.forEach((p, i) => p.classList.toggle('on', i < done));
-    const next = tasks.find((t) => !t.classList.contains('done'));
-    tasks.forEach((t) => {
-      t.classList.toggle('next', t === next);
-      t.querySelector('em').textContent = t === next ? 'Next' : t.classList.contains('done') ? 'Done' : '';
-    });
-    if (done === tasks.length) go.innerHTML = '<div class="result"><small>Valued at</small>£42m' + RING + '</div>';
+    tasks.forEach((t) => { t.querySelector('em').textContent = t.classList.contains('done') ? 'Done' : ''; });
+    const all = done === tasks.length;
+    document.getElementById('title').textContent = all ? 'Today’s report' : 'Today’s assignment';
+    document.getElementById('sub').textContent = all ? '' : done ? done + ' of 6 done.' : 'Six quick tasks. One report.';
+    document.getElementById('eyebrow').innerHTML = all ? '<span>Filed · Thu 19 Nov</span><span>Next in 9h 14m</span>' : '<span>#42 · Thu 19 Nov</span><span>4-day streak</span>';
+    if (all) go.innerHTML = '<div class="result"><small>Valued at</small>£37.0m' + RING + '</div>';
     else { go.innerHTML = goHTML; go.querySelector('button').textContent = done ? 'Continue' : 'Start'; }
+    fit();
   }
   tasks.forEach((t) => t.addEventListener('click', () => {
     const ticking = !t.classList.contains('done');
@@ -505,10 +503,12 @@ code { font: 600 13px/1 ui-monospace, Consolas, monospace; background: var(--pap
 
   // Shrink the clipboard heading if it would overflow its box, never grow it.
   function fit() {
-    const h = document.querySelector('.clipart h4'), box = h.parentElement;
+    const h = document.querySelector('.clipart h4'), box = h;
     h.style.fontSize = '';
     let s = parseFloat(getComputedStyle(h).fontSize), n = 0;
     while (box.scrollWidth > box.clientWidth + 1 && n++ < 40) h.style.fontSize = (s *= .96) + 'px';
+    const e = document.getElementById('eyebrow'); e.style.fontSize = ''; let t = parseFloat(getComputedStyle(e).fontSize), m = 0;
+    while (e.scrollWidth > e.clientWidth + 1 && m++ < 40) e.style.fontSize = (t *= .96) + 'px';
   }
   document.fonts.ready.then(fit);
   addEventListener('resize', fit);

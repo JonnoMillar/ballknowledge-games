@@ -82,8 +82,10 @@ palette, type). The full exploration it replaced is in git at commit 1f54dd7.
      two real states, before (six tasks, yellow Start) and done (ticks,
      valuation ringed, yellow gone to the next game); left-halfway only has
      to hold up. No pips, no Next chip on the clipboard: one yellow thing.
-     Mark variants: none, ruler edges, touchline and corner arcs, print crop
-     marks, stitched seam. Waiting for Jonno's pick.
+     Marks: **touchline and corner arcs** (Jonno, 2026-11-20): a thin cream
+     inset border (42% cream), a quarter arc in each corner, halfway ticks on
+     the long sides. Now in `style.html` too, with the two states and the
+     valuation written to one decimal (£37.0m), as the live run reports it.
    - Style reference image re-locked to the new palette (every later piece is
      generated against it).
    - Office plate, desktop and phone: keep the scout's office but shift the
