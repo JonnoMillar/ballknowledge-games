@@ -209,8 +209,15 @@ palette, type). The full exploration it replaced is in git at commit 1f54dd7.
 
 ## Resume prompt (paste after /clear)
 
-Read `design-drafts/brand-concepts/HANDOFF.md`. The brand picks are locked
-(FootballScouted, Valley Sans + Onest, wordmark 4, colour system A). Update
-`style.html` to the picks and show it at http://localhost:4321/style.html.
-Then inventory the generated art and propose the regeneration queue (clipboard
-first), one variant each, and wait for Jonno's OK before spending credits.
+Read `design-drafts/brand-concepts/HANDOFF.md`. Picks locked (FootballScouted,
+Valley Sans + Onest, wordmark 4, colour system A on ink #1B2230); the clipboard
+is done (generated plain ink sheet, touchline marks in code, two states). Next
+is the style reference: an edit of job `b6b4987a-7811-4fc3-9a9d-7483645bd242`
+with the clipboard job `5e82726c-cabf-43b5-860d-eb9806e37348` as a second
+reference. Keep binoculars, stopwatch, mug, grain, top-left light; swap the
+ball for the ink clipboard; pennant ink and cream and blank (a real badge sits
+on it later), mug rim ink; lighter, less orange cream ground; no strong yellow,
+no lettering. One variant, GPT Image 2.6 low, 0.25 credits: ask Jonno before
+generating. Then the office plates and the seven game backgrounds (queue in
+HANDOFF). Known nit: the `type.html` hub mock shows the Chain Next flag in the
+before state; the suggestion belongs only after the run is finished.
