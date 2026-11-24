@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 import { Big_Shoulders, Libre_Franklin } from 'next/font/google';
 import './globals.css';
 import { GAMES } from '../src/games';
-import HomeLink from '../components/HomeLink';
 
 /**
  * The two faces, self-hosted at build time by next/font so the page never
@@ -83,7 +82,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="cards-grade">
         <div className="table" aria-hidden />
         {children}
-        <footer className="site-foot"><HomeLink href="/">All games</HomeLink> · <a href="/credits">Photo and data credits</a></footer>
+        <footer className="site-foot"><a href="/">All games</a> · <a href="/credits">Photo and data credits</a></footer>
       </body>
     </html>
   );
