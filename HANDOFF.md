@@ -32,6 +32,9 @@ are in `CLAUDE.md`.
 
 ## The site hub and Chain's hub (2026-10-14)
 
+> **Update 2026-11-24:** `/` is now the scout's-office hub (`games/hub/HANDOFF.md`). The bento of
+> tiles described below lives at `/games`.
+
 Shipped to `main` at a04b817 (typecheck clean, `npm test` 1,728 passed, prod
 build clean, checked in the browser at 375 and 1200 wide). Waiting on Jonno's
 verdict on both hubs.

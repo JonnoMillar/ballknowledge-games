@@ -171,7 +171,7 @@ export default function Hub() {
           <path style={{ fill: 'var(--frame)', stroke: 'var(--frame)' }} strokeWidth="8" strokeLinejoin="round" d="M222.73 129.50A113.0 113.0 0 0 1 368.75 120.56L360.36 131.76A99.0 99.0 0 0 0 232.43 139.59Z" />
         </symbol>
       </svg>
-      <div className="hx-bar"><Link href="/" className="hx-wm H" aria-label="FootballScouted, all games"><Wordmark /></Link><nav><Link href="/">All games</Link></nav></div>
+      <div className="hx-bar"><Link href="/" className="hx-wm H" aria-label="FootballScouted"><Wordmark /></Link><nav><Link href="/games">All games</Link></nav></div>
       <div className="hx-stage">
         <div className="hx-cam" ref={cam}>
           <div className="hx-scene" ref={scene}>

@@ -1,11 +1,13 @@
 # Hub (`/hub`): the scout's office
 
-Live 2026-11-24 at `/hub`; `/` is still Chain's hub. The swap to `/` is a later decision.
+The hub, at `/` since 2026-11-24 (Jonno's call). `/hub` redirects to `/`. The old bento of tiles
+moved to `/games` ("All games" on the office bar): it is the only way to Rondo, which is parked off
+the board. Its hub-to-game morph (app/layout.tsx) now keys on `/games`; `/` to a game is a plain fade.
 
 A faithful port of `design-drafts/brand-concepts/hub.html` (v2, Jonno's arranged layout, Rondo
 parked). The draft's own HANDOFF (sections Hub MVP, v2, Arrange tools) says what each part is.
 
-- `app/hub/page.tsx`: thin shell. `Hub.tsx`: the client component (camera, parallax, dust canvas,
+- `app/page.tsx`: thin shell (also keeps the old `/?c=NNN` redirect). `Hub.tsx`: the client component (camera, parallax, dust canvas,
   countdown, the clipboard). `hub.css`: every class is `hx-` prefixed (global CSS).
 - Art: `public/hub/office/` (low 1k drafts, copied unchanged, plain `<img>` so nothing is
   re-encoded). A new plate drops in by replacing the files; positions are % of the plate.
