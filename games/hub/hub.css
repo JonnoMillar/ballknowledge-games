@@ -1,0 +1,125 @@
+/* The hub: the scout's office (port of design-drafts/brand-concepts/hub.html, v2).
+   The scene covers the window at 16:9, anchored to the top. Positions are % of the plate,
+   so a new plate drops in without moving anything. Every class is hx-prefixed: this file is
+   global CSS and the site has its own names. */
+.hx {
+  --ink: #1B2230; --paper: #FBF6EA; --muted: #5E574D; --att: #F5AF3E; --att-deep: #A8680F; --biro: #23408E; --tape: #151413; --mark: rgba(251,246,234,.55);
+  --h: 'Valley Sans'; --b: var(--font-onest), 'Onest'; --ease: cubic-bezier(.2,.8,.2,1);
+  position: fixed; inset: 0; z-index: 100; overflow: hidden; background: var(--ink);
+  font: 500 15px/1.4 var(--b), system-ui, sans-serif; color: var(--ink);
+}
+/* The site's footer and table sit behind the fixed hub; stop the page scrolling under it. */
+html:has(.hx) { overflow: hidden; }
+.hx *, .hx *::before, .hx *::after { box-sizing: border-box; }
+.hx .H { font-family: var(--h), system-ui, sans-serif; font-weight: 900; }
+.hx img { -webkit-user-drag: none; user-select: none; }
+.hx-stage { position: absolute; inset: 0; overflow: hidden; }
+/* Hidden until the camera is placed, so the unframed plate never flashes. */
+.hx-cam { position: absolute; inset: 0; transform-origin: 0 0; visibility: hidden; }
+.hx-cam[data-ready] { visibility: visible; }
+/* Anchored to the top so wide windows lose floor, never the board. */
+.hx-scene { position: absolute; left: 50%; top: 0; width: max(100vw, 177.78vh); aspect-ratio: 16 / 9; transform: translateX(-50%); container-type: inline-size; }
+/* Depth layers move a few px with the pointer (parallax); set from JS as --px/--py in -1..1. */
+.hx-layer { position: absolute; inset: 0; transform: translate(calc(var(--px, 0) * var(--d) * -1px), calc(var(--py, 0) * var(--d) * -1px)); transition: transform 600ms var(--ease); }
+.hx-art { position: absolute; inset: -1%; width: 102%; height: 102%; display: block; }
+
+.hx-bar { position: absolute; left: 0; right: 0; top: 0; height: 56px; padding: 0 24px; display: flex; align-items: center; background: var(--ink); color: var(--paper); z-index: 5; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+.hx-bar .hx-wm { font-size: 28px; color: var(--paper); text-decoration: none; }
+.hx-bar nav { margin-left: auto; display: flex; gap: 10px; }
+.hx-bar nav a { background: var(--paper); color: var(--ink); font: 800 12px/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: .8em 1em; border-radius: 5px; text-decoration: none; white-space: nowrap; }
+.hx-wm { white-space: nowrap; line-height: 1; display: inline-block; }
+.hx-wm .oo { height: calc(.6em * 245 / 138); width: calc(.6em * 370 / 138); vertical-align: -.01em; margin: 0 .03em; }
+
+/* ---- Live layer: light, dust, steam, sway. All of it stops for reduced motion. ---- */
+/* Sun through the window: a warm wash that breathes and dims when a cloud passes. */
+.hx-sun { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; background: linear-gradient(115deg, rgba(255,214,150,.0) 8%, rgba(255,214,150,.55) 22%, rgba(255,214,150,.18) 46%, rgba(255,214,150,0) 70%); animation: hx-cloud 23s ease-in-out infinite; }
+@keyframes hx-cloud { 0%, 52%, 100% { opacity: 1; } 62% { opacity: .35; } 72% { opacity: .8; } }
+/* Lamp glow, a slow warm pulse. */
+.hx-glow { position: absolute; left: 29.2%; top: 48.1%; width: 16cqw; height: 16cqw; transform: translate(-50%, -30%); border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, rgba(255,200,120,.38), rgba(255,200,120,0)); mix-blend-mode: screen; animation: hx-lamp 5.5s ease-in-out infinite; }
+@keyframes hx-lamp { 50% { opacity: .72; } }
+.hx-dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* Steam off the mug. */
+.hx-steam { position: absolute; left: 32.1%; top: 58.6%; width: 2.4cqw; height: 4.5cqw; transform: translate(-50%, -100%); pointer-events: none; }
+.hx-steam i { position: absolute; bottom: 0; left: 40%; width: .5cqw; height: 2.6cqw; border-radius: 50%; background: rgba(255,255,255,.55); filter: blur(.35cqw); opacity: 0; animation: hx-steam 4.2s ease-in infinite; }
+.hx-steam i:nth-child(2) { left: 15%; animation-delay: 1.4s; }
+.hx-steam i:nth-child(3) { left: 65%; animation-delay: 2.8s; }
+@keyframes hx-steam { 0% { opacity: 0; transform: translateY(0) scaleX(.7); } 25% { opacity: .7; } 100% { opacity: 0; transform: translateY(-2.6cqw) translateX(.5cqw) scaleX(1.4); } }
+/* Hanging things sway from their pin. */
+.hx-sway { animation: hx-sway 6.5s ease-in-out infinite; transform-origin: 50% 2%; }
+@keyframes hx-sway { 0%, 100% { rotate: -1.2deg; } 50% { rotate: 1.2deg; } }
+
+/* Wall props in the scene (not links). */
+.hx-prop { position: absolute; display: block; pointer-events: none; filter: drop-shadow(.2cqw .5cqw .5cqw rgba(60,30,5,.28)); }
+.hx-olise { position: absolute; left: 73.58%; top: 14.57%; width: 8.52%; height: 24.51%; object-fit: cover; object-position: 97% 50%; /* subject sits at x 65-96% of the image */ box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+
+/* Board items: generated cut-outs. Hover lifts the item off its pin, straightens it,
+   grows it and dims the rest of the board, so the choice is obvious. */
+.hx-board:has(a.hx-item:hover) .hx-item:not(:hover), .hx-board:has(a.hx-item:focus-visible) .hx-item:not(:focus-visible) { filter: brightness(.86) saturate(.85) drop-shadow(.2cqw .35cqw .4cqw rgba(40,20,5,.25)); }
+.hx-item { position: absolute; display: block; z-index: 1; text-decoration: none; transform: rotate(var(--r, 0deg)); transform-origin: 50% 8%; transition: transform 260ms var(--ease), filter 260ms var(--ease); filter: drop-shadow(.2cqw .35cqw .4cqw rgba(40,20,5,.3)); }
+.hx-item img { display: block; width: 100%; height: auto; }
+a.hx-item:hover, a.hx-item:focus-visible { z-index: 4; transform: translateY(-.6cqw) rotate(0deg) scale(1.45); filter: drop-shadow(.6cqw 1.6cqw 1.2cqw rgba(40,20,5,.38)); outline: none; }
+a.hx-item:active { transform: translateY(-.3cqw) rotate(0deg) scale(1.38); transition-duration: 90ms; }
+.hx-item b { position: absolute; left: 50%; bottom: -.5cqw; transform: translateX(-50%) rotate(calc(var(--r, 0deg) * -1 - 1deg)); background: var(--tape); color: #F4F1EA; font: 900 .78cqw/1 var(--h), system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; padding: .45em .7em .38em; border-radius: 2px; white-space: nowrap; box-shadow: 0 2px 3px rgba(0,0,0,.35); transition: transform 260ms var(--ease); }
+a.hx-item:hover b, a.hx-item:focus-visible b { transform: translateX(-50%) rotate(0deg) scale(.82); }
+
+/* Stopwatch: hours and minutes at desk size; hover lifts it to read the seconds. */
+.hx-watch { position: absolute; left: 65.58%; top: 60.12%; width: 2.47%; height: 2.43%; z-index: 3; display: grid; place-items: center; cursor: default; transition: transform 260ms var(--ease); transform-origin: 50% 80%; }
+.hx-watch span { font: 800 .62cqw/1 var(--b), system-ui, sans-serif; font-variant-numeric: tabular-nums; color: rgba(27,34,48,.85); white-space: nowrap; }
+.hx-watch .s { display: none; }
+.hx-watch:hover { transform: scale(3.2) translateY(-.6cqw); }
+.hx-watch:hover .s { display: inline; }
+.hx-watch::before { content: ''; position: absolute; inset: -1.6cqw -1cqw -2.4cqw; }
+.hx-watch .c { animation: hx-blink 1s steps(1) infinite; }
+@keyframes hx-blink { 50% { opacity: .25; } }
+
+/* Clipboard: the generated plain ink board (job 5e82726c) with the layer on top. Inside, cqw is the clipboard's. */
+.hx-clip { position: absolute; left: 38.71%; top: 15.03%; width: 14.96%; z-index: 2; container-type: inline-size; }
+.hx-clip > .cb { filter: drop-shadow(.6cqw 1.2cqw 1.4cqw rgba(40,20,5,.35)); }
+.hx-clip .cb img { display: block; width: 100%; height: auto; }
+.hx-sheet { position: absolute; left: 13.5%; top: 15.9%; width: 72.9%; height: 74%; }
+.hx-sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hx-sheet svg * { vector-effect: non-scaling-stroke; }
+.hx-head { position: absolute; left: 20.8%; top: 23.6%; width: 58.4%; height: 21.6%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); }
+.hx-head .eyebrow { white-space: nowrap; overflow: hidden; display: flex; justify-content: space-between; gap: 1em; font: 800 2.5cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; opacity: .78; }
+.hx-head h4 { margin: 2.2cqw 0 1.2cqw; font-size: 6.4cqw; line-height: 1; white-space: nowrap; overflow: hidden; }
+.hx-head .sub { margin: 0; font: 500 2.9cqw/1.3 var(--b), system-ui, sans-serif; opacity: .78; }
+.hx-btn { display: block; width: 100%; text-align: center; text-decoration: none; font-size: 4.2cqw; line-height: 1; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); background: var(--att); border: 0; border-radius: 1cqw; padding: .5em 1em .45em; cursor: pointer; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--att-deep); transition: transform 90ms var(--ease), box-shadow 90ms var(--ease); }
+.hx-btn:hover { box-shadow: 0 0 0 .5cqw var(--paper), 0 1.8cqw 0 .5cqw var(--att-deep); transform: translateY(-.3cqw); }
+.hx-btn:active { transform: translateY(.8cqw); box-shadow: 0 0 0 .5cqw var(--paper), 0 .4cqw 0 .5cqw var(--att-deep); }
+.hx-btn:focus-visible, .hx-result:focus-visible { outline: .5cqw solid var(--paper); outline-offset: 1cqw; }
+.hx-tasks { list-style: none; margin: 0; padding: 0; }
+.hx-tasks li { position: absolute; left: 19.2%; width: 61.6%; height: 4.8%; display: flex; align-items: center; gap: 2.4cqw; padding: 0 2.4cqw; font: 700 3.7cqw/1.1 var(--b), system-ui, sans-serif; background: var(--paper); color: var(--ink); border-radius: .5cqw; user-select: none; }
+.hx-tasks li.done { color: var(--muted); }
+.hx-box { width: 5cqw; height: 5cqw; flex: none; border: .45cqw solid var(--ink); border-radius: .6cqw; display: grid; place-items: center; }
+.hx .biro { stroke: var(--biro); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.hx-box svg { width: 5cqw; height: 5cqw; overflow: visible; }
+.hx-box svg path { stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 320ms var(--ease); }
+.hx-tasks li.done .hx-box svg path { stroke-dashoffset: 0; }
+.hx-nm { position: relative; white-space: nowrap; }
+.hx-nm svg { position: absolute; left: -3px; top: 50%; width: calc(100% + 6px); height: .5em; transform: translateY(-40%); overflow: visible; clip-path: inset(0 100% 0 0); transition: clip-path 260ms var(--ease) 160ms; }
+.hx-nm svg path { stroke-width: 2.4; vector-effect: non-scaling-stroke; }
+.hx-tasks li.done .hx-nm svg { clip-path: inset(0 0 0 0); }
+.hx-go { margin-top: auto; display: flex; justify-content: center; }
+.hx-result { position: relative; display: flex; align-items: baseline; gap: 2cqw; padding: 0 3cqw; color: var(--paper); text-decoration: none; font: 900 8cqw/1 var(--h), system-ui, sans-serif; font-variant-numeric: tabular-nums; animation: hx-inkin 480ms var(--ease) both; }
+.hx-result small { white-space: nowrap; opacity: .78; font: 800 2.3cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.hx-result svg { position: absolute; left: -8px; top: -10px; width: calc(100% + 16px); height: calc(100% + 22px); overflow: visible; }
+.hx-result svg path { stroke: var(--paper); stroke-width: 2.4; stroke-dasharray: 1; stroke-dashoffset: 1; animation: hx-draw 620ms 260ms var(--ease) forwards; }
+@keyframes hx-draw { to { stroke-dashoffset: 0; } }
+@keyframes hx-inkin { from { opacity: 0; transform: translateY(4px); } }
+.hx-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.hx-flag { margin-left: .5em; font: 800 .8em/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; background: var(--att); color: var(--ink); padding: .3em .45em; border-radius: 2px; box-shadow: 0 0 0 .15cqw var(--paper); }
+
+/* Phone stopgap: the scene is framed on the clipboard (hub.tsx), and the games, which sit out of frame, are plain links below. */
+.hx-games { display: none; }
+@media (max-width: 699px) {
+  .hx-bar { padding: 0 16px; }
+  .hx-bar .hx-wm { font-size: 22px; }
+  .hx-bar nav a { font-size: 11px; }
+  .hx-games { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--ink); box-shadow: 0 -2px 10px rgba(0,0,0,.25); }
+  .hx-games a { flex: 1 1 28%; text-align: center; background: var(--tape); color: #F4F1EA; font: 900 12px/1 var(--h), system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; padding: 13px 8px; border-radius: 3px; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(244,241,234,.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx *, .hx *::before, .hx *::after { animation: none !important; transition-duration: 1ms !important; }
+  .hx-steam, .hx-dust { display: none; }
+}
