@@ -1,12 +1,15 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { HOME_KEY } from '../../components/HomeLink';
 import { localDate } from '../../src/lib/daily';
 import { allRuns, streakDates, streakOf } from '../../src/lib/run/progress';
 import { money, reportValue, runScore } from '../../src/lib/run/score';
 import { RUN_TASKS } from '../../src/lib/run/tasks';
 
 const ART = '/hub/office';
+/** "All games" is the old hub, so choosing it ends /hub being home. */
+const leave = () => { try { sessionStorage.removeItem(HOME_KEY); } catch { /* */ } };
 
 /** [name, image, href (none: no route on main yet), left %, top %, width %, tilt]. Jonno's arranged layout, 2026-11-24; Rondo is parked off the board. */
 const ITEMS: readonly [string, string, string | null, number, number, number, number][] = [
@@ -67,6 +70,8 @@ function Lcd() {
 
 export default function Hub() {
   const [t, setT] = useState<Today | null>(null);
+  // While the player is here, the games' back arrows return here, not to Chain's hub (components/HomeLink).
+  useEffect(() => { try { sessionStorage.setItem(HOME_KEY, '/hub'); } catch { /* */ } }, []);
   const scene = useRef<HTMLDivElement>(null), cam = useRef<HTMLDivElement>(null), dust = useRef<HTMLCanvasElement>(null);
   const title = useRef<HTMLHeadingElement>(null), eyebrow = useRef<HTMLDivElement>(null);
 
@@ -171,7 +176,7 @@ export default function Hub() {
           <path style={{ fill: 'var(--frame)', stroke: 'var(--frame)' }} strokeWidth="8" strokeLinejoin="round" d="M222.73 129.50A113.0 113.0 0 0 1 368.75 120.56L360.36 131.76A99.0 99.0 0 0 0 232.43 139.59Z" />
         </symbol>
       </svg>
-      <div className="hx-bar"><Link href="/" className="hx-wm H" aria-label="FootballScouted, all games"><Wordmark /></Link><nav><Link href="/">All games</Link></nav></div>
+      <div className="hx-bar"><Link href="/" className="hx-wm H" aria-label="FootballScouted, all games" onClick={leave}><Wordmark /></Link><nav><Link href="/" onClick={leave}>All games</Link></nav></div>
       <div className="hx-stage">
         <div className="hx-cam" ref={cam}>
           <div className="hx-scene" ref={scene}>

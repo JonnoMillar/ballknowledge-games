@@ -7,6 +7,7 @@ import { RUN_TASKS, type RunTaskDef, type RunTaskProps, type TaskId, type TaskRe
 import {
   bandOf, bandWord, bell, bestMoment, markOf, MARK_WORD, money, reportValue, runScore, shareLine, topPercent, type TaskMark,
 } from '../../src/lib/run/score';
+import HomeLink from '../HomeLink';
 import { allRuns, bestThisMonth, loadRunDay, saveRunDay, streakDates, streakOf, type RunDay } from '../../src/lib/run/progress';
 
 /**
@@ -209,7 +210,7 @@ function Report({ day, archive, list, run }: { day: number; archive: boolean; li
           {!archive ? <Countdown /> : null}
           <div className="run-actions">
             <button type="button" className="lobby-play" onClick={share}>{copied ? 'Copied' : 'Share'}</button>
-            <a className="lobby-quiet" href="/">Back to the board</a>
+            <HomeLink className="lobby-quiet" href="/">Back to the board</HomeLink>
           </div>
         </div>
       </div>
