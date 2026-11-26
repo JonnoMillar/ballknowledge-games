@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Drill circuit draft</title>
+<title>Training Ground draft</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen&display=swap" rel="stylesheet">
 <style>
@@ -21,18 +21,17 @@
   .grp span { margin-right: 4px; }
   .grp button { font: inherit; font-size: 11px; color: var(--ink); background: transparent; border: 1px solid var(--line); padding: 5px 8px; cursor: pointer; }
   .grp button[aria-pressed="true"] { background: var(--ink); color: var(--page); border-color: var(--ink); }
+  .grp button:disabled { opacity: .35; cursor: not-allowed; }
   .note { font-size: 10px; color: var(--dim); margin-left: auto; }
 
   .stage-wrap { flex: 1; display: grid; place-items: center; padding: 12px; min-height: 0; }
   .stage { position: relative; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
   canvas#game { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
-  /* CRT scanlines + vignette, as on Krillion/Noillirk */
   .stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
     background:
       repeating-linear-gradient(to bottom, rgba(0,0,0,.16) 0 1px, transparent 1px 3px),
       radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.38) 100%); }
 
-  /* HTML UI sits on the pixel canvas and scales with it (--px = screen px per game px) */
   .ui { position: absolute; inset: 0; pointer-events: none; font-size: calc(var(--px) * 6); }
   .ui > * { pointer-events: auto; }
   .panel { background: var(--panel); border: 1px solid var(--line); }
@@ -45,6 +44,7 @@
   .drills .boxes i.on { background: var(--ink); border-color: var(--ink); }
   .drills small { font-size: .62em; letter-spacing: .2em; color: var(--dim); }
   .card { position: absolute; left: 50%; transform: translateX(-50%); width: min(92%, calc(var(--px) * 200)); padding: calc(var(--px)*4) calc(var(--px)*6); }
+  .card.compact { font-size: .82em; padding: calc(var(--px)*3) calc(var(--px)*5); }
   .card p { font-family: "Jersey 10", monospace; font-size: 2em; line-height: 1.05; margin: calc(var(--px)*1.5) 0 0; }
   .answer { position: absolute; left: 50%; transform: translateX(-50%); width: min(80%, calc(var(--px) * 150)); display: flex; }
   .answer input { flex: 1; min-width: 0; font: inherit; font-family: "Jersey 10", monospace; font-size: 2em; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-right: 0; padding: calc(var(--px)*2) calc(var(--px)*4); outline: none; }
@@ -54,37 +54,52 @@
   .toast.show { opacity: 1; }
   .shake { animation: shake .3s steps(6); }
   @keyframes shake { 0%,100%{translate:0} 25%{translate:calc(var(--px)*-3)} 50%{translate:calc(var(--px)*3)} 75%{translate:calc(var(--px)*-2)} }
-  .big { position: absolute; left: 50%; top: 42%; transform: translate(-50%,-50%); text-align: center; font-family: "Jersey 10", monospace; font-size: 4em; line-height: 1; text-shadow: 0 calc(var(--px)*1) 0 #000; display: none; }
+  .big { position: absolute; left: 50%; top: 42%; transform: translate(-50%,-50%); text-align: center; font-family: "Jersey 10", monospace; font-size: 4em; line-height: 1; text-shadow: 0 calc(var(--px)*1) 0 #000; display: none; white-space: nowrap; }
   .big small { display: block; font-family: "Silkscreen", monospace; font-size: .2em; letter-spacing: .2em; margin-top: calc(var(--px)*2); }
   .start { position: absolute; left: 50%; top: 58%; transform: translateX(-50%); font: inherit; font-size: 1.2em; letter-spacing: .15em; background: var(--amber); color: #1a1405; border: 0; padding: calc(var(--px)*3) calc(var(--px)*8); cursor: pointer; display: none; }
+  /* concept-loop props */
+  .tag { position: absolute; transform: translate(-50%, -50%); font-family: "Jersey 10", monospace; font-size: 1.7em; padding: calc(var(--px)*1) calc(var(--px)*3); white-space: nowrap; display: none; }
+  .badge { position: absolute; transform: translate(-50%, -50%); width: calc(var(--px) * 22); display: none; filter: drop-shadow(0 calc(var(--px)*1) 0 #000); }
+  .badge.flash { outline: calc(var(--px)*1) solid var(--ink); outline-offset: calc(var(--px)*1); }
+  .readout { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(var(--px)*8); text-align: center; padding: calc(var(--px)*2) calc(var(--px)*5); display: none; }
+  .readout b { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 2em; display: block; line-height: 1.1; }
+  .readout small { font-size: .62em; letter-spacing: .2em; color: var(--dim); }
+  .concept-flag { position: absolute; right: calc(var(--px)*6); top: calc(var(--px)*6); font-size: .62em; letter-spacing: .2em; color: var(--dim); padding: calc(var(--px)*2) calc(var(--px)*3); display: none; }
 
   section.sheet { padding: 18px 16px 40px; border-top: 1px solid var(--line); }
   section.sheet h2 { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 24px; margin: 0 0 4px; }
-  section.sheet p { font-size: 11px; color: var(--dim); margin: 0 0 14px; max-width: 70ch; line-height: 1.6; }
+  section.sheet p { font-size: 11px; color: var(--dim); margin: 0 0 14px; max-width: 75ch; line-height: 1.6; }
   .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
   .row figure { margin: 0; text-align: center; font-size: 10px; color: var(--dim); }
   .row figure img, .row figure canvas { display: block; background: #2a3a2c; image-rendering: pixelated; margin-bottom: 6px; }
-  .scenes img { max-height: 260px; image-rendering: pixelated; }
+  .scenes img { height: 200px; image-rendering: pixelated; }
 </style>
 </head>
 <body>
   <div class="bar">
-    <h1>Kickyuppies draft</h1>
+    <h1>Training Ground draft</h1>
+    <div class="grp" id="g-drill"><span>drill</span>
+      <button data-v="kick" aria-pressed="true">1 Kickyuppies</button><button data-v="heading" aria-pressed="false">2 Heading</button><button data-v="crossbar" aria-pressed="false">3 Crossbar</button><button data-v="final" aria-pressed="false">4 Final shot</button></div>
     <div class="grp" id="g-density"><span>pixel size</span></div>
     <div class="grp" id="g-layout"><span>layout</span>
       <button data-v="wide" aria-pressed="true">Wide</button><button data-v="portrait" aria-pressed="false">Portrait</button></div>
     <div class="grp" id="g-mode"><span>mode</span>
       <button data-v="demo" aria-pressed="true">Watch demo</button><button data-v="play" aria-pressed="false">Play it</button></div>
-    <div class="note">Draft, not the game. Scene + poses: Higgsfield (6 credits). Motion, ball, UI: code.</div>
+    <div class="note">Draft. Art: Higgsfield, 8 credits. Motion, ball, UI: code.</div>
   </div>
 
   <div class="stage-wrap" id="wrap">
     <div class="stage" id="stage">
       <canvas id="game"></canvas>
       <div class="ui" id="ui">
-        <div class="count panel"><small>JUGGLES</small><b id="cnt">0/10</b></div>
-        <div class="drills panel"><div class="boxes"><i class="on"></i><i></i><i></i><i></i></div><small>DRILL 1 OF 4</small></div>
-        <div class="card panel" id="card"><small>KICKYUPPIES &middot; ANSWER BEFORE IT LANDS</small><p>Name a player who has played for Arsenal and Chelsea</p></div>
+        <div class="count panel" id="countBox"><small id="cntLabel">JUGGLES</small><b id="cnt">0/10</b></div>
+        <div class="drills panel"><div class="boxes" id="boxes"><i></i><i></i><i></i><i></i></div><small id="drillLabel">DRILL 1 OF 4</small></div>
+        <div class="concept-flag panel" id="flag">CONCEPT LOOP</div>
+        <div class="card panel" id="card"><small id="cardLabel"></small><p id="cardText"></p></div>
+        <img class="badge" id="badgeL" src="art/badges/arsenal.png" alt="Arsenal">
+        <img class="badge" id="badgeR" src="art/badges/chelsea.png" alt="Chelsea">
+        <div class="tag panel" id="tag"></div>
+        <div class="readout panel" id="readout"></div>
         <div class="toast panel" id="toast"></div>
         <form class="answer" id="form" autocomplete="off"><input id="inp" placeholder="Type a player" spellcheck="false"><button>KICK</button></form>
         <div class="big" id="big"></div>
@@ -94,101 +109,154 @@
   </div>
 
   <section class="sheet">
-    <h2>Key poses</h2>
-    <p>Four poses from one reference, Krillion's puffer-0..3 trick. Top row: raw output. Bottom row: what the game draws at the chosen pixel size, shown 4x.</p>
-    <div class="row" id="raw"></div>
-    <div class="row" id="small" style="margin-top:14px"></div>
+    <h2>Trainee</h2>
+    <p>Four poses from one reference image. Top: raw output. Bottom: what the game draws at the chosen pixel size, shown 4x.</p>
+    <div class="row" id="raw-trainee"></div>
+    <div class="row" id="small-trainee" style="margin-top:14px"></div>
+  </section>
+  <section class="sheet">
+    <h2>Coach</h2>
+    <p>Idle, whistle (starts each drill), laugh (miss or drop), shocked (last-second save, exact guess), impressed (good answer). Mirrored in the build so he faces the kid. GPT Image 2.5 low, 0.25 credits each.</p>
+    <div class="row" id="raw-coach"></div>
+    <div class="row" id="small-coach" style="margin-top:14px"></div>
   </section>
   <section class="sheet">
     <h2>Scenes</h2>
-    <p>Raw output, wide and portrait. The game shrinks them to the pixel size above and caps them at 64 colours.</p>
-    <div class="row scenes"><img src="art/scene-wide.png" alt="wide scene"><img src="art/scene-portrait.png" alt="portrait scene"></div>
+    <p>Raw output. Kickyuppies has wide and portrait; the other three are wide only for now.</p>
+    <div class="row scenes">
+      <figure><img src="art/scene-wide.png" alt="">Kickyuppies</figure>
+      <figure><img src="art/scene-portrait.png" alt="">Kickyuppies portrait</figure>
+      <figure><img src="art/scene-heading.png" alt="">Heading</figure>
+      <figure><img src="art/scene-crossbar.png" alt="">Crossbar</figure>
+      <figure><img src="art/scene-final.png" alt="">Final shot</figure>
+    </div>
   </section>
 
 <script src="assets.js"></script>
 <script>
 (() => {
   const A = window.ART;
-  const POSES = ["idle", "kick", "header", "celebrate"];
-  // Answer list for the mock question: players with senior spells at both clubs.
+  const T_POSES = ["idle", "kick", "header", "celebrate"];
+  const C_POSES = ["idle", "whistle", "laugh", "shocked", "impressed"];
+  const DRILLS = ["kick", "heading", "crossbar", "final"];
   const ANSWERS = ["Ashley Cole", "Cesc Fabregas", "Petr Cech", "William Gallas", "Olivier Giroud",
     "David Luiz", "Jorginho", "Willian", "Kai Havertz", "Pierre-Emerick Aubameyang", "Raheem Sterling",
     "Emmanuel Petit", "Yossi Benayoun", "Lassana Diarra"];
   const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z ]/g, "").trim();
   const surname = s => norm(s).split(" ").pop();
-  function match(text) {
-    const t = norm(text);
-    if (!t) return null;
-    return ANSWERS.find(a => norm(a) === t || surname(a) === t) || null;
-  }
+  const match = text => { const t = norm(text); return t ? ANSWERS.find(a => norm(a) === t || surname(a) === t) || null : null; };
 
-  const state = { density: A.densities[1], layout: "wide", mode: "demo" };
+  const state = { drill: "kick", density: A.densities[1], layout: "wide", mode: "demo" };
   const cvs = document.getElementById("game"), g = cvs.getContext("2d");
   const stage = document.getElementById("stage"), wrap = document.getElementById("wrap");
   const $ = id => document.getElementById(id);
-  let imgs = {}, W = 0, H = 0, L = {};
+  let imgs = null, W = 0, H = 0, L = {}, K = 1;
 
   // ---------- controls ----------
-  const dg = $("g-density");
   A.densities.forEach(d => {
     const b = document.createElement("button");
     b.dataset.v = d; b.textContent = Math.round(d * 16 / 9) + "px";
     b.title = `game canvas ${Math.round(d * 16 / 9)} x ${d} (wide)`;
     b.setAttribute("aria-pressed", d === state.density);
-    dg.appendChild(b);
+    $("g-density").appendChild(b);
   });
   function bindGroup(id, key, cast = v => v) {
     $(id).addEventListener("click", e => {
-      const b = e.target.closest("button"); if (!b) return;
+      const b = e.target.closest("button"); if (!b || b.disabled) return;
       state[key] = cast(b.dataset.v);
-      $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      press(id, b.dataset.v);
       setup();
     });
   }
-  bindGroup("g-density", "density", Number); bindGroup("g-layout", "layout"); bindGroup("g-mode", "mode");
+  function press(id, v) { $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v == v)); }
+  bindGroup("g-drill", "drill"); bindGroup("g-density", "density", Number); bindGroup("g-layout", "layout"); bindGroup("g-mode", "mode");
 
-  function load(src) { return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; }); }
+  const cache = new Map();
+  function load(src) {
+    if (cache.has(src)) return cache.get(src);
+    const p = new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+    cache.set(src, p); return p;
+  }
 
-  // ---------- layout ----------
+  // ---------- per-drill layout (fractions of the canvas) ----------
+  const LAYOUTS = {
+    kick: { wide: { ground: 0.9, trainX: 0.3, coachX: 0.84, lights: [[0.105, 0.115], [0.885, 0.115]], sky: 0.42, card: [50, 15], toast: [55, 66], answer: [55, 78], apex: 0.5 },
+            portrait: { ground: 0.8, trainX: 0.36, coachX: 0.78, lights: [[0.13, 0.085]], sky: 0.26, card: [50, 13], toast: [50, 84], answer: [50, 89], apex: 0.36 } },
+    heading: { wide: { ground: 0.8, trainX: 0.5, coachX: 0.7, lights: [[0.105, 0.09], [0.89, 0.09]], sky: 0.4, card: [50, 15], goalL: [0.05, 0.53], goalR: [0.95, 0.53] } },
+    crossbar: { wide: { ground: 0.99, trainX: 0.36, coachX: 0.86, lights: [[0.11, 0.09], [0.89, 0.09]], sky: 0.4, card: [73, 13], cardW: 46, goal: [0.28, 0.72], barY: 0.34, goalBottom: 0.59 } },
+    final: { wide: { ground: 0.9, trainX: 0.41, coachX: 0.84, lights: [[0.1, 0.11], [0.9, 0.11]], sky: 0.4, card: [76, 13], cardW: 42, goal: [0.335, 0.665], barY: 0.37, goalBottom: 0.57, spot: [0.5, 0.8] } },
+  };
+
+  const COPY = {
+    kick: ["KICKYUPPIES · ANSWER BEFORE IT LANDS", "Name a player who has played for Arsenal and Chelsea"],
+    heading: ["HEADING · SEND EACH PLAYER TO HIS CLUB", "Arsenal or Chelsea?"],
+    crossbar: ["CROSSBAR · CLOSER GUESS, CLOSER TO THE BAR", "Thierry Henry's Premier League goals for Arsenal?"],
+    final: ["FINAL SHOT · ONE ANSWER, RARER SCORES MORE", "Name a Chelsea striker since 2010"],
+  };
+
   async function setup() {
+    clearLoops();
+    const portraitOk = state.drill === "kick";
+    $("g-layout").querySelector('[data-v="portrait"]').disabled = !portraitOk;
+    $("g-mode").querySelector('[data-v="play"]').disabled = !portraitOk;
+    if (!portraitOk) { state.layout = "wide"; state.mode = "demo"; press("g-layout", "wide"); press("g-mode", "demo"); }
+
     const set = A.sets[state.density];
-    const sc = await load(set[state.layout]);
-    const sp = {}; for (const p of POSES) sp[p] = await load(set.sprites[p]);
-    imgs = { scene: sc, sp, set };
-    W = sc.width; H = sc.height;
-    cvs.width = W; cvs.height = H;
-    const s = state.density;
-    L = state.layout === "wide"
-      ? { groundY: Math.round(H * 0.9), trainX: Math.round(W * 0.3), lights: [[0.105, 0.115], [0.885, 0.115]], sky: 0.42,
-          card: [50, 15], toast: [66, 64], answer: [66, 76], apex: 0.5 }
-      : { groundY: Math.round(H * 0.8), trainX: Math.round(W * 0.42), lights: [[0.13, 0.085]], sky: 0.26,
-          card: [50, 13], toast: [50, 84], answer: [50, 89], apex: 0.36 };
-    L.ballR = Math.max(2, Math.round(s / 50));
-    L.footY = L.groundY - Math.round(set.spriteH * 0.22);
-    L.apexY = Math.round(H * L.apex);
-    for (const [id, key] of [["card", "card"], ["toast", "toast"], ["form", "answer"]]) {
-      $(id).style.left = L[key][0] + "%"; $(id).style.top = L[key][1] + "%";
-    }
-    $("form").style.width = state.layout === "wide" ? "min(52%, calc(var(--px) * 150))" : "";
-    makeAmbient();
-    fit();
-    drawSheet();
-    reset();
+    const sceneKey = state.drill === "kick" ? (state.layout === "wide" ? "wide" : "portrait") : state.drill;
+    const sc = await load(set.scenes[sceneKey]);
+    const tr = {}, co = {};
+    for (const p of T_POSES) tr[p] = await load(set.trainee.poses[p]);
+    for (const p of C_POSES) co[p] = await load(set.coach.poses[p]);
+    imgs = { scene: sc, tr, co, set };
+    W = sc.width; H = sc.height; cvs.width = W; cvs.height = H;
+
+    const lay = LAYOUTS[state.drill][state.layout];
+    L = { ...lay, groundY: Math.round(H * lay.ground), trainX: Math.round(W * lay.trainX), coachX: Math.round(W * lay.coachX) };
+    L.ballR = Math.max(2, Math.round(state.density / 50));
+    L.footY = L.groundY - Math.round(set.trainee.h * 0.22);
+    if (lay.apex) L.apexY = Math.round(H * lay.apex);
+
+    // UI for this drill
+    const i = DRILLS.indexOf(state.drill);
+    $("boxes").querySelectorAll("i").forEach((b, k) => b.classList.toggle("on", k <= i));
+    $("drillLabel").textContent = `DRILL ${i + 1} OF 4`;
+    $("cardLabel").textContent = COPY[state.drill][0]; $("cardText").textContent = COPY[state.drill][1];
+    const isKick = state.drill === "kick";
+    $("form").style.display = isKick ? "flex" : "none";
+    $("flag").style.display = isKick ? "none" : "block";
+    $("countBox").style.display = state.drill === "final" ? "none" : "block";
+    $("cntLabel").textContent = { kick: "JUGGLES", heading: "SORTED", crossbar: "OFF BY" }[state.drill] || "";
+    for (const id of ["badgeL", "badgeR", "tag", "readout", "big", "toast"]) { $(id).style.display = ""; $(id).classList.remove("show", "flash"); }
+    $("badgeL").style.display = $("badgeR").style.display = state.drill === "heading" ? "block" : "none";
+    for (const [id, key] of [["card", "card"], ["toast", "toast"], ["form", "answer"]]) if (L[key]) { $(id).style.left = L[key][0] + "%"; $(id).style.top = L[key][1] + "%"; }
+    $("form").style.width = state.layout === "wide" ? "min(44%, calc(var(--px) * 150))" : "";
+    $("card").style.width = L.cardW ? L.cardW + "%" : "";
+    $("card").classList.toggle("compact", !!L.cardW);
+
+    makeAmbient(); fit(); drawSheets();
+    coachPose("idle", 0);
+    if (isKick) reset(); else startConcept();
   }
 
   function fit() {
     const r = wrap.getBoundingClientRect();
     const availW = r.width - 24, availH = Math.max(240, window.innerHeight - wrap.offsetTop - 24);
     let k = Math.min(availW / W, availH / H);
-    if (k >= 2) k = Math.floor(k);            // whole-number scale keeps pixels square
+    if (k >= 2) k = Math.floor(k);
+    K = k;
     stage.style.width = W * k + "px"; stage.style.height = H * k + "px";
     stage.style.setProperty("--px", k + "px");
+    if (L.goalL) {   // badges sit above the two goals
+      place($("badgeL"), L.goalL[0] * W + 10, L.goalL[1] * H - 26);
+      place($("badgeR"), L.goalR[0] * W - 10, L.goalR[1] * H - 26);
+    }
   }
+  function place(el, gx, gy) { el.style.left = gx * K + "px"; el.style.top = gy * K + "px"; }
   window.addEventListener("resize", () => W && fit());
 
-  // ---------- ambient (stars, moths in the beams) ----------
+  // ---------- ambient ----------
   let stars = [], moths = [];
-  function rnd(a, b) { return a + Math.random() * (b - a); }
+  const rnd = (a, b) => a + Math.random() * (b - a);
   function makeAmbient() {
     stars = Array.from({ length: Math.round(W / 14) }, () => ({ x: Math.floor(rnd(0, W)), y: Math.floor(rnd(0, H * L.sky * 0.45)), p: rnd(0, 6) }));
     moths = [];
@@ -196,119 +264,194 @@
       moths.push({ cx: lx * W, cy: ly * H + 4, a: rnd(0, 6.28), r: rnd(3, 14), sp: rnd(0.8, 2.2) });
   }
 
-  // ---------- game state ----------
-  let ball, pose, poseUntil, count, used, queued, phase, tStart, demo;
+  // ---------- coach ----------
+  let cPose = "idle", cUntil = 0;
+  function coachPose(p, ms) { cPose = p; cUntil = ms === Infinity ? Infinity : performance.now() + ms; }
+
+  // ---------- timers for loops ----------
+  let timers = [];
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+  function clearLoops() { timers.forEach(clearTimeout); timers = []; concept = null; ball = null; }
+
+  // ================= Kickyuppies (playable) =================
+  let ball = null, tPose = "idle", tUntil = 0, count, used, queued, queuedLate, phase;
   const TARGET = 10;
-  function hangFor(n) { return Math.max(2.6, 4.6 - n * 0.22); }  // seconds per flight, shrinking
+  const hangFor = n => Math.max(2.6, 4.6 - n * 0.22);
   function reset() {
-    count = 0; used = new Set(); queued = false; pose = "idle"; poseUntil = 0;
+    count = 0; used = new Set(); queued = false; tPose = "idle"; tUntil = 0; ball = null;
     $("cnt").textContent = `0/${TARGET}`; $("big").style.display = "none"; $("inp").value = "";
-    ball = null;
-    if (state.mode === "play") { phase = "ready"; $("start").style.display = "block"; $("inp").disabled = true; }
-    else { $("start").style.display = "none"; $("inp").disabled = true; kickOff(); }
+    if (state.mode === "play") { phase = "ready"; $("start").style.display = "block"; $("start").textContent = "KICK OFF"; $("inp").disabled = true; }
+    else { $("start").style.display = "none"; $("inp").disabled = true; phase = "ready"; later(kickOff, 400); }
   }
   function kickOff() {
-    phase = "live"; $("start").style.display = "none";
-    if (state.mode === "play") { $("inp").disabled = false; $("inp").focus(); }
-    launch(performance.now());
-    if (state.mode === "demo") demoScript();
+    $("big").style.display = "none"; $("start").style.display = "none";
+    coachPose("whistle", 700);                       // whistle starts the drill
+    later(() => {
+      phase = "live";
+      if (state.mode === "play") { $("inp").disabled = false; $("inp").focus(); }
+      launch(performance.now());
+      if (state.mode === "demo") demoScript();
+    }, 700);
   }
   function launch(now) {
-    const T = hangFor(count), h = L.footY - L.apexY;
-    const gAcc = 8 * h / (T * T);
-    ball = { t0: now, T, g: gAcc, v0: gAcc * T / 2, x: L.trainX + Math.round(imgs.set.spriteW * 0.42), spin: 0, dropped: false };
-    pose = "kick"; poseUntil = now + 260;
+    const T = hangFor(count), h = L.footY - L.apexY, gA = 8 * h / (T * T);
+    ball = { t0: now, T, g: gA, v0: gA * T / 2, x: L.trainX + Math.round(imgs.set.trainee.w * 0.42), spin: 0, dropped: false };
+    tPose = "kick"; tUntil = now + 260;
   }
-  function ballY(now) {
-    const t = (now - ball.t0) / 1000;
-    return L.footY - (ball.v0 * t - ball.g * t * t / 2);
-  }
-
+  const ballY = now => { const t = (now - ball.t0) / 1000; return L.footY - (ball.v0 * t - ball.g * t * t / 2); };
   function toast(text, ok) {
     const el = $("toast"); el.textContent = (ok ? "✓ " : "✕ ") + text;
     el.classList.add("show"); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), 900);
   }
-  function submit(text) {
-    if (phase !== "live") return;
-    const hit = match(text);
-    if (!hit) { toast("NOT ON THE LIST", false); shake(); return; }
-    if (used.has(hit)) { toast("ALREADY USED", false); shake(); return; }
-    if (queued) { toast("ONE PER TOUCH", false); return; }
-    used.add(hit); queued = true; toast(hit.toUpperCase(), true);
-  }
   function shake() { const f = $("form"); f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); }
+  function submit(text) {
+    if (phase !== "live" || !ball) return;
+    const hit = match(text);
+    if (!hit) { toast("NOT ON THE LIST", false); shake(); coachPose("laugh", 900); return; }
+    if (used.has(hit)) { toast("ALREADY USED", false); shake(); coachPose("laugh", 900); return; }
+    if (queued) { toast("ONE PER TOUCH", false); return; }
+    used.add(hit); queued = true;
+    const left = ball.T - (performance.now() - ball.t0) / 1000;
+    queuedLate = left < ball.T * 0.22;
+    toast(hit.toUpperCase(), true);
+    coachPose(queuedLate ? "shocked" : "impressed", 900);
+  }
   $("form").addEventListener("submit", e => { e.preventDefault(); submit($("inp").value); $("inp").value = ""; });
-  $("start").addEventListener("click", kickOff);
-
+  $("start").addEventListener("click", () => { resetSoft(); kickOff(); });
+  function resetSoft() { count = 0; used = new Set(); queued = false; ball = null; tPose = "idle"; $("cnt").textContent = `0/${TARGET}`; }
   function onContact(now) {
     if (queued) {
       queued = false; count++;
       $("cnt").textContent = `${count}/${TARGET}`;
       if (count >= TARGET) return finish(now, true);
       launch(now);
-    } else {
-      ball.dropped = true; ball.dropT = now; ball.dropY = L.footY;
-      finish(now, false);
-    }
+    } else { ball.dropped = true; ball.dropT = now; finish(now, false); }
   }
   function finish(now, won) {
     phase = "over"; $("inp").disabled = true;
-    if (won) { ball = null; pose = "celebrate"; poseUntil = Infinity; }
-    const big = $("big");
-    big.innerHTML = won ? `DRILL DONE<small>10 TOUCHES</small>` : `DROPPED<small>${count} TOUCHES</small>`;
-    big.style.display = "block";
-    setTimeout(() => { if (phase === "over") { state.mode === "demo" ? reset() : ($("start").style.display = "block", $("start").textContent = "AGAIN", phase = "ready", resetSoft()); } }, 3200);
+    if (won) { ball = null; tPose = "celebrate"; tUntil = Infinity; coachPose("impressed", Infinity); }
+    else coachPose("laugh", 2600);
+    $("big").innerHTML = won ? `DRILL DONE<small>10 TOUCHES</small>` : `DROPPED<small>${count} TOUCHES</small>`;
+    $("big").style.display = "block";
+    later(() => {
+      if (state.mode === "demo") reset();
+      else { phase = "ready"; $("start").textContent = "AGAIN"; $("start").style.display = "block"; }
+    }, 3200);
   }
-  function resetSoft() { count = 0; used = new Set(); queued = false; ball = null; pose = "idle"; poseUntil = 0; $("cnt").textContent = `0/${TARGET}`; }
-  $("start").addEventListener("click", () => { $("big").style.display = "none"; });
-
-  // Demo: types answers like a player would, one wrong guess on the way.
   function demoScript() {
-    clearTimeout(demo);
     const pool = ["Petr Cech", "Giroud", "Thierry Henry", "Ashley Cole", "Havertz", "Willian", "Jorginho", "David Luiz", "Fabregas", "Sterling", "Aubameyang"];
     let i = 0;
     const step = () => {
-      if (phase !== "live" || state.mode !== "demo") return;
-      if (!queued && ball && !ball.dropped) {
-        const name = pool[i++ % pool.length];
-        typeOut(name, () => { submit(name); $("inp").value = ""; });
-      }
-      demo = setTimeout(step, rnd(900, 1600));
+      if (phase !== "live" || state.mode !== "demo" || state.drill !== "kick") return;
+      if (!queued && ball && !ball.dropped) { const name = pool[i++ % pool.length]; typeOut(name, () => { submit(name); $("inp").value = ""; }); }
+      later(step, rnd(900, 1600));
     };
-    demo = setTimeout(step, 700);
+    later(step, 700);
   }
   function typeOut(text, done) {
     const inp = $("inp"); inp.value = ""; let k = 0;
     const t = setInterval(() => { inp.value = text.slice(0, ++k); if (k >= text.length) { clearInterval(t); setTimeout(done, 160); } }, 55);
   }
 
+  // ================= Concept loops (Heading, Crossbar, Final) =================
+  let concept = null;
+  const HEAD = [["Bukayo Saka", "L"], ["Cole Palmer", "R"], ["Declan Rice", "L"], ["Reece James", "R"], ["Martin Odegaard", "L"], ["Enzo Fernandez", "R", true]];
+  const BAR = [[160, "15 UNDER", "impressed"], [175, "CROSSBAR! EXACT", "shocked"], [210, "35 OVER", "laugh"]];
+  function startConcept() { concept = { t0: performance.now(), n: 0 }; $("cnt").textContent = state.drill === "heading" ? "0/12" : "-"; }
+  const ease = t => t < 0 ? 0 : t > 1 ? 1 : t * t * (3 - 2 * t);
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  function conceptFrame(now) {
+    const c = concept; if (!c) return null;
+    if (state.drill === "heading") return headingFrame(now, c);
+    if (state.drill === "crossbar") return crossbarFrame(now, c);
+    return finalFrame(now, c);
+  }
+  // Heading: a name drops in, the kid heads it into the matching club's goal.
+  function headingFrame(now, c) {
+    const P = 3600, t = (now - c.t0) % P, cyc = Math.floor((now - c.t0) / P);
+    const [name, side, wrong] = HEAD[cyc % HEAD.length];
+    const goWrong = !!wrong, dest = (goWrong ? (side === "L" ? "R" : "L") : side) === "L" ? L.goalL : L.goalR;
+    const hx = L.trainX, hy = L.groundY - imgs.set.trainee.h - 6;
+    const tag = $("tag"); tag.style.display = "block"; tag.textContent = name;
+    let x, y;
+    if (t < 300) { if (c.n !== cyc) { c.n = cyc; coachPose("whistle", 450); } x = hx; y = -10; }
+    else if (t < 1400) { const k = ease((t - 300) / 1100); x = hx; y = lerp(-10, hy, k); }
+    else if (t < 2300) { const k = ease((t - 1400) / 900); x = lerp(hx, dest[0] * W, k); y = lerp(hy, dest[1] * H, k) - Math.sin(k * Math.PI) * 18; }
+    else { x = dest[0] * W; y = dest[1] * H; }
+    place(tag, x, y);
+    tag.style.opacity = t > 2900 ? 0 : 1;
+    const hitting = t > 1250 && t < 1650;
+    const landed = t >= 2300 && t < 2900;
+    $("badgeL").classList.toggle("flash", landed && dest === L.goalL);
+    $("badgeR").classList.toggle("flash", landed && dest === L.goalR);
+    if (t >= 2300 && t < 2350) coachPose(goWrong ? "laugh" : "impressed", 900);
+    if (t >= 2300 && t < 2350) $("cnt").textContent = `${(cyc % 12) + 1 - Math.floor((cyc % 12 + 1) / 6)}/12`;
+    return { trainee: hitting ? "header" : "idle", jump: hitting ? 6 : 0 };
+  }
+  // Crossbar: a guess, then the ball flies at a height set by the error.
+  function crossbarFrame(now, c) {
+    const P = 4200, t = (now - c.t0) % P, cyc = Math.floor((now - c.t0) / P);
+    const [guess, label, react] = BAR[cyc % BAR.length];
+    const err = guess - 175, ro = $("readout");
+    ro.style.display = "block"; ro.innerHTML = `<small>YOUR GUESS</small><b>${guess}</b><small>${t > 2000 ? label : "&nbsp;"}</small>`;
+    if (t < 50 && c.n !== cyc) { c.n = cyc; coachPose("whistle", 450); }
+    const startX = L.trainX + imgs.set.trainee.w * 0.45, startY = L.groundY - 4;
+    const tx = W * lerp(L.goal[0], L.goal[1], 0.5 + (cyc % 3 - 1) * 0.12);
+    const ty = H * L.barY + err * 0.9;  // under = lower, over = higher
+    let bx = startX, by = startY, r = L.ballR + 1, kicking = false;
+    if (t > 600 && t < 2000) { const k = ease((t - 600) / 1400); bx = lerp(startX, tx, k); by = lerp(startY, ty, k) - Math.sin(k * Math.PI) * 30; r = Math.max(1, Math.round(lerp(L.ballR + 1, L.ballR * 0.5, k))); kicking = t < 850; }
+    else if (t >= 2000) {
+      const k = (t - 2000) / 1000;   // after contact: bounce off the bar, drop into net, or sail over
+      bx = tx; r = Math.max(1, Math.round(L.ballR * 0.5));
+      by = err === 0 ? ty + k * 40 - Math.sin(Math.min(k, 1) * Math.PI) * 12 : err < 0 ? Math.min(H * L.goalBottom, ty + k * 30) : ty - k * 30;
+      if (t < 2050) { coachPose(react, 1300); $("cnt").textContent = String(Math.abs(err)); }
+    }
+    return { trainee: kicking ? "kick" : "idle", ball: t > 400 && t < 3600 ? { x: bx, y: by, r, spin: t / 60 } : null };
+  }
+  // Final shot: the answer goes in, the ball finds the top corner, the pick is graded.
+  function finalFrame(now, c) {
+    const P = 4800, t = (now - c.t0) % P, cyc = Math.floor((now - c.t0) / P);
+    const picks = [["Loic Remy", "TOP BIN", "+85", "shocked"], ["Diego Costa", "ON TARGET", "+30", "impressed"], ["Alexandre Pato", "TOP BIN", "+95", "shocked"]];
+    const [ans, grade, pts, react] = picks[cyc % picks.length];
+    const tag = $("tag"), ro = $("readout");
+    if (t < 50 && c.n !== cyc) { c.n = cyc; coachPose("whistle", 450); }
+    tag.style.display = t > 300 && t < 1300 ? "block" : "none"; tag.textContent = ans; place(tag, W * 0.5, H * 0.62);
+    const sx = L.spot[0] * W, sy = L.spot[1] * H;
+    const tx = W * lerp(L.goal[0], L.goal[1], cyc % 2 ? 0.1 : 0.9), ty = H * L.barY + 5;
+    let bx = sx, by = sy, r = L.ballR + 1, kicking = false;
+    if (t > 1300 && t < 2100) { const k = ease((t - 1300) / 800); bx = lerp(sx, tx, k); by = lerp(sy, ty, k) - Math.sin(k * Math.PI) * 10; r = Math.max(1, Math.round(lerp(L.ballR + 1, L.ballR * 0.5, k))); kicking = t < 1500; }
+    else if (t >= 2100) { bx = tx; by = Math.min(H * L.goalBottom, ty + (t - 2100) * 0.02); r = Math.max(1, Math.round(L.ballR * 0.5)); }
+    ro.style.display = t > 2200 ? "block" : "none";
+    ro.innerHTML = `<b>${grade} ${pts}</b><small>${ans.toUpperCase()}</small>`;
+    if (t >= 2200 && t < 2250) coachPose(react, 1500);
+    return { trainee: kicking ? "kick" : "idle", ball: { x: bx, y: by, r, spin: t / 60 }, faceAway: false };
+  }
+
   // ---------- drawing ----------
   function px(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
-  function drawBall(cx, cy, spin) {
-    const r = L.ballR; cx = Math.round(cx); cy = Math.round(cy);
+  function drawBall(cx, cy, spin, r = L.ballR) {
+    cx = Math.round(cx); cy = Math.round(cy);
     for (let dy = -r - 1; dy <= r + 1; dy++) for (let dx = -r - 1; dx <= r + 1; dx++) {
       const d = dx * dx + dy * dy;
       if (d <= r * r) px(cx + dx, cy + dy, 1, 1, dy < 0 && dx < 0 ? "#ffffff" : "#e3e0d6");
       else if (d <= (r + 1) * (r + 1)) px(cx + dx, cy + dy, 1, 1, "#1d1f2b");
     }
-    // two dark patches sliding round = spin (no pentagon motif)
-    for (const off of [0, Math.PI]) {
+    if (r >= 2) for (const off of [0, Math.PI]) {   // two patches sliding round = spin, no pentagon motif
       const a = spin + off, ex = Math.round(Math.cos(a) * r * 0.55), ey = Math.round(Math.sin(a) * r * 0.35);
       if (Math.cos(a) > -0.2) px(cx + ex, cy + ey, r > 3 ? 2 : 1, r > 3 ? 2 : 1, "#3a3d4c");
     }
   }
-  function drawShadow(x, y, heightAbove) {
-    const k = Math.max(0.35, 1 - heightAbove / (L.footY - L.apexY + 1) * 0.65);
-    const w = Math.round(L.ballR * 2.6 * k);
-    g.globalAlpha = 0.35 * k; px(x - w / 2, L.groundY - 1, w, 2, "#000"); g.globalAlpha = 1;
+  function shadow(x, w, a = 0.3) { g.globalAlpha = a; px(x - w / 2, L.groundY - 1, Math.round(w), 2, "#000"); g.globalAlpha = 1; }
+  function drawChar(set, img, cx, extraY = 0) {
+    shadow(cx, set.w * 0.6);
+    g.drawImage(img, Math.round(cx - set.w / 2), L.groundY - set.groundFromTop + extraY);
   }
 
   function frame(now) {
-    if (!W) return requestAnimationFrame(frame);
+    if (!imgs) return requestAnimationFrame(frame);
     g.imageSmoothingEnabled = false;
     g.drawImage(imgs.scene, 0, 0);
-
-    // floodlight shimmer
     g.globalCompositeOperation = "lighter";
     for (const [lx, ly] of L.lights) {
       const f = 0.10 + 0.03 * Math.sin(now / 130) + (Math.random() < 0.01 ? 0.08 : 0);
@@ -317,53 +460,56 @@
       g.fillStyle = grd; g.fillRect(0, 0, W, H * 0.6);
     }
     g.globalCompositeOperation = "source-over";
-    // stars twinkle (stepped)
-    for (const s of stars) { const on = Math.sin(now / 400 + s.p) > 0.55; if (on) px(s.x, s.y, 1, 1, "#e8ecff"); }
-    // moths circling the lamps
+    for (const s of stars) if (Math.sin(now / 400 + s.p) > 0.55) px(s.x, s.y, 1, 1, "#e8ecff");
     for (const m of moths) { const a = m.a + now / 1000 * m.sp; px(m.cx + Math.cos(a) * m.r, m.cy + Math.sin(a * 1.3) * m.r * 0.6, 1, 1, "#fff2c8"); }
 
-    // ball
-    let by = null;
-    if (ball && phase === "live") {
-      by = ballY(now);
-      if (by >= L.footY && now - ball.t0 > 200) { onContact(now); by = ball && !ball.dropped ? ballY(now) : L.footY; }
-      ball.spin += 0.18;
-    }
-    if (ball && ball.dropped) {   // fall to the grass, small bounce
-      const t = (now - ball.dropT) / 1000;
-      by = Math.min(L.groundY - L.ballR - 1, L.footY + 160 * t * t);
-      ball.x += 0.25;
-    }
-    const set = imgs.set, sp = imgs.sp;
-    if (ball && by !== null) drawShadow(ball.x, by, L.groundY - by);
+    // coach: stepped idle bob, pose swap
+    if (now > cUntil && cPose !== "idle") cPose = "idle";
+    const cBob = cPose === "idle" ? Math.floor(now / 520) % 2 : (cPose === "laugh" ? Math.floor(now / 140) % 2 : 0);
+    drawChar(imgs.set.coach, imgs.co[cPose], L.coachX, cBob);
 
-    // trainee: stepped idle bob, pose swap
-    if (now > poseUntil && pose !== "celebrate") pose = (ball && ball.dropped) ? "header" : "idle";
-    let bob = pose === "idle" ? (Math.floor(now / 420) % 2) : 0;
-    if (pose === "celebrate") bob = -(Math.floor(now / 260) % 2) * 2;
-    const sx = Math.round(L.trainX - set.spriteW / 2), sy = L.groundY - set.groundFromTop + bob;
-    g.globalAlpha = 0.3; px(L.trainX - set.spriteW * 0.3, L.groundY - 1, Math.round(set.spriteW * 0.6), 2, "#000"); g.globalAlpha = 1;
-    g.drawImage(sp[pose], sx, sy);
-
-    if (ball && by !== null) {
-      drawBall(ball.x, by, ball.spin);
-      if (queued && phase === "live") {        // ready ring: answer banked for this touch
-        const r = L.ballR + 3, c = Math.round(ball.x), y = Math.round(by);
-        for (let a = 0; a < 6.28; a += 0.5) if ((Math.floor(now / 120) + Math.round(a * 2)) % 2) px(c + Math.cos(a) * r, y + Math.sin(a) * r, 1, 1, "#ffc94a");
+    const set = imgs.set.trainee;
+    if (state.drill === "kick") {
+      let by = null;
+      if (ball && phase === "live") {
+        by = ballY(now);
+        if (by >= L.footY && now - ball.t0 > 200) { onContact(now); by = !ball ? null : ball.dropped ? L.footY : ballY(now); }
+        if (ball) ball.spin += 0.18;
       }
+      if (ball && ball.dropped) { const t = (now - ball.dropT) / 1000; by = Math.min(L.groundY - L.ballR - 1, L.footY + 160 * t * t); ball.x += 0.25; }
+      if (ball && by !== null) { const k = Math.max(0.35, 1 - (L.groundY - by) / (L.footY - L.apexY + 1) * 0.65); shadow(ball.x, L.ballR * 2.6 * k, 0.35 * k); }
+      if (now > tUntil && tPose !== "celebrate") tPose = (ball && ball.dropped) ? "header" : "idle";
+      let bob = tPose === "idle" ? Math.floor(now / 420) % 2 : 0;
+      if (tPose === "celebrate") bob = -(Math.floor(now / 260) % 2) * 2;
+      drawChar(set, imgs.tr[tPose], L.trainX, bob);
+      if (ball && by !== null) {
+        drawBall(ball.x, by, ball.spin);
+        if (queued && phase === "live") {
+          const r = L.ballR + 3, c = Math.round(ball.x), y = Math.round(by);
+          for (let a = 0; a < 6.28; a += 0.5) if ((Math.floor(now / 120) + Math.round(a * 2)) % 2) px(c + Math.cos(a) * r, y + Math.sin(a) * r, 1, 1, "#ffc94a");
+        }
+      }
+    } else {
+      const f = conceptFrame(now) || {};
+      const pose = f.trainee || "idle";
+      const bob = pose === "idle" ? Math.floor(now / 420) % 2 : 0;
+      drawChar(set, imgs.tr[pose], L.trainX, bob - (f.jump || 0));
+      if (f.ball) drawBall(f.ball.x, f.ball.y, f.ball.spin, f.ball.r);
     }
     requestAnimationFrame(frame);
   }
 
-  // ---------- pose sheet ----------
-  function drawSheet() {
-    const raw = $("raw"), small = $("small"); raw.innerHTML = ""; small.innerHTML = "";
-    for (const p of POSES) {
-      raw.insertAdjacentHTML("beforeend", `<figure><img src="${A.raw["pose_" + p]}" width="160" height="160" alt="${p}">${p}</figure>`);
-      const c = document.createElement("canvas"), s = imgs.sp[p];
-      c.width = s.width; c.height = s.height; c.style.width = s.width * 4 + "px"; c.style.height = s.height * 4 + "px";
-      c.getContext("2d").drawImage(s, 0, 0);
-      const f = document.createElement("figure"); f.append(c, `${p} · ${s.width}x${s.height}`); small.append(f);
+  // ---------- sheets ----------
+  function drawSheets() {
+    for (const [name, poses, imgsKey] of [["trainee", T_POSES, "tr"], ["coach", C_POSES, "co"]]) {
+      const raw = $("raw-" + name), small = $("small-" + name); raw.innerHTML = ""; small.innerHTML = "";
+      for (const p of poses) {
+        raw.insertAdjacentHTML("beforeend", `<figure><img src="${A.raw[name][p]}" width="150" height="150" alt="${p}">${p}</figure>`);
+        const c = document.createElement("canvas"), s = imgs[imgsKey][p];
+        c.width = s.width; c.height = s.height; c.style.width = s.width * 4 + "px"; c.style.height = s.height * 4 + "px";
+        c.getContext("2d").drawImage(s, 0, 0);
+        const f = document.createElement("figure"); f.append(c, `${p} · ${s.width}x${s.height}`); small.append(f);
+      }
     }
   }
 
