@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drill circuit draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page: #0b0f1a; --panel: rgba(10, 14, 28, .84); --line: rgba(255,255,255,.14);
+    --ink: #f4f1e8; --dim: #9aa3b8; --amber: #ffc94a; --px: 3px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--page); color: var(--ink); font-family: "Silkscreen", monospace; }
+  body { min-height: 100vh; display: flex; flex-direction: column; }
+
+  .bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  .bar h1 { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 26px; margin: 0 8px 0 0; letter-spacing: .5px; }
+  .grp { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--dim); }
+  .grp span { margin-right: 4px; }
+  .grp button { font: inherit; font-size: 11px; color: var(--ink); background: transparent; border: 1px solid var(--line); padding: 5px 8px; cursor: pointer; }
+  .grp button[aria-pressed="true"] { background: var(--ink); color: var(--page); border-color: var(--ink); }
+  .note { font-size: 10px; color: var(--dim); margin-left: auto; }
+
+  .stage-wrap { flex: 1; display: grid; place-items: center; padding: 12px; min-height: 0; }
+  .stage { position: relative; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+  canvas#game { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+  /* CRT scanlines + vignette, as on Krillion/Noillirk */
+  .stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,.16) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.38) 100%); }
+
+  /* HTML UI sits on the pixel canvas and scales with it (--px = screen px per game px) */
+  .ui { position: absolute; inset: 0; pointer-events: none; font-size: calc(var(--px) * 6); }
+  .ui > * { pointer-events: auto; }
+  .panel { background: var(--panel); border: 1px solid var(--line); }
+  .count { position: absolute; left: calc(var(--px) * 6); top: calc(var(--px) * 6); padding: calc(var(--px)*2.5) calc(var(--px)*4); text-align: center; }
+  .count small, .card small { display: block; font-size: .62em; letter-spacing: .2em; color: var(--dim); }
+  .count b { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 2.6em; line-height: 1; }
+  .drills { position: absolute; left: 50%; top: calc(var(--px) * 6); transform: translateX(-50%); padding: calc(var(--px)*2.5) calc(var(--px)*4); text-align: center; }
+  .drills .boxes { display: flex; gap: calc(var(--px)*1.5); justify-content: center; margin-bottom: calc(var(--px)*1.5); }
+  .drills .boxes i { width: calc(var(--px)*5); height: calc(var(--px)*5); border: 1px solid var(--dim); }
+  .drills .boxes i.on { background: var(--ink); border-color: var(--ink); }
+  .drills small { font-size: .62em; letter-spacing: .2em; color: var(--dim); }
+  .card { position: absolute; left: 50%; transform: translateX(-50%); width: min(92%, calc(var(--px) * 200)); padding: calc(var(--px)*4) calc(var(--px)*6); }
+  .card p { font-family: "Jersey 10", monospace; font-size: 2em; line-height: 1.05; margin: calc(var(--px)*1.5) 0 0; }
+  .answer { position: absolute; left: 50%; transform: translateX(-50%); width: min(80%, calc(var(--px) * 150)); display: flex; }
+  .answer input { flex: 1; min-width: 0; font: inherit; font-family: "Jersey 10", monospace; font-size: 2em; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-right: 0; padding: calc(var(--px)*2) calc(var(--px)*4); outline: none; }
+  .answer input:focus { border-color: var(--amber); }
+  .answer button { font: inherit; font-size: 1em; background: var(--amber); color: #1a1405; border: 0; padding: 0 calc(var(--px)*5); cursor: pointer; letter-spacing: .1em; }
+  .toast { position: absolute; left: 50%; transform: translateX(-50%); font-size: 1.05em; letter-spacing: .12em; padding: calc(var(--px)*1.5) calc(var(--px)*4); white-space: nowrap; opacity: 0; transition: opacity .18s steps(3); }
+  .toast.show { opacity: 1; }
+  .shake { animation: shake .3s steps(6); }
+  @keyframes shake { 0%,100%{translate:0} 25%{translate:calc(var(--px)*-3)} 50%{translate:calc(var(--px)*3)} 75%{translate:calc(var(--px)*-2)} }
+  .big { position: absolute; left: 50%; top: 42%; transform: translate(-50%,-50%); text-align: center; font-family: "Jersey 10", monospace; font-size: 4em; line-height: 1; text-shadow: 0 calc(var(--px)*1) 0 #000; display: none; }
+  .big small { display: block; font-family: "Silkscreen", monospace; font-size: .2em; letter-spacing: .2em; margin-top: calc(var(--px)*2); }
+  .start { position: absolute; left: 50%; top: 58%; transform: translateX(-50%); font: inherit; font-size: 1.2em; letter-spacing: .15em; background: var(--amber); color: #1a1405; border: 0; padding: calc(var(--px)*3) calc(var(--px)*8); cursor: pointer; display: none; }
+
+  section.sheet { padding: 18px 16px 40px; border-top: 1px solid var(--line); }
+  section.sheet h2 { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 24px; margin: 0 0 4px; }
+  section.sheet p { font-size: 11px; color: var(--dim); margin: 0 0 14px; max-width: 70ch; line-height: 1.6; }
+  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
+  .row figure { margin: 0; text-align: center; font-size: 10px; color: var(--dim); }
+  .row figure img, .row figure canvas { display: block; background: #2a3a2c; image-rendering: pixelated; margin-bottom: 6px; }
+  .scenes img { max-height: 260px; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <h1>Kickyuppies draft</h1>
+    <div class="grp" id="g-density"><span>pixel size</span></div>
+    <div class="grp" id="g-layout"><span>layout</span>
+      <button data-v="wide" aria-pressed="true">Wide</button><button data-v="portrait" aria-pressed="false">Portrait</button></div>
+    <div class="grp" id="g-mode"><span>mode</span>
+      <button data-v="demo" aria-pressed="true">Watch demo</button><button data-v="play" aria-pressed="false">Play it</button></div>
+    <div class="note">Draft, not the game. Scene + poses: Higgsfield (6 credits). Motion, ball, UI: code.</div>
+  </div>
+
+  <div class="stage-wrap" id="wrap">
+    <div class="stage" id="stage">
+      <canvas id="game"></canvas>
+      <div class="ui" id="ui">
+        <div class="count panel"><small>JUGGLES</small><b id="cnt">0/10</b></div>
+        <div class="drills panel"><div class="boxes"><i class="on"></i><i></i><i></i><i></i></div><small>DRILL 1 OF 4</small></div>
+        <div class="card panel" id="card"><small>KICKYUPPIES &middot; ANSWER BEFORE IT LANDS</small><p>Name a player who has played for Arsenal and Chelsea</p></div>
+        <div class="toast panel" id="toast"></div>
+        <form class="answer" id="form" autocomplete="off"><input id="inp" placeholder="Type a player" spellcheck="false"><button>KICK</button></form>
+        <div class="big" id="big"></div>
+        <button class="start" id="start">KICK OFF</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="sheet">
+    <h2>Key poses</h2>
+    <p>Four poses from one reference, Krillion's puffer-0..3 trick. Top row: raw output. Bottom row: what the game draws at the chosen pixel size, shown 4x.</p>
+    <div class="row" id="raw"></div>
+    <div class="row" id="small" style="margin-top:14px"></div>
+  </section>
+  <section class="sheet">
+    <h2>Scenes</h2>
+    <p>Raw output, wide and portrait. The game shrinks them to the pixel size above and caps them at 64 colours.</p>
+    <div class="row scenes"><img src="art/scene-wide.png" alt="wide scene"><img src="art/scene-portrait.png" alt="portrait scene"></div>
+  </section>
+
+<script src="assets.js"></script>
+<script>
+(() => {
+  const A = window.ART;
+  const POSES = ["idle", "kick", "header", "celebrate"];
+  // Answer list for the mock question: players with senior spells at both clubs.
+  const ANSWERS = ["Ashley Cole", "Cesc Fabregas", "Petr Cech", "William Gallas", "Olivier Giroud",
+    "David Luiz", "Jorginho", "Willian", "Kai Havertz", "Pierre-Emerick Aubameyang", "Raheem Sterling",
+    "Emmanuel Petit", "Yossi Benayoun", "Lassana Diarra"];
+  const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z ]/g, "").trim();
+  const surname = s => norm(s).split(" ").pop();
+  function match(text) {
+    const t = norm(text);
+    if (!t) return null;
+    return ANSWERS.find(a => norm(a) === t || surname(a) === t) || null;
+  }
+
+  const state = { density: A.densities[1], layout: "wide", mode: "demo" };
+  const cvs = document.getElementById("game"), g = cvs.getContext("2d");
+  const stage = document.getElementById("stage"), wrap = document.getElementById("wrap");
+  const $ = id => document.getElementById(id);
+  let imgs = {}, W = 0, H = 0, L = {};
+
+  // ---------- controls ----------
+  const dg = $("g-density");
+  A.densities.forEach(d => {
+    const b = document.createElement("button");
+    b.dataset.v = d; b.textContent = Math.round(d * 16 / 9) + "px";
+    b.title = `game canvas ${Math.round(d * 16 / 9)} x ${d} (wide)`;
+    b.setAttribute("aria-pressed", d === state.density);
+    dg.appendChild(b);
+  });
+  function bindGroup(id, key, cast = v => v) {
+    $(id).addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      state[key] = cast(b.dataset.v);
+      $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      setup();
+    });
+  }
+  bindGroup("g-density", "density", Number); bindGroup("g-layout", "layout"); bindGroup("g-mode", "mode");
+
+  function load(src) { return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; }); }
+
+  // ---------- layout ----------
+  async function setup() {
+    const set = A.sets[state.density];
+    const sc = await load(set[state.layout]);
+    const sp = {}; for (const p of POSES) sp[p] = await load(set.sprites[p]);
+    imgs = { scene: sc, sp, set };
+    W = sc.width; H = sc.height;
+    cvs.width = W; cvs.height = H;
+    const s = state.density;
+    L = state.layout === "wide"
+      ? { groundY: Math.round(H * 0.9), trainX: Math.round(W * 0.3), lights: [[0.105, 0.115], [0.885, 0.115]], sky: 0.42,
+          card: [50, 15], toast: [66, 64], answer: [66, 76], apex: 0.5 }
+      : { groundY: Math.round(H * 0.8), trainX: Math.round(W * 0.42), lights: [[0.13, 0.085]], sky: 0.26,
+          card: [50, 13], toast: [50, 84], answer: [50, 89], apex: 0.36 };
+    L.ballR = Math.max(2, Math.round(s / 50));
+    L.footY = L.groundY - Math.round(set.spriteH * 0.22);
+    L.apexY = Math.round(H * L.apex);
+    for (const [id, key] of [["card", "card"], ["toast", "toast"], ["form", "answer"]]) {
+      $(id).style.left = L[key][0] + "%"; $(id).style.top = L[key][1] + "%";
+    }
+    $("form").style.width = state.layout === "wide" ? "min(52%, calc(var(--px) * 150))" : "";
+    makeAmbient();
+    fit();
+    drawSheet();
+    reset();
+  }
+
+  function fit() {
+    const r = wrap.getBoundingClientRect();
+    const availW = r.width - 24, availH = Math.max(240, window.innerHeight - wrap.offsetTop - 24);
+    let k = Math.min(availW / W, availH / H);
+    if (k >= 2) k = Math.floor(k);            // whole-number scale keeps pixels square
+    stage.style.width = W * k + "px"; stage.style.height = H * k + "px";
+    stage.style.setProperty("--px", k + "px");
+  }
+  window.addEventListener("resize", () => W && fit());
+
+  // ---------- ambient (stars, moths in the beams) ----------
+  let stars = [], moths = [];
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function makeAmbient() {
+    stars = Array.from({ length: Math.round(W / 14) }, () => ({ x: Math.floor(rnd(0, W)), y: Math.floor(rnd(0, H * L.sky * 0.45)), p: rnd(0, 6) }));
+    moths = [];
+    for (const [lx, ly] of L.lights) for (let i = 0; i < 7; i++)
+      moths.push({ cx: lx * W, cy: ly * H + 4, a: rnd(0, 6.28), r: rnd(3, 14), sp: rnd(0.8, 2.2) });
+  }
+
+  // ---------- game state ----------
+  let ball, pose, poseUntil, count, used, queued, phase, tStart, demo;
+  const TARGET = 10;
+  function hangFor(n) { return Math.max(2.6, 4.6 - n * 0.22); }  // seconds per flight, shrinking
+  function reset() {
+    count = 0; used = new Set(); queued = false; pose = "idle"; poseUntil = 0;
+    $("cnt").textContent = `0/${TARGET}`; $("big").style.display = "none"; $("inp").value = "";
+    ball = null;
+    if (state.mode === "play") { phase = "ready"; $("start").style.display = "block"; $("inp").disabled = true; }
+    else { $("start").style.display = "none"; $("inp").disabled = true; kickOff(); }
+  }
+  function kickOff() {
+    phase = "live"; $("start").style.display = "none";
+    if (state.mode === "play") { $("inp").disabled = false; $("inp").focus(); }
+    launch(performance.now());
+    if (state.mode === "demo") demoScript();
+  }
+  function launch(now) {
+    const T = hangFor(count), h = L.footY - L.apexY;
+    const gAcc = 8 * h / (T * T);
+    ball = { t0: now, T, g: gAcc, v0: gAcc * T / 2, x: L.trainX + Math.round(imgs.set.spriteW * 0.42), spin: 0, dropped: false };
+    pose = "kick"; poseUntil = now + 260;
+  }
+  function ballY(now) {
+    const t = (now - ball.t0) / 1000;
+    return L.footY - (ball.v0 * t - ball.g * t * t / 2);
+  }
+
+  function toast(text, ok) {
+    const el = $("toast"); el.textContent = (ok ? "✓ " : "✕ ") + text;
+    el.classList.add("show"); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), 900);
+  }
+  function submit(text) {
+    if (phase !== "live") return;
+    const hit = match(text);
+    if (!hit) { toast("NOT ON THE LIST", false); shake(); return; }
+    if (used.has(hit)) { toast("ALREADY USED", false); shake(); return; }
+    if (queued) { toast("ONE PER TOUCH", false); return; }
+    used.add(hit); queued = true; toast(hit.toUpperCase(), true);
+  }
+  function shake() { const f = $("form"); f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); }
+  $("form").addEventListener("submit", e => { e.preventDefault(); submit($("inp").value); $("inp").value = ""; });
+  $("start").addEventListener("click", kickOff);
+
+  function onContact(now) {
+    if (queued) {
+      queued = false; count++;
+      $("cnt").textContent = `${count}/${TARGET}`;
+      if (count >= TARGET) return finish(now, true);
+      launch(now);
+    } else {
+      ball.dropped = true; ball.dropT = now; ball.dropY = L.footY;
+      finish(now, false);
+    }
+  }
+  function finish(now, won) {
+    phase = "over"; $("inp").disabled = true;
+    if (won) { ball = null; pose = "celebrate"; poseUntil = Infinity; }
+    const big = $("big");
+    big.innerHTML = won ? `DRILL DONE<small>10 TOUCHES</small>` : `DROPPED<small>${count} TOUCHES</small>`;
+    big.style.display = "block";
+    setTimeout(() => { if (phase === "over") { state.mode === "demo" ? reset() : ($("start").style.display = "block", $("start").textContent = "AGAIN", phase = "ready", resetSoft()); } }, 3200);
+  }
+  function resetSoft() { count = 0; used = new Set(); queued = false; ball = null; pose = "idle"; poseUntil = 0; $("cnt").textContent = `0/${TARGET}`; }
+  $("start").addEventListener("click", () => { $("big").style.display = "none"; });
+
+  // Demo: types answers like a player would, one wrong guess on the way.
+  function demoScript() {
+    clearTimeout(demo);
+    const pool = ["Petr Cech", "Giroud", "Thierry Henry", "Ashley Cole", "Havertz", "Willian", "Jorginho", "David Luiz", "Fabregas", "Sterling", "Aubameyang"];
+    let i = 0;
+    const step = () => {
+      if (phase !== "live" || state.mode !== "demo") return;
+      if (!queued && ball && !ball.dropped) {
+        const name = pool[i++ % pool.length];
+        typeOut(name, () => { submit(name); $("inp").value = ""; });
+      }
+      demo = setTimeout(step, rnd(900, 1600));
+    };
+    demo = setTimeout(step, 700);
+  }
+  function typeOut(text, done) {
+    const inp = $("inp"); inp.value = ""; let k = 0;
+    const t = setInterval(() => { inp.value = text.slice(0, ++k); if (k >= text.length) { clearInterval(t); setTimeout(done, 160); } }, 55);
+  }
+
+  // ---------- drawing ----------
+  function px(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
+  function drawBall(cx, cy, spin) {
+    const r = L.ballR; cx = Math.round(cx); cy = Math.round(cy);
+    for (let dy = -r - 1; dy <= r + 1; dy++) for (let dx = -r - 1; dx <= r + 1; dx++) {
+      const d = dx * dx + dy * dy;
+      if (d <= r * r) px(cx + dx, cy + dy, 1, 1, dy < 0 && dx < 0 ? "#ffffff" : "#e3e0d6");
+      else if (d <= (r + 1) * (r + 1)) px(cx + dx, cy + dy, 1, 1, "#1d1f2b");
+    }
+    // two dark patches sliding round = spin (no pentagon motif)
+    for (const off of [0, Math.PI]) {
+      const a = spin + off, ex = Math.round(Math.cos(a) * r * 0.55), ey = Math.round(Math.sin(a) * r * 0.35);
+      if (Math.cos(a) > -0.2) px(cx + ex, cy + ey, r > 3 ? 2 : 1, r > 3 ? 2 : 1, "#3a3d4c");
+    }
+  }
+  function drawShadow(x, y, heightAbove) {
+    const k = Math.max(0.35, 1 - heightAbove / (L.footY - L.apexY + 1) * 0.65);
+    const w = Math.round(L.ballR * 2.6 * k);
+    g.globalAlpha = 0.35 * k; px(x - w / 2, L.groundY - 1, w, 2, "#000"); g.globalAlpha = 1;
+  }
+
+  function frame(now) {
+    if (!W) return requestAnimationFrame(frame);
+    g.imageSmoothingEnabled = false;
+    g.drawImage(imgs.scene, 0, 0);
+
+    // floodlight shimmer
+    g.globalCompositeOperation = "lighter";
+    for (const [lx, ly] of L.lights) {
+      const f = 0.10 + 0.03 * Math.sin(now / 130) + (Math.random() < 0.01 ? 0.08 : 0);
+      const grd = g.createRadialGradient(lx * W, ly * H, 0, lx * W, ly * H, W * 0.16);
+      grd.addColorStop(0, `rgba(255,220,150,${f})`); grd.addColorStop(1, "rgba(255,220,150,0)");
+      g.fillStyle = grd; g.fillRect(0, 0, W, H * 0.6);
+    }
+    g.globalCompositeOperation = "source-over";
+    // stars twinkle (stepped)
+    for (const s of stars) { const on = Math.sin(now / 400 + s.p) > 0.55; if (on) px(s.x, s.y, 1, 1, "#e8ecff"); }
+    // moths circling the lamps
+    for (const m of moths) { const a = m.a + now / 1000 * m.sp; px(m.cx + Math.cos(a) * m.r, m.cy + Math.sin(a * 1.3) * m.r * 0.6, 1, 1, "#fff2c8"); }
+
+    // ball
+    let by = null;
+    if (ball && phase === "live") {
+      by = ballY(now);
+      if (by >= L.footY && now - ball.t0 > 200) { onContact(now); by = ball && !ball.dropped ? ballY(now) : L.footY; }
+      ball.spin += 0.18;
+    }
+    if (ball && ball.dropped) {   // fall to the grass, small bounce
+      const t = (now - ball.dropT) / 1000;
+      by = Math.min(L.groundY - L.ballR - 1, L.footY + 160 * t * t);
+      ball.x += 0.25;
+    }
+    const set = imgs.set, sp = imgs.sp;
+    if (ball && by !== null) drawShadow(ball.x, by, L.groundY - by);
+
+    // trainee: stepped idle bob, pose swap
+    if (now > poseUntil && pose !== "celebrate") pose = (ball && ball.dropped) ? "header" : "idle";
+    let bob = pose === "idle" ? (Math.floor(now / 420) % 2) : 0;
+    if (pose === "celebrate") bob = -(Math.floor(now / 260) % 2) * 2;
+    const sx = Math.round(L.trainX - set.spriteW / 2), sy = L.groundY - set.groundFromTop + bob;
+    g.globalAlpha = 0.3; px(L.trainX - set.spriteW * 0.3, L.groundY - 1, Math.round(set.spriteW * 0.6), 2, "#000"); g.globalAlpha = 1;
+    g.drawImage(sp[pose], sx, sy);
+
+    if (ball && by !== null) {
+      drawBall(ball.x, by, ball.spin);
+      if (queued && phase === "live") {        // ready ring: answer banked for this touch
+        const r = L.ballR + 3, c = Math.round(ball.x), y = Math.round(by);
+        for (let a = 0; a < 6.28; a += 0.5) if ((Math.floor(now / 120) + Math.round(a * 2)) % 2) px(c + Math.cos(a) * r, y + Math.sin(a) * r, 1, 1, "#ffc94a");
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- pose sheet ----------
+  function drawSheet() {
+    const raw = $("raw"), small = $("small"); raw.innerHTML = ""; small.innerHTML = "";
+    for (const p of POSES) {
+      raw.insertAdjacentHTML("beforeend", `<figure><img src="${A.raw["pose_" + p]}" width="160" height="160" alt="${p}">${p}</figure>`);
+      const c = document.createElement("canvas"), s = imgs.sp[p];
+      c.width = s.width; c.height = s.height; c.style.width = s.width * 4 + "px"; c.style.height = s.height * 4 + "px";
+      c.getContext("2d").drawImage(s, 0, 0);
+      const f = document.createElement("figure"); f.append(c, `${p} · ${s.width}x${s.height}`); small.append(f);
+    }
+  }
+
+  setup().then(() => requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
