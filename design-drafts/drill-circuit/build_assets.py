@@ -16,7 +16,7 @@ OUT = Path(__file__).parent / "assets.js"
 DENSITIES = [144, 180, 225, 270]
 SPRITE_FRAC = 0.34
 COACH_FRAC = 0.37            # coach is a bit taller than the kid
-WIDE_SCENES = ["wide", "heading", "crossbar", "final"]
+WIDE_SCENES = ["wide", "heading", "crossbar", "final", "end"]
 CHARACTERS = {
     "trainee": (["idle", "kick", "header", "celebrate"], SPRITE_FRAC, False),
     # mirror the poses the model drew facing right, so he always faces the kid (checked by eye)

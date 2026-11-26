@@ -66,6 +66,43 @@
   .readout small { font-size: .62em; letter-spacing: .2em; color: var(--dim); }
   .concept-flag { position: absolute; right: calc(var(--px)*6); top: calc(var(--px)*6); font-size: .62em; letter-spacing: .2em; color: var(--dim); padding: calc(var(--px)*2) calc(var(--px)*3); display: none; }
 
+  /* end screen */
+  .end { position: absolute; inset: 0; display: none; pointer-events: none; }
+  .end > * { pointer-events: auto; }
+  .end .head { position: absolute; left: 50%; top: calc(var(--px)*5); transform: translateX(-50%); text-align: center; font-size: .62em; letter-spacing: .25em; color: var(--dim); white-space: nowrap; }
+  .end .head b { display: block; font-family: "Jersey 10", monospace; font-weight: 400; font-size: 3.2em; letter-spacing: .02em; color: var(--ink); line-height: 1; }
+  .end .pn { position: absolute; top: 14%; height: 45%; padding: calc(var(--px)*4) calc(var(--px)*5); opacity: 0; transition: opacity .3s steps(4); }
+  .end.in .pn { opacity: 1; }
+  .end .pn h3 { margin: 0 0 calc(var(--px)*2); font-weight: 400; font-size: .62em; letter-spacing: .22em; color: var(--dim); }
+  .p-rate { left: 3%; width: 29%; }
+  .p-radar { left: 34.5%; width: 31%; }
+  .p-curve { left: 68%; width: 29%; }
+  .rate { display: flex; align-items: baseline; gap: calc(var(--px)*2); }
+  .rate b { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 4.6em; line-height: .9; }
+  .rate span { font-size: .8em; color: var(--dim); }
+  .grade { font-family: "Jersey 10", monospace; font-size: 1.7em; color: var(--amber); margin-bottom: calc(var(--px)*2); }
+  .rows { display: grid; gap: calc(var(--px)*1.5); font-size: .66em; }
+  .rows div { display: grid; grid-template-columns: 1fr auto; gap: calc(var(--px)*2); opacity: 0; transition: opacity .2s steps(2); }
+  .rows div.on { opacity: 1; }
+  .rows i { font-style: normal; color: var(--dim); }
+  .radar-box { position: relative; width: 100%; height: calc(100% - var(--px)*6); }
+  .radar-box canvas, .curve-box canvas { position: absolute; image-rendering: pixelated; }
+  .ax { position: absolute; transform: translate(-50%, -50%); text-align: center; font-size: .6em; letter-spacing: .14em; color: var(--dim); white-space: nowrap; }
+  .ax b { display: block; font-family: "Jersey 10", monospace; font-weight: 400; font-size: 2em; letter-spacing: 0; color: var(--ink); line-height: 1; }
+  .pct { font-family: "Jersey 10", monospace; font-size: 1.8em; line-height: 1; }
+  .pct small { display: block; font-family: "Silkscreen", monospace; font-size: .34em; letter-spacing: .16em; color: var(--dim); margin-top: calc(var(--px)*1); }
+  .curve-box { position: relative; width: 100%; height: 32%; margin-top: calc(var(--px)*3); }
+  .curve-tip { position: absolute; transform: translate(-50%, -110%); font-size: .55em; letter-spacing: .1em; padding: calc(var(--px)*1) calc(var(--px)*2); white-space: nowrap; display: none; pointer-events: none; }
+  .meta { font-size: .55em; letter-spacing: .14em; color: var(--dim); margin-top: calc(var(--px)*2); line-height: 1.7; }
+  .meta b { color: var(--ink); font-weight: 400; }
+  .end .actions { position: absolute; left: 50%; top: 64%; transform: translateX(-50%); display: flex; gap: calc(var(--px)*3); opacity: 0; transition: opacity .3s steps(4); }
+  .end.in .actions { opacity: 1; }
+  .end .actions button { font: inherit; font-size: 1em; letter-spacing: .15em; border: 0; padding: calc(var(--px)*3) calc(var(--px)*7); cursor: pointer; }
+  .end .actions .share { background: var(--amber); color: #1a1405; }
+  .end .actions .ghost { background: var(--panel); color: var(--ink); border: 1px solid var(--line); }
+  .end .sharetext { position: absolute; left: 50%; top: 76%; transform: translateX(-50%); font-size: .62em; letter-spacing: .06em; padding: calc(var(--px)*2) calc(var(--px)*4); white-space: pre; display: none; }
+  .note-est { font-size: .5em; letter-spacing: .12em; color: var(--dim); margin-top: calc(var(--px)*2); }
+
   section.sheet { padding: 18px 16px 40px; border-top: 1px solid var(--line); }
   section.sheet h2 { font-family: "Jersey 10", monospace; font-weight: 400; font-size: 24px; margin: 0 0 4px; }
   section.sheet p { font-size: 11px; color: var(--dim); margin: 0 0 14px; max-width: 75ch; line-height: 1.6; }
@@ -79,7 +116,9 @@
   <div class="bar">
     <h1>Training Ground draft</h1>
     <div class="grp" id="g-drill"><span>drill</span>
-      <button data-v="kick" aria-pressed="true">1 Kickyuppies</button><button data-v="heading" aria-pressed="false">2 Heading</button><button data-v="crossbar" aria-pressed="false">3 Crossbar</button><button data-v="final" aria-pressed="false">4 Final shot</button></div>
+      <button data-v="kick" aria-pressed="true">1 Kickyuppies</button><button data-v="heading" aria-pressed="false">2 Heading</button><button data-v="crossbar" aria-pressed="false">3 Crossbar</button><button data-v="final" aria-pressed="false">4 Final shot</button><button data-v="end" aria-pressed="false">End screen</button></div>
+    <div class="grp" id="g-sample" style="display:none"><span>sample run</span>
+      <button data-v="strong" aria-pressed="true">Strong</button><button data-v="average" aria-pressed="false">Average</button><button data-v="rough" aria-pressed="false">Rough</button></div>
     <div class="grp" id="g-density"><span>pixel size</span></div>
     <div class="grp" id="g-layout"><span>layout</span>
       <button data-v="wide" aria-pressed="true">Wide</button><button data-v="portrait" aria-pressed="false">Portrait</button></div>
@@ -104,6 +143,28 @@
         <form class="answer" id="form" autocomplete="off"><input id="inp" placeholder="Type a player" spellcheck="false"><button>KICK</button></form>
         <div class="big" id="big"></div>
         <button class="start" id="start">KICK OFF</button>
+        <div class="end" id="end">
+          <div class="head">SESSION COMPLETE<b>Training Ground #1</b></div>
+          <div class="pn panel p-rate">
+            <h3>SESSION RATING</h3>
+            <div class="rate"><b id="rateN">0</b><span>/ 100</span></div>
+            <div class="grade" id="grade">&nbsp;</div>
+            <div class="rows" id="rows"></div>
+          </div>
+          <div class="pn panel p-radar">
+            <h3>SKILLS</h3>
+            <div class="radar-box" id="radarBox"><canvas id="radar"></canvas></div>
+          </div>
+          <div class="pn panel p-curve">
+            <h3>TODAY'S SESSIONS</h3>
+            <div class="pct" id="pct">&nbsp;</div>
+            <div class="curve-box" id="curveBox"><canvas id="curve"></canvas><div class="curve-tip panel" id="tip"></div></div>
+            <div class="note-est">ESTIMATED FROM TODAY'S DIFFICULTY</div>
+            <div class="meta">STREAK <b id="streak">3 DAYS</b><br>NEXT SESSION <b id="next">--:--:--</b></div>
+          </div>
+          <div class="actions"><button class="share" id="shareBtn">SHARE</button><button class="ghost" id="replayBtn">REPLAY</button></div>
+          <div class="sharetext panel" id="shareText"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -146,7 +207,7 @@
   const surname = s => norm(s).split(" ").pop();
   const match = text => { const t = norm(text); return t ? ANSWERS.find(a => norm(a) === t || surname(a) === t) || null : null; };
 
-  const state = { drill: "kick", density: A.densities[1], layout: "wide", mode: "demo" };
+  const state = { drill: "kick", density: A.densities[1], layout: "wide", mode: "demo", sample: "strong" };
   const cvs = document.getElementById("game"), g = cvs.getContext("2d");
   const stage = document.getElementById("stage"), wrap = document.getElementById("wrap");
   const $ = id => document.getElementById(id);
@@ -169,7 +230,7 @@
     });
   }
   function press(id, v) { $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v == v)); }
-  bindGroup("g-drill", "drill"); bindGroup("g-density", "density", Number); bindGroup("g-layout", "layout"); bindGroup("g-mode", "mode");
+  bindGroup("g-drill", "drill"); bindGroup("g-density", "density", Number); bindGroup("g-layout", "layout"); bindGroup("g-mode", "mode"); bindGroup("g-sample", "sample");
 
   const cache = new Map();
   function load(src) {
@@ -184,6 +245,7 @@
             portrait: { ground: 0.8, trainX: 0.36, coachX: 0.78, lights: [[0.13, 0.085]], sky: 0.26, card: [50, 13], toast: [50, 84], answer: [50, 89], apex: 0.36 } },
     heading: { wide: { ground: 0.8, trainX: 0.5, coachX: 0.7, lights: [[0.105, 0.09], [0.89, 0.09]], sky: 0.4, card: [50, 15], goalL: [0.05, 0.53], goalR: [0.95, 0.53] } },
     crossbar: { wide: { ground: 0.99, trainX: 0.36, coachX: 0.86, lights: [[0.11, 0.09], [0.89, 0.09]], sky: 0.4, card: [73, 13], cardW: 46, goal: [0.28, 0.72], barY: 0.34, goalBottom: 0.59 } },
+    end: { wide: { ground: 0.93, trainX: 0.74, coachX: 0.89, lights: [[0.89, 0.12]], sky: 0.4 } },
     final: { wide: { ground: 0.9, trainX: 0.41, coachX: 0.84, lights: [[0.1, 0.11], [0.9, 0.11]], sky: 0.4, card: [76, 13], cardW: 42, goal: [0.335, 0.665], barY: 0.37, goalBottom: 0.57, spot: [0.5, 0.8] } },
   };
 
@@ -191,6 +253,7 @@
     kick: ["KICKYUPPIES · ANSWER BEFORE IT LANDS", "Name a player who has played for Arsenal and Chelsea"],
     heading: ["HEADING · SEND EACH PLAYER TO HIS CLUB", "Arsenal or Chelsea?"],
     crossbar: ["CROSSBAR · CLOSER GUESS, CLOSER TO THE BAR", "Thierry Henry's Premier League goals for Arsenal?"],
+    end: ["", ""],
     final: ["FINAL SHOT · ONE ANSWER, RARER SCORES MORE", "Name a Chelsea striker since 2010"],
   };
 
@@ -232,10 +295,16 @@
     $("form").style.width = state.layout === "wide" ? "min(44%, calc(var(--px) * 150))" : "";
     $("card").style.width = L.cardW ? L.cardW + "%" : "";
     $("card").classList.toggle("compact", !!L.cardW);
+    const isEnd = state.drill === "end";
+    $("g-sample").style.display = isEnd ? "flex" : "none";
+    $("end").style.display = isEnd ? "block" : "none"; $("end").classList.remove("in");
+    document.querySelector(".drills").style.display = isEnd ? "none" : "";
+    $("card").style.display = isEnd ? "none" : "";
+    if (isEnd) { $("countBox").style.display = "none"; $("flag").style.display = "none"; }
 
     makeAmbient(); fit(); drawSheets();
     coachPose("idle", 0);
-    if (isKick) reset(); else startConcept();
+    if (isKick) reset(); else if (isEnd) startEnd(); else startConcept();
   }
 
   function fit() {
@@ -365,6 +434,7 @@
     const c = concept; if (!c) return null;
     if (state.drill === "heading") return headingFrame(now, c);
     if (state.drill === "crossbar") return crossbarFrame(now, c);
+    if (state.drill === "end") return endFrame(now, c);
     return finalFrame(now, c);
   }
   // Heading: a name drops in, the kid heads it into the matching club's goal.
@@ -426,6 +496,126 @@
     ro.innerHTML = `<b>${grade} ${pts}</b><small>${ans.toUpperCase()}</small>`;
     if (t >= 2200 && t < 2250) coachPose(react, 1500);
     return { trainee: kicking ? "kick" : "idle", ball: { x: bx, y: by, r, spin: t / 60 }, faceAway: false };
+  }
+
+  // ================= End screen =================
+  // Skill axes stay fixed as drills change; each drill feeds one axis.
+  const SKILLS = ["RECALL", "REFLEX", "PRECISION", "DEPTH"];
+  const SAMPLES = {
+    strong:  { skills: [90, 88, 96, 95], rows: [["⚽ KICKYUPPIES", "9/10"], ["🗣 HEADING", "15/16"], ["🥅 CROSSBAR", "3 OFF"], ["🎯 FINAL SHOT", "TOP BIN"]],
+               share: "⚽ 9/10 · 🗣 15/16 · 🥅 3 off · 🎯 Top bin" },
+    average: { skills: [60, 66, 70, 30], rows: [["⚽ KICKYUPPIES", "6/10"], ["🗣 HEADING", "11/16"], ["🥅 CROSSBAR", "22 OFF"], ["🎯 FINAL SHOT", "ON TARGET"]],
+               share: "⚽ 6/10 · 🗣 11/16 · 🥅 22 off · 🎯 On target" },
+    rough:   { skills: [20, 44, 25, 0], rows: [["⚽ KICKYUPPIES", "2/10"], ["🗣 HEADING", "7/16"], ["🥅 CROSSBAR", "61 OFF"], ["🎯 FINAL SHOT", "WIDE"]],
+               share: "⚽ 2/10 · 🗣 7/16 · 🥅 61 off · 🎯 Wide" },
+  };
+  // No players yet: today's spread is a normal curve set by the day's difficulty.
+  const DAY = { mean: 58, sd: 15 };
+  const GRADES = [[85, "Captain"], [70, "Starter"], [50, "Squad"], [30, "Trialist"], [0, "Bench"]];
+  function erf(x) { const s = Math.sign(x); x = Math.abs(x); const t = 1 / (1 + 0.3275911 * x);
+    return s * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x)); }
+  const pctBelow = v => 0.5 * (1 + erf((v - DAY.mean) / (DAY.sd * Math.SQRT2)));
+  const pdf = v => Math.exp(-0.5 * ((v - DAY.mean) / DAY.sd) ** 2);
+
+  let endState = null, nextTimer = null;
+  function startEnd() {
+    const S = SAMPLES[state.sample];
+    const rating = Math.round(S.skills.reduce((a, b) => a + b, 0) / S.skills.length);
+    endState = { S, rating, pct: Math.round(pctBelow(rating) * 100), reacted: false };
+    concept = { t0: performance.now(), n: 0 };
+    $("rows").innerHTML = S.rows.map(([a, b], k) => `<div><span>${a}</span><i>${b} · ${S.skills[k]}</i></div>`).join("");
+    $("grade").innerHTML = "&nbsp;"; $("pct").innerHTML = "&nbsp;"; $("rateN").textContent = "0";
+    $("shareText").style.display = "none";
+    $("shareText").textContent = `Training Ground #1 · ${rating}\n${S.share}`;
+    requestAnimationFrame(() => $("end").classList.add("in"));
+    sizeCharts();
+    clearInterval(nextTimer); tickNext(); nextTimer = setInterval(tickNext, 1000);
+  }
+  function tickNext() {
+    const now = new Date(), mid = new Date(now); mid.setHours(24, 0, 0, 0);
+    const s = Math.floor((mid - now) / 1000), f = n => String(n).padStart(2, "0");
+    $("next").textContent = `${f(Math.floor(s / 3600))}:${f(Math.floor(s / 60) % 60)}:${f(s % 60)}`;
+  }
+  $("replayBtn").addEventListener("click", () => { $("end").classList.remove("in"); coachPose("idle", 0); startEnd(); });
+  $("shareBtn").addEventListener("click", async () => {
+    const el = $("shareText"); el.style.display = "block";
+    try { await navigator.clipboard.writeText(el.textContent); $("shareBtn").textContent = "COPIED"; }
+    catch { $("shareBtn").textContent = "SHOWN BELOW"; }
+    setTimeout(() => $("shareBtn").textContent = "SHARE", 1600);
+  });
+
+  // charts are drawn at game resolution, then scaled crisp like everything else
+  const RG = 64, CW = 88, CH = 30;
+  function sizeCharts() {
+    const box = $("radarBox").getBoundingClientRect(), rc = $("radar");
+    const side = Math.min(box.width, box.height) * 0.62;
+    rc.width = RG; rc.height = RG;
+    Object.assign(rc.style, { width: side + "px", height: side + "px", left: (box.width - side) / 2 + "px", top: (box.height - side) / 2 + "px" });
+    endState.radar = { side, cx: box.width / 2, cy: box.height / 2 };
+    $("radarBox").querySelectorAll(".ax").forEach(e => e.remove());
+    const off = side / 2 + 4;
+    [[0, -off - 8], [off + 18, 0], [0, off + 10], [-off - 18, 0]].forEach(([dx, dy], k) => {
+      const d = document.createElement("div"); d.className = "ax"; d.id = "ax" + k;
+      d.style.left = box.width / 2 + dx + "px"; d.style.top = box.height / 2 + dy + "px";
+      d.innerHTML = `<b>-</b>${SKILLS[k]}`; $("radarBox").appendChild(d);
+    });
+    const cb = $("curveBox").getBoundingClientRect(), cc = $("curve");
+    cc.width = CW; cc.height = CH; Object.assign(cc.style, { width: cb.width + "px", height: cb.height + "px", left: 0, top: 0 });
+  }
+  window.addEventListener("resize", () => endState && state.drill === "end" && sizeCharts());
+
+  const AMBER = "#ffc94a", INK = "#f4f1e8", FAINT = "rgba(244,241,232,.22)";
+  function drawRadar(k) {
+    const c = $("radar").getContext("2d"), r = RG / 2 - 3, cx = RG / 2, cy = RG / 2;
+    c.clearRect(0, 0, RG, RG); c.imageSmoothingEnabled = false;
+    const pt = (i, v) => { const a = -Math.PI / 2 + i * Math.PI / 2; return [cx + Math.cos(a) * r * v, cy + Math.sin(a) * r * v]; };
+    c.strokeStyle = FAINT; c.lineWidth = 1;
+    for (const ring of [0.25, 0.5, 0.75, 1]) { c.beginPath(); for (let i = 0; i < 4; i++) { const [x, y] = pt(i, ring); i ? c.lineTo(x, y) : c.moveTo(x, y); } c.closePath(); c.stroke(); }
+    for (let i = 0; i < 4; i++) { const [x, y] = pt(i, 1); c.beginPath(); c.moveTo(cx, cy); c.lineTo(x, y); c.stroke(); }
+    const vals = endState.S.skills.map(v => v / 100 * k);
+    c.beginPath(); vals.forEach((v, i) => { const [x, y] = pt(i, v); i ? c.lineTo(x, y) : c.moveTo(x, y); }); c.closePath();
+    c.fillStyle = "rgba(255,201,74,.35)"; c.fill(); c.strokeStyle = AMBER; c.stroke();
+    vals.forEach((v, i) => { const [x, y] = pt(i, v); c.fillStyle = INK; c.fillRect(Math.round(x) - 1, Math.round(y) - 1, 2, 2); });
+    endState.S.skills.forEach((v, i) => { const e = $("ax" + i); if (e) e.querySelector("b").textContent = Math.round(v * k); });
+  }
+  function drawCurve(reveal, markK) {
+    const c = $("curve").getContext("2d"); c.clearRect(0, 0, CW, CH);
+    const base = CH - 2, top = 2, xOf = v => 1 + v / 100 * (CW - 2), yOf = v => base - pdf(v) * (base - top);
+    const you = endState.rating;
+    for (let x = 1; x < CW - 1; x++) {           // column-by-column = pixel area chart
+      const v = (x - 1) / (CW - 2) * 100; if (v > reveal * 100) break;
+      const y = Math.round(yOf(v));
+      c.fillStyle = v <= you * markK ? "rgba(255,201,74,.55)" : "rgba(244,241,232,.12)";
+      c.fillRect(x, y, 1, base - y);
+      c.fillStyle = v <= you * markK ? AMBER : "rgba(244,241,232,.5)"; c.fillRect(x, y, 1, 1);
+    }
+    c.fillStyle = FAINT; c.fillRect(0, base, CW, 1);
+    if (markK >= 1) { const x = Math.round(xOf(you)); c.fillStyle = INK; c.fillRect(x, top - 1, 1, base - top + 1); c.fillRect(x - 1, top - 2, 3, 2); }
+  }
+  // hover: what any score on the curve would mean
+  $("curveBox").addEventListener("mousemove", e => {
+    if (!endState) return;
+    const b = $("curveBox").getBoundingClientRect(), v = Math.max(0, Math.min(100, Math.round((e.clientX - b.left) / b.width * 100)));
+    const tip = $("tip"); tip.style.display = "block"; tip.style.left = e.clientX - b.left + "px"; tip.style.top = 0;
+    tip.textContent = `${v} · BETTER THAN ${Math.round(pctBelow(v) * 100)}%`;
+  });
+  $("curveBox").addEventListener("mouseleave", () => { $("tip").style.display = "none"; });
+
+  function endFrame(now, c) {
+    const e = endState; if (!e) return {};
+    const t = now - c.t0, step = (a, d) => Math.max(0, Math.min(1, Math.floor(((t - a) / d) * 8) / 8)); // 8-step reveals
+    $("rateN").textContent = Math.round(e.rating * Math.min(1, Math.max(0, (t - 300) / 1200)));
+    $("rows").querySelectorAll("div").forEach((d, k) => d.classList.toggle("on", t > 400 + k * 220));
+    drawRadar(step(500, 900));
+    drawCurve(step(900, 800), step(1800, 500));
+    if (t > 1500) $("grade").textContent = GRADES.find(([min]) => e.rating >= min)[1];
+    if (t > 2300) $("pct").innerHTML = `BETTER THAN ${e.pct}%<small>OF TODAY'S PLAYERS</small>`;
+    if (t > 2300 && !e.reacted) {
+      e.reacted = true;
+      coachPose(e.rating >= 85 ? "shocked" : e.rating >= 50 ? "impressed" : "laugh", 3000);
+    }
+    const celebrating = t > 2300 && e.rating >= 70;
+    return { trainee: celebrating ? "celebrate" : "idle", jump: celebrating ? (Math.floor(now / 260) % 2) * 2 : 0 };
   }
 
   // ---------- drawing ----------
