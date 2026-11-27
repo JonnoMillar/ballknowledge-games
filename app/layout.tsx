@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Big_Shoulders, Libre_Franklin } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { GAMES } from '../src/games';
 
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="table" aria-hidden />
         {children}
         <footer className="site-foot"><a href="/">All games</a> · <a href="/credits">Photo and data credits</a></footer>
+        <Analytics />
       </body>
     </html>
   );
