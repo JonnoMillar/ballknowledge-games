@@ -14,25 +14,28 @@ const json = <T,>(file: string, fallback: T): T => (existsSync(`${DIR}/${file}`)
  * awaiting thousands of file reads in the component made React's dev stream record every one
  * ("Maximum call stack size exceeded", 100 s a load).
  */
-function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats; cut: number; screened: number } {
-  const screen = json<{ cut: number; items: Record<string, { suspect: number; tags: string[]; why: Record<string, string> }> }>('screen.json', { cut: 0.5, items: {} });
+function nextBatch(focus?: string): { items: CheckItem[]; stats: CheckStats; cut: number; screened: number } {
+  const screen = json<{ cut: number; items: Record<string, { suspect: number; tags: string[]; why: Record<string, string> }>; blurry?: Record<string, number[]> }>('screen.json', { cut: 0.5, items: {} });
   const all = json<{ id: string; name: string; club?: string }[]>('players.json', []);
-  // ?focus=1: only the players in upcoming games (focus.json, soonest first), all in one page.
-  const want = focus ? json<string[]>('focus.json', []) : null;
+  // ?focus=1: only the players in upcoming games (focus.json, soonest first), all in one page. ?focus=<name>: focus-<name>.json
+  // (gaps: the best-known players with no checked photo, scripts/photos/ops/gap_batch.py).
+  const want = focus ? json<string[]>(focus === '1' ? 'focus.json' : `focus-${focus.replace(/[^a-z0-9-]/gi, '')}.json`, []) : null;
   const byId = new Map(all.map((p) => [p.id, p]));
   const players = want ? want.flatMap((id) => (byId.has(id) ? [byId.get(id)!] : [])) : all;
   const marks = json<{ wrong: string[]; flagged: string[] }>('marks.json', { wrong: [], flagged: [] });
   const approved = new Set(json<string[]>('approved.json', []));
   const bad = new Set([...marks.wrong, ...marks.flagged]);
-  const skip = new Set([...approved, ...bad]);
+  // A player he has decided on /photo-pick or /photo-choose (an alternative, or the kit card) needs no check here.
+  const decided = Object.keys(json<Record<string, unknown>>('choices.json', {}));
+  const skip = new Set([...approved, ...bad, ...decided]);
   const items: CheckItem[] = [];
   let left = 0;
   let kit = 0;
   players.forEach((p, i) => {
     if (skip.has(p.id)) return;
-    const st = json<{ ok: boolean; results?: { file: string; year: number }[] } | null>(`out/${p.id}.json`, null);
+    const st = json<{ ok: boolean; results?: { file: string; year: number; chosen?: boolean }[] } | null>(`out/${p.id}.json`, null);
     if (!st) return;
-    if (!st.ok) { kit++; return; }
+    if (!st.ok || (screen.blurry?.[p.id]?.includes(0) && !st.results?.[0]?.chosen)) { kit++; return; }   // a blurry upscale is never shown: the pipeline cuts the next one
     left++;
     const sc = screen.items[p.id];   // not screened yet: counts as a suspect, so it is looked at
     if (focus || items.length < BATCH) items.push({ id: p.id, name: p.name, rank: (want ? all.indexOf(p) : i) + 1, club: p.club, cutout: true, file: st.results?.[0]?.file.replace(/^File:/, ''), year: st.results?.[0]?.year, suspect: sc ? sc.suspect : screen.cut, suggest: sc?.tags, why: sc?.why });
@@ -49,6 +52,6 @@ function nextBatch(focus: boolean): { items: CheckItem[]; stats: CheckStats; cut
  */
 export default async function Page({ searchParams }: { searchParams: Promise<{ focus?: string }> }) {
   if (process.env.NODE_ENV !== 'development') notFound();
-  const { items, stats, cut, screened } = nextBatch(!!(await searchParams).focus);
+  const { items, stats, cut, screened } = nextBatch((await searchParams).focus);
   return <PhotoCheck items={items} stats={stats} cut={cut} screened={screened} />;
 }

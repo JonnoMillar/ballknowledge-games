@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font sweep</title>
+<link rel="icon" href="img/fs-icon/fs-icon-32.png">
+<style>
+  :root { --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --muted: #5E574D; --navy: #02294A; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 system-ui, sans-serif; }
+  main { max-width: 1500px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { margin: 0 0 4px; font-size: 24px; }
+  .lede { margin: 0 0 16px; color: var(--muted); max-width: 90ch; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+  .t { background: var(--paper); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(40,25,10,.18); }
+  .bar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--ink); color: var(--paper); }
+  .bar img { width: 34px; height: 34px; flex: none; }
+  .bar span { font-size: 25px; line-height: 1; white-space: nowrap; }
+  .art { height: 88px; background: url(img/round2/6-desk.png) 55% 38% / 220% auto; display: flex; align-items: center; padding: 0 12px; }
+  .art b { background: #151413; color: #F4F1EA; font-size: 17px; letter-spacing: .12em; text-transform: uppercase; padding: .4em .7em .34em; border-radius: 2px; box-shadow: 0 2px 3px rgba(0,0,0,.35); transform: rotate(-1.5deg); }
+  .head { background: var(--navy); color: var(--paper); padding: 10px 12px; font-size: 26px; line-height: 1; }
+  .row { padding: 8px 12px; font-size: 15px; font-weight: 700; display: flex; justify-content: space-between; background: #FCDCA4; }
+  .meta { padding: 7px 12px; font: 600 12.5px/1.3 system-ui, sans-serif; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+  .meta b { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Font sweep: the long list</h1>
+  <p class="lede">How these were found: Google Fonts' own metadata (1,961 families) filtered to sans and display faces with an 800+ weight, ranked by Google's popularity order; the AI reflex fonts named by design-slop lists (Inter, DM Sans, Space Grotesk, Outfit, Plus Jakarta, Syne, Manrope, Figtree and so on) and anything in the top ~150 removed; brand faces (TikTok, Wix, Reddit, GitHub, Zalando), rounded and sci-fi faces dropped. Each face below sets the wordmark, a tape label, the clipboard header and a task row at its heaviest weight, on the hub art. Rank is Google's popularity position (1 = most used).</p>
+  <div class="grid" id="g"></div>
+</main>
+<script>
+// [family, heaviest weight, Google popularity rank]
+const F = [
+  ['Big Shoulders', 900, 547], ['Gabarito', 900, 320], ['Phudu', 900, 956], ['Changa', 800, 299], ['Anybody', 900, 649],
+  ['Epilogue', 900, 176], ['Parkinsans', 800, 537], ['Funnel Display', 800, 473], ['Host Grotesk', 800, 374], ['Science Gothic', 900, 480],
+  ['Sansita', 900, 581], ['Glory', 800, 645], ['Livvic', 900, 614], ['Alexandria', 900, 287], ['Commissioner', 900, 291],
+  ['Gantari', 900, 526], ['Sen', 800, 327], ['Alan Sans', 900, 992], ['Savate', 900, 1890], ['Matangi', 900, 1951],
+  ['Pliant', 900, 1150], ['Akt', 900, 1325], ['Valley Sans', 900, 1586], ['SN Pro', 900, 1363], ['Geom', 900, 1271],
+  ['Elms Sans', 900, 1093], ['National Park', 800, 774], ['Asta Sans', 800, 884], ['Pathway Extreme', 900, 726], ['Kumbh Sans', 900, 302],
+  ['Golos Text', 900, 238], ['Onest', 900, 171], ['Rethink Sans', 800, 258], ['Atkinson Hyperlegible Next', 800, 386], ['Scoutie Sans', 800, 1797],
+  ['Clarity City', 900, 1738], ['Finlandica Headline', 900, 1843], ['Asap Condensed', 900, 399], ['Bowlby One', 400, 478], ['Rammetto One', 400, 352],
+  ['Paytone One', 400, 297], ['Dela Gothic One', 400, 340], ['Passion One', 900, 304], ['Stick No Bills', 800, 1018],
+];
+const q = F.map(([f, w]) => 'family=' + f.replace(/ /g, '+') + ':wght@' + w).join('&');
+document.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?${q}&display=swap">`);
+document.getElementById('g').innerHTML = F.map(([f, w, r]) => {
+  const st = `font-family:'${f}',system-ui;font-weight:${w}`;
+  return `<div class="t">
+    <div class="bar"><img src="img/fs-icon.svg" alt=""><span style="${st}">FootballScouted</span></div>
+    <div class="art"><b style="${st}">Season line</b></div>
+    <div class="head" style="${st}">Today’s assignment</div>
+    <div class="row" style="font-family:'${f}',system-ui"><span>Log the shot · 0123456789</span><span>£42m</span></div>
+    <div class="meta"><b>${f} ${w}</b><span>rank ${r}</span></div>
+  </div>`;
+}).join('');
+</script>
+</body>
+</html>

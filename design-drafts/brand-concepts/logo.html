@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BK Scout logo</title>
+<title>FootyScoutle logo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800;900&family=Libre+Franklin:wght@500;700;800&display=swap" rel="stylesheet">
@@ -39,6 +39,14 @@
   .fk { fill: currentColor; }
   .fp { fill: var(--fill, var(--paper)); }
   .glyph { fill: currentColor; font-family: 'Big Shoulders', sans-serif; font-weight: 900; }
+  .tt { fill: #1F3A5F; }
+  .tp { fill: #FBF6EA; }
+  .tf { fill: none; stroke: #FBF6EA; stroke-width: 6.5; stroke-linejoin: round; }
+  .tb { fill: none; stroke: #FBF6EA; stroke-width: 6.5; stroke-linecap: butt; }
+  .thgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; margin-top: 14px; }
+  .thcell { border: 1px solid #ddd3bf; border-radius: 10px; padding: 12px; }
+  .thcell h3 { font: 700 13px/1.3 'Libre Franklin', sans-serif; margin: 0 0 10px; }
+  .thsizes { display: flex; align-items: end; gap: 12px; }
   .glyph-p { fill: var(--fill, var(--paper)); }
   .hg { fill: currentColor; stroke: var(--fill, var(--paper)); stroke-width: 2.4; }
   .hl { fill: none; stroke: var(--fill, var(--paper)); stroke-width: 2.6; stroke-linecap: round; }
@@ -100,16 +108,110 @@
       <rect class="hg" x="40" y="44.5" width="17" height="11" rx="1.5"/>
       <circle class="fp" cx="39" cy="29" r="11"/><circle class="fp" cx="41" cy="71" r="11.5"/>
     </symbol>
+    <clipPath id="tl"><path d="M10 44H47L44 74H13Z"/></clipPath>
+    <clipPath id="tr"><path d="M53 44H90L87 74H56Z"/></clipPath>
+    <symbol id="th-a" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#tl)"><rect class="tp" x="15.5" y="49.5" width="8" height="14" rx="4.0"/></g><g clip-path="url(#tr)"><rect class="tp" x="59" y="49.5" width="8" height="14" rx="4.0"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M12 33Q28 21 45 30"/><path class="tb" d="M56 37Q71 32 86 37"/></symbol>
+    <symbol id="th-b" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#tl)"><rect class="tp" x="34.5" y="49.5" width="8" height="14" rx="4.0"/></g><g clip-path="url(#tr)"><rect class="tp" x="77" y="49.5" width="8" height="14" rx="4.0"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M14 37Q29 32 44 37"/><path class="tb" d="M55 30Q72 21 88 33"/></symbol>
+    <symbol id="th-c" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#tl)"><rect class="tp" x="34.5" y="49.5" width="8" height="14" rx="4.0"/></g><g clip-path="url(#tr)"><rect class="tp" x="77" y="49.5" width="8" height="14" rx="4.0"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M13 34Q29 26 45 33"/><path class="tb" d="M55 30Q72 21 88 33"/></symbol>
+    <symbol id="th-d" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#tl)"><rect class="tp" x="24.5" y="49.5" width="8" height="14" rx="4.0"/></g><g clip-path="url(#tr)"><rect class="tp" x="67.5" y="49.5" width="8" height="14" rx="4.0"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M13 34Q29 26 45 33"/><path class="tb" d="M55 33Q71 26 87 34"/></symbol>
+    <symbol id="th-e" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#tl)"><rect class="tp" x="32.5" y="49.5" width="10" height="17" rx="5.0"/></g><g clip-path="url(#tr)"><rect class="tp" x="75" y="49.5" width="10" height="17" rx="5.0"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M14 37Q29 32 44 37"/><path class="tb" d="M55 30Q72 21 88 33"/></symbol>
+    <symbol id="th-f" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#tl)"><rect class="tp" x="33" y="49.5" width="10" height="10" rx="5.0"/></g><g clip-path="url(#tr)"><rect class="tp" x="75.5" y="49.5" width="10" height="10" rx="5.0"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M14 37Q29 32 44 37"/><path class="tb" d="M55 30Q72 21 88 33"/></symbol>
+    <symbol id="th-g" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#th-g-l)"><rect class="tp" x="26" y="49.5" width="8" height="10" rx="4"/></g><g clip-path="url(#th-g-r)"><rect class="tp" x="69" y="49.5" width="8" height="10" rx="4"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M13 34Q29 26 45 33"/><path class="tb" d="M55 30Q72 21 88 33"/></symbol>
+    <clipPath id="th-g-l"><path d="M10 44H47L44 74H13Z"/></clipPath><clipPath id="th-g-r"><path d="M53 44H90L87 74H56Z"/></clipPath>
+    <symbol id="th-h" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#th-h-l)"><rect class="tp" x="26" y="43.5" width="8" height="11" rx="4"/></g><g clip-path="url(#th-h-r)"><rect class="tp" x="69" y="43.5" width="8" height="11" rx="4"/></g><path class="tf" d="M11 38H47L44 78H14Z"/><path class="tf" d="M53 38H89L86 78H56Z"/><path class="tf" d="M47 45H53"/><path class="tb" d="M13 28Q29 20 45 27"/><path class="tb" d="M55 24Q72 15 88 27"/></symbol>
+    <clipPath id="th-h-l"><path d="M11 38H47L44 78H14Z"/></clipPath><clipPath id="th-h-r"><path d="M53 38H89L86 78H56Z"/></clipPath>
+    <symbol id="th-i" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#th-i-l)"><ellipse class="tp" cx="28.5" cy="60" rx="11.5" ry="9"/><rect class="tt" x="26" y="51.5" width="7" height="8" rx="3.5"/></g><g clip-path="url(#th-i-r)"><ellipse class="tp" cx="71.5" cy="60" rx="11.5" ry="9"/><rect class="tt" x="69" y="51.5" width="7" height="8" rx="3.5"/></g><path class="tf" d="M10 44H47L44 74H13Z"/><path class="tf" d="M53 44H90L87 74H56Z"/><path class="tf" d="M47 50H53"/><path class="tb" d="M13 34Q29 26 45 33"/><path class="tb" d="M55 30Q72 21 88 33"/></symbol>
+    <clipPath id="th-i-l"><path d="M10 44H47L44 74H13Z"/></clipPath><clipPath id="th-i-r"><path d="M53 44H90L87 74H56Z"/></clipPath>
+    <symbol id="th-j" viewBox="0 0 100 100"><rect class="tt" width="100" height="100" rx="22"/><g clip-path="url(#th-j-l)"><ellipse class="tp" cx="29" cy="58" rx="11.5" ry="14"/><rect class="tt" x="26" y="45.5" width="7" height="10" rx="3.5"/></g><g clip-path="url(#th-j-r)"><ellipse class="tp" cx="71" cy="58" rx="11.5" ry="14"/><rect class="tt" x="68" y="45.5" width="7" height="10" rx="3.5"/></g><path class="tf" d="M11 38H47L44 78H14Z"/><path class="tf" d="M53 38H89L86 78H56Z"/><path class="tf" d="M47 45H53"/><path class="tb" d="M13 28Q29 20 45 27"/><path class="tb" d="M55 24Q72 15 88 27"/></symbol>
+    <clipPath id="th-j-l"><path d="M11 38H47L44 78H14Z"/></clipPath><clipPath id="th-j-r"><path d="M53 38H89L86 78H56Z"/></clipPath>
   </defs>
 </svg>
 
 <main>
-  <h1>BK Scout logo: options</h1>
+  <h1>FootyScoutle logo: options</h1>
   <p class="lede">Round 2, drawn to match the wordmark: squared, condensed, heavy strokes with flat ends, like Big Shoulders 900. No ball anywhere: the name already says Ball. Each at 128, 64, 32 and 16 px, as an app icon, on ink and with the wordmark. Judge at 32 and 16 first. The pentagon versions are gone.</p>
 
+  <section class="feature" id="final-icon">
+    <h2>Final icon: vector redraw of the pick</h2>
+    <p class="lede" style="margin:0">Traced from the pixels, not redrawn by eye: every shape is a parameter (tile, lens edges and corner radii, pupils, brows) fitted to the generated original by pixel diff. Then tidied: no cream margin, both lenses mirrored, one 22-unit stroke for frame, bridge and both brows, coordinates on a whole or half-unit grid of a 420 square. Brow corners rounded slightly (radius 4), as in the original. File: <code>img/fs-icon.svg</code>, PNGs in <code>img/fs-icon/</code>.</p>
+    <div class="row">
+      <figure><img src="img/round3/fs-think-pick.png" alt="Generated original" style="width:256px;display:block"><figcaption>Original (generated)</figcaption></figure>
+      <figure><img src="img/fs-icon.svg" alt="Vector redraw" style="width:256px;display:block"><figcaption>SVG (tile fills the square)</figcaption></figure>
+      <figure><img src="img/round3/fs-icon-diff.png" alt="Diff heatmap" style="width:256px;display:block"><figcaption>Diff: blue = pixel differs</figcaption></figure>
+    </div>
+    <ul>
+      <li><b>0.48% of pixels differ</b> (1,249 of 258,064), each pixel snapped to the nearest of the three colours first. Nearly all of it is one-pixel edge noise; the visible differences are the bridge (about 4 units thinner, to match the stroke) and the arch's ends, which the original rounds very slightly.</li>
+      <li>Before tidying, the untied fit was 0.36%. First hand-measured draft: 2.35%.</li>
+      <li>Colours sampled from the original: yellow #F5AF3E, ink #19212A, cream #FBF6EA.</li>
+    </ul>
+    <div class="row">
+      <figure><img src="img/fs-icon.svg" alt="" style="width:128px;display:block;margin:0 auto"><figcaption>128</figcaption></figure><figure><img src="img/fs-icon.svg" alt="" style="width:64px;display:block;margin:0 auto"><figcaption>64</figcaption></figure><figure><img src="img/fs-icon.svg" alt="" style="width:32px;display:block;margin:0 auto"><figcaption>32</figcaption></figure><figure><img src="img/fs-icon.svg" alt="" style="width:16px;display:block;margin:0 auto"><figcaption>16</figcaption></figure>
+      <figure><div style="background:#1B2230;padding:10px;border-radius:12px"><img src="img/fs-icon.svg" alt="" style="width:64px;display:block"></div><figcaption>On ink</figcaption></figure>
+    </div>
+  </section>
+  <section class="feature">
+    <h2>Picked: flat left brow, arched right (Jonno, 2026-11-18)</h2>
+    <p class="lede" style="margin:0">Top-right cell of grid be14180b, cropped as it was generated. Next: a clean final version of exactly this (a vector redraw or one high-quality generation), not a new design.</p>
+    <div class="row">
+      <figure><img src="img/round3/fs-think-pick.png" alt="" style="width:128px;display:block;margin:0 auto"><figcaption>128</figcaption></figure><figure><img src="img/round3/fs-think-pick.png" alt="" style="width:64px;display:block;margin:0 auto"><figcaption>64</figcaption></figure><figure><img src="img/round3/fs-think-pick.png" alt="" style="width:48px;display:block;margin:0 auto"><figcaption>48</figcaption></figure><figure><img src="img/round3/fs-think-pick.png" alt="" style="width:32px;display:block;margin:0 auto"><figcaption>32</figcaption></figure><figure><img src="img/round3/fs-think-pick.png" alt="" style="width:16px;display:block;margin:0 auto"><figcaption>16</figcaption></figure>
+      <figure><div style="background:#1B2230;padding:10px;border-radius:12px"><img src="img/round3/fs-think-pick.png" alt="" style="width:64px;display:block"></div><figcaption>On ink</figcaption></figure>
+    </div>
+  </section>
+  <section class="feature">
+    <h2>Thinking glasses: brows only (Higgsfield)</h2>
+    <p class="lede" style="margin:0">The old tapered frames, the free-rein eyes (whites, pupil high, catchlight), nothing extra. Only the brows change.</p>
+    <div class="row">
+      <figure><img src="img/round3/fs-think-brows.png" alt="Four brow variants on the thinking glasses" style="width:520px;border-radius:8px;display:block"><figcaption>Job be14180b: both arched, right higher · flat left, arched right · both even · flat left, tilted right</figcaption></figure>
+      <figure><img src="img/round3/fs-think-brows.png" alt="" style="width:96px;display:block;margin:0 auto"><figcaption>At 96 (each icon about 40)</figcaption></figure>
+    </div>
+  </section>
+  <section class="feature">
+    <h2>Thinking glasses: free rein (Higgsfield)</h2>
+    <p class="lede" style="margin:0">One generation with no reference and free choice of line, spacing and shapes; the only rule was "thinking, not suspicious". All four finally look up: eye whites with the pupil high, a catchlight, relaxed arched brows with one higher.</p>
+    <div class="row">
+      <figure><img src="img/round3/fs-think-grid.png" alt="Four thinking-glasses icons" style="width:520px;border-radius:8px;display:block"><figcaption>Job 563c7696: thought bubble (navy) · bold frames with spark lines (yellow) · ellipsis (outline) · cloud and sparks (ink)</figcaption></figure>
+      <figure><img src="img/round3/fs-think-grid.png" alt="" style="width:64px;display:block;margin:0 auto"><figcaption>Whole grid at 64</figcaption></figure>
+    </div>
+  </section>
+  <section class="feature">
+    <h2>Looking up: drafts G to J</h2>
+    <p class="lede" style="margin:0">A to F read as sideways: the lenses are wide and short, so a pupil can travel far sideways but only a little up. Fix: pupils at the top centre with clear empty lens below, taller lenses for more vertical travel, and eye whites so the pupil sits at the top of a visible eye. Brows as C.</p>
+    <div class="thgrid">
+      <div class="thcell"><h3>G · Pupils top centre, empty lens below</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-g"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-g"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-g"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-g"/></svg></div></div>
+      <div class="thcell"><h3>H · Taller lenses, pupils top centre</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-h"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-h"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-h"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-h"/></svg></div></div>
+      <div class="thcell"><h3>I · Eye whites, pupils at the top of them</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-i"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-i"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-i"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-i"/></svg></div></div>
+      <div class="thcell"><h3>J · Taller lenses, eye whites</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-j"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-j"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-j"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-j"/></svg></div></div>
+    </div>
+  </section>
+  <section class="feature">
+    <h2>Thinking, not suspicious: SVG drafts</h2>
+    <p class="lede" style="margin:0">Drawn in code to settle the expression before Higgsfield has a go. Thinking means looking up: the pupils sit in an upper corner, just clear of the frame, and the brows rise. No brow angles down, because a lowered brow is what made gen 1 read as suspicious. One stroke weight everywhere (frame, bridge, brows), corners all set by the same round join. Shown at 120, 48, 32 and 16 px.</p>
+    <div class="thgrid">
+      <div class="thcell"><h3>A · Looks up-left, left brow raised</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-a"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-a"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-a"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-a"/></svg></div></div>
+      <div class="thcell"><h3>B · Looks up-right, right brow raised</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-b"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-b"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-b"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-b"/></svg></div></div>
+      <div class="thcell"><h3>C · Looks up-right, both raised, right higher</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-c"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-c"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-c"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-c"/></svg></div></div>
+      <div class="thcell"><h3>D · Looks straight up, both brows arched</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-d"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-d"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-d"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-d"/></svg></div></div>
+      <div class="thcell"><h3>E · As B with bigger pupils</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-e"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-e"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-e"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-e"/></svg></div></div>
+      <div class="thcell"><h3>F · As B with round pupils, for comparison</h3><div class="thsizes"><svg width="120" height="120" viewBox="0 0 100 100"><use href="#th-f"/></svg><svg width="48" height="48" viewBox="0 0 100 100"><use href="#th-f"/></svg><svg width="32" height="32" viewBox="0 0 100 100"><use href="#th-f"/></svg><svg width="16" height="16" viewBox="0 0 100 100"><use href="#th-f"/></svg></div></div>
+    </div>
+  </section>
+  <section class="feature">
+    <h2>FootyScoutle icon: four concepts (Higgsfield)</h2>
+    <p class="lede" style="margin:0">Standalone icon, no lettering, no ball. Edge rule: crisp geometry with small tight corner radii, circles only for lenses and pupils, flat ends, one heavy stroke (matches Big Shoulders). Scout eyes uses the glasses shape from the first grid, tightened. A direction to redraw as clean SVG, not final art.</p>
+    <div class="row">
+      <figure><img src="img/round3/fs-think-1.png" alt="Thinking glasses icon: furrowed and raised brows, tall pupils" style="width:300px;border-radius:8px;display:block"><figcaption>Thinking glasses 1 (job 6275e574): furrow and raised brow, tall pupils cropped by the frame</figcaption></figure>
+      <figure><img src="img/round3/fs-think-1.png" alt="" style="width:64px;display:block;margin:0 auto"><figcaption>64</figcaption></figure>
+      <figure><img src="img/round3/fs-think-1.png" alt="" style="width:32px;display:block;margin:0 auto"><figcaption>32</figcaption></figure>
+      <figure><img src="img/round3/fs-think-1.png" alt="" style="width:16px;display:block;margin:0 auto"><figcaption>16</figcaption></figure>
+    </div>
+    <div class="row">
+      <figure><img src="img/round3/fs-icon-grid-2.png" alt="Second grid: two binoculars and two thinking glasses" style="width:520px;border-radius:8px;display:block"><figcaption>Round 2 (job 0a3fedce): binoculars, cream lenses · binoculars, yellow lenses with glints · thinking glasses, raised brow · filled lenses (reads as sunglasses)</figcaption></figure>
+      <figure><img src="img/round3/fs-icon-grid.png" alt="Grid of four FootyScoutle icon concepts" style="width:520px;border-radius:8px;display:block"><figcaption>Job aaeb8bc3: the OO · scout eyes · lens on the pitch · viewfinder</figcaption></figure>
+    </div>
+  </section>
   <section class="feature">
     <h2>BK, the B as binoculars (Higgsfield)</h2>
-    <p class="lede" style="margin:0">Latest first. Generated with the BK Scout wordmark as reference; a direction to redraw as a clean vector, not final art.</p>
+    <p class="lede" style="margin:0">Name changed to FootyScoutle on 2026-11-18, so the BK lettermarks below are history; the binocular idea carries on as a standalone mark. Latest first. Generated with the old BK Scout wordmark as reference; a direction to redraw as a clean vector, not final art.</p>
     <div class="row">
       <figure><img src="img/round3/bk-grid.png" alt="Grid of four BK binocular variants" style="width:460px;border-radius:8px;display:block"><figcaption>Grid (job b9682288): stroke-matched · lenses flattened into the stem · carved negative space · middle ground</figcaption></figure>
       <figure><img src="img/round3/bk-binoc-3.png" alt="BK, stubby binocular B with a straight stem" style="width:360px;border-radius:8px;display:block"><figcaption>Shorter barrels, straight stem: more B (job 2b04f973)</figcaption></figure>
@@ -149,7 +251,7 @@
         <figure>${svg(id, 16)}<figcaption>16</figcaption></figure>
         <figure><div class="app" style="width:72px;height:72px">${svg(id, 52)}</div><figcaption>App icon</figcaption></figure>
         <figure><div class="ink">${svg(id, 32)}</div><figcaption>On ink</figcaption></figure>
-        <figure><div class="lock">${svg(id, 44)}<b>BK Scout</b></div><figcaption>Lockup</figcaption></figure>
+        <figure><div class="lock">${svg(id, 44)}<b>FootyScoutle</b></div><figcaption>Lockup</figcaption></figure>
       </div>
     </section>`).join('');
 </script>

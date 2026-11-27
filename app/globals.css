@@ -2247,3 +2247,10 @@ html.is-smoothing::view-transition-new(*):only-child { animation: vt-arrive 260m
 .pp__row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1.5px solid var(--rule-strong); }
 .pp__name { margin: 0; font-size: 16px; }
 .pp__opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+/* /photo-choose: raw photos before any cutout. The chosen one gets a heavy ink frame and the word CHOSEN (no colour). */
+.pp__row.is-done .pp__name::after { content: ' - chosen'; font-weight: 400; }
+.ch__opt { position: relative; display: block; padding: 4px; border: 0; border-radius: 4px; background: none; cursor: pointer; }
+.ch__opt img { display: block; width: 160px; height: 160px; object-fit: cover; border-radius: 2px; }
+.ch__opt.is-on { box-shadow: 0 0 0 4px var(--ink); background: rgba(20, 18, 16, 0.1); }
+.ch__opt:focus-visible { outline: 2px solid var(--ink); }
+.ch__none { width: 168px; height: 168px; display: flex; align-items: center; justify-content: center; border: 1.5px dashed var(--ink); font: inherit; font-weight: 600; color: var(--ink); }

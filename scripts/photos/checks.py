@@ -25,6 +25,20 @@ MANAGER_OK = re.compile(r'press conference|rueda de prensa|interview|entrevista|
 
 MIN_KIT = 0.7     # CLIP's probability that the crop is a footballer in a shirt
 MAX_EDGE = 0.05   # alpha in the outer columns beside the head: another person or a limb
+# Laplacian variance of the subject in the 440 px crop (subject_sharpness). Set 2026-11-17 from the 480
+# published cutouts: the five Jonno found too soft (Palmer 22, Figo 25, Park 28, Berbatov 39, Guardiola 47:
+# small old photos upscaled) are the five lowest, then a gap to Sancho 60 (soft, acceptable); median 941.
+# Of 3,551 unreviewed cutouts, 126 (3.5%) fall under it, and a sample of 40-55 was smeared.
+MIN_SUBJECT_SHARP = 55
+
+def subject_sharpness(rgba: np.ndarray) -> float:
+    """Laplacian variance of the grey image over the subject (alpha > 200, eroded 2 px so the matte's
+    own edge does not count). An upscaled small photo has no fine detail left and scores low."""
+    m = cv2.erode((rgba[..., 3] > 200).astype(np.uint8), np.ones((5, 5), np.uint8))
+    if m.sum() < 500:
+        return 0.0
+    lap = cv2.Laplacian(cv2.cvtColor(np.ascontiguousarray(rgba[..., :3]), cv2.COLOR_RGB2GRAY), cv2.CV_64F)
+    return float(lap[m > 0].var())
 
 def bad_metadata(text: str, manager: bool = False) -> str | None:
     for m in NOT_FOOTBALL.finditer(text):
@@ -90,10 +104,13 @@ class Clip:
 def crop_verdict(rgba_img, detector, clip: 'Clip', manager: bool = False) -> tuple[str | None, dict]:
     """(reason to reject or None, measures) for a PIL RGBA crop. A manager passes in a suit or tracksuit too."""
     rgba = np.array(rgba_img.convert('RGBA'))
+    sharp = subject_sharpness(rgba)
+    if sharp < MIN_SUBJECT_SHARP:   # cheapest check first: no CLIP for a photo that is mush anyway
+        return f'blurry (subject sharpness {sharp:.0f})', {'subj': round(sharp, 1)}
     edge = edge_mass(rgba[..., 3])
     faces = second_faces(rgba, detector)
     kit, dress, top = clip.kit([rgba_img])[0]
-    m = {'edge': round(edge, 3), 'faces': faces, 'kit': round(kit, 3)}
+    m = {'edge': round(edge, 3), 'faces': faces, 'kit': round(kit, 3), 'subj': round(sharp, 1)}
     if kit + (dress if manager else 0) < MIN_KIT:
         return f'not a footballer in kit ({top})', m
     if edge > MAX_EDGE:

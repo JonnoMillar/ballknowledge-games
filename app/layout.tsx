@@ -28,7 +28,7 @@ const text = Libre_Franklin({
 
 /**
  * Runs in the page before its first frame (stringified below, so it must
- * stand alone). A page change between the hub and a game's front page is the
+ * stand alone). A page change between the games board (/games) and a game's front page is the
  * slow, staged move in MOTION (globals.css): mark the view transition with
  * the type `morph`, and put .vt-arrived on <html> until everything has risen
  * in, and .vt-landed for good, so the page's own load-in never replays when
@@ -43,9 +43,9 @@ function morph(fronts: string[]) {
     if (!t || !t.types || !from) return;
     const a = new URL(from.url).pathname;
     const b = location.pathname;
-    if (!((a === '/' && fronts.includes(b)) || (b === '/' && fronts.includes(a)))) return;
+    if (!((a === '/games' && fronts.includes(b)) || (b === '/games' && fronts.includes(a)))) return;
     t.types.add('morph');
-    if (b === '/') {
+    if (b === '/games') {
       const keep = document.createElement('style');
       keep.textContent = `.vt-arrived .hub__tile[href="${a}"] > :is(.hub__ground, .hub__mini) { animation: none; }`;
       document.head.appendChild(keep);
@@ -64,9 +64,9 @@ function morph(fronts: string[]) {
 const MORPH = `(${morph.toString()})(${JSON.stringify(GAMES.map((g) => g.href))})`;
 
 export const metadata = {
-  title: { default: 'Ball Knowledge Scout', template: '%s · BK Scout' },
+  title: { default: 'FootballScouted · Daily football games', template: '%s · FootballScouted' },
   description: 'Daily football games for people with real ball knowledge.',
-  applicationName: 'Ball Knowledge Scout',
+  applicationName: 'FootballScouted',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

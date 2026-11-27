@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FootballScouted brand</title>
+<link rel="icon" href="img/fs-icon/fs-icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Valley+Sans:wght@900&family=Onest:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* The brand as chosen (2026-11-19). The exploration that led here is in git history. */
+:root {
+  --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --rule: #E2D6BD; --muted: #5E574D;
+  --navy: #1F3A5F; --sun: #F5AF3E; --biro: #23408E; --tape: #151413; --ochre: #9A5B00; --mark: rgba(251,246,234,.55);
+  /* Accent set, swapped per variation in section 3. */
+  --act: #C8202F; --act-ink: #fff; --act-deep: #8E1520; --next-ink: #C8202F; --next-bg: transparent; --pip: #F5AF3E;
+  /* Font set, swapped per candidate. */
+  --h: 'Valley Sans'; --hw: 900; --hx: 100%; --b: 'Onest';
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+main { max-width: 1500px; margin: 0 auto; padding: 24px 16px 80px; }
+header { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+header img { width: 56px; height: 56px; }
+h1 { margin: 0; font: 800 26px/1.1 system-ui, sans-serif; }
+header nav { display: flex; gap: 14px; flex-wrap: wrap; font-weight: 700; }
+header nav a { color: var(--ink); text-underline-offset: 3px; }
+section { margin-top: 40px; scroll-margin-top: 12px; }
+h2 { margin: 0 0 4px; font: 800 22px/1.2 system-ui, sans-serif; }
+h2 span { color: var(--muted); margin-right: 6px; }
+h3 { margin: 0 0 8px; font: 700 15px/1.3 system-ui, sans-serif; }
+h3 small { color: var(--muted); font-weight: 500; margin-left: 6px; }
+.lede { margin: 0 0 16px; color: var(--muted); max-width: 86ch; }
+figure { margin: 0; }
+
+/* Controls: state is a tick and a fill, never colour alone. */
+
+/* ===== The hub scene: a crop of the office frame at about real laptop scale.
+   Everything inside is sized in cqw of the scene. ===== */
+.scene { position: relative; container-type: inline-size; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 24px rgba(40,25,10,.25); background: #b36d32; font-family: var(--b), system-ui, sans-serif; color: var(--ink); }
+.scene > .art { position: absolute; width: 175cqw; max-width: none; left: -62cqw; top: -17cqw; }
+.H { font-family: var(--h), system-ui, sans-serif; font-weight: var(--hw); font-stretch: var(--hx); }
+
+.bar { position: absolute; left: 0; right: 0; top: 0; height: 7.4cqw; padding: 0 2.2cqw; display: flex; align-items: center; gap: 1.4cqw; background: var(--ink); color: var(--paper); z-index: 2; box-shadow: 0 .3cqw 1cqw rgba(0,0,0,.25); }
+.bar .icon { width: 4.8cqw; height: 4.8cqw; display: block; flex: none; }
+.bar .wm { font-size: 3.2cqw; }
+.bar nav { margin-left: auto; display: flex; gap: .8cqw; }
+.bar nav span { background: var(--paper); color: var(--ink); font: 800 1.3cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: .75em 1em; border-radius: .4cqw; }
+
+.tape { position: absolute; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: .3cqw; transform: rotate(var(--r, -1.5deg)); }
+.tape b { background: var(--tape); color: #F4F1EA; font-size: 1.9cqw; line-height: 1; letter-spacing: .12em; text-transform: uppercase; padding: .42em .7em .36em; border-radius: 2px; box-shadow: 0 2px 3px rgba(0,0,0,.35); display: flex; gap: .5em; align-items: center; }
+.tape small { background: var(--paper); color: var(--ink); font: 800 1.15cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: .5em .6em; border-radius: 2px; box-shadow: 0 2px 3px rgba(40,20,5,.35); }
+.tape .flag { font: 800 .62em/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; background: var(--act); color: var(--act-ink); padding: .35em .5em; border-radius: 2px; box-shadow: 0 0 0 .2cqw var(--paper); }
+
+/* Generated clipboard (img/round3/clipboard-ink-plain-cut.png, job 5e82726c); the layer
+   sits on its ink sheet, as in style.html. Inside, cqw is the clipboard's. */
+.clipart { position: absolute; left: 29cqw; top: 9cqw; width: 42cqw; z-index: 1; container-type: inline-size; }
+.clipart > .cb { filter: drop-shadow(.6cqw 1.2cqw 1.4cqw rgba(40,20,5,.35)); }
+.clipart .cb img { display: block; width: 100%; height: auto; }
+.head { position: absolute; left: 20.8%; top: 23.6%; width: 58.4%; height: 21.6%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); text-shadow: 0 0 1cqw #0f2140, 0 0 2cqw #0f2140; }
+.head .eyebrow { display: flex; justify-content: space-between; gap: 1em; font: 800 2.5cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #C9D3E6; }
+.head h4 { margin: 2.2cqw 0 1.2cqw; font-size: 6.4cqw; line-height: 1; white-space: nowrap; color: var(--paper); }
+.head .sub { margin: 0; font: 500 2.9cqw/1.3 var(--b), system-ui, sans-serif; color: var(--pA-ink, var(--paper)); opacity: .78; }
+.pips { display: flex; gap: 1cqw; }
+.pips i { flex: 1; height: 1.4cqw; border-radius: .3cqw; background: rgba(251,246,234,.2); }
+.pips i.on { background: var(--pip); }
+.head .btn { margin-top: auto; width: 100%; font-size: 4.2cqw; line-height: 1; letter-spacing: .1em; text-transform: uppercase; color: var(--act-ink); background: var(--act); border: 0; border-radius: 1cqw; padding: .5em 1em .45em; text-shadow: none; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--act-deep); }
+.tasks { list-style: none; margin: 0; padding: 0; }
+.tasks li { position: absolute; left: 19.2%; width: 61.6%; height: 4.8%; display: flex; align-items: center; gap: 2.4cqw; padding: 0 2.4cqw; font: 700 3.7cqw/1.1 var(--b), system-ui, sans-serif; color: var(--ink); }
+.box { width: 5cqw; height: 5cqw; flex: none; border: .45cqw solid var(--ink); border-radius: .6cqw; display: grid; place-items: center; }
+.box svg { width: 5cqw; height: 5cqw; overflow: visible; }
+.biro { stroke: var(--biro); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.tasks li.done { color: var(--muted); }
+.nm { position: relative; white-space: nowrap; }
+.nm svg { position: absolute; left: -3px; top: 50%; width: calc(100% + 6px); height: .5em; transform: translateY(-40%); overflow: visible; }
+.nm svg path { stroke-width: 2.2; vector-effect: non-scaling-stroke; }
+.tasks li em { margin-left: auto; font: 800 2.5cqw/1 var(--b), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: var(--muted); }
+.tasks li.next em { color: var(--next-ink); background: var(--next-bg); padding: .35em .5em; border-radius: .5cqw; }
+.tasks li.next em::after { content: ' \2192'; }
+
+
+/* ===== Wordmark treatments ===== */
+.wm { white-space: nowrap; line-height: 1; display: inline-block; }
+.wm .a { display: inline-block; }
+.wm.two .a { color: var(--sun); }
+.on-paper .wm.two .a { color: var(--ochre); }
+.wm .oo { height: .6em; width: calc(.6em * 370 / 138); vertical-align: -.01em; margin: 0 .03em; --frame: var(--sun); --lens: var(--paper); --pupil: var(--ink); }
+.on-paper .wm .oo { --frame: var(--ink); }
+.wm .oo.brows { height: calc(.6em * 245 / 138); }
+.on-paper .wm.two .oo { --frame: var(--ochre); }
+
+
+.share { position: relative; min-width: 0; overflow: hidden; background: var(--paper); border-radius: 10px; padding: 16px; box-shadow: 0 8px 24px rgba(40,25,10,.2); font-family: var(--b), system-ui, sans-serif; color: var(--ink); }
+.share .wmline { display: flex; align-items: center; gap: 10px; }
+.share .wm { font-size: 30px; }
+.share .shot { margin: 12px 0; aspect-ratio: 2 / 1; border-radius: 6px; background: url(img/round2/6-desk.png) 62% 42% / 190% auto; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); }
+.share .res { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+.share .res small { display: block; font: 800 11px/1.3 var(--b), system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.share .res b { display: block; font-size: 40px; line-height: .95; font-variant-numeric: tabular-nums; }
+.share .ticks { display: flex; gap: 3px; }
+.share .ticks i { width: 15px; height: 15px; border: 2px solid var(--ink); border-radius: 3px; display: grid; place-items: center; font: 900 11px/1 system-ui, sans-serif; font-style: normal; }
+.share .ticks i::after { content: '✓'; }
+
+/* ===== Colour variations ===== */
+/* Palette systems: two primaries (A dominant, B second) and one rationed
+   attention colour, used only for the button, the Next chip and the tape flag. */
+.pal-ink    { --pA: #1B2230; --pA-ink: #FBF6EA; --pB: #FBF6EA; --pB-ink: #1B2230; --bar: #1B2230; --att: #F5AF3E; --att-ink: #1B2230; --att-deep: #A8680F; --biro: #23408E; }
+.cs { --act: var(--att); --act-ink: var(--att-ink); --act-deep: var(--att-deep); --next-ink: var(--att-ink); --next-bg: var(--att); }
+.cs .bar { background: var(--bar); }
+/* The generated sheet is already ink; this box only carries the code-drawn touchline marks. */
+.sheet { display: none; }
+.cs .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cs .sheet svg * { vector-effect: non-scaling-stroke; }
+.cs .sheet { display: block; position: absolute; left: 13.5%; top: 15.9%; width: 72.9%; height: 74%; background: none; }
+.cs .head { color: var(--pA-ink); text-shadow: none; }
+.cs .head h4 { color: var(--pA-ink); }
+.cs .head .eyebrow { color: var(--pA-ink); opacity: .78; }
+.cs .pips i { background: color-mix(in srgb, var(--pA-ink) 22%, transparent); }
+.cs .pips i.on { background: var(--pA-ink); }
+.cs .head .btn { box-shadow: 0 0 0 .5cqw var(--pA-ink), 0 1.4cqw 0 .5cqw var(--att-deep); }
+.cs .tasks li { background: var(--pB); color: var(--pB-ink); border-radius: .5cqw; }
+.cs .tasks li.done { color: color-mix(in srgb, var(--pB-ink) 62%, var(--pB)); }
+.cs .box { border-color: var(--pB-ink); }
+.cs .tasks li em { color: color-mix(in srgb, var(--pB-ink) 62%, var(--pB)); }
+.cs .tasks li.next em { color: var(--att-ink); background: var(--att); }
+.cs .biro { stroke: var(--biro); }
+
+/* ===== The chosen brand page ===== */
+.duo { display: grid; grid-template-columns: minmax(0, 760px) minmax(0, 340px); gap: 24px; align-items: start; }
+@media (max-width: 1000px) { .duo { grid-template-columns: minmax(0, 1fr); } .duo > * { max-width: 760px; } }
+.wm .oo.brows { height: calc(.6em * 245 / 138); }
+.marks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .marks { grid-template-columns: minmax(0, 1fr); } }
+.marks > div { border-radius: 10px; padding: 28px 22px 18px; container-type: inline-size; }
+.marks .wm { font-size: 9.6cqw; }
+.marks small { display: block; margin-top: 12px; font: 700 12px/1.3 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .72; }
+.icons { display: flex; gap: 18px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px; }
+.icons figure { text-align: center; font: 600 12px/1 system-ui, sans-serif; color: var(--muted); }
+.icons figcaption { margin-top: 6px; }
+.pal { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.sw { border-radius: 10px; overflow: hidden; background: var(--paper); box-shadow: inset 0 0 0 1px var(--rule); }
+.sw i { display: flex; align-items: flex-end; height: 84px; padding: 10px 12px; font: 900 22px/1 'Valley Sans', system-ui; font-style: normal; }
+.sw div { padding: 10px 12px 12px; font: 500 13px/1.4 system-ui, sans-serif; color: var(--muted); }
+.sw b { display: block; color: var(--ink); font-size: 14px; }
+.spec { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 6px 18px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.spec:last-child { border-bottom: 0; }
+.spec small { font: 600 12px/1.35 system-ui, sans-serif; color: var(--muted); }
+@media (max-width: 640px) { .spec { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--paper); border-radius: 10px; padding: 6px 20px; box-shadow: inset 0 0 0 1px var(--rule); }
+</style>
+</head>
+<body>
+<!-- The icon's glasses (paths from img/fs-icon.svg, no tile, no brows), for the "oo" treatment. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="oo" viewBox="25 197 370 138">
+    <path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
+    <path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+    <circle style="fill:var(--pupil)" cx="139" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="148" cy="227.5" r="5"/>
+    <circle style="fill:var(--pupil)" cx="319" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="328" cy="227.5" r="5"/>
+    <path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+    <rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
+  </symbol>
+  <symbol id="ico" viewBox="0 0 420 420">
+<path style="fill:var(--tile)" d="M101 0H319C370.51 0 420 49.49 420 101V319C420 370.51 370.51 420 319 420H101C49.49 420 0 370.51 0 319V101C0 49.49 49.49 0 101 0Z"/>
+<path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
+<path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+<circle style="fill:var(--pupil)" cx="139" cy="237.5" r="24"/>
+<circle style="fill:var(--lens)" cx="148" cy="227.5" r="5"/>
+<circle style="fill:var(--pupil)" cx="319" cy="237.5" r="24"/>
+<circle style="fill:var(--lens)" cx="328" cy="227.5" r="5"/>
+<path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+<rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
+<rect style="fill:var(--frame)" x="45" y="147" width="129" height="22" rx="4"/>
+<path style="fill:var(--frame);stroke:var(--frame)" stroke-width="8" stroke-linejoin="round" d="M222.73 129.50A113.0 113.0 0 0 1 368.75 120.56L360.36 131.76A99.0 99.0 0 0 0 232.43 139.59Z"/>
+</symbol>
+  <symbol id="oob" viewBox="25 90 370 245">
+    <path style="fill:var(--lens)" d="M52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77Z"/>
+    <path style="fill:var(--lens)" d="M243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+    <circle style="fill:var(--pupil)" cx="139" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="148" cy="227.5" r="5"/>
+    <circle style="fill:var(--pupil)" cx="319" cy="237.5" r="24"/><circle style="fill:var(--lens)" cx="328" cy="227.5" r="5"/>
+    <path style="fill:var(--frame)" fill-rule="evenodd" d="M25.23 235.49A29 29 0 0 1 52.8 197.5L159.84 197.5A41 41 0 0 1 199.43 249.17L182.61 311.57A31 31 0 0 1 152.68 334.5L78.56 334.5A29 29 0 0 1 50.99 314.49ZM52.98 249.63A23 23 0 0 1 74.85 219.5L154.62 219.5A23 23 0 0 1 176.83 248.49L162.96 299.92A17 17 0 0 1 146.55 312.5L85.82 312.5A17 17 0 0 1 69.66 300.77ZM220.57 249.17A41 41 0 0 1 260.16 197.5L367.2 197.5A29 29 0 0 1 394.77 235.49L369.01 314.49A29 29 0 0 1 341.44 334.5L267.32 334.5A31 31 0 0 1 237.39 311.57ZM243.17 248.49A23 23 0 0 1 265.38 219.5L345.15 219.5A23 23 0 0 1 367.02 249.63L350.34 300.77A17 17 0 0 1 334.18 312.5L273.45 312.5A17 17 0 0 1 257.04 299.92Z"/>
+    <rect style="fill:var(--frame)" x="199" y="230" width="22" height="22"/>
+  
+    <rect style="fill:var(--frame)" x="45" y="147" width="129" height="22" rx="4"/>
+    <path style="fill:var(--frame);stroke:var(--frame)" stroke-width="8" stroke-linejoin="round" d="M222.73 129.50A113.0 113.0 0 0 1 368.75 120.56L360.36 131.76A99.0 99.0 0 0 0 232.43 139.59Z"/>
+  </symbol>
+</svg>
+<main>
+  <header>
+    <svg width="56" height="56" viewBox="0 0 420 420" style="--tile:#F5AF3E;--frame:#19212A;--lens:#FBF6EA;--pupil:#19212A"><use href="#ico"/></svg>
+    <div>
+      <h1>FootballScouted: the brand as chosen</h1>
+      <nav><a href="#hub">On the hub</a><a href="#mark">Wordmark and icon</a><a href="#colour">Colour</a><a href="#type">Type</a></nav>
+    </div>
+  </header>
+
+  <section id="hub">
+    <h2>On the hub</h2>
+    <p class="lede">Ink and cream carry the surfaces; yellow appears only on the main button and the Next flag (the clipboard shows its before state). The clipboard is the generated plain ink sheet with the touchline marks in code.</p>
+    <div class="duo">
+      <div id="scene"></div>
+      <div class="share on-paper" id="share"></div>
+    </div>
+  </section>
+
+  <section id="mark">
+    <h2>Wordmark and icon</h2>
+    <p class="lede">Two-tone with brows: the icon’s own glasses and brows stand in for the oo. The wordmark stands alone in the top bar; the icon is used on its own (app icon, favicon, avatar).</p>
+    <div class="marks" id="marks"></div>
+    <div class="icons" id="icons"></div>
+  </section>
+
+  <section id="colour">
+    <h2>Colour</h2>
+    <p class="lede">Two primaries and one rationed attention colour. Meaning is always also carried by a word or shape, never by colour alone.</p>
+    <div class="pal">
+      <div class="sw"><i style="background:#1B2230;color:#FBF6EA">Ink</i><div><b>Primary A · #1B2230</b>Big surfaces: top bar, clipboard sheet; also all type on cream. 14.8:1 either way.</div></div>
+      <div class="sw"><i style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 -1px 0 #E2D6BD">Cream</i><div><b>Primary B · #FBF6EA</b>Second surface: task rows, paper, share cards.</div></div>
+      <div class="sw"><i style="background:#F5AF3E;color:#1B2230">Yellow</i><div><b>Attention · #F5AF3E</b>The icon’s yellow. Only the main button, Next and its flag. 8.4:1 on ink.</div></div>
+            <div class="sw"><i style="background:#9A5B00;color:#FBF6EA">Ochre</i><div><b>Yellow on paper · #9A5B00</b>The wordmark’s Football half on light grounds. 5.0:1.</div></div>
+    </div>
+  </section>
+
+  <section id="type">
+    <h2>Type</h2>
+    <p class="lede">Valley Sans for anything that shouts, Onest for anything you read. Both free on Google Fonts and uncommon; how they were found: <a href="font-sweep.html">font-sweep.html</a>.</p>
+    <div class="panel">
+      <div class="spec"><small>Valley Sans 900 · heading</small><div class="H" style="font-size:44px;line-height:1">Today’s assignment</div></div>
+      <div class="spec"><small>Valley Sans 900 · valuation</small><div class="H" style="font-size:56px;line-height:.95;font-variant-numeric:tabular-nums">£37.0m</div></div>
+      <div class="spec"><small>Valley Sans 900 · button and tape, caps +10%</small><div class="H" style="font-size:20px;letter-spacing:.1em;text-transform:uppercase">Continue · Season line</div></div>
+      <div class="spec"><small>Onest 800 · eyebrow, caps +12%</small><div style="font:800 12px/1 'Onest',system-ui;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">4-day streak · Thu 19 Nov</div></div>
+      <div class="spec"><small>Onest 700 · UI</small><div style="font:700 16px/1.3 'Onest',system-ui">Log the shot</div></div>
+      <div class="spec"><small>Onest 500 · body</small><div style="font:500 16px/1.5 'Onest',system-ui;max-width:62ch">One move in each career never happened. Find it before the clock runs out.</div></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const ICO = (px) => `<svg width="${px}" height="${px}" viewBox="0 0 420 420" style="display:block;--tile:#F5AF3E;--frame:#19212A;--lens:#FBF6EA;--pupil:#19212A"><use href="#ico"/></svg>`;
+const WM = (acc, rest) => `<span class="wm H" style="color:${rest}"><span style="color:${acc}">F<svg class="oo brows" aria-label="oo" style="--frame:${acc};--lens:#FBF6EA;--pupil:#19212A"><use href="#oob"/></svg>tball</span>Scouted</span>`;
+const WM_DARK = WM('#F5AF3E', '#FBF6EA'), WM_PAPER = WM('#9A5B00', '#1B2230');
+const TICK = '<svg viewBox="0 0 22 22"><path class="biro" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
+const STRIKE = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg>';
+const TASKS = ['Check the rumours', 'Trace the link', 'Log the shot', 'Find the mole', 'Line them up', 'Read the season'];
+const TOPS = [48.4, 54.8, 61.2, 67.6, 74.0, 80.4];
+const rows = TASKS.map((t, i) => {
+  return `<li style="top:${TOPS[i]}%"><i class="box"></i><span class="nm">${t}</span><em></em></li>`;
+}).join('');
+document.getElementById('scene').innerHTML = `<div class="scene cs pal-ink">
+  <img class="art" src="img/round2/6-desk.png" alt="">
+  <div class="bar">${WM_DARK}<nav><span>Log in</span><span>Menu</span></nav></div>
+  <div class="tape" style="left:3cqw; top:20cqw; --r:-2deg"><b class="H">Spoofed</b><small>Spot the fake move</small></div>
+  <div class="tape" style="left:4cqw; top:50cqw; --r:1.5deg"><b class="H">Chain <span class="flag">Next</span></b><small>Steps, then the puzzle</small></div>
+  <div class="tape" style="left:74cqw; top:44cqw; --r:-1deg"><b class="H">Season line</b><small>Name that season</small></div>
+  <div class="clipart"><div class="cb"><img src="img/round3/clipboard-ink-plain-cut.png" alt=""></div><div class="sheet"><svg viewBox="0 0 500 753" preserveAspectRatio="none" aria-hidden="true"><rect x="16" y="40" width="468" height="697" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 62A22 22 0 0 0 38 40M462 40A22 22 0 0 0 484 62M484 715A22 22 0 0 0 462 737M38 737A22 22 0 0 0 16 715" fill="none" stroke="var(--mark)" stroke-width="1.6"/><path d="M16 388.5H30M484 388.5H470" stroke="var(--mark)" stroke-width="1.6"/></svg></div>
+    <div class="head"><div class="eyebrow"><span>#42 · Thu 19 Nov</span><span>4-day streak</span></div>
+      <h4 class="H">Today’s assignment</h4>
+      <p class="sub">Six quick tasks. One report.</p>
+      <button class="btn H">Start</button></div>
+    <ol class="tasks">${rows}</ol>
+  </div>
+</div>`;
+document.getElementById('share').innerHTML = `<div class="wmline">${WM_PAPER}</div>
+  <div class="shot"></div>
+  <div class="res"><div><small>Valued at</small><b class="H">£37.0m</b></div><div><small style="text-align:right">#42 · Thu 19 Nov</small><div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>`;
+document.getElementById('marks').innerHTML =
+  `<div style="background:#1B2230;color:#FBF6EA">${WM_DARK}<small>On ink · the style and the top bar</small></div>` +
+  `<div class="on-paper" style="background:#FBF6EA;color:#1B2230;box-shadow:inset 0 0 0 1px #E2D6BD">${WM_PAPER}<small>On paper · share cards</small></div>`;
+document.getElementById('icons').innerHTML = [[128, 'App icon'], [64, '64'], [32, '32'], [16, '16']]
+  .map(([px, t]) => `<figure>${ICO(px)}<figcaption>${t}</figcaption></figure>`).join('');
+
+// Shrink anything that would overflow its box, never grow it.
+function fit(el, box) {
+  el.style.fontSize = '';
+  let s = parseFloat(getComputedStyle(el).fontSize), n = 0;
+  while (box.scrollWidth > box.clientWidth + 1 && n++ < 40) el.style.fontSize = (s *= .96) + 'px';
+}
+function fitAll() {
+  document.querySelectorAll('.head h4').forEach((h) => fit(h, h.parentElement));
+  document.querySelectorAll('.share .wmline').forEach((l) => fit(l.querySelector('.wm'), l));
+  document.querySelectorAll('.share .res').forEach((r) => fit(r.querySelector('b'), r));
+}
+document.fonts.ready.then(fitAll);
+addEventListener('resize', fitAll);
+</script>
+</body>
+</html>

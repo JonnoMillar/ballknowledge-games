@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipboard marks</title>
+<link rel="icon" href="img/fs-icon/fs-icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Valley+Sans:wght@900&family=Onest:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Tokens from style.html (colour system A on ink). */
+:root {
+  --ink: #1B2230; --paper: #FBF6EA; --paper-2: #F1E6CF; --rule: #E2D6BD; --muted: #5E574D;
+  --yellow: #F5AF3E; --yellow-deep: #A8680F; --biro: #23408E; --cream-dim: rgba(251,246,234,.72);
+  --mark: rgba(251,246,234,.55); /* perimeter marks: cream, quiet */
+  --display: 'Valley Sans', system-ui, sans-serif; --body: 'Onest', system-ui, sans-serif;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper-2); color: var(--ink); font: 500 15px/1.5 var(--body); }
+main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 60px; }
+h1 { font: 900 30px/1 var(--display); margin: 0 0 6px; }
+.lede { color: var(--muted); max-width: 80ch; margin: 0 0 16px; }
+.lede b { color: var(--ink); }
+
+/* Variant picker: state is a filled box and a tick, never colour alone. */
+.picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+.picker button { font: 700 14px/1 var(--body); color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 6px; padding: 10px 14px; cursor: pointer; display: flex; gap: 8px; align-items: center; }
+.picker button::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--ink); border-radius: 3px; }
+.picker button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.picker button[aria-pressed="true"]::before { content: '✓'; border-color: var(--paper); font-size: 11px; line-height: 10px; text-align: center; }
+.note { font: 500 14px/1.45 var(--body); color: var(--muted); max-width: 80ch; margin: -10px 0 22px; min-height: 2.9em; }
+
+.states { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+@media (max-width: 900px) { .states { grid-template-columns: minmax(0, 1fr); justify-items: center; } }
+.states figure { margin: 0; width: 100%; max-width: 380px; }
+.states figcaption { font: 800 12px/1.3 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+.states figcaption span { display: block; font: 500 13.5px/1.4 var(--body); letter-spacing: 0; text-transform: none; margin-top: 4px; }
+
+/* 3x crop of the sheet's top-left corner. */
+.zoom { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--rule); }
+.zoom .clipart { position: absolute; width: 300%; left: -22%; top: -58%; }
+
+/* ===== The clipboard (generated plain ink sheet; marks and bands in code) ===== */
+.clipart { position: relative; width: 100%; container-type: inline-size; }
+.clipart > .cb { filter: drop-shadow(4px 8px 10px rgba(40,20,5,.28)); }
+.clipart .cb img { display: block; width: 100%; height: auto; }
+.clipart .cb img[src$="lines.png"] { clip-path: polygon(8.3% 10.7%, 29.1% 10.7%, 29.1% 10.3%, 45.1% 10.3%, 45.3% 4.9%, 47.2% 4.1%, 53.1% 4.1%, 54.9% 4.9%, 55.2% 10.3%, 71.2% 10.3%, 71.2% 10.7%, 91.6% 10.7%, 91.6% 93.6%, 8.3% 93.6%); }
+.sheet { position: absolute; left: 13.5%; top: 15.9%; width: 72.9%; height: 74%; background: none; }
+.sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sheet svg * { vector-effect: non-scaling-stroke; }
+
+.head { position: absolute; left: 20.8%; top: 23.6%; width: 58.4%; height: 21.6%; padding: 1.6cqw 2cqw; display: flex; flex-direction: column; color: var(--paper); }
+.eyebrow { display: flex; justify-content: space-between; gap: 1em; white-space: nowrap; overflow: hidden; font: 800 2.5cqw/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); }
+.head h4 { margin: 2.2cqw 0 1.2cqw; font: 900 6.4cqw/1 var(--display); color: var(--paper); white-space: nowrap; overflow: hidden; }
+.sub { font: 500 2.9cqw/1.3 var(--body); color: var(--cream-dim); margin: 0; }
+.bottom { margin-top: auto; }
+.btn { width: 100%; font: 900 4.2cqw/1 var(--display); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); background: var(--yellow); border: 0; border-radius: 1cqw; padding: .5em 1em .45em; cursor: pointer; box-shadow: 0 0 0 .5cqw var(--paper), 0 1.4cqw 0 .5cqw var(--yellow-deep); transition: transform 160ms var(--ease), box-shadow 160ms var(--ease); }
+.btn:hover { transform: translateY(-.4cqw); box-shadow: 0 0 0 .5cqw var(--paper), 0 1.8cqw 0 .5cqw var(--yellow-deep); }
+.btn:focus-visible { outline: .6cqw solid var(--paper); outline-offset: 1.4cqw; }
+
+/* Done: the valuation written in and ringed in white marker. No stamp. */
+.done-row { display: flex; align-items: center; justify-content: space-between; gap: 2cqw; }
+.result { position: relative; display: flex; align-items: baseline; gap: 1.6cqw; padding: .6cqw 3cqw; color: var(--paper); font: 900 7.6cqw/1 var(--display); font-variant-numeric: tabular-nums; }
+.result small { white-space: nowrap; color: var(--cream-dim); font: 800 2.2cqw/1 var(--body); letter-spacing: .08em; text-transform: uppercase; }
+.result svg { position: absolute; left: -1.6cqw; top: -1.8cqw; width: calc(100% + 3.2cqw); height: calc(100% + 3.6cqw); overflow: visible; }
+.result svg path { stroke: var(--paper); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+.link { font: 800 2.5cqw/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--paper); text-decoration: underline; text-underline-offset: .6cqw; text-decoration-thickness: .35cqw; background: none; border: 0; padding: 1cqw; cursor: pointer; }
+
+/* Task bands: primary B on primary A. */
+.tasks { list-style: none; margin: 0; padding: 0; }
+.tasks li { position: absolute; left: 19.2%; width: 61.6%; height: 4.8%; display: flex; align-items: center; gap: 2.4cqw; padding: 0 2.4cqw; background: var(--paper); color: var(--ink); border-radius: .6cqw; font: 700 3.7cqw/1.1 var(--body); }
+.box { width: 5cqw; height: 5cqw; flex: none; border: .45cqw solid var(--ink); border-radius: .6cqw; display: grid; place-items: center; }
+.box svg { width: 5cqw; height: 5cqw; overflow: visible; }
+.biro { stroke: var(--biro); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.nm { position: relative; white-space: nowrap; }
+.nm svg { position: absolute; left: -3px; top: 50%; width: calc(100% + 6px); height: .5em; transform: translateY(-40%); overflow: visible; }
+.nm svg path { stroke-width: 2.2; vector-effect: non-scaling-stroke; }
+.tasks li.done .nm { color: var(--muted); }
+.tasks li em { margin-left: auto; font: 800 2.5cqw/1 var(--body); letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Clipboard: what's on it, and the perimeter marks</h1>
+  <p class="lede">The run is played in one go, so the clipboard has two real states: <b>before</b> (the six tasks and a yellow Start) and <b>done</b> (ticked tasks and the valuation, ringed). The middle state only has to hold up if someone leaves halfway. No progress pips (the ticks say it), no Next chip (the button says it), so there is only ever one yellow thing on it. Art: the generated board, clip and plain ink sheet (job 5e82726c). Marks and bands are SVG and CSS, so they stay crisp and the row count can change without new art.</p>
+
+  <div class="picker" id="picker" role="group" aria-label="Perimeter marks"></div>
+  <p class="note" id="note"></p>
+
+  <div class="states" id="states"></div>
+
+  <h1 style="margin-top:48px" id="gen">Generated lines or code lines</h1>
+  <p class="lede">Two Higgsfield edits of the round 3 clipboard, 2026-11-20 (GPT Image 2.6, low, one variant each): <b>A</b> with the touchline and corner arcs printed in the art (job 58a183a4), <b>B</b> with a plain ink sheet (job 5e82726c) and the same marks drawn in SVG on top. Same layer on both. The bottom row is the top-left corner at 3x, where crispness shows.</p>
+  <div class="states" id="genrow"></div>
+  <div class="states" id="genzoom" style="margin-top:18px"></div>
+</main>
+
+<script>
+// Sheet coordinates: the sheet is 500 x 753 (72.7% x 73.5% of a 688 x 1024 board).
+// The clip notch covers x 105 to 395 at the top, so marks keep clear of y < 30 there.
+const W = 500, H = 753;
+const range = (a, b, s) => { const r = []; for (let v = a; v <= b + .01; v += s) r.push(v); return r; };
+const line = (x1, y1, x2, y2, w = 1.5) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--mark)" stroke-width="${w}"/>`;
+
+const MARKS = {
+  none: { name: 'None', note: 'Plain ink sheet, for comparison.', svg: () => '' },
+  ruler: {
+    name: 'Ruler edges',
+    note: 'A cutting-mat ruler down the left and along the bottom: short ticks every 12, long every 60. Reads as a working tool; echoes the old navy mat without the grid.',
+    svg: () => {
+      let s = '';
+      range(48, H - 24, 12).forEach((y, i) => s += line(0, y, (i % 5 === 0) ? 22 : 10, y, (i % 5 === 0) ? 2 : 1.2));
+      range(24, W - 24, 12).forEach((x, i) => s += line(x, H, x, H - ((i % 5 === 0) ? 22 : 10), (i % 5 === 0) ? 2 : 1.2));
+      return s;
+    },
+  },
+  pitch: {
+    name: 'Touchline and corner arcs',
+    note: 'A thin inset border with a quarter-circle in each corner and halfway ticks on the long sides: the sheet as a pitch, without drawing a pitch. Most football, still quiet.',
+    svg: () => {
+      const i = 16, r = 22, top = 40;
+      return `<rect x="${i}" y="${top}" width="${W - 2 * i}" height="${H - top - i}" fill="none" stroke="var(--mark)" stroke-width="1.6"/>` +
+        `<path d="M${i} ${top + r}A${r} ${r} 0 0 0 ${i + r} ${top}M${W - i - r} ${top}A${r} ${r} 0 0 0 ${W - i} ${top + r}M${W - i} ${H - i - r}A${r} ${r} 0 0 0 ${W - i - r} ${H - i}M${i + r} ${H - i}A${r} ${r} 0 0 0 ${i} ${H - i - r}" fill="none" stroke="var(--mark)" stroke-width="1.6"/>` +
+        line(i, (top + H - i) / 2, i + 14, (top + H - i) / 2, 1.6) + line(W - i, (top + H - i) / 2, W - i - 14, (top + H - i) / 2, 1.6);
+    },
+  },
+  crop: {
+    name: 'Print crop marks',
+    note: 'L-shaped crop marks at the corners and a registration target at the foot, like a printed scouting form. Crisp and graphic; less football, more "official document".',
+    svg: () => {
+      const a = 18, L = 26, top = 42, b = H - 18;
+      const L_ = (x, y, dx, dy) => `<path d="M${x + dx * L} ${y}H${x}V${y + dy * L}" fill="none" stroke="var(--mark)" stroke-width="2"/>`;
+      const cx = W / 2, cy = H - 14;
+      return L_(a, top, 1, 1) + L_(W - a, top, -1, 1) + L_(a, b, 1, -1) + L_(W - a, b, -1, -1) +
+        `<circle cx="${cx}" cy="${cy}" r="5.5" fill="none" stroke="var(--mark)" stroke-width="1.4"/>` + line(cx - 10, cy, cx + 10, cy, 1.4) + line(cx, cy - 10, cx, cy + 10, 1.4);
+    },
+  },
+  stitch: {
+    name: 'Stitched seam',
+    note: 'A dashed inset line all round, like the stitching on a leather pad or a kit seam. Softest of the set; adds a material feel rather than a printed one.',
+    svg: () => {
+      const i = 14, top = 38;
+      return `<rect x="${i}" y="${top}" width="${W - 2 * i}" height="${H - top - i}" rx="6" fill="none" stroke="var(--mark)" stroke-width="1.8" stroke-dasharray="7 6"/>`;
+    },
+  },
+};
+
+const NAMES = ['Check the rumours', 'Trace the link', 'Log the shot', 'Find the mole', 'Line them up', 'Read the season'];
+const TOPS = [48.4, 54.8, 61.2, 67.6, 74.0, 80.4];
+const TICK = '<svg viewBox="0 0 22 22"><path class="biro" d="M4.2 11.6c1.4 1.1 2.6 2.6 3.8 4.6 2.1-4.4 5.2-8.3 10.4-12.2"/></svg>';
+const STRIKE = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="biro" d="M1 6.2C18 4.4 31 7.1 49 5.2S81 4.1 99 5.6"/></svg>';
+const RING = '<svg viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M58 4C30 1 6 9 4 27s20 30 50 29 44-12 42-29C94 9 70 2 44 6"/></svg>';
+
+const rows = (done) => NAMES.map((n, i) => {
+  const d = i < done;
+  return `<li class="${d ? 'done' : ''}" style="top:${TOPS[i]}%"><i class="box">${d ? TICK : ''}</i><span class="nm">${n}${d ? STRIKE : ''}</span><em>${d ? 'Done' : ''}</em></li>`;
+}).join('');
+
+const STATES = [
+  { cap: 'Before', why: 'What the hub shows each morning. The six tasks are the preview of the run; Start is the only yellow.',
+    head: `<div class="eyebrow"><span>#42 · Thu 19 Nov</span><span>4-day streak</span></div>
+      <h4>Today’s assignment</h4><p class="sub">Six quick tasks. One report.</p>
+      <div class="bottom"><button class="btn">Start</button></div>`, done: 0 },
+  { cap: 'Done', why: 'After the run. The yellow leaves the clipboard (it moves to the next game’s Play on the hub); the valuation is ringed in white marker.',
+    head: `<div class="eyebrow"><span>Filed · Thu 19 Nov</span><span>Next in 9h 14m</span></div>
+      <h4>Today’s report</h4>
+      <div class="bottom done-row"><div class="result"><small>Valued at</small>£37.0m${RING}</div><button class="link">Share</button></div>`, done: 6 },
+  { cap: 'Left halfway', why: 'Only has to hold up: ticks show where you got to, the button says Continue.',
+    head: `<div class="eyebrow"><span>#42 · Thu 19 Nov</span><span>4-day streak</span></div>
+      <h4>Today’s assignment</h4><p class="sub">3 of 6 done.</p>
+      <div class="bottom"><button class="btn">Continue</button></div>`, done: 3 },
+];
+
+let current = 'pitch';
+function render() {
+  const m = MARKS[current];
+  document.getElementById('states').innerHTML = STATES.map((s) => `<figure>
+    <div class="clipart"><div class="cb"><img src="img/round3/clipboard-ink-plain-cut.png" alt=""></div>
+      <div class="sheet"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${m.svg()}</svg></div>
+      <div class="head">${s.head}</div><ol class="tasks">${rows(s.done)}</ol></div>
+    <figcaption>${s.cap}<span>${s.why}</span></figcaption></figure>`).join('');
+  document.getElementById('note').textContent = m.note;
+  document.querySelectorAll('#picker button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.k === current));
+}
+// Shrink anything that would overflow its box, never grow it.
+function fit(el, box) {
+  el.style.fontSize = '';
+  let s = parseFloat(getComputedStyle(el).fontSize), n = 0;
+  while (box.scrollWidth > box.clientWidth + 1 && n++ < 40) el.style.fontSize = (s *= .96) + 'px';
+}
+function fitAll() {
+  document.querySelectorAll('.head').forEach((h) => {
+    const t = h.querySelector('h4'); fit(t, t);
+    const e = h.querySelector('.eyebrow'); fit(e, e);
+    const r = h.querySelector('.done-row'); if (r) fit(r.querySelector('.result'), r);
+  });
+}
+const _render = render;
+render = () => { _render(); document.fonts.ready.then(fitAll); };
+addEventListener('resize', fitAll);
+document.getElementById('picker').innerHTML = Object.entries(MARKS).map(([k, m]) => `<button data-k="${k}">${m.name}</button>`).join('');
+document.getElementById('picker').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { current = b.dataset.k; history.replaceState(null, '', '#' + current); render(); } });
+if (MARKS[location.hash.slice(1)]) current = location.hash.slice(1);
+render();
+
+// Generated art: the sheet is already ink, so nothing is painted; B gets the SVG marks.
+const GEN_SHEET = 'left:13.5%;top:15.9%;width:72.9%;height:74%;background:none;clip-path:none';
+const GEN = [
+  { cap: 'A · Lines in the art', why: 'Printed by the generator: cream border, corner arcs, halfway ticks.', src: 'img/round3/clipboard-ink-lines.png', marks: '' },
+  { cap: 'B · Plain art, SVG lines', why: 'Plain generated sheet; the same marks drawn in code at 55% cream.', src: 'img/round3/clipboard-ink-plain-cut.png', marks: MARKS.pitch.svg() },
+  { cap: 'B · Plain art, no lines', why: 'The bare generated sheet, for reference.', src: 'img/round3/clipboard-ink-plain-cut.png', marks: '' },
+];
+const genBoard = (g) => `<div class="clipart"><div class="cb"><img src="${g.src}" alt=""></div>
+  <div class="sheet" style="${GEN_SHEET}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${g.marks}</svg></div>
+  <div class="head">${STATES[0].head}</div><ol class="tasks">${rows(0)}</ol></div>`;
+document.getElementById('genrow').innerHTML = GEN.map((g) => `<figure>${genBoard(g)}<figcaption>${g.cap}<span>${g.why}</span></figcaption></figure>`).join('');
+document.getElementById('genzoom').innerHTML = GEN.map((g) => `<figure><div class="zoom">${genBoard(g)}</div><figcaption>${g.cap} · corner at 3x</figcaption></figure>`).join('');
+document.fonts.ready.then(fitAll);
+</script>
+</body>
+</html>

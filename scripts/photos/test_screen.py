@@ -30,5 +30,28 @@ assert 'nothim' in S.tag_rules({**good, 'id_med': 0.05, 'id_coh': 0.6}, med, mad
 assert 'nothim' not in S.tag_rules({**good, 'id_med': 0.05, 'id_coh': 0.05}, med, mad, S.DEFAULT_TH)   # his other photos disagree too: no verdict
 assert 'old' in S.tag_rules({**good, 'after': 9}, med, mad, S.DEFAULT_TH)
 assert 'messy' in S.tag_rules({**good, 'stray': 0.2}, med, mad, S.DEFAULT_TH)
-assert S.TAGS == ['training', 'notkit', 'lowq', 'crop', 'unusable', 'better', 'nothim', 'messy', 'old'] and S.SOFT == {'training', 'better'}
+# sharpness floor: a detailed subject passes, the same subject shrunk to 60 px and blown back up to 440 (Figo's case) fails;
+# the matte's own edge does not count, and blurry_cutouts lists exactly the soft file
+import tempfile, cv2
+from pathlib import Path
+from PIL import Image
+yy, xx = np.mgrid[:440, :440]
+detail = (((xx // 6 + yy // 6) % 2) * 120 + 60 + rng.normal(0, 12, (440, 440))).clip(0, 255).astype(np.uint8)
+alpha = (((xx - 220) ** 2 + (yy - 260) ** 2) < 170 ** 2).astype(np.uint8) * 255
+def rgba(grey):
+    return np.dstack([grey, grey, grey, alpha])
+soft = cv2.resize(cv2.resize(detail, (60, 60), interpolation=cv2.INTER_AREA), (440, 440), interpolation=cv2.INTER_LANCZOS4)
+flat = np.full((440, 440), 128, np.uint8)
+assert S.checks.subject_sharpness(rgba(detail)) > 10 * S.checks.MIN_SUBJECT_SHARP
+assert S.checks.subject_sharpness(rgba(soft)) < S.checks.MIN_SUBJECT_SHARP
+assert S.checks.subject_sharpness(rgba(flat)) < 1   # a hard matte edge on a flat subject is not detail
+assert S.checks.subject_sharpness(np.dstack([detail] * 3 + [np.zeros_like(alpha)])) == 0.0   # no subject
+with tempfile.TemporaryDirectory() as t:
+    Image.fromarray(rgba(detail)).save(f'{t}/Q1.0.webp', lossless=True)
+    Image.fromarray(rgba(soft)).save(f'{t}/Q1.1.webp', lossless=True)
+    Image.fromarray(rgba(detail)).save(f'{t}/Q2.0.webp', lossless=True)
+    assert S.blurry_cutouts(t, Path(t) / 'cache.json') == {'Q1': [1]}
+    assert S.blurry_cutouts(t, Path(t) / 'cache.json') == {'Q1': [1]}   # from the cache
+
+assert S.TAGS ==['training', 'notkit', 'lowq', 'crop', 'unusable', 'better', 'nothim', 'messy', 'old'] and S.SOFT == {'training', 'better'}
 print('ok')

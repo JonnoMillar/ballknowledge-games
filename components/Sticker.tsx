@@ -83,7 +83,7 @@ export default function Sticker({
  * the wall draw it as it is.
  */
 export function StickerFace({
-  player, image, ground, index, className = '', ref, ...rest
+  player, image, ground, index, className = '', ref, flag = true, ...rest
 }: {
   player: Named;
   image: PortraitImage | undefined;
@@ -91,6 +91,8 @@ export function StickerFace({
   index?: number;
   className?: string;
   ref?: (node: HTMLElement | null) => void;
+  /** The dev-only "Wrong photo" button. Off where the card is itself a button (the review pages): a button may not nest. */
+  flag?: boolean;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
   const name = plateName(player.id, player.name).toUpperCase();
   const seam = ground.liveA && ground.liveB && ground.a !== ground.b;
@@ -102,7 +104,7 @@ export function StickerFace({
         <span className={`sticker__half sticker__half--b ${ground.liveB ? 'is-live' : ''}`} style={{ background: ground.b }} aria-hidden />
         <span className={`sticker__seam ${seam ? 'is-live' : ''}`} aria-hidden />
         {!image || image.fit === 'kit' ? <KitCard club={image?.club} ground={ground} /> : <img src={image.url} alt="" draggable={false} />}
-        {process.env.NODE_ENV === 'development' && image?.fit === 'box' ? <FlagPhoto id={player.id} /> : null}
+        {flag && process.env.NODE_ENV === 'development' && image?.fit === 'box' ? <FlagPhoto id={player.id} /> : null}
       </div>
       <div className="sticker__plate">
         <span className={`sticker__name ${name.length > 10 ? 'sticker__name--long' : ''}`}>{name}</span>
